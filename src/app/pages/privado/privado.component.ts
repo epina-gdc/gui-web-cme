@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-privado',
   imports: [],
   templateUrl: './privado.component.html',
-  styleUrl: './privado.component.css'
+  styleUrl: './privado.component.scss'
 })
 export class PrivadoComponent {
 
