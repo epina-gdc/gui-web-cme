@@ -1,0 +1,48 @@
+.header-titulos {
+  font-size: 20px;
+  line-height: 120%;
+  font-weight: 700;
+  color: var(--gob-mx-gris-tono1);
+}
+.header-subtitulos {
+  font-size: 16px;
+  line-height: 120%;
+  font-weight: 700;
+  color: var(--gob-mx-gris-tono1);
+}
+.text-base {
+  font-size: 14px !important;
+  line-height: 150%;
+  color: var(--gob-mx-gris-tono1);
+}
+.text-chico {
+  font-size: 12px !important;
+  line-height: 150%;
+  color: var(--gob-mx-gris-tono1);
+}
+.text-caption {
+  font-size: 10px !important;
+  line-height: 150%;
+  color: var(--gob-mx-gris-tono1);
+}
+.link-text-base {
+  text-decoration: underline;
+  font-size: 14px;
+  line-height: 150%;
+  font-weight: 700;
+  color: var(--bs-primary-hex-color);
+}
+.link-text-chico {
+  text-decoration: underline;
+  font-size: 12px;
+  line-height: 150%;
+  font-weight: 700;
+  color: var(--bs-primary-hex-color);
+}
+.link-text-caption {
+  text-decoration: underline;
+  font-size: 10px;
+  line-height: 150%;
+  font-weight: 700;
+  color: var(--bs-primary-hex-color);
+}
