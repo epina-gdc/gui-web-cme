@@ -1,7 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
-@import "primeflex/primeflex.css";
-@import "primeicons/primeicons.css";
+@use "primeflex/primeflex.css";
+@use "primeicons/primeicons.css";
+@use "assets/scss/design-system/index";
 
 @layer app-components {
-  @import "assets/scss/design-system/index";
+
+  :root {
+    --cme-max-width: 1440px;
+
+    @media screen and (min-width: 1440px) {
+      --cme-max-width: 1600px;
+    }
+
+    @media screen and (min-width: 1600px) {
+      --cme-max-width: 1900px;
+    }
+
+    @media screen and (min-width: 1900px) {
+      --cme-max-width: 2100px;
+    }
+  }
+
+  .container {
+    width: 100% !important;
+  }
+
+  .container-cme {
+    max-width: var(--cme-max-width);
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
