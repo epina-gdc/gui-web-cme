@@ -30,4 +30,22 @@
     margin-left: auto;
     margin-right: auto;
   }
+
+  html {
+    font-size: 12px;
+    font-family: 'Noto Sans', Arial, Helvetica, sans-serif;
+  }
+
+  html,
+  body {
+    padding-top: 60px;
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background-color: #fafafa;
+  }
+
 }
