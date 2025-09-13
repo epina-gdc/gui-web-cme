@@ -1,7 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @use "primeflex/primeflex.css";
 @use "primeicons/primeicons.css";
-@use "assets/scss/design-system/index";
+@use "assets/scss/design-system/index" as design;
+@use "assets/scss/primeng-custom/index" as customprimeng;
 
 @layer app-components {
 
@@ -48,10 +49,9 @@
   }
 
   .login-background {
-    background: url("assets/backgrounds/login-background.jpg") no-repeat;
-    background-size: cover;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), /* Black overlay */
+    url("assets/backgrounds/login-background.jpg") no-repeat center center / cover;
     min-height: 100vh;
-    opacity: 0.9;
   }
 
   header {
