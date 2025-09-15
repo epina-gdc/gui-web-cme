@@ -1,5 +1,6 @@
 import {Component, input, Input, InputSignal} from '@angular/core';
 import {NgClass} from '@angular/common';
+import {StepItemInterno} from '@models/step-item.interface';
 
 @Component({
   selector: 'steps',
@@ -10,7 +11,7 @@ import {NgClass} from '@angular/common';
   styleUrl: './steps.component.scss'
 })
 export class StepsComponent {
-  @Input() steps: any[] = [];
+  @Input() steps: StepItemInterno[] = [];
   currentStepIndex: InputSignal<number> = input(1);
 
   getStepClass(index: number): string {
