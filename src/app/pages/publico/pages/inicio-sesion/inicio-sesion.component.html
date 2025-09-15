@@ -1,17 +1,49 @@
 <main class="flex  login-background">
   <aside class="col-6 flex flex-column justify-content-center align-items-center p-6">
-    <h1 class="login-titulo">Convocatoria para medicos especialistas</h1>
+    <h1 class="login-titulo">Convocatoria para médicos especialistas</h1>
     <h2 class="login-subtitulo">Reclutamiento IMSS 2025</h2>
   </aside>
   <section class="col-6 flex justify-content-center align-items-center">
-    <p-card class="top-rounded-card" [style]="{ width: '45rem', overflow: 'hidden' }">
-      <ng-template #header>
-        <div class="flex justify-content-center">
-          <h2>Inicio de sesión</h2>
+    <p-card class="top-rounded-card px-2 border-round-bottom-3xl border-round-bottom" [style]="{ width: '45rem', overflow: 'hidden' }">
+      <form [formGroup]="formLogin"  (ngSubmit)="iniciarSesion()">
+        <div class="flex justify-content-center px-3">
+          <h2 class="login-card-titulo">Inicio de sesión</h2>
         </div>
-        <hr>
-      </ng-template>
-      <p-button label="Primary"/>
+        <div class="px-0">
+          <hr class=" border-1 opacity-10">
+        </div>
+        <div class="login-card-body mt-4">
+          <div class="field">
+            <label class="field-label" for="correoElectronico">Correo electrónico</label>
+            <input 
+              pInputText 
+              class="w-full" 
+              type="email" 
+              id="correoElectronico" 
+              placeholder="Ingresa correo electrónico" 
+              formControlName="correoElectronico" />
+          </div>
+          <div class="form-icon">
+            <label class="field-label" for="password">Contraseña</label>
+            <input #input
+              pInputText
+              class="w-full"
+              type="text"
+              id="password"
+              placeholder="Ingresa contraseña"
+              formControlName="password"/>
+              <i class="cursor-pointer icon pi pi-eye-slash"
+                (click)="input.type = input.type==='password'?'text':'password'"></i>
+          </div>
+          <div class="flex justify-content-end my-3">
+            <a href="#" class="login-hipervinculo">Olvidé mi contraseña</a>
+          </div>
+          <div class="flex justify-content-between">
+            <a href="#" class="login-hipervinculo">Crear cuenta</a>
+            <p-button type="submit" label="Iniciar sesión"/>
+          </div>
+        </div>
+      </form>
     </p-card>
   </section>
 </main>

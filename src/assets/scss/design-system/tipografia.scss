@@ -18,6 +18,43 @@
   line-height: 40px; /* 125% */
 }
 
+.login-card-titulo{
+  color: var(--gob-mx-gris-tono1);
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%; /* 24px */
+}
+
+.field-label{
+  color: #404041;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-family: "Noto Sans";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 100%; /* 12px */
+}
+
+.login-hipervinculo{
+  color: #404041;
+  text-align: right;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-family: "Noto Sans";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 30px; /* 250% */
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: none;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+
+}
+
 .titulo-seccion {
   display: flex;
   width: 284px;
