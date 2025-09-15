@@ -62,4 +62,13 @@
     background-color: var(--gob-mx-pr-imss-tono1);
   }
 
+  hr.vertical {
+    border: 10px;
+    margin: 10px;
+    border-left: 1px solid #ccc;
+    height: 20px;
+    width: 0;
+    float: left;
+  }
+
 }
