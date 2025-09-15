@@ -1,0 +1,75 @@
+
+.stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 2rem 0;
+}
+
+.stepper-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex-grow: 1;
+}
+
+.stepper-step {
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 1.25rem;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.stepper-step-active {
+  background-color: var(--stepper-active-color);
+  color: #fff;
+}
+
+.stepper-step-done {
+  background-color: var(--stepper-done-color);
+  color: #fff;
+}
+
+.stepper-step-pending {
+  background-color: var(--stepper-pending-color);
+  color: #6b7280;
+}
+
+.stepper-label {
+  margin-top: 0.5rem;
+  text-align: center;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.stepper-label-active {
+  color: var(--stepper-active-color);
+  font-weight: 600;
+}
+
+.stepper-line {
+  height: 0.20rem;
+  width: 500px;
+  flex-grow: 1;
+  margin-bottom: 20px;
+  transition: background-color 0.3s;
+}
+
+.stepper-line-done {
+  background-color: var(--stepper-done-color);
+}
+
+.stepper-line-pending {
+  background-color: var(--stepper-pending-color);
+}
+
+.stepper-line-active {
+  background-color: var(--stepper-active-color);
+}
