@@ -3,4 +3,8 @@
     border-top: 15px solid var(--bs-primary-hex-color);
     border-radius: 16px 16px 0 0;
   }
+
+  .card-padding-0 > .p-card-body {
+    padding: 0;
+  }
 }
