@@ -9,6 +9,7 @@ import {Component, Input} from '@angular/core';
 export class IconCardComponent {
   @Input() iconClass: string = 'pi pi-user'; // Clase del icono (por defecto, pi-user)
   @Input() cardColor: string = '#ff8f01'; // Color principal (por defecto, naranja)
+  @Input() leftBorderRound: boolean = false; // Opcional: borde redondo inferior izquierda
 
   // Opcional: para un color de fondo con opacidad
   get backgroundColor() {
