@@ -43,10 +43,12 @@
 }
 
 .stepper-label {
-  margin-top: 0.5rem;
-  text-align: center;
-  font-weight: 500;
-  color: #6b7280;
+  color: var(--Primary-Color-4-Tone1, #3F5C7C);
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%; /* 14.4px */
 }
 
 .stepper-line {

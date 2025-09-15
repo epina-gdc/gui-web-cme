@@ -62,7 +62,7 @@
   line-height: 120%; /* 21.6px */
 }
 
-.titulo-medico {
+.label-medico {
   color: #BC955C;
   font-size: 14px;
   font-style: normal;
@@ -76,4 +76,20 @@
   font-style: normal;
   font-weight: 700;
   line-height: 20px; /* 142.857% */
+}
+
+.label-campo {
+  color: var(--Grays-Tone3, #7781A5);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%; /* 14px */
+}
+
+.texto-campo {
+  color: #374957;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%; /* 16px */
 }
