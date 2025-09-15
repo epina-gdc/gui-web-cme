@@ -49,16 +49,13 @@
   color: #6b7280;
 }
 
-.stepper-label-active {
-  color: var(--stepper-active-color);
-  font-weight: 600;
-}
-
 .stepper-line {
   height: 0.20rem;
   width: 500px;
   flex-grow: 1;
   margin-bottom: 20px;
+  margin-left: 5px;
+  margin-right: 5px;
   transition: background-color 0.3s;
 }
 

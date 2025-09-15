@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {InicioSesionComponent} from '@publico/inicio-sesion/inicio-sesion.component';
 
 const routes: Routes = [

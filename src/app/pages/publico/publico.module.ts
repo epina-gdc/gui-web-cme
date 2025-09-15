@@ -1,7 +1,7 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { PublicoRoutingModule } from './publico-routing.module';
+import {PublicoRoutingModule} from './publico-routing.module';
 
 
 @NgModule({
