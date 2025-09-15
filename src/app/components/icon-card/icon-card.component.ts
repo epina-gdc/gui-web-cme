@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {Card} from 'primeng/card';
 
 @Component({
-  selector: 'app-icon-card',
+  selector: 'icon-card',
   imports: [
     Card
   ],
