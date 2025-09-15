@@ -1,0 +1,25 @@
+<div class="stepper">
+  @for (step of steps; track i; let i = $index) {
+    <div class="stepper-item">
+      <div class="stepper-step" [ngClass]="getStepClass(i)">
+        @if (i < currentStepIndex()) {
+          <i class="pi pi-check" style="font-size: 1.25rem;"></i>
+        } @else if (i === currentStepIndex()) {
+          <i class="pi pi-spinner-dotted" style="font-size: 1.25rem;"></i>
+        } @else {
+          <i class="pi pi-chart-pie" style="font-size: 1.25rem;"></i>
+        }
+      </div>
+      <span class="stepper-label">
+        {{ step.label }}
+      </span>
+    </div>
+
+    @if (i < steps.length) {
+      <div class="stepper-line"
+           [ngClass]="{'stepper-line-done': i < currentStepIndex(), 'stepper-line-active': i === currentStepIndex(),
+           'stepper-line-pending': i > currentStepIndex()}">
+      </div>
+    }
+  }
+</div>
