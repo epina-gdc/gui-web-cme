@@ -15,7 +15,7 @@
       </span>
     </div>
 
-    @if (i < steps.length - 1) {
+    @if (i < steps.length) {
       <div class="stepper-line"
            [ngClass]="{'stepper-line-done': i < currentStepIndex(), 'stepper-line-active': i === currentStepIndex(),
            'stepper-line-pending': i > currentStepIndex()}">
