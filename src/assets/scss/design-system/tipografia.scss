@@ -17,3 +17,63 @@
   font-weight: 500;
   line-height: 40px; /* 125% */
 }
+
+.titulo-seccion {
+  display: flex;
+  width: 284px;
+  height: 28px;
+  flex-direction: column;
+  justify-content: flex-end;
+  color: #6776A8;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%; /* 30px */
+}
+
+.usuario-menu {
+  color: #374060;
+  text-align: right;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%; /* 16.8px */
+}
+
+.letras-menu-imss {
+  color: #006455;
+  text-align: right;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 120%; /* 24px */
+}
+
+.menu-nombre-sistema {
+  color: #374957;
+  text-align: right;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%; /* 21.6px */
+}
+
+.titulo-medico {
+  color: #BC955C;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.nombre-medico {
+  color: #222;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px; /* 142.857% */
+}
