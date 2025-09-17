@@ -6,7 +6,7 @@
                   [invalidFileSizeMessageSummary]="''"
                   [invalidFileLimitMessageDetail]="'El peso del documento excede al permitido.'"
                   [invalidFileSizeMessageDetail]="'El peso del documento excede al permitido.'"
-                  maxFileSize="5120000" (onUpload)="onTemplatedUpload()" (onSelect)="onSelectedFiles($event)">
+                  maxFileSize="1048576" (onUpload)="onTemplatedUpload()" (onSelect)="onSelectedFiles($event)">
 
       <ng-template pTemplate="header" let-files let-chooseCallback="chooseCallback"
                    let-uploadCallback="uploadCallback" let-clearCallback="clearCallback">
@@ -32,12 +32,13 @@
         @if (files?.length > 0) {
           <div class="flex flex-wrap">
             @for (file of files; track file.objectURL; let index = $index) {
-              <div
-                class="card m-0 flex flex-column border-1 surface-border align-items-center gap-3 half-border">
-                <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="241" height="120"
-                     style="object-fit: cover;"/>
+              <div class="flex align-items-center justify-content-center
+              flex-column border-dashed border-1 half-border border-circle">
+                <img role="presentation" class="border-circle"
+                     [alt]="file.name" [src]="file.objectURL" style="object-fit: cover; width: 100%; height: 100%;"/>
+                <p-button icon="icon-cme-camara" [rounded]="true" class="btn-upload image-upload-button"
+                          (click)="seleccionarArchivo()"/>
               </div>
-              <div class="mitad-inferior"></div>
             }
           </div>
         }
