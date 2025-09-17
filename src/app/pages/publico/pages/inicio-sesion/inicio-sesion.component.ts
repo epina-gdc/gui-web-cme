@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from "@angular/
 import {Card} from 'primeng/card';
 import {Button} from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { RegistroMedicoComponent } from '../registro-medico/registro-medico.component';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -10,7 +11,8 @@ import { InputTextModule } from 'primeng/inputtext';
     Card,
     Button,
     InputTextModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    RegistroMedicoComponent
   ],
   templateUrl: './inicio-sesion.component.html',
   styleUrl: './inicio-sesion.component.scss',
@@ -20,6 +22,7 @@ export class InicioSesionComponent implements OnInit{
 
   fb = inject(FormBuilder)
   formLogin!: FormGroup;
+  vista: 'login' | 'olvideContrasenia' | 'registrarMedico' = "login";
 
 
   ngOnInit(): void {

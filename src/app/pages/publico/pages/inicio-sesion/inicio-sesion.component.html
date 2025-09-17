@@ -5,45 +5,57 @@
   </aside>
   <section class="col-6 flex justify-content-center align-items-center">
     <p-card class="top-rounded-card px-2 border-round-bottom-3xl border-round-bottom" [style]="{ width: '45rem', overflow: 'hidden' }">
-      <form [formGroup]="formLogin"  (ngSubmit)="iniciarSesion()">
-        <div class="flex justify-content-center px-3">
-          <h2 class="login-card-titulo">Inicio de sesión</h2>
-        </div>
-        <div class="px-0">
-          <hr class=" border-1 opacity-10">
-        </div>
-        <div class="login-card-body mt-4">
-          <div class="field">
-            <label class="field-label" for="correoElectronico">Correo electrónico</label>
-            <input 
-              pInputText 
-              class="w-full" 
-              type="email" 
-              id="correoElectronico" 
-              placeholder="Ingresa correo electrónico" 
-              formControlName="correoElectronico" />
-          </div>
-          <div class="form-icon">
-            <label class="field-label" for="password">Contraseña</label>
-            <input #input
-              pInputText
-              class="w-full"
-              type="text"
-              id="password"
-              placeholder="Ingresa contraseña"
-              formControlName="password"/>
-              <i class="cursor-pointer icon pi pi-eye-slash"
-                (click)="input.type = input.type==='password'?'text':'password'"></i>
-          </div>
-          <div class="flex justify-content-end my-3">
-            <a href="#" class="login-hipervinculo">Olvidé mi contraseña</a>
-          </div>
-          <div class="flex justify-content-between">
-            <a href="#" class="login-hipervinculo">Crear cuenta</a>
-            <p-button type="submit" label="Iniciar sesión"/>
-          </div>
-        </div>
-      </form>
+      <div class="flex justify-content-center px-3">
+        <h2 class="login-card-titulo">Inicio de sesión</h2>
+      </div>
+      <div class="px-0">
+        <hr class=" border-1 opacity-10">
+      </div>
+
+      @switch (vista) {
+        @case ('login') {
+          <form [formGroup]="formLogin"  (ngSubmit)="iniciarSesion()">
+            <div class="login-card-body mt-4">
+              <div class="field">
+                <label class="field-label" for="correoElectronico">Correo electrónico</label>
+                <input 
+                  pInputText 
+                  class="w-full" 
+                  type="email" 
+                  id="correoElectronico" 
+                  placeholder="Ingresa correo electrónico" 
+                  formControlName="correoElectronico" />
+              </div>
+              <div class="form-icon">
+                <label class="field-label" for="password">Contraseña</label>
+                <input #input
+                  pInputText
+                  class="w-full"
+                  type="text"
+                  id="password"
+                  placeholder="Ingresa contraseña"
+                  formControlName="password"/>
+                  <i class="cursor-pointer icon pi pi-eye-slash"
+                    (click)="input.type = input.type==='password'?'text':'password'"></i>
+              </div>
+              <div class="flex justify-content-end my-3">
+                <a href="#" class="login-hipervinculo">Olvidé mi contraseña</a>
+              </div>
+              <div class="flex justify-content-between">
+                <a (click)="vista = 'registrarMedico'" class="login-hipervinculo cursor-pointer">Crear cuenta</a>
+                <p-button type="submit" label="Iniciar sesión"/>
+              </div>
+            </div>
+          </form>
+        }
+        @case ('registrarMedico') {
+          <app-registro-medico></app-registro-medico>
+        }
+      }
+
+
     </p-card>
+
+
   </section>
 </main>
