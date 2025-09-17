@@ -13,4 +13,8 @@
     font-weight: 400;
     line-height: 120%;
   }
+
+  .image-upload-button > .p-button {
+    background: var(--bs-info-emphasis);
+  }
 }
