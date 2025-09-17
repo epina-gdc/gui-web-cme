@@ -1,7 +1,8 @@
 @layer app-components {
-  .top-rounded-card {
+  .p-card-body{
     border-top: 18px solid var(--bs-primary-hex-color);
-    border-radius: 16px 16px 0 0;
+    border-radius: 10px 10px 0 0;
+    
   }
 
   .card-padding-0 > .p-card-body {
