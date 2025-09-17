@@ -1,0 +1,43 @@
+<p-card class="top-rounded-card" [style]="{ width: '45rem',  }">
+  <form [formGroup]="form"  (ngSubmit)="iniciarSesion()">
+    <div class="flex justify-content-center px-3">
+      <h2 class="login-card-titulo">Residente IMSS</h2>
+    </div>
+    <div class="px-0">
+      <hr class=" border-1 opacity-10">
+    </div>
+    <div class="login-card-body mt-4">
+      <div class="field">
+        <label class="field-label" for="correoElectronico">Correo electrónico</label>
+        <input 
+          pInputText 
+          class="w-full" 
+          type="email" 
+          id="correoElectronico" 
+          placeholder="Ingresa correo electrónico" 
+          formControlName="correoElectronico" />
+      </div>
+      <div class="form-icon">
+        <label class="field-label" for="password">Contraseña</label>
+        <input #input
+          pInputText
+          class="w-full"
+          type="text"
+          id="password"
+          placeholder="Ingresa contraseña"
+          formControlName="password"/>
+          <i class="cursor-pointer icon pi pi-eye-slash"
+            (click)="input.type = input.type==='password'?'text':'password'"></i>
+      </div>
+      <div class="flex justify-content-end my-3">
+        <a href="#" class="login-hipervinculo">Olvidé mi contraseña</a>
+      </div>
+      <div class="flex justify-content-between">
+        <a href="#" class="login-hipervinculo">Crear cuenta</a>
+        <p-button type="submit" label="Iniciar sesión"/>
+      </div>
+    </div>
+  </form>
+
+  
+</p-card>
