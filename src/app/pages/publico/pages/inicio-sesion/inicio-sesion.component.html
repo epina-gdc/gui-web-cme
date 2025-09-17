@@ -5,15 +5,14 @@
   </aside>
   <section class="col-6 flex justify-content-center align-items-center">
     <p-card class="top-rounded-card px-2 border-round-bottom-3xl border-round-bottom" [style]="{ width: '45rem', overflow: 'hidden' }">
-      <div class="flex justify-content-center px-3">
-        <h2 class="login-card-titulo">Inicio de sesión</h2>
-      </div>
-      <div class="px-0">
-        <hr class=" border-1 opacity-10">
-      </div>
-
-      @switch (vista) {
-        @case ('login') {
+      
+      @if (vista() == 'login') {  
+          <div class="flex justify-content-center px-3">
+            <h2 class="login-card-titulo">Inicio de sesión</h2>
+          </div>
+          <div class="px-0">
+            <hr class=" border-1 opacity-10">
+          </div>
           <form [formGroup]="formLogin"  (ngSubmit)="iniciarSesion()">
             <div class="login-card-body mt-4">
               <div class="field">
@@ -31,31 +30,27 @@
                 <input #input
                   pInputText
                   class="w-full"
-                  type="text"
+                  type="password"
                   id="password"
                   placeholder="Ingresa contraseña"
                   formControlName="password"/>
-                  <i class="cursor-pointer icon pi pi-eye-slash"
+                  <i [ngClass]="{'pi-eye': input.type==='password', 'pi-eye-slash':  input.type ==='text'}" 
+                    class="cursor-pointer icon pi"
                     (click)="input.type = input.type==='password'?'text':'password'"></i>
               </div>
               <div class="flex justify-content-end my-3">
-                <a href="#" class="login-hipervinculo">Olvidé mi contraseña</a>
+                <a (click)="vista.set('olvideContrasenia')" class="login-hipervinculo cursor-pointer">Olvidé mi contraseña</a>
               </div>
               <div class="flex justify-content-between">
-                <a (click)="vista = 'registrarMedico'" class="login-hipervinculo cursor-pointer">Crear cuenta</a>
+                <a (click)="vista.set('registrarMedico')" class="login-hipervinculo cursor-pointer">Crear cuenta</a>
                 <p-button type="submit" label="Iniciar sesión"/>
               </div>
             </div>
           </form>
         }
-        @case ('registrarMedico') {
-          <app-registro-medico></app-registro-medico>
+        @if(vista() == 'olvideContrasenia'){
+          <app-recuperar-cuenta></app-recuperar-cuenta>
         }
-      }
-
-
     </p-card>
-
-
   </section>
 </main>

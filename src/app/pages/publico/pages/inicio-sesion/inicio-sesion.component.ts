@@ -1,9 +1,11 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from "@angular/forms";
 import {Card} from 'primeng/card';
 import {Button} from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { RegistroMedicoComponent } from '../registro-medico/registro-medico.component';
+import { RecuperarCuentaComponent } from '../recuperar-cuenta/recuperar-cuenta.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -12,7 +14,8 @@ import { RegistroMedicoComponent } from '../registro-medico/registro-medico.comp
     Button,
     InputTextModule,
     ReactiveFormsModule,
-    RegistroMedicoComponent
+    RecuperarCuentaComponent,
+    CommonModule
   ],
   templateUrl: './inicio-sesion.component.html',
   styleUrl: './inicio-sesion.component.scss',
@@ -22,7 +25,7 @@ export class InicioSesionComponent implements OnInit{
 
   fb = inject(FormBuilder)
   formLogin!: FormGroup;
-  vista: 'login' | 'olvideContrasenia' | 'registrarMedico' = "login";
+  vista = signal('login');
 
 
   ngOnInit(): void {
@@ -39,4 +42,5 @@ export class InicioSesionComponent implements OnInit{
   iniciarSesion(){
     console.log("");
   }
+
 }
