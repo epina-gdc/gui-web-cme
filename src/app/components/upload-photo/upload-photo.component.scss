@@ -25,11 +25,6 @@
   position: relative;
 }
 
-.leyendas-inferior {
-  position: absolute;
-  bottom: -40px
-}
-
 .card-upload-photo {
   display: flex;
   padding: 0 23px 11px 0;
@@ -61,6 +56,6 @@
 
 .btn-upload {
   position: absolute;
-  right: 10%;
-  top: 10%;
+  right: 15%;
+  top: 0;
 }

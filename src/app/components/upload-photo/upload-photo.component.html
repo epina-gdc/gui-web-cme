@@ -36,16 +36,6 @@
                 class="card m-0 flex flex-column border-1 surface-border align-items-center gap-3 half-border">
                 <img role="presentation" [alt]="file.name" [src]="file.objectURL" width="241" height="120"
                      style="object-fit: cover;"/>
-                <div class="leyendas-inferior flex flex-row justify-content-between gap-5">
-                  <div>
-                    <span class="font-semibold">{{ file.name }}</span>
-                    <div>{{ formatSize(file.size) | lowercase }} Documento cargado</div>
-                  </div>
-                  <p-button icon="pi pi-trash" [text]="true" [rounded]="true" class="p-icon-button"
-                            (onClick)="onRemoveTemplatingFile($event, file, removeFileCallback, index)"
-                            severity="danger"/>
-
-                </div>
               </div>
               <div class="mitad-inferior"></div>
             }
@@ -86,7 +76,8 @@
             <p class="label1-subir-imagen">Sube una foto</p>
             <p class="label2-subir-imagen">(jpg/png, máx. 1Mb),<br> clara y sin gafas</p>
           </span>
-          <p-button icon="icon-cme-camara" [rounded]="true" class="btn-upload image-upload-button" (click)="seleccionarArchivo()" />
+          <p-button icon="icon-cme-camara" [rounded]="true" class="btn-upload image-upload-button"
+                    (click)="seleccionarArchivo()"/>
         </div>
       </ng-template>
     </p-fileupload>
