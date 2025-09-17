@@ -17,8 +17,8 @@ import {StepsComponent} from '../../../../components/steps/steps.component';
 })
 export class InicioComponent {
   steps = [
-    { label: 'Personal', active: false },
-    { label: 'Seat', active: true },
-    { label: 'Payment', active: false },
+    { label: 'Información Personal', active: false },
+    { label: 'Documentación', active: false },
+    { label: 'Oferta laboral', active: false },
   ];
 }

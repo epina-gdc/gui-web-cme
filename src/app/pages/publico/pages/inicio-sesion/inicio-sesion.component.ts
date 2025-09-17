@@ -1,8 +1,8 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from "@angular/forms";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Card} from 'primeng/card';
 import {Button} from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
+import {InputTextModule} from 'primeng/inputtext';
 
 @Component({
   selector: 'app-inicio-sesion',

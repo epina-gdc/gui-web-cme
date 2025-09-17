@@ -1,4 +1,4 @@
-<div class="stepper">
+<div class="stepper mb-5">
   @for (step of steps; track i; let i = $index) {
     <div class="stepper-item">
       <div class="stepper-step" [ngClass]="getStepClass(i)">
@@ -10,9 +10,9 @@
           <i class="pi pi-chart-pie" style="font-size: 1.25rem;"></i>
         }
       </div>
-      <span class="stepper-label">
-        {{ step.label }}
-      </span>
+      <div class="stepper-label-container">
+        <span class="stepper-label mb-1">{{ step.label }}</span>
+      </div>
     </div>
 
     @if (i < steps.length) {
