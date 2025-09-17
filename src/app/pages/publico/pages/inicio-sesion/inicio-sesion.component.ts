@@ -3,7 +3,6 @@ import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from "@angular/
 import {Card} from 'primeng/card';
 import {Button} from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
-import { RegistroMedicoComponent } from '../registro-medico/registro-medico.component';
 import { RecuperarCuentaComponent } from '../recuperar-cuenta/recuperar-cuenta.component';
 import { CommonModule } from '@angular/common';
 
