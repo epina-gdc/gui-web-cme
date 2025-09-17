@@ -50,5 +50,11 @@
 
 ::ng-deep .p-fileupload-content {
   height: 164px !important;
+  width: 200px !important;
   display: grid;
+  margin-top: 10px;
+}
+
+::ng-deep .p-fileupload-advanced {
+  border: none;
 }
