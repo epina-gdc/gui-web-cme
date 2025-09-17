@@ -1,11 +1,15 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
+import { SelectModule } from 'primeng/select';
+
 
 @Component({
   selector: 'app-registro-medico',
-  imports: [],
+  imports: [SelectModule],
   templateUrl: './registro-medico.component.html',
-  styleUrl: './registro-medico.component.scss'
+  styleUrl: './registro-medico.component.scss',
+  standalone: true
 })
 export class RegistroMedicoComponent {
+
 
 }
