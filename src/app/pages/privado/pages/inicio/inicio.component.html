@@ -33,9 +33,15 @@
 </p-card>
 
 <p-card class="mx-2 mb-4">
-  <steps [currentStepIndex]="1" [steps]="steps" />
+  <steps [currentStepIndex]="0" [steps]="steps"/>
 </p-card>
 
 <p-card class="mx-2">
-  <upload-photo/>
+  <section class="flex">
+    <article class="col-3 flex flex-row">
+      <p class="field-label">Fotografía</p>
+      <upload-photo class="mt-6"/>
+      <p class="label2-subir-imagen">Obligatorio</p>
+    </article>
+  </section>
 </p-card>
