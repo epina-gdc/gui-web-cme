@@ -1,7 +1,6 @@
 .stepper {
   display: flex;
   align-items: center;
-  justify-content: center;
   width: 100%;
 }
 
@@ -40,6 +39,10 @@
   color: #fff;
 }
 
+.stepper-label-container {
+  position: relative;
+}
+
 .stepper-label {
   color: var(--Primary-Color-4-Tone1, #3F5C7C);
   font-feature-settings: 'liga' off, 'clig' off;
@@ -47,13 +50,17 @@
   font-style: normal;
   font-weight: 600;
   line-height: 120%; /* 14.4px */
+  position: absolute;
+  top: 100%;
+  left: -10px;
+  white-space: nowrap;
+  padding-top: 10px;
 }
 
 .stepper-line {
   height: 0.20rem;
   width: 500px;
   flex-grow: 1;
-  margin-bottom: 15px;
   margin-left: 5px;
   margin-right: 5px;
   transition: background-color 0.3s;

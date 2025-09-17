@@ -4,11 +4,13 @@ import Aura from '@primeng/themes/aura';
 import {es} from "primelocale/es.json"
 import {routes} from './app.routes';
 import {providePrimeNG} from 'primeng/config';
+import {provideHttpClient} from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    provideHttpClient(),
     providePrimeNG(
       {
         theme: {

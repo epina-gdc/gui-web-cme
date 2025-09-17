@@ -1,7 +1,8 @@
 @layer app-components {
   :root {
-    --p-button-primary-background: red;
-    --p-button-primary-color: var(--gob-mx-base-blanco)
+    --p-button-primary-color: var(--gob-mx-base-blanco);
+    --p-button-padding-x: 15px;
+    --p-button-padding-y: 10px;
   }
 
   .p-button {
@@ -9,7 +10,6 @@
     font-size: 14px;
     background: #08865C;
     color: #FFF;
-    font-family: "Noto Sans";
     font-size: 14px;
     font-style: normal;
     font-weight: 400;

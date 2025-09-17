@@ -3,6 +3,7 @@
 @use "primeicons/primeicons.css";
 @use "assets/scss/design-system/index" as design;
 @use "assets/scss/primeng-custom/index" as customprimeng;
+@use "assets/scss/icons/index" as icons;
 
 @layer app-components {
 
@@ -69,6 +70,14 @@
     height: 20px;
     width: 0;
     float: left;
+  }
+
+  .bg-green {
+    background-color: var(--gob-mx-pr-imss-tono1);
+  }
+
+  .p-fileupload-header {
+    display: none;
   }
 
 }
