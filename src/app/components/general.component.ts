@@ -1,7 +1,8 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnDestroy, inject } from "@angular/core";
 import { Mensajes } from "../components/mensajes";
-
+import { Router } from '@angular/router';
+import { NAV } from "./url-global";
 
 
 @Component({
@@ -14,14 +15,16 @@ import { Mensajes } from "../components/mensajes";
 })
 export class GeneralComponent  {
 
-
+  _nav = NAV;
   protected _Mensajes: Mensajes;
+  protected _router: Router;
 
 
 
-  public msjCamposObligatorios = 'Ingrese los campos obligatorios';
+  
   constructor() {
     this._Mensajes = inject(Mensajes);
+    this._router = inject(Router);
   }
  
   

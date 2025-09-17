@@ -7,7 +7,7 @@ import { Select } from 'primeng/select';
 import { ResidenteComponent } from '../residente/residente.component';
 import { ExternoComponent } from '../externo/externo.component';
 import { GeneralComponent } from '../../../../components/general.component';
-
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-crear-cuenta',
@@ -16,8 +16,7 @@ import { GeneralComponent } from '../../../../components/general.component';
     Button,
     Select,
     ReactiveFormsModule,
-  ResidenteComponent,
-  ExternoComponent
+    CommonModule
 
 
 
@@ -26,13 +25,12 @@ import { GeneralComponent } from '../../../../components/general.component';
   templateUrl: './crear-cuenta.component.html',
   styleUrl: './crear-cuenta.component.scss'
 })
-export class CrearCuentaComponent  extends GeneralComponent implements OnInit  {
+export class CrearCuentaComponent extends GeneralComponent implements OnInit {
 
   fb = inject(FormBuilder)
   form!: FormGroup;
   blnSeleccionado = false;
 
-  selectedCity: any;
   lstPerfil !: any;
 
 
@@ -40,6 +38,7 @@ export class CrearCuentaComponent  extends GeneralComponent implements OnInit  {
   perfilElegido!: any;
   ngOnInit() {
     this.blnSeleccionado = false;
+    this.form = this.inicializarForm();
     this.getCatalogoPErfiles();
   }
 
@@ -53,15 +52,36 @@ export class CrearCuentaComponent  extends GeneralComponent implements OnInit  {
     ]
   }
 
+  inicializarForm(): FormGroup {
+    return this.fb.group({
+      perfil: ['', [Validators.required]],
 
-  public medicoResidente() {
-    this.blnSeleccionado = true;
-    this.blnResidente = true;
-    //this.router.navigate('');
+    });
   }
 
-  public medicoExterno() {
-    this.blnSeleccionado = true;
-    this.blnResidente = false;
+
+
+
+  public btnAceptar() {
+    
+    if (this.form.valid) {
+      this.perfilElegido = this.form.controls['perfil'].value;
+      console.log("el valor elegido es ",this.lstPerfil[ this.perfilElegido-1].text);
+
+      switch (this.perfilElegido) {
+        case 1:
+          this._router.navigate([this._nav.formMedicoResidente]);
+          break;
+        case 2:
+          this._router.navigate([this._nav.formMedicoExterno]);
+          break;
+
+
+        default:
+          break;
+      }
+    } else {
+
+    }
   }
 }

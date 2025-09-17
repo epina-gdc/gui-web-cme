@@ -6,30 +6,31 @@
     <section class="col-6  flex justify-content-center align-items-center vertical-align:middle align-items:center">
 
         <p-card class="top-rounded-card" [style]="{ width: '45rem', overflow: 'hidden' }">
-            <ng-template #header>
-                <div class="flex justify-content-center">
-                    <h2>Crear cuenta</h2>
-                </div>
-                <hr>
-                <div class="col-12">
-                    <div class="row">
-                        <label class="field-label">Tipo de perfil</label>
+            <form [formGroup]="form" (ngSubmit)="btnAceptar()">
+              
+                    <div class="flex justify-content-center">
+                        <h2>Crear cuenta</h2>
                     </div>
-                    <div class="row col-12">
-                        <p-select [options]="lstPerfil" optionLabel="text" value="perfilElegido"
-                            placeholder="Selecciona un perfil">
-                        </p-select>
+                    <hr>
+                    <div class="col-12">
+                        <div class="row">
+                            <label class="field-label" for="perfil">Tipo de perfil</label>
+                        </div>
+                        <div class="row col-12">
+                            <p-select id="perfil" formControlName="perfil" [options]="lstPerfil" optionLabel="text" optionValue="id"
+                                placeholder="Selecciona un perfil" class="w-full">
+                            </p-select>
+                        </div>
                     </div>
+        
+
+
+                <div class="flex justify-content-end">
+
+                    <p-button type="submit" label="Aceptar" [disabled]="!form.valid"/>
                 </div>
-            </ng-template>
 
-
-            <div class="flex justify-content-end">
-
-                <p-button type="submit" label="Aceptar" />
-            </div>
-
-
+            </form>
 
         </p-card>
 
