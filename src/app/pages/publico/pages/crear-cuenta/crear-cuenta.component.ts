@@ -1,10 +1,12 @@
-import { Component , inject, OnInit} from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
 import { Card } from 'primeng/card';
 import { Button } from 'primeng/button';
 import { Router } from "@angular/router";
+import { Select } from 'primeng/select';
 import { ResidenteComponent } from '../residente/residente.component';
 import { ExternoComponent } from '../externo/externo.component';
+import { GeneralComponent } from '../../../../components/general.component';
 
 
 @Component({
@@ -12,34 +14,43 @@ import { ExternoComponent } from '../externo/externo.component';
   imports: [
     Card,
     Button,
-    ReactiveFormsModule
+    Select,
+    ReactiveFormsModule,
+  ResidenteComponent,
+  ExternoComponent
 
-    
+
 
   ],
+  //standalone: true,
   templateUrl: './crear-cuenta.component.html',
   styleUrl: './crear-cuenta.component.scss'
 })
-export class CrearCuentaComponent {
+export class CrearCuentaComponent  extends GeneralComponent implements OnInit  {
 
   fb = inject(FormBuilder)
   form!: FormGroup;
   blnSeleccionado = false;
-  constructor(private router: Router) {
-  }
+
   selectedCity: any;
-  lstPerfil = [
-    {
-      id: 1,
-      text: 'Perfil 1'
-    },
-    { id: 2, text: 'Perfil 2' }
-  ]
+  lstPerfil !: any;
+
 
   blnResidente!: boolean;
-
+  perfilElegido!: any;
   ngOnInit() {
     this.blnSeleccionado = false;
+    this.getCatalogoPErfiles();
+  }
+
+
+  getCatalogoPErfiles() {
+    this.lstPerfil = [{
+      id: 1,
+      text: 'Residente IMSS'
+    },
+    { id: 2, text: 'Médico externo' }
+    ]
   }
 
 

@@ -5,9 +5,11 @@ import {es} from "primelocale/es.json"
 import {routes} from './app.routes';
 import {providePrimeNG} from 'primeng/config';
 import {provideHttpClient} from '@angular/common/http';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { Mensajes } from './components/mensajes';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
+  providers: [Mensajes,
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
     provideHttpClient(),
@@ -24,5 +26,6 @@ export const appConfig: ApplicationConfig = {
         }, translation: es,
       }
     ),
+    provideAnimations(),
   ]
 };

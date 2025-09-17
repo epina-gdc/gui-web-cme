@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from "@angular/
 import { Card } from 'primeng/card';
 import {Button} from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { GeneralComponent } from '../../../../components/general.component';
 @Component({
   selector: 'app-residente',
   imports: [
@@ -14,7 +15,7 @@ import { InputTextModule } from 'primeng/inputtext';
   templateUrl: './residente.component.html',
   styleUrl: './residente.component.scss'
 })
-export class ResidenteComponent {
+export class ResidenteComponent extends GeneralComponent {
   fb = inject(FormBuilder)
   form!: FormGroup;
 

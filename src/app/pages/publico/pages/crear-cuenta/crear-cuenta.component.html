@@ -3,40 +3,39 @@
         <h1 class="login-titulo">Convocatoria para médicos especialistas</h1>
         <h2 class="login-subtitulo">Reclutamiento IMSS 2025</h2>
     </aside>
-    <section class="col-6  flex justify-content-center align-items-center">
-       
-             <p-card class="top-rounded-card" [style]="{ width: '45rem', overflow: 'hidden' }">
-                <ng-template #header>
-                    <div class="flex justify-content-center">
-                        <h2>Crear cuenta</h2>
+    <section class="col-6  flex justify-content-center align-items-center vertical-align:middle align-items:center">
+
+        <p-card class="top-rounded-card" [style]="{ width: '45rem', overflow: 'hidden' }">
+            <ng-template #header>
+                <div class="flex justify-content-center">
+                    <h2>Crear cuenta</h2>
+                </div>
+                <hr>
+                <div class="col-12">
+                    <div class="row">
+                        <label class="field-label">Tipo de perfil</label>
                     </div>
-                    <hr>
-                    <div class="field">
-                    
-                        <label class="field-label" >Tipo de perfil</label>
-                        <select options="lstPerfiles" placeholder="Selecciona un perfil" ></select>
+                    <div class="row col-12">
+                        <p-select [options]="lstPerfil" optionLabel="text" value="perfilElegido"
+                            placeholder="Selecciona un perfil">
+                        </p-select>
                     </div>
-                </ng-template>
-
-        
-                <div class="flex justify-content-end">
-                    
-                    <p-button type="submit" label="Aceptar"/>
-                  </div>
+                </div>
+            </ng-template>
 
 
+            <div class="flex justify-content-end">
 
-            </p-card> 
-           <!--  <div class="row">
-                <app-residente></app-residente>
+                <p-button type="submit" label="Aceptar" />
             </div>
 
-            <div class="row">
-                <app-externo></app-externo>
-            </div> -->
 
 
-       
+        </p-card>
+
+
+
+
     </section>
 
 
