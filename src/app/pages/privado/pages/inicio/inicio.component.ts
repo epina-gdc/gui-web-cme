@@ -7,7 +7,7 @@ import {UploadPhotoComponent} from '../../../../components/upload-photo/upload-p
 import {InputText} from 'primeng/inputtext';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {Select} from 'primeng/select';
-import { DatePickerModule } from 'primeng/datepicker';
+import {DatePickerModule} from 'primeng/datepicker';
 import {Button} from 'primeng/button';
 
 @Component({
@@ -31,6 +31,7 @@ export class InicioComponent {
 
   fb = inject(FormBuilder)
   formRegistro!: FormGroup;
+  formZonaInteres!: FormGroup;
 
   steps = [
     {label: 'Información Personal', active: false},
@@ -44,6 +45,7 @@ export class InicioComponent {
 
   constructor() {
     this.formRegistro = this.asignarFormularioRegistro();
+    this.formZonaInteres = this.asignarFormularioZonaInteres();
   }
 
   asignarFormularioRegistro(): FormGroup {
@@ -69,6 +71,13 @@ export class InicioComponent {
       colonia: [],
       calle: [],
       numeroExterior: []
+    })
+  }
+
+  asignarFormularioZonaInteres(): FormGroup {
+    return this.fb.group({
+      ooad: [],
+      zonaInteres: []
     })
   }
 }
