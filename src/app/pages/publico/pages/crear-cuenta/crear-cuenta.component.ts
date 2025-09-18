@@ -70,10 +70,10 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
 
       switch (this.perfilElegido) {
         case 1:
-          this._router.navigate([this._nav.formMedicoResidente]);
+          this._router.navigate(['publico/'+this._nav.formMedicoResidente]);
           break;
         case 2:
-          this._router.navigate([this._nav.formMedicoExterno]);
+          this._router.navigate(['publico/'+this._nav.formMedicoExterno]);
           break;
 
 

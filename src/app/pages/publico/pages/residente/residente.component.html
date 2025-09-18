@@ -1,55 +1,114 @@
 <main class="flex  login-background">
   <aside class="col-6 flex flex-column justify-content-center align-items-center p-6">
-      <h1 class="login-titulo">{{_Mensajes.MSJ_TITULO_CONVOCATORIA}}</h1>
-      <h2 class="login-subtitulo">{{_Mensajes.MSJ_SUBTITULO_CONVOCATORIA}}</h2>
+    <h1 class="login-titulo">{{_Mensajes.MSJ_TITULO_CONVOCATORIA}}</h1>
+    <h2 class="login-subtitulo">{{_Mensajes.MSJ_SUBTITULO_CONVOCATORIA}}</h2>
   </aside>
   <section class="col-6  flex justify-content-center align-items-center vertical-align:middle align-items:center">
 
-     
 
-      <p-card class="top-rounded-card" [style]="{ width: '45rem',  }">
-        <form [formGroup]="form"  (ngSubmit)="iniciarSesion()">
-          <div class="flex justify-content-center px-3">
+
+    <p-card class="top-rounded-card" [style]="{ width: '45rem',  }">
+      <form [formGroup]="form" (ngSubmit)="btnCrearCuenta()">
+
+        <div class="flex col-12 px-3">
+          <div class="px-3 col-4 justify-content-start align-items-center vertical-align:middle "
+            (click)="btnAnterior()">
+            <div class="icon-cme-file">Regresar</div>
+          </div>
+          <div class="col-8 px-3">
             <h2 class="login-card-titulo">Residente IMSS</h2>
           </div>
-          <div class="px-0">
-            <hr class=" border-1 opacity-10">
+        </div>
+        <div class="px-0">
+          <hr class=" border-1 opacity-10">
+        </div>
+        <div class=" mt-4 row flex">
+          <div class="field col-9">
+            <label class="field-label" for="matricula">Matrícula</label>
+            <input pInputText class="w-full" type="text" id="matricula" placeholder="Ingresa matrícula"
+              formControlName="matricula" (keyup)="desbloquearValidar()" />
           </div>
-         <!--  <div class="login-card-body mt-4">
-            <div class="field">
-              <label class="field-label" for="correoElectronico">Correo electrónico</label>
-              <input 
-                pInputText 
-                class="w-full" 
-                type="email" 
-                id="correoElectronico" 
-                placeholder="Ingresa correo electrónico" 
-                formControlName="correoElectronico" />
-            </div>
-            <div class="form-icon">
-              <label class="field-label" for="password">Contraseña</label>
-              <input #input
-                pInputText
-                class="w-full"
-                type="text"
-                id="password"
-                placeholder="Ingresa contraseña"
-                formControlName="password"/>
-                <i class="cursor-pointer icon pi pi-eye-slash"
-                  (click)="input.type = input.type==='password'?'text':'password'"></i>
-            </div>
-            <div class="flex justify-content-end my-3">
-              <a href="#" class="login-hipervinculo">Olvidé mi contraseña</a>
-            </div>
-            <div class="flex justify-content-between">
-              <a href="#" class="login-hipervinculo">Crear cuenta</a>
-              <p-button type="submit" label="Iniciar sesión"/>
-            </div>
-          </div> -->
-        </form>
-      
-        
-      </p-card>
+
+          <div class="field col-3 flex justify-content-end">
+            <p-button label="Validar" [disabled]="blnBtnValidar" (click)="btnValidar()"/>
+          </div>
+
+        </div>
+        <div class=" mt-4 row col-12">
+
+          <label class="field-label" for="nombre">Nombres(s)</label>
+          <input #input pInputText class="w-full" type="text" id="nombre" placeholder="Ingresa nombre(s)"
+            formControlName="nombre" />
+
+
+        </div>
+
+        <div class=" mt-4 row flex">
+          <div class="field col-6">
+            <label class="field-label" for="apellidoP">Primer apellido</label>
+            <input pInputText class="w-full" type="text" id="apellidoP" placeholder="Ingresa primer apellido"
+              formControlName="apellidoP"  />
+          </div>
+          <div class="field col-6">
+            <label class="field-label" for="apellidoM">Segundo apellido</label>
+            <input pInputText class="w-full" type="text" id="apellidoM" placeholder="Ingresa segundo apellido"
+              formControlName="apellidoM" />
+          </div>
+
+        </div>
+
+        <div class=" mt-4 row flex">
+          <div class="field col-6">
+            <label class="field-label" for="curp">CURP</label>
+            <input pInputText class="w-full" type="text" id="curp" placeholder="Ingresa CURP"
+              formControlName="curp" />
+          </div>
+          <div class="field col-6">
+            <label class="field-label" for="rfc">RFC</label>
+            <input pInputText class="w-full" type="text" id="rfc" placeholder="Ingresa RFC"
+              formControlName="rfc" />
+          </div>
+
+        </div>
+
+        <div class=" mt-4 row flex">
+          <div class="field col-6">
+            <label class="field-label" for="correo">Correo electrónico</label>
+            <input pInputText class="w-full" type="text" id="correo" placeholder="Ingresa correo electrónico"
+              formControlName="correo" (change)="validarCorreo()"  />
+          </div>
+          <div class="field col-6">
+            <label class="field-label" for="correoc">Confirmar correo electrónico</label>
+            <input pInputText class="w-full" type="text" id="correoc" placeholder="Confirmar correo electrónico"
+              formControlName="correoc" />
+          </div>
+
+        </div>
+
+        <div class=" mt-4 row flex">
+          <div class="field col-6">
+            <label class="field-label" for="pass">Contraseña</label>
+            <input pInputText class="w-full" type="text" id="pass" placeholder="Ingresa contraseña"
+              formControlName="pass" />
+          </div>
+          <div class="field col-6">
+            <label class="field-label" for="passc">Confirmar contraseña</label>
+            <input pInputText class="w-full" type="text" id="passc" placeholder="Confirmar contraseña"
+              formControlName="passc" />
+          </div>
+
+        </div>
+
+        <div class=" mt-4 row  flex justify-content-end">
+          
+            <p-button label="Crear Cuenta"type="submit" [disabled]="!form.valid"/>
+          
+
+        </div>
+      </form>
+
+
+    </p-card>
 
 
 
@@ -58,9 +117,3 @@
 
 
 </main>
-
-
-
-
-
-
