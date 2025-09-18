@@ -6,6 +6,7 @@ import {StepsComponent} from '../../../../components/steps/steps.component';
 import {UploadPhotoComponent} from '../../../../components/upload-photo/upload-photo.component';
 import {InputText} from 'primeng/inputtext';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {Select} from 'primeng/select';
 
 @Component({
   selector: 'app-inicio',
@@ -16,7 +17,8 @@ import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
     StepsComponent,
     UploadPhotoComponent,
     InputText,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    Select
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss'
@@ -27,10 +29,12 @@ export class InicioComponent {
   formRegistro!: FormGroup;
 
   steps = [
-    { label: 'Información Personal', active: false },
-    { label: 'Documentación', active: false },
-    { label: 'Oferta laboral', active: false },
+    {label: 'Información Personal', active: false},
+    {label: 'Documentación', active: false},
+    {label: 'Oferta laboral', active: false},
   ];
+
+  dummies = [{label: 'Dummie', value: 'Dummie'}]
 
   indice: WritableSignal<number> = signal<number>(0);
 
@@ -46,8 +50,8 @@ export class InicioComponent {
       sexo: [],
       estadoCivil: [],
       dependientes: [],
-      hijos: [{ value: '', disabled: true }],
-      otros: [{ value: '', disabled: true }],
+      hijos: [{value: '', disabled: true}],
+      otros: [{value: '', disabled: true}],
       correo: [],
       correoAdicional: [],
       telefonoCasa: [],
@@ -57,7 +61,7 @@ export class InicioComponent {
       codigoPostal: [],
       pais: [],
       estado: [],
-      municipio:[],
+      municipio: [],
       colonia: [],
       calle: [],
       numeroExterior: []
