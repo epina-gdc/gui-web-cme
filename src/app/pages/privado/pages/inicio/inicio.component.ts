@@ -48,6 +48,19 @@ export class InicioComponent {
       dependientes: [],
       hijos: [{ value: '', disabled: true }],
       otros: [{ value: '', disabled: true }],
+      correo: [],
+      correoAdicional: [],
+      telefonoCasa: [],
+      telefonoCelular: [],
+      paisNacimiento: [],
+      estadoNacimiento: [],
+      codigoPostal: [],
+      pais: [],
+      estado: [],
+      municipio:[],
+      colonia: [],
+      calle: [],
+      numeroExterior: []
     })
   }
 }

@@ -63,10 +63,29 @@
               <input pInputText class="w-full" type="text" id="nss" placeholder="Ingresa NSS"
                      formControlName="nss"/>
             </div>
-            <div class="col-4"></div>
-            <div class="col-4"></div>
-            <div class="col-4"></div>
-            <div class="col-4"></div>
+            <div class="col-4">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="fechaNacimiento">Fecha de Nacimiento</label>
+                <p class="label-obligatorio">Obligatorio</p>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="sexo">Sexo</label>
+                <p class="label-obligatorio">Obligatorio</p>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="estadoCivil">Estado civil</label>
+                <p class="label-obligatorio">Obligatorio</p>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="rfc">Dependientes</label>
+              </div>
+            </div>
             <div class="col-4">
               <div class="flex justify-content-between">
                 <label class="field-label" for="hijos">¿Cuántos hijos?</label>
@@ -88,9 +107,110 @@
       </p-card>
 
       <p-card class="mx-2 empty-border" [header]="'Datos de Contacto'">
+        <article class="flex flex-row flex-wrap">
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="correo">Correo electrónico</label>
+            </div>
+            <input pInputText class="w-full" type="text" id="correo" placeholder="Ingresa correo electrónico"
+                   formControlName="correo"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="correoAdicional">Correo electrónico adicional</label>
+            </div>
+            <input pInputText class="w-full" type="text" id="correoAdicional"
+                   placeholder="Ingresa correo electrónico adicional"
+                   formControlName="correoAdicional"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="telefonooCasa">Teléfono de casa</label>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="telefonooCasa" placeholder="Ingresa teléfono de casa"
+                   formControlName="telefonooCasa"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="telefonoCelular">Teléfono celular</label>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="telefonoCelular" placeholder="Ingresa teléfono celular"
+                   formControlName="telefonoCelular"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="paisNacimiento">País de nacimiento</label>
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="estadoNacimiento">Estado de origen (nacimiento)</label>
+            </div>
+          </div>
+        </article>
       </p-card>
 
       <p-card class="mx-2 empty-border" [header]="'Datos del Domicilio'">
+        <article class="flex flex-row flex-wrap">
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="codigoPostal">Código postal</label>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="codigoPostal" placeholder="Ingresa código postal"
+                   formControlName="codigoPostal"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="pais">País</label>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="pais" placeholder="Ingresa país"
+                   formControlName="pais"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="estado">Estado</label>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="estado" placeholder="Ingresa estado"
+                   formControlName="estado"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="municipio">Alcaldía o municipio</label>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="municipio" placeholder="Ingresa delegación"
+                   formControlName="municipio"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="colonia">Colonia</label>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="colonia" placeholder="Ingresa colonia"
+                   formControlName="colonia"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="calle">Calle</label>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="calle" placeholder="Ingresa calle"
+                   formControlName="calle"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="numeroExterior">Número exterior</label>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="numeroExterior" placeholder="Ingresa número exterior"
+                   formControlName="numeroExterior"/>
+          </div>
+        </article>
       </p-card>
 
       <p-card class="mx-2 empty-border" [header]="'Zona de interes laboral'">
