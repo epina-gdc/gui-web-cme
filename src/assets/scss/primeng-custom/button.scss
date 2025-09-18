@@ -4,7 +4,6 @@
     --p-button-padding-x: 15px;
     --p-button-padding-y: 10px;
     --p-button-primary-active-background: '#08865C';
-    --p-button-border-radius: 8px;
   }
 
   .p-button {
@@ -12,6 +11,7 @@
     font-style: normal;
     font-weight: 400;
     line-height: 120%;
+    border-radius: 8px;
   }
 
   .image-upload-button > .p-button {

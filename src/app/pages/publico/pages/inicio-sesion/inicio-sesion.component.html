@@ -4,9 +4,9 @@
     <h2 class="login-subtitulo">Reclutamiento IMSS 2025</h2>
   </aside>
   <section class="col-6 flex justify-content-center align-items-center">
-    <p-card class="px-2 border-round-bottom-3xl border-round-bottom" [style]="{ width: '45rem', overflow: 'hidden' }">
-      
-      @if (vista() == 'login') {  
+    <p-card class="px-2 login-card border-round-bottom-3xl border-round-bottom" [style]="{ width: '45rem', overflow: 'hidden' }">
+
+      @if (vista() == 'login') {
           <div class="flex justify-content-center px-3">
             <h2 class="login-card-titulo">Inicio de sesión</h2>
           </div>
@@ -17,12 +17,12 @@
             <div class="login-card-body mt-4">
               <div class="field">
                 <label class="field-label" for="correoElectronico">Correo electrónico</label>
-                <input 
-                  pInputText 
-                  class="w-full" 
-                  type="email" 
-                  id="correoElectronico" 
-                  placeholder="Ingresa correo electrónico" 
+                <input
+                  pInputText
+                  class="w-full"
+                  type="email"
+                  id="correoElectronico"
+                  placeholder="Ingresa correo electrónico"
                   formControlName="correoElectronico" />
               </div>
               <div class="form-icon">
@@ -34,7 +34,7 @@
                   id="password"
                   placeholder="Ingresa contraseña"
                   formControlName="password"/>
-                  <i [ngClass]="{'pi-eye': input.type==='password', 'pi-eye-slash':  input.type ==='text'}" 
+                  <i [ngClass]="{'pi-eye': input.type==='password', 'pi-eye-slash':  input.type ==='text'}"
                     class="cursor-pointer icon pi"
                     (click)="input.type = input.type==='password'?'text':'password'"></i>
               </div>
