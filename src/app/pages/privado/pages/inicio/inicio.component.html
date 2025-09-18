@@ -248,6 +248,22 @@
             </div>
           </article>
         </form>
+        <p-table [value]="zonasInteres" [tableStyle]="{ 'min-width': '50rem' }">
+          <ng-template #header>
+            <tr>
+              <th scope="col">OOAD</th>
+              <th scope="col">Zona de interés</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-product>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </ng-template>
+        </p-table>
       </p-card>
 
       <div class="flex flex-row justify-content-end gap-3">

@@ -9,6 +9,7 @@ import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {Select} from 'primeng/select';
 import {DatePickerModule} from 'primeng/datepicker';
 import {Button} from 'primeng/button';
+import {TableModule} from 'primeng/table';
 
 @Component({
   selector: 'app-inicio',
@@ -22,7 +23,8 @@ import {Button} from 'primeng/button';
     ReactiveFormsModule,
     Select,
     DatePickerModule,
-    Button
+    Button,
+    TableModule
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss'
@@ -32,6 +34,8 @@ export class InicioComponent {
   fb = inject(FormBuilder)
   formRegistro!: FormGroup;
   formZonaInteres!: FormGroup;
+
+  zonasInteres: any[] = [];
 
   steps = [
     {label: 'Información Personal', active: false},
