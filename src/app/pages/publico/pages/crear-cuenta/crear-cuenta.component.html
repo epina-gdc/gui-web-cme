@@ -1,76 +1,73 @@
 <main class="flex  login-background">
-    <aside class="col-6 flex flex-column justify-content-center align-items-center p-6">
-        <h1 class="login-titulo">Convocatoria para médicos especialistas</h1>
-        <h2 class="login-subtitulo">Reclutamiento IMSS 2025</h2>
-    </aside>
-    <section class="col-6  flex justify-content-center align-items-center vertical-align:middle align-items:center">
+  <aside class="col-6 flex flex-column justify-content-center align-items-center p-6">
+    <h1 class="login-titulo">Convocatoria para médicos especialistas</h1>
+    <h2 class="login-subtitulo">Reclutamiento IMSS 2025</h2>
+  </aside>
+  <section class="col-6  flex justify-content-center align-items-center vertical-align:middle align-items:center">
 
-        <p-card class="top-rounded-card" [style]="{ width: '45rem', overflow: 'show' }">
-            <form [formGroup]="form" (ngSubmit)="btnAceptar()">
+    <p-card class="top-rounded-card" [style]="{ width: '45rem', overflow: 'show' }">
+      <form [formGroup]="form" (ngSubmit)="btnAceptar()">
 
-                <div class="flex justify-content-center">
-                    <h2>Crear cuenta</h2>
-                </div>
-                <hr>
-                <div class="col-12">
-                    <div class="row">
-                        <label class="field-label" for="perfil">Tipo de perfil</label>
-                    </div>
-                    <div class="row col-12">
-                        <p-select id="perfil" formControlName="perfil" [options]="lstPerfil" optionLabel="text"
-                            optionValue="id" placeholder="Selecciona un perfil" class="w-full"
-                            (ngModelChange)="cambia()">
-                        </p-select>
-                    </div>
-                </div>
-                <div *ngIf="!blnResidente">
-                    <div class="col-12">
-                        <div class="row">
-                            <label class="field-label" for="perfil">Modalidad del médico</label>
-                        </div>
-                        <div class="row col-12">
-                            <p-select id="perfil" formControlName="perfil" [options]="lstModalidad" optionLabel="text"
-                                optionValue="id" placeholder="Selecciona una modalidad" class="w-full">
-                            </p-select>
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <div class="row">
-                            <label class="field-label" for="perfil">Selecciona un documento de verificación</label>
-                        </div>
-                        <div class="row col-12">
-                            <div class="flex flex-wrap gap-4">
-                                <div class="flex items-center">
-                                    <p-radiobutton name="pizza" value="Cheese"  inputId="ingredient1" />
-                                    <label for="ingredient1" class="ml-2">Cheese</label>
-                                </div>
-                            
-                                <div class="flex items-center">
-                                    <p-radiobutton name="pizza" value="Mushroom"  inputId="ingredient2" />
-                                    <label for="ingredient2" class="ml-2">Mushroom</label>
-                                </div>
-                            
-                            </div>
-                            
-                        </div>
-                    </div>
+        <div class="flex justify-content-center">
+          <h2>Crear cuenta</h2>
+        </div>
+        <hr>
+        <div class="col-12">
+          <div class="row">
+            <label class="field-label" for="perfil">Tipo de perfil</label>
+          </div>
+          <div class="row col-12">
+            <p-select id="perfil" formControlName="perfil" [options]="lstPerfil" optionLabel="text"
+                      optionValue="id" placeholder="Selecciona un perfil" class="w-full"
+                      (ngModelChange)="cambia()">
+            </p-select>
+          </div>
+        </div>
+        <div *ngIf="!blnResidente">
+          <div class="col-12">
+            <div class="row">
+              <label class="field-label" for="perfil">Modalidad del médico</label>
+            </div>
+            <div class="row col-12">
+              <p-select id="perfil" formControlName="perfil" [options]="lstModalidad" optionLabel="text"
+                        optionValue="id" placeholder="Selecciona una modalidad" class="w-full">
+              </p-select>
+            </div>
+          </div>
+          <div class="col-12">
+            <div class="row">
+              <label class="field-label" for="perfil">Selecciona un documento de verificación</label>
+            </div>
+            <div class="row col-12">
+              <div class="flex flex-wrap gap-4">
+                <div class="flex items-center">
+                  <p-radio-button name="pizza" value="Cheese" inputId="ingredient1"/>
+                  <label for="ingredient1" class="ml-2">Cheese</label>
                 </div>
 
-
-
-                <div class="flex justify-content-end">
-
-                    <p-button type="submit" label="Aceptar" [disabled]="!form.valid" />
+                <div class="flex items-center">
+                  <p-radio-button name="pizza" value="Mushroom" inputId="ingredient2"/>
+                  <label for="ingredient2" class="ml-2">Mushroom</label>
                 </div>
 
-            </form>
+              </div>
 
-        </p-card>
+            </div>
+          </div>
+        </div>
 
 
+        <div class="flex justify-content-end">
+
+          <p-button type="submit" label="Aceptar" [disabled]="!form.valid"/>
+        </div>
+
+      </form>
+
+    </p-card>
 
 
-    </section>
+  </section>
 
 
 </main>
