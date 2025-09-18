@@ -8,6 +8,7 @@ import {InputText} from 'primeng/inputtext';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {Select} from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
+import {Button} from 'primeng/button';
 
 @Component({
   selector: 'app-inicio',
@@ -20,7 +21,8 @@ import { DatePickerModule } from 'primeng/datepicker';
     InputText,
     ReactiveFormsModule,
     Select,
-    DatePickerModule
+    DatePickerModule,
+    Button
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss'
