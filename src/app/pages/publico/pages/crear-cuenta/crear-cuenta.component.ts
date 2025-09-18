@@ -1,10 +1,11 @@
-import { Component , inject, OnInit} from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
 import { Card } from 'primeng/card';
 import { Button } from 'primeng/button';
-import { Router } from "@angular/router";
-import { ResidenteComponent } from '../residente/residente.component';
-import { ExternoComponent } from '../externo/externo.component';
+import { Select } from 'primeng/select';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { GeneralComponent } from '../../../../components/general.component';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -12,45 +13,100 @@ import { ExternoComponent } from '../externo/externo.component';
   imports: [
     Card,
     Button,
-    ReactiveFormsModule
-
+    Select,
+    ReactiveFormsModule,
+    CommonModule,
     
 
+
+
   ],
+  standalone: true,
   templateUrl: './crear-cuenta.component.html',
   styleUrl: './crear-cuenta.component.scss'
 })
-export class CrearCuentaComponent {
+export class CrearCuentaComponent extends GeneralComponent implements OnInit {
 
   fb = inject(FormBuilder)
   form!: FormGroup;
   blnSeleccionado = false;
-  constructor(private router: Router) {
-  }
-  selectedCity: any;
-  lstPerfil = [
-    {
-      id: 1,
-      text: 'Perfil 1'
-    },
-    { id: 2, text: 'Perfil 2' }
-  ]
+
+  lstPerfil !: any;
+  lstModalidad!: any;
+
 
   blnResidente!: boolean;
-
+  perfilElegido!: any;
   ngOnInit() {
-    this.blnSeleccionado = false;
-  }
-
-
-  public medicoResidente() {
-    this.blnSeleccionado = true;
     this.blnResidente = true;
-    //this.router.navigate('');
+    this.blnSeleccionado = false;
+    this.form = this.inicializarForm();
+    this.getCatalogoPErfiles();
+     this.getCatalogoModalidad();
   }
 
-  public medicoExterno() {
-    this.blnSeleccionado = true;
-    this.blnResidente = false;
+
+  getCatalogoPErfiles() {
+    this.lstPerfil = [{
+      id: 1,
+      text: 'Residente IMSS'
+    },
+    { id: 2, text: 'Médico externo' }
+    ]
+  }
+
+  
+  getCatalogoModalidad() {
+    this.lstModalidad = [{
+      id: 1,
+      text: 'Médico cursando la residencia'
+    },
+    { id: 2, text: 'Médico especialista con estudio en el extranjero ' },
+    { id: 3, text: 'Médicos especialistas egresados 2025 de otra Institucional de Salud' },
+    { id: 4, text: 'Médico especialista IMSS egresado de dos años anteriores ' }
+    ]
+  }
+
+
+  inicializarForm(): FormGroup {
+    return this.fb.group({
+      perfil: ['', [Validators.required]],
+
+    });
+  }
+
+
+
+
+  public btnAceptar() {
+    
+    if (this.form.valid) {
+      this.perfilElegido = this.form.controls['perfil'].value;
+      console.log("el valor elegido es ",this.lstPerfil[ this.perfilElegido-1].text);
+
+      switch (this.perfilElegido) {
+        case 1:
+          this._router.navigate(['publico/'+this._nav.formMedicoResidente]);
+          break;
+        case 2:
+        
+          this._router.navigate(['publico/'+this._nav.formMedicoExterno]);
+          break;
+
+
+        default:
+          break;
+      }
+    } else {
+
+    }
+  }
+
+  cambia(){
+    console.log("hay cambios en el selct ");
+    this.perfilElegido = this.form.controls['perfil'].value;
+    if(this.perfilElegido == 2){
+      this.blnResidente = false
+    }
   }
 }
