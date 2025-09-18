@@ -2,10 +2,14 @@
   .p-card-body{
     border-top: 18px solid var(--bs-primary-hex-color);
     border-radius: 10px 10px 0 0;
-    
+
   }
 
   .card-padding-0 > .p-card-body {
     padding: 0;
+  }
+
+  .empty-border .p-card-body {
+    border-top: none;
   }
 }

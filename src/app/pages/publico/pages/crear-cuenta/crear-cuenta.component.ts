@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from "@angula
 import { Card } from 'primeng/card';
 import { Button } from 'primeng/button';
 import { Select } from 'primeng/select';
-import { RadioButtonModule } from 'primeng/radiobutton';
+import {RadioButton, RadioButtonModule} from 'primeng/radiobutton';
 import { GeneralComponent } from '../../../../components/general.component';
 import { CommonModule } from '@angular/common';
 
@@ -16,8 +16,7 @@ import { CommonModule } from '@angular/common';
     Select,
     ReactiveFormsModule,
     CommonModule,
-    
-
+    RadioButton,
 
 
   ],
@@ -55,7 +54,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
     ]
   }
 
-  
+
   getCatalogoModalidad() {
     this.lstModalidad = [{
       id: 1,
@@ -79,7 +78,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
 
 
   public btnAceptar() {
-    
+
     if (this.form.valid) {
       this.perfilElegido = this.form.controls['perfil'].value;
       console.log("el valor elegido es ",this.lstPerfil[ this.perfilElegido-1].text);
@@ -89,7 +88,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
           this._router.navigate(['publico/'+this._nav.formMedicoResidente]);
           break;
         case 2:
-        
+
           this._router.navigate(['publico/'+this._nav.formMedicoExterno]);
           break;
 

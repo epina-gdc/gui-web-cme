@@ -3,7 +3,7 @@
   <h3 class="titulo-seccion">Registro de médico interno</h3>
 </div>
 
-<p-card class="mx-2 my-4 card-padding-0">
+<p-card class="mx-2 my-4 empty-border">
   <section class="flex flex-column">
     <article class="flex flex-row p-4">
       <span class="flex-column">
@@ -13,7 +13,7 @@
     </article>
     <article class="flex flex-row">
       <div class="justify-content-start flex">
-        <icon-card iconClass="icon-cme-user" cardColor="#1a73e8" [leftBorderRound]="true"></icon-card>
+        <icon-card iconClass="cme-user" cardColor="#1a73e8" [leftBorderRound]="true"></icon-card>
         <div class="flex flex-column justify-content-center mr-5">
           <p class="m-2 label-campo">Matricula</p>
           <strong class="m-2 texto-campo">XXXXXXXXX</strong>
@@ -22,7 +22,7 @@
           <p class="m-2 label-campo">CURP</p>
           <strong class="m-2 texto-campo">XXXXXXXXX</strong>
         </div>
-        <icon-card iconClass="icon-cme-document" cardColor="#00c853"></icon-card>
+        <icon-card iconClass="cme-document" cardColor="#00c853"></icon-card>
         <div class="flex flex-column justify-content-center">
           <p class="m-2 label-campo">Fecha de registro</p>
           <strong class="m-2 texto-campo">XXXXXXXXX</strong>
@@ -32,11 +32,11 @@
   </section>
 </p-card>
 
-<p-card class="mx-2 mb-4">
+<p-card class="mx-2 mb-4 empty-border">
   <steps [currentStepIndex]="0" [steps]="steps"/>
 </p-card>
 
-<p-card class="mx-2">
+<p-card class="mx-2 empty-border" [header]="'Datos Personales'">
   <section class="flex">
     <article class="col-3 flex flex-row">
       <p class="field-label">Fotografía</p>

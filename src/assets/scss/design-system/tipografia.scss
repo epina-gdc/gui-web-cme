@@ -54,6 +54,8 @@
 }
 
 .titulo-seccion {
+  margin-top: 0;
+  margin-bottom: 0;
   display: flex;
   width: 284px;
   height: 28px;
@@ -147,4 +149,15 @@
   font-weight: 500;
   line-height: 121%;
   text-align: center;
+}
+
+.cmr-texto {
+  border-radius: 20px !important;
+  border: 1px solid #9CE2C2;
+  background: #0AA16E;
+  font-size: 10px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  color: var(--gob-mx-base-blanco);
+  font-weight: 600;
 }

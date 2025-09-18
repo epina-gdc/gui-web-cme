@@ -36,7 +36,7 @@
               flex-column border-dashed border-1 half-border border-circle">
                 <img role="presentation" class="border-circle"
                      [alt]="file.name" [src]="file.objectURL" style="object-fit: cover; width: 100%; height: 100%;"/>
-                <p-button icon="icon-cme-camara" [rounded]="true" class="btn-upload image-upload-button"
+                <p-button icon="cme-camara" [rounded]="true" class="btn-upload image-upload-button"
                           (click)="seleccionarArchivo()"/>
               </div>
             }
@@ -73,11 +73,11 @@
         <div
           class="flex align-items-center justify-content-center flex-column border-dashed border-1 half-border border-circle">
           <span class="flex flex-column justify-content-center align-items-center">
-            <i class="icon-cme-image" style="font-size: 2rem"></i>
+            <i class="cme-image" style="font-size: 2rem"></i>
             <p class="label1-subir-imagen">Sube una foto</p>
             <p class="label2-subir-imagen">(jpg/png, máx. 1Mb),<br> clara y sin gafas</p>
           </span>
-          <p-button icon="icon-cme-camara" [rounded]="true" class="btn-upload image-upload-button"
+          <p-button icon="cme-camara" [rounded]="true" class="btn-upload image-upload-button"
                     (click)="seleccionarArchivo()"/>
         </div>
       </ng-template>

@@ -10,9 +10,9 @@
   font-display: block;
 }
 
-[class^="icon-"], [class*=" icon-"] {
+[class^="cme-"], [class*=" cme-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'icomoon' !important;
+  font-family: 'icomoon', sans-serif !important;
   speak: never;
   font-style: normal;
   font-weight: normal;
@@ -25,42 +25,42 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-cme-file:before {
+.cme-file:before {
   content: "\e900";
 }
-.icon-cme-image:before {
+.cme-image:before {
   content: "\e901";
 }
-.icon-cme-calendar:before {
+.cme-calendar:before {
   content: "\e904";
 }
-.icon-cme-camara:before {
+.cme-camara:before {
   content: "\e905";
 }
-.icon-cme-loading:before {
+.cme-loading:before {
   content: "\e906";
 }
-.icon-cme-plus:before {
+.cme-plus:before {
   content: "\e907";
 }
-.icon-cme-time:before {
+.cme-time:before {
   content: "\e908";
 }
-.icon-cme-upload:before {
+.cme-upload:before {
   content: "\e90a";
 }
-.icon-cme-trash:before {
+.cme-trash:before {
   content: "\e90b";
 }
-.icon-cme-document:before {
+.cme-document:before {
   content: "\e902";
 }
-.icon-cme-user:before {
+.cme-user:before {
   content: "\e903";
 }
-.icon-cme-dark_image:before {
+.cme-dark_image:before {
   content: "\e909";
 }
-.icon-cme-pdf:before {
+.cme-pdf:before {
   content: "\e90d";
 }

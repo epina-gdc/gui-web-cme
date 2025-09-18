@@ -2,7 +2,6 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {PrimeNG} from 'primeng/config';
 import {Button} from 'primeng/button';
 import {PrimeTemplate} from 'primeng/api';
-import {LowerCasePipe} from '@angular/common';
 import {FileUpload} from 'primeng/fileupload';
 
 @Component({
@@ -10,7 +9,6 @@ import {FileUpload} from 'primeng/fileupload';
   imports: [
     Button,
     PrimeTemplate,
-    LowerCasePipe,
     FileUpload
   ],
   templateUrl: './upload-photo.component.html',
@@ -24,7 +22,8 @@ export class UploadPhotoComponent {
   totalSize: number = 0;
   totalSizePercent: number = 0;
 
-  constructor(private readonly config: PrimeNG) {}
+  constructor(private readonly config: PrimeNG) {
+  }
 
   onSelectedFiles(event: any) {
     this.files = event.currentFiles;
@@ -54,7 +53,8 @@ export class UploadPhotoComponent {
     return `${formattedSize} ${sizes[i]}`;
   }
 
-  onTemplatedUpload() { }
+  onTemplatedUpload() {
+  }
 
   cancelarCargaArchivo(): void {
     const elemento: HTMLElement | null = document.getElementById('clear_btn');

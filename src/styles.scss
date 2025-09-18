@@ -5,6 +5,21 @@
 @use "assets/scss/primeng-custom/index" as customprimeng;
 @use "assets/scss/icons/index" as icons;
 
+/* src/styles.css */
+@layer framework {
+  .navbar-expand-md .navbar-nav {
+    margin-left: 0 !important;
+  }
+}
+
+@import url("https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css") layer(framework);
+
+@layer primeng-base {
+  .navbar-expand-md .navbar-nav {
+    margin-left: 0;
+  }
+}
+
 @layer app-components {
 
   :root {
@@ -45,7 +60,6 @@
 
   body {
     margin: 0;
-    padding: 0;
     background-color: var( --gob-mx-gris-tono4);
   }
 
@@ -55,11 +69,7 @@
     min-height: 100vh;
   }
 
-  header {
-    background-color: var(--gob-mx-pr-rojo-tono1);
-  }
-
-  footer {
+  .footer-cme {
     background-color: var(--gob-mx-pr-imss-tono1);
   }
 
@@ -78,6 +88,10 @@
 
   .p-fileupload-content .p-progressbar, .p-fileupload-header, .p-fileupload-file-list, p-progressbar {
     display: none;
+  }
+
+  p {
+    margin: 0;
   }
 
 }
