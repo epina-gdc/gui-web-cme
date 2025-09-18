@@ -8,4 +8,8 @@
   .card-padding-0 > .p-card-body {
     padding: 0;
   }
+
+  .empty-border .p-card-body {
+    border-top: none;
+  }
 }
