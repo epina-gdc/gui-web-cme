@@ -5,13 +5,15 @@ import { Button } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { GeneralComponent } from '../../../../components/general.component';
 import { MedicoResidente } from '@models/datosMedico';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-residente',
   imports: [
     Card,
     Button,
     InputTextModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    CommonModule
   ],
   templateUrl: './residente.component.html',
   styleUrl: './residente.component.scss'
