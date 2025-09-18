@@ -38,34 +38,65 @@
 @switch (indice()) {
 
   @case (0) {
-    <p-card class="mx-2 empty-border" [header]="'Datos Personales'">
-      <section class="flex">
-        <article class="col-3 flex flex-row">
-          <p class="field-label">Fotografía</p>
-          <upload-photo class="mt-6"/>
-          <p class="label2-subir-imagen">Obligatorio</p>
-        </article>
-        <article class="col-9 flex flex-row">
-          <div class="col-3"></div>
-          <div class="col-3"></div>
-          <div class="col-3"></div>
-          <div class="col-3"></div>
-          <div class="col-3"></div>
-          <div class="col-3"></div>
-          <div class="col-3"></div>
-          <div class="col-3"></div>
-        </article>
-      </section>
-    </p-card>
+    <form [formGroup]="formRegistro">
+      <p-card class="mx-2 empty-border" [header]="'Datos Personales'">
+        <section class="flex">
+          <article class="col-3 flex flex-row">
+            <p class="field-label">Fotografía</p>
+            <upload-photo class="mt-6"/>
+            <p class="label-obligatorio">Obligatorio</p>
+          </article>
+          <article class="col-9 flex flex-row flex-wrap">
+            <div class="col-4">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="rfc">RFC</label>
+                <p class="label-obligatorio">Obligatorio</p>
+              </div>
+              <input pInputText class="w-full" type="text" id="rfc" placeholder="Ingresa RFC"
+                     formControlName="rfc"/>
+            </div>
+            <div class="col-4">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="nss">NSS</label>
+                <p class="label-obligatorio">Obligatorio</p>
+              </div>
+              <input pInputText class="w-full" type="text" id="nss" placeholder="Ingresa NSS"
+                     formControlName="nss"/>
+            </div>
+            <div class="col-4"></div>
+            <div class="col-4"></div>
+            <div class="col-4"></div>
+            <div class="col-4"></div>
+            <div class="col-4">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="hijos">¿Cuántos hijos?</label>
+                <p class="label-obligatorio">Obligatorio</p>
+              </div>
+              <input pInputText class="w-full" type="text" id="hijos" placeholder="Número de hijos"
+                     formControlName="hijos"/>
+            </div>
+            <div class="col-4">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="otros">Otros</label>
+                <p class="label-obligatorio">Obligatorio</p>
+              </div>
+              <input pInputText class="w-full" type="text" id="otros" placeholder="Especifica"
+                     formControlName="otros"/>
+            </div>
+          </article>
+        </section>
+      </p-card>
 
-    <p-card class="mx-2 empty-border" [header]="'Datos de Contacto'">
-    </p-card>
+      <p-card class="mx-2 empty-border" [header]="'Datos de Contacto'">
+      </p-card>
 
-    <p-card class="mx-2 empty-border" [header]="'Datos del Domicilio'">
-    </p-card>
+      <p-card class="mx-2 empty-border" [header]="'Datos del Domicilio'">
+      </p-card>
 
-    <p-card class="mx-2 empty-border" [header]="'Zona de interes laboral'">
-    </p-card>
+      <p-card class="mx-2 empty-border" [header]="'Zona de interes laboral'">
+      </p-card>
+
+    </form>
   }
   @case (1) {
 
