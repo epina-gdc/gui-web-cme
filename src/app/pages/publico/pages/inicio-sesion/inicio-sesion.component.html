@@ -11,7 +11,7 @@
             <h2 class="login-card-titulo">Inicio de sesión</h2>
           </div>
           <div class="px-0">
-            <hr class=" border-1 opacity-10">
+            <hr class=" border-1 text-gray-100">
           </div>
           <form [formGroup]="formLogin"  (ngSubmit)="iniciarSesion()">
             <div class="login-card-body mt-4">
@@ -42,7 +42,7 @@
                 <a (click)="vista.set('olvideContrasenia')" class="login-hipervinculo cursor-pointer">Olvidé mi contraseña</a>
               </div>
               <div class="flex justify-content-between">
-                <a (click)="vista.set('registrarMedico')" class="login-hipervinculo cursor-pointer">Crear cuenta</a>
+                <a href="#" class="login-hipervinculo cursor-pointer">Crear cuenta</a>
                 <p-button type="submit" label="Iniciar sesión"/>
               </div>
             </div>
