@@ -33,15 +33,41 @@
 </p-card>
 
 <p-card class="mx-2 mb-4 empty-border">
-  <steps [currentStepIndex]="0" [steps]="steps"/>
+  <steps [currentStepIndex]="indice()" [steps]="steps"/>
 </p-card>
+@switch (indice()) {
 
-<p-card class="mx-2 empty-border" [header]="'Datos Personales'">
-  <section class="flex">
-    <article class="col-3 flex flex-row">
-      <p class="field-label">Fotografía</p>
-      <upload-photo class="mt-6"/>
-      <p class="label2-subir-imagen">Obligatorio</p>
-    </article>
-  </section>
-</p-card>
+  @case (0) {
+    <p-card class="mx-2 empty-border" [header]="'Datos Personales'">
+      <section class="flex">
+        <article class="col-3 flex flex-row">
+          <p class="field-label">Fotografía</p>
+          <upload-photo class="mt-6"/>
+          <p class="label2-subir-imagen">Obligatorio</p>
+        </article>
+        <article class="col-9 flex flex-row">
+          <div class="col-3"></div>
+          <div class="col-3"></div>
+          <div class="col-3"></div>
+          <div class="col-3"></div>
+          <div class="col-3"></div>
+          <div class="col-3"></div>
+          <div class="col-3"></div>
+          <div class="col-3"></div>
+        </article>
+      </section>
+    </p-card>
+
+    <p-card class="mx-2 empty-border" [header]="'Datos de Contacto'">
+    </p-card>
+
+    <p-card class="mx-2 empty-border" [header]="'Datos del Domicilio'">
+    </p-card>
+
+    <p-card class="mx-2 empty-border" [header]="'Zona de interes laboral'">
+    </p-card>
+  }
+  @case (1) {
+
+  }
+}

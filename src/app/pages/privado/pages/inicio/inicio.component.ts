@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, signal, WritableSignal} from '@angular/core';
 import {Card} from 'primeng/card';
 import {IconCardComponent} from '../../../../components/icon-card/icon-card.component';
 import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regresar.component';
@@ -23,4 +23,6 @@ export class InicioComponent {
     { label: 'Documentación', active: false },
     { label: 'Oferta laboral', active: false },
   ];
+
+  indice: WritableSignal<number> = signal<number>(0);
 }
