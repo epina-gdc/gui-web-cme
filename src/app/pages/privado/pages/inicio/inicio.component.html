@@ -275,6 +275,37 @@
     </form>
   }
   @case (1) {
+    <p-card class="mx-2 empty-border" [header]="'Documentos de idnetificación'">
+      <article class="flex flex-row flex-wrap">
+        <div class="col-3">
+          <div class="flex justify-content-between">
+            <p class="field-label">Identificación Oficial (INE)</p>
+            <p class="label-obligatorio">Obligatorio</p>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="flex justify-content-between">
+            <p class="field-label">Título Medicina General</p>
+            <p class="label-obligatorio">Obligatorio</p>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="flex justify-content-between">
+            <p class="field-label">Cédula Profesional Médica General</p>
+            <p class="label-obligatorio">Obligatorio</p>
+          </div>
+        </div>
+      </article>
+    </p-card>
 
+    <p-card class="mx-2 empty-border" [header]="'Documentos de especialización'">
+      <em>Indica y carga el documento de cada una de tus especialidades</em>
+    </p-card>
+
+    <p-card class="mx-2 empty-border" [header]="'Constancias de cursos de educación permanente en salud'">
+    </p-card>
+
+    <p-card class="mx-2 empty-border" [header]="'Datos de empleo'">
+    </p-card>
   }
 }
