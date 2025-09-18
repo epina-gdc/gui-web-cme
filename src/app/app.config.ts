@@ -18,7 +18,7 @@ export const appConfig: ApplicationConfig = {
             darkModeSelector: 'none',
             cssLayer: {
               name: 'primeng-base',
-              order: 'framework, primeng-base, app-components, app-overrides'
+              order: 'primeng-base, framework, app-components, app-overrides'
             }
           }
         }, translation: es,
