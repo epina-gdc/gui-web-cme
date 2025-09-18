@@ -7,6 +7,7 @@ import {UploadPhotoComponent} from '../../../../components/upload-photo/upload-p
 import {InputText} from 'primeng/inputtext';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {Select} from 'primeng/select';
+import { DatePickerModule } from 'primeng/datepicker';
 
 @Component({
   selector: 'app-inicio',
@@ -18,7 +19,8 @@ import {Select} from 'primeng/select';
     UploadPhotoComponent,
     InputText,
     ReactiveFormsModule,
-    Select
+    Select,
+    DatePickerModule
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss'
