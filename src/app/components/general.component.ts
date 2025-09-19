@@ -4,6 +4,7 @@ import { Mensajes } from "@utils/mensajes";
 import { Router } from '@angular/router';
 import { NAV } from "./../core/utils/url-global";
 import { CatalogoGeneral } from "@models/catalogoGeneral";
+import { AlertService } from "../core/alert/alert.service";
 
 
 @Component({
@@ -19,13 +20,14 @@ export class GeneralComponent  {
   _nav = NAV;
   protected _Mensajes: Mensajes;
   protected _router: Router;
-
+  protected _alertServices: AlertService;
 
 
 
   constructor() {
     this._Mensajes = inject(Mensajes);
     this._router = inject(Router);
+    this._alertServices = inject(AlertService);
   }
 
 
@@ -114,4 +116,12 @@ export class GeneralComponent  {
   }
 
 
+  public comparaCampos(texto1: string, texto2: string): boolean {
+    let blnIguales = false;
+    if (texto1 === texto2) {
+      blnIguales = true;
+    }
+
+    return blnIguales;
+  }
 }

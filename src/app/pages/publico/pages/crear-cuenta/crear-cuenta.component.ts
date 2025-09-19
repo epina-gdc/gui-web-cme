@@ -109,6 +109,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   registroMedico!: RegistroMedico;
 
   cambia() {
+    this._alertServices.alerta("alertas")
     console.log("hay cambios en el selct ");
     this.perfilElegido = this.form.controls['perfil'].value;
     if (this.perfilElegido == 2) {

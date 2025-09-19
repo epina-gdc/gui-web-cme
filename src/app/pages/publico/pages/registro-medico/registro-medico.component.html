@@ -7,7 +7,7 @@
 
 
 
-        <p-card class="top-rounded-card" [style]="{ width: '45rem',  }">
+        <p-card class="top-rounded-card" [style]="{ width: '45rem', overflow: 'hidden'  }">
             <form [formGroup]="form" (ngSubmit)="btnCrearCuenta()">
 
                 <div class="flex col-12 px-3">
@@ -193,7 +193,7 @@
           
                   </div>
  
-                <div class=" mt-4 row  flex justify-content-end">
+                <div class=" mt-4   flex justify-content-end">
 
                     <p-button label="Crear Cuenta" type="submit" [disabled]="!form.valid" />
 

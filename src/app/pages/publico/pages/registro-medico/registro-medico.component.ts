@@ -115,14 +115,14 @@ export class RegistroMedicoComponent extends GeneralComponent {
         Validators.required,
         Validators.minLength(1),
         Validators.maxLength(100),
-        Validators.pattern(/^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/)
+        Validators.pattern(/^[-\w.%+=_*']{1,64}@(?:[a-z0-9-]{1,63}\.){1,125}[a-z]{2,63}$/)
 
       ])],
       correoc: ['', Validators.compose([
         Validators.required,
         Validators.minLength(1),
         Validators.maxLength(100),
-        Validators.pattern(/^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/)
+        Validators.pattern(/^[-\w.%+=_*']{1,64}@(?:[a-z0-9-]{1,63}\.){1,125}[a-z]{2,63}$/)
 
       ])],
       pass: ['', Validators.compose([
@@ -195,7 +195,8 @@ export class RegistroMedicoComponent extends GeneralComponent {
 
         }
       } else {
-
+this.scrollToTop();
+this._alertServices.alerta(this._Mensajes.MSG007);
       }
 
 
@@ -206,14 +207,6 @@ export class RegistroMedicoComponent extends GeneralComponent {
   }
 
 
-  private comparaCampos(texto1: string, texto2: string): boolean {
-    let blnIguales = false;
-    if (texto1 === texto2) {
-      blnIguales = true;
-    }
-
-    return blnIguales;
-  }
 
   cambiaModalidad() {
 
