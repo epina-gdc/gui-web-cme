@@ -247,7 +247,6 @@
             </div>
             <div class="col-3 flex justify-content-start align-items-end">
               <p-button label="Agregar" icon="cme-plus" iconPos="right" [text]="true"/>
-
             </div>
           </article>
         </form>
@@ -282,21 +281,21 @@
     <p-card class="mx-2 empty-border" [header]="'Documentos de identificación'">
       <article class="flex flex-row flex-wrap">
         <div class="col-3">
-          <div class="flex justify-content-between mb-3">
+          <div class="flex justify-content-between mb-1">
             <p class="field-label">Identificación Oficial (INE)</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
           <upload-document/>
         </div>
         <div class="col-3">
-          <div class="flex justify-content-between mb-3">
+          <div class="flex justify-content-between mb-1">
             <p class="field-label">Título Medicina General</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
           <upload-document/>
         </div>
         <div class="col-3">
-          <div class="flex justify-content-between mb-3">
+          <div class="flex justify-content-between mb-1">
             <p class="field-label">Cédula Profesional Médica General</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
@@ -316,20 +315,27 @@
             <p class="field-label">Especialidad</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
+          <p-select [options]="dummies" optionLabel="label"
+                    placeholder="Selecciona opción" class="w-full"/>
         </div>
         <div class="col-3">
           <div class="flex justify-content-between">
             <p class="field-label">Documentos obligatorios</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
+          <p-select [options]="dummies" optionLabel="label"
+                    placeholder="Selecciona opción" class="w-full"/>
         </div>
         <div class="col-3">
-          <div class="flex justify-content-between">
+          <div class="flex justify-content-between mb-1">
             <p class="field-label">Carga de documento</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
+          <upload-document/>
         </div>
-        <div class="col-3"></div>
+        <div class="col-3 flex justify-content-start align-items-center">
+          <p-button label="Agregar" icon="cme-plus" iconPos="right" [text]="true"/>
+        </div>
       </article>
     </p-card>
 
