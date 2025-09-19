@@ -229,7 +229,7 @@
           <em class="info-em-texto">Queremos conocer tu interés, elige tres opciones
             para estar en posibilidad de prindarle una mejor oferta laboral</em>
         </div>
-        <form [formGroup]="formZonaInteres">
+        <form [formGroup]="formZonaInteres" class="mb-4">
           <article class="flex flex-row">
             <div class="col-3">
               <div class="flex justify-content-between">
@@ -251,6 +251,7 @@
             </div>
           </article>
         </form>
+
         <p-table [value]="zonasInteres" [tableStyle]="{ 'min-width': '50rem' }">
           <ng-template #header>
             <tr>

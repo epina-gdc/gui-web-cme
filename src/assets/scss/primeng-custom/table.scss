@@ -1,0 +1,12 @@
+@layer app-components {
+
+  .p-datatable-thead > tr > th {
+    color: #58595C;
+    font-feature-settings: 'liga' off, 'clig' off;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 100%; /* 14px */
+    background: #F1F4FD;
+  }
+}
