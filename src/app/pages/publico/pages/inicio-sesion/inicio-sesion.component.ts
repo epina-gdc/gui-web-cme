@@ -7,6 +7,7 @@ import { RecuperarCuentaComponent } from '../recuperar-cuenta/recuperar-cuenta.c
 import { CommonModule } from '@angular/common';
 import { GeneralComponent } from '../../../../components/general.component';
 import { passwordValidator } from '@validators/password-validator';
+import { BloquearCaracterPasswordDirective } from '@directives/bloquear-caracter-password.directive';
 
 
 @Component({
@@ -17,7 +18,8 @@ import { passwordValidator } from '@validators/password-validator';
     InputTextModule,
     ReactiveFormsModule,
     RecuperarCuentaComponent,
-    CommonModule
+    CommonModule,
+    BloquearCaracterPasswordDirective
   ],
   templateUrl: './inicio-sesion.component.html',
   styleUrl: './inicio-sesion.component.scss',
