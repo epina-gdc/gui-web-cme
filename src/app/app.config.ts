@@ -6,7 +6,7 @@ import {routes} from './app.routes';
 import {providePrimeNG} from 'primeng/config';
 import {provideHttpClient} from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { Mensajes } from './components/mensajes';
+import { Mensajes } from '@utils/mensajes';
 
 export const appConfig: ApplicationConfig = {
   providers: [Mensajes,
