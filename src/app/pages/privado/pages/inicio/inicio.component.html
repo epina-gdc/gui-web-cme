@@ -224,8 +224,11 @@
       </p-card>
 
       <p-card class="mx-2 empty-border" [header]="'Zona de interes laboral'">
-        <em class="info-em-texto">Queremos conocer tu interés, elige tres opciones
-          para estar en posibilidad de prindarle una mejor oferta laboral</em>
+        <div class="flex align-items-center gap-4 px-2 py-4">
+          <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
+          <em class="info-em-texto">Queremos conocer tu interés, elige tres opciones
+            para estar en posibilidad de prindarle una mejor oferta laboral</em>
+        </div>
         <form [formGroup]="formZonaInteres">
           <article class="flex flex-row">
             <div class="col-3">
@@ -299,7 +302,10 @@
     </p-card>
 
     <p-card class="mx-2 empty-border" [header]="'Documentos de especialización'">
-      <em class="info-em-texto">Indica y carga el documento de cada una de tus especialidades</em>
+      <div class="flex align-items-center gap-4 px-2 py-4">
+        <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
+        <em class="info-em-texto">Indica y carga el documento de cada una de tus especialidades</em>
+      </div>
       <article class="flex flex-row flex-wrap">
         <div class="col-3">
           <div class="flex justify-content-between">
@@ -324,8 +330,11 @@
     </p-card>
 
     <p-card class="mx-2 empty-border" [header]="'Constancias de cursos de educación permanente en salud'">
-      <em class="info-em-texto">Adjunta hasta 3 documentos de tus cursos de capacitación o actualización post-especialidad
-        (ej. Alta Especialidad, Adiestramientos). considerando el tamaño máximo 50mb.</em>
+      <div class="flex align-items-center gap-4 px-2 py-4">
+        <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
+        <em class="info-em-texto">Adjunta hasta 3 documentos de tus cursos de capacitación o actualización
+          post-especialidad (ej. Alta Especialidad, Adiestramientos). considerando el tamaño máximo 50mb.</em>
+      </div>
       <article class="flex flex-row flex-wrap">
 
       </article>
