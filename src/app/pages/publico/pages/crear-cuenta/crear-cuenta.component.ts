@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from "@angula
 import { Card } from 'primeng/card';
 import { Button } from 'primeng/button';
 import { Select } from 'primeng/select';
-import {RadioButton, RadioButtonModule} from 'primeng/radiobutton';
+import { RadioButton, RadioButtonModule } from 'primeng/radiobutton';
 import { GeneralComponent } from '../../../../components/general.component';
 import { CommonModule } from '@angular/common';
 
@@ -40,15 +40,15 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   lstPerfil !: any;
   lstModalidad!: any;
   lstDocumentos: any;
-
+  registroMedico!: RegistroMedico;
   blnResidente!: boolean;
-  perfilElegido!: any;
+
   ngOnInit() {
     this.registroMedico = new RegistroMedico();
     this.blnResidente = true;
     this.blnSeleccionado = false;
     this.form = this.inicializarForm();
-    
+
     this.lstPerfil = this.getCatalogoPerfiles();
 
   }
@@ -74,23 +74,23 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
       this.registroMedico.modalidad = this.form.controls['perfil'].value;
       console.log("el valor elegido es ", this.form);
 
-      switch (    this.registroMedico.modalidad) {
+      switch (this.registroMedico.modalidad) {
         case 1:
-       
+
           break;
         case 2:
 
-          if(this.form.controls['documento'].value === '1'){
-            this.registroMedico.blnPasaporte=false;
-          }else{
-            this.registroMedico.blnPasaporte=true;
+          if (this.form.controls['documento'].value === '1') {
+            this.registroMedico.blnPasaporte = false;
+          } else {
+            this.registroMedico.blnPasaporte = true;
           }
-           
-        
-          
 
 
-          this._router.navigate(['publico/'+this._nav.registroMedico]);
+
+
+
+          this._router.navigate(['publico/' + this._nav.registroMedico]);
 
           break;
 
@@ -99,36 +99,58 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
           break;
       }
       console.log("registroMedico es ", this.registroMedico);
-      this.saveSession("registroMedico",this.registroMedico)
+      this.saveSession("registroMedico", this.registroMedico)
       this._router.navigate(['publico/' + this._nav.registroMedico]);
     } else {
 
     }
   }
 
-  registroMedico!: RegistroMedico;
 
-  cambia() {
-    this._alertServices.alerta("alertas")
+
+  cambiaPerfil() {
+
     console.log("hay cambios en el selct ");
-    this.perfilElegido = this.form.controls['perfil'].value;
-    if (this.perfilElegido == 2) {
-      this.lstModalidad=  this.getCatalogoModalidad();
-      this.lstDocumentos =  this.getCatalogoDocumento();
-      this.blnResidente = false;
+    this.registroMedico.perfil = this.form.controls['perfil'].value;
+    if (this.registroMedico.perfil == 2) {
 
-
-
-      this.form.controls['modalidad'].setValidators([Validators.required]);
-      this.form.controls['documento'].setValidators([Validators.required]);
-      this.form.controls['modalidad'].updateValueAndValidity();
-      this.form.controls['documento'].updateValueAndValidity();
-
+      this.camposExterno();
 
 
 
 
     }
+
+    if (this.registroMedico.perfil == 1) {
+      this.camposResidente();
+
+
+
+    }
+  }
+
+  private camposResidente() {
+    this.clearCampos();
+    this.blnResidente = true;
+  }
+  private camposExterno() {
+    this.lstModalidad = this.getCatalogoModalidad();
+    this.lstDocumentos = this.getCatalogoDocumento();
+    this.blnResidente = false;
+
+
+
+    this.form.controls['modalidad'].setValidators([Validators.required]);
+    this.form.controls['documento'].setValidators([Validators.required]);
+    this.form.controls['modalidad'].updateValueAndValidity();
+    this.form.controls['documento'].updateValueAndValidity();
+  }
+
+  private clearCampos(){
+    this.form.controls['modalidad'].setValidators([]);
+    this.form.controls['documento'].setValidators([]);
+    this.form.controls['modalidad'].updateValueAndValidity();
+    this.form.controls['documento'].updateValueAndValidity();
   }
 
   cambiaModalidad() {

@@ -8,6 +8,7 @@ export class Medico {
     correo!: string;
     password!: string;
     modalidad!: number;
+    perfil!: number;
 }
 
 

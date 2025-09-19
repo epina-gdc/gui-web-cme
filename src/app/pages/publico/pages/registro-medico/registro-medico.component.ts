@@ -31,9 +31,11 @@ export class RegistroMedicoComponent extends GeneralComponent {
   medico!: RegistroMedico;
   lstModalidad!: Array<CatalogoGeneral>;
   ngOnInit(): void {
-
+    this.blnPassIguales = false;
+    this.blnCorreosIguales = false;
     this.lstModalidad = this.getCatalogoModalidad();
     this.form = this.inicializarForm();
+    
     let x = this.getSession('registroMedico');
     if (x) {
       this.medico = x;
@@ -67,7 +69,20 @@ export class RegistroMedicoComponent extends GeneralComponent {
     }
   }
 
+  private clearCampos(){
+    this.form.controls['matricula'].setValidators([]),
+    this.form.controls['modalidad'].setValidators([]);
+    this.form.controls['pasaporte'].setValidators([]);
+    this.form.controls['pais'].setValidators([]);
+    this.form.controls['modalidad'].updateValueAndValidity();
+    this.form.controls['pasaporte'].updateValueAndValidity();
+    this.form.controls['pais'].updateValueAndValidity();
+    this.form.controls['matricula'].updateValueAndValidity();
+
+  }
+
   private isPasaporte() {
+    this.clearCampos();
     this.form.controls['modalidad'].setValidators([Validators.required]);
     this.form.controls['pasaporte'].setValidators([Validators.required]);
     this.form.controls['pais'].setValidators([Validators.required]);
@@ -77,10 +92,11 @@ export class RegistroMedicoComponent extends GeneralComponent {
   }
 
   private isResidente() {
-    this.form.controls['matricula'].setValidators([Validators.required,Validators.minLength(10),
-      Validators.minLength(10),
-      Validators.maxLength(10),
-      Validators.pattern(/^[0-9]{10}$/)]);
+    this.clearCampos();
+    this.form.controls['matricula'].setValidators([Validators.required, Validators.minLength(10),
+    Validators.minLength(10),
+    Validators.maxLength(10),
+    Validators.pattern(/^[0-9]{10}$/)]);
 
 
     this.form.controls['matricula'].updateValueAndValidity();
@@ -177,36 +193,75 @@ export class RegistroMedicoComponent extends GeneralComponent {
   }
 
   public btnCrearCuenta() {
-    this.medico.correo = this.form.controls['correo'].value;
-    this.medico.correo2 = this.form.controls['correoc'].value;
-    this.medico.password = this.form.controls['pass'].value;
-    this.medico.password2 = this.form.controls['passc'].value;
-    console.log("crear cuenta");
+
+
 
     if (this.form.valid) {
-      if (this.comparaCampos(this.medico.correo, this.medico.correo2)) {
 
-        if (this.comparaCampos(this.medico.password, this.medico.password2)) {
 
-          //this._Mensajes.MSG012
-          this._router.navigate(['publico/inicio-sesion']);
+      if (this.blnCorreosIguales) {
+
+      
+        if (this.blnPassIguales) {
+
+          
+          this.guardarRegistro();
+    
 
         } else {
-
+          this._alertServices.alerta(this._Mensajes.MSG007);
         }
+
       } else {
-this.scrollToTop();
-this._alertServices.alerta(this._Mensajes.MSG007);
+        this._alertServices.alerta(this._Mensajes.MSG0077);
       }
 
 
+
     } else {
-      //mostar
-      //this._Mensajes.MSG013
+
+      this._alertServices.alerta(this._Mensajes.MSG013);
     }
   }
 
 
+  private guardarRegistro(){
+    this._router.navigate(['publico/inicio-sesion']);
+    setTimeout(() => {
+      this._alertServices.exito(this._Mensajes.MSG012);  
+    }, 500);
+    
+  }
+  blnCorreosIguales!: boolean;
+  blnPassIguales!: boolean;
+  public compararCorreos() {
+    this.medico.correo = this.form.controls['correo'].value;
+    this.medico.correo2 = this.form.controls['correoc'].value;
+    if (this.medico.correo.length > 0 && this.medico.correo2.length > 0) {
+      if (this.comparaCampos(this.medico.correo, this.medico.correo2)) {
+        this.blnCorreosIguales = true;
+      } else {
+        this.blnCorreosIguales = false;
+        this._alertServices.alerta(this._Mensajes.MSG0077);
+      }
+    }
+
+  }
+
+
+  public compararPassword() {
+    this.medico.password = this.form.controls['pass'].value;
+    this.medico.password2 = this.form.controls['passc'].value;
+    if (this.medico.password.length > 0 && this.medico.password2.length > 0) {
+      if (this.comparaCampos(this.medico.password, this.medico.password2)) {
+        this.blnPassIguales = true;
+      } else {
+        this.blnPassIguales = false;
+        this._alertServices.alerta(this._Mensajes.MSG007);
+      }
+    }
+
+  }
 
   cambiaModalidad() {
 
@@ -250,8 +305,15 @@ this._alertServices.alerta(this._Mensajes.MSG007);
   }
 
   public btnValidarMatricula() {
+    this.medico.matricula = this.form.controls['matricula'].value
 
-    this.validarMatricula();
+    if (this.existeMatricula(this.medico.matricula)) {
+      this.validarMatricula();
+    } else {
+      this._alertServices.alerta(this._Mensajes.MSG010);
+      this.form.controls['matricula'].setValue('');
+      this.medico.matricula = this.form.controls['matricula'].value
+    }
   }
 
   private validarMatricula() {
@@ -267,6 +329,14 @@ this._alertServices.alerta(this._Mensajes.MSG007);
     this.medico.rfc = this.form.controls['rfc'].value;
 
     console.log("datos del medico", this.medico);
+  }
+
+  private existeMatricula(matricula: string): boolean {
+    let blnExiste = false;
+    if (matricula === '1234567890') {
+      blnExiste = true;
+    }
+    return blnExiste;
   }
 
 }
