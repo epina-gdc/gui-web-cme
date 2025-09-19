@@ -37,7 +37,7 @@
               {{ file.name }}
             </div>
             <p-button icon="pi pi-times" class="border-circle" [outlined]="true"
-                      [text]="true" severity="danger" size="small"/>
+                      [text]="true" severity="danger" size="small" (click)="cancelarCargaArchivo()" />
           </div>
         }
       </div>

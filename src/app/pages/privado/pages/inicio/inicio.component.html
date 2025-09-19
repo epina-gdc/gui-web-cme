@@ -279,26 +279,28 @@
     </form>
   }
   @case (1) {
-    <p-card class="mx-2 empty-border" [header]="'Documentos de idnetificación'">
+    <p-card class="mx-2 empty-border" [header]="'Documentos de identificación'">
       <article class="flex flex-row flex-wrap">
         <div class="col-3">
           <div class="flex justify-content-between mb-3">
             <p class="field-label">Identificación Oficial (INE)</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
-          <upload-document />
+          <upload-document/>
         </div>
         <div class="col-3">
-          <div class="flex justify-content-between">
+          <div class="flex justify-content-between mb-3">
             <p class="field-label">Título Medicina General</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
+          <upload-document/>
         </div>
         <div class="col-3">
-          <div class="flex justify-content-between">
+          <div class="flex justify-content-between mb-3">
             <p class="field-label">Cédula Profesional Médica General</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
+          <upload-document/>
         </div>
       </article>
     </p-card>
