@@ -30,6 +30,7 @@
       "@pages/*":["./src/app/pages/*"],
       "@privado/*":["./src/app/pages/privado/pages/*"],
       "@publico/*":["./src/app/pages/publico/pages/*"],
+      "@validators/*":["./src/app/core/validators/*"],
     }
   },
   "angularCompilerOptions": {
