@@ -11,13 +11,14 @@
             <h2 class="login-card-titulo">Inicio de sesión</h2>
           </div>
           <div class="px-0">
-            <hr class=" border-1 opacity-10">
+            <hr class=" border-1 text-gray-100">
           </div>
           <form [formGroup]="formLogin"  (ngSubmit)="iniciarSesion()">
             <div class="login-card-body mt-4">
               <div class="field">
                 <label class="field-label" for="correoElectronico">Correo electrónico</label>
                 <input
+                autocomplete="false"
                   pInputText
                   class="w-full"
                   type="email"
@@ -32,18 +33,49 @@
                   class="w-full"
                   type="password"
                   id="password"
+                  (keypress)="ingresoPass = true"
+                  appBloquearCaracterPassword
                   placeholder="Ingresa contraseña"
-                  formControlName="password"/>
+                  formControlName="password"
+                  autocomplete="false"/>
                   <i [ngClass]="{'pi-eye': input.type==='password', 'pi-eye-slash':  input.type ==='text'}"
                     class="cursor-pointer icon pi"
                     (click)="input.type = input.type==='password'?'text':'password'"></i>
+
+                    @if(ingresoPass){
+                      <div class="flex flex-column">
+                        @if(f['password'].errors?.['minLength']){
+                          <span class="nombre-medico">{{_Mensajes.MSJ_PASS_MIN_CARACTER}}</span>
+                        }
+      
+                        @if(f['password'].errors?.['maxLength']){
+                          <span class="nombre-medico">{{_Mensajes.MSJ_PASS_MAX_CARACTER}}</span>
+                        }
+      
+                        @if(f['password'].errors?.['mayuscula']){
+                          <span class="nombre-medico">{{_Mensajes.MSJ_PASS_MAYUSCULA}}</span>
+                        }
+      
+                        @if(f['password'].errors?.['minuscula']){
+                          <span class="nombre-medico">{{_Mensajes.MSJ_PASS_MINUSCULA}}</span>
+                        }
+      
+                        @if(f['password'].errors?.['numero']){
+                          <span class="nombre-medico">{{_Mensajes.MSJ_PASS_NUMERO}}</span>
+                        }
+      
+                        @if(f['password'].errors?.['caracter']){
+                          <span class="nombre-medico">{{_Mensajes.MSJ_PASS_CARACTER_ESPECIAL}}</span>
+                        }
+                      </div>
+                    }
               </div>
               <div class="flex justify-content-end my-3">
                 <a (click)="vista.set('olvideContrasenia')" class="login-hipervinculo cursor-pointer">Olvidé mi contraseña</a>
               </div>
               <div class="flex justify-content-between">
-                <a (click)="vista.set('registrarMedico')" class="login-hipervinculo cursor-pointer">Crear cuenta</a>
-                <p-button type="submit" label="Iniciar sesión"/>
+                <a href="#" class="login-hipervinculo cursor-pointer">Crear cuenta</a>
+                <p-button type="submit" [disabled]="formLogin.invalid" label="Iniciar sesión"/>
               </div>
             </div>
           </form>
