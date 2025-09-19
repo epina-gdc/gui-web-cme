@@ -161,3 +161,12 @@
   color: var(--gob-mx-base-blanco);
   font-weight: 600;
 }
+
+.info-em-texto {
+  color: #7D8FB3;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%; /* 12px */
+}
