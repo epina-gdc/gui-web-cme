@@ -163,7 +163,7 @@ export class RegistroMedicoComponent extends GeneralComponent {
     }
   }
 
-  public btnValidarCURP() {
+  public btnValidar() {
 
     this.validarCURP();
   }
