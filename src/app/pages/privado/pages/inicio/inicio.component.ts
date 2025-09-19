@@ -10,6 +10,7 @@ import {Select} from 'primeng/select';
 import {DatePickerModule} from 'primeng/datepicker';
 import {Button} from 'primeng/button';
 import {TableModule} from 'primeng/table';
+import {UploadDocumentComponent} from '../../../../components/upload-document/upload-document.component';
 
 @Component({
   selector: 'app-inicio',
@@ -24,7 +25,8 @@ import {TableModule} from 'primeng/table';
     Select,
     DatePickerModule,
     Button,
-    TableModule
+    TableModule,
+    UploadDocumentComponent
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss'
@@ -45,7 +47,7 @@ export class InicioComponent {
 
   dummies = [{label: 'Dummie', value: 'Dummie'}]
 
-  indice: WritableSignal<number> = signal<number>(0);
+  indice: WritableSignal<number> = signal<number>(1);
 
   constructor() {
     this.formRegistro = this.asignarFormularioRegistro();
