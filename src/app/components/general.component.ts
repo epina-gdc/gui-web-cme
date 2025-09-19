@@ -1,8 +1,8 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnDestroy, inject } from "@angular/core";
-import { Mensajes } from "../components/mensajes";
+import { Mensajes } from "@utils/mensajes";
 import { Router } from '@angular/router';
-import { NAV } from "./url-global";
+import { NAV } from "@utils/url-global";
 
 
 @Component({
@@ -21,24 +21,24 @@ export class GeneralComponent  {
 
 
 
-  
+
   constructor() {
     this._Mensajes = inject(Mensajes);
     this._router = inject(Router);
   }
- 
-  
+
+
 
 
   salir() {
-  
+
   }
 
 
 
 
   irAHome() {
-   
+
   }
 
   scrollToTop() {
@@ -47,7 +47,7 @@ export class GeneralComponent  {
 
 
 
- 
+
 
 
 }

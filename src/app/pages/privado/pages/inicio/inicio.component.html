@@ -33,15 +33,315 @@
 </p-card>
 
 <p-card class="mx-2 mb-4 empty-border">
-  <steps [currentStepIndex]="0" [steps]="steps"/>
+  <steps [currentStepIndex]="indice()" [steps]="steps"/>
 </p-card>
+@switch (indice()) {
 
-<p-card class="mx-2 empty-border" [header]="'Datos Personales'">
-  <section class="flex">
-    <article class="col-3 flex flex-row">
-      <p class="field-label">Fotografía</p>
-      <upload-photo class="mt-6"/>
-      <p class="label2-subir-imagen">Obligatorio</p>
-    </article>
-  </section>
-</p-card>
+  @case (0) {
+    <form [formGroup]="formRegistro">
+      <p-card class="mx-2 empty-border" [header]="'Datos Personales'">
+        <section class="flex">
+          <article class="col-3 flex flex-row">
+            <p class="field-label">Fotografía</p>
+            <upload-photo class="mt-6"/>
+            <p class="label-obligatorio">Obligatorio</p>
+          </article>
+          <article class="col-9 flex flex-row flex-wrap">
+            <div class="col-4">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="rfc">RFC</label>
+                <p class="label-obligatorio">Obligatorio</p>
+              </div>
+              <input pInputText class="w-full" type="text" id="rfc" placeholder="Ingresa RFC"
+                     formControlName="rfc"/>
+            </div>
+            <div class="col-4">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="nss">NSS</label>
+                <p class="label-obligatorio">Obligatorio</p>
+              </div>
+              <input pInputText class="w-full" type="text" id="nss" placeholder="Ingresa NSS"
+                     formControlName="nss"/>
+            </div>
+            <div class="col-4">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="fechaNacimiento">Fecha de Nacimiento</label>
+                <p class="label-obligatorio">Obligatorio</p>
+              </div>
+              <p-datepicker formControlName="fechaNacimiento" [style]="{ 'width': '100%' }"
+                            [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"/>
+            </div>
+            <div class="col-4">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="sexo">Sexo</label>
+                <p class="label-obligatorio">Obligatorio</p>
+              </div>
+              <p-select [options]="dummies" formControlName="sexo" optionLabel="label"
+                        placeholder="Ingresa sexo" class="w-full"/>
+            </div>
+            <div class="col-4">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="estadoCivil">Estado civil</label>
+                <p class="label-obligatorio">Obligatorio</p>
+              </div>
+              <p-select [options]="dummies" formControlName="estadoCivil" optionLabel="label"
+                        placeholder="Ingresa estado civil" class="w-full"/>
+            </div>
+            <div class="col-4">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="rfc">Dependientes</label>
+              </div>
+            </div>
+            <div class="col-4">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="hijos">¿Cuántos hijos?</label>
+                <p class="label-obligatorio">Obligatorio</p>
+              </div>
+              <input pInputText class="w-full" type="text" id="hijos" placeholder="Número de hijos"
+                     formControlName="hijos"/>
+            </div>
+            <div class="col-4">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="otros">Otros</label>
+                <p class="label-obligatorio">Obligatorio</p>
+              </div>
+              <input pInputText class="w-full" type="text" id="otros" placeholder="Especifica"
+                     formControlName="otros"/>
+            </div>
+          </article>
+        </section>
+      </p-card>
+
+      <p-card class="mx-2 empty-border" [header]="'Datos de Contacto'">
+        <article class="flex flex-row flex-wrap">
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="correo">Correo electrónico</label>
+            </div>
+            <input pInputText class="w-full" type="text" id="correo" placeholder="Ingresa correo electrónico"
+                   formControlName="correo"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="correoAdicional">Correo electrónico adicional</label>
+            </div>
+            <input pInputText class="w-full" type="text" id="correoAdicional"
+                   placeholder="Ingresa correo electrónico adicional"
+                   formControlName="correoAdicional"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="telefonoCasa">Teléfono de casa</label>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="telefonoCasa" placeholder="Ingresa teléfono de casa"
+                   formControlName="telefonoCasa"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="telefonoCelular">Teléfono celular</label>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="telefonoCelular" placeholder="Ingresa teléfono celular"
+                   formControlName="telefonoCelular"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="paisNacimiento">País de nacimiento</label>
+            </div>
+            <p-select [options]="dummies" formControlName="paisNacimiento" optionLabel="label"
+                      placeholder="Ingresa País de nacimiento" class="w-full"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="estadoNacimiento">Estado de origen (nacimiento)</label>
+            </div>
+            <p-select [options]="dummies" formControlName="estadoNacimiento" optionLabel="label"
+                      placeholder="Ingresa estado de origen" class="w-full"/>
+          </div>
+        </article>
+      </p-card>
+
+      <p-card class="mx-2 empty-border" [header]="'Datos del Domicilio'">
+        <article class="flex flex-row flex-wrap">
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="codigoPostal">Código postal</label>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="codigoPostal" placeholder="Ingresa código postal"
+                   formControlName="codigoPostal"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="pais">País</label>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <p-select [options]="dummies" formControlName="pais" optionLabel="label"
+                      placeholder="Ingresa país" class="w-full"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="estado">Estado</label>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="estado" placeholder="Ingresa estado"
+                   formControlName="estado"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="municipio">Alcaldía o municipio</label>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="municipio" placeholder="Ingresa delegación"
+                   formControlName="municipio"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="colonia">Colonia</label>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="colonia" placeholder="Ingresa colonia"
+                   formControlName="colonia"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="calle">Calle</label>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="calle" placeholder="Ingresa calle"
+                   formControlName="calle"/>
+          </div>
+          <div class="col-3">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="numeroExterior">Número exterior</label>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="numeroExterior" placeholder="Ingresa número exterior"
+                   formControlName="numeroExterior"/>
+          </div>
+        </article>
+      </p-card>
+
+      <p-card class="mx-2 empty-border" [header]="'Zona de interes laboral'">
+        <div class="flex align-items-center gap-4 px-2 py-4">
+          <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
+          <em class="info-em-texto">Queremos conocer tu interés, elige tres opciones
+            para estar en posibilidad de prindarle una mejor oferta laboral</em>
+        </div>
+        <form [formGroup]="formZonaInteres" class="mb-4">
+          <article class="flex flex-row">
+            <div class="col-3">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="ooad">OOAD</label>
+              </div>
+              <p-select [options]="dummies" formControlName="ooad" optionLabel="label"
+                        placeholder="Seleccionar opción" class="w-full"/>
+            </div>
+            <div class="col-3">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="zonaInteres">Zona de interés</label>
+              </div>
+              <p-select [options]="dummies" formControlName="zonaInteres" optionLabel="label"
+                        placeholder="Seleccionar opción" class="w-full"/>
+            </div>
+            <div class="col-3 flex justify-content-start align-items-end">
+              <p-button label="Agregar" icon="cme-plus" iconPos="right" [text]="true"/>
+
+            </div>
+          </article>
+        </form>
+
+        <p-table [value]="zonasInteres" [tableStyle]="{ 'min-width': '50rem' }">
+          <ng-template #header>
+            <tr>
+              <th scope="col">OOAD</th>
+              <th scope="col">Zona de interés</th>
+              <th scope="col">Acciones</th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-product>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-card>
+
+      <div class="flex flex-row justify-content-end gap-3">
+        <p-button type="button" variant="outlined" label="Limpiar formulario"/>
+        <p-button type="button" label="Guardar"/>
+        <p-button type="button" label="Finalizar registro"/>
+      </div>
+
+    </form>
+  }
+  @case (1) {
+    <p-card class="mx-2 empty-border" [header]="'Documentos de idnetificación'">
+      <article class="flex flex-row flex-wrap">
+        <div class="col-3">
+          <div class="flex justify-content-between">
+            <p class="field-label">Identificación Oficial (INE)</p>
+            <p class="label-obligatorio">Obligatorio</p>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="flex justify-content-between">
+            <p class="field-label">Título Medicina General</p>
+            <p class="label-obligatorio">Obligatorio</p>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="flex justify-content-between">
+            <p class="field-label">Cédula Profesional Médica General</p>
+            <p class="label-obligatorio">Obligatorio</p>
+          </div>
+        </div>
+      </article>
+    </p-card>
+
+    <p-card class="mx-2 empty-border" [header]="'Documentos de especialización'">
+      <div class="flex align-items-center gap-4 px-2 py-4">
+        <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
+        <em class="info-em-texto">Indica y carga el documento de cada una de tus especialidades</em>
+      </div>
+      <article class="flex flex-row flex-wrap">
+        <div class="col-3">
+          <div class="flex justify-content-between">
+            <p class="field-label">Especialidad</p>
+            <p class="label-obligatorio">Obligatorio</p>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="flex justify-content-between">
+            <p class="field-label">Documentos obligatorios</p>
+            <p class="label-obligatorio">Obligatorio</p>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="flex justify-content-between">
+            <p class="field-label">Carga de documento</p>
+            <p class="label-obligatorio">Obligatorio</p>
+          </div>
+        </div>
+        <div class="col-3"></div>
+      </article>
+    </p-card>
+
+    <p-card class="mx-2 empty-border" [header]="'Constancias de cursos de educación permanente en salud'">
+      <div class="flex align-items-center gap-4 px-2 py-4">
+        <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
+        <em class="info-em-texto">Adjunta hasta 3 documentos de tus cursos de capacitación o actualización
+          post-especialidad (ej. Alta Especialidad, Adiestramientos). considerando el tamaño máximo 50mb.</em>
+      </div>
+      <article class="flex flex-row flex-wrap">
+
+      </article>
+    </p-card>
+
+    <p-card class="mx-2 empty-border" [header]="'Datos de empleo'">
+    </p-card>
+  }
+}
