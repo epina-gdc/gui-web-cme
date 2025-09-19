@@ -5,6 +5,9 @@ import {Button} from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { RecuperarCuentaComponent } from '../recuperar-cuenta/recuperar-cuenta.component';
 import { CommonModule } from '@angular/common';
+import { GeneralComponent } from '../../../../components/general.component';
+import { passwordValidator } from '@validators/password-validator';
+
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -20,26 +23,33 @@ import { CommonModule } from '@angular/common';
   styleUrl: './inicio-sesion.component.scss',
   standalone: true
 })
-export class InicioSesionComponent implements OnInit{
+export class InicioSesionComponent extends GeneralComponent implements OnInit{
 
   fb = inject(FormBuilder)
   formLogin!: FormGroup;
   vista = signal('login');
+  ingresoPass: boolean = false;
 
 
   ngOnInit(): void {
     this.formLogin = this.inicializarFormLogin();
+    
   }
 
   inicializarFormLogin() : FormGroup{
     return this.fb.group({
-      correoElectronico: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]],
+      correoElectronico: ['', [Validators.required]],
+      password: ['', [Validators.required, passwordValidator()]],
     });
   }
 
   iniciarSesion(){
     console.log("");
+  }
+
+
+  get f(){
+    return this.formLogin.controls;
   }
 
 }
