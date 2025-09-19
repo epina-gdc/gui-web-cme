@@ -3,8 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { InicioSesionComponent } from '@publico/inicio-sesion/inicio-sesion.component';
 import { CrearCuentaComponent } from '@publico/crear-cuenta/crear-cuenta.component';
 import { NAV } from '@utils/url-global';
-import { ExternoComponent } from './pages/externo/externo.component';
-import { ResidenteComponent } from './pages/residente/residente.component';
+import { RegistroMedicoComponent } from './pages/registro-medico/registro-medico.component';
 
 const routes: Routes = [
   {
@@ -21,18 +20,12 @@ const routes: Routes = [
     path: NAV.crearCuenta,
     component: CrearCuentaComponent,
   },
-
   {
-    path: NAV.formMedicoExterno,
+    path: NAV.registroMedico,
 
-    component: ExternoComponent,
+    component: RegistroMedicoComponent,
   },
 
-  {
-    path: NAV.formMedicoResidente,
-    component: ResidenteComponent,
-
-  },
 ];
 
 @NgModule({
