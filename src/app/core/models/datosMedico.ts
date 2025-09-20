@@ -7,13 +7,19 @@ export class Medico {
     rfc!: string;
     correo!: string;
     password!: string;
-
+    modalidad!: number;
+    perfil!: number;
 }
 
 
 
-export class MedicoResidente extends Medico {
+
+
+export class RegistroMedico extends Medico {
     correo2!: string;
     password2!: string;
-matricula!: string;
+    blnPasaporte!: boolean;
+    pais!:string;
+    pasaporte!: string;
+    matricula!: string;
 }
