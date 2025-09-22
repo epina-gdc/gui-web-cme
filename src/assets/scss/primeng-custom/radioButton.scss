@@ -14,13 +14,13 @@
   }
 
   .radio-button-square .p-radiobutton-checked .p-radiobutton-box {
-    background-color: var(--p-radiobutton-checked-background);
-    border-color: var(--p-radiobutton-checked-background);
+    background-color: var(--gob-mx-pr-imss-tono1);
+    border-color: var(--gob-mx-pr-imss-tono1);
   }
 
   .radio-button-square .p-radiobutton-checked .p-radiobutton-box::after {
     content: '✔';
-    font-size: 14px;
+    font-size: 12px;
     color: white;
     position: absolute;
     top: 50%;
