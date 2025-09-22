@@ -91,6 +91,15 @@
               <div class="flex justify-content-between">
                 <label class="field-label" for="rfc">Dependientes</label>
               </div>
+              <div class="flex justify-content-between flex-wrap gap-2">
+                @for (dependiente of dependientes; track dependiente.key) {
+                  <div class="flex align-items-center gap-1">
+                    <p-radiobutton class="radio-button-square" [inputId]="dependiente.key" [value]="dependiente" formControlName="dependientes">
+                    </p-radiobutton>
+                    <label [for]="dependiente.key" class="field-label mt-4">{{ dependiente.name }}</label>
+                  </div>
+                }
+              </div>
             </div>
             <div class="col-4">
               <div class="flex justify-content-between">
@@ -271,7 +280,7 @@
 
       <div class="flex flex-row justify-content-end gap-3">
         <p-button type="button" variant="outlined" label="Limpiar formulario"/>
-        <p-button type="button" label="Guardar"/>
+        <p-button type="button" label="Guardar" (click)="siguientePasoStepper()"/>
         <p-button type="button" label="Finalizar registro"/>
       </div>
 
