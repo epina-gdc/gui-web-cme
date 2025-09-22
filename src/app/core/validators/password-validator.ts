@@ -1,9 +1,9 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
-import { PATRON_LETRA_MAYUSCULA, PATRON_LETRA_MINUSCULA, PATRON_CARACTER_ESPECIAL, PATRON_NUMERO } from "@utils/regex";
+import {AbstractControl, ValidationErrors, ValidatorFn} from "@angular/forms";
+import {PATRON_CARACTER_ESPECIAL, PATRON_LETRA_MAYUSCULA, PATRON_LETRA_MINUSCULA, PATRON_NUMERO} from "@utils/regex";
 
 export function passwordValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
-        
+
         const value = control.value || '';
         const errores: any = {};
         if (value.length < 8) {
@@ -27,4 +27,3 @@ export function passwordValidator(): ValidatorFn {
         return Object.keys(errores).length ? errores : null;
     };
   }
-  

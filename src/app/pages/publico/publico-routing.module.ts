@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { InicioSesionComponent } from '@publico/inicio-sesion/inicio-sesion.component';
-import { CrearCuentaComponent } from '@publico/crear-cuenta/crear-cuenta.component';
-import { NAV } from '@utils/url-global';
-import { ExternoComponent } from './pages/externo/externo.component';
-import { ResidenteComponent } from './pages/residente/residente.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {InicioSesionComponent} from '@publico/inicio-sesion/inicio-sesion.component';
+import {CrearCuentaComponent} from '@publico/crear-cuenta/crear-cuenta.component';
+import {NAV} from '@utils/url-global';
+import {ExternoComponent} from './pages/externo/externo.component';
+import {ResidenteComponent} from './pages/residente/residente.component';
 
 const routes: Routes = [
   {

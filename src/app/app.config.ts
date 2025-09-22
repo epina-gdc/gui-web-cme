@@ -5,8 +5,8 @@ import {es} from "primelocale/es.json"
 import {routes} from './app.routes';
 import {providePrimeNG} from 'primeng/config';
 import {provideHttpClient} from '@angular/common/http';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import { Mensajes } from '@utils/mensajes';
+import {provideAnimations} from '@angular/platform-browser/animations';
+import {Mensajes} from '@utils/mensajes';
 
 export const appConfig: ApplicationConfig = {
   providers: [Mensajes,

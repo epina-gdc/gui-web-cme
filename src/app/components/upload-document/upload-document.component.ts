@@ -2,15 +2,14 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {PrimeNG} from 'primeng/config';
 import {FileUpload} from 'primeng/fileupload';
 import {PrimeTemplate} from 'primeng/api';
-import {Button, ButtonDirective} from 'primeng/button';
+import {Button} from 'primeng/button';
 
 @Component({
   selector: 'upload-document',
   imports: [
     FileUpload,
     PrimeTemplate,
-    Button,
-    ButtonDirective
+    Button
   ],
   templateUrl: './upload-document.component.html',
   styleUrl: './upload-document.component.scss'

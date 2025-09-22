@@ -1,8 +1,8 @@
-import { CommonModule } from "@angular/common";
-import { Component, OnDestroy, inject } from "@angular/core";
-import { Mensajes } from "@utils/mensajes";
-import { Router } from '@angular/router';
-import { NAV } from "@utils/url-global";
+import {CommonModule} from "@angular/common";
+import {Component, inject} from "@angular/core";
+import {Mensajes} from "@utils/mensajes";
+import {Router} from '@angular/router';
+import {NAV} from "@utils/url-global";
 
 
 @Component({

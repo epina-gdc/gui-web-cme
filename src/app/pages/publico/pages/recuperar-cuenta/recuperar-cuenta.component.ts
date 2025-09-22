@@ -1,7 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {Button} from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from "@angular/forms";
+import {InputTextModule} from 'primeng/inputtext';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-recuperar-cuenta',

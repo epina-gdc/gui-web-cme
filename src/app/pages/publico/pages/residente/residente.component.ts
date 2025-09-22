@@ -1,11 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
-import { Card } from 'primeng/card';
-import { Button } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { GeneralComponent } from '../../../../components/general.component';
-import { MedicoResidente } from '@models/datosMedico';
-import { CommonModule } from '@angular/common';
+import {Component, inject} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {Card} from 'primeng/card';
+import {Button} from 'primeng/button';
+import {InputTextModule} from 'primeng/inputtext';
+import {GeneralComponent} from '../../../../components/general.component';
+import {MedicoResidente} from '@models/datosMedico';
+import {CommonModule} from '@angular/common';
+
 @Component({
   selector: 'app-residente',
   imports: [
@@ -21,7 +22,7 @@ import { CommonModule } from '@angular/common';
 export class ResidenteComponent extends GeneralComponent {
   fb = inject(FormBuilder)
   form!: FormGroup;
-  
+
 medico!: MedicoResidente;
 
   ngOnInit(): void {
@@ -45,7 +46,7 @@ medico!: MedicoResidente;
       apellidoM: ['', [Validators.required]],
       curp: ['', Validators.compose([
         Validators.required,
-      
+
       ])],
       rfc: ['', [Validators.required]],
       correo: ['', [Validators.required]],

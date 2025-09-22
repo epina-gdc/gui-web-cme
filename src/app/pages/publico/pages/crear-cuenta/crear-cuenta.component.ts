@@ -1,11 +1,11 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
-import { Card } from 'primeng/card';
-import { Button } from 'primeng/button';
-import { Select } from 'primeng/select';
-import {RadioButton, RadioButtonModule} from 'primeng/radiobutton';
-import { GeneralComponent } from '../../../../components/general.component';
-import { CommonModule } from '@angular/common';
+import {Component, inject, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {Card} from 'primeng/card';
+import {Button} from 'primeng/button';
+import {Select} from 'primeng/select';
+import {RadioButton} from 'primeng/radiobutton';
+import {GeneralComponent} from '../../../../components/general.component';
+import {CommonModule} from '@angular/common';
 
 
 @Component({

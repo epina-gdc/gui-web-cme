@@ -1,11 +1,11 @@
-import { Directive, HostListener } from '@angular/core';
-import { PATRON_CARACTERES_ASCII } from '@utils/regex';
+import {Directive, HostListener} from '@angular/core';
+import {PATRON_CARACTERES_ASCII} from '@utils/regex';
 
 @Directive({
   selector: '[appBloquearCaracterPassword]'
 })
 export class BloquearCaracterPasswordDirective {
-  
+
 
   constructor() { }
 

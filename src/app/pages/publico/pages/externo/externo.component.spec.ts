@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ExternoComponent } from './externo.component';
+import {ExternoComponent} from './externo.component';
 
 describe('ExternoComponent', () => {
   let component: ExternoComponent;
