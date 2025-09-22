@@ -44,5 +44,10 @@
     background: transparent;
   }
 
+  .grid-datos-empleo {
+    grid-template-columns: repeat(2, 1fr) repeat(3, 2fr);
+    gap: 2.5rem;
+  }
+
 
 }

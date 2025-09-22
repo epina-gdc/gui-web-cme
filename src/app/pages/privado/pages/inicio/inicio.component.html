@@ -420,14 +420,34 @@
     </p-card>
 
     <p-card class="mx-2 empty-border" [header]="'Datos de empleo'">
-      <article class="grid">
-        <div class="col">
+      <article class="grid grid-datos-empleo">
+        <div>
           <p class="field-label">¿Tienes otro empleo?</p>
+          <div class="flex flex-wrap gap-2">
+            @for (opcion of opciones_boolean; track opcion.key) {
+              <div class="flex align-items-center gap-1">
+                <p-radiobutton class="radio-button-square" [inputId]="opcion.key" [value]="opcion"
+                               [(ngModel)]="empleo">
+                </p-radiobutton>
+                <label [for]="opcion.key" class="field-label mt-4">{{ opcion.name }}</label>
+              </div>
+            }
+          </div>
         </div>
-        <div class="col">
-          <p class="field-label">¿Eres médico sustituto?</p>
+        <div>
+          <p class="field-label">¿Eres sustituto 08 IMSS?</p>
+          <div class="flex flex-wrap gap-2">
+            @for (opcion of opciones_boolean; track opcion.key) {
+              <div class="flex align-items-center gap-1">
+                <p-radiobutton class="radio-button-square" [inputId]="opcion.key" [value]="opcion"
+                 [(ngModel)]="sustituto">
+                </p-radiobutton>
+                <label [for]="opcion.key" class="field-label mt-4">{{ opcion.name }}</label>
+              </div>
+            }
+          </div>
         </div>
-        <div class="col-2">
+        <div>
           <div class="flex justify-content-between">
             <p class="field-label">Jornada laboral</p>
           </div>
@@ -446,7 +466,7 @@
             </p-datepicker>
           </div>
         </div>
-        <div class="col-2">
+        <div>
           <div class="flex justify-content-between">
             <p class="field-label">Horario laboral</p>
           </div>
@@ -457,7 +477,9 @@
                           [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"/>
           </div>
         </div>
-        <div class="col-2"></div>
+        <div>
+          <p></p>
+        </div>
       </article>
     </p-card>
   }

@@ -5,14 +5,14 @@ import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regr
 import {StepsComponent} from '../../../../components/steps/steps.component';
 import {UploadPhotoComponent} from '../../../../components/upload-photo/upload-photo.component';
 import {InputText} from 'primeng/inputtext';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Select} from 'primeng/select';
 import {DatePickerModule} from 'primeng/datepicker';
 import {Button} from 'primeng/button';
 import {TableModule} from 'primeng/table';
 import {UploadDocumentComponent} from '../../../../components/upload-document/upload-document.component';
 import {RadioButton} from 'primeng/radiobutton';
-import {DEPENDENTIES} from '@utils/constants';
+import {BOOLEAN_OPCIONES, DEPENDENTIES} from '@utils/constants';
 import {TabPanel, TabView} from 'primeng/tabview';
 import {HeaderTabComponent} from '../../../../components/header-tab/header-tab.component';
 
@@ -34,7 +34,8 @@ import {HeaderTabComponent} from '../../../../components/header-tab/header-tab.c
     RadioButton,
     TabPanel,
     TabView,
-    HeaderTabComponent
+    HeaderTabComponent,
+    FormsModule
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
@@ -42,6 +43,7 @@ import {HeaderTabComponent} from '../../../../components/header-tab/header-tab.c
 export class InicioComponent {
 
   readonly dependientes = DEPENDENTIES;
+  readonly opciones_boolean = BOOLEAN_OPCIONES;
 
   fb = inject(FormBuilder)
   formRegistro!: FormGroup;
@@ -54,6 +56,9 @@ export class InicioComponent {
     {label: 'Documentación', active: false},
     {label: 'Oferta laboral', active: false},
   ];
+
+  sustituto!: any;
+  empleo!: any;
 
   dummies = [{label: 'Dummie', value: 'Dummie'}]
 
