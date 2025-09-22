@@ -395,6 +395,45 @@
     </p-card>
 
     <p-card class="mx-2 empty-border" [header]="'Datos de empleo'">
+      <article class="grid">
+        <div class="col">
+          <p class="field-label">¿Tienes otro empleo?</p>
+        </div>
+        <div class="col">
+          <p class="field-label">¿Eres médico sustituto?</p>
+        </div>
+        <div class="col-2">
+          <div class="flex justify-content-between">
+            <p class="field-label">Jornada laboral</p>
+          </div>
+          <div class="flex gap-2">
+            <p-datepicker [style]="{ 'width': '100%' }" placeholder="De" [iconDisplay]="'input'"
+                          [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay">
+              <ng-template #inputicon let-clickCallBack="clickCallBack">
+                <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
+              </ng-template>
+            </p-datepicker>
+            <p-datepicker [style]="{ 'width': '100%' }" placeholder="Hasta" [iconDisplay]="'input'"
+                          [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay">
+              <ng-template #inputicon let-clickCallBack="clickCallBack">
+                <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
+              </ng-template>
+            </p-datepicker>
+          </div>
+        </div>
+        <div class="col-2">
+          <div class="flex justify-content-between">
+            <p class="field-label">Horario laboral</p>
+          </div>
+          <div class="flex gap-2">
+            <p-datepicker [style]="{ 'width': '100%' }" placeholder="De" [iconDisplay]="'input'"
+                          [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"/>
+            <p-datepicker [style]="{ 'width': '100%' }" placeholder="Hasta" [iconDisplay]="'input'"
+                          [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"/>
+          </div>
+        </div>
+        <div class="col-2"></div>
+      </article>
     </p-card>
   }
 }
