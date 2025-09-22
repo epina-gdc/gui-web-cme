@@ -348,34 +348,16 @@
         </div>
       </article>
       <article class="flex flex-row flex-wrap">
-        <p-tabView class="vertical-tabview">
+        <p-tabView class="vertical-tabview" [activeIndex]="0">
           <p-tabPanel>
             <ng-template pTemplate="header">
-              <div
-                class="card border-round flex flex-row w-tab py-3 justify-content-between border-tab align-items-center gap-3">
-                <div class="flex gap-2 ml-3 align-items-center">
-                  <i class="cme-file" style="font-size: 2rem"></i>
-                  <p class="titulo-tab">Pediatría</p>
-                </div>
-                <div class="documento-tab">
-                  <p class="titulo-tab">1 Doc.</p>
-                </div>
-              </div>
+              <header-tab [title]="'Pediatria'" [numDocs]="1" class="header-tab"/>
             </ng-template>
             Algo de contenido
           </p-tabPanel>
           <p-tabPanel>
             <ng-template pTemplate="header">
-              <div
-                class="card border-round flex flex-row w-tab py-3 justify-content-between border-tab align-items-center gap-3">
-                <div class="flex gap-2 ml-3 align-items-center">
-                  <i class="cme-file" style="font-size: 2rem"></i>
-                  <p class="titulo-tab">Cardiología</p>
-                </div>
-                <div class="documento-tab">
-                  <p class="titulo-tab">1 Doc.</p>
-                </div>
-              </div>
+              <header-tab [title]="'Cardiología'" [numDocs]="3"/>
             </ng-template>
           </p-tabPanel>
         </p-tabView>

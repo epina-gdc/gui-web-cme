@@ -1,27 +1,24 @@
 @layer app-components {
 
-  /* Ensure styles are global or use a more specific selector */
   .vertical-tabview {
-    display: flex; /* Make the container a flexbox */
-    flex-direction: row; /* Arrange children (tabs and content) horizontally */
+    display: flex;
+    flex-direction: row;
 
-    /* Style the tab navigation */
     .p-tabview-nav {
-      flex-direction: column; /* Stack the tab headers vertically */
-      border-right: 1px solid #dee2e6; /* Add a separator line */
-      width: 150px; /* Adjust width as needed */
+      flex-direction: column;
+      border-right: 1px solid #dee2e6;
+      width: 150px;
 
       .p-tabview-nav-link {
         border-bottom-right-radius: 0;
         border-top-right-radius: 0;
-        margin-right: -1px; /* Remove the gap between tab and content border */
+        margin-right: -1px;
       }
     }
 
 
-    /* Style the tab content panels */
     .p-tabview-panels {
-      flex-grow: 1; /* Allow content to take up the remaining space */
+      flex-grow: 1;
     }
 
     .p-tabs {
@@ -42,42 +39,10 @@
     border: none;
   }
 
-  .border-tab  {
-    border-right: 4px solid rgba(193, 198, 207, 0.50);;
+  :host ::ng-deep .p-tablist-active-bar {
+    border: none;
+    background: transparent;
   }
 
-  .titulo-tab {
-    color: #95969C;
-    font-feature-settings: 'liga' off, 'clig' off;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 120%; /* 16.8px */
-  }
-
-  .w-tab {
-    width: 290px;
-  }
-
-  .documento-tab {
-    display: flex;
-    width: 60px;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    gap: 4px;
-  }
-
-  :host ::ng-deep .p-tab-active > .border-tab  {
-    border-right: 4px solid #0dcaf0;
-  }
-
-  :host ::ng-deep .p-tab-active .border-tab .titulo-tab {
-    color: #0dcaf0;
-  }
-
-  :host ::ng-deep .p-tab-active .border-tab i {
-    color: #0dcaf0;
-  }
 
 }

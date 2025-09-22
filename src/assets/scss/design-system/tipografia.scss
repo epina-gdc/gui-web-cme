@@ -18,7 +18,7 @@
   line-height: 40px; /* 125% */
 }
 
-.login-card-titulo{
+.login-card-titulo {
   color: var(--gob-mx-gris-tono1);
   font-feature-settings: 'liga' off, 'clig' off;
   font-size: 20px;
@@ -27,7 +27,7 @@
   line-height: 120%; /* 24px */
 }
 
-.field-label{
+.field-label {
   color: #404041;
   font-feature-settings: 'liga' off, 'clig' off;
   font-size: 12px;
@@ -36,7 +36,7 @@
   line-height: 100%; /* 12px */
 }
 
-.login-hipervinculo{
+.login-hipervinculo {
   color: #404041;
   text-align: right;
   font-feature-settings: 'liga' off, 'clig' off;
@@ -169,4 +169,35 @@
   font-style: normal;
   font-weight: 500;
   line-height: 100%; /* 12px */
+}
+
+.titulo-tab {
+  color: #95969C;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%; /* 16.8px */
+}
+
+.p-tab-active .titulo-tab {
+  color: #5383EB;
+}
+
+.doc-tab {
+  color: #95969C;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%; /* 16.8px */
+}
+
+.documento-tab {
+  display: flex;
+  width: 60px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 4px;
 }

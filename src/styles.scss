@@ -94,4 +94,32 @@
     margin: 0;
   }
 
+
+  .border-tab {
+    border-right: 4px solid rgba(193, 198, 207, 0.50);
+  }
+
+  .p-tab-active .border-tab {
+    background: rgba(112, 153, 230, 0.1);
+  }
+
+  .p-tab-active .border-tab {
+    border-right: 5px solid #5383EB;
+  }
+
+  .border-tab i {
+    background: rgba(193, 198, 207, 0.1);
+  }
+
+  .w-tab {
+    width: 290px;
+  }
+
+
+
+  .p-tab-active .border-tab i {
+    color: #455B88;
+    background: rgba(112, 153, 230, 0.1);
+  }
+
 }

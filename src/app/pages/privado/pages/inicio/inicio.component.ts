@@ -14,6 +14,7 @@ import {UploadDocumentComponent} from '../../../../components/upload-document/up
 import {RadioButton} from 'primeng/radiobutton';
 import {DEPENDENTIES} from '@utils/constants';
 import {TabPanel, TabView} from 'primeng/tabview';
+import {HeaderTabComponent} from '../../../../components/header-tab/header-tab.component';
 
 @Component({
   selector: 'app-inicio',
@@ -32,7 +33,8 @@ import {TabPanel, TabView} from 'primeng/tabview';
     UploadDocumentComponent,
     RadioButton,
     TabPanel,
-    TabView
+    TabView,
+    HeaderTabComponent
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
