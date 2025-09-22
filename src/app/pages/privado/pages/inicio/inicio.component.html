@@ -94,7 +94,8 @@
               <div class="flex justify-content-between flex-wrap gap-2">
                 @for (dependiente of dependientes; track dependiente.key) {
                   <div class="flex align-items-center gap-1">
-                    <p-radiobutton class="radio-button-square" [inputId]="dependiente.key" [value]="dependiente" formControlName="dependientes">
+                    <p-radiobutton class="radio-button-square" [inputId]="dependiente.key" [value]="dependiente"
+                                   formControlName="dependientes">
                     </p-radiobutton>
                     <label [for]="dependiente.key" class="field-label mt-4">{{ dependiente.name }}</label>
                   </div>
@@ -320,7 +321,7 @@
       </div>
       <article class="flex flex-row flex-wrap">
         <div class="col-3">
-          <div class="flex justify-content-between">
+          <div class="flex justify-content-between mb-1">
             <p class="field-label">Especialidad</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
@@ -328,7 +329,7 @@
                     placeholder="Selecciona opción" class="w-full"/>
         </div>
         <div class="col-3">
-          <div class="flex justify-content-between">
+          <div class="flex justify-content-between mb-1">
             <p class="field-label">Documentos obligatorios</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
@@ -345,6 +346,39 @@
         <div class="col-3 flex justify-content-start align-items-center">
           <p-button label="Agregar" icon="cme-plus" iconPos="right" [text]="true"/>
         </div>
+      </article>
+      <article class="flex flex-row flex-wrap">
+        <p-tabView class="vertical-tabview">
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              <div
+                class="card border-round flex flex-row w-tab py-3 justify-content-between border-tab align-items-center gap-3">
+                <div class="flex gap-2 ml-3 align-items-center">
+                  <i class="cme-file" style="font-size: 2rem"></i>
+                  <p class="titulo-tab">Pediatría</p>
+                </div>
+                <div class="documento-tab">
+                  <p class="titulo-tab">1 Doc.</p>
+                </div>
+              </div>
+            </ng-template>
+            Algo de contenido
+          </p-tabPanel>
+          <p-tabPanel>
+            <ng-template pTemplate="header">
+              <div
+                class="card border-round flex flex-row w-tab py-3 justify-content-between border-tab align-items-center gap-3">
+                <div class="flex gap-2 ml-3 align-items-center">
+                  <i class="cme-file" style="font-size: 2rem"></i>
+                  <p class="titulo-tab">Cardiología</p>
+                </div>
+                <div class="documento-tab">
+                  <p class="titulo-tab">1 Doc.</p>
+                </div>
+              </div>
+            </ng-template>
+          </p-tabPanel>
+        </p-tabView>
       </article>
     </p-card>
 

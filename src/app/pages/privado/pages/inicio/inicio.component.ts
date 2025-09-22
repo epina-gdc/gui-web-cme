@@ -13,6 +13,7 @@ import {TableModule} from 'primeng/table';
 import {UploadDocumentComponent} from '../../../../components/upload-document/upload-document.component';
 import {RadioButton} from 'primeng/radiobutton';
 import {DEPENDENTIES} from '@utils/constants';
+import {TabPanel, TabView} from 'primeng/tabview';
 
 @Component({
   selector: 'app-inicio',
@@ -29,10 +30,12 @@ import {DEPENDENTIES} from '@utils/constants';
     Button,
     TableModule,
     UploadDocumentComponent,
-    RadioButton
+    RadioButton,
+    TabPanel,
+    TabView
   ],
   templateUrl: './inicio.component.html',
-  styleUrl: './inicio.component.scss'
+  styleUrl: './inicio.component.scss',
 })
 export class InicioComponent {
 
@@ -52,7 +55,7 @@ export class InicioComponent {
 
   dummies = [{label: 'Dummie', value: 'Dummie'}]
 
-  indice: WritableSignal<number> = signal<number>(0);
+  indice: WritableSignal<number> = signal<number>(1);
 
   constructor() {
     this.formRegistro = this.asignarFormularioRegistro();
