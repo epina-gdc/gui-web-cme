@@ -3,6 +3,8 @@ export class Mensajes {
 
 public MSJ_TITULO_CONVOCATORIA:string  = "Convocatoria para médicos especialistas";
 public MSJ_SUBTITULO_CONVOCATORIA:string = "Reclutamiento IMSS 2025";
+public MSG002: string = "El correo contiene caracteres no permitidos.";
+public MSG003: string = "Correo electrónico no válido, por favor verifícalo.";
 public MSG006:string = 'Correo electrónico no valido, por favor Verifícalo';
 public MSG007:string =  "Las contraseñas no coinciden por favor verifica tu información";
 public MSG0077:string =  "Los correos no coinciden por favor verifica tu información";
