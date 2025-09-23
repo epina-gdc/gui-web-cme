@@ -1,13 +1,13 @@
-import {Component, computed, inject, OnInit, signal} from '@angular/core';
-import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from "@angular/forms";
+import {Component, inject, OnInit, signal} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Card} from 'primeng/card';
 import {Button} from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { RecuperarCuentaComponent } from '../recuperar-cuenta/recuperar-cuenta.component';
-import { CommonModule } from '@angular/common';
-import { GeneralComponent } from '../../../../components/general.component';
-import { passwordValidator } from '@validators/password-validator';
-import { BloquearCaracterPasswordDirective } from '@directives/bloquear-caracter-password.directive';
+import {InputTextModule} from 'primeng/inputtext';
+import {RecuperarCuentaComponent} from '../recuperar-cuenta/recuperar-cuenta.component';
+import {CommonModule} from '@angular/common';
+import {GeneralComponent} from '../../../../components/general.component';
+import {passwordValidator} from '@validators/password-validator';
+import {BloquearCaracterPasswordDirective} from '@directives/bloquear-caracter-password.directive';
 
 
 @Component({
@@ -35,7 +35,7 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit{
 
   ngOnInit(): void {
     this.formLogin = this.inicializarFormLogin();
-    
+
   }
 
   inicializarFormLogin() : FormGroup{

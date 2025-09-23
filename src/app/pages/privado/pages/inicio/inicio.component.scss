@@ -1,0 +1,54 @@
+@layer app-components {
+
+  .vertical-tabview {
+    display: flex;
+    flex-direction: row;
+
+    .p-tabview-nav {
+      flex-direction: column;
+      border-right: 1px solid #dee2e6;
+      width: 150px;
+
+      .p-tabview-nav-link {
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+        margin-right: -1px;
+      }
+    }
+
+
+    .p-tabview-panels {
+      flex-grow: 1;
+    }
+
+    .p-tabs {
+      flex-direction: row !important;
+    }
+
+    .p-tab-active {
+      border-bottom: none;
+      border-left: 10px;
+    }
+  }
+
+  :host ::ng-deep .p-tablist-tab-list {
+    flex-direction: column !important;
+  }
+
+  :host ::ng-deep .p-tab {
+    border: none;
+  }
+
+  :host ::ng-deep .p-tablist-active-bar {
+    border: none;
+    background: transparent;
+  }
+
+  .grid-datos-empleo {
+    display: grid;
+    grid-template-columns: repeat(2, 12.5%) repeat(3, 25%);
+    gap: 1.5rem;
+  }
+
+
+}

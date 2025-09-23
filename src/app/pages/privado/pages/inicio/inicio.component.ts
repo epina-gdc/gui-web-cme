@@ -5,11 +5,16 @@ import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regr
 import {StepsComponent} from '../../../../components/steps/steps.component';
 import {UploadPhotoComponent} from '../../../../components/upload-photo/upload-photo.component';
 import {InputText} from 'primeng/inputtext';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {Select} from 'primeng/select';
 import {DatePickerModule} from 'primeng/datepicker';
 import {Button} from 'primeng/button';
 import {TableModule} from 'primeng/table';
+import {UploadDocumentComponent} from '../../../../components/upload-document/upload-document.component';
+import {RadioButton} from 'primeng/radiobutton';
+import {BOOLEAN_OPCIONES, DEPENDENTIES} from '@utils/constants';
+import {TabPanel, TabView} from 'primeng/tabview';
+import {HeaderTabComponent} from '../../../../components/header-tab/header-tab.component';
 
 @Component({
   selector: 'app-inicio',
@@ -24,12 +29,21 @@ import {TableModule} from 'primeng/table';
     Select,
     DatePickerModule,
     Button,
-    TableModule
+    TableModule,
+    UploadDocumentComponent,
+    RadioButton,
+    TabPanel,
+    TabView,
+    HeaderTabComponent,
+    FormsModule
   ],
   templateUrl: './inicio.component.html',
-  styleUrl: './inicio.component.scss'
+  styleUrl: './inicio.component.scss',
 })
 export class InicioComponent {
+
+  readonly dependientes = DEPENDENTIES;
+  readonly opciones_boolean = BOOLEAN_OPCIONES;
 
   fb = inject(FormBuilder)
   formRegistro!: FormGroup;
@@ -43,9 +57,12 @@ export class InicioComponent {
     {label: 'Oferta laboral', active: false},
   ];
 
+  sustituto!: any;
+  empleo!: any;
+
   dummies = [{label: 'Dummie', value: 'Dummie'}]
 
-  indice: WritableSignal<number> = signal<number>(0);
+  indice: WritableSignal<number> = signal<number>(1);
 
   constructor() {
     this.formRegistro = this.asignarFormularioRegistro();
@@ -83,5 +100,13 @@ export class InicioComponent {
       ooad: [],
       zonaInteres: []
     })
+  }
+
+  siguientePasoStepper(): void {
+    this.indice.update(value => value + 1);
+  }
+
+  anteriorPasoStepper(): void {
+    this.indice.update(value => value - 1);
   }
 }
