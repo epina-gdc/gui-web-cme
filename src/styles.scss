@@ -96,7 +96,7 @@
 
 
   .border-tab {
-    border-right: 4px solid rgba(193, 198, 207, 0.50);
+    border-right: 8px solid rgba(193, 198, 207, 0.50);
   }
 
   .p-tab-active .border-tab {
@@ -104,7 +104,7 @@
   }
 
   .p-tab-active .border-tab {
-    border-right: 5px solid #5383EB;
+    border-right: 8px solid #5383EB;
   }
 
   .border-tab i {
@@ -121,7 +121,7 @@
   }
 
   .p-card-title {
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid rgba(193, 198, 207, 0.50);
   }
 
   :host ::ng-deep .p-card-body .p-card-title {
