@@ -1,0 +1,215 @@
+<main class="flex  login-background">
+    <aside class="col-6 flex flex-column justify-content-center align-items-center p-6">
+        <h1 class="login-titulo">{{_Mensajes.MSJ_TITULO_CONVOCATORIA}}</h1>
+        <h2 class="login-subtitulo">{{_Mensajes.MSJ_SUBTITULO_CONVOCATORIA}}</h2>
+    </aside>
+    <section class="col-6  flex justify-content-center align-items-center vertical-align:middle align-items:center">
+
+
+
+        <p-card class="top-rounded-card" [style]="{ width: '45rem', overflow: 'hidden'  }">
+            <form [formGroup]="form" (ngSubmit)="btnCrearCuenta()">
+
+                <div class="flex col-12 px-3">
+                    <div class="px-3 col-4 justify-content-start align-items-center vertical-align:middle "
+                        (click)="btnAnterior()">
+                        <div class="icon-cme-file">Regresar</div>
+                    </div>
+                    <div class="col-8 px-3">
+                        <h2 class="login-card-titulo">{{strTitulo}}</h2>
+                    </div>
+                </div>
+                <div class="px-0">
+                    <hr class=" border-1 opacity-10">
+                </div>
+                @if(medico.modalidad == 1){
+                <div class=" mt-4 row flex">
+                    <div class="field col-9">
+                        <label class="field-label" for="matricula">Matrícula</label>
+                        <input pInputText class="w-full" type="text" id="matricula" placeholder="Ingresa matrícula"
+                            maxlength="10" autocomplete="off" formControlName="matricula"
+                            (keyup)="desbloquearValidarMatricula()" />
+                    </div>
+
+                    <div class="field col-3 flex justify-content-end vertical-align:middle">
+                        <p-button label="Validar" [disabled]="blnBtnValidar" (click)="btnValidarMatricula()" />
+                    </div>
+                </div>
+                <div class=" mt-4 row flex">
+
+                    <div class="field col-12">
+                        <label class="field-label" for="nombre">Nombres(s)</label>
+                        <input pInputText class="w-full" type="text" id="nombre" placeholder="Ingresa nombre"
+                            autocomplete="off" formControlName="nombre" maxlength="150" />
+                    </div>
+
+
+                </div>
+                }
+                @if(medico.modalidad == 2){
+                <div class=" mt-4 row flex">
+                    <div class="field col-12">
+                        <label class="field-label" for="modalidad">Modalidad del médico</label>
+                        <p-select id="modalidad" formControlName="modalidad" [options]="lstModalidad"
+                            optionLabel="descripcion" optionValue="id" placeholder="Selecciona una modalidad"
+                            class="w-full" (ngModelChange)="cambiaModalidad()">
+                        </p-select>
+                    </div>
+                </div>
+                }
+                @if(!medico.blnPasaporte && medico.modalidad == 2){
+                <div class=" mt-4 row flex">
+                    <div class="field col-9">
+                        <label class="field-label" for="curp">CURP</label>
+                        <input pInputText class="w-full" type="text" id="curp" placeholder="Ingresa CURP" maxlength="18"
+                            autocomplete="off" formControlName="curp" (keyup)="desbloquearValidar(); mayusculas(1);" />
+                    </div>
+
+                    <div class="field col-3 flex justify-content-end vertical-align:middle">
+                        <p-button label="Validar" [disabled]="blnBtnValidar" (click)="btnValidar()" />
+                    </div>
+
+                </div>
+
+                <div class=" mt-4 row flex">
+
+                    <div class="field col-6">
+                        <label class="field-label" for="rfc">RFC</label>
+                        <input pInputText class="w-full" type="text" id="rfc" placeholder="Ingresa RFC"
+                            autocomplete="off" formControlName="rfc" maxlength="13" (keyup)="mayusculas(2);" />
+                    </div>
+                    <div class="field col-6">
+
+                        <label class="field-label" for="nombre">Nombres(s)</label>
+                        <input #input pInputText class="w-full" type="text" id="nombre" placeholder="Ingresa nombre(s)"
+                            autocomplete="off" formControlName="nombre" />
+
+
+                    </div>
+
+                </div>
+
+                } @else if (medico.blnPasaporte && medico.modalidad == 2) {
+
+                <div class=" mt-4 row flex">
+
+                    <div class="field col-6">
+                        <label class="field-label" for="pasaporte">Pasaporte</label>
+                        <input pInputText class="w-full" type="text" id="pasaporte" placeholder="Ingresa pasaporte"
+                            autocomplete="off" formControlName="pasaporte" maxlength="13" />
+                    </div>
+                    <div class="field col-6">
+
+                        <label class="field-label" for="pais">País</label>
+                        <input #input pInputText class="w-full" type="text" id="pais" placeholder="Ingresa país"
+                            autocomplete="off" formControlName="pais" />
+
+
+                    </div>
+
+                </div>
+                <div class=" mt-4 row flex">
+
+                    <div class="field col-12">
+                        <label class="field-label" for="nombre">Nombres(s)</label>
+                        <input pInputText class="w-full" type="text" id="nombre" placeholder="Ingresa nombre"
+                            autocomplete="off" formControlName="nombre" maxlength="150" />
+                    </div>
+
+
+                </div>
+                }
+
+
+                <div class=" mt-4 row flex">
+                    <div class="field col-6">
+                        <label class="field-label" for="apellidoP">Primer apellido</label>
+                        <input pInputText class="w-full" type="text" id="apellidoP" autocomplete="off"
+                            placeholder="Ingresa primer apellido" formControlName="apellidoP" />
+                    </div>
+                    <div class="field col-6">
+                        <label class="field-label" for="apellidoM">Segundo apellido</label>
+                        <input pInputText class="w-full" type="text" id="apellidoM" autocomplete="off"
+                            placeholder="Ingresa segundo apellido" formControlName="apellidoM" />
+                    </div>
+
+                </div>
+                @if(medico.blnPasaporte || medico.modalidad == 1){
+                <div class=" mt-4 row flex">
+                    <div class="field col-6">
+
+                        <label class="field-label" for="curp">CURP</label>
+                        <input #input pInputText class="w-full" type="text" id="curp" placeholder="Ingresa CURP"
+                            autocomplete="off" formControlName="curp" maxlength="18" (keyup)="mayusculas(1);" />
+
+
+                    </div>
+
+
+                    <div class="field col-6">
+                        <label class="field-label" for="rfc">RFC</label>
+                        <input pInputText class="w-full" type="text" id="rfc" placeholder="Ingresa RFC"
+                            autocomplete="off" formControlName="rfc" maxlength="13" (keyup)="mayusculas(2);" />
+                    </div>
+
+                </div>
+
+                }
+
+
+                <div class=" mt-4 row flex">
+                    <div class="field col-6">
+                        <label class="field-label" for="correo">Correo electrónico</label>
+                        <input pInputText class="w-full" type="text" id="correo"
+                            placeholder="Ingresa correo electrónico" formControlName="correo" autocomplete="off"
+                            (change)="validarCorreo()"  (change)="compararCorreos()" (keyup)="minusculas(1);" />
+                    </div>
+                    <div class="field col-6">
+                        <label class="field-label" for="correoc">Confirmar correo electrónico</label>
+                        <input pInputText class="w-full" type="text" id="correoc" autocomplete="off"
+                            placeholder="Confirmar correo electrónico" formControlName="correoc"
+                            (keyup)="minusculas(2);" (change)="compararCorreos()"/>
+                    </div>
+
+                </div>
+
+                <div class=" mt-4 row flex">
+                    <div class="form-icon col-6">
+                      <label class="field-label" for="pass">Contraseña</label>
+                      <input pInputText class="w-full" type="password" id="pass" placeholder="Ingresa contraseña"
+                      autocomplete="off"   formControlName="pass" minlength="8" maxlength="12"
+                      (change)="compararPassword()" />
+                        <!-- <i [ngClass]="{'pi-eye': input.type==='password', 'pi-eye-slash':  input.type ==='text'}" 
+                        class="cursor-pointer icon pi"
+                        (click)="input.type = input.type==='password'?'text':'password'"></i> -->
+                    </div>
+                    <div class="form-icon col-6">
+                      <label class="field-label" for="passc">Confirmar contraseña</label>
+                      <input pInputText class="w-full" type="password" id="passc" placeholder="Confirmar contraseña"
+                      autocomplete="off"   formControlName="passc"  minlength="8" maxlength="12" 
+                      (change)="compararPassword()" />
+                       <!--  <i [ngClass]="{'pi-eye': input.type==='password', 'pi-eye-slash':  input.type ==='text'}" 
+                        class="cursor-pointer icon pi"
+                        (click)="input.type = input.type==='password'?'text':'password'"></i> -->
+                    </div>
+          
+                  </div>
+ 
+                <div class=" mt-4   flex justify-content-end">
+
+                    <p-button label="Crear Cuenta" type="submit" [disabled]="!form.valid" />
+
+
+                </div>
+            </form>
+
+
+        </p-card>
+
+
+
+
+    </section>
+
+
+</main>

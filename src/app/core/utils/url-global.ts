@@ -1,6 +1,6 @@
 export const NAV = {
-    crearCuenta: 'crear-cuenta',
-    formMedicoResidente: 'medico-residente',
-    formMedicoExterno: 'medico-externo',
+  crearCuenta: 'crear-cuenta',
+    
+  registroMedico: 'registro-medico',
  
   };

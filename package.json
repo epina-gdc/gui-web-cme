@@ -18,6 +18,7 @@
     "@angular/platform-browser": "^19.2.0",
     "@angular/platform-browser-dynamic": "^19.2.0",
     "@angular/router": "^19.2.0",
+    "@ng-bootstrap/ng-bootstrap": "^17.0.0",
     "@primeng/themes": "^19.1.4",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
