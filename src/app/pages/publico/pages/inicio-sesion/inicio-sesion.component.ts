@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 import { GeneralComponent } from '../../../../components/general.component';
 import { passwordValidator } from '@validators/password-validator';
 import { BloquearCaracterPasswordDirective } from '@directives/bloquear-caracter-password.directive';
-
+import { PATRON_EMAIL } from '@utils/regex';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -32,6 +32,8 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit{
   vista = signal('login');
   ingresoPass: boolean = false;
 
+  caracteresProhibidos = new Set([' ', '"', '(', ')', '[', ']', '{', '}', '!', '#', '&', '/', ',', ';', ':', '<', '>']);
+
 
   ngOnInit(): void {
     this.formLogin = this.inicializarFormLogin();
@@ -49,6 +51,18 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit{
     console.log("");
   }
 
+  validarCaracterCorreo(event: KeyboardEvent){
+    if(this.caracteresProhibidos.has(event.key)){
+      this._alertServices.alerta(this._Mensajes.MSG002);
+      event.preventDefault();
+    }
+  }
+
+  validarEstructuraCorreo(event: any){
+    if(!PATRON_EMAIL.test(event.target.value)){
+      this._alertServices.alerta(this._Mensajes.MSG003);
+    }
+  }
 
   get f(){
     return this.formLogin.controls;

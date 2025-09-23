@@ -19,6 +19,8 @@
                 <label class="field-label" for="correoElectronico">Correo electrónico</label>
                 <input
                 autocomplete="false"
+                  (keypress)="validarCaracterCorreo($event)"
+                  (change)="validarEstructuraCorreo($event)"
                   pInputText
                   class="w-full"
                   type="email"
