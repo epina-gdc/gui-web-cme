@@ -221,14 +221,14 @@
                 <label class="field-label" for="ooad">OOAD</label>
               </div>
               <p-select [options]="dummies" formControlName="ooad" optionLabel="label"
-                        placeholder="Seleccionar opción" class="w-full"/>
+                        placeholder="Seleccionar opción" class="w-full" optionValue="value"/>
             </div>
             <div class="col-3">
               <div class="flex justify-content-between">
                 <label class="field-label" for="zonaInteres">Zona de interés</label>
               </div>
               <p-select [options]="dummies" formControlName="zonaInteres" optionLabel="label"
-                        placeholder="Seleccionar opción" class="w-full"/>
+                        placeholder="Seleccionar opción" class="w-full"  optionValue="value"/>
             </div>
             <div class="col-3 flex justify-content-start align-items-end">
               <p-button label="Agregar" icon="cme-plus" iconPos="right" [text]="true" [disabled]="formZonaInteres.invalid"
