@@ -14,8 +14,6 @@
     border-radius: 8px;
   }
 
-
-
   .p-button-outlined:not(:disabled) {
     border-color: #08865C;
     color: #08865C;
@@ -34,4 +32,28 @@
     border-radius: 50%;
     color: var(--gob-mx-base-blanco);
   }
+
+  .p-button-outlined.p-button-danger {
+    border-color: var(--p-button-outlined-danger-border-color);
+    color: var(--p-button-outlined-danger-color);
+  }
+
+  .p-button-text.p-button-danger {
+    background: transparent;
+    border-color: transparent;
+    color: var(--p-button-text-danger-color);
+  }
+
+  .p-button-outlined.p-button-danger:not(:disabled):hover {
+    background: var(--p-button-outlined-danger-hover-background);
+    border-color: var(--p-button-outlined-danger-border-color);
+    color: var(--p-button-outlined-danger-color);
+  }
+
+  .p-button-outlined.p-button-danger {
+    border-color: var(--p-button-outlined-danger-border-color);
+    color: var(--p-button-outlined-danger-color);
+    border-radius: 50%;
+  }
+
 }
