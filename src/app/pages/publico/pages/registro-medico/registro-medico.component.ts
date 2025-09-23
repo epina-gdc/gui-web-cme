@@ -11,6 +11,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
 import { CatalogoGeneral } from '@models/catalogoGeneral';
 import { RegistroMedico } from '@models/datosMedico';
+import { BtnRegresarComponent } from '../../../../components/btn-regresar/btn-regresar.component';
 @Component({
   selector: 'app-registro-medico',
   imports: [
@@ -19,7 +20,8 @@ import { RegistroMedico } from '@models/datosMedico';
     Select,
     InputTextModule,
     ReactiveFormsModule,
-    CommonModule
+    CommonModule,
+    BtnRegresarComponent,
   ],
   templateUrl: './registro-medico.component.html',
   styleUrl: './registro-medico.component.scss'
@@ -30,7 +32,9 @@ export class RegistroMedicoComponent extends GeneralComponent {
   strTitulo!: string;
   medico!: RegistroMedico;
   lstModalidad!: Array<CatalogoGeneral>;
+  ruta: string='';
   ngOnInit(): void {
+    this.ruta = this._nav.publico+ this._nav.crearCuenta;
     this.blnPassIguales = false;
     this.blnCorreosIguales = false;
     this.lstModalidad = this.getCatalogoModalidad();
@@ -57,6 +61,14 @@ export class RegistroMedicoComponent extends GeneralComponent {
     this.medico.curp = '';
 
     this.form.controls['modalidad'].setValue(this.medico.modalidad);
+  }
+
+  
+   ngOnDestroy() {
+
+
+    this.removeSession('registroMedico');
+   
   }
 
   public desbloquearValidarMatricula() {
