@@ -107,7 +107,6 @@ export class InicioComponent {
   agregarZonaInteres(): void {
     const nuevaZona = this.crearRegistroZonaInteres();
     this.zonasInteres.update(value => [...value, nuevaZona]);
-    console.log(this.zonasInteres())
   }
 
   crearRegistroZonaInteres() {
