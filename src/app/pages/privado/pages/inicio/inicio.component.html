@@ -245,12 +245,12 @@
               <th scope="col">Acciones</th>
             </tr>
           </ng-template>
-          <ng-template #body let-zona>
+          <ng-template #body let-zona let-rowIndex="rowIndex">
             <tr>
               <td>{{ zona.ooad }}</td>
               <td>{{ zona.zonaInteres }}</td>
               <td>
-                <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.0rem'}" />
+                <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.0rem'}"  (click)="(eliminarZonaInteres(rowIndex))" />
               </td>
             </tr>
           </ng-template>

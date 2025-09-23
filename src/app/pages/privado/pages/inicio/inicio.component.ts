@@ -62,7 +62,7 @@ export class InicioComponent {
   sustituto!: any;
   empleo!: any;
 
-  dummies = [{label: 'Dummie', value: 'Dummie'}]
+  dummies = [{label: 'Dummie', value: 'Dummie'}, {label: 'Dummie 2', value: 'Dummie 2'}]
 
   indice: WritableSignal<number> = signal<number>(0);
 
@@ -107,10 +107,17 @@ export class InicioComponent {
   agregarZonaInteres(): void {
     const nuevaZona = this.crearRegistroZonaInteres();
     this.zonasInteres.update(value => [...value, nuevaZona]);
+    this.formZonaInteres.reset();
   }
 
   crearRegistroZonaInteres() {
     return this.formZonaInteres.value
+  }
+
+  eliminarZonaInteres(indice: number): void {
+    const zonasActualizadas = [...this.zonasInteres().slice(0, indice),
+      ...this.zonasInteres().slice(indice + 1)];
+    this.zonasInteres.update(() => zonasActualizadas);
   }
 
   siguientePasoStepper(): void {
