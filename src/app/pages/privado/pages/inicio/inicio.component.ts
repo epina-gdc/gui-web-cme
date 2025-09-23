@@ -5,7 +5,7 @@ import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regr
 import {StepsComponent} from '../../../../components/steps/steps.component';
 import {UploadPhotoComponent} from '../../../../components/upload-photo/upload-photo.component';
 import {InputText} from 'primeng/inputtext';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Select} from 'primeng/select';
 import {DatePickerModule} from 'primeng/datepicker';
 import {Button} from 'primeng/button';
@@ -15,6 +15,9 @@ import {RadioButton} from 'primeng/radiobutton';
 import {BOOLEAN_OPCIONES, DEPENDENTIES} from '@utils/constants';
 import {TabPanel, TabView} from 'primeng/tabview';
 import {HeaderTabComponent} from '../../../../components/header-tab/header-tab.component';
+import {
+  HeaderMedicoInternoComponent
+} from '@pages/privado/shared/header-medico-interno/header-medico-interno.component';
 
 @Component({
   selector: 'app-inicio',
@@ -35,7 +38,8 @@ import {HeaderTabComponent} from '../../../../components/header-tab/header-tab.c
     TabPanel,
     TabView,
     HeaderTabComponent,
-    FormsModule
+    FormsModule,
+    HeaderMedicoInternoComponent
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
@@ -45,7 +49,7 @@ export class InicioComponent {
   readonly dependientes = DEPENDENTIES;
   readonly opciones_boolean = BOOLEAN_OPCIONES;
 
-  fb = inject(FormBuilder)
+  fb: FormBuilder = inject(FormBuilder);
   formRegistro!: FormGroup;
   formZonaInteres!: FormGroup;
 
@@ -53,7 +57,7 @@ export class InicioComponent {
 
   steps = [
     {label: 'Información Personal', active: false},
-    {label: 'Documentación', active: false},
+    {label: 'Documentos de escolaridad', active: false},
     {label: 'Oferta laboral', active: false},
   ];
 
@@ -62,7 +66,7 @@ export class InicioComponent {
 
   dummies = [{label: 'Dummie', value: 'Dummie'}]
 
-  indice: WritableSignal<number> = signal<number>(1);
+  indice: WritableSignal<number> = signal<number>(0);
 
   constructor() {
     this.formRegistro = this.asignarFormularioRegistro();
@@ -72,7 +76,7 @@ export class InicioComponent {
   asignarFormularioRegistro(): FormGroup {
     return this.fb.group({
       rfc: [],
-      nss: [],
+      nss: [{ value: '', disabled: false }, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
       fechaNacimiento: [],
       sexo: [],
       estadoCivil: [],

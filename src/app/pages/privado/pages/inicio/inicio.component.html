@@ -2,39 +2,14 @@
   <btn-regresar/>
   <h3 class="titulo-seccion">Registro de médico interno</h3>
 </div>
-
-<p-card class="mx-2 my-4 empty-border">
-  <section class="flex flex-column">
-    <article class="flex flex-row p-4">
-      <span class="flex-column">
-        <p class="m-1 label-medico">Nombre del médico</p>
-        <strong class="m-1 nombre-medico">Pablo Andres Garcia Bernal</strong>
-      </span>
-    </article>
-    <article class="flex flex-row">
-      <div class="justify-content-start flex">
-        <icon-card iconClass="cme-user" cardColor="#1a73e8" [leftBorderRound]="true"></icon-card>
-        <div class="flex flex-column justify-content-center mr-5">
-          <p class="m-2 label-campo">Matricula</p>
-          <strong class="m-2 texto-campo">XXXXXXXXX</strong>
-        </div>
-        <div class="flex flex-column justify-content-center mr-5">
-          <p class="m-2 label-campo">CURP</p>
-          <strong class="m-2 texto-campo">XXXXXXXXX</strong>
-        </div>
-        <icon-card iconClass="cme-document" cardColor="#00c853"></icon-card>
-        <div class="flex flex-column justify-content-center">
-          <p class="m-2 label-campo">Fecha de registro</p>
-          <strong class="m-2 texto-campo">XXXXXXXXX</strong>
-        </div>
-      </div>
-    </article>
-  </section>
+<p-card class="mx-2 my-4 no-padding-empty-border">
+  <header-medico-interno></header-medico-interno>
 </p-card>
 
 <p-card class="mt-2 empty-border">
   <steps [currentStepIndex]="indice()" [steps]="steps"/>
 </p-card>
+
 @switch (indice()) {
 
   @case (0) {
@@ -440,7 +415,7 @@
             @for (opcion of opciones_boolean; track opcion.key) {
               <div class="flex align-items-center gap-1">
                 <p-radiobutton class="radio-button-square" [inputId]="opcion.key" [value]="opcion"
-                 [(ngModel)]="sustituto">
+                               [(ngModel)]="sustituto">
                 </p-radiobutton>
                 <label [for]="opcion.key" class="field-label mt-4">{{ opcion.name }}</label>
               </div>
