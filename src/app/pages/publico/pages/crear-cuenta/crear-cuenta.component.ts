@@ -1,14 +1,12 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
-import { Card } from 'primeng/card';
-import { Button } from 'primeng/button';
-import { Select } from 'primeng/select';
-import { RadioButton, RadioButtonModule } from 'primeng/radiobutton';
-import { GeneralComponent } from '../../../../components/general.component';
-import { CommonModule } from '@angular/common';
-
-import { FormsModule } from '@angular/forms'; // Import FormsModule
-import { RegistroMedico } from '@models/datosMedico';
+import {Component, inject, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms"; // Import FormsModule
+import {Card} from 'primeng/card';
+import {Button} from 'primeng/button';
+import {Select} from 'primeng/select';
+import {RadioButton, RadioButtonModule} from 'primeng/radiobutton';
+import {GeneralComponent} from '../../../../components/general.component';
+import {CommonModule} from '@angular/common';
+import {RegistroMedico} from '@models/datosMedico';
 
 @Component({
   selector: 'app-crear-cuenta',

@@ -1,6 +1,5 @@
 import {Component, inject, signal, WritableSignal} from '@angular/core';
 import {Card} from 'primeng/card';
-import {IconCardComponent} from '../../../../components/icon-card/icon-card.component';
 import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regresar.component';
 import {StepsComponent} from '../../../../components/steps/steps.component';
 import {UploadPhotoComponent} from '../../../../components/upload-photo/upload-photo.component';
@@ -23,7 +22,6 @@ import {
   selector: 'app-inicio',
   imports: [
     Card,
-    IconCardComponent,
     BtnRegresarComponent,
     StepsComponent,
     UploadPhotoComponent,
@@ -53,7 +51,7 @@ export class InicioComponent {
   formRegistro!: FormGroup;
   formZonaInteres!: FormGroup;
 
-  zonasInteres: any[] = [];
+  zonasInteres: WritableSignal<any[]> = signal([]);
 
   steps = [
     {label: 'Información Personal', active: false},
@@ -76,7 +74,7 @@ export class InicioComponent {
   asignarFormularioRegistro(): FormGroup {
     return this.fb.group({
       rfc: [],
-      nss: [{ value: '', disabled: false }, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
+      nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
       fechaNacimiento: [],
       sexo: [],
       estadoCivil: [],
@@ -101,9 +99,18 @@ export class InicioComponent {
 
   asignarFormularioZonaInteres(): FormGroup {
     return this.fb.group({
-      ooad: [],
-      zonaInteres: []
+      ooad: [{value: '', disabled: false}, [Validators.required]],
+      zonaInteres: [{value: '', disabled: false}, [Validators.required]]
     })
+  }
+
+  agregarZonaInteres(): void {
+    const nuevaZona = this.crearRegistroZonaInteres();
+    this.zonasInteres.update(value => [...value, nuevaZona]);
+  }
+
+  crearRegistroZonaInteres() {
+    return this.formZonaInteres.value
   }
 
   siguientePasoStepper(): void {

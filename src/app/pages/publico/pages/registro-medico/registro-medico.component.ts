@@ -1,16 +1,17 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { Card } from 'primeng/card';
-import { GeneralComponent } from '../../../../components/general.component';
+import {Component, inject} from '@angular/core';
+import {Card} from 'primeng/card';
+import {GeneralComponent} from '../../../../components/general.component';
 
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
-import { Select } from 'primeng/select';
-import { Button } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {Select} from 'primeng/select';
+import {Button} from 'primeng/button';
+import {InputTextModule} from 'primeng/inputtext';
 
 
-import { CommonModule } from '@angular/common';
-import { CatalogoGeneral } from '@models/catalogoGeneral';
-import { RegistroMedico } from '@models/datosMedico';
+import {CommonModule} from '@angular/common';
+import {CatalogoGeneral} from '@models/catalogoGeneral';
+import {RegistroMedico} from '@models/datosMedico';
+
 @Component({
   selector: 'app-registro-medico',
   imports: [
@@ -35,7 +36,7 @@ export class RegistroMedicoComponent extends GeneralComponent {
     this.blnCorreosIguales = false;
     this.lstModalidad = this.getCatalogoModalidad();
     this.form = this.inicializarForm();
-    
+
     let x = this.getSession('registroMedico');
     if (x) {
       this.medico = x;
@@ -201,12 +202,12 @@ export class RegistroMedicoComponent extends GeneralComponent {
 
       if (this.blnCorreosIguales) {
 
-      
+
         if (this.blnPassIguales) {
 
-          
+
           this.guardarRegistro();
-    
+
 
         } else {
           this._alertServices.alerta(this._Mensajes.MSG007);
@@ -228,9 +229,9 @@ export class RegistroMedicoComponent extends GeneralComponent {
   private guardarRegistro(){
     this._router.navigate(['publico/inicio-sesion']);
     setTimeout(() => {
-      this._alertServices.exito(this._Mensajes.MSG012);  
+      this._alertServices.exito(this._Mensajes.MSG012);
     }, 500);
-    
+
   }
   blnCorreosIguales!: boolean;
   blnPassIguales!: boolean;

@@ -1,10 +1,10 @@
-import { CommonModule } from "@angular/common";
-import { Component, OnDestroy, inject } from "@angular/core";
-import { Mensajes } from "@utils/mensajes";
-import { Router } from '@angular/router';
-import { NAV } from "./../core/utils/url-global";
-import { CatalogoGeneral } from "@models/catalogoGeneral";
-import { AlertService } from "../core/alert/alert.service";
+import {CommonModule} from "@angular/common";
+import {Component, inject} from "@angular/core";
+import {Mensajes} from "@utils/mensajes";
+import {Router} from '@angular/router';
+import {NAV} from "./../core/utils/url-global";
+import {CatalogoGeneral} from "@models/catalogoGeneral";
+import {AlertService} from "../core/alert/alert.service";
 
 
 @Component({
@@ -67,7 +67,7 @@ export class GeneralComponent  {
   public removeSession(objeto: string) {
     sessionStorage.removeItem(objeto);
   }
- 
+
 
   public getCatalogoModalidad():Array<CatalogoGeneral> {
     let lstModalidad:Array<CatalogoGeneral> = [{
@@ -93,7 +93,7 @@ export class GeneralComponent  {
     return lstPerfil;
   }
 
-  
+
 
   getCatalogoDocumento() :Array<CatalogoGeneral> {
     let lstDocumentos = [

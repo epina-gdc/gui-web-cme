@@ -231,12 +231,13 @@
                         placeholder="Seleccionar opción" class="w-full"/>
             </div>
             <div class="col-3 flex justify-content-start align-items-end">
-              <p-button label="Agregar" icon="cme-plus" iconPos="right" [text]="true"/>
+              <p-button label="Agregar" icon="cme-plus" iconPos="right" [text]="true" [disabled]="formZonaInteres.invalid"
+               (click)="agregarZonaInteres()"/>
             </div>
           </article>
         </form>
 
-        <p-table [value]="zonasInteres" [tableStyle]="{ 'min-width': '50rem' }">
+        <p-table [value]="zonasInteres()" [tableStyle]="{ 'min-width': '50rem' }">
           <ng-template #header>
             <tr>
               <th scope="col">OOAD</th>
@@ -244,10 +245,10 @@
               <th scope="col">Acciones</th>
             </tr>
           </ng-template>
-          <ng-template #body let-product>
+          <ng-template #body let-zona>
             <tr>
-              <td></td>
-              <td></td>
+              <td>{{ zona.ooad }}</td>
+              <td>{{ zona.zonaInteres }}</td>
               <td></td>
             </tr>
           </ng-template>
