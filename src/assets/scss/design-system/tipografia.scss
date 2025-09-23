@@ -201,3 +201,12 @@
   align-items: flex-start;
   gap: 4px;
 }
+
+.leyenda-documento {
+  color: var(--Grises-gris-tono2, #7D8FB3);
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 100%; /* 10px */
+}
