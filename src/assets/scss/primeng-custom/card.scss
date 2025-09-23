@@ -11,5 +11,14 @@
 
   .empty-border .p-card-body {
     border-top: none;
+    padding: 0;
+  }
+
+  .empty-border .p-card-title {
+    padding: var(--p-card-body-padding);
+  }
+
+  .empty-border .p-card-content {
+    padding: var(--p-card-body-padding);
   }
 }

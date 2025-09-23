@@ -45,8 +45,9 @@
   }
 
   .grid-datos-empleo {
-    grid-template-columns: repeat(2, 1fr) repeat(3, 2fr);
-    gap: 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(2, 12.5%) repeat(3, 25%);
+    gap: 1.5rem;
   }
 
 

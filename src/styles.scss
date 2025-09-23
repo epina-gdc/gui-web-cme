@@ -115,11 +115,19 @@
     width: 290px;
   }
 
-
-
   .p-tab-active .border-tab i {
     color: #455B88;
     background: rgba(112, 153, 230, 0.1);
+  }
+
+  .p-card-title {
+    border-bottom: 1px solid #000;
+  }
+
+  :host ::ng-deep .p-card-body .p-card-title {
+    /* Anula el padding para que el borde se pegue a los lados */
+    padding-left: 0;
+    padding-right: 0;
   }
 
 }
