@@ -1,10 +1,10 @@
-import {CommonModule} from "@angular/common";
-import {Component, inject} from "@angular/core";
-import {Mensajes} from "@utils/mensajes";
-import {Router} from '@angular/router';
-import {NAV} from "./../core/utils/url-global";
-import {CatalogoGeneral} from "@models/catalogoGeneral";
-import {AlertService} from "../core/alert/alert.service";
+import { CommonModule } from "@angular/common";
+import { Component, OnDestroy, inject } from "@angular/core";
+import { Mensajes } from "@utils/mensajes";
+import { Router } from '@angular/router';
+import { NAV } from "./../core/utils/url-global";
+import { CatalogoGeneral } from "@models/catalogoGeneral";
+import { AlertService } from "../core/alert/alert.service";
 
 
 @Component({
@@ -15,7 +15,7 @@ import {AlertService} from "../core/alert/alert.service";
   ],
   template: '',
 })
-export class GeneralComponent  {
+export class GeneralComponent {
 
   _nav = NAV;
   protected _Mensajes: Mensajes;
@@ -30,9 +30,24 @@ export class GeneralComponent  {
     this._alertServices = inject(AlertService);
   }
 
+  public onlyNumbers(event: any) {
+    const pattern = /^[0-9]*$/;
+    if (!pattern.test(event.target.value)) {
+      event.target.value = event.target.value.replace(/[^0-9]/g, '');
+    }
+  }
 
+  public convertMayusculas(event: any) {
+    if (event.target.value) {
+      event.target.value = event.target.value.toUpperCase();
+    }
+  }
 
-
+  public convertMinusculas(event: any) {
+    if (event.target.value) {
+      event.target.value = event.target.value.toLowerCase();
+    }
+  }
   salir() {
 
   }
@@ -69,8 +84,8 @@ export class GeneralComponent  {
   }
 
 
-  public getCatalogoModalidad():Array<CatalogoGeneral> {
-    let lstModalidad:Array<CatalogoGeneral> = [{
+  public getCatalogoModalidad(): Array<CatalogoGeneral> {
+    let lstModalidad: Array<CatalogoGeneral> = [{
       id: 1,
       descripcion: 'Médico cursando la residencia'
     },
@@ -82,7 +97,7 @@ export class GeneralComponent  {
   }
 
 
-  getCatalogoPerfiles() :Array<CatalogoGeneral> {
+  getCatalogoPerfiles(): Array<CatalogoGeneral> {
     let lstPerfil = [{
       id: 1,
       descripcion: 'Residente IMSS'
@@ -95,7 +110,7 @@ export class GeneralComponent  {
 
 
 
-  getCatalogoDocumento() :Array<CatalogoGeneral> {
+  getCatalogoDocumento(): Array<CatalogoGeneral> {
     let lstDocumentos = [
       { id: 1, descripcion: 'CURP' },
       { id: 2, descripcion: 'Pasaporte' },
@@ -105,15 +120,7 @@ export class GeneralComponent  {
   }
 
 
-  convertirMayusculas(texto:string):string{
-    let mayusculas = texto.toUpperCase();
-    return mayusculas;
-  }
 
-  convertirMinusculas(texto:string):string{
-    let minusculas = texto.toLowerCase();
-    return minusculas;
-  }
 
 
   public comparaCampos(texto1: string, texto2: string): boolean {
