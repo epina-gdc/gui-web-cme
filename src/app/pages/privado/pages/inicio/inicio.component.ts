@@ -17,6 +17,7 @@ import {HeaderTabComponent} from '../../../../components/header-tab/header-tab.c
 import {
   HeaderMedicoInternoComponent
 } from '@pages/privado/shared/header-medico-interno/header-medico-interno.component';
+import {EmptyTabComponent} from '../../../../components/empty-tab/empty-tab.component';
 
 @Component({
   selector: 'app-inicio',
@@ -37,7 +38,8 @@ import {
     TabView,
     HeaderTabComponent,
     FormsModule,
-    HeaderMedicoInternoComponent
+    HeaderMedicoInternoComponent,
+    EmptyTabComponent
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
@@ -64,7 +66,7 @@ export class InicioComponent {
 
   dummies = [{label: 'Dummie', value: 'Dummie'}, {label: 'Dummie 2', value: 'Dummie 2'}]
 
-  indice: WritableSignal<number> = signal<number>(0);
+  indice: WritableSignal<number> = signal<number>(1);
 
   constructor() {
     this.formRegistro = this.asignarFormularioRegistro();

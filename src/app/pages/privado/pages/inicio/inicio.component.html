@@ -275,6 +275,7 @@
 
     </form>
   }
+
   @case (1) {
     <p-card class="mx-2 empty-border" [header]="'Documentos de identificación'">
       <article class="flex flex-row flex-wrap">
@@ -335,6 +336,11 @@
           <p-button label="Agregar" icon="cme-plus" iconPos="right" [text]="true"/>
         </div>
       </article>
+
+      <article class="mx-3">
+        <empty-tab></empty-tab>
+      </article>
+
       <article class="flex flex-row flex-wrap">
         <p-tabView class="vertical-tabview" [activeIndex]="0">
           <p-tabPanel>

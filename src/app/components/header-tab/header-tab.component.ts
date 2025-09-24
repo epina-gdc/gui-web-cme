@@ -8,6 +8,6 @@ import {Component, Input} from '@angular/core';
 })
 export class HeaderTabComponent {
   @Input() title: string = '';
-  @Input() numDocs: number = 0;
+  @Input() numDocs: number | string = '';
 
 }
