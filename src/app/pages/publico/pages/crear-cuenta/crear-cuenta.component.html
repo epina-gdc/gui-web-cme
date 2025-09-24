@@ -1,81 +1,83 @@
 <main class="flex  login-background">
-  <aside class="col-6 flex flex-column justify-content-center align-items-center p-6">
-      <h1 class="login-titulo">Convocatoria para médicos especialistas</h1>
-      <h2 class="login-subtitulo">Reclutamiento IMSS 2025</h2>
-  </aside>
-  <section class="col-6  flex justify-content-center align-items-center vertical-align:middle align-items:center">
+    <aside class="col-6 flex flex-column justify-content-center align-items-center p-6">
+        <h1 class="login-titulo">Convocatoria para médicos especialistas</h1>
+        <h2 class="login-subtitulo">Reclutamiento IMSS 2025</h2>
+    </aside>
+    <section class="col-6  flex justify-content-center align-items-center vertical-align:middle align-items:center">
 
-      <p-card class="top-rounded-card" [style]="{ width: '45rem', overflow: 'show' }">
-          <form [formGroup]="form" (ngSubmit)="btnAceptar()">
-
-
-              <div class="flex justify-content-center">
-                  <h2>Crear cuenta</h2>
-              </div>
-              <hr>
-              <div class="col-12">
-                  <div class="row">
-                      <label class="field-label" for="perfil">Tipo de perfil</label>
-                  </div>
-                  <div class="row col-12">
-                      <p-select id="perfil" formControlName="perfil" [options]="lstPerfil" optionLabel="descripcion"
-                          optionValue="id" placeholder="Selecciona un perfil" class="w-full"
-                          (ngModelChange)="cambiaPerfil()">
-                      </p-select>
-                  </div>
-              </div>
-              @if(!blnResidente){
-
-              <div class="col-12">
-                  <div class="row">
-                      <label class="field-label" for="modalidad">Modalidad del médico</label>
-                  </div>
-                  <div class="row col-12">
-                      <p-select id="modalidad" formControlName="modalidad" [options]="lstModalidad"
-                          optionLabel="descripcion" optionValue="id" placeholder="Selecciona una modalidad"
-                          class="w-full" (ngModelChange)="cambiaModalidad()">
-                      </p-select>
-                  </div>
-              </div>
-              <div class="col-12">
-                  <div class="row">
-                      <label class="field-label" for="documento">Selecciona un documento de verificación</label>
-                  </div>
-                  <div class="row col-12">
-                      <div class="flex flex-wrap gap-4">
-                          <div class="flex items-center">
-                              <p-radiobutton id="documento" formControlName="documento" name="documento" value="1"
-                                  inputId="documento1" [(ngModel)]="registroMedico.blnPasaporte" />
-                              <label for="documento1" class="ml-2">CURP</label>
-                          </div>
-
-                          <div class="flex items-center">
-                              <p-radiobutton id="documento" formControlName="documento" name="documento" value="2"
-                                  inputId="documento2" [(ngModel)]="registroMedico.blnPasaporte" />
-                              <label for="documento2" class="ml-2">Pasaporte</label>
-                          </div>
-
-                      </div>
-
-                  </div>
-              </div>
-
-              }
+        <p-card class="top-rounded-card" [style]="{ width: '45rem', overflow: 'show' }">
+            <form [formGroup]="form" (ngSubmit)="btnAceptar()">
 
 
+                <div class="flex justify-content-center">
+                    <h2>Crear cuenta</h2>
+                </div>
+                <hr>
+                <article class="flex flex-column">
+                    <div class="flex flex-row">
+
+                        <label class="field-label" for="perfil">Tipo de perfil</label>
+                    </div>
+                    <div class="flex flex-row">
+
+                        <p-select id="perfil" formControlName="perfil" [options]="lstPerfil" optionLabel="descripcion"
+                            optionValue="id" placeholder="Selecciona un perfil" class="w-full"
+                            (ngModelChange)="cambiaPerfil()">
+                        </p-select>
+                    </div>
+
+                    @if(!blnResidente){
+
+                    <div class="flex flex-column" style="margin-top: 25px; margin-bottom: 15px;">
+                        <div class="flex flex-row">
+                            <label class="field-label" for="modalidad">Modalidad del médico</label>
+                        </div>
+                        <div class="flex flex-row">
+                            <p-select id="modalidad" formControlName="modalidad" [options]="lstModalidad"
+                                optionLabel="descripcion" optionValue="id" placeholder="Selecciona una modalidad"
+                                class="w-full" (ngModelChange)="cambiaModalidad()">
+                            </p-select>
+                        </div>
+                    </div>
+                    <div class="flex flex-column">
+                        <div class="flex flex-row">
+                            <label class="field-label" for="documento">Selecciona un documento de verificación</label>
+                        </div>
+                        <div class="flex flex-row">
+                            <div class="flex flex-wrap gap-4">
+                                <div class="flex items-center">
+                                    <p-radiobutton id="documento" formControlName="documento" name="documento" value="1"
+                                        inputId="documento1" [(ngModel)]="registroMedico.blnPasaporte" />
+                                    <label for="documento1" class="ml-2">CURP</label>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <p-radiobutton id="documento" formControlName="documento" name="documento" value="2"
+                                        inputId="documento2" [(ngModel)]="registroMedico.blnPasaporte" />
+                                    <label for="documento2" class="ml-2">Pasaporte</label>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    }
 
 
-              <div class="flex justify-content-end" style="margin-top: 40px;">
-
-                  <p-button type="submit" label="Aceptar" [disabled]="!form.valid" />
-              </div>
-
-          </form>
-
-      </p-card>
 
 
-  </section>
+                    <div class="flex flex-row justify-content-end" style="margin-top: 40px;">
+
+                        <p-button type="submit" label="Aceptar" [disabled]="!form.valid" />
+                    </div>
+                </article>
+            </form>
+
+        </p-card>
+
+
+    </section>
 
 
 </main>
