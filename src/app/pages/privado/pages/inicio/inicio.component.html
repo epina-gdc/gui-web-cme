@@ -2,39 +2,14 @@
   <btn-regresar/>
   <h3 class="titulo-seccion">Registro de médico interno</h3>
 </div>
-
-<p-card class="mx-2 my-4 empty-border">
-  <section class="flex flex-column">
-    <article class="flex flex-row p-4">
-      <span class="flex-column">
-        <p class="m-1 label-medico">Nombre del médico</p>
-        <strong class="m-1 nombre-medico">Pablo Andres Garcia Bernal</strong>
-      </span>
-    </article>
-    <article class="flex flex-row">
-      <div class="justify-content-start flex">
-        <icon-card iconClass="cme-user" cardColor="#1a73e8" [leftBorderRound]="true"></icon-card>
-        <div class="flex flex-column justify-content-center mr-5">
-          <p class="m-2 label-campo">Matricula</p>
-          <strong class="m-2 texto-campo">XXXXXXXXX</strong>
-        </div>
-        <div class="flex flex-column justify-content-center mr-5">
-          <p class="m-2 label-campo">CURP</p>
-          <strong class="m-2 texto-campo">XXXXXXXXX</strong>
-        </div>
-        <icon-card iconClass="cme-document" cardColor="#00c853"></icon-card>
-        <div class="flex flex-column justify-content-center">
-          <p class="m-2 label-campo">Fecha de registro</p>
-          <strong class="m-2 texto-campo">XXXXXXXXX</strong>
-        </div>
-      </div>
-    </article>
-  </section>
+<p-card class="mx-2 my-4 no-padding-empty-border">
+  <header-medico-interno></header-medico-interno>
 </p-card>
 
 <p-card class="mt-2 empty-border">
   <steps [currentStepIndex]="indice()" [steps]="steps"/>
 </p-card>
+
 @switch (indice()) {
 
   @case (0) {
@@ -246,22 +221,23 @@
                 <label class="field-label" for="ooad">OOAD</label>
               </div>
               <p-select [options]="dummies" formControlName="ooad" optionLabel="label"
-                        placeholder="Seleccionar opción" class="w-full"/>
+                        placeholder="Seleccionar opción" class="w-full" optionValue="value"/>
             </div>
             <div class="col-3">
               <div class="flex justify-content-between">
                 <label class="field-label" for="zonaInteres">Zona de interés</label>
               </div>
               <p-select [options]="dummies" formControlName="zonaInteres" optionLabel="label"
-                        placeholder="Seleccionar opción" class="w-full"/>
+                        placeholder="Seleccionar opción" class="w-full"  optionValue="value"/>
             </div>
             <div class="col-3 flex justify-content-start align-items-end">
-              <p-button label="Agregar" icon="cme-plus" iconPos="right" [text]="true"/>
+              <p-button label="Agregar" icon="cme-plus" iconPos="right" [text]="true" [disabled]="formZonaInteres.invalid"
+               (click)="agregarZonaInteres()"/>
             </div>
           </article>
         </form>
 
-        <p-table [value]="zonasInteres" [tableStyle]="{ 'min-width': '50rem' }">
+        <p-table [value]="zonasInteres()" [tableStyle]="{ 'min-width': '50rem' }">
           <ng-template #header>
             <tr>
               <th scope="col">OOAD</th>
@@ -269,11 +245,23 @@
               <th scope="col">Acciones</th>
             </tr>
           </ng-template>
-          <ng-template #body let-product>
+          <ng-template #body let-zona let-rowIndex="rowIndex">
             <tr>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td>{{ zona.ooad }}</td>
+              <td>{{ zona.zonaInteres }}</td>
+              <td>
+                <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.0rem'}"  (click)="(eliminarZonaInteres(rowIndex))" />
+              </td>
+            </tr>
+          </ng-template>
+          <ng-template #emptymessage>
+            <tr>
+              <td colspan="3">
+                <div class="flex justify-content-center align-items-center">
+                  <img class="p-0"
+                       src="/assets/images/tabla_sin_resultados.svg" alt="Sin resultados">
+                </div>
+              </td>
             </tr>
           </ng-template>
         </p-table>
@@ -440,7 +428,7 @@
             @for (opcion of opciones_boolean; track opcion.key) {
               <div class="flex align-items-center gap-1">
                 <p-radiobutton class="radio-button-square" [inputId]="opcion.key" [value]="opcion"
-                 [(ngModel)]="sustituto">
+                               [(ngModel)]="sustituto">
                 </p-radiobutton>
                 <label [for]="opcion.key" class="field-label mt-4">{{ opcion.name }}</label>
               </div>

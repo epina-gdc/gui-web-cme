@@ -9,6 +9,11 @@
     padding: 0;
   }
 
+  .no-padding-empty-border .p-card-body {
+    border-top: none;
+    padding: 0;
+  }
+
   .empty-border .p-card-body {
     border-top: none;
     padding: 0;

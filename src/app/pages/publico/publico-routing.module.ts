@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { InicioSesionComponent } from '@publico/inicio-sesion/inicio-sesion.component';
-import { CrearCuentaComponent } from '@publico/crear-cuenta/crear-cuenta.component';
-import { NAV } from '@utils/url-global';
-import { RegistroMedicoComponent } from './pages/registro-medico/registro-medico.component';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {InicioSesionComponent} from '@publico/inicio-sesion/inicio-sesion.component';
+import {CrearCuentaComponent} from '@publico/crear-cuenta/crear-cuenta.component';
+import {NAV} from '@utils/url-global';
+import {RegistroMedicoComponent} from './pages/registro-medico/registro-medico.component';
 
 const routes: Routes = [
   {

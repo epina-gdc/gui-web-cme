@@ -1,8 +1,8 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { NavigationStart, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { Alert } from './alert.model';
-import { AlertService } from './alert.service';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {NavigationStart, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {Alert} from './alert.model';
+import {AlertService} from './alert.service';
 
 @Component({
     selector: 'alert',
@@ -81,7 +81,7 @@ export class AlertComponent implements OnInit, OnDestroy {
 		this.alerts.splice(this.alerts.indexOf(alert), 1);
 	}
 
-    
+
     cssClass(alert: Alert) {
         if (!alert)
             return;

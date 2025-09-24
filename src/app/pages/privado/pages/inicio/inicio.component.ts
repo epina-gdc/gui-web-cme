@@ -1,11 +1,10 @@
 import {Component, inject, signal, WritableSignal} from '@angular/core';
 import {Card} from 'primeng/card';
-import {IconCardComponent} from '../../../../components/icon-card/icon-card.component';
 import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regresar.component';
 import {StepsComponent} from '../../../../components/steps/steps.component';
 import {UploadPhotoComponent} from '../../../../components/upload-photo/upload-photo.component';
 import {InputText} from 'primeng/inputtext';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Select} from 'primeng/select';
 import {DatePickerModule} from 'primeng/datepicker';
 import {Button} from 'primeng/button';
@@ -15,12 +14,14 @@ import {RadioButton} from 'primeng/radiobutton';
 import {BOOLEAN_OPCIONES, DEPENDENTIES} from '@utils/constants';
 import {TabPanel, TabView} from 'primeng/tabview';
 import {HeaderTabComponent} from '../../../../components/header-tab/header-tab.component';
+import {
+  HeaderMedicoInternoComponent
+} from '@pages/privado/shared/header-medico-interno/header-medico-interno.component';
 
 @Component({
   selector: 'app-inicio',
   imports: [
     Card,
-    IconCardComponent,
     BtnRegresarComponent,
     StepsComponent,
     UploadPhotoComponent,
@@ -35,7 +36,8 @@ import {HeaderTabComponent} from '../../../../components/header-tab/header-tab.c
     TabPanel,
     TabView,
     HeaderTabComponent,
-    FormsModule
+    FormsModule,
+    HeaderMedicoInternoComponent
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
@@ -45,24 +47,24 @@ export class InicioComponent {
   readonly dependientes = DEPENDENTIES;
   readonly opciones_boolean = BOOLEAN_OPCIONES;
 
-  fb = inject(FormBuilder)
+  fb: FormBuilder = inject(FormBuilder);
   formRegistro!: FormGroup;
   formZonaInteres!: FormGroup;
 
-  zonasInteres: any[] = [];
+  zonasInteres: WritableSignal<any[]> = signal([]);
 
   steps = [
     {label: 'Información Personal', active: false},
-    {label: 'Documentación', active: false},
+    {label: 'Documentos de escolaridad', active: false},
     {label: 'Oferta laboral', active: false},
   ];
 
   sustituto!: any;
   empleo!: any;
 
-  dummies = [{label: 'Dummie', value: 'Dummie'}]
+  dummies = [{label: 'Dummie', value: 'Dummie'}, {label: 'Dummie 2', value: 'Dummie 2'}]
 
-  indice: WritableSignal<number> = signal<number>(1);
+  indice: WritableSignal<number> = signal<number>(0);
 
   constructor() {
     this.formRegistro = this.asignarFormularioRegistro();
@@ -72,7 +74,7 @@ export class InicioComponent {
   asignarFormularioRegistro(): FormGroup {
     return this.fb.group({
       rfc: [],
-      nss: [],
+      nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
       fechaNacimiento: [],
       sexo: [],
       estadoCivil: [],
@@ -97,9 +99,25 @@ export class InicioComponent {
 
   asignarFormularioZonaInteres(): FormGroup {
     return this.fb.group({
-      ooad: [],
-      zonaInteres: []
+      ooad: [{value: '', disabled: false}, [Validators.required]],
+      zonaInteres: [{value: '', disabled: false}, [Validators.required]]
     })
+  }
+
+  agregarZonaInteres(): void {
+    const nuevaZona = this.crearRegistroZonaInteres();
+    this.zonasInteres.update(value => [...value, nuevaZona]);
+    this.formZonaInteres.reset();
+  }
+
+  crearRegistroZonaInteres() {
+    return this.formZonaInteres.value
+  }
+
+  eliminarZonaInteres(indice: number): void {
+    const zonasActualizadas = [...this.zonasInteres().slice(0, indice),
+      ...this.zonasInteres().slice(indice + 1)];
+    this.zonasInteres.update(() => zonasActualizadas);
   }
 
   siguientePasoStepper(): void {
