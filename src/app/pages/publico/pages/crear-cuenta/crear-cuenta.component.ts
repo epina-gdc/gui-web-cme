@@ -50,7 +50,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
     this.form = this.inicializarForm();
 
     this.lstPerfil = this.getCatalogoPerfiles();
-
+this._alertServices.exito("aqui <b> asasas</> fdfdfdf");
   }
 
 
@@ -71,10 +71,10 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   public btnAceptar() {
 
     if (this.form.valid) {
-      this.registroMedico.modalidad = this.form.controls['perfil'].value;
+      this.registroMedico.perfil = this.form.controls['perfil'].value;
       console.log("el valor elegido es ", this.form);
 
-      switch (this.registroMedico.modalidad) {
+      switch (this.registroMedico.perfil) {
         case 1:
 
           break;
@@ -147,6 +147,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   }
 
   private clearCampos(){
+    this.form.controls['modalidad'].setValue(null);
     this.form.controls['modalidad'].setValidators([]);
     this.form.controls['documento'].setValidators([]);
     this.form.controls['modalidad'].updateValueAndValidity();

@@ -18,4 +18,11 @@ public MSJ_PASS_MINUSCULA:string = "Debe contener al menos una letra minúscula"
 public MSJ_PASS_NUMERO:string = "Debe contener al menos un número"
 public MSJ_PASS_CARACTER_ESPECIAL:string = "Debe contener al menos un caracter especial"
 
+
+public MSJ_CAMPO_REQUERIDO:string = 'Campo obligatorio';
+public MSJ_FORMATO_MATRICULA:string = 'Formato de matrícula: 0123456789';
+public MSJ_LONG_MATRICULA:string = 'Longitud de matrícula es de 10';
+public MSJ_LONG_CURP:string = 'Longitud de CURP es de 18';
+public MSJ_LONG_RFC:string = 'Longitud de RFC es de 13';
+public MSJ_FORMATO_NO_VALIDO:string = 'Formato no válido';
 }
