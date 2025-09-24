@@ -15,44 +15,64 @@
 
 
 
-                        <div class="flex justify-content-start align-items-center gap-2">
-                            <div class="flex justify-content-start">
-                            <btn-regresar [ruta]="ruta" />
+                        <div class="flex  align-items-center gap-2">
+                            <div class="flex justify-content-start col-1">
+                                <btn-regresar [ruta]="ruta" />
                             </div>
-                            <div class="flex justify-content-center">
-                            <h2 class="login-card-titulo">{{strTitulo}}</h2>
+                            <div class="flex justify-content-center col-11">
+                                <h2 class="login-card-titulo">{{strTitulo}}</h2>
                             </div>
                         </div>
 
 
                         <div class="px-0">
-                            <hr class=" border-1 opacity-10">
+                            <hr class=" border-1 text-gray-100">
                         </div>
-                        @if(medico.modalidad == 1){
+                        @if(medico.perfil == 1){
                         <div class=" mt-4 row flex">
                             <div class="field col-9">
                                 <label class="field-label" for="matricula">Matrícula</label>
                                 <input pInputText class="w-full" type="text" id="matricula"
-                                    placeholder="Ingresa matrícula" maxlength="10" autocomplete="off"
-                                    formControlName="matricula" (keyup)="desbloquearValidarMatricula()" />
+                                    (keypress)="inMatricula = true"
+                                    (input)="onlyNumbers($event)"
+                                    placeholder="Ingresa matrícula" maxlength="10"
+                                    autocomplete="off" formControlName="matricula"
+                                    (keyup)="desbloquearValidarMatricula()" />
+                                    @if(inMatricula){
+                                        @for (validation of msjValidation.matricula; track validation.msj) {   
+                                            @if(f['matricula'].errors?.[validation.type]){
+                                                <p class="text-danger">{{validation.msj}}</p>
+                                            }
+                                        }
+                                    }
                             </div>
 
-                            <div class="field col-3 flex justify-content-end vertical-align:middle">
-                                <p-button label="Validar" [disabled]="blnBtnValidar" (click)="btnValidarMatricula()" />
+                            <div class="field col-3 flex justify-content-end vertical-align:middle" style="padding-top: 30px;">
+                                <p-button class="bg-white " label="Validar" [disabled]="blnBtnValidar" (click)="btnValidarMatricula()" />
                             </div>
                         </div>
+                        
                         <div class=" mt-4 row flex">
 
                             <div class="field col-12">
                                 <label class="field-label" for="nombre">Nombres(s)</label>
                                 <input pInputText class="w-full" type="text" id="nombre" placeholder="Ingresa nombre"
-                                    autocomplete="off" formControlName="nombre" maxlength="150" />
+                                    autocomplete="off"
+                                    (keypress)="inNombre = true"
+                                    formControlName="nombre" maxlength="40" />
+                                    @if(inNombre){
+                                        @for (validation of msjValidation.nombre; track validation.msj) {   
+                                            @if(f['nombre'].errors?.[validation.type]){
+                                                <p class="text-danger">{{validation.msj}}</p>
+                                            }
+                                        }
+                                    }
                             </div>
 
 
                         </div>
                         }
-                        @if(medico.modalidad == 2){
+                        @if(medico.perfil == 2){
                         <div class=" mt-4 row flex">
                             <div class="field col-12">
                                 <label class="field-label" for="modalidad">Modalidad del médico</label>
@@ -63,17 +83,25 @@
                             </div>
                         </div>
                         }
-                        @if(!medico.blnPasaporte && medico.modalidad == 2){
+                        @if(!medico.blnPasaporte && medico.perfil == 2){
                         <div class=" mt-4 row flex">
                             <div class="field col-9">
                                 <label class="field-label" for="curp">CURP</label>
                                 <input pInputText class="w-full" type="text" id="curp" placeholder="Ingresa CURP"
                                     maxlength="18" autocomplete="off" formControlName="curp"
-                                    (keyup)="desbloquearValidar(); mayusculas(1);" />
+                                    (keypress)="inCurp = true" (change)="btnValidarCurp()"
+                                    (keyup)="desbloquearValidar(); convertMayusculas($event);" />
+                                    @if(inCurp){
+                                        @for (validation of msjValidation.curp; track validation.msj) {   
+                                            @if(f['curp'].errors?.[validation.type]){
+                                                <p class="text-danger">{{validation.msj}}</p>
+                                            }
+                                        }
+                                    }
                             </div>
 
                             <div class="field col-3 flex justify-content-end vertical-align:middle">
-                                <p-button label="Validar" [disabled]="blnBtnValidar" (click)="btnValidar()" />
+                                <p-button label="Validar" [disabled]="blnBtnValidar" (click)="btnValidarCurp()" />
                             </div>
 
                         </div>
@@ -83,35 +111,62 @@
                             <div class="field col-6">
                                 <label class="field-label" for="rfc">RFC</label>
                                 <input pInputText class="w-full" type="text" id="rfc" placeholder="Ingresa RFC"
-                                    autocomplete="off" formControlName="rfc" maxlength="13" (keyup)="mayusculas(2);" />
+                                    autocomplete="off"  (keypress)="inRfc = true" formControlName="rfc" maxlength="13" 
+                                    (keyup)="convertMayusculas($event);" />
+                                    @if(inRfc){
+                                        @for (validation of msjValidation.rfc; track validation.msj) {   
+                                            @if(f['rfc'].errors?.[validation.type]){
+                                                <p class="text-danger">{{validation.msj}}</p>
+                                            }
+                                        }
+                                    }
                             </div>
                             <div class="field col-6">
 
                                 <label class="field-label" for="nombre">Nombres(s)</label>
                                 <input #input pInputText class="w-full" type="text" id="nombre"
-                                    placeholder="Ingresa nombre(s)" autocomplete="off" formControlName="nombre" />
-
+                                    placeholder="Ingresa nombre(s)"  (keypress)="inNombre = true"  autocomplete="off" formControlName="nombre" />
+                                    @if(inNombre){
+                                        @for (validation of msjValidation.nombre; track validation.msj) {   
+                                            @if(f['nombre'].errors?.[validation.type]){
+                                                <p class="text-danger">{{validation.msj}}</p>
+                                            }
+                                        }
+                                    }
 
                             </div>
 
                         </div>
 
-                        } @else if (medico.blnPasaporte && medico.modalidad == 2) {
+                        } @else if (medico.blnPasaporte && medico.perfil == 2) {
 
                         <div class=" mt-4 row flex">
 
                             <div class="field col-6">
                                 <label class="field-label" for="pasaporte">Pasaporte</label>
                                 <input pInputText class="w-full" type="text" id="pasaporte"
-                                    placeholder="Ingresa pasaporte" autocomplete="off" formControlName="pasaporte"
+                                    placeholder="Ingresa pasaporte" (keypress)="inPasaporte = true" autocomplete="off" formControlName="pasaporte"
                                     maxlength="13" />
+                                    @if(inPasaporte){
+                                        @for (validation of msjValidation.pasaporte; track validation.msj) {   
+                                            @if(f['pasaporte'].errors?.[validation.type]){
+                                                <p class="text-danger">{{validation.msj}}</p>
+                                            }
+                                        }
+                                    }
                             </div>
                             <div class="field col-6">
 
                                 <label class="field-label" for="pais">País</label>
                                 <input #input pInputText class="w-full" type="text" id="pais" placeholder="Ingresa país"
-                                    autocomplete="off" formControlName="pais" />
-
+                                    autocomplete="off" formControlName="pais" (keypress)="inPais = true"  />
+                                    @if(inPais){
+                                        @for (validation of msjValidation.pais; track validation.msj) {   
+                                            @if(f['pais'].errors?.[validation.type]){
+                                                <p class="text-danger">{{validation.msj}}</p>
+                                            }
+                                        }
+                                    }
 
                             </div>
 
@@ -121,7 +176,14 @@
                             <div class="field col-12">
                                 <label class="field-label" for="nombre">Nombres(s)</label>
                                 <input pInputText class="w-full" type="text" id="nombre" placeholder="Ingresa nombre"
-                                    autocomplete="off" formControlName="nombre" maxlength="150" />
+                                    autocomplete="off" (keypress)="inNombre = true"  formControlName="nombre" maxlength="150" />
+                                    @if(inNombre){
+                                        @for (validation of msjValidation.nombre; track validation.msj) {   
+                                            @if(f['nombre'].errors?.[validation.type]){
+                                                <p class="text-danger">{{validation.msj}}</p>
+                                            }
+                                        }
+                                    }
                             </div>
 
 
@@ -133,23 +195,45 @@
                             <div class="field col-6">
                                 <label class="field-label" for="apellidoP">Primer apellido</label>
                                 <input pInputText class="w-full" type="text" id="apellidoP" autocomplete="off"
-                                    placeholder="Ingresa primer apellido" formControlName="apellidoP" />
+                                    placeholder="Ingresa primer apellido" (keypress)="inAp = true"  formControlName="apellidoP" />
+                                    @if(inAp){
+                                        @for (validation of msjValidation.apellidoP; track validation.msj) {   
+                                            @if(f['apellidoP'].errors?.[validation.type]){
+                                                <p class="text-danger">{{validation.msj}}</p>
+                                            }
+                                        }
+                                    }
                             </div>
                             <div class="field col-6">
                                 <label class="field-label" for="apellidoM">Segundo apellido</label>
                                 <input pInputText class="w-full" type="text" id="apellidoM" autocomplete="off"
-                                    placeholder="Ingresa segundo apellido" formControlName="apellidoM" />
+                                    placeholder="Ingresa segundo apellido" (keypress)="inAm = true"  formControlName="apellidoM" />
+                                    @if(inAm){
+                                        @for (validation of msjValidation.apellidoM; track validation.msj) {   
+                                            @if(f['apellidoM'].errors?.[validation.type]){
+                                                <p class="text-danger">{{validation.msj}}</p>
+                                            }
+                                        }
+                                    }
                             </div>
 
                         </div>
-                        @if(medico.blnPasaporte || medico.modalidad == 1){
+                        @if(medico.blnPasaporte || medico.perfil == 1){
                         <div class=" mt-4 row flex">
                             <div class="field col-6">
 
                                 <label class="field-label" for="curp">CURP</label>
                                 <input #input pInputText class="w-full" type="text" id="curp" placeholder="Ingresa CURP"
-                                    autocomplete="off" formControlName="curp" maxlength="18" (keyup)="mayusculas(1);" />
-
+                                    autocomplete="off" (keypress)="inCurp = true" formControlName="curp" maxlength="18"
+                                    (change)="dinamicoCurp()"
+                                     (keyup)="convertMayusculas($event);" />
+                                    @if(inCurp){
+                                        @for (validation of msjValidation.curp; track validation.msj) {   
+                                            @if(f['curp'].errors?.[validation.type]){
+                                                <p class="text-danger">{{validation.msj}}</p>
+                                            }
+                                        }
+                                    }
 
                             </div>
 
@@ -157,7 +241,15 @@
                             <div class="field col-6">
                                 <label class="field-label" for="rfc">RFC</label>
                                 <input pInputText class="w-full" type="text" id="rfc" placeholder="Ingresa RFC"
-                                    autocomplete="off" formControlName="rfc" maxlength="13" (keyup)="mayusculas(2);" />
+                                    autocomplete="off" (keypress)="inRfc = true" formControlName="rfc" maxlength="13" 
+                                    (keyup)="convertMayusculas($event);" />
+                                    @if(inRfc){
+                                        @for (validation of msjValidation.rfc; track validation.msj) {   
+                                            @if(f['rfc'].errors?.[validation.type]){
+                                                <p class="text-danger">{{validation.msj}}</p>
+                                            }
+                                        }
+                                    }
                             </div>
 
                         </div>
@@ -169,14 +261,28 @@
                             <div class="field col-6">
                                 <label class="field-label" for="correo">Correo electrónico</label>
                                 <input pInputText class="w-full" type="text" id="correo"
-                                    placeholder="Ingresa correo electrónico" formControlName="correo" autocomplete="off"
-                                    (change)="validarCorreo()" (change)="compararCorreos()" (keyup)="minusculas(1);" />
+                                    placeholder="Ingresa correo electrónico" (keypress)="inCorreo = true" formControlName="correo" autocomplete="off"
+                                    (change)="validarCorreo()" (change)="compararCorreos()" (keyup)="convertMinusculas($event);" />
+                                    @if(inCorreo){
+                                        @for (validation of msjValidation.correo; track validation.msj) {   
+                                            @if(f['correo'].errors?.[validation.type]){
+                                                <p class="text-danger">{{validation.msj}}</p>
+                                            }
+                                        }
+                                    }
                             </div>
                             <div class="field col-6">
                                 <label class="field-label" for="correoc">Confirmar correo electrónico</label>
                                 <input pInputText class="w-full" type="text" id="correoc" autocomplete="off"
-                                    placeholder="Confirmar correo electrónico" formControlName="correoc"
-                                    (keyup)="minusculas(2);" (change)="compararCorreos()" />
+                                    placeholder="Confirmar correo electrónico" (keypress)="inCorreo2 = true" formControlName="correoc"
+                                    (keyup)="convertMinusculas($event);" (change)="compararCorreos()" />
+                                    @if(inCorreo2){
+                                        @for (validation of msjValidation.correoc; track validation.msj) {   
+                                            @if(f['correoc'].errors?.[validation.type]){
+                                                <p class="text-danger">{{validation.msj}}</p>
+                                            }
+                                        }
+                                    }
                             </div>
 
                         </div>
@@ -185,20 +291,28 @@
                             <div class="form-icon col-6">
                                 <label class="field-label" for="pass">Contraseña</label>
                                 <input pInputText class="w-full" type="password" id="pass"
-                                    placeholder="Ingresa contraseña" autocomplete="off" formControlName="pass"
+                                    placeholder="Ingresa contraseña" autocomplete="off" (keypress)="inPass = true"  formControlName="pass"
                                     minlength="8" maxlength="12" (change)="compararPassword()" />
-                                <!-- <i [ngClass]="{'pi-eye': input.type==='password', 'pi-eye-slash':  input.type ==='text'}" 
-                        class="cursor-pointer icon pi"
-                        (click)="input.type = input.type==='password'?'text':'password'"></i> -->
+                                    @if(inPass){
+                                        @for (validation of msjValidation.pass; track validation.msj) {   
+                                            @if(f['pass'].errors?.[validation.type]){
+                                                <p class="text-danger">{{validation.msj}}</p>
+                                            }
+                                        }
+                                    }
                             </div>
                             <div class="form-icon col-6">
                                 <label class="field-label" for="passc">Confirmar contraseña</label>
                                 <input pInputText class="w-full" type="password" id="passc"
-                                    placeholder="Confirmar contraseña" autocomplete="off" formControlName="passc"
+                                    placeholder="Confirmar contraseña" autocomplete="off"  (keypress)="inPass2 = true"  formControlName="passc"
                                     minlength="8" maxlength="12" (change)="compararPassword()" />
-                                <!--  <i [ngClass]="{'pi-eye': input.type==='password', 'pi-eye-slash':  input.type ==='text'}" 
-                        class="cursor-pointer icon pi"
-                        (click)="input.type = input.type==='password'?'text':'password'"></i> -->
+                                    @if(inPass2){
+                                        @for (validation of msjValidation.passc; track validation.msj) {   
+                                            @if(f['passc'].errors?.[validation.type]){
+                                                <p class="text-danger">{{validation.msj}}</p>
+                                            }
+                                        }
+                                    }
                             </div>
 
                         </div>
