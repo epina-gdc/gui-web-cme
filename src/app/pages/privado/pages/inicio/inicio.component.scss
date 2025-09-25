@@ -50,5 +50,9 @@
     gap: 1.5rem;
   }
 
+  .table-wrapper {
+    display: flex;
+    flex-direction: column; /* Apila los elementos hijos verticalmente */
+  }
 
 }

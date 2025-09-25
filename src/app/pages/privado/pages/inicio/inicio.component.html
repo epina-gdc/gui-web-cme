@@ -316,16 +316,16 @@
               <p class="field-label">Especialidad</p>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <p-select [options]="dummies" optionLabel="label"
-                      placeholder="Selecciona opción" class="w-full"/>
+            <p-select [options]="dummies" optionLabel="label" optionValue="value"
+                      placeholder="Selecciona opción" formControlName="especialidad" class="w-full"/>
           </div>
           <div class="col-3">
             <div class="flex justify-content-between mb-1">
               <p class="field-label">Documentos obligatorios</p>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <p-select [options]="dummies" optionLabel="label"
-                      placeholder="Selecciona opción" class="w-full"/>
+            <p-select [options]="dummies" optionLabel="label" optionValue="value"
+                      placeholder="Selecciona opción" formControlName="documento" class="w-full"/>
           </div>
           <div class="col-3">
             <div class="flex justify-content-between mb-1">
@@ -347,18 +347,41 @@
         </article>
       } @else {
         <article class="flex flex-row flex-wrap">
-          <p-tabView class="vertical-tabview" [activeIndex]="0">
-            <p-tabPanel>
-              <ng-template pTemplate="header">
-                <header-tab [title]="'Pediatria'" [numDocs]="1" class="header-tab"/>
-              </ng-template>
-              Algo de contenido
-            </p-tabPanel>
-            <p-tabPanel>
-              <ng-template pTemplate="header">
-                <header-tab [title]="'Cardiología'" [numDocs]="3"/>
-              </ng-template>
-            </p-tabPanel>
+          <p-tabView class="vertical-tabview flex-grow-1" [activeIndex]="0">
+            @for (registro of registrosDocumentosEspecialidad(); track registro.especialidad) {
+              <p-tabPanel>
+                <ng-template pTemplate="header">
+                  <header-tab [title]="registro.especialidad" [numDocs]="registro.documentos.length"
+                              class="header-tab"/>
+                </ng-template>
+                <div class="flex flex-grow-1">
+                  <p-table [value]="registro.documentos" [tableStyle]="{ 'min-width': '50rem' }" class="flex-grow-1">
+                    <ng-template pTemplate="header">
+                      <tr>
+                        <th scope="col">Tipo documento</th>
+                        <th scope="col">Especialidad médica</th>
+                        <th scope="col">Acciones</th>
+                      </tr>
+                    </ng-template>
+                    <ng-template #body let-registro >
+                      <tr>
+                        <td>{{ registro.tipoDocumento }}</td>
+                        <td>{{ registro.especialidadMedica }}</td>
+                        <td>
+                          <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.0rem'}" />
+                        </td>
+                      </tr>
+                    </ng-template>
+                    <ng-template #emptymessage>
+                      <tr>
+                        <td colspan="3">
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </p-table>
+                </div>
+              </p-tabPanel>
+            }
           </p-tabView>
         </article>
       }
