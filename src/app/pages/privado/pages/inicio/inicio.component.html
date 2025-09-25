@@ -228,11 +228,12 @@
                 <label class="field-label" for="zonaInteres">Zona de interés</label>
               </div>
               <p-select [options]="dummies" formControlName="zonaInteres" optionLabel="label"
-                        placeholder="Seleccionar opción" class="w-full"  optionValue="value"/>
+                        placeholder="Seleccionar opción" class="w-full" optionValue="value"/>
             </div>
             <div class="col-3 flex justify-content-start align-items-end">
-              <p-button label="Agregar" icon="cme-plus" iconPos="right" [text]="true" [disabled]="formZonaInteres.invalid"
-               (click)="agregarZonaInteres()"/>
+              <p-button label="Agregar" icon="cme-plus" iconPos="right" [text]="true"
+                        [disabled]="formZonaInteres.invalid"
+                        (click)="agregarZonaInteres()"/>
             </div>
           </article>
         </form>
@@ -250,7 +251,8 @@
               <td>{{ zona.ooad }}</td>
               <td>{{ zona.zonaInteres }}</td>
               <td>
-                <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.0rem'}"  (click)="(eliminarZonaInteres(rowIndex))" />
+                <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.0rem'}"
+                          (click)="(eliminarZonaInteres(rowIndex))"/>
               </td>
             </tr>
           </ng-template>
@@ -275,7 +277,6 @@
 
     </form>
   }
-
   @case (1) {
     <p-card class="mx-2 empty-border" [header]="'Documentos de identificación'">
       <article class="flex flex-row flex-wrap">
@@ -308,54 +309,59 @@
         <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
         <em class="info-em-texto">Indica y carga el documento de cada una de tus especialidades</em>
       </div>
-      <article class="flex flex-row flex-wrap">
-        <div class="col-3">
-          <div class="flex justify-content-between mb-1">
-            <p class="field-label">Especialidad</p>
-            <p class="label-obligatorio">Obligatorio</p>
+      <form [formGroup]="formDocumentosEspecialidad">
+        <article class="flex flex-row flex-wrap">
+          <div class="col-3">
+            <div class="flex justify-content-between mb-1">
+              <p class="field-label">Especialidad</p>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <p-select [options]="dummies" optionLabel="label"
+                      placeholder="Selecciona opción" class="w-full"/>
           </div>
-          <p-select [options]="dummies" optionLabel="label"
-                    placeholder="Selecciona opción" class="w-full"/>
-        </div>
-        <div class="col-3">
-          <div class="flex justify-content-between mb-1">
-            <p class="field-label">Documentos obligatorios</p>
-            <p class="label-obligatorio">Obligatorio</p>
+          <div class="col-3">
+            <div class="flex justify-content-between mb-1">
+              <p class="field-label">Documentos obligatorios</p>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <p-select [options]="dummies" optionLabel="label"
+                      placeholder="Selecciona opción" class="w-full"/>
           </div>
-          <p-select [options]="dummies" optionLabel="label"
-                    placeholder="Selecciona opción" class="w-full"/>
-        </div>
-        <div class="col-3">
-          <div class="flex justify-content-between mb-1">
-            <p class="field-label">Carga de documento</p>
-            <p class="label-obligatorio">Obligatorio</p>
+          <div class="col-3">
+            <div class="flex justify-content-between mb-1">
+              <p class="field-label">Carga de documento</p>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <upload-document/>
           </div>
-          <upload-document/>
-        </div>
-        <div class="col-3 flex justify-content-start align-items-center">
-          <p-button label="Agregar" icon="cme-plus" iconPos="right" [text]="true"/>
-        </div>
-      </article>
+          <div class="col-3 flex justify-content-start align-items-center">
+            <p-button label="Agregar" icon="cme-plus" iconPos="right"
+                      [text]="true" (click)="agregarDocumento()"/>
+          </div>
+        </article>
+      </form>
 
-      <article class="mx-3">
-        <empty-tab></empty-tab>
-      </article>
-
-      <article class="flex flex-row flex-wrap">
-        <p-tabView class="vertical-tabview" [activeIndex]="0">
-          <p-tabPanel>
-            <ng-template pTemplate="header">
-              <header-tab [title]="'Pediatria'" [numDocs]="1" class="header-tab"/>
-            </ng-template>
-            Algo de contenido
-          </p-tabPanel>
-          <p-tabPanel>
-            <ng-template pTemplate="header">
-              <header-tab [title]="'Cardiología'" [numDocs]="3"/>
-            </ng-template>
-          </p-tabPanel>
-        </p-tabView>
-      </article>
+      @if (registrosDocumentosEspecialidad().length === 0) {
+        <article class="mx-3">
+          <empty-tab></empty-tab>
+        </article>
+      } @else {
+        <article class="flex flex-row flex-wrap">
+          <p-tabView class="vertical-tabview" [activeIndex]="0">
+            <p-tabPanel>
+              <ng-template pTemplate="header">
+                <header-tab [title]="'Pediatria'" [numDocs]="1" class="header-tab"/>
+              </ng-template>
+              Algo de contenido
+            </p-tabPanel>
+            <p-tabPanel>
+              <ng-template pTemplate="header">
+                <header-tab [title]="'Cardiología'" [numDocs]="3"/>
+              </ng-template>
+            </p-tabPanel>
+          </p-tabView>
+        </article>
+      }
     </p-card>
 
     <p-card class="mx-2 empty-border" [header]="'Constancias de cursos de educación permanente en salud'">

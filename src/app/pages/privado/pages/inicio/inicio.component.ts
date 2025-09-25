@@ -18,6 +18,7 @@ import {
   HeaderMedicoInternoComponent
 } from '@pages/privado/shared/header-medico-interno/header-medico-interno.component';
 import {EmptyTabComponent} from '../../../../components/empty-tab/empty-tab.component';
+import {TabDocumento, TabNode} from '@models/tab-node.interface';
 
 @Component({
   selector: 'app-inicio',
@@ -52,8 +53,10 @@ export class InicioComponent {
   fb: FormBuilder = inject(FormBuilder);
   formRegistro!: FormGroup;
   formZonaInteres!: FormGroup;
+  formDocumentosEspecialidad!: FormGroup;
 
   zonasInteres: WritableSignal<any[]> = signal([]);
+  registrosDocumentosEspecialidad: WritableSignal<TabNode[]> = signal([]);
 
   steps = [
     {label: 'Información Personal', active: false},
@@ -71,6 +74,7 @@ export class InicioComponent {
   constructor() {
     this.formRegistro = this.asignarFormularioRegistro();
     this.formZonaInteres = this.asignarFormularioZonaInteres();
+    this.formDocumentosEspecialidad = this.asignarFormularioDocumentosEspecialidad();
   }
 
   asignarFormularioRegistro(): FormGroup {
@@ -106,6 +110,13 @@ export class InicioComponent {
     })
   }
 
+  asignarFormularioDocumentosEspecialidad(): FormGroup {
+    return this.fb.group({
+      especialidad: [],
+      documento: []
+    })
+  }
+
   agregarZonaInteres(): void {
     const nuevaZona = this.crearRegistroZonaInteres();
     this.zonasInteres.update(value => [...value, nuevaZona]);
@@ -120,6 +131,77 @@ export class InicioComponent {
     const zonasActualizadas = [...this.zonasInteres().slice(0, indice),
       ...this.zonasInteres().slice(indice + 1)];
     this.zonasInteres.update(() => zonasActualizadas);
+  }
+
+  obtenerNuevoDocumento(): TabDocumento {
+    return {
+      tipoDocumento: this.formDocumentosEspecialidad.get('documento')?.value,
+      especialidadMedica: this.formDocumentosEspecialidad.get('especialidad')?.value
+    }
+  }
+
+  agregarDocumento(): void {
+    const nuevoDocumento = this.obtenerNuevoDocumento();
+    if (!nuevoDocumento) return;
+    const especialidades = this.registrosDocumentosEspecialidad();
+    const indiceEspecialidad = especialidades.findIndex(e => e.especialidad === nuevoDocumento.especialidadMedica);
+
+    // Si la especialidad no existe, la creamos
+    if (indiceEspecialidad === -1) {
+      const nuevaEspecialidad: TabNode = {
+        especialidad: nuevoDocumento.especialidadMedica,
+        documentos: [nuevoDocumento]
+      };
+      this.registrosDocumentosEspecialidad.update(value => [...value, nuevaEspecialidad]);
+      return;
+    }
+
+    // Si la especialidad ya existe, verificamos si el documento es un duplicado
+    const especialidadExistente = {...especialidades[indiceEspecialidad]};
+    const documentoYaExiste = especialidadExistente.documentos.some(doc => doc.tipoDocumento === nuevoDocumento.tipoDocumento);
+
+    if (documentoYaExiste) {
+      console.warn('El documento ya existe para esta especialidad. No se ha añadido.');
+      return; // No hacemos nada si es un duplicado
+    }
+
+    // Añadimos el nuevo documento y actualizamos el signal
+    especialidadExistente.documentos.push(nuevoDocumento);
+
+    const especialidadesActualizadas = [...especialidades.slice(0, indiceEspecialidad),
+      especialidadExistente,
+      ...especialidades.slice(indiceEspecialidad + 1)
+    ];
+    this.registrosDocumentosEspecialidad.update(() => especialidadesActualizadas);
+  }
+
+  eliminarDocumento(especialidadMedica: string, tipoDocumento: string): void {
+    const especialidades = this.registrosDocumentosEspecialidad();
+    const indiceEspecialidad = especialidades.findIndex(e => e.especialidad === especialidadMedica);
+
+    if (indiceEspecialidad === -1) {
+      console.error('La especialidad no se encontró, no se puede eliminar el documento.');
+      return;
+    }
+
+    const especialidadParaModificar = {...especialidades[indiceEspecialidad]};
+    const documentosActualizados = especialidadParaModificar.documentos.filter(d => d.tipoDocumento !== tipoDocumento);
+
+    // Si la lista de documentos queda vacía, eliminamos la especialidad completa
+    if (documentosActualizados.length === 0) {
+      const especialidadesSinEspecialidad = [...especialidades.slice(0, indiceEspecialidad),
+        ...especialidades.slice(indiceEspecialidad + 1)
+      ];
+      this.registrosDocumentosEspecialidad.update(() => especialidadesSinEspecialidad);
+    } else {
+      // Si aún hay documentos, actualizamos la especialidad con la nueva lista
+      especialidadParaModificar.documentos = documentosActualizados;
+      const especialidadesModificadas = [...especialidades.slice(0, indiceEspecialidad),
+        especialidadParaModificar,
+        ...especialidades.slice(indiceEspecialidad + 1)
+      ];
+      this.registrosDocumentosEspecialidad.update(() => especialidadesModificadas);
+    }
   }
 
   siguientePasoStepper(): void {
