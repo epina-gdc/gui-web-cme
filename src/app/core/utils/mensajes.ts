@@ -8,10 +8,12 @@ public MSG003: string = "Correo electrónico no válido, por favor verifícalo."
 public MSG006:string = 'Correo electrónico no valido, por favor Verifícalo';
 public MSG007:string =  "Las contraseñas no coinciden por favor verifica tu información";
 public MSG0077:string =  "Los correos no coinciden por favor verifica tu información";
+public MSG008:string = 'Usted es titular de una plaza, por lo que no es posible realizar su registro.';
 public MSG010:string = 'La información ingresada es incorrecta. Por favor, verifica tu matrícula o CURP.';
-public MSG011: string = "Ya existe una cuenta registrada con este correo electrónico...";
+public MSG011: string = "Ya existe una cuenta registrada con este correo electrónico. Si olvidaste tu contraseña, utiliza la opción <b>Olvidé mi contraseña</b>.";
 public MSG012: string="Tu registro fue finalizado con éxito, se te enviará un correo con la información de tu registro.";
 public MSG013:string = "Por favor completa todos los campos obligatorios.";
+public MSG014:string ='La CURP ingresada es incorrecta, por favor verifica tu información.';
 
 public MSJ_PASS_MIN_CARACTER:string = "La contraseña debe tener al menos 8 caracteres"
 public MSJ_PASS_MAX_CARACTER:string = "La contraseña debe tener máximo 12 caracteres"
