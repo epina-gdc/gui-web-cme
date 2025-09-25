@@ -25,6 +25,7 @@ import { PATRON_CURP, PATRON_EMAIL, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_RFC 
     CommonModule,
     BtnRegresarComponent,
   ],
+  standalone: true,
   templateUrl: './registro-medico.component.html',
   styleUrl: './registro-medico.component.scss'
 })
@@ -105,20 +106,22 @@ export class RegistroMedicoComponent extends GeneralComponent {
       case 1:
 
 
-        this.inCurp = false;
+        this.isNotCurp();
 
         break;
       case 2://
 
 
 
-
-
+        debugger
         if (this.medico.blnPasaporte) {
           this.inPasaporte = true;
           this.inPais = true;
+          this.isNotCurp();
         } else {
-          this.inCurp = true;
+
+          this.isCurp();
+        
         }
         break;
 
@@ -161,6 +164,7 @@ export class RegistroMedicoComponent extends GeneralComponent {
     this.form.controls['modalidad'].updateValueAndValidity();
     this.form.controls['pasaporte'].updateValueAndValidity();
     this.form.controls['pais'].updateValueAndValidity();
+    //this.inPasaporte = true;
   }
 
   private isCurp() {
@@ -178,7 +182,7 @@ export class RegistroMedicoComponent extends GeneralComponent {
 
   private isNotCurp() {
     this.form.controls['curp'].setValidators([]),
-    this.form.controls['curp'].updateValueAndValidity();
+      this.form.controls['curp'].updateValueAndValidity();
     this.inCurp = false;
 
   }
@@ -227,7 +231,7 @@ export class RegistroMedicoComponent extends GeneralComponent {
         { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
         { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },],
       'curp': [
-        // { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
+         { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
         { type: 'minlength', msj: this._Mensajes.MSJ_LONG_CURP },
         { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
       ],
@@ -289,7 +293,7 @@ export class RegistroMedicoComponent extends GeneralComponent {
       apellidoP: ['', [Validators.required, Validators.pattern(PATRON_NOMBRE)]],
       apellidoM: ['', [Validators.required, Validators.pattern(PATRON_NOMBRE)]],
       curp: ['', Validators.compose([
-        // Validators.required,
+         Validators.required,
         Validators.minLength(18),
         Validators.maxLength(18),
         Validators.pattern(PATRON_CURP),
@@ -344,11 +348,13 @@ export class RegistroMedicoComponent extends GeneralComponent {
   }
 
   public btnValidarCurp() {
-    this.medico.curp = this.form.controls['curp'].value;
-if(this.medico.curp.length == 18){
-  this.validarCURP();
-}
-    
+    if (!this.blnBtnValidar) {
+      this.medico.curp = this.form.controls['curp'].value;
+      if (this.medico.curp.length == 18) {
+        this.validarCURP();
+      }
+    }
+
   }
 
   private validarCURP() {
@@ -405,6 +411,7 @@ if(this.medico.curp.length == 18){
     } else {
 
       this._alertServices.alerta(this._Mensajes.MSG013);
+      this.activarCampos(this.medico.perfil);
     }
   }
 
@@ -473,6 +480,7 @@ if(this.medico.curp.length == 18){
       this._alertServices.alerta(this._Mensajes.MSG010);
       this.form.controls['matricula'].setValue('');
       this.medico.matricula = this.form.controls['matricula'].value
+      this.form.reset();
     }
   }
 
@@ -481,7 +489,7 @@ if(this.medico.curp.length == 18){
     this.form.controls['apellidoP'].setValue('Vcitoria');
     // this.form.controls['apellidoM'].setValue('SArmiento');
     this.form.controls['curp'].setValue('VISA900901MTLCRM0');
-    
+
     this.form.controls['rfc'].setValue('VISA900901LA');
 
     this.medico.apellidoP = this.form.controls['apellidoP'].value;

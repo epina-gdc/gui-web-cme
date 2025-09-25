@@ -134,8 +134,28 @@
     padding-right: 0;
   }
 
+  .alert{
+       text-align: center;
+    font-feature-settings: 'liga' off, 'clig' off;
+    font-family: "Noto Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 21px */
+    
+  }
+
   .alert-success{
     background: var(--Sistema-Success-100, #D1E7DD);
+    color: var(--Sistema-Success-800, #0A3622);
+   
+    
+  }
+
+  .alert-info{
+   
+  }
+  .alert-warning {
 
   }
 }

@@ -48,7 +48,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
     this.form = this.inicializarForm();
 
     this.lstPerfil = this.getCatalogoPerfiles();
-this._alertServices.exito("aqui <b> asasas</> fdfdfdf");
+//this._alertServices.exito("este texto muestra algo en <b> negritas<b/>");
   }
 
 
