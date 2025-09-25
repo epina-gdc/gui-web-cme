@@ -15,19 +15,18 @@
 
 
 
-                        <div class="flex  align-items-center gap-2">
+                        <div class="flex  align-items-center gap-2 bordeTitulo" >
                             <div class="flex justify-content-start col-1">
                                 <btn-regresar [ruta]="ruta" />
                             </div>
                             <div class="flex justify-content-center col-11">
                                 <h2 class="login-card-titulo">{{strTitulo}}</h2>
                             </div>
+                          
                         </div>
 
 
-                        <div class="px-0">
-                            <hr class=" border-1 text-gray-100">
-                        </div>
+                  
                         @if(medico.perfil == 1){
                         <div class=" mt-4 row flex">
                             <div class="field col-9">
@@ -37,7 +36,7 @@
                                     (input)="onlyNumbers($event)"
                                     placeholder="Ingresa matrícula" maxlength="10"
                                     autocomplete="off" formControlName="matricula"
-                                    (keyup)="desbloquearValidarMatricula()" />
+                                    (keyup)="desbloquearValidarMatricula()" (change)="btnValidarMatricula()"/>
                                     @if(inMatricula){
                                         @for (validation of msjValidation.matricula; track validation.msj) {   
                                             @if(f['matricula'].errors?.[validation.type]){
@@ -100,8 +99,8 @@
                                     }
                             </div>
 
-                            <div class="field col-3 flex justify-content-end vertical-align:middle">
-                                <p-button label="Validar" [disabled]="blnBtnValidar" (click)="btnValidarCurp()" />
+                            <div class="field col-3 flex justify-content-end vertical-align:middle" style="padding-top: 30px;">
+                                <p-button class="btn-outLine" label="Validar" [disabled]="blnBtnValidar" (click)="btnValidarCurp()" />
                             </div>
 
                         </div>
@@ -290,9 +289,12 @@
                         <div class=" mt-4 row flex">
                             <div class="form-icon col-6">
                                 <label class="field-label" for="pass">Contraseña</label>
-                                <input pInputText class="w-full" type="password" id="pass"
+                                <input #input pInputText class="w-full" type="password" id="pass"
                                     placeholder="Ingresa contraseña" autocomplete="off" (keypress)="inPass = true"  formControlName="pass"
                                     minlength="8" maxlength="12" (change)="compararPassword()" />
+                                    <i [ngClass]="{'pi-eye': input.type==='password', 'pi-eye-slash':  input.type ==='text'}"
+                                    class="cursor-pointer icon pi"
+                                    (click)="input.type = input.type==='password'?'text':'password'"></i>
                                     @if(inPass){
                                         @for (validation of msjValidation.pass; track validation.msj) {   
                                             @if(f['pass'].errors?.[validation.type]){
@@ -303,9 +305,12 @@
                             </div>
                             <div class="form-icon col-6">
                                 <label class="field-label" for="passc">Confirmar contraseña</label>
-                                <input pInputText class="w-full" type="password" id="passc"
+                                <input #input2 pInputText class="w-full" type="password" id="passc"
                                     placeholder="Confirmar contraseña" autocomplete="off"  (keypress)="inPass2 = true"  formControlName="passc"
                                     minlength="8" maxlength="12" (change)="compararPassword()" />
+                                    <i [ngClass]="{'pi-eye': input2.type==='password', 'pi-eye-slash':  input2.type ==='text'}"
+                                    class="cursor-pointer icon pi"
+                                    (click)="input2.type = input2.type==='password'?'text':'password'"></i>
                                     @if(inPass2){
                                         @for (validation of msjValidation.passc; track validation.msj) {   
                                             @if(f['passc'].errors?.[validation.type]){
@@ -319,7 +324,7 @@
 
                         <div class=" mt-4   flex justify-content-end">
 
-                            <p-button label="Crear Cuenta" type="submit" [disabled]="!form.valid" />
+                            <p-button label="Crear Cuenta" type="submit"  />
 
 
                         </div>

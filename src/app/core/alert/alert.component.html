@@ -29,7 +29,7 @@
             </svg>
             <div class="d-flex flex-column  align-items-center ps-2 pe-2">
                <!--  <span class="fw-semibold fs-6">{{alert.title}}</span> -->
-                <span class="fw-400">{{alert.message}}</span>
+                <span class="fw-400" [innerHTML]="alert.message"></span>
             </div>
             <div class="">
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
