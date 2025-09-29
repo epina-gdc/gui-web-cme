@@ -1,5 +1,5 @@
-import { Component,Input } from '@angular/core';
-import { GeneralComponent } from '../general.component';
+import {Component, Input} from '@angular/core';
+import {GeneralComponent} from '../general.component';
 
 @Component({
   selector: 'btn-regresar',
@@ -17,6 +17,6 @@ export class BtnRegresarComponent extends GeneralComponent {
     }else{
       this._alertServices.informacion("Dev no ha ingresado la ruta de retorno");
     }
-    
+
   }
 }
