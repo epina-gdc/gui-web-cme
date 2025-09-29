@@ -1,4 +1,4 @@
-export const DEPENDENTIES = [
+export const DEPENDIENTES = [
   { name: 'Padres', key: 'A' },
   { name: 'Hijos', key: 'M' },
   { name: 'Conyuge', key: 'P' },
@@ -8,4 +8,9 @@ export const DEPENDENTIES = [
 export const BOOLEAN_OPCIONES = [
   { name: 'Si', key: 'true' },
   { name: 'No', key: 'false' }
+]
+
+export const INSTITUCIONES = [
+  { name: 'Pública', key: 'true' },
+  { name: 'Privada', key: 'false' }
 ]

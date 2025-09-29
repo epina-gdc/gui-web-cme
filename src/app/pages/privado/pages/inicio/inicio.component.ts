@@ -11,7 +11,7 @@ import {Button} from 'primeng/button';
 import {TableModule} from 'primeng/table';
 import {UploadDocumentComponent} from '../../../../components/upload-document/upload-document.component';
 import {RadioButton} from 'primeng/radiobutton';
-import {BOOLEAN_OPCIONES, DEPENDENTIES} from '@utils/constants';
+import {BOOLEAN_OPCIONES, DEPENDIENTES, INSTITUCIONES} from '@utils/constants';
 import {TabPanel, TabView} from 'primeng/tabview';
 import {HeaderTabComponent} from '../../../../components/header-tab/header-tab.component';
 import {
@@ -47,7 +47,8 @@ import {TabDocumento, TabNode} from '@models/tab-node.interface';
 })
 export class InicioComponent {
 
-  readonly dependientes = DEPENDENTIES;
+  readonly dependientes = DEPENDIENTES;
+  readonly instituciones = INSTITUCIONES;
   readonly opciones_boolean = BOOLEAN_OPCIONES;
 
   fb: FormBuilder = inject(FormBuilder);
@@ -66,6 +67,7 @@ export class InicioComponent {
 
   sustituto!: any;
   empleo!: any;
+  institucion!: any;
 
   dummies = [{label: 'Dummie', value: 'Dummie'}, {label: 'Dummie 2', value: 'Dummie 2'}]
 
