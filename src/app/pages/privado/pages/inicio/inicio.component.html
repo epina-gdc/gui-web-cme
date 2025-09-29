@@ -512,7 +512,7 @@
             <div class="flex gap-2">
               @for (institucion of instituciones; track institucion.key) {
                 <div class="flex justify-content-end gap-1 align-items-center">
-                  <p-radiobutton [inputId]="institucion.key" [value]="institucion">
+                  <p-radiobutton [inputId]="institucion.key" [(ngModel)]="institucionSeleccionada"  >
                   </p-radiobutton>
                   <label [for]="institucion.key" class="leyenda-documento mt-4">{{ institucion.name }}</label>
                 </div>

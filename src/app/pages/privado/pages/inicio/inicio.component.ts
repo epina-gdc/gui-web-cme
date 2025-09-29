@@ -67,7 +67,7 @@ export class InicioComponent {
 
   sustituto!: any;
   empleo!: any;
-  institucion!: any;
+  institucionSeleccionada = true;
 
   dummies = [{label: 'Dummie', value: 'Dummie'}, {label: 'Dummie 2', value: 'Dummie 2'}]
 
