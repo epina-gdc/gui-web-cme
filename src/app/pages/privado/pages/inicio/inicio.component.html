@@ -358,15 +358,15 @@
                   <p-table [value]="registro.documentos" [tableStyle]="{ 'min-width': '50rem' }" class="flex-grow-1">
                     <ng-template pTemplate="header">
                       <tr>
-                        <th scope="col">Tipo documento</th>
-                        <th scope="col">Especialidad médica</th>
-                        <th scope="col">Acciones</th>
+                        <th class="label-th" scope="col">Tipo documento</th>
+                        <th class="label-th" scope="col">Especialidad médica</th>
+                        <th class="label-th" scope="col">Acciones</th>
                       </tr>
                     </ng-template>
                     <ng-template #body let-registro >
                       <tr>
-                        <td>{{ registro.tipoDocumento }}</td>
-                        <td>{{ registro.especialidadMedica }}</td>
+                        <td class="label-documento-td">{{ registro.tipoDocumento }}</td>
+                        <td class="label-td">{{ registro.especialidadMedica }}</td>
                         <td>
                           <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.0rem'}"
                           (click)="eliminarDocumento(registro.especialidadMedica, registro.tipoDocumento)" />
