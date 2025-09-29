@@ -1,19 +1,20 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { Card } from 'primeng/card';
-import { GeneralComponent } from '../../../../components/general.component';
+import {Component, inject} from '@angular/core';
+import {Card} from 'primeng/card';
+import {GeneralComponent} from '../../../../components/general.component';
 
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
-import { Select } from 'primeng/select';
-import { Button } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {Select} from 'primeng/select';
+import {Button} from 'primeng/button';
+import {InputTextModule} from 'primeng/inputtext';
 
 
-import { CommonModule } from '@angular/common';
-import { CatalogoGeneral } from '@models/catalogoGeneral';
-import { RegistroMedico } from '@models/datosMedico';
-import { BtnRegresarComponent } from '../../../../components/btn-regresar/btn-regresar.component';
-import { passwordValidator } from '@validators/password-validator';
-import { PATRON_CURP, PATRON_EMAIL, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_RFC } from '@utils/regex';
+import {CommonModule} from '@angular/common';
+import {CatalogoGeneral} from '@models/catalogoGeneral';
+import {RegistroMedico} from '@models/datosMedico';
+import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regresar.component';
+import {passwordValidator} from '@validators/password-validator';
+import {PATRON_CURP, PATRON_EMAIL, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_RFC} from '@utils/regex';
+
 @Component({
   selector: 'app-registro-medico',
   imports: [
@@ -121,7 +122,7 @@ export class RegistroMedicoComponent extends GeneralComponent {
         } else {
 
           this.isCurp();
-        
+
         }
         break;
 
