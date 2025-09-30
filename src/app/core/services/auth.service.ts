@@ -12,6 +12,7 @@ export class AuthService {
   private readonly URL_BASE: string = environment.api.login + 'auth/';
   private readonly URL_AUTH: string = 'authenticate';
   private readonly URL_CAMBIO_CONTRASENIA: string = 'solicitud-cambio-contrasena';
+  private readonly URL_ACTUALIZAR_CONTRASENIA: string = 'cambio-contrasena';
 
   http = inject(HttpClient);
 
@@ -31,5 +32,9 @@ export class AuthService {
 
   solicitarCambioPass(solicitud: SolicitudCambioContrasenia): Observable<any> {
     return this.http.post(`${this.URL_BASE}${this.URL_CAMBIO_CONTRASENIA}`, solicitud)
+  }
+
+  cambiarPass(solicitud: SolicitudCambioContrasenia): Observable<any> {
+    return this.http.post(`${this.URL_BASE}${this.URL_ACTUALIZAR_CONTRASENIA}`, solicitud)
   }
 }
