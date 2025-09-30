@@ -11,6 +11,8 @@ import {ConfirmationService} from 'primeng/api';
 import {Card} from 'primeng/card';
 import {SolicitudCambioContrasenia} from '@models/solicitud-cambio-contrasenia.interface';
 import {AuthService} from '@services/auth.service';
+import {LoaderService} from '../../../../components/loader/services/loader.service';
+import {finalize} from 'rxjs';
 
 @Component({
   selector: 'app-recuperar-cuenta',
@@ -32,6 +34,7 @@ export class RecuperarCuentaComponent {
   formRecuperarCuenta!: FormGroup;
   fb: FormBuilder = inject(FormBuilder);
   authService: AuthService = inject(AuthService);
+  loaderService: LoaderService = inject(LoaderService);
 
   constructor(private readonly confirmationService: ConfirmationService) {
     this.formRecuperarCuenta = this.inicializarFormulario();
@@ -64,7 +67,10 @@ export class RecuperarCuentaComponent {
 
   recuperarContrasenia(): void {
     const solicitud: SolicitudCambioContrasenia = this.generarSolicitudRecuperacionContrasenia();
-    this.authService.solicitarCambioPass(solicitud).subscribe({
+    this.loaderService.activar();
+    this.authService.solicitarCambioPass(solicitud).pipe(
+      finalize(() => this.loaderService.desactivar())
+    ).subscribe({
       next: () => {
       },
       error: (error) => {
