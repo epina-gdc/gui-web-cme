@@ -1,14 +1,14 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { environment } from '@env/environment.development';
-import { Login } from '@models/login';
-import { Observable, map, tap } from 'rxjs';
-import {SolicitudCambioContrasenia} from '@models/solicitud-cambio-contrasenia.interface';
-import { JwtHelperService } from "@auth0/angular-jwt";
+import {JwtHelperService} from "@auth0/angular-jwt";
 import { UserService } from './user.service';
 import { SesionUser } from '@models/sesion-user.interface';
 import { Payload } from '@models/payload.interface';
 import { Router } from '@angular/router';
+import {HttpClient} from '@angular/common/http';
+import {inject, Injectable} from '@angular/core';
+import {environment} from '@env/environment.development';
+import {Login} from '@models/login';
+import {map, Observable, tap} from 'rxjs';
+import {SolicitudCambioContrasenia} from '@models/solicitud-cambio-contrasenia.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,6 @@ export class AuthService {
   private readonly URL_AUTH: string = 'authenticate';
   private readonly URL_CAMBIO_CONTRASENIA: string = 'solicitud-cambio-contrasena';
   private readonly URL_ACTUALIZAR_CONTRASENIA: string = 'cambio-contrasena';
-
   
   http = inject(HttpClient);
   router = inject(Router);
@@ -29,6 +28,7 @@ export class AuthService {
     map((usuario: SesionUser | null) => !!usuario)
   )
   
+
   login(login: Login): Observable<any> {
     return this.http.post<any>(`${this.URL_BASE}${this.URL_AUTH}`, login).pipe(
       tap((respuesta: any) => {
