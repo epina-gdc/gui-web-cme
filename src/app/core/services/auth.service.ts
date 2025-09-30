@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environment } from '@env/environment.development';
 import { Login } from '@models/login';
-import { Observable, tap } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import {SolicitudCambioContrasenia} from '@models/solicitud-cambio-contrasenia.interface';
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { UserService } from './user.service';
@@ -19,15 +19,17 @@ export class AuthService {
   private readonly URL_CAMBIO_CONTRASENIA: string = 'solicitud-cambio-contrasena';
   private readonly URL_ACTUALIZAR_CONTRASENIA: string = 'cambio-contrasena';
 
+  
   http = inject(HttpClient);
   router = inject(Router);
   usuarioService = inject(UserService);
+
+  existeUnaSesion$: Observable<boolean> = this.usuarioService.userData$
+  .pipe(
+    map((usuario: SesionUser | null) => !!usuario)
+  )
   
   login(login: Login): Observable<any> {
-    /*const headers = new HttpHeaders({
-      'CME-REGISTRO-API-KEY': 'YjRkZjFhYmE5NTAzZTRmNmNiOTdhM2Q2YzVhM2Q0NTNjOGI3MDYxY2YwNDU4M2JkNzdiNDI3NGY2YWE5M2I5',
-      'Content-Type': 'application/json'
-    });*/
     return this.http.post<any>(`${this.URL_BASE}${this.URL_AUTH}`, login).pipe(
       tap((respuesta: any) => {
         if (respuesta.exito) {

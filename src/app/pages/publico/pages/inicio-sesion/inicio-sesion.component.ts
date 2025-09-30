@@ -11,6 +11,8 @@ import {PATRON_EMAIL} from '@utils/regex';
 import {AuthService} from '@services/auth.service';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {HttpRespuesta} from '@models/http-respuesta.interface';
+import { LoaderService } from '../../../../components/loader/services/loader.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -32,6 +34,7 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit{
 
   loginService = inject(AuthService);
   fb = inject(FormBuilder)
+  loaderService: LoaderService = inject(LoaderService);
   destroyRef = inject(DestroyRef);
 
   activatedRoute = inject(ActivatedRoute);
@@ -59,7 +62,9 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit{
 
   iniciarSesion(){
     if(this.formLogin.valid){
+      this.loaderService.activar();
       this.loginService.login(this.formLogin.value)
+      .pipe(finalize(()=> this.loaderService.desactivar()))
       .subscribe({
         next:(respuesta: HttpRespuesta<any>) => {
           if(!respuesta.exito){
