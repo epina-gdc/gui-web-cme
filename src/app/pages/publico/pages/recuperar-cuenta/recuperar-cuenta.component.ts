@@ -9,6 +9,8 @@ import {NgClass} from '@angular/common';
 import {ConfirmDialog} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
 import {Card} from 'primeng/card';
+import {SolicitudCambioContrasenia} from '@models/solicitud-cambio-contrasenia.interface';
+import {AuthService} from '@services/auth.service';
 
 @Component({
   selector: 'app-recuperar-cuenta',
@@ -29,6 +31,7 @@ import {Card} from 'primeng/card';
 export class RecuperarCuentaComponent {
   formRecuperarCuenta!: FormGroup;
   fb: FormBuilder = inject(FormBuilder);
+  authService: AuthService = inject(AuthService);
 
   constructor(private readonly confirmationService: ConfirmationService) {
     this.formRecuperarCuenta = this.inicializarFormulario();
@@ -53,15 +56,27 @@ export class RecuperarCuentaComponent {
         label: 'No',
         severity: 'danger'
       },
-      accept: () => {
-      },
+      accept: () => this.recuperarContrasenia(),
       reject: () => {
       }
     });
   }
 
-  recuperarContrasenia() {
-    console.log('');
+  recuperarContrasenia(): void {
+    const solicitud: SolicitudCambioContrasenia = this.generarSolicitudRecuperacionContrasenia();
+    this.authService.solicitarCambioPass(solicitud).subscribe({
+      next: () => {
+      },
+      error: (error) => {
+      },
+    })
+  }
+
+  generarSolicitudRecuperacionContrasenia(): SolicitudCambioContrasenia {
+    return {
+      refCurp: this.formRecuperarCuenta.get('curp')?.value,
+      refEmail: this.formRecuperarCuenta.get('correoPersonal')?.value
+    }
   }
 
 }
