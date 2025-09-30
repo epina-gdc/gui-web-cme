@@ -60,7 +60,7 @@
 
   body {
     margin: 0;
-    background-color: var( --gob-mx-gris-tono4);
+    background-color: var(--gob-mx-gris-tono4);
   }
 
   .login-background {
@@ -105,9 +105,6 @@
 
   .p-tab-active .border-tab {
     background: rgba(112, 153, 230, 0.1);
-  }
-
-  .p-tab-active .border-tab {
     border-right: 8px solid #5383EB;
   }
 
@@ -134,10 +131,9 @@
     padding-right: 0;
   }
 
-  .alert{
-       text-align: center;
+  .alert {
+    text-align: center;
     font-feature-settings: 'liga' off, 'clig' off;
-    font-family: "Noto Sans";
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -145,21 +141,23 @@
 
   }
 
-  .alert-success{
+  .alert-success {
     background: var(--Sistema-Success-100, #D1E7DD);
     color: var(--Sistema-Success-800, #0A3622);
 
 
   }
 
-  .alert-info{
+  .alert-info {
 
   }
+
   .alert-warning {
 
   }
 
-  .p-tabpanels {
+  .p-tabpanels, .p-password {
     width: 100% !important;
   }
+
 }

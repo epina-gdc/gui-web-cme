@@ -5,6 +5,7 @@ import {CrearCuentaComponent} from '@publico/crear-cuenta/crear-cuenta.component
 import {NAV} from '@utils/url-global';
 import {RegistroMedicoComponent} from './pages/registro-medico/registro-medico.component';
 import {RecuperarCuentaComponent} from '@publico/recuperar-cuenta/recuperar-cuenta.component';
+import {CambioContraseniaComponent} from '@publico/cambio-contrasenia/cambio-contrasenia.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,10 @@ const routes: Routes = [
   {
     path: NAV.recuperarContrasenia,
     component: RecuperarCuentaComponent
+  },
+  {
+    path: NAV.nuevaContrasenia,
+    component: CambioContraseniaComponent
   }
 ];
 
