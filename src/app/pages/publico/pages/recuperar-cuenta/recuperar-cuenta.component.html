@@ -4,7 +4,7 @@
 <div class="px-0">
   <hr class=" border-1 text-gray-100">
 </div>
-<form [formGroup]="formRecuperarCuenta" (ngSubmit)="recuperarContrasenia()">
+<form [formGroup]="formRecuperarCuenta" (ngSubmit)="abrirModalRecuperarContrasenia()">
   <div class=" mt-4">
     <div class="field">
       <label for="curp_recuperar_cuenta" class="field-label">CURP</label>
@@ -16,8 +16,8 @@
         id="curp_recuperar_cuenta"
         oninput="this.value = this.value.toUpperCase()"
         placeholder="Ingresa tu CURP"
-        minlength="10"
-        maxlength="10"
+        minlength="18"
+        maxlength="18"
         formControlName="curp"/>
     </div>
     <div class="form-icon">
@@ -37,3 +37,15 @@
 <div class="flex justify-content-end mt-3">
   <p-button type="submit" disabled label="Enviar"/>
 </div>
+
+
+<p-toast />
+<p-confirmDialog>
+  <ng-template #message let-message>
+    <div class="flex flex-col items-center w-full gap-4 border-b border-surface-200 dark:border-surface-700">
+      <i [ngClass]="message.icon" class="!text-6xl text-primary-500"></i>
+      <p>{{ message.message }}</p>
+    </div>
+  </ng-template>
+</p-confirmDialog>
+

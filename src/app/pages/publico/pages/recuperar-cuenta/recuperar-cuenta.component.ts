@@ -5,6 +5,10 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {PATRON_CURP} from '@utils/regex';
 import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
 import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.directive';
+import {Toast} from 'primeng/toast';
+import {NgClass} from '@angular/common';
+import {ConfirmDialog} from 'primeng/confirmdialog';
+import {ConfirmationService, MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-recuperar-cuenta',
@@ -13,24 +17,53 @@ import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.di
     InputTextModule,
     ReactiveFormsModule,
     AlphanumericDirective,
-    EmailAllowCaractersDirective
+    EmailAllowCaractersDirective,
+    Toast,
+    NgClass,
+    ConfirmDialog
   ],
   templateUrl: './recuperar-cuenta.component.html',
-  styleUrl: './recuperar-cuenta.component.scss'
+  styleUrl: './recuperar-cuenta.component.scss',
+  providers: [ConfirmationService, MessageService]
 })
 export class RecuperarCuentaComponent {
   formRecuperarCuenta!: FormGroup;
   fb: FormBuilder = inject(FormBuilder);
 
-  constructor() {
+  constructor(private confirmationService: ConfirmationService, private messageService: MessageService) {
     this.formRecuperarCuenta = this.inicializarFormulario();
   }
 
   inicializarFormulario(): FormGroup {
     return this.fb.group({
-      curp: ['', [Validators.required, Validators.minLength(10),
-        Validators.maxLength(10), Validators.pattern(PATRON_CURP)]],
+      curp: ['', [Validators.required, Validators.minLength(18),
+        Validators.maxLength(18), Validators.pattern(PATRON_CURP)]],
       correoPersonal: ['', [Validators.required, Validators.email]]
+    });
+  }
+
+  abrirModalRecuperarContrasenia() {
+    this.confirmationService.confirm({
+      header: 'Confirmation',
+      message: '¿Está seguro de que desea cambiar su contraseña?',
+      icon: 'pi pi-exclamation-circle',
+      rejectButtonProps: {
+        label: 'No',
+        icon: 'pi pi-times',
+        outlined: true,
+        size: 'small'
+      },
+      acceptButtonProps: {
+        label: 'Sí',
+        icon: 'pi pi-check',
+        size: 'small'
+      },
+      accept: () => {
+        this.messageService.add({severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000});
+      },
+      reject: () => {
+        this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000});
+      }
     });
   }
 
