@@ -13,6 +13,8 @@ import {SolicitudCambioContrasenia} from '@models/solicitud-cambio-contrasenia.i
 import {AuthService} from '@services/auth.service';
 import {LoaderService} from '../../../../components/loader/services/loader.service';
 import {finalize} from 'rxjs';
+import {AlertService} from '@services/alert.service';
+import {Mensajes} from '@utils/mensajes';
 
 @Component({
   selector: 'app-recuperar-cuenta',
@@ -31,10 +33,12 @@ import {finalize} from 'rxjs';
   providers: [ConfirmationService]
 })
 export class RecuperarCuentaComponent {
+  mensajes: Mensajes = new Mensajes()
   formRecuperarCuenta!: FormGroup;
   fb: FormBuilder = inject(FormBuilder);
   authService: AuthService = inject(AuthService);
   loaderService: LoaderService = inject(LoaderService);
+  alertaService: AlertService = inject(AlertService);
 
   constructor(private readonly confirmationService: ConfirmationService) {
     this.formRecuperarCuenta = this.inicializarFormulario();
@@ -72,6 +76,8 @@ export class RecuperarCuentaComponent {
       finalize(() => this.loaderService.desactivar())
     ).subscribe({
       next: () => {
+        this.alertaService.exito(this.mensajes.MSG017);
+        this.formRecuperarCuenta.reset();
       },
       error: (error) => {
       },

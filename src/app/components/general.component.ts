@@ -4,7 +4,7 @@ import {Mensajes} from "@utils/mensajes";
 import {Router} from '@angular/router';
 import {NAV} from "./../core/utils/url-global";
 import {CatalogoGeneral} from "@models/catalogoGeneral";
-import {AlertService} from "../core/alert/alert.service";
+import {AlertService} from "@services/alert.service";
 
 
 @Component({
