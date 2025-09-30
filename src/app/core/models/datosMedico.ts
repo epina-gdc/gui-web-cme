@@ -1,14 +1,20 @@
+import { CatPerfil } from "./catalogoGeneral";
 
 export class Medico {
-    nombre!: string;
-    apellidoP!: string;
-    apellidoM!: string;
-    curp!: string;
-    rfc!: string;
-    correo!: string;
-    password!: string;
+    nomNombre!: string;
+    nomApellidoPaterno!: string;
+    nomApellidoMaterno!: string;
+    refCurp!: string;
+    refRfc!: string;
+    refEmail!: string;
+    refContrasenaHash!: string;
     modalidad!: number;
-    perfil!: number;
+    perfil1!: number
+    nomPerfil!: string;
+perfil!: CatPerfil;
+blnInterno!: boolean;
+
+
 }
 
 
@@ -21,5 +27,21 @@ export class RegistroMedico extends Medico {
     blnPasaporte!: boolean;
     pais!:string;
     pasaporte!: string;
-    matricula!: string;
+    cveMatricula!: string;
+}
+
+
+
+export class RegistroInternoRequest {
+   refEmail!:string;
+   refContrasenaHash!:string;
+   idPerfil!: number;
+   cveMatricula!:string;
+   nomNombre!:string;
+   nomApellidoPaterno!:string;
+   nomApellidoMaterno!:string;
+   refCurp!:string;
+   refRfc!:string;
+
+
 }

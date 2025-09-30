@@ -27,7 +27,7 @@
 
 
                   
-                        @if(medico.perfil == 1){
+                        @if(medico.blnInterno){
                         <div class=" mt-4 row flex">
                             <div class="field col-9">
                                 <label class="field-label" for="matricula">Matrícula</label>
@@ -71,7 +71,7 @@
 
                         </div>
                         }
-                        @if(medico.perfil == 2){
+                        @if(!medico.blnInterno){
                         <div class=" mt-4 row flex">
                             <div class="field col-12">
                                 <label class="field-label" for="modalidad">Modalidad del médico</label>
@@ -82,7 +82,7 @@
                             </div>
                         </div>
                         }
-                        @if(!medico.blnPasaporte && medico.perfil == 2){
+                        @if(!medico.blnPasaporte && !medico.blnInterno){
                         <div class=" mt-4 row flex">
                             <div class="field col-9">
                                 <label class="field-label" for="curp">CURP</label>
@@ -137,7 +137,7 @@
 
                         </div>
 
-                        } @else if (medico.blnPasaporte && medico.perfil == 2) {
+                        } @else if (medico.blnPasaporte && !medico.blnInterno) {
 
                         <div class=" mt-4 row flex">
 
@@ -217,7 +217,7 @@
                             </div>
 
                         </div>
-                        @if(medico.blnPasaporte || medico.perfil == 1){
+                        @if(medico.blnPasaporte || medico.blnInterno){
                         <div class=" mt-4 row flex">
                             <div class="field col-6">
 
