@@ -2,14 +2,14 @@ import {Directive, ElementRef, HostListener, Renderer2, forwardRef} from '@angul
 import {ControlValueAccessor, NG_VALUE_ACCESSOR} from "@angular/forms";
 
 @Directive({
-  selector: 'input[alphanumericOnly]',
+  selector: 'input[emailAllowCaracters]',
   providers: [{
     provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => AlphanumericDirective),
+    useExisting: forwardRef(() => EmailAllowCaractersDirective),
     multi: true
   }]
 })
-export class AlphanumericDirective implements ControlValueAccessor {
+export class EmailAllowCaractersDirective implements ControlValueAccessor {
   private onChange!: (val: string) => void;
   private onTouched!: () => void;
   private value!: string;
@@ -23,6 +23,7 @@ export class AlphanumericDirective implements ControlValueAccessor {
   @HostListener('input', ['$event.target.value'])
   onInputChange(value: string): void {
     const valorFiltrado: string = filtrarValor(value);
+
     this.actualizarTextInput(valorFiltrado, this.value !== valorFiltrado);
   }
 
@@ -33,6 +34,7 @@ export class AlphanumericDirective implements ControlValueAccessor {
 
   private actualizarTextInput(nuevoValor: string, propagarCambio: boolean): void {
     this.renderer.setProperty(this.elementRef.nativeElement, 'value', nuevoValor);
+
     if (propagarCambio) {
       this.onChange(nuevoValor);
     }
@@ -53,13 +55,11 @@ export class AlphanumericDirective implements ControlValueAccessor {
 
   writeValue(value: any): void {
     value = value ? String(value) : '';
-    this.actualizarTextInput(value, false);
+    this.actualizarTextInput(filtrarValor(value), false);
   }
 }
 
 function filtrarValor(value: string): string {
-  let newValue: string = value.replace(/[^a-zA-Z0-9ñÑ\s]+/g, '');
-  newValue = newValue.replace(/\s+/g, ' ');
-  return newValue;
+  const regex = /[^a-zA-Z0-9ñÑ._\-+%=*']+/g;
+  return value.replace(regex, '');
 }
-

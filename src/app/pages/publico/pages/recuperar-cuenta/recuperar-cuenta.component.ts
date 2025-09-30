@@ -4,6 +4,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {PATRON_CURP} from '@utils/regex';
 import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
+import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.directive';
 
 @Component({
   selector: 'app-recuperar-cuenta',
@@ -11,7 +12,8 @@ import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
     Button,
     InputTextModule,
     ReactiveFormsModule,
-    AlphanumericDirective
+    AlphanumericDirective,
+    EmailAllowCaractersDirective
   ],
   templateUrl: './recuperar-cuenta.component.html',
   styleUrl: './recuperar-cuenta.component.scss'

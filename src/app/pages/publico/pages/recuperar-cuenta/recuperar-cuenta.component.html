@@ -7,13 +7,13 @@
 <form [formGroup]="formRecuperarCuenta" (ngSubmit)="recuperarContrasenia()">
   <div class=" mt-4">
     <div class="field">
-      <label for="curp" class="field-label">CURP</label>
+      <label for="curp_recuperar_cuenta" class="field-label">CURP</label>
       <input
         pInputText
         alphanumericOnly
         class="w-full"
         type="text"
-        id="curp"
+        id="curp_recuperar_cuenta"
         oninput="this.value = this.value.toUpperCase()"
         placeholder="Ingresa tu CURP"
         minlength="10"
@@ -21,12 +21,14 @@
         formControlName="curp"/>
     </div>
     <div class="form-icon">
-      <label class="field-label" for="correoPersonal">Correo personal</label>
+      <label class="field-label" for="correoPersonal_recuperar_cuenta">Correo personal</label>
       <input
         pInputText
+        emailAllowCaracters
         class="w-full"
         type="text"
-        id="correoPersonal"
+        id="correoPersonal_recuperar_cuenta"
+        oninput="this.value = this.value.toLowerCase()"
         placeholder="Ingresa correo personal"
         formControlName="correoPersonal"/>
     </div>
