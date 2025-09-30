@@ -45,6 +45,8 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit{
 
   caracteresProhibidos = new Set([' ', '"', '(', ')', '[', ']', '{', '}', '!', '#', '&', '/', ',', ';', ':', '<', '>']);
 
+  fechaActual = new Date();
+
 
   ngOnInit(): void {
     this.formLogin = this.inicializarFormLogin();
@@ -72,7 +74,9 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit{
           });
         },
         error:(error) => {
-          this._alertServices.error(error.error.mensaje);
+          if(error){
+            this._alertServices.error(error.error.mensaje);
+          }
         }
       })
     }
