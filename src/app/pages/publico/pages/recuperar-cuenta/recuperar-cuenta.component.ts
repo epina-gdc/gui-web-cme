@@ -1,34 +1,38 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {Button} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {PATRON_CURP} from '@utils/regex';
+import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
 
 @Component({
   selector: 'app-recuperar-cuenta',
   imports: [
     Button,
     InputTextModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AlphanumericDirective
   ],
   templateUrl: './recuperar-cuenta.component.html',
   styleUrl: './recuperar-cuenta.component.scss'
 })
-export class RecuperarCuentaComponent implements OnInit{
+export class RecuperarCuentaComponent {
   formRecuperarCuenta!: FormGroup;
-  fb = inject(FormBuilder);
+  fb: FormBuilder = inject(FormBuilder);
 
-  ngOnInit(): void {
-      this.formRecuperarCuenta = this.inicializarFormulario();
+  constructor() {
+    this.formRecuperarCuenta = this.inicializarFormulario();
   }
 
-  inicializarFormulario(): FormGroup{
+  inicializarFormulario(): FormGroup {
     return this.fb.group({
-      curp: ['', [Validators.required]],
+      curp: ['', [Validators.required, Validators.minLength(10),
+        Validators.maxLength(10), Validators.pattern(PATRON_CURP)]],
       correoPersonal: ['', [Validators.required, Validators.email]]
     });
   }
 
-  recuperarContrasenia(){
+  recuperarContrasenia() {
     console.log('');
   }
 

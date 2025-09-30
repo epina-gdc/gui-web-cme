@@ -1,24 +1,28 @@
 <div class="flex justify-content-center px-3">
-    <h2 class="login-card-titulo">Recuperar contraseña</h2>
+  <h2 class="login-card-titulo">Recuperar contraseña</h2>
 </div>
 <div class="px-0">
-    <hr class=" border-1 text-gray-100">
+  <hr class=" border-1 text-gray-100">
 </div>
-<form [formGroup]="formRecuperarCuenta"  (ngSubmit)="recuperarContrasenia()">
-    <div class=" mt-4">
+<form [formGroup]="formRecuperarCuenta" (ngSubmit)="recuperarContrasenia()">
+  <div class=" mt-4">
     <div class="field">
-        <label for="curp" class="field-label">CURP</label>
-        <input 
-        pInputText 
-        class="w-full" 
-        type="text" 
-        id="curp" 
-        placeholder="Ingresa tu CURP" 
-        formControlName="curp" />
+      <label for="curp" class="field-label">CURP</label>
+      <input
+        pInputText
+        alphanumericOnly
+        class="w-full"
+        type="text"
+        id="curp"
+        oninput="this.value = this.value.toUpperCase()"
+        placeholder="Ingresa tu CURP"
+        minlength="10"
+        maxlength="10"
+        formControlName="curp"/>
     </div>
     <div class="form-icon">
-        <label class="field-label" for="correoPersonal">Correo personal</label>
-        <input 
+      <label class="field-label" for="correoPersonal">Correo personal</label>
+      <input
         pInputText
         class="w-full"
         type="text"
@@ -26,8 +30,8 @@
         placeholder="Ingresa correo personal"
         formControlName="correoPersonal"/>
     </div>
-    </div>
+  </div>
 </form>
 <div class="flex justify-content-end mt-3">
-    <p-button type="submit" disabled label="Enviar"/>
+  <p-button type="submit" disabled label="Enviar"/>
 </div>
