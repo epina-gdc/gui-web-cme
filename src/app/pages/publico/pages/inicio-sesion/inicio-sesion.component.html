@@ -16,7 +16,7 @@
           <form [formGroup]="formLogin"  (ngSubmit)="iniciarSesion()">
             <div class="login-card-body mt-4">
               <div class="field">
-                <label class="field-label" for="correoElectronico">Correo electrónico</label>
+                <label class="field-label" for="username">Correo electrónico</label>
                 <input
                 autocomplete="false"
                   (keypress)="validarCaracterCorreo($event)"
@@ -24,9 +24,9 @@
                   pInputText
                   class="w-full"
                   type="email"
-                  id="correoElectronico"
+                  id="username"
                   placeholder="Ingresa correo electrónico"
-                  formControlName="correoElectronico" />
+                  formControlName="username" />
               </div>
               <div class="form-icon">
                 <label class="field-label" for="password">Contraseña</label>
