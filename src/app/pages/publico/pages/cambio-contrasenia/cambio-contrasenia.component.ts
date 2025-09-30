@@ -1,27 +1,17 @@
 import {Component, inject} from '@angular/core';
-import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
-import {Button} from 'primeng/button';
 import {Card} from 'primeng/card';
-import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.directive';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {InputText} from 'primeng/inputtext';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Password} from 'primeng/password';
-import {NgClass} from '@angular/common';
 import {Divider} from 'primeng/divider';
 import {PrimeTemplate} from 'primeng/api';
 
 @Component({
   selector: 'app-cambio-contrasenia',
   imports: [
-    AlphanumericDirective,
-    Button,
     Card,
-    EmailAllowCaractersDirective,
     FormsModule,
-    InputText,
     ReactiveFormsModule,
     Password,
-    NgClass,
     Divider,
     PrimeTemplate
   ],
@@ -39,13 +29,25 @@ export class CambioContraseniaComponent {
 
   crearRegistroForm(): FormGroup {
     return this.fb.group({
-      nuevaContrasena: [''],
-      confirmarContrasena: ['']
+      nuevaContrasena: ['', [Validators.required, Validators.minLength(8),
+        Validators.maxLength(16)]],
+      confirmarContrasena: ['', [Validators.required, Validators.minLength(8),
+        Validators.maxLength(16)]]
     });
   }
 
   cambiarPassword(): void {
+    if (this.registroForm.invalid) return;
+    if (!this.validarMismoPass()) {
+      // this.mostrarAlertaDatosInvalidos('Las contraseñas no coinciden, favor de verificar.');
+      return;
+    }
+  }
 
+  validarMismoPass(): boolean {
+    const nuevaContrasena = this.registroForm.get('nuevaContrasena');
+    const confirmarContrasena = this.registroForm.get('confirmarContrasena');
+    return nuevaContrasena?.value === confirmarContrasena?.value
   }
 
 }
