@@ -3,13 +3,15 @@ import {inject, Injectable} from '@angular/core';
 import {environment} from '@env/environment.development';
 import {Login} from '@models/login';
 import {Observable, tap} from 'rxjs';
+import {SolicitudCambioContrasenia} from '@models/solicitud-cambio-contrasenia.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly URL_BASE: string = environment.api.login;
-  private readonly URL_AUTH: string = 'auth/authenticate';
+  private readonly URL_BASE: string = environment.api.login + 'auth/';
+  private readonly URL_AUTH: string = 'authenticate';
+  private readonly URL_CAMBIO_CONTRASENIA: string = 'solicitud-cambio-contrasena';
 
   http = inject(HttpClient);
 
@@ -27,7 +29,7 @@ export class AuthService {
     );
   }
 
-  solicitarCambioPass(): void {
-
+  solicitarCambioPass(solicitud: SolicitudCambioContrasenia): Observable<any> {
+    return this.http.post(`${this.URL_BASE}${this.URL_CAMBIO_CONTRASENIA}`, solicitud)
   }
 }
