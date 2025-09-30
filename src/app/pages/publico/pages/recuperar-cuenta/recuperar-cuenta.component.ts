@@ -15,6 +15,7 @@ import {LoaderService} from '../../../../components/loader/services/loader.servi
 import {finalize} from 'rxjs';
 import {AlertService} from '@services/alert.service';
 import {Mensajes} from '@utils/mensajes';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-recuperar-cuenta',
@@ -39,6 +40,8 @@ export class RecuperarCuentaComponent {
   authService: AuthService = inject(AuthService);
   loaderService: LoaderService = inject(LoaderService);
   alertaService: AlertService = inject(AlertService);
+
+  private router = inject(Router);
 
   constructor(private readonly confirmationService: ConfirmationService) {
     this.formRecuperarCuenta = this.inicializarFormulario();
@@ -76,10 +79,12 @@ export class RecuperarCuentaComponent {
       finalize(() => this.loaderService.desactivar())
     ).subscribe({
       next: () => {
-        this.alertaService.exito(this.mensajes.MSG017);
         this.formRecuperarCuenta.reset();
+        void this.router.navigate(['/iniciar-sesion']);
+        this.alertaService.exito(this.mensajes.MSG017);
       },
       error: (error) => {
+        this.alertaService.error(this.mensajes.MSG018);
       },
     })
   }

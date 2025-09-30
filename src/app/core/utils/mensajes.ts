@@ -16,6 +16,7 @@ export class Mensajes {
   public MSG013: string = "Por favor completa todos los campos obligatorios.";
   public MSG014: string = 'La CURP ingresada es incorrecta, por favor verifica tu información.';
   public MSG017: string = 'Se ha enviado a su cuenta de correo la información para poder ingresar.';
+  public MSG018: string = 'No se encontró ningún registro con los datos proporcionados.';
 
   public MSJ_PASS_MIN_CARACTER: string = "La contraseña debe tener al menos 8 caracteres"
   public MSJ_PASS_MAX_CARACTER: string = "La contraseña debe tener máximo 12 caracteres"
