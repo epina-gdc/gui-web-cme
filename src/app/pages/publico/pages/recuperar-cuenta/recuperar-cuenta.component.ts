@@ -8,7 +8,7 @@ import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.di
 import {Toast} from 'primeng/toast';
 import {NgClass} from '@angular/common';
 import {ConfirmDialog} from 'primeng/confirmdialog';
-import {ConfirmationService, MessageService} from 'primeng/api';
+import {ConfirmationService} from 'primeng/api';
 import {Card} from 'primeng/card';
 
 @Component({
@@ -26,13 +26,13 @@ import {Card} from 'primeng/card';
   ],
   templateUrl: './recuperar-cuenta.component.html',
   styleUrl: './recuperar-cuenta.component.scss',
-  providers: [ConfirmationService, MessageService]
+  providers: [ConfirmationService]
 })
 export class RecuperarCuentaComponent {
   formRecuperarCuenta!: FormGroup;
   fb: FormBuilder = inject(FormBuilder);
 
-  constructor(private confirmationService: ConfirmationService, private messageService: MessageService) {
+  constructor(private readonly confirmationService: ConfirmationService) {
     this.formRecuperarCuenta = this.inicializarFormulario();
   }
 
@@ -46,25 +46,18 @@ export class RecuperarCuentaComponent {
 
   abrirModalRecuperarContrasenia() {
     this.confirmationService.confirm({
-      header: 'Confirmation',
       message: '¿Está seguro de que desea cambiar su contraseña?',
       icon: 'pi pi-exclamation-circle',
-      rejectButtonProps: {
-        label: 'No',
-        icon: 'pi pi-times',
-        outlined: true,
-        size: 'small'
-      },
       acceptButtonProps: {
         label: 'Sí',
-        icon: 'pi pi-check',
-        size: 'small'
+      },
+      rejectButtonProps: {
+        label: 'No',
+        severity: 'danger'
       },
       accept: () => {
-        this.messageService.add({severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000});
       },
       reject: () => {
-        this.messageService.add({severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000});
       }
     });
   }

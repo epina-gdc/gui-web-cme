@@ -60,6 +60,6 @@ export class EmailAllowCaractersDirective implements ControlValueAccessor {
 }
 
 function filtrarValor(value: string): string {
-  const regex = /[^a-zA-Z0-9._\-+%=*']+/g;
+  const regex = /[^a-zA-Z0-9._\-+%=*@']+/g;
   return value.replace(regex, '');
 }
