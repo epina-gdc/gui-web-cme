@@ -3,14 +3,13 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {Card} from 'primeng/card';
 import {Button} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
-import {RecuperarCuentaComponent} from '../recuperar-cuenta/recuperar-cuenta.component';
 import {CommonModule} from '@angular/common';
 import {GeneralComponent} from '../../../../components/general.component';
 import {passwordValidator} from '@validators/password-validator';
 import {BloquearCaracterPasswordDirective} from '@directives/bloquear-caracter-password.directive';
 import {PATRON_EMAIL} from '@utils/regex';
 import {AuthService} from '@services/auth.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, RouterLink} from '@angular/router';
 import {HttpRespuesta} from '@models/http-respuesta.interface';
 
 @Component({
@@ -20,9 +19,9 @@ import {HttpRespuesta} from '@models/http-respuesta.interface';
     Button,
     InputTextModule,
     ReactiveFormsModule,
-    RecuperarCuentaComponent,
     CommonModule,
-    BloquearCaracterPasswordDirective
+    BloquearCaracterPasswordDirective,
+    RouterLink
   ],
   templateUrl: './inicio-sesion.component.html',
   styleUrl: './inicio-sesion.component.scss',

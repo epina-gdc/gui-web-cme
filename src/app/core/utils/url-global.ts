@@ -1,6 +1,7 @@
 export const NAV = {
-  publico:'publico/',
-  crearCuenta: 'crear-cuenta', 
+  publico: 'publico/',
+  inicioSesion: 'inicio-sesion',
+  crearCuenta: 'crear-cuenta',
   registroMedico: 'registro-medico',
- 
-  };
+  recuperarContrasenia: 'recuperar-contrasenia',
+};

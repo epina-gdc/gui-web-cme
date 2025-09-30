@@ -9,6 +9,7 @@ import {Toast} from 'primeng/toast';
 import {NgClass} from '@angular/common';
 import {ConfirmDialog} from 'primeng/confirmdialog';
 import {ConfirmationService, MessageService} from 'primeng/api';
+import {Card} from 'primeng/card';
 
 @Component({
   selector: 'app-recuperar-cuenta',
@@ -20,7 +21,8 @@ import {ConfirmationService, MessageService} from 'primeng/api';
     EmailAllowCaractersDirective,
     Toast,
     NgClass,
-    ConfirmDialog
+    ConfirmDialog,
+    Card
   ],
   templateUrl: './recuperar-cuenta.component.html',
   styleUrl: './recuperar-cuenta.component.scss',
