@@ -193,7 +193,7 @@ export class RegistroMedicoComponent extends GeneralComponent {
   private isPasaporte() {
     this.clearCampos();
     this.form.controls['modalidad'].setValidators([Validators.required]);
-    this.form.controls['pasaporte'].setValidators([Validators.required]);
+    this.form.controls['pasaporte'].setValidators([Validators.required,Validators.minLength(6),Validators.maxLength(9)]);
     this.form.controls['pais'].setValidators([Validators.required]);
     this.form.controls['modalidad'].updateValueAndValidity();
     this.form.controls['pasaporte'].updateValueAndValidity();

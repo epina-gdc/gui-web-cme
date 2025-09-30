@@ -145,7 +145,7 @@
                                 <label class="field-label" for="pasaporte">Pasaporte</label>
                                 <input pInputText class="w-full" type="text" id="pasaporte"
                                     placeholder="Ingresa pasaporte" (keypress)="inPasaporte = true" autocomplete="off" formControlName="pasaporte"
-                                    maxlength="13" />
+                                    maxlength="9" minlength="6"  (keyup)="convertMayusculas($event);" />
                                     @if(inPasaporte){
                                         @for (validation of msjValidation.pasaporte; track validation.msj) {   
                                             @if(f['pasaporte'].errors?.[validation.type]){

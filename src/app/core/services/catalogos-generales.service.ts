@@ -56,6 +56,15 @@ import { CatPaisResponse, CatPerfil, CatPerfilResponse, CatSubperfilResponse } f
             })
         );
     }
+
+    getLstDocumentosVerificacion(): Observable<CatPaisResponse> {
+        return this.http.get<CatPaisResponse>(this.serverEndPointURL + '/paises', { headers: this.header }).pipe(
+            catchError(this.handleError),
+            map((response: CatPaisResponse) => {
+                return response;
+            })
+        );
+    }
  
  
   
