@@ -3,6 +3,9 @@ import { Injectable, inject } from '@angular/core';
 import { environment } from '@env/environment.development';
 import { Login } from '@models/login';
 import { Observable, tap } from 'rxjs';
+import {JwtHelperService} from "@auth0/angular-jwt";
+import { UserService } from './user.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -10,16 +13,15 @@ import { Observable, tap } from 'rxjs';
 export class AuthService {
 
   http = inject(HttpClient);
-
+  usuarioService$ = inject(UserService);
+  
   login(login: Login): Observable<any> {
-    /*const headers = new HttpHeaders({
-      'CME-REGISTRO-API-KEY': 'YjRkZjFhYmE5NTAzZTRmNmNiOTdhM2Q2YzVhM2Q0NTNjOGI3MDYxY2YwNDU4M2JkNzdiNDI3NGY2YWE5M2I5',
-      'Content-Type': 'application/json'
-    });*/
     return this.http.post<any>(`${environment.api.login}auth/authenticate`, login).pipe(
       tap((respuesta: any) => {
         if (respuesta.exito) {
           localStorage.setItem('access_token', respuesta.respuesta.token);
+          let payload: any | null = new JwtHelperService().decodeToken<any>(respuesta.respuesta.token);
+          this.usuarioService$.setUser(payload);
         }
       })
     );

@@ -72,7 +72,7 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit{
           });
         },
         error:(error) => {
-          this._alertServices.alerta(error.error.mensaje);
+          this._alertServices.error(error.error.mensaje);
         }
       })
     }
