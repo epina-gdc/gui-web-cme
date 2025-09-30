@@ -4,7 +4,7 @@
  */
  import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
  import { Injectable } from '@angular/core';
-import { CatPerfil, CatPerfilResponse } from '@models/catalogoGeneral';
+import { CatPaisResponse, CatPerfil, CatPerfilResponse, CatSubperfilResponse } from '@models/catalogoGeneral';
  import { Observable, throwError } from 'rxjs';
  import { catchError, map } from 'rxjs/operators';
  import { environment } from '../../../environments/environment.development';
@@ -37,6 +37,25 @@ import { CatPerfil, CatPerfilResponse } from '@models/catalogoGeneral';
              })
          );
      }
+
+     getLstSubPerfil(): Observable<CatSubperfilResponse> {
+        return this.http.get<CatSubperfilResponse>(this.serverEndPointURL + '/subperfiles-medicos/perfil/3', { headers: this.header }).pipe(
+            catchError(this.handleError),
+            map((response: CatSubperfilResponse) => {
+                return response;
+            })
+        );
+    }
+
+
+    getLstPais(): Observable<CatPaisResponse> {
+        return this.http.get<CatPaisResponse>(this.serverEndPointURL + '/paises', { headers: this.header }).pipe(
+            catchError(this.handleError),
+            map((response: CatPaisResponse) => {
+                return response;
+            })
+        );
+    }
  
  
   

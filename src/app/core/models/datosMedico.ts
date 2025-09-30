@@ -25,7 +25,7 @@ export class RegistroMedico extends Medico {
     correo2!: string;
     password2!: string;
     blnPasaporte!: boolean;
-    pais!:string;
+    pais!:number;
     pasaporte!: string;
     cveMatricula!: string;
 }
@@ -45,3 +45,38 @@ export class RegistroInternoRequest {
 
 
 }
+
+export class RegistroCurpRequest {
+    refEmail!: string;
+    refContrasenaHash!: string;
+    idPerfil!: number;
+    idSubperfil!: number;
+    idDocumentoVerificacion!: number;
+    nomNombre!: string;
+    nomApellidoPaterno!: string;
+    nomApellidoMaterno!: string;
+    refCurp!: string;
+    refRfc!: string;
+ 
+ 
+ }
+
+ export class RegistroPasaporteRequest {
+    refEmail!: string;
+    refContrasenaHash!: string;
+    idPerfil!: number;
+    idSubperfil!: number;
+    idDocumentoVerificacion!: number;
+    pasaporte!:string;
+    idPaisEmision!: number;
+    nomNombre!: string;
+    nomApellidoPaterno!: string;
+    nomApellidoMaterno!: string;
+    refCurp!: string;
+    refRfc!: string;
+
+
+  
+ 
+ 
+ }

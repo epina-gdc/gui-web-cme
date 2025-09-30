@@ -5,7 +5,7 @@
  import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
  import { Injectable } from '@angular/core';
 import { CatPerfil, CatPerfilResponse } from '@models/catalogoGeneral';
-import { RegistroInternoRequest } from '@models/datosMedico';
+import { RegistroCurpRequest, RegistroInternoRequest, RegistroPasaporteRequest } from '@models/datosMedico';
  import { Observable, throwError } from 'rxjs';
  import { catchError, map } from 'rxjs/operators';
  import { environment } from '../../../environments/environment.development';
@@ -43,6 +43,24 @@ import { RegistroInternoRequest } from '@models/datosMedico';
      registrarResidente(residente: RegistroInternoRequest): Observable<any> {
         let ruta = `${this.serverEndPointURRegistro}/registro`
         return this.http.post<RegistroInternoRequest>(ruta, residente, { headers: this.header }).pipe(
+          map((response:any) => {
+            return response
+          }),
+        )
+      }
+
+      registrarPasaporte(residente: RegistroPasaporteRequest): Observable<any> {
+        let ruta = `${this.serverEndPointURRegistro}/registro`
+        return this.http.post<RegistroPasaporteRequest>(ruta, residente, { headers: this.header }).pipe(
+          map((response:any) => {
+            return response
+          }),
+        )
+      }
+
+      registrarCurp(residente: RegistroCurpRequest): Observable<any> {
+        let ruta = `${this.serverEndPointURRegistro}/registro`
+        return this.http.post<RegistroCurpRequest>(ruta, residente, { headers: this.header }).pipe(
           map((response:any) => {
             return response
           }),

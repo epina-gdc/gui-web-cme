@@ -90,29 +90,9 @@ export class GeneralComponent {
   }
 
 
-  public getCatalogoModalidad(): Array<CatalogoGeneral> {
-    let lstModalidad: Array<CatalogoGeneral> = [{
-      id: 1,
-      descripcion: 'Médico cursando la residencia'
-    },
-    { id: 2, descripcion: 'Médico especialista con estudio en el extranjero ' },
-    { id: 3, descripcion: 'Médicos especialistas egresados 2025 de otra Institucional de Salud' },
-    { id: 4, descripcion: 'Médico especialista IMSS egresado de dos años anteriores ' }
-    ]
-    return lstModalidad;
-  }
 
 
-  public getCatalogoPerfiles1(): Array<CatalogoGeneral> {
-    let lstModalidad: Array<CatalogoGeneral> = [{
-      id: 2,
-      descripcion: 'Médico residente'
-    },
-    { id: 3, descripcion: 'Médico especialista con estudio en el extranjero ' },
 
-    ]
-    return lstModalidad;
-  }
 
 
 

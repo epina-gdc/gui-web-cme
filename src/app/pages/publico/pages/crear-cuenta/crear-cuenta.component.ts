@@ -7,7 +7,7 @@ import {RadioButton, RadioButtonModule} from 'primeng/radiobutton';
 import {GeneralComponent} from '../../../../components/general.component';
 import {CommonModule} from '@angular/common';
 import {RegistroMedico} from '@models/datosMedico';
-import { CatPerfil, CatPerfilResponse } from '@models/catalogoGeneral';
+import { CatPerfil, CatPerfilResponse, CatSubperfil, CatSubperfilResponse } from '@models/catalogoGeneral';
 
 @Component({
   selector: 'app-crear-cuenta',
@@ -37,7 +37,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   blnSeleccionado = false;
 
   lstPerfil !: any;
-  lstModalidad!: any;
+  lstModalidad!: Array<CatSubperfil>;
   lstDocumentos: any;
   registroMedico!: RegistroMedico;
   blnResidente!: boolean;
@@ -48,7 +48,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
     this.blnSeleccionado = false;
     this.form = this.inicializarForm();  
 
-    this.lstPerfil = this.getCatalogoPerfiles();
+     this.getCatalogoPerfiles();
   
     
       console.log("perfiles",this.lstPerfil);
@@ -72,7 +72,21 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
 
     });
   }
+  
+  getCatalogoModalidad(): void{
+    this.lstModalidad = new Array<CatSubperfil>();
+    this._CatalogoGenService.getLstSubPerfil().subscribe((response: CatSubperfilResponse) => {
 
+      if (response.exito) {
+
+        this.lstModalidad = response.respuesta;
+      
+      }
+
+      
+
+    });
+  }
 
 
   inicializarForm(): FormGroup {
@@ -165,7 +179,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
     this.blnResidente = true;
   }
   private camposExterno() {
-    this.lstModalidad = this.getCatalogoModalidad();
+    this.getCatalogoModalidad();
     this.lstDocumentos = this.getCatalogoDocumento();
     this.blnResidente = false;
 
