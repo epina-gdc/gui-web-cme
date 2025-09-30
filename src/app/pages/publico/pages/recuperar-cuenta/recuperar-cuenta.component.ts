@@ -5,7 +5,6 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {PATRON_CURP} from '@utils/regex';
 import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
 import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.directive';
-import {Toast} from 'primeng/toast';
 import {NgClass} from '@angular/common';
 import {ConfirmDialog} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
@@ -19,7 +18,6 @@ import {Card} from 'primeng/card';
     ReactiveFormsModule,
     AlphanumericDirective,
     EmailAllowCaractersDirective,
-    Toast,
     NgClass,
     ConfirmDialog,
     Card
