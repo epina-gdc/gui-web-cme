@@ -7,7 +7,7 @@ import {providePrimeNG} from 'primeng/config';
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {Mensajes} from '@utils/mensajes';
-import { ApiKeyInterceptor} from '@interceptors/api-key.interceptor';
+import {ApiKeyInterceptor} from '@interceptors/api-key.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [Mensajes,
