@@ -22,6 +22,9 @@ import {TabDocumento, TabNode} from '@models/tab-node.interface';
 import {ActivatedRoute} from '@angular/router';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
 import {mapearArregloTipoDropdown} from '@utils/funciones';
+import {CatalogosGeneralesService} from '@services/catalogos-generales.service';
+import {LoaderService} from '../../../../components/loader/services/loader.service';
+import {finalize} from 'rxjs';
 
 @Component({
   selector: 'app-inicio',
@@ -78,14 +81,21 @@ export class InicioComponent {
   estadosCiviles: TipoDropdown[] = [];
   paises: TipoDropdown[] = [];
   lugaresNacimiento: TipoDropdown[] = [];
+  estados: TipoDropdown[] = [];
+  municipios: TipoDropdown[] = [];
+  colonias: TipoDropdown[] = [];
 
   indice: WritableSignal<number> = signal<number>(0);
+
+  catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
+  loaderService: LoaderService = inject(LoaderService);
 
   constructor(private readonly activatedRoute: ActivatedRoute) {
     this.formRegistro = this.asignarFormularioRegistro();
     this.formZonaInteres = this.asignarFormularioZonaInteres();
     this.formDocumentosEspecialidad = this.asignarFormularioDocumentosEspecialidad();
     this.obtenerCatalogos();
+    this.suscribirObservables();
   }
 
   asignarFormularioRegistro(): FormGroup {
@@ -111,7 +121,49 @@ export class InicioComponent {
       colonia: [],
       calle: [],
       numeroExterior: []
-    })
+    });
+  }
+
+  suscribirObservables(): void {
+    this.formRegistro.get('pais')?.valueChanges.subscribe(value => this.obtenerEstadoPorPais(value));
+    this.formRegistro.get('estado')?.valueChanges.subscribe(value => this.obtenerMunicipioPorEstado(value));
+    this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerAlcaldiaPorMunicipio(value));
+  }
+
+  obtenerEstadoPorPais(pais: number): void {
+    if (!pais) return;
+    this.loaderService.activar();
+    this.catalogoService.getLstEstadosByPais(pais).pipe(
+      finalize((() => this.loaderService.desactivar()))
+    ).subscribe({
+      next: (valor) => {
+        this.estados = mapearArregloTipoDropdown(valor.respuesta, 'desEstado', 'idEstado');
+      }
+    });
+  }
+
+  obtenerMunicipioPorEstado(estado: number): void {
+    if (!estado) return;
+    this.loaderService.activar();
+    this.catalogoService.getLstDelegacionesMunicipiosByEstado(estado).pipe(
+      finalize((() => this.loaderService.desactivar()))
+    ).subscribe({
+      next: (valor) => {
+        this.municipios = mapearArregloTipoDropdown(valor.respuesta, 'desMunicipio', 'idMunicipio');
+      }
+    });
+  }
+
+  obtenerAlcaldiaPorMunicipio(municipio: number): void {
+    if (!municipio) return;
+    this.loaderService.activar();
+    this.catalogoService.getLstColoniasByDelegacion(municipio).pipe(
+      finalize((() => this.loaderService.desactivar()))
+    ).subscribe({
+      next: (valor) => {
+        this.colonias = mapearArregloTipoDropdown(valor.respuesta, 'nomColonia', 'idColonia');
+      }
+    });
   }
 
   asignarFormularioZonaInteres(): FormGroup {
