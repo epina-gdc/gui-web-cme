@@ -71,7 +71,7 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit{
             this._alertServices.alerta(respuesta.mensaje);
             return;
           }
-          this._router.navigate(['/privado'], {
+          void this._router.navigate(['/privado'], {
             relativeTo: this.activatedRoute,
           });
         },

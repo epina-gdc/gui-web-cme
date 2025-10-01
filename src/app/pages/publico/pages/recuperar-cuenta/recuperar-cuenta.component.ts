@@ -96,4 +96,9 @@ export class RecuperarCuentaComponent {
     }
   }
 
+  get f(){
+    return this.formRecuperarCuenta.controls;
+  }
+
+
 }
