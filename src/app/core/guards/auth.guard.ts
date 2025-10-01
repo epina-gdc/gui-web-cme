@@ -1,12 +1,19 @@
 import { inject } from '@angular/core';
-import { CanActivateChildFn, Router } from '@angular/router';
+import { CanActivateChildFn, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from '@services/auth.service';
-import { Observable, map } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 export const authGuard: CanActivateChildFn = (childRoute, state) => {
-  const authService = inject(AuthService);
-  const router = inject(Router);
+  return checkAuth(state);
+};
 
-  return authService.existeUnaSesion$.
-  pipe(map(existeUnaSesion =>  existeUnaSesion ? true : router.parseUrl('/inicio-sesion')));
+
+const checkAuth = (state: RouterStateSnapshot): Observable<boolean> => {
+  const auth = inject(AuthService);
+  if (localStorage.getItem('access_token')){
+    return of(true);
+    auth.settearSession(localStorage.getItem('access_token') as string);
+  }
+  auth.cerrarSesion();
+  return of(false);
 };
