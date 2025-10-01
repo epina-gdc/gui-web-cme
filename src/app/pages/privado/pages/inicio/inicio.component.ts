@@ -135,8 +135,8 @@ export class InicioComponent {
   obtenerCatalogos(): void {
     this.activatedRoute.data.subscribe(({respuesta}) => {
       const [sexos, estadosCiviles] = respuesta;
-      this.sexos = mapearArregloTipoDropdown(sexos, 'desSexo', 'idSexo');
-      this.estadosCiviles = mapearArregloTipoDropdown(estadosCiviles, 'desEstadoCivil', 'idEstadoCivil');
+      this.sexos = mapearArregloTipoDropdown(sexos.respuesta, 'desSexo', 'idSexo');
+      this.estadosCiviles = mapearArregloTipoDropdown(estadosCiviles.respuesta, 'desEstadoCivil', 'idEstadoCivil');
     });
   }
 

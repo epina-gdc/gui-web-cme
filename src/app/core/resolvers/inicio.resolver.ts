@@ -5,8 +5,8 @@ import {forkJoin} from 'rxjs';
 
 export const inicioResolver: ResolveFn<any> = (route, state) => {
   const catalogosService = inject(CatalogosGeneralesService);
-  const sexos = catalogosService.getCatalogoSexo();
-  const estadosCiviles = catalogosService.getCatalogoEstadoCivil();
+  const sexos = catalogosService.getLstSexos();
+  const estadosCiviles = catalogosService.getLstEstadosCiviles();
 
   return forkJoin([sexos, estadosCiviles]);
 };
