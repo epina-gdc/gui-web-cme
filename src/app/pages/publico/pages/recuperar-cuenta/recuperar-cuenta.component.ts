@@ -41,7 +41,7 @@ export class RecuperarCuentaComponent {
   loaderService: LoaderService = inject(LoaderService);
   alertaService: AlertService = inject(AlertService);
 
-  private router = inject(Router);
+  private readonly router = inject(Router);
 
   constructor(private readonly confirmationService: ConfirmationService) {
     this.formRecuperarCuenta = this.inicializarFormulario();

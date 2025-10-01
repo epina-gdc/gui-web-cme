@@ -4,6 +4,8 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {Password} from 'primeng/password';
 import {Divider} from 'primeng/divider';
 import {PrimeTemplate} from 'primeng/api';
+import {ActivatedRoute} from '@angular/router';
+import {AlertService} from '@services/alert.service';
 
 @Component({
   selector: 'app-cambio-contrasenia',
@@ -20,26 +22,33 @@ import {PrimeTemplate} from 'primeng/api';
 })
 export class CambioContraseniaComponent {
   registroForm!: FormGroup;
+  route: ActivatedRoute = inject(ActivatedRoute);
+  alertaService: AlertService = inject(AlertService);
 
   fb: FormBuilder = inject(FormBuilder);
 
+  token: string = '';
+
+  REGEX_PASS: RegExp = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^a-zA-Z0-9\s]).{8,12}$/;
+
   constructor() {
+    this.token = this.route.snapshot.queryParams['token'];
     this.registroForm = this.crearRegistroForm();
   }
 
   crearRegistroForm(): FormGroup {
     return this.fb.group({
       nuevaContrasena: ['', [Validators.required, Validators.minLength(8),
-        Validators.maxLength(16)]],
+        Validators.maxLength(16), Validators.pattern(this.REGEX_PASS)]],
       confirmarContrasena: ['', [Validators.required, Validators.minLength(8),
-        Validators.maxLength(16)]]
+        Validators.maxLength(16), Validators.pattern(this.REGEX_PASS)]]
     });
   }
 
   cambiarPassword(): void {
     if (this.registroForm.invalid) return;
     if (!this.validarMismoPass()) {
-      // this.mostrarAlertaDatosInvalidos('Las contraseñas no coinciden, favor de verificar.');
+      this.alertaService.error('Las contraseñas no coinciden, favor de verificar.');
       return;
     }
   }

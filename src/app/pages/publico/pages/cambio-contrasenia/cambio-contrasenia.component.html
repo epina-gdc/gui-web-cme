@@ -18,7 +18,7 @@
           <label for="nuevoPass1" class="field-label">Nueva contraseña</label>
           <div class="w-full mt-3 z-4">
             <p-password formControlName="nuevaContrasena" #nuevoPass1 id="nuevoPass1"
-                        placeholder="Ingresar contraseña" maxlength="12" minlength="8"
+                        placeholder="Ingresar contraseña" maxlength="12" minlength="8" [pattern]="REGEX_PASS"
                         promptLabel="Introduce una nueva contraseña" weakLabel="Seguridad Débil"
                         mediumLabel="Seguridad Media" strongLabel="Seguridad Fuerte" [feedback]="true"
                         [toggleMask]="true" [inputStyleClass]="'w-full'" class="w-full" [appendTo]="'body'">
@@ -44,7 +44,7 @@
               <p-password formControlName="confirmarContrasena" #nuevoPass2
                           placeholder="Ingresar confirmación de contraseña" id="nuevoPass2"
                           promptLabel="Introduce una nueva contraseña" maxlength="12" minlength="8"
-                          weakLabel="Seguridad Debíl" mediumLabel="Seguridad Media"
+                          weakLabel="Seguridad Debíl" mediumLabel="Seguridad Media" [pattern]="REGEX_PASS"
                           strongLabel="Seguridad Fuerte" [inputStyleClass]="'w-full'" [toggleMask]="true"
                           class="w-full" [appendTo]="'body'" [feedback]="true">
                 <ng-template pTemplate="footer">
