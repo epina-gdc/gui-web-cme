@@ -34,7 +34,7 @@ import {Router} from '@angular/router';
   providers: [ConfirmationService]
 })
 export class RecuperarCuentaComponent {
-  mensajes: Mensajes = new Mensajes()
+  mensajes: Mensajes = new Mensajes();
   formRecuperarCuenta!: FormGroup;
   fb: FormBuilder = inject(FormBuilder);
   authService: AuthService = inject(AuthService);

@@ -9,6 +9,7 @@ import {environment} from '@env/environment.development';
 import {Login} from '@models/login';
 import {map, Observable, tap} from 'rxjs';
 import {SolicitudCambioContrasenia} from '@models/solicitud-cambio-contrasenia.interface';
+import {CambioContrasenia} from '@models/cambio-contrasenia.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,7 @@ export class AuthService {
   private readonly URL_AUTH: string = 'authenticate';
   private readonly URL_CAMBIO_CONTRASENIA: string = 'solicitud-cambio-contrasena';
   private readonly URL_ACTUALIZAR_CONTRASENIA: string = 'cambio-contrasena';
-  
+
   http = inject(HttpClient);
   router = inject(Router);
   usuarioService = inject(UserService);
@@ -27,7 +28,7 @@ export class AuthService {
   .pipe(
     map((usuario: SesionUser | null) => !!usuario)
   )
-  
+
 
   login(login: Login): Observable<any> {
     return this.http.post<any>(`${this.URL_BASE}${this.URL_AUTH}`, login).pipe(
@@ -44,7 +45,7 @@ export class AuthService {
     return this.http.post(`${this.URL_BASE}${this.URL_CAMBIO_CONTRASENIA}`, solicitud)
   }
 
-  cambiarPass(solicitud: SolicitudCambioContrasenia): Observable<any> {
+  cambiarPass(solicitud: CambioContrasenia): Observable<any> {
     return this.http.post(`${this.URL_BASE}${this.URL_ACTUALIZAR_CONTRASENIA}`, solicitud)
   }
 
