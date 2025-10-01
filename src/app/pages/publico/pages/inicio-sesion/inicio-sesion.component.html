@@ -30,19 +30,21 @@
           </div>
           <div class="form-icon">
             <label class="field-label" for="password">Contraseña</label>
-            <input #input
-                   pInputText
-                   class="w-full"
-                   type="password"
-                   id="password"
-                   (keypress)="ingresoPass = true"
-                   appBloquearCaracterPassword
-                   placeholder="Ingresa contraseña"
-                   formControlName="password"
-                   autocomplete="false"/>
-            <i [ngClass]="{'pi-eye': input.type==='password', 'pi-eye-slash':  input.type ==='text'}"
-               class="cursor-pointer icon pi"
-               (click)="input.type = input.type==='password'?'text':'password'"></i>
+            <div class="contenedor-password">
+              <input #input
+                     pInputText
+                     class="w-full"
+                     type="password"
+                     id="password"
+                     (keypress)="ingresoPass = true"
+                     appBloquearCaracterPassword
+                     placeholder="Ingresa contraseña"
+                     formControlName="password"
+                     autocomplete="false"/>
+              <i [ngClass]="{'pi-eye': input.type==='password', 'pi-eye-slash':  input.type ==='text'}"
+                 class="cursor-pointer icon pi"
+                 (click)="input.type = input.type==='password'?'text':'password'"></i>
+            </div>
 
             @if (ingresoPass) {
               <div class="flex flex-column">
