@@ -71,7 +71,7 @@ export class InicioComponent {
 
   dummies = [{label: 'Dummie', value: 'Dummie'}, {label: 'Dummie 2', value: 'Dummie 2'}]
 
-  indice: WritableSignal<number> = signal<number>(1);
+  indice: WritableSignal<number> = signal<number>(0);
 
   constructor() {
     this.formRegistro = this.asignarFormularioRegistro();
