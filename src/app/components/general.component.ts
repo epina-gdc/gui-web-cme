@@ -46,6 +46,13 @@ export class GeneralComponent {
     }
   }
 
+  public onlyAlphanumeric(event: any) {
+    const pattern = /^[^0-9|A-Z]*$/;
+    if (!pattern.test(event.target.value)) {
+      event.target.value = event.target.value.replace(/[^0-9|A-Z]/g, '');
+    }
+  }
+
   public convertMayusculas(event: any) {
     if (event.target.value) {
       event.target.value = event.target.value.toUpperCase();

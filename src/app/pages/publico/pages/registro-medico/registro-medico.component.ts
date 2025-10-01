@@ -1,22 +1,23 @@
 
 import { ResponseGeneral } from '@models/responseGeneral';
 
-import {Component, inject} from '@angular/core';
-import {Card} from 'primeng/card';
-import {GeneralComponent} from '../../../../components/general.component';
+import { Component, inject } from '@angular/core';
+import { Card } from 'primeng/card';
+import { GeneralComponent } from '../../../../components/general.component';
 
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Select} from 'primeng/select';
-import {Button} from 'primeng/button';
-import {InputTextModule} from 'primeng/inputtext';
-import {  HttpErrorResponse } from '@angular/common/http';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { Select } from 'primeng/select';
+import { Button } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { HttpErrorResponse } from '@angular/common/http';
 
-import {CommonModule} from '@angular/common';
-import {CatalogoGeneral, CatPaisResponse, CatSubperfil, CatSubperfilResponse, Pais} from '@models/catalogoGeneral';
-import {RegistroCurpRequest, RegistroInternoRequest, RegistroMedico, RegistroPasaporteRequest} from '@models/datosMedico';
-import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regresar.component';
-import {passwordValidator} from '@validators/password-validator';
-import {PATRON_CURP, PATRON_EMAIL, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_RFC} from '@utils/regex';
+import { CommonModule } from '@angular/common';
+import { CatalogoGeneral, CatPaisResponse, CatSubperfil, CatSubperfilResponse, Pais } from '@models/catalogoGeneral';
+import { RegistroCurpRequest, RegistroInternoRequest, RegistroMedico, RegistroPasaporteRequest } from '@models/datosMedico';
+import { BtnRegresarComponent } from '../../../../components/btn-regresar/btn-regresar.component';
+import { passwordValidator } from '@validators/password-validator';
+import { PATRON_CURP, PATRON_EMAIL, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_PASAPORTE, PATRON_RFC } from '@utils/regex';
+import { AlphanumericDirective } from '@directives/only-alphanumeric.directive';
 
 
 @Component({
@@ -29,6 +30,7 @@ import {PATRON_CURP, PATRON_EMAIL, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_RFC} 
     ReactiveFormsModule,
     CommonModule,
     BtnRegresarComponent,
+    AlphanumericDirective,
   ],
   standalone: true,
   templateUrl: './registro-medico.component.html',
@@ -58,14 +60,14 @@ export class RegistroMedicoComponent extends GeneralComponent {
     this.ruta = this._nav.publico + this._nav.crearCuenta;
     this.blnPassIguales = false;
     this.blnCorreosIguales = false;
-     this.getCatalogoModalidad();
+    this.getCatalogoModalidad();
     this.form = this.inicializarForm();
     this.msjForm();
 
     let x = this.getSession('registroMedico');
     if (x) {
       this.medico = x;
-this.medico.documentoVerif =x.documentoVerif;
+      this.medico.documentoVerif = x.documentoVerif;
       if (this.medico.blnInterno) {
         this.strTitulo = 'Residente IMSS';
         this.isResidente();
@@ -89,36 +91,36 @@ this.medico.documentoVerif =x.documentoVerif;
     this.medico.refCurp = '';
 
     this.form.controls['modalidad'].setValue(this.medico.modalidad);
-    console.log("form de registro: ", this.medico);
+
   }
 
-  
-  getCatalogoModalidad(): void{
+
+  getCatalogoModalidad(): void {
     this.lstModalidad = new Array<CatSubperfil>();
     this._CatalogoGenService.getLstSubPerfil().subscribe((response: CatSubperfilResponse) => {
 
       if (response.exito) {
 
         this.lstModalidad = response.respuesta;
-      
+
       }
 
-      
+
 
     });
   }
 
-  getCatalogoPais(): void{
+  getCatalogoPais(): void {
     this.lstPais = new Array<Pais>();
     this._CatalogoGenService.getLstPais().subscribe((response: CatPaisResponse) => {
 
       if (response.exito) {
 
         this.lstPais = response.respuesta;
-      
+
       }
 
-      
+
 
     });
   }
@@ -169,7 +171,7 @@ this.medico.documentoVerif =x.documentoVerif;
   }
 
   public desbloquearValidarMatricula() {
-    console.log("a desbloquear boton ");
+
     this.medico.cveMatricula = this.form.controls['matricula'].value
     if (this.medico.cveMatricula.length == 10) {
       this.blnBtnValidar = false;
@@ -197,7 +199,8 @@ this.medico.documentoVerif =x.documentoVerif;
   private isPasaporte() {
     this.clearCampos();
     this.form.controls['modalidad'].setValidators([Validators.required]);
-    this.form.controls['pasaporte'].setValidators([Validators.required,Validators.minLength(6),Validators.maxLength(9)]);
+    this.form.controls['pasaporte'].setValidators([Validators.required, Validators.minLength(6),
+    Validators.maxLength(9), Validators.pattern(PATRON_PASAPORTE)]);
     this.form.controls['pais'].setValidators([Validators.required]);
     this.form.controls['modalidad'].updateValueAndValidity();
     this.form.controls['pasaporte'].updateValueAndValidity();
@@ -255,7 +258,10 @@ this.medico.documentoVerif =x.documentoVerif;
         { type: 'minlength', msj: this._Mensajes.MSJ_LONG_MATRICULA },
       ],
       'pasaporte': [
-        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },],
+        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
+        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
+        { type: 'minlength', msj: this._Mensajes.MSJ_LONG_PASAPORTE },
+      ],
       'pais': [
         { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },],
       'nombre': [
@@ -376,7 +382,7 @@ this.medico.documentoVerif =x.documentoVerif;
   blnBtnValidar!: boolean;
 
   public desbloquearValidar() {
-    console.log("a desbloquear boton ");
+
     this.medico.refCurp = this.form.controls['curp'].value
     if (this.medico.refCurp.length == 18) {
       this.blnBtnValidar = false;
@@ -408,7 +414,7 @@ this.medico.documentoVerif =x.documentoVerif;
     this.medico.refCurp = this.form.controls['curp'].value;
     this.medico.refRfc = this.form.controls['rfc'].value;
     this.activarCampos(this.medico.blnInterno);
-    console.log("datos del medico", this.medico);
+
   }
 
   btnAnterior() {
@@ -417,11 +423,11 @@ this.medico.documentoVerif =x.documentoVerif;
 
 
   public validarCorreo() {
-    console.log("validando correo");
+
   }
 
   public btnCrearCuenta() {
-this.asignarDatos();
+    this.asignarDatos();
 
 
     if (this.form.valid) {
@@ -444,8 +450,8 @@ this.asignarDatos();
             residente.refEmail = this.medico.refEmail;
             residente.refContrasenaHash = this.medico.refContrasenaHash;
             this.postResidente(residente);
-          }else{
-            if(this.medico.blnPasaporte){
+          } else {
+            if (this.medico.blnPasaporte) {
               let pasaporte = new RegistroPasaporteRequest();
               pasaporte.refEmail = this.medico.refEmail;
               pasaporte.refContrasenaHash = this.medico.refContrasenaHash;
@@ -455,17 +461,17 @@ this.asignarDatos();
               pasaporte.nomNombre = this.medico.nomNombre;
               pasaporte.nomApellidoMaterno = this.medico.nomApellidoMaterno;
               pasaporte.nomApellidoPaterno = this.medico.nomApellidoPaterno;
-                        pasaporte.pasaporte = this.medico.pasaporte;
-                        pasaporte.idPaisEmision = this.medico.pais;
+              pasaporte.pasaporte = this.medico.pasaporte;
+              pasaporte.idPaisEmision = this.medico.pais;
               pasaporte.refCurp = this.medico.refCurp;
               pasaporte.refRfc = this.medico.refRfc;
 
               //pasaporte.idDocumentoVerificacion
               this.postPasaporte(pasaporte);
 
-            }else{
+            } else {
               let curp = new RegistroCurpRequest();
-          
+
               curp.refEmail = this.medico.refEmail;
               curp.refContrasenaHash = this.medico.refContrasenaHash;
               curp.idPerfil = this.medico.perfil.idPerfil;
@@ -474,7 +480,7 @@ this.asignarDatos();
               curp.nomNombre = this.medico.nomNombre;
               curp.nomApellidoMaterno = this.medico.nomApellidoMaterno;
               curp.nomApellidoPaterno = this.medico.nomApellidoPaterno;
-                        
+
               curp.refCurp = this.medico.refCurp;
               curp.refRfc = this.medico.refRfc;
               this.postCurp(curp);
@@ -504,7 +510,7 @@ this.asignarDatos();
   postResidente(residente: RegistroInternoRequest) {
     this._RegistroMedicoService.registrarResidente(residente).subscribe({
       next: (data: ResponseGeneral) => {
-        console.log("data:", data);
+
         if (data.exito) {
           this.paginaAnterior();
         } else {
@@ -521,7 +527,7 @@ this.asignarDatos();
   postPasaporte(pasaporte: RegistroPasaporteRequest) {
     this._RegistroMedicoService.registrarPasaporte(pasaporte).subscribe({
       next: (data: ResponseGeneral) => {
-        console.log("data:", data);
+
         if (data.exito) {
           this.paginaAnterior();
         } else {
@@ -538,7 +544,7 @@ this.asignarDatos();
   postCurp(curp: RegistroCurpRequest) {
     this._RegistroMedicoService.registrarCurp(curp).subscribe({
       next: (data: ResponseGeneral) => {
-        console.log("data:", data);
+
         if (data.exito) {
           this.paginaAnterior();
         } else {
@@ -595,13 +601,13 @@ this.asignarDatos();
   cambiaModalidad() {
 
     this.medico.modalidad = this.form.controls['modalidad'].value;
-    console.log("hay cambios en el selct ", this.medico);
+
   }
 
   cambiaPais() {
 
     this.medico.pais = this.form.controls['pais'].value;
-    
+
   }
 
 
@@ -636,23 +642,23 @@ this.asignarDatos();
 
     this.form.controls['rfc'].setValue('VISA900901LA');
 
-  
+
     this.activarCampos(this.medico.blnInterno);
     this.dinamicoCurp();
 
-    console.log("datos del medico", this.medico);
+
     this.asignarDatos();
   }
 
-  private asignarDatos(){
+  private asignarDatos() {
     this.medico.nomNombre = this.form.controls['nombre'].value;
     this.medico.nomApellidoPaterno = this.form.controls['apellidoP'].value;
     this.medico.nomApellidoMaterno = this.form.controls['apellidoM'].value;
     this.medico.refCurp = this.form.controls['curp'].value;
-    
+
     this.medico.refRfc = this.form.controls['rfc'].value;
 
-    if(this.medico.blnPasaporte){
+    if (this.medico.blnPasaporte) {
       this.medico.pasaporte = this.form.controls['pasaporte'].value;
       this.medico.pais = this.form.controls['pais'].value;
     }
@@ -660,7 +666,7 @@ this.asignarDatos();
 
   private existeMatricula(matricula: string): boolean {
     let blnExiste = false;
-    if (matricula === '9999999999') {
+    if (matricula.length == 10) {
       blnExiste = true;
     }
     return blnExiste;

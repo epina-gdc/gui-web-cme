@@ -89,7 +89,7 @@
                                 <input pInputText class="w-full" type="text" id="curp" placeholder="Ingresa CURP"
                                     maxlength="18" autocomplete="off" formControlName="curp"
                                     (keypress)="inCurp = true" (change)="btnValidarCurp()"
-                                    (keyup)="desbloquearValidar(); convertMayusculas($event);" />
+                                    alphanumericOnly (keyup)="desbloquearValidar(); convertMayusculas($event);" />
                                     @if(inCurp){
                                         @for (validation of msjValidation.curp; track validation.msj) {   
                                             @if(f['curp'].errors?.[validation.type]){
@@ -124,7 +124,8 @@
 
                                 <label class="field-label" for="nombre">Nombres(s)</label>
                                 <input #input pInputText class="w-full" type="text" id="nombre"
-                                    placeholder="Ingresa nombre(s)"  (keypress)="inNombre = true"  autocomplete="off" formControlName="nombre" />
+                                    placeholder="Ingresa nombre(s)"  (keypress)="inNombre = true"  autocomplete="off" formControlName="nombre" 
+                                    maxlength="40"/>
                                     @if(inNombre){
                                         @for (validation of msjValidation.nombre; track validation.msj) {   
                                             @if(f['nombre'].errors?.[validation.type]){
@@ -145,7 +146,9 @@
                                 <label class="field-label" for="pasaporte">Pasaporte</label>
                                 <input pInputText class="w-full" type="text" id="pasaporte"
                                     placeholder="Ingresa pasaporte" (keypress)="inPasaporte = true" autocomplete="off" formControlName="pasaporte"
-                                    maxlength="9" minlength="6"  (keyup)="convertMayusculas($event);" />
+                                    maxlength="9" minlength="6"  (keyup)="convertMayusculas($event);"
+                                    
+                                    alphanumericOnly />
                                     @if(inPasaporte){
                                         @for (validation of msjValidation.pasaporte; track validation.msj) {   
                                             @if(f['pasaporte'].errors?.[validation.type]){
@@ -173,7 +176,7 @@
                             <div class="field col-12">
                                 <label class="field-label" for="nombre">Nombres(s)</label>
                                 <input pInputText class="w-full" type="text" id="nombre" placeholder="Ingresa nombre"
-                                    autocomplete="off" (keypress)="inNombre = true"  formControlName="nombre" maxlength="150" />
+                                    autocomplete="off" (keypress)="inNombre = true"  formControlName="nombre" maxlength="40" />
                                     @if(inNombre){
                                         @for (validation of msjValidation.nombre; track validation.msj) {   
                                             @if(f['nombre'].errors?.[validation.type]){
@@ -192,7 +195,7 @@
                             <div class="field col-6">
                                 <label class="field-label" for="apellidoP">Primer apellido</label>
                                 <input pInputText class="w-full" type="text" id="apellidoP" autocomplete="off"
-                                    placeholder="Ingresa primer apellido" (keypress)="inAp = true"  formControlName="apellidoP" />
+                                    placeholder="Ingresa primer apellido" (keypress)="inAp = true"  formControlName="apellidoP"  maxlength="40"/>
                                     @if(inAp){
                                         @for (validation of msjValidation.apellidoP; track validation.msj) {   
                                             @if(f['apellidoP'].errors?.[validation.type]){
@@ -204,7 +207,7 @@
                             <div class="field col-6">
                                 <label class="field-label" for="apellidoM">Segundo apellido</label>
                                 <input pInputText class="w-full" type="text" id="apellidoM" autocomplete="off"
-                                    placeholder="Ingresa segundo apellido" (keypress)="inAm = true"  formControlName="apellidoM" />
+                                    placeholder="Ingresa segundo apellido" (keypress)="inAm = true"  formControlName="apellidoM" maxlength="40" />
                                     @if(inAm){
                                         @for (validation of msjValidation.apellidoM; track validation.msj) {   
                                             @if(f['apellidoM'].errors?.[validation.type]){
@@ -222,7 +225,7 @@
                                 <label class="field-label" for="curp">CURP</label>
                                 <input #input pInputText class="w-full" type="text" id="curp" placeholder="Ingresa CURP"
                                     autocomplete="off" (keypress)="inCurp = true" formControlName="curp" maxlength="18"
-                                    (change)="dinamicoCurp()"
+                                    alphanumericOnly  (change)="dinamicoCurp()"
                                      (keyup)="convertMayusculas($event);" />
                                     @if(inCurp){
                                         @for (validation of msjValidation.curp; track validation.msj) {   
@@ -239,7 +242,7 @@
                                 <label class="field-label" for="rfc">RFC</label>
                                 <input pInputText class="w-full" type="text" id="rfc" placeholder="Ingresa RFC"
                                     autocomplete="off" (keypress)="inRfc = true" formControlName="rfc" maxlength="13" 
-                                    (keyup)="convertMayusculas($event);" />
+                                    alphanumericOnly   (keyup)="convertMayusculas($event);" />
                                     @if(inRfc){
                                         @for (validation of msjValidation.rfc; track validation.msj) {   
                                             @if(f['rfc'].errors?.[validation.type]){
