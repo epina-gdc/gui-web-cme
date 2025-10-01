@@ -1,10 +1,10 @@
-import { ResponseGeneral } from "./responseGeneral";
+import {ResponseGeneral} from "./responseGeneral";
 
 
 export class CatalogoGeneral  {
     id!: number;
     descripcion!: string;
-    
+
 }
 
 export class Pais{
@@ -30,7 +30,7 @@ export class CatSubperfil{
 export class CatDocumentoVerificacion{
   idDocumentoVerificacion!: number;
   desDocumentoVerificacion!: string;
-  
+
   indActivo!: number;
 
 }

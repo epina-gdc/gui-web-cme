@@ -1,4 +1,3 @@
-
 import {ConfigEnvironment} from '@models/config-environment.interface';
 
 const base: string = 'http://10.166.120:1052/';

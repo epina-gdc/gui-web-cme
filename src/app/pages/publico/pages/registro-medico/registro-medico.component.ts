@@ -1,5 +1,4 @@
-
-import { ResponseGeneral } from '@models/responseGeneral';
+import {ResponseGeneral} from '@models/responseGeneral';
 
 import {Component, inject} from '@angular/core';
 import {Card} from 'primeng/card';
@@ -9,11 +8,16 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {Select} from 'primeng/select';
 import {Button} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
-import {  HttpErrorResponse } from '@angular/common/http';
+import {HttpErrorResponse} from '@angular/common/http';
 
 import {CommonModule} from '@angular/common';
-import {CatalogoGeneral, CatPaisResponse, CatSubperfil, CatSubperfilResponse, Pais} from '@models/catalogoGeneral';
-import {RegistroCurpRequest, RegistroInternoRequest, RegistroMedico, RegistroPasaporteRequest} from '@models/datosMedico';
+import {CatPaisResponse, CatSubperfil, CatSubperfilResponse, Pais} from '@models/catalogoGeneral';
+import {
+  RegistroCurpRequest,
+  RegistroInternoRequest,
+  RegistroMedico,
+  RegistroPasaporteRequest
+} from '@models/datosMedico';
 import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regresar.component';
 import {passwordValidator} from '@validators/password-validator';
 import {PATRON_CURP, PATRON_EMAIL, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_RFC} from '@utils/regex';
@@ -92,7 +96,7 @@ this.medico.documentoVerif =x.documentoVerif;
     console.log("form de registro: ", this.medico);
   }
 
-  
+
   getCatalogoModalidad(): void{
     this.lstModalidad = new Array<CatSubperfil>();
     this._CatalogoGenService.getLstSubPerfil().subscribe((response: CatSubperfilResponse) => {
@@ -100,10 +104,10 @@ this.medico.documentoVerif =x.documentoVerif;
       if (response.exito) {
 
         this.lstModalidad = response.respuesta;
-      
+
       }
 
-      
+
 
     });
   }
@@ -115,10 +119,10 @@ this.medico.documentoVerif =x.documentoVerif;
       if (response.exito) {
 
         this.lstPais = response.respuesta;
-      
+
       }
 
-      
+
 
     });
   }
@@ -465,7 +469,7 @@ this.asignarDatos();
 
             }else{
               let curp = new RegistroCurpRequest();
-          
+
               curp.refEmail = this.medico.refEmail;
               curp.refContrasenaHash = this.medico.refContrasenaHash;
               curp.idPerfil = this.medico.perfil.idPerfil;
@@ -474,7 +478,7 @@ this.asignarDatos();
               curp.nomNombre = this.medico.nomNombre;
               curp.nomApellidoMaterno = this.medico.nomApellidoMaterno;
               curp.nomApellidoPaterno = this.medico.nomApellidoPaterno;
-                        
+
               curp.refCurp = this.medico.refCurp;
               curp.refRfc = this.medico.refRfc;
               this.postCurp(curp);
@@ -601,7 +605,7 @@ this.asignarDatos();
   cambiaPais() {
 
     this.medico.pais = this.form.controls['pais'].value;
-    
+
   }
 
 
@@ -636,7 +640,7 @@ this.asignarDatos();
 
     this.form.controls['rfc'].setValue('VISA900901LA');
 
-  
+
     this.activarCampos(this.medico.blnInterno);
     this.dinamicoCurp();
 
@@ -649,7 +653,7 @@ this.asignarDatos();
     this.medico.nomApellidoPaterno = this.form.controls['apellidoP'].value;
     this.medico.nomApellidoMaterno = this.form.controls['apellidoM'].value;
     this.medico.refCurp = this.form.controls['curp'].value;
-    
+
     this.medico.refRfc = this.form.controls['rfc'].value;
 
     if(this.medico.blnPasaporte){

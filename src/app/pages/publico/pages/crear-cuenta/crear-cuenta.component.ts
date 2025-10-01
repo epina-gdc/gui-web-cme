@@ -7,7 +7,14 @@ import {RadioButton, RadioButtonModule} from 'primeng/radiobutton';
 import {GeneralComponent} from '../../../../components/general.component';
 import {CommonModule} from '@angular/common';
 import {RegistroMedico} from '@models/datosMedico';
-import { CatDocumentoVerificacion, CatDocVerifResponse, CatPerfil, CatPerfilResponse, CatSubperfil, CatSubperfilResponse } from '@models/catalogoGeneral';
+import {
+  CatDocumentoVerificacion,
+  CatDocVerifResponse,
+  CatPerfil,
+  CatPerfilResponse,
+  CatSubperfil,
+  CatSubperfilResponse
+} from '@models/catalogoGeneral';
 
 @Component({
   selector: 'app-crear-cuenta',
@@ -46,13 +53,13 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
     this.registroMedico = new RegistroMedico();
     this.blnResidente = true;
     this.blnSeleccionado = false;
-    this.form = this.inicializarForm();  
+    this.form = this.inicializarForm();
 
      this.getCatalogoPerfiles();
-  
-    
+
+
       console.log("perfiles",this.lstPerfil);
-  
+
 //this._alertServices.exito("este texto muestra algo en <b> negritas<b/>");
 
   }
@@ -64,15 +71,15 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
       if (response.exito) {
 
         this.lstPerfil = response.respuesta;
-      
+
 
       }
 
-      
+
 
     });
   }
-  
+
   getCatalogoModalidad(): void{
     this.lstModalidad = new Array<CatSubperfil>();
     this._CatalogoGenService.getLstSubPerfil().subscribe((response: CatSubperfilResponse) => {
@@ -105,8 +112,8 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
 
 
   public btnAceptar() {
-    
-    
+
+
     if (this.form.valid) {
 
 
@@ -123,7 +130,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
 
           if (  this.registroMedico.desDocumentoVerificacion  === 'CURP') {
             this.registroMedico.blnPasaporte = false;
-          }  
+          }
            if (  this.registroMedico.desDocumentoVerificacion  === 'PASAPORTE') {
             this.registroMedico.blnPasaporte = true;
           }
@@ -153,9 +160,9 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   cambiaPerfil() {
 
     console.log("hay cambios en el selct ");
-   
+
     this.perfilSeleccionado();
-   
+
     if ( !this.registroMedico.blnInterno) {
 
       this.camposExterno();

@@ -11,8 +11,8 @@ import {PATRON_EMAIL} from '@utils/regex';
 import {AuthService} from '@services/auth.service';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {HttpRespuesta} from '@models/http-respuesta.interface';
-import { LoaderService } from '../../../../components/loader/services/loader.service';
-import { finalize } from 'rxjs';
+import {LoaderService} from '../../../../components/loader/services/loader.service';
+import {finalize} from 'rxjs';
 
 @Component({
   selector: 'app-inicio-sesion',
