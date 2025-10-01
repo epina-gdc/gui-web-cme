@@ -101,17 +101,6 @@ export class GeneralComponent {
 
 
 
-  getCatalogoDocumento(): Array<CatalogoGeneral> {
-    let lstDocumentos = [
-      { id: 1, descripcion: 'CURP' },
-      { id: 2, descripcion: 'Pasaporte' },
-
-    ]
-    return lstDocumentos;
-  }
-
-
-
 
 
   public comparaCampos(texto1: string, texto2: string): boolean {

@@ -4,7 +4,7 @@
  */
  import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
  import { Injectable } from '@angular/core';
-import { CatPaisResponse, CatPerfil, CatPerfilResponse, CatSubperfilResponse } from '@models/catalogoGeneral';
+import { CatDocVerifResponse, CatPaisResponse, CatPerfil, CatPerfilResponse, CatSubperfilResponse } from '@models/catalogoGeneral';
  import { Observable, throwError } from 'rxjs';
  import { catchError, map } from 'rxjs/operators';
  import { environment } from '../../../environments/environment.development';
@@ -57,10 +57,10 @@ import { CatPaisResponse, CatPerfil, CatPerfilResponse, CatSubperfilResponse } f
         );
     }
 
-    getLstDocumentosVerificacion(): Observable<CatPaisResponse> {
-        return this.http.get<CatPaisResponse>(this.serverEndPointURL + '/paises', { headers: this.header }).pipe(
+    getLstDocumentosVerificacion(): Observable<CatDocVerifResponse> {
+        return this.http.get<CatDocVerifResponse>(this.serverEndPointURL + '/documentos-verificacion', { headers: this.header }).pipe(
             catchError(this.handleError),
-            map((response: CatPaisResponse) => {
+            map((response: CatDocVerifResponse) => {
                 return response;
             })
         );

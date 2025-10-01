@@ -27,6 +27,14 @@ export class CatSubperfil{
   indActivo!: number;
 }
 
+export class CatDocumentoVerificacion{
+  idDocumentoVerificacion!: number;
+  desDocumentoVerificacion!: string;
+  
+  indActivo!: number;
+
+}
+
 export class CatPerfilResponse extends ResponseGeneral{
   respuesta!: Array<CatPerfil>;
 }
@@ -37,4 +45,9 @@ export class CatSubperfilResponse extends ResponseGeneral{
 
 export class CatPaisResponse extends ResponseGeneral{
   respuesta!: Array<Pais>;
+}
+
+
+export class CatDocVerifResponse extends ResponseGeneral{
+  respuesta!: Array<CatDocumentoVerificacion>;
 }
