@@ -7,7 +7,7 @@ import {RadioButton, RadioButtonModule} from 'primeng/radiobutton';
 import {GeneralComponent} from '../../../../components/general.component';
 import {CommonModule} from '@angular/common';
 import {RegistroMedico} from '@models/datosMedico';
-import { CatPerfil, CatPerfilResponse, CatSubperfil, CatSubperfilResponse } from '@models/catalogoGeneral';
+import { CatDocumentoVerificacion, CatDocVerifResponse, CatPerfil, CatPerfilResponse, CatSubperfil, CatSubperfilResponse } from '@models/catalogoGeneral';
 
 @Component({
   selector: 'app-crear-cuenta',
@@ -38,7 +38,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
 
   lstPerfil !: any;
   lstModalidad!: Array<CatSubperfil>;
-  lstDocumentos: any;
+  lstDocumentos!: Array<CatDocumentoVerificacion>;
   registroMedico!: RegistroMedico;
   blnResidente!: boolean;
 
@@ -76,15 +76,18 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   getCatalogoModalidad(): void{
     this.lstModalidad = new Array<CatSubperfil>();
     this._CatalogoGenService.getLstSubPerfil().subscribe((response: CatSubperfilResponse) => {
-
       if (response.exito) {
-
         this.lstModalidad = response.respuesta;
-      
       }
+    });
+  }
 
-      
-
+  getCatalogoDocumento(): void{
+    this.lstDocumentos = new Array<CatDocumentoVerificacion>();
+    this._CatalogoGenService.getLstDocumentosVerificacion().subscribe((response: CatDocVerifResponse) => {
+      if (response.exito) {
+        this.lstDocumentos = response.respuesta;
+      }
     });
   }
 
@@ -112,10 +115,16 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
 
           break;
         case false:
+          this.registroMedico.desDocumentoVerificacion =this.form.controls['documento'].value;
+          let doc = this.lstDocumentos.find(x=> x.desDocumentoVerificacion ===  this.registroMedico.desDocumentoVerificacion  );
+          if(doc){
+            this.registroMedico.documentoVerif = doc;
+          }
 
-          if (this.form.controls['documento'].value === '1') {
+          if (  this.registroMedico.desDocumentoVerificacion  === 'CURP') {
             this.registroMedico.blnPasaporte = false;
-          } else {
+          }  
+           if (  this.registroMedico.desDocumentoVerificacion  === 'PASAPORTE') {
             this.registroMedico.blnPasaporte = true;
           }
 
@@ -180,7 +189,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   }
   private camposExterno() {
     this.getCatalogoModalidad();
-    this.lstDocumentos = this.getCatalogoDocumento();
+    this.getCatalogoDocumento();
     this.blnResidente = false;
 
 

@@ -65,7 +65,7 @@ export class RegistroMedicoComponent extends GeneralComponent {
     let x = this.getSession('registroMedico');
     if (x) {
       this.medico = x;
-
+this.medico.documentoVerif =x.documentoVerif;
       if (this.medico.blnInterno) {
         this.strTitulo = 'Residente IMSS';
         this.isResidente();
@@ -399,7 +399,7 @@ export class RegistroMedicoComponent extends GeneralComponent {
     this.form.controls['nombre'].setValue('Ame');
     this.form.controls['apellidoP'].setValue('Vcitoria');
     this.form.controls['apellidoM'].setValue('SArmiento');
-    this.form.controls['curp'].setValue('VISA900901MTLCRM00');
+    //this.form.controls['curp'].setValue('VISA900901MTLCRM00');
     this.inCurp = true;
     this.form.controls['rfc'].setValue('VISA900901LA3');
 
@@ -451,7 +451,7 @@ this.asignarDatos();
               pasaporte.refContrasenaHash = this.medico.refContrasenaHash;
               pasaporte.idPerfil = this.medico.perfil.idPerfil;
               pasaporte.idSubperfil = this.medico.modalidad;
-              pasaporte.idDocumentoVerificacion = this.medico.modalidad;
+              pasaporte.idDocumentoVerificacion = this.medico.documentoVerif.idDocumentoVerificacion;
               pasaporte.nomNombre = this.medico.nomNombre;
               pasaporte.nomApellidoMaterno = this.medico.nomApellidoMaterno;
               pasaporte.nomApellidoPaterno = this.medico.nomApellidoPaterno;
@@ -459,6 +459,8 @@ this.asignarDatos();
                         pasaporte.idPaisEmision = this.medico.pais;
               pasaporte.refCurp = this.medico.refCurp;
               pasaporte.refRfc = this.medico.refRfc;
+
+              //pasaporte.idDocumentoVerificacion
               this.postPasaporte(pasaporte);
 
             }else{
@@ -468,7 +470,7 @@ this.asignarDatos();
               curp.refContrasenaHash = this.medico.refContrasenaHash;
               curp.idPerfil = this.medico.perfil.idPerfil;
               curp.idSubperfil = this.medico.modalidad;
-              curp.idDocumentoVerificacion = this.medico.modalidad;
+              curp.idDocumentoVerificacion = this.medico.documentoVerif.idDocumentoVerificacion;
               curp.nomNombre = this.medico.nomNombre;
               curp.nomApellidoMaterno = this.medico.nomApellidoMaterno;
               curp.nomApellidoPaterno = this.medico.nomApellidoPaterno;
@@ -658,7 +660,7 @@ this.asignarDatos();
 
   private existeMatricula(matricula: string): boolean {
     let blnExiste = false;
-    if (matricula === '1234567890') {
+    if (matricula === '9999999999') {
       blnExiste = true;
     }
     return blnExiste;

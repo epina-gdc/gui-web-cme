@@ -1,4 +1,4 @@
-import { CatPerfil } from "./catalogoGeneral";
+import { CatDocumentoVerificacion, CatPerfil } from "./catalogoGeneral";
 
 export class Medico {
     nomNombre!: string;
@@ -13,7 +13,8 @@ export class Medico {
     nomPerfil!: string;
 perfil!: CatPerfil;
 blnInterno!: boolean;
-
+desDocumentoVerificacion!:string;
+documentoVerif!: CatDocumentoVerificacion;
 
 }
 

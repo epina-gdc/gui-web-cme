@@ -6,8 +6,8 @@ export const environment: ConfigEnvironment = {
   production: false,
   api: {
     login: base + 'mscme-autenticacion/api/',
-    apiCatalogos:  base + 'mscme-catalogos/api',
-    apiRegistro:  base + 'mscme-registro/api'
+    apiCatalogos: 'http://10.166.120:1054/mscme-catalogos/api',
+    apiRegistro:   'http://10.166.120:1053/mscme-registro/api'
   }
 }
 
