@@ -166,6 +166,13 @@
                                     optionLabel="desPais" optionValue="idPais" placeholder="Selecciona un país"
                                     class="w-full" (ngModelChange)="cambiaPais()">
                                 </p-select>
+                                @if(inPais){
+                                    @for (validation of msjValidation.pais; track validation.msj) {   
+                                        @if(f['pais'].errors?.[validation.type]){
+                                            <p class="text-danger">{{validation.msj}}</p>
+                                        }
+                                    }
+                                }
                                    
 
                             </div>
