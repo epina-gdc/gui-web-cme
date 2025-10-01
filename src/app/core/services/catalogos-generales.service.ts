@@ -3,11 +3,12 @@
  * 2025
  */
  import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
- import { Injectable } from '@angular/core';
+ import { Injectable,inject } from '@angular/core';
 import { CatDocVerifResponse, CatPaisResponse, CatPerfil, CatPerfilResponse, CatSubperfilResponse } from '@models/catalogoGeneral';
  import { Observable, throwError } from 'rxjs';
  import { catchError, map } from 'rxjs/operators';
  import { environment } from '../../../environments/environment.development';
+import { AlertService } from '../services/alert.service';
 
  
  
@@ -17,7 +18,8 @@ import { CatDocVerifResponse, CatPaisResponse, CatPerfil, CatPerfilResponse, Cat
  export class CatalogosGeneralesService {
      private VERSION_API:string  = '/v1/';
      private serverEndPointURL = `${environment.api.apiCatalogos + this.VERSION_API+'catalogos'}`;
- 
+     protected _alertService: AlertService  ;
+     protected http: HttpClient;
      header = new HttpHeaders({
          'Content-Type': 'application/json',
          'Access-Control-Allow-Origin': '*',
@@ -25,7 +27,11 @@ import { CatDocVerifResponse, CatPaisResponse, CatPerfil, CatPerfilResponse, Cat
          'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
      });
  
-     constructor(private http: HttpClient) { }
+     constructor() {
+        this.http = inject(HttpClient);
+        this._alertService = inject(AlertService);
+        
+      }
  
  
      /**Obtener Listado de Perfiles */
@@ -69,8 +75,12 @@ import { CatDocVerifResponse, CatPaisResponse, CatPerfil, CatPerfilResponse, Cat
  
   
      private handleError(error: HttpErrorResponse) {
-         console.log("Error: ", error);
+        
+        if (error.status) {
+        //this._alertService?.error("Error "+error.status +'. Contácte al administrador');
+        console.log("Error "+error.status +'. Endpoint: '+error.url+'. Contácte al administrador');
          // Return an observable with a user-facing error message.
+        }
          return throwError(error);
      }
  

@@ -16,7 +16,8 @@ import {CatalogoGeneral, CatPaisResponse, CatSubperfil, CatSubperfilResponse, Pa
 import {RegistroCurpRequest, RegistroInternoRequest, RegistroMedico, RegistroPasaporteRequest} from '@models/datosMedico';
 import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regresar.component';
 import {passwordValidator} from '@validators/password-validator';
-import {PATRON_CURP, PATRON_EMAIL, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_RFC} from '@utils/regex';
+import {PATRON_CURP, PATRON_EMAIL, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_PASAPORTE, PATRON_RFC} from '@utils/regex';
+import { AlphanumericDirective } from '@directives/only-alphanumeric.directive';
 
 
 @Component({
@@ -29,6 +30,7 @@ import {PATRON_CURP, PATRON_EMAIL, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_RFC} 
     ReactiveFormsModule,
     CommonModule,
     BtnRegresarComponent,
+    AlphanumericDirective,
   ],
   standalone: true,
   templateUrl: './registro-medico.component.html',
@@ -89,7 +91,7 @@ this.medico.documentoVerif =x.documentoVerif;
     this.medico.refCurp = '';
 
     this.form.controls['modalidad'].setValue(this.medico.modalidad);
-    console.log("form de registro: ", this.medico);
+    
   }
 
   
@@ -169,7 +171,7 @@ this.medico.documentoVerif =x.documentoVerif;
   }
 
   public desbloquearValidarMatricula() {
-    console.log("a desbloquear boton ");
+    
     this.medico.cveMatricula = this.form.controls['matricula'].value
     if (this.medico.cveMatricula.length == 10) {
       this.blnBtnValidar = false;
@@ -197,7 +199,8 @@ this.medico.documentoVerif =x.documentoVerif;
   private isPasaporte() {
     this.clearCampos();
     this.form.controls['modalidad'].setValidators([Validators.required]);
-    this.form.controls['pasaporte'].setValidators([Validators.required,Validators.minLength(6),Validators.maxLength(9)]);
+    this.form.controls['pasaporte'].setValidators([Validators.required,Validators.minLength(6),
+      Validators.maxLength(9), Validators.pattern(PATRON_PASAPORTE)]);
     this.form.controls['pais'].setValidators([Validators.required]);
     this.form.controls['modalidad'].updateValueAndValidity();
     this.form.controls['pasaporte'].updateValueAndValidity();
@@ -255,7 +258,10 @@ this.medico.documentoVerif =x.documentoVerif;
         { type: 'minlength', msj: this._Mensajes.MSJ_LONG_MATRICULA },
       ],
       'pasaporte': [
-        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },],
+        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
+        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
+        { type: 'minlength', msj: this._Mensajes.MSJ_LONG_PASAPORTE },
+      ],
       'pais': [
         { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },],
       'nombre': [
@@ -376,7 +382,7 @@ this.medico.documentoVerif =x.documentoVerif;
   blnBtnValidar!: boolean;
 
   public desbloquearValidar() {
-    console.log("a desbloquear boton ");
+    
     this.medico.refCurp = this.form.controls['curp'].value
     if (this.medico.refCurp.length == 18) {
       this.blnBtnValidar = false;
@@ -408,7 +414,7 @@ this.medico.documentoVerif =x.documentoVerif;
     this.medico.refCurp = this.form.controls['curp'].value;
     this.medico.refRfc = this.form.controls['rfc'].value;
     this.activarCampos(this.medico.blnInterno);
-    console.log("datos del medico", this.medico);
+    
   }
 
   btnAnterior() {
@@ -417,7 +423,7 @@ this.medico.documentoVerif =x.documentoVerif;
 
 
   public validarCorreo() {
-    console.log("validando correo");
+    
   }
 
   public btnCrearCuenta() {
@@ -504,7 +510,7 @@ this.asignarDatos();
   postResidente(residente: RegistroInternoRequest) {
     this._RegistroMedicoService.registrarResidente(residente).subscribe({
       next: (data: ResponseGeneral) => {
-        console.log("data:", data);
+        
         if (data.exito) {
           this.paginaAnterior();
         } else {
@@ -521,7 +527,7 @@ this.asignarDatos();
   postPasaporte(pasaporte: RegistroPasaporteRequest) {
     this._RegistroMedicoService.registrarPasaporte(pasaporte).subscribe({
       next: (data: ResponseGeneral) => {
-        console.log("data:", data);
+        
         if (data.exito) {
           this.paginaAnterior();
         } else {
@@ -538,7 +544,7 @@ this.asignarDatos();
   postCurp(curp: RegistroCurpRequest) {
     this._RegistroMedicoService.registrarCurp(curp).subscribe({
       next: (data: ResponseGeneral) => {
-        console.log("data:", data);
+        
         if (data.exito) {
           this.paginaAnterior();
         } else {
@@ -595,7 +601,7 @@ this.asignarDatos();
   cambiaModalidad() {
 
     this.medico.modalidad = this.form.controls['modalidad'].value;
-    console.log("hay cambios en el selct ", this.medico);
+    
   }
 
   cambiaPais() {
@@ -640,7 +646,7 @@ this.asignarDatos();
     this.activarCampos(this.medico.blnInterno);
     this.dinamicoCurp();
 
-    console.log("datos del medico", this.medico);
+    
     this.asignarDatos();
   }
 
@@ -660,7 +666,7 @@ this.asignarDatos();
 
   private existeMatricula(matricula: string): boolean {
     let blnExiste = false;
-    if (matricula === '9999999999') {
+    if (matricula.length == 10) {
       blnExiste = true;
     }
     return blnExiste;
