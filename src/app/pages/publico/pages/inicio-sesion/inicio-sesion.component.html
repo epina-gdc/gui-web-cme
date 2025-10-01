@@ -1,7 +1,7 @@
 <main class="flex  login-background">
   <aside class="col-6 flex flex-column justify-content-center align-items-center p-6">
     <h1 class="login-titulo">Convocatoria para Médicos Especialistas</h1>
-    <h2 class="login-subtitulo">Reclutamiento IMSS {{fechaActual.getFullYear()}}</h2>
+    <h2 class="login-subtitulo">Reclutamiento IMSS {{ fechaActual.getFullYear() }}</h2>
   </aside>
   <section class="col-6 flex justify-content-center align-items-center">
     <p-card class="px-2 login-card border-round-bottom-3xl border-round-bottom"
@@ -49,27 +49,27 @@
             @if (ingresoPass) {
               <div class="flex flex-column">
                 @if (f['password'].errors?.['minLength']) {
-                  <span class="nombre-medico">{{ _Mensajes.MSJ_PASS_MIN_CARACTER }}</span>
+                  <span class="text-danger">{{ _Mensajes.MSJ_PASS_MIN_CARACTER }}</span>
                 }
 
                 @if (f['password'].errors?.['maxLength']) {
-                  <span class="nombre-medico">{{ _Mensajes.MSJ_PASS_MAX_CARACTER }}</span>
+                  <span class="text-danger">{{ _Mensajes.MSJ_PASS_MAX_CARACTER }}</span>
                 }
 
                 @if (f['password'].errors?.['mayuscula']) {
-                  <span class="nombre-medico">{{ _Mensajes.MSJ_PASS_MAYUSCULA }}</span>
+                  <span class="text-danger">{{ _Mensajes.MSJ_PASS_MAYUSCULA }}</span>
                 }
 
                 @if (f['password'].errors?.['minuscula']) {
-                  <span class="nombre-medico">{{ _Mensajes.MSJ_PASS_MINUSCULA }}</span>
+                  <span class="text-danger">{{ _Mensajes.MSJ_PASS_MINUSCULA }}</span>
                 }
 
                 @if (f['password'].errors?.['numero']) {
-                  <span class="nombre-medico">{{ _Mensajes.MSJ_PASS_NUMERO }}</span>
+                  <span class="text-danger">{{ _Mensajes.MSJ_PASS_NUMERO }}</span>
                 }
 
                 @if (f['password'].errors?.['caracter']) {
-                  <span class="nombre-medico">{{ _Mensajes.MSJ_PASS_CARACTER_ESPECIAL }}</span>
+                  <span class="text-danger">{{ _Mensajes.MSJ_PASS_CARACTER_ESPECIAL }}</span>
                 }
               </div>
             }
@@ -79,7 +79,8 @@
               contraseña</a>
           </div>
           <div class="flex justify-content-between">
-            <a (click)="_router.navigate(['publico/' + _nav.crearCuenta])" class="login-hipervinculo cursor-pointer">Crear cuenta</a>
+            <a (click)="_router.navigate(['publico/' + _nav.crearCuenta])" class="login-hipervinculo cursor-pointer">Crear
+              cuenta</a>
             <p-button type="submit" [disabled]="formLogin.invalid" label="Iniciar sesión"/>
           </div>
         </div>

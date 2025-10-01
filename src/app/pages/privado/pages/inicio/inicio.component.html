@@ -51,7 +51,7 @@
                 <label class="field-label" for="sexo">Sexo</label>
                 <p class="label-obligatorio">Obligatorio</p>
               </div>
-              <p-select [options]="dummies" formControlName="sexo" optionLabel="label"
+              <p-select [options]="sexos" formControlName="sexo" optionLabel="label"
                         placeholder="Ingresa sexo" class="w-full"/>
             </div>
             <div class="col-4">
@@ -59,7 +59,7 @@
                 <label class="field-label" for="estadoCivil">Estado civil</label>
                 <p class="label-obligatorio">Obligatorio</p>
               </div>
-              <p-select [options]="dummies" formControlName="estadoCivil" optionLabel="label"
+              <p-select [options]="estadosCiviles" formControlName="estadoCivil" optionLabel="label"
                         placeholder="Ingresa estado civil" class="w-full"/>
             </div>
             <div class="col-4">
@@ -134,14 +134,14 @@
             <div class="flex justify-content-between">
               <label class="field-label" for="paisNacimiento">País de nacimiento</label>
             </div>
-            <p-select [options]="dummies" formControlName="paisNacimiento" optionLabel="label"
+            <p-select [options]="paises" formControlName="paisNacimiento" optionLabel="label"
                       placeholder="Ingresa País de nacimiento" class="w-full"/>
           </div>
           <div class="col-3">
             <div class="flex justify-content-between">
               <label class="field-label" for="estadoNacimiento">Estado de origen (nacimiento)</label>
             </div>
-            <p-select [options]="dummies" formControlName="estadoNacimiento" optionLabel="label"
+            <p-select [options]="lugaresNacimiento" formControlName="estadoNacimiento" optionLabel="label"
                       placeholder="Ingresa estado de origen" class="w-full"/>
           </div>
         </article>
@@ -162,7 +162,7 @@
               <label class="field-label" for="pais">País</label>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <p-select [options]="dummies" formControlName="pais" optionLabel="label"
+            <p-select [options]="paises" formControlName="pais" optionLabel="label"
                       placeholder="Ingresa país" class="w-full"/>
           </div>
           <div class="col-3">

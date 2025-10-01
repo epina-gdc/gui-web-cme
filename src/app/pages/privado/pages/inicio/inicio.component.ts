@@ -19,6 +19,9 @@ import {
 } from '@pages/privado/shared/header-medico-interno/header-medico-interno.component';
 import {EmptyTabComponent} from '../../../../components/empty-tab/empty-tab.component';
 import {TabDocumento, TabNode} from '@models/tab-node.interface';
+import {ActivatedRoute} from '@angular/router';
+import {TipoDropdown} from '@models/tipo-dropdown.interface';
+import {mapearArregloTipoDropdown} from '@utils/funciones';
 
 @Component({
   selector: 'app-inicio',
@@ -69,14 +72,20 @@ export class InicioComponent {
   empleo!: any;
   institucionSeleccionada = true;
 
-  dummies = [{label: 'Dummie', value: 'Dummie'}, {label: 'Dummie 2', value: 'Dummie 2'}]
+  dummies = [{label: 'Dummie', value: 'Dummie'}, {label: 'Dummie 2', value: 'Dummie 2'}];
 
-  indice: WritableSignal<number> = signal<number>(1);
+  sexos: TipoDropdown[] = [];
+  estadosCiviles: TipoDropdown[] = [];
+  paises: TipoDropdown[] = [];
+  lugaresNacimiento: TipoDropdown[] = [];
 
-  constructor() {
+  indice: WritableSignal<number> = signal<number>(0);
+
+  constructor(private readonly activatedRoute: ActivatedRoute) {
     this.formRegistro = this.asignarFormularioRegistro();
     this.formZonaInteres = this.asignarFormularioZonaInteres();
     this.formDocumentosEspecialidad = this.asignarFormularioDocumentosEspecialidad();
+    this.obtenerCatalogos();
   }
 
   asignarFormularioRegistro(): FormGroup {
@@ -123,6 +132,16 @@ export class InicioComponent {
     const nuevaZona = this.crearRegistroZonaInteres();
     this.zonasInteres.update(value => [...value, nuevaZona]);
     this.formZonaInteres.reset();
+  }
+
+  obtenerCatalogos(): void {
+    this.activatedRoute.data.subscribe(({respuesta}) => {
+      const [sexos, estadosCiviles, paises, lugaresNacimiento] = respuesta;
+      this.sexos = mapearArregloTipoDropdown(sexos.respuesta, 'desSexo', 'idSexo');
+      this.estadosCiviles = mapearArregloTipoDropdown(estadosCiviles.respuesta, 'desEstadoCivil', 'idEstadoCivil');
+      this.paises = mapearArregloTipoDropdown(paises.respuesta, 'desPais', 'idPais');
+      this.lugaresNacimiento = mapearArregloTipoDropdown(lugaresNacimiento.respuesta, 'desLugarNacimiento', 'idLugarNacimiento');
+    });
   }
 
   crearRegistroZonaInteres() {
