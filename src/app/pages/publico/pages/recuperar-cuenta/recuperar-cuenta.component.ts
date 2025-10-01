@@ -34,14 +34,14 @@ import {Router} from '@angular/router';
   providers: [ConfirmationService]
 })
 export class RecuperarCuentaComponent {
-  mensajes: Mensajes = new Mensajes()
+  mensajes: Mensajes = new Mensajes();
   formRecuperarCuenta!: FormGroup;
   fb: FormBuilder = inject(FormBuilder);
   authService: AuthService = inject(AuthService);
   loaderService: LoaderService = inject(LoaderService);
   alertaService: AlertService = inject(AlertService);
 
-  private router = inject(Router);
+  private readonly router = inject(Router);
 
   constructor(private readonly confirmationService: ConfirmationService) {
     this.formRecuperarCuenta = this.inicializarFormulario();

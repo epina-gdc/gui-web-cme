@@ -17,6 +17,8 @@ export class Mensajes {
   public MSG014: string = 'La CURP ingresada es incorrecta, por favor verifica tu información.';
   public MSG017: string = 'Se ha enviado a su cuenta de correo la información para poder ingresar.';
   public MSG018: string = 'No se encontró ningún registro con los datos proporcionados.';
+  public MSG062: string = 'Tu contraseña ha sido actualizada correctamente, te emos enviado un correo con los detalles del cambio de contraseña. Por seguridad, no compartas tu contraseña con nadie.';
+  public MSG063: string = 'El enlace ha expirado o no es válido. Por favor, solicita un nuevo cambio de contraseña';
 
   public MSJ_PASS_MIN_CARACTER: string = "La contraseña debe tener al menos 8 caracteres"
   public MSJ_PASS_MAX_CARACTER: string = "La contraseña debe tener máximo 12 caracteres"

@@ -4,4 +4,5 @@ export const NAV = {
   crearCuenta: 'crear-cuenta',
   registroMedico: 'registro-medico',
   recuperarContrasenia: 'recuperar-contrasenia',
+  nuevaContrasenia: 'restablecer-contrasenia',
 };
