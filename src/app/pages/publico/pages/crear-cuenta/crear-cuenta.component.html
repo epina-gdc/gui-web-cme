@@ -20,8 +20,8 @@
                     </div>
                     <div class="flex flex-row">
 
-                        <p-select id="perfil" formControlName="perfil" [options]="lstPerfil" optionLabel="descripcion"
-                            optionValue="id" placeholder="Selecciona un perfil" class="w-full"
+                        <p-select id="perfil" formControlName="perfil" [options]="lstPerfil" optionLabel="nomPerfil"
+                            optionValue="idPerfil" placeholder="Selecciona un perfil" class="w-full"
                             (ngModelChange)="cambiaPerfil()">
                         </p-select>
                     </div>
@@ -34,8 +34,9 @@
                         </div>
                         <div class="flex flex-row">
                             <p-select id="modalidad" formControlName="modalidad" [options]="lstModalidad"
-                                optionLabel="descripcion" optionValue="id" placeholder="Selecciona una modalidad"
-                                class="w-full" (ngModelChange)="cambiaModalidad()">
+                                optionLabel="nomSubperfil" optionValue="idSubperfil"
+                                placeholder="Selecciona una modalidad" class="w-full"
+                                (ngModelChange)="cambiaModalidad()">
                             </p-select>
                         </div>
                     </div>
@@ -45,17 +46,18 @@
                         </div>
                         <div class="flex flex-row">
                             <div class="flex flex-wrap gap-4">
+                               
                                 <div class="flex items-center">
-                                    <p-radiobutton id="documento" formControlName="documento" name="documento" value="1"
-                                        inputId="documento1" [(ngModel)]="registroMedico.blnPasaporte" />
-                                    <label for="documento1" class="ml-2">CURP</label>
-                                </div>
+                                   
+                               
 
-                                <div class="flex items-center">
-                                    <p-radiobutton id="documento" formControlName="documento" name="documento" value="2"
-                                        inputId="documento2" [(ngModel)]="registroMedico.blnPasaporte" />
-                                    <label for="documento2" class="ml-2">Pasaporte</label>
-                                </div>
+                                @for (documento of lstDocumentos; track documento.idDocumentoVerificacion) {
+                                    <p-radiobutton id="documento" formControlName="documento" name="documento"
+                                     value="{{documento.desDocumentoVerificacion}}"
+                                    inputId="documento" [(ngModel)]="registroMedico.desDocumentoVerificacion" />
+                                <label for="documento" class="ml-2">{{documento.desDocumentoVerificacion}}</label>
+                                }
+                            </div>
 
                             </div>
 

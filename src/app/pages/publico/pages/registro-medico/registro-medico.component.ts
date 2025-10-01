@@ -1,3 +1,6 @@
+
+import { ResponseGeneral } from '@models/responseGeneral';
+
 import {Component, inject} from '@angular/core';
 import {Card} from 'primeng/card';
 import {GeneralComponent} from '../../../../components/general.component';
@@ -6,14 +9,15 @@ import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/
 import {Select} from 'primeng/select';
 import {Button} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
-
+import {  HttpErrorResponse } from '@angular/common/http';
 
 import {CommonModule} from '@angular/common';
-import {CatalogoGeneral} from '@models/catalogoGeneral';
-import {RegistroMedico} from '@models/datosMedico';
+import {CatalogoGeneral, CatPaisResponse, CatSubperfil, CatSubperfilResponse, Pais} from '@models/catalogoGeneral';
+import {RegistroCurpRequest, RegistroInternoRequest, RegistroMedico, RegistroPasaporteRequest} from '@models/datosMedico';
 import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regresar.component';
 import {passwordValidator} from '@validators/password-validator';
 import {PATRON_CURP, PATRON_EMAIL, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_RFC} from '@utils/regex';
+
 
 @Component({
   selector: 'app-registro-medico',
@@ -35,7 +39,8 @@ export class RegistroMedicoComponent extends GeneralComponent {
   form!: FormGroup;
   strTitulo!: string;
   medico!: RegistroMedico;
-  lstModalidad!: Array<CatalogoGeneral>;
+  lstModalidad!: Array<CatSubperfil>;
+  lstPais!: Array<Pais>;
   ruta: string = '';
   inMatricula: boolean = false;
   inNombre: boolean = false;
@@ -53,15 +58,15 @@ export class RegistroMedicoComponent extends GeneralComponent {
     this.ruta = this._nav.publico + this._nav.crearCuenta;
     this.blnPassIguales = false;
     this.blnCorreosIguales = false;
-    this.lstModalidad = this.getCatalogoModalidad();
+     this.getCatalogoModalidad();
     this.form = this.inicializarForm();
     this.msjForm();
 
     let x = this.getSession('registroMedico');
     if (x) {
       this.medico = x;
-
-      if (this.medico.perfil == 1) {
+this.medico.documentoVerif =x.documentoVerif;
+      if (this.medico.blnInterno) {
         this.strTitulo = 'Residente IMSS';
         this.isResidente();
       } else {
@@ -69,6 +74,7 @@ export class RegistroMedicoComponent extends GeneralComponent {
         this.isExterno();
 
         if (this.medico.blnPasaporte) {
+          this.getCatalogoPais();
           this.isPasaporte();
 
         } else {
@@ -80,10 +86,41 @@ export class RegistroMedicoComponent extends GeneralComponent {
     }
 
     this.blnBtnValidar = true;
-    this.medico.curp = '';
+    this.medico.refCurp = '';
 
     this.form.controls['modalidad'].setValue(this.medico.modalidad);
     console.log("form de registro: ", this.medico);
+  }
+
+  
+  getCatalogoModalidad(): void{
+    this.lstModalidad = new Array<CatSubperfil>();
+    this._CatalogoGenService.getLstSubPerfil().subscribe((response: CatSubperfilResponse) => {
+
+      if (response.exito) {
+
+        this.lstModalidad = response.respuesta;
+      
+      }
+
+      
+
+    });
+  }
+
+  getCatalogoPais(): void{
+    this.lstPais = new Array<Pais>();
+    this._CatalogoGenService.getLstPais().subscribe((response: CatPaisResponse) => {
+
+      if (response.exito) {
+
+        this.lstPais = response.respuesta;
+      
+      }
+
+      
+
+    });
   }
 
 
@@ -94,7 +131,7 @@ export class RegistroMedicoComponent extends GeneralComponent {
 
   }
 
-  private activarCampos(perfil: number) {
+  private activarCampos(blnInterno: boolean) {
     this.inNombre = true;
     this.inRfc = true;
     this.inAp = true;
@@ -103,18 +140,18 @@ export class RegistroMedicoComponent extends GeneralComponent {
     this.inCorreo2 = true;
     this.inPass = true;
     this.inPass2 = true;
-    switch (perfil) {
-      case 1:
+    switch (blnInterno) {
+      case true:
 
 
         this.isNotCurp();
 
         break;
-      case 2://
+      case false://
 
 
 
-        debugger
+
         if (this.medico.blnPasaporte) {
           this.inPasaporte = true;
           this.inPais = true;
@@ -133,8 +170,8 @@ export class RegistroMedicoComponent extends GeneralComponent {
 
   public desbloquearValidarMatricula() {
     console.log("a desbloquear boton ");
-    this.medico.matricula = this.form.controls['matricula'].value
-    if (this.medico.matricula.length == 10) {
+    this.medico.cveMatricula = this.form.controls['matricula'].value
+    if (this.medico.cveMatricula.length == 10) {
       this.blnBtnValidar = false;
     } else {
       this.blnBtnValidar = true;
@@ -160,7 +197,7 @@ export class RegistroMedicoComponent extends GeneralComponent {
   private isPasaporte() {
     this.clearCampos();
     this.form.controls['modalidad'].setValidators([Validators.required]);
-    this.form.controls['pasaporte'].setValidators([Validators.required]);
+    this.form.controls['pasaporte'].setValidators([Validators.required,Validators.minLength(6),Validators.maxLength(9)]);
     this.form.controls['pais'].setValidators([Validators.required]);
     this.form.controls['modalidad'].updateValueAndValidity();
     this.form.controls['pasaporte'].updateValueAndValidity();
@@ -232,7 +269,7 @@ export class RegistroMedicoComponent extends GeneralComponent {
         { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
         { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },],
       'curp': [
-         { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
+        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
         { type: 'minlength', msj: this._Mensajes.MSJ_LONG_CURP },
         { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
       ],
@@ -294,7 +331,7 @@ export class RegistroMedicoComponent extends GeneralComponent {
       apellidoP: ['', [Validators.required, Validators.pattern(PATRON_NOMBRE)]],
       apellidoM: ['', [Validators.required, Validators.pattern(PATRON_NOMBRE)]],
       curp: ['', Validators.compose([
-         Validators.required,
+        Validators.required,
         Validators.minLength(18),
         Validators.maxLength(18),
         Validators.pattern(PATRON_CURP),
@@ -340,8 +377,8 @@ export class RegistroMedicoComponent extends GeneralComponent {
 
   public desbloquearValidar() {
     console.log("a desbloquear boton ");
-    this.medico.curp = this.form.controls['curp'].value
-    if (this.medico.curp.length == 18) {
+    this.medico.refCurp = this.form.controls['curp'].value
+    if (this.medico.refCurp.length == 18) {
       this.blnBtnValidar = false;
     } else {
       this.blnBtnValidar = true;
@@ -350,8 +387,8 @@ export class RegistroMedicoComponent extends GeneralComponent {
 
   public btnValidarCurp() {
     if (!this.blnBtnValidar) {
-      this.medico.curp = this.form.controls['curp'].value;
-      if (this.medico.curp.length == 18) {
+      this.medico.refCurp = this.form.controls['curp'].value;
+      if (this.medico.refCurp.length == 18) {
         this.validarCURP();
       }
     }
@@ -362,15 +399,15 @@ export class RegistroMedicoComponent extends GeneralComponent {
     this.form.controls['nombre'].setValue('Ame');
     this.form.controls['apellidoP'].setValue('Vcitoria');
     this.form.controls['apellidoM'].setValue('SArmiento');
-    this.form.controls['curp'].setValue('VISA900901MTLCRM00');
+    //this.form.controls['curp'].setValue('VISA900901MTLCRM00');
     this.inCurp = true;
     this.form.controls['rfc'].setValue('VISA900901LA3');
 
-    this.medico.apellidoP = this.form.controls['apellidoP'].value;
-    this.medico.apellidoM = this.form.controls['apellidoM'].value;
-    this.medico.curp = this.form.controls['curp'].value;
-    this.medico.rfc = this.form.controls['rfc'].value;
-    this.activarCampos(this.medico.perfil);
+    this.medico.nomApellidoPaterno = this.form.controls['apellidoP'].value;
+    this.medico.nomApellidoMaterno = this.form.controls['apellidoM'].value;
+    this.medico.refCurp = this.form.controls['curp'].value;
+    this.medico.refRfc = this.form.controls['rfc'].value;
+    this.activarCampos(this.medico.blnInterno);
     console.log("datos del medico", this.medico);
   }
 
@@ -384,7 +421,7 @@ export class RegistroMedicoComponent extends GeneralComponent {
   }
 
   public btnCrearCuenta() {
-
+this.asignarDatos();
 
 
     if (this.form.valid) {
@@ -395,8 +432,55 @@ export class RegistroMedicoComponent extends GeneralComponent {
 
         if (this.blnPassIguales) {
 
+          if (this.medico.blnInterno) {
+            let residente = new RegistroInternoRequest();
+            residente.cveMatricula = this.medico.cveMatricula;
+            residente.idPerfil = this.medico.perfil.idPerfil;
+            residente.nomApellidoMaterno = this.medico.nomApellidoMaterno;
+            residente.nomApellidoPaterno = this.medico.nomApellidoPaterno;
+            residente.nomNombre = this.medico.nomNombre;
+            residente.refCurp = this.medico.refCurp;
+            residente.refRfc = this.medico.refRfc;
+            residente.refEmail = this.medico.refEmail;
+            residente.refContrasenaHash = this.medico.refContrasenaHash;
+            this.postResidente(residente);
+          }else{
+            if(this.medico.blnPasaporte){
+              let pasaporte = new RegistroPasaporteRequest();
+              pasaporte.refEmail = this.medico.refEmail;
+              pasaporte.refContrasenaHash = this.medico.refContrasenaHash;
+              pasaporte.idPerfil = this.medico.perfil.idPerfil;
+              pasaporte.idSubperfil = this.medico.modalidad;
+              pasaporte.idDocumentoVerificacion = this.medico.documentoVerif.idDocumentoVerificacion;
+              pasaporte.nomNombre = this.medico.nomNombre;
+              pasaporte.nomApellidoMaterno = this.medico.nomApellidoMaterno;
+              pasaporte.nomApellidoPaterno = this.medico.nomApellidoPaterno;
+                        pasaporte.pasaporte = this.medico.pasaporte;
+                        pasaporte.idPaisEmision = this.medico.pais;
+              pasaporte.refCurp = this.medico.refCurp;
+              pasaporte.refRfc = this.medico.refRfc;
 
-          this.guardarRegistro();
+              //pasaporte.idDocumentoVerificacion
+              this.postPasaporte(pasaporte);
+
+            }else{
+              let curp = new RegistroCurpRequest();
+          
+              curp.refEmail = this.medico.refEmail;
+              curp.refContrasenaHash = this.medico.refContrasenaHash;
+              curp.idPerfil = this.medico.perfil.idPerfil;
+              curp.idSubperfil = this.medico.modalidad;
+              curp.idDocumentoVerificacion = this.medico.documentoVerif.idDocumentoVerificacion;
+              curp.nomNombre = this.medico.nomNombre;
+              curp.nomApellidoMaterno = this.medico.nomApellidoMaterno;
+              curp.nomApellidoPaterno = this.medico.nomApellidoPaterno;
+                        
+              curp.refCurp = this.medico.refCurp;
+              curp.refRfc = this.medico.refRfc;
+              this.postCurp(curp);
+            }
+          }
+
 
 
         } else {
@@ -412,12 +496,65 @@ export class RegistroMedicoComponent extends GeneralComponent {
     } else {
 
       this._alertServices.alerta(this._Mensajes.MSG013);
-      this.activarCampos(this.medico.perfil);
+      this.activarCampos(this.medico.blnInterno);
     }
   }
 
 
-  private guardarRegistro() {
+  postResidente(residente: RegistroInternoRequest) {
+    this._RegistroMedicoService.registrarResidente(residente).subscribe({
+      next: (data: ResponseGeneral) => {
+        console.log("data:", data);
+        if (data.exito) {
+          this.paginaAnterior();
+        } else {
+          this._alertServices.error(data.mensaje)
+        }
+      },
+      error: (err: HttpErrorResponse) => {
+        this._alertServices.error(err.message);
+
+      }
+    });
+  }
+
+  postPasaporte(pasaporte: RegistroPasaporteRequest) {
+    this._RegistroMedicoService.registrarPasaporte(pasaporte).subscribe({
+      next: (data: ResponseGeneral) => {
+        console.log("data:", data);
+        if (data.exito) {
+          this.paginaAnterior();
+        } else {
+          this._alertServices.error(data.mensaje)
+        }
+      },
+      error: (err: HttpErrorResponse) => {
+        this._alertServices.error(err.message);
+
+      }
+    });
+  }
+
+  postCurp(curp: RegistroCurpRequest) {
+    this._RegistroMedicoService.registrarCurp(curp).subscribe({
+      next: (data: ResponseGeneral) => {
+        console.log("data:", data);
+        if (data.exito) {
+          this.paginaAnterior();
+        } else {
+          this._alertServices.error(data.mensaje)
+        }
+      },
+      error: (err: HttpErrorResponse) => {
+        this._alertServices.error(err.message);
+
+      }
+    });
+  }
+
+
+
+  private paginaAnterior() {
     this._router.navigate(['publico/inicio-sesion']);
     setTimeout(() => {
       this._alertServices.exito(this._Mensajes.MSG012);
@@ -427,10 +564,10 @@ export class RegistroMedicoComponent extends GeneralComponent {
   blnCorreosIguales!: boolean;
   blnPassIguales!: boolean;
   public compararCorreos() {
-    this.medico.correo = this.form.controls['correo'].value;
+    this.medico.refEmail = this.form.controls['correo'].value;
     this.medico.correo2 = this.form.controls['correoc'].value;
-    if (this.medico.correo.length > 0 && this.medico.correo2.length > 0) {
-      if (this.comparaCampos(this.medico.correo, this.medico.correo2)) {
+    if (this.medico.refEmail.length > 0 && this.medico.correo2.length > 0) {
+      if (this.comparaCampos(this.medico.refEmail, this.medico.correo2)) {
         this.blnCorreosIguales = true;
       } else {
         this.blnCorreosIguales = false;
@@ -442,10 +579,10 @@ export class RegistroMedicoComponent extends GeneralComponent {
 
 
   public compararPassword() {
-    this.medico.password = this.form.controls['pass'].value;
+    this.medico.refContrasenaHash = this.form.controls['pass'].value;
     this.medico.password2 = this.form.controls['passc'].value;
-    if (this.medico.password.length > 0 && this.medico.password2.length > 0) {
-      if (this.comparaCampos(this.medico.password, this.medico.password2)) {
+    if (this.medico.refContrasenaHash.length > 0 && this.medico.password2.length > 0) {
+      if (this.comparaCampos(this.medico.refContrasenaHash, this.medico.password2)) {
         this.blnPassIguales = true;
       } else {
         this.blnPassIguales = false;
@@ -461,10 +598,16 @@ export class RegistroMedicoComponent extends GeneralComponent {
     console.log("hay cambios en el selct ", this.medico);
   }
 
+  cambiaPais() {
+
+    this.medico.pais = this.form.controls['pais'].value;
+    
+  }
+
 
   public dinamicoCurp() {
-    this.medico.curp = this.form.controls['curp'].value
-    if (this.medico.curp.length > 0) {
+    this.medico.refCurp = this.form.controls['curp'].value
+    if (this.medico.refCurp.length > 0) {
       this.isCurp();
     } else {
       this.isNotCurp();
@@ -473,14 +616,14 @@ export class RegistroMedicoComponent extends GeneralComponent {
 
 
   public btnValidarMatricula() {
-    this.medico.matricula = this.form.controls['matricula'].value
+    this.medico.cveMatricula = this.form.controls['matricula'].value
 
-    if (this.existeMatricula(this.medico.matricula)) {
+    if (this.existeMatricula(this.medico.cveMatricula)) {
       this.validarMatricula();
     } else {
       this._alertServices.alerta(this._Mensajes.MSG010);
       this.form.controls['matricula'].setValue('');
-      this.medico.matricula = this.form.controls['matricula'].value
+      this.medico.cveMatricula = this.form.controls['matricula'].value
       this.form.reset();
     }
   }
@@ -493,20 +636,31 @@ export class RegistroMedicoComponent extends GeneralComponent {
 
     this.form.controls['rfc'].setValue('VISA900901LA');
 
-    this.medico.apellidoP = this.form.controls['apellidoP'].value;
-    this.medico.apellidoM = this.form.controls['apellidoM'].value;
-    this.medico.curp = this.form.controls['curp'].value;
-
-    this.medico.rfc = this.form.controls['rfc'].value;
-    this.activarCampos(this.medico.perfil);
+  
+    this.activarCampos(this.medico.blnInterno);
     this.dinamicoCurp();
 
     console.log("datos del medico", this.medico);
+    this.asignarDatos();
+  }
+
+  private asignarDatos(){
+    this.medico.nomNombre = this.form.controls['nombre'].value;
+    this.medico.nomApellidoPaterno = this.form.controls['apellidoP'].value;
+    this.medico.nomApellidoMaterno = this.form.controls['apellidoM'].value;
+    this.medico.refCurp = this.form.controls['curp'].value;
+    
+    this.medico.refRfc = this.form.controls['rfc'].value;
+
+    if(this.medico.blnPasaporte){
+      this.medico.pasaporte = this.form.controls['pasaporte'].value;
+      this.medico.pais = this.form.controls['pais'].value;
+    }
   }
 
   private existeMatricula(matricula: string): boolean {
     let blnExiste = false;
-    if (matricula === '1234567890') {
+    if (matricula === '9999999999') {
       blnExiste = true;
     }
     return blnExiste;

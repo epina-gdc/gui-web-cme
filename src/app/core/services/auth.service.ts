@@ -35,10 +35,14 @@ export class AuthService {
       tap((respuesta: any) => {
         if (respuesta.exito) {
           localStorage.setItem('access_token', respuesta.respuesta.token);
-          this.usuarioService.setUser(this.obtenerUsuarioDePayload(respuesta.respuesta.token));
+          this.settearSession(respuesta.respuesta.token);
         }
       })
     );
+  }
+
+  settearSession(token: string){
+    this.usuarioService.setUser(this.obtenerUsuarioDePayload(token));
   }
 
   solicitarCambioPass(solicitud: SolicitudCambioContrasenia): Observable<any> {

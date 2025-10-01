@@ -1,10 +1,16 @@
-import {CommonModule} from "@angular/common";
-import {Component, inject} from "@angular/core";
-import {Mensajes} from "@utils/mensajes";
-import {Router} from '@angular/router';
-import {NAV} from "./../core/utils/url-global";
-import {CatalogoGeneral} from "@models/catalogoGeneral";
+
+import { CommonModule } from "@angular/common";
+import { Component, OnDestroy, inject } from "@angular/core";
+import { Mensajes } from "@utils/mensajes";
+import { Router } from '@angular/router';
+import { NAV } from "./../core/utils/url-global";
+import { CatalogoGeneral, CatPerfil, CatPerfilResponse } from "@models/catalogoGeneral";
+import { CatalogosGeneralesService } from "@services/catalogos-generales.service";
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { RegistroMedicoService } from "@services/registro-medico.service";
+
 import {AlertService} from "@services/alert.service";
+
 
 
 @Component({
@@ -21,13 +27,16 @@ export class GeneralComponent {
   protected _Mensajes: Mensajes;
   protected _router: Router;
   protected _alertServices: AlertService;
-
+  protected _CatalogoGenService: CatalogosGeneralesService;
+  protected _RegistroMedicoService: RegistroMedicoService;
 
 
   constructor() {
     this._Mensajes = inject(Mensajes);
     this._router = inject(Router);
     this._alertServices = inject(AlertService);
+    this._CatalogoGenService = inject(CatalogosGeneralesService);
+    this._RegistroMedicoService = inject(RegistroMedicoService);
   }
 
   public onlyNumbers(event: any) {
@@ -84,40 +93,11 @@ export class GeneralComponent {
   }
 
 
-  public getCatalogoModalidad(): Array<CatalogoGeneral> {
-    let lstModalidad: Array<CatalogoGeneral> = [{
-      id: 1,
-      descripcion: 'Médico cursando la residencia'
-    },
-    { id: 2, descripcion: 'Médico especialista con estudio en el extranjero ' },
-    { id: 3, descripcion: 'Médicos especialistas egresados 2025 de otra Institucional de Salud' },
-    { id: 4, descripcion: 'Médico especialista IMSS egresado de dos años anteriores ' }
-    ]
-    return lstModalidad;
-  }
-
-
-  getCatalogoPerfiles(): Array<CatalogoGeneral> {
-    let lstPerfil = [{
-      id: 1,
-      descripcion: 'Residente IMSS'
-    },
-    { id: 2, descripcion: 'Médico externo' }
-    ]
-
-    return lstPerfil;
-  }
 
 
 
-  getCatalogoDocumento(): Array<CatalogoGeneral> {
-    let lstDocumentos = [
-      { id: 1, descripcion: 'CURP' },
-      { id: 2, descripcion: 'Pasaporte' },
 
-    ]
-    return lstDocumentos;
-  }
+
 
 
 

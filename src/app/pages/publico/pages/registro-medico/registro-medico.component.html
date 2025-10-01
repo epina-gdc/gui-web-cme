@@ -27,7 +27,7 @@
 
 
                   
-                        @if(medico.perfil == 1){
+                        @if(medico.blnInterno){
                         <div class=" mt-4 row flex">
                             <div class="field col-9">
                                 <label class="field-label" for="matricula">Matrícula</label>
@@ -71,18 +71,18 @@
 
                         </div>
                         }
-                        @if(medico.perfil == 2){
+                        @if(!medico.blnInterno){
                         <div class=" mt-4 row flex">
                             <div class="field col-12">
                                 <label class="field-label" for="modalidad">Modalidad del médico</label>
                                 <p-select id="modalidad" formControlName="modalidad" [options]="lstModalidad"
-                                    optionLabel="descripcion" optionValue="id" placeholder="Selecciona una modalidad"
+                                    optionLabel="nomSubperfil" optionValue="idSubperfil" placeholder="Selecciona una modalidad"
                                     class="w-full" (ngModelChange)="cambiaModalidad()">
                                 </p-select>
                             </div>
                         </div>
                         }
-                        @if(!medico.blnPasaporte && medico.perfil == 2){
+                        @if(!medico.blnPasaporte && !medico.blnInterno){
                         <div class=" mt-4 row flex">
                             <div class="field col-9">
                                 <label class="field-label" for="curp">CURP</label>
@@ -137,7 +137,7 @@
 
                         </div>
 
-                        } @else if (medico.blnPasaporte && medico.perfil == 2) {
+                        } @else if (medico.blnPasaporte && !medico.blnInterno) {
 
                         <div class=" mt-4 row flex">
 
@@ -145,7 +145,7 @@
                                 <label class="field-label" for="pasaporte">Pasaporte</label>
                                 <input pInputText class="w-full" type="text" id="pasaporte"
                                     placeholder="Ingresa pasaporte" (keypress)="inPasaporte = true" autocomplete="off" formControlName="pasaporte"
-                                    maxlength="13" />
+                                    maxlength="9" minlength="6"  (keyup)="convertMayusculas($event);" />
                                     @if(inPasaporte){
                                         @for (validation of msjValidation.pasaporte; track validation.msj) {   
                                             @if(f['pasaporte'].errors?.[validation.type]){
@@ -157,15 +157,13 @@
                             <div class="field col-6">
 
                                 <label class="field-label" for="pais">País</label>
-                                <input #input pInputText class="w-full" type="text" id="pais" placeholder="Ingresa país"
-                                    autocomplete="off" formControlName="pais" (keypress)="inPais = true"  />
-                                    @if(inPais){
-                                        @for (validation of msjValidation.pais; track validation.msj) {   
-                                            @if(f['pais'].errors?.[validation.type]){
-                                                <p class="text-danger">{{validation.msj}}</p>
-                                            }
-                                        }
-                                    }
+                                <!-- <input #input pInputText class="w-full" type="text" id="pais" placeholder="Ingresa país"
+                                    autocomplete="off" formControlName="pais"   /> -->
+                                    <p-select id="pais" formControlName="pais" [options]="lstPais"
+                                    optionLabel="desPais" optionValue="idPais" placeholder="Selecciona un país"
+                                    class="w-full" (ngModelChange)="cambiaPais()">
+                                </p-select>
+                                   
 
                             </div>
 
@@ -217,7 +215,7 @@
                             </div>
 
                         </div>
-                        @if(medico.blnPasaporte || medico.perfil == 1){
+                        @if(medico.blnPasaporte || medico.blnInterno){
                         <div class=" mt-4 row flex">
                             <div class="field col-6">
 

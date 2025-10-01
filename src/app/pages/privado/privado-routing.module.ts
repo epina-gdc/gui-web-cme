@@ -7,7 +7,6 @@ import { authGuard } from '@guards/auth.guard';
 const routes: Routes = [{
   path: '',
   component: PrivadoComponent,
-  canActivateChild: [authGuard],
   children: [
     {
       path: '',
