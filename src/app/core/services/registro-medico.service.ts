@@ -2,16 +2,14 @@
  * Develop: Ameyalli Victoria S
  * 2025
  */
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Injectable ,inject} from '@angular/core';
-import { environment } from '@env/environment.development';
-import { RegistroCurpRequest, RegistroInternoRequest, RegistroPasaporteRequest } from '@models/datosMedico';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {inject, Injectable} from '@angular/core';
+import {environment} from '@env/environment.development';
+import {RegistroCurpRequest, RegistroInternoRequest, RegistroPasaporteRequest} from '@models/datosMedico';
+import {Observable, throwError} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
 
-import { AlertService } from './alert.service';
-
-
+import {AlertService} from './alert.service';
 
 
 @Injectable({
@@ -67,7 +65,7 @@ export class RegistroMedicoService {
 
 
   private handleError(error: HttpErrorResponse) {
-    
+
     this.alertas.error("Error "+error.status +'. Contácte al administrador');
     // Return an observable with a user-facing error message.
     return throwError(error);
