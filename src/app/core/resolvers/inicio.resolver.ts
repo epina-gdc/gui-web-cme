@@ -7,6 +7,7 @@ export const inicioResolver: ResolveFn<any> = (route, state) => {
   const catalogosService = inject(CatalogosGeneralesService);
   const sexos = catalogosService.getLstSexos();
   const estadosCiviles = catalogosService.getLstEstadosCiviles();
+  const paises = catalogosService.getLstPais();
 
-  return forkJoin([sexos, estadosCiviles]);
+  return forkJoin([sexos, estadosCiviles, paises]);
 };

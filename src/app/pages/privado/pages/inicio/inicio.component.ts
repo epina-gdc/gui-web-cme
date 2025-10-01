@@ -76,6 +76,7 @@ export class InicioComponent {
 
   sexos: TipoDropdown[] = [];
   estadosCiviles: TipoDropdown[] = [];
+  paises: TipoDropdown[] = [];
 
   indice: WritableSignal<number> = signal<number>(0);
 
@@ -134,9 +135,10 @@ export class InicioComponent {
 
   obtenerCatalogos(): void {
     this.activatedRoute.data.subscribe(({respuesta}) => {
-      const [sexos, estadosCiviles] = respuesta;
+      const [sexos, estadosCiviles, paises] = respuesta;
       this.sexos = mapearArregloTipoDropdown(sexos.respuesta, 'desSexo', 'idSexo');
       this.estadosCiviles = mapearArregloTipoDropdown(estadosCiviles.respuesta, 'desEstadoCivil', 'idEstadoCivil');
+      this.paises = mapearArregloTipoDropdown(paises.respuesta, 'desPais', 'idPais');
     });
   }
 
