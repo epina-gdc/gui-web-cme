@@ -11,14 +11,13 @@ import {catchError, map} from 'rxjs/operators';
 
 import {AlertService} from './alert.service';
 
-
 @Injectable({
   providedIn: 'root'
 })
 export class RegistroMedicoService {
-  private VERSION_API: string = '/v1/';
-  private serverEndPointURL = environment.api.apiCatalogos + this.VERSION_API;
-  private serverEndPointURRegistro = environment.api.apiRegistro;
+  private readonly VERSION_API: string = '/v1/';
+  private readonly serverEndPointURL = environment.api.apiCatalogos + this.VERSION_API;
+  private readonly serverEndPointURRegistro = environment.api.apiRegistro;
   alertas = inject(AlertService);
   header = new HttpHeaders({
     'Content-Type': 'application/json',
