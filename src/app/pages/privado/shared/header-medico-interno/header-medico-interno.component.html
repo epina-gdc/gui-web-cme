@@ -2,7 +2,7 @@
   <article class="flex flex-row p-4">
       <span class="flex-column">
         <p class="m-1 label-medico">Nombre del médico</p>
-        <strong class="m-1 nombre-medico">{{userData?.nomNombre}} {{userData?.nomApellidoPaterno}}</strong>
+        <strong class="m-1 nombre-medico">{{userData?.nomNombre}} {{userData?.nomApellidoPaterno}} {{userData?.nomApellidoMaterno}}</strong>
       </span>
   </article>
   <article class="flex flex-row">
@@ -10,11 +10,11 @@
       <icon-card iconClass="cme-user" cardColor="#1a73e8" [leftBorderRound]="true"></icon-card>
       <div class="flex flex-column justify-content-center mr-5">
         <p class="m-2 label-campo">Matricula</p>
-        <strong class="m-2 texto-campo">XXXXXXXXX</strong>
+        <strong class="m-2 texto-campo">{{userData?.cveMatricula}}</strong>
       </div>
       <div class="flex flex-column justify-content-center mr-5">
         <p class="m-2 label-campo">CURP</p>
-        <strong class="m-2 texto-campo">XXXXXXXXX</strong>
+        <strong class="m-2 texto-campo">{{userData?.refCurp}}</strong>
       </div>
       <icon-card iconClass="cme-document" cardColor="#00c853"></icon-card>
       <div class="flex flex-column justify-content-center">

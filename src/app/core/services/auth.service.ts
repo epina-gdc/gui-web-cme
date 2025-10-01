@@ -78,6 +78,8 @@ export class AuthService {
         idUsuario: payload.idUsuario,
         nomApellidoPaterno: payload.nomApellidoPaterno,
         nomNombre: payload.nomNombre,
+        nomApellidoMaterno: payload.nomApellidoMaterno,
+        cveMatricula: payload.cveMatricula,
         perfil: payload.perfil,
         refCurp: payload.refCurp,
         refEmail: payload.refEmail,
