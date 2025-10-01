@@ -59,7 +59,7 @@ export class CambioContraseniaComponent {
   cambiarPassword(): void {
     if (this.registroForm.invalid) return;
     if (!this.validarMismoPass()) {
-      this.alertaService.error('Las contraseñas no coinciden, favor de verificar.');
+      this.alertaService.alerta('Las contraseñas no coinciden, favor de verificar.');
       return;
     }
     const solicitud: CambioContrasenia = this.crearSolicitudCambioPass();
