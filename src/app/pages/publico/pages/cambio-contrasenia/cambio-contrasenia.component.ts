@@ -4,7 +4,7 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {Password} from 'primeng/password';
 import {Divider} from 'primeng/divider';
 import {PrimeTemplate} from 'primeng/api';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {AlertService} from '@services/alert.service';
 import {CambioContrasenia} from '@models/cambio-contrasenia.interface';
 import {finalize} from 'rxjs';
@@ -22,7 +22,8 @@ import {Button} from 'primeng/button';
     Password,
     Divider,
     PrimeTemplate,
-    Button
+    Button,
+    RouterLink
   ],
   templateUrl: './cambio-contrasenia.component.html',
   styleUrl: './cambio-contrasenia.component.scss'
@@ -38,14 +39,12 @@ export class CambioContraseniaComponent {
 
   fb: FormBuilder = inject(FormBuilder);
 
-  token: string = '';
+  solicitarNuevoCodigo: boolean = false;
 
   REGEX_PASS: RegExp = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[^a-zA-Z0-9\s]).{8,12}$/;
 
   constructor() {
-    this.token = this.route.snapshot.queryParams['token'];
     this.registroForm = this.crearRegistroForm();
-    console.log(this.token);
   }
 
   crearRegistroForm(): FormGroup {
@@ -65,11 +64,15 @@ export class CambioContraseniaComponent {
     }
     const solicitud: CambioContrasenia = this.crearSolicitudCambioPass();
     this.loaderService.activar();
-    this.authService.cambiarPass(solicitud, this.token).pipe(
+    const token = this.route.snapshot.queryParams['token'];
+    this.authService.cambiarPass(solicitud, token).pipe(
       finalize(() => this.loaderService.desactivar()))
       .subscribe({
           next: () => this.manejarCambioPassCorrecto(),
-          error: (error: any) => this.manejarValidarCodigoError(error)
+          error: (error) => {
+            console.log(error);
+            this.manejarValidarCodigoError(error.error)
+          }
         }
       );
   }
@@ -86,13 +89,23 @@ export class CambioContraseniaComponent {
   }
 
   manejarValidarCodigoError(error: any): void {
-    this.alertaService.error(this.mensajes.MSG063);
+    console.log(error.mensaje)
+    if (error.mensaje === 'El Token ha expirado.') {
+      this.alertaService.error(this.mensajes.MSG063);
+      this.solicitarNuevoCodigo = true;
+      return;
+    }
+    if (!error.mensaje) {
+      this.alertaService.error('Ocurrió un error, por favor intente más tarde.');
+      return;
+    }
+    this.alertaService.error(error.mensaje);
   }
 
   validarMismoPass(): boolean {
     const nuevaContrasena = this.registroForm.get('nuevaContrasena');
     const confirmarContrasena = this.registroForm.get('confirmarContrasena');
-    return nuevaContrasena?.value === confirmarContrasena?.value
+    return nuevaContrasena?.value === confirmarContrasena?.value;
   }
 
   get f() {

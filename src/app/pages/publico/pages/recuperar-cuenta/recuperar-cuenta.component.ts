@@ -80,7 +80,7 @@ export class RecuperarCuentaComponent {
       finalize(() => this.loaderService.desactivar())
     ).subscribe({
       next: () => this.manejarSolicitudCambioPassCorrecto(),
-      error: (error) => this.manejarValidarCodigoError(error),
+      error: (error) => this.manejarValidarCodigoError(error.error),
     });
   }
 

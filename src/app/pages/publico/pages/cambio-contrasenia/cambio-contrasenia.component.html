@@ -73,8 +73,11 @@
             }
           </div>
         </div>
-        <div class="flex justify-content-end mt-3">
-          <p-button type="submit" [disabled]="registroForm.invalid" label="Enviar"/>
+        <div class="flex justify-content-end mt-3 gap-2">
+          @if (solicitarNuevoCodigo) {
+            <p-button type="button" label="Solicitar nuevo código" [routerLink]="'../recuperar-contrasenia'"/>
+          }
+          <p-button type="submit" [disabled]="registroForm.invalid || solicitarNuevoCodigo" label="Enviar"/>
         </div>
       </form>
     </p-card>
