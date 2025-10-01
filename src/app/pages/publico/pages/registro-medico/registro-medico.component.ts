@@ -181,8 +181,8 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
   private clearCampos() {
-    this.form.controls['matricula'].setValidators([]),
-      this.form.controls['modalidad'].setValidators([]);
+    this.form.controls['matricula'].setValidators([]);
+    this.form.controls['modalidad'].setValidators([]);
     this.form.controls['pasaporte'].setValidators([]);
     this.form.controls['pais'].setValidators([]);
     this.form.controls['modalidad'].updateValueAndValidity();
@@ -222,8 +222,8 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
   private isNotCurp() {
-    this.form.controls['curp'].setValidators([]),
-      this.form.controls['curp'].updateValueAndValidity();
+    this.form.controls['curp'].setValidators([]);
+    this.form.controls['curp'].updateValueAndValidity();
     this.inCurp = false;
 
   }

@@ -15,11 +15,11 @@ import {AlertService} from '../services/alert.service';
      providedIn: 'root'
  })
  export class CatalogosGeneralesService {
-     private VERSION_API:string  = '/v1/';
-     private serverEndPointURL = `${environment.api.apiCatalogos + this.VERSION_API+'catalogos'}`;
+     private readonly VERSION_API:string  = '/v1/';
+     private readonly serverEndPointURL = `${environment.api.apiCatalogos + this.VERSION_API+'catalogos'}`;
      protected _alertService: AlertService  ;
      protected http: HttpClient;
-     header = new HttpHeaders({
+     header: HttpHeaders = new HttpHeaders({
          'Content-Type': 'application/json',
          'Access-Control-Allow-Origin': '*',
          'Access-Control-Allow-Headers': 'Content-Type',
