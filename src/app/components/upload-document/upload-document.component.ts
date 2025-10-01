@@ -23,7 +23,7 @@ export class UploadDocumentComponent {
   totalSize: number = 0;
   totalSizePercent: number = 0;
 
-  constructor(private config: PrimeNG) {
+  constructor(private readonly config: PrimeNG) {
   }
 
   onSelectedFiles(event: any) {

@@ -1,7 +1,7 @@
-import { inject } from '@angular/core';
-import { CanActivateChildFn, RouterStateSnapshot } from '@angular/router';
-import { AuthService } from '@services/auth.service';
-import { Observable, of } from 'rxjs';
+import {inject} from '@angular/core';
+import {CanActivateChildFn, RouterStateSnapshot} from '@angular/router';
+import {AuthService} from '@services/auth.service';
+import {Observable, of} from 'rxjs';
 
 export const authGuard: CanActivateChildFn = (childRoute, state) => {
   return checkAuth(state);

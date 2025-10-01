@@ -11,8 +11,8 @@ import {PATRON_EMAIL} from '@utils/regex';
 import {AuthService} from '@services/auth.service';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {HttpRespuesta} from '@models/http-respuesta.interface';
-import { LoaderService } from '../../../../components/loader/services/loader.service';
-import { finalize } from 'rxjs';
+import {LoaderService} from '../../../../components/loader/services/loader.service';
+import {finalize} from 'rxjs';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -71,7 +71,7 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit{
             this._alertServices.alerta(respuesta.mensaje);
             return;
           }
-          this._router.navigate(['/privado'], {
+          void this._router.navigate(['/privado'], {
             relativeTo: this.activatedRoute,
           });
         },

@@ -18,7 +18,7 @@ export class AlertComponent implements OnInit, OnDestroy {
     alertSubscription: Subscription = new Subscription;
     routeSubscription: Subscription = new Subscription;
 
-    constructor(private router: Router, private alertService: AlertService) { }
+    constructor(private readonly router: Router, private readonly alertService: AlertService) { }
 
     ngOnInit() {
         // subscribe to new alert notifications

@@ -1,4 +1,4 @@
-import { CatDocumentoVerificacion, CatPerfil } from "./catalogoGeneral";
+import {CatDocumentoVerificacion, CatPerfil} from "./catalogoGeneral";
 
 export class Medico {
     nomNombre!: string;
@@ -58,8 +58,8 @@ export class RegistroCurpRequest {
     nomApellidoMaterno!: string;
     refCurp!: string;
     refRfc!: string;
- 
- 
+
+
  }
 
  export class RegistroPasaporteRequest {
@@ -77,7 +77,7 @@ export class RegistroCurpRequest {
     refRfc!: string;
 
 
-  
- 
- 
+
+
+
  }

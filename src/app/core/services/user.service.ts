@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
-import { SesionUser } from '@models/sesion-user.interface';
-import { BehaviorSubject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {SesionUser} from '@models/sesion-user.interface';
+import {BehaviorSubject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ export class UserService {
 
   constructor() { }
 
-  private userDataSubject = new BehaviorSubject<any>(null);
+  private readonly userDataSubject = new BehaviorSubject<any>(null);
   userData$ = this.userDataSubject.asObservable();
 
   setUser (data: SesionUser) {
@@ -20,5 +20,5 @@ export class UserService {
   clearUser() {
     this.userDataSubject.next(null);
   }
-  
+
 }

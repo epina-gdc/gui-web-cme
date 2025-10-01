@@ -73,21 +73,34 @@ export class RecuperarCuentaComponent {
   }
 
   recuperarContrasenia(): void {
+    if (this.formRecuperarCuenta.invalid) return;
     const solicitud: SolicitudCambioContrasenia = this.generarSolicitudRecuperacionContrasenia();
     this.loaderService.activar();
     this.authService.solicitarCambioPass(solicitud).pipe(
       finalize(() => this.loaderService.desactivar())
     ).subscribe({
-      next: () => {
-        this.formRecuperarCuenta.reset();
-        void this.router.navigate(['/iniciar-sesion']);
-        this.alertaService.exito(this.mensajes.MSG017);
-      },
-      error: (error) => {
-        this.alertaService.error(this.mensajes.MSG018);
-      },
-    })
+      next: () => this.manejarSolicitudCambioPassCorrecto(),
+      error: (error) => this.manejarValidarCodigoError(error.error),
+    });
   }
+
+  manejarSolicitudCambioPassCorrecto(): void {
+    void this.router.navigate(['/iniciar-sesion']);
+    this.alertaService.exito(this.mensajes.MSG017);
+  }
+
+  manejarValidarCodigoError(error: any): void {
+    if (error.mensaje === 'Usuario no encontrado.') {
+      this.alertaService.error(this.mensajes.MSG018);
+      return;
+    }
+    if (!error.mensaje) {
+      this.alertaService.error('Ocurrió un error, por favor intente más tarde.');
+      return;
+    }
+    this.alertaService.error(error.mensaje);
+  }
+
 
   generarSolicitudRecuperacionContrasenia(): SolicitudCambioContrasenia {
     return {
@@ -95,5 +108,10 @@ export class RecuperarCuentaComponent {
       refEmail: this.formRecuperarCuenta.get('correoPersonal')?.value
     }
   }
+
+  get f() {
+    return this.formRecuperarCuenta.controls;
+  }
+
 
 }

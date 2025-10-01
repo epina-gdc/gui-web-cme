@@ -6,8 +6,8 @@ import {Alert, AlertType} from '@models/alert.model';
 
 @Injectable({ providedIn: 'root' })
 export class AlertService {
-  private subject = new Subject<Alert>();
-  private defaultId = 'default-alert';
+  private readonly subject = new Subject<Alert>();
+  private readonly defaultId = 'default-alert';
   text = 'Ha ocurrido un error';
 
   // enable subscribing to alerts observable
@@ -26,19 +26,19 @@ export class AlertService {
   }
 
   error(message = this.text, title = '¡Error!') {
-    message = message ? message : this.text;
+    message = message ?? this.text;
     window.scrollTo({ top: 0, behavior: 'smooth' });
     this.alert(new Alert({ type: AlertType.Error,message, title: title  }));
   }
 
   alerta(message?: string) {
-    message = message ? message : this.text;
+    message = message ?? this.text;
     window.scrollTo({ top: 0, behavior: 'smooth' });
     this.alert(new Alert({ type: AlertType.Warning, message, title: '¡Alerta!' }));
   }
 
   informacion(message?: string) {
-    message = message ? message : this.text;
+    message = message ?? this.text;
     window.scrollTo({ top: 0, behavior: 'smooth' });
     this.alert(new Alert({ type: AlertType.Info, message, title: '¡Información!' }));
   }

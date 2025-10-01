@@ -18,7 +18,7 @@
           <div class="field">
             <label class="field-label" for="username">Correo electrónico</label>
             <input
-              autocomplete="false"
+              autocomplete="off"
               (keypress)="validarCaracterCorreo($event)"
               (change)="validarEstructuraCorreo($event)"
               pInputText
@@ -40,7 +40,7 @@
                      appBloquearCaracterPassword
                      placeholder="Ingresa contraseña"
                      formControlName="password"
-                     autocomplete="false"/>
+                     autocomplete="off"/>
               <i [ngClass]="{'pi-eye': input.type==='password', 'pi-eye-slash':  input.type ==='text'}"
                  class="cursor-pointer icon pi"
                  (click)="input.type = input.type==='password'?'text':'password'"></i>

@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {InicioComponent} from '@privado/inicio/inicio.component';
 import {PrivadoComponent} from '@pages/privado/privado.component';
-import { authGuard } from '@guards/auth.guard';
 
 const routes: Routes = [{
   path: '',

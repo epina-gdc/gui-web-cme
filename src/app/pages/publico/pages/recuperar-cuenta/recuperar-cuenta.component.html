@@ -28,6 +28,14 @@
               minlength="18"
               maxlength="18"
               formControlName="curp"/>
+            <div class="flex flex-column">
+              @if (f['curp'].errors?.['minlength'] && (f['curp'].dirty || f['curp'].touched)) {
+                <span class="text-danger">{{ mensajes.MSJ_PASS_MAX_CARACTER }}</span>
+              }
+              @if (f['curp'].errors?.['pattern'] && (f['curp'].dirty || f['curp'].touched)) {
+                <span class="text-danger">{{ mensajes.MSJ_FORMATO_NO_VALIDO }}</span>
+              }
+            </div>
           </div>
           <div class="form-icon">
             <label class="field-label" for="correoPersonal_recuperar_cuenta">Correo personal</label>
@@ -40,6 +48,11 @@
               oninput="this.value = this.value.toLowerCase()"
               placeholder="Ingresa correo personal"
               formControlName="correoPersonal"/>
+            <div class="flex flex-column">
+              @if (f['correoPersonal'].errors?.['email'] && (f['correoPersonal'].dirty || f['correoPersonal'].touched)) {
+                <span class="text-danger">{{ mensajes.MSJ_FORMATO_NO_VALIDO }}</span>
+              }
+            </div>
           </div>
         </div>
         <div class="flex justify-content-end mt-3">

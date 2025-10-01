@@ -2,38 +2,37 @@
  * Develop: Ameyalli Victoria S
  * 2025
  */
- import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
- import { Injectable,inject } from '@angular/core';
-import { CatDocVerifResponse, CatPaisResponse, CatPerfil, CatPerfilResponse, CatSubperfilResponse } from '@models/catalogoGeneral';
- import { Observable, throwError } from 'rxjs';
- import { catchError, map } from 'rxjs/operators';
- import { environment } from '../../../environments/environment.development';
-import { AlertService } from '../services/alert.service';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {inject, Injectable} from '@angular/core';
+import {CatDocVerifResponse, CatPaisResponse, CatPerfilResponse, CatSubperfilResponse} from '@models/catalogoGeneral';
+import {Observable, throwError} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
+import {environment} from '../../../environments/environment.development';
+import {AlertService} from '../services/alert.service';
 
- 
- 
- @Injectable({
+
+@Injectable({
      providedIn: 'root'
  })
  export class CatalogosGeneralesService {
-     private VERSION_API:string  = '/v1/';
-     private serverEndPointURL = `${environment.api.apiCatalogos + this.VERSION_API+'catalogos'}`;
+     private readonly VERSION_API:string  = '/v1/';
+     private readonly serverEndPointURL = `${environment.api.apiCatalogos + this.VERSION_API+'catalogos'}`;
      protected _alertService: AlertService  ;
      protected http: HttpClient;
-     header = new HttpHeaders({
+     header: HttpHeaders = new HttpHeaders({
          'Content-Type': 'application/json',
          'Access-Control-Allow-Origin': '*',
          'Access-Control-Allow-Headers': 'Content-Type',
          'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
      });
- 
+
      constructor() {
         this.http = inject(HttpClient);
         this._alertService = inject(AlertService);
-        
+
       }
- 
- 
+
+
      /**Obtener Listado de Perfiles */
      getLstPerfil(): Observable<CatPerfilResponse> {
          return this.http.get<CatPerfilResponse>(this.serverEndPointURL + '/perfiles-medicos', { headers: this.header }).pipe(
@@ -71,11 +70,11 @@ import { AlertService } from '../services/alert.service';
             })
         );
     }
- 
- 
-  
+
+
+
      private handleError(error: HttpErrorResponse) {
-        
+
         if (error.status) {
         //this._alertService?.error("Error "+error.status +'. Contácte al administrador');
         console.log("Error "+error.status +'. Endpoint: '+error.url+'. Contácte al administrador');
@@ -83,7 +82,6 @@ import { AlertService } from '../services/alert.service';
         }
          return throwError(error);
      }
- 
- 
+
+
  }
- 

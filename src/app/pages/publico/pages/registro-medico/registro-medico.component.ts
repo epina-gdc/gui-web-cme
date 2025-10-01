@@ -1,24 +1,27 @@
+import {ResponseGeneral} from '@models/responseGeneral';
 
-import { ResponseGeneral } from '@models/responseGeneral';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Card} from 'primeng/card';
+import {GeneralComponent} from '../../../../components/general.component';
 
-import { Component, inject } from '@angular/core';
-import { Card } from 'primeng/card';
-import { GeneralComponent } from '../../../../components/general.component';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {Select} from 'primeng/select';
+import {Button} from 'primeng/button';
+import {InputTextModule} from 'primeng/inputtext';
+import {HttpErrorResponse} from '@angular/common/http';
 
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { Select } from 'primeng/select';
-import { Button } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { HttpErrorResponse } from '@angular/common/http';
-
-import { CommonModule } from '@angular/common';
-import { CatalogoGeneral, CatPaisResponse, CatSubperfil, CatSubperfilResponse, Pais } from '@models/catalogoGeneral';
-import { RegistroCurpRequest, RegistroInternoRequest, RegistroMedico, RegistroPasaporteRequest } from '@models/datosMedico';
-import { BtnRegresarComponent } from '../../../../components/btn-regresar/btn-regresar.component';
-import { passwordValidator } from '@validators/password-validator';
-import { PATRON_CURP, PATRON_EMAIL, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_PASAPORTE, PATRON_RFC } from '@utils/regex';
-import { AlphanumericDirective } from '@directives/only-alphanumeric.directive';
-
+import {CommonModule} from '@angular/common';
+import {CatPaisResponse, CatSubperfil, CatSubperfilResponse, Pais} from '@models/catalogoGeneral';
+import {
+  RegistroCurpRequest,
+  RegistroInternoRequest,
+  RegistroMedico,
+  RegistroPasaporteRequest
+} from '@models/datosMedico';
+import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regresar.component';
+import {passwordValidator} from '@validators/password-validator';
+import {PATRON_CURP, PATRON_EMAIL, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_PASAPORTE, PATRON_RFC} from '@utils/regex';
+import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
 
 @Component({
   selector: 'app-registro-medico',
@@ -36,7 +39,7 @@ import { AlphanumericDirective } from '@directives/only-alphanumeric.directive';
   templateUrl: './registro-medico.component.html',
   styleUrl: './registro-medico.component.scss'
 })
-export class RegistroMedicoComponent extends GeneralComponent {
+export class RegistroMedicoComponent extends GeneralComponent implements OnInit, OnDestroy {
   fb = inject(FormBuilder)
   form!: FormGroup;
   strTitulo!: string;
@@ -56,6 +59,7 @@ export class RegistroMedicoComponent extends GeneralComponent {
   inCorreo2: boolean = false;
   inPass: boolean = false;
   inPass2: boolean = false;
+
   ngOnInit(): void {
     this.ruta = this._nav.publico + this._nav.crearCuenta;
     this.blnPassIguales = false;
@@ -106,7 +110,6 @@ export class RegistroMedicoComponent extends GeneralComponent {
       }
 
 
-
     });
   }
 
@@ -119,7 +122,6 @@ export class RegistroMedicoComponent extends GeneralComponent {
         this.lstPais = response.respuesta;
 
       }
-
 
 
     });
@@ -152,8 +154,6 @@ export class RegistroMedicoComponent extends GeneralComponent {
       case false://
 
 
-
-
         if (this.medico.blnPasaporte) {
           this.inPasaporte = true;
           this.inPais = true;
@@ -181,8 +181,8 @@ export class RegistroMedicoComponent extends GeneralComponent {
   }
 
   private clearCampos() {
-    this.form.controls['matricula'].setValidators([]),
-      this.form.controls['modalidad'].setValidators([]);
+    this.form.controls['matricula'].setValidators([]);
+    this.form.controls['modalidad'].setValidators([]);
     this.form.controls['pasaporte'].setValidators([]);
     this.form.controls['pais'].setValidators([]);
     this.form.controls['modalidad'].updateValueAndValidity();
@@ -200,7 +200,7 @@ export class RegistroMedicoComponent extends GeneralComponent {
     this.clearCampos();
     this.form.controls['modalidad'].setValidators([Validators.required]);
     this.form.controls['pasaporte'].setValidators([Validators.required, Validators.minLength(6),
-    Validators.maxLength(9), Validators.pattern(PATRON_PASAPORTE)]);
+      Validators.maxLength(9), Validators.pattern(PATRON_PASAPORTE)]);
     this.form.controls['pais'].setValidators([Validators.required]);
     this.form.controls['modalidad'].updateValueAndValidity();
     this.form.controls['pasaporte'].updateValueAndValidity();
@@ -212,8 +212,8 @@ export class RegistroMedicoComponent extends GeneralComponent {
 
 
     this.form.controls['curp'].setValidators([Validators.required, Validators.minLength(18),
-    Validators.maxLength(18),
-    Validators.pattern(PATRON_CURP)]);
+      Validators.maxLength(18),
+      Validators.pattern(PATRON_CURP)]);
 
 
     this.form.controls['curp'].updateValueAndValidity();
@@ -222,19 +222,18 @@ export class RegistroMedicoComponent extends GeneralComponent {
   }
 
   private isNotCurp() {
-    this.form.controls['curp'].setValidators([]),
-      this.form.controls['curp'].updateValueAndValidity();
+    this.form.controls['curp'].setValidators([]);
+    this.form.controls['curp'].updateValueAndValidity();
     this.inCurp = false;
 
   }
+
   private isResidente() {
     this.clearCampos();
     this.form.controls['matricula'].setValidators([Validators.required, Validators.minLength(10),
-    Validators.minLength(10),
-    Validators.maxLength(10),
-    Validators.pattern(PATRON_MATRICULA)]);
-
-
+      Validators.minLength(10),
+      Validators.maxLength(10),
+      Validators.pattern(PATRON_MATRICULA)]);
 
 
     this.form.controls['matricula'].updateValueAndValidity();
@@ -247,79 +246,79 @@ export class RegistroMedicoComponent extends GeneralComponent {
     this.form.controls['modalidad'].updateValueAndValidity();
 
   }
+
   msjValidation: any = {};
+
   msjForm(): void {
     this.msjValidation = {
       'modalidad': [
-        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },],
+        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},],
       'matricula': [
-        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
-        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_MATRICULA },
-        { type: 'minlength', msj: this._Mensajes.MSJ_LONG_MATRICULA },
+        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
+        {type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_MATRICULA},
+        {type: 'minlength', msj: this._Mensajes.MSJ_LONG_MATRICULA},
       ],
       'pasaporte': [
-        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
-        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
-        { type: 'minlength', msj: this._Mensajes.MSJ_LONG_PASAPORTE },
+        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
+        {type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO},
+        {type: 'minlength', msj: this._Mensajes.MSJ_LONG_PASAPORTE},
       ],
       'pais': [
-        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },],
+        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},],
       'nombre': [
-        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
-        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
+        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
+        {type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO},
       ],
       'apellidoP': [
-        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
-        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },],
+        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
+        {type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO},],
       'apellidoM': [
-        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
-        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },],
+        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
+        {type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO},],
       'curp': [
-        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
-        { type: 'minlength', msj: this._Mensajes.MSJ_LONG_CURP },
-        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
+        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
+        {type: 'minlength', msj: this._Mensajes.MSJ_LONG_CURP},
+        {type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO},
       ],
 
       'rfc': [
-        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
-        { type: 'minlength', msj: this._Mensajes.MSJ_LONG_RFC },
-        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
+        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
+        {type: 'minlength', msj: this._Mensajes.MSJ_LONG_RFC},
+        {type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO},
       ],
       'correo': [
-        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
-        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
+        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
+        {type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO},
 
       ],
       'correoc': [
-        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
-        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
+        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
+        {type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO},
 
       ],
       'pass': [
-        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
+        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
         //{ type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
-        { type: 'caracter', msj: this._Mensajes.MSJ_PASS_CARACTER_ESPECIAL },
-        { type: 'numero', msj: this._Mensajes.MSJ_PASS_NUMERO },
-        { type: 'minLength', msj: this._Mensajes.MSJ_PASS_MIN_CARACTER },
-        { type: 'maxLength', msj: this._Mensajes.MSJ_PASS_MAX_CARACTER },
-        { type: 'mayuscula', msj: this._Mensajes.MSJ_PASS_MAYUSCULA },
-        { type: 'minuscula', msj: this._Mensajes.MSJ_PASS_MINUSCULA },
+        {type: 'caracter', msj: this._Mensajes.MSJ_PASS_CARACTER_ESPECIAL},
+        {type: 'numero', msj: this._Mensajes.MSJ_PASS_NUMERO},
+        {type: 'minLength', msj: this._Mensajes.MSJ_PASS_MIN_CARACTER},
+        {type: 'maxLength', msj: this._Mensajes.MSJ_PASS_MAX_CARACTER},
+        {type: 'mayuscula', msj: this._Mensajes.MSJ_PASS_MAYUSCULA},
+        {type: 'minuscula', msj: this._Mensajes.MSJ_PASS_MINUSCULA},
       ],
       'passc': [
-        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
+        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
         //{ type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
-        { type: 'caracter', msj: this._Mensajes.MSJ_PASS_CARACTER_ESPECIAL },
-        { type: 'numero', msj: this._Mensajes.MSJ_PASS_NUMERO },
-        { type: 'minLength', msj: this._Mensajes.MSJ_PASS_MIN_CARACTER },
-        { type: 'maxLength', msj: this._Mensajes.MSJ_PASS_MAX_CARACTER },
-        { type: 'mayuscula', msj: this._Mensajes.MSJ_PASS_MAYUSCULA },
-        { type: 'minuscula', msj: this._Mensajes.MSJ_PASS_MINUSCULA },
+        {type: 'caracter', msj: this._Mensajes.MSJ_PASS_CARACTER_ESPECIAL},
+        {type: 'numero', msj: this._Mensajes.MSJ_PASS_NUMERO},
+        {type: 'minLength', msj: this._Mensajes.MSJ_PASS_MIN_CARACTER},
+        {type: 'maxLength', msj: this._Mensajes.MSJ_PASS_MAX_CARACTER},
+        {type: 'mayuscula', msj: this._Mensajes.MSJ_PASS_MAYUSCULA},
+        {type: 'minuscula', msj: this._Mensajes.MSJ_PASS_MINUSCULA},
       ],
-
 
 
     }
-
 
 
   }
@@ -327,6 +326,7 @@ export class RegistroMedicoComponent extends GeneralComponent {
   get f() {
     return this.form.controls;
   }
+
   inicializarForm(): FormGroup {
     return this.fb.group({
       modalidad: ['', ''],
@@ -488,7 +488,6 @@ export class RegistroMedicoComponent extends GeneralComponent {
           }
 
 
-
         } else {
           this._alertServices.alerta(this._Mensajes.MSG007);
         }
@@ -496,7 +495,6 @@ export class RegistroMedicoComponent extends GeneralComponent {
       } else {
         this._alertServices.alerta(this._Mensajes.MSG0077);
       }
-
 
 
     } else {
@@ -559,7 +557,6 @@ export class RegistroMedicoComponent extends GeneralComponent {
   }
 
 
-
   private paginaAnterior() {
     this._router.navigate(['publico/inicio-sesion']);
     setTimeout(() => {
@@ -567,8 +564,10 @@ export class RegistroMedicoComponent extends GeneralComponent {
     }, 500);
 
   }
+
   blnCorreosIguales!: boolean;
   blnPassIguales!: boolean;
+
   public compararCorreos() {
     this.medico.refEmail = this.form.controls['correo'].value;
     this.medico.correo2 = this.form.controls['correoc'].value;
@@ -671,7 +670,6 @@ export class RegistroMedicoComponent extends GeneralComponent {
     }
     return blnExiste;
   }
-
 
 
 }
