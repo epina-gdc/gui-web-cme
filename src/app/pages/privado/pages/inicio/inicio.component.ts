@@ -84,6 +84,8 @@ export class InicioComponent {
   estados: TipoDropdown[] = [];
   municipios: TipoDropdown[] = [];
   colonias: TipoDropdown[] = [];
+  ooad: TipoDropdown[] = [];
+  zonas: TipoDropdown[] = [];
 
   indice: WritableSignal<number> = signal<number>(0);
 
@@ -127,7 +129,7 @@ export class InicioComponent {
   suscribirObservables(): void {
     this.formRegistro.get('pais')?.valueChanges.subscribe(value => this.obtenerEstadoPorPais(value));
     this.formRegistro.get('estado')?.valueChanges.subscribe(value => this.obtenerMunicipioPorEstado(value));
-    this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerAlcaldiaPorMunicipio(value));
+    this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerValoresPorMunicipio(value));
   }
 
   obtenerEstadoPorPais(pais: number): void {
@@ -154,6 +156,12 @@ export class InicioComponent {
     });
   }
 
+  obtenerValoresPorMunicipio(municipio: number): void {
+    this.obtenerOOADPorMunicipio(municipio);
+    this.obtenerZonasPorMunicipio(municipio);
+    this.obtenerAlcaldiaPorMunicipio(municipio);
+  }
+
   obtenerAlcaldiaPorMunicipio(municipio: number): void {
     if (!municipio) return;
     this.loaderService.activar();
@@ -162,6 +170,29 @@ export class InicioComponent {
     ).subscribe({
       next: (valor) => {
         this.colonias = mapearArregloTipoDropdown(valor.respuesta, 'nomColonia', 'idColonia');
+      }
+    });
+  }
+
+  obtenerOOADPorMunicipio(municipio: number): void {
+    if (!municipio) return;
+    this.loaderService.activar();
+    this.catalogoService.getLstOOADS(municipio).pipe(
+      finalize((() => this.loaderService.desactivar()))
+    ).subscribe({
+      next: (valor) => {
+        this.ooad = mapearArregloTipoDropdown(valor.respuesta, 'desOoad', 'idOoad');
+      }
+    });
+  }
+
+  obtenerZonasPorMunicipio(municipio: number): void {
+    if (!municipio) return;
+    this.catalogoService.getLstZonas(municipio).pipe(
+      finalize((() => this.loaderService.desactivar()))
+    ).subscribe({
+      next: (valor) => {
+        this.zonas = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'idZona');
       }
     });
   }
