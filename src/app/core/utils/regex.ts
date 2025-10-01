@@ -8,3 +8,4 @@ export const PATRON_RFC = /^([A-ZÑ\x26]{3,4}([0-9]{2})(0[1-9]|1[0-2])(0[1-9]|1[
 export const PATRON_NOMBRE = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+(?:\s+[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+){0,5}(?:\s+[-\sa-zA-ZáéíóúÁÉÍÓÚüÜñÑ]+)?$/
 export const PATRON_MATRICULA = /^[0-9]{10}$/
 export const PATRON_EMAIL = /^[-\w.%+=_*']{1,64}@(?:[a-z0-9-]{1,63}\.){1,125}[a-z]{2,63}$/
+export const PATRON_PASAPORTE = /^[A-Z0-9]{6,9}$/

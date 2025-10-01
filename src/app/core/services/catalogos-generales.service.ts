@@ -2,31 +2,38 @@
  * Develop: Ameyalli Victoria S
  * 2025
  */
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {Injectable} from '@angular/core';
-import {CatDocVerifResponse, CatPaisResponse, CatPerfilResponse, CatSubperfilResponse} from '@models/catalogoGeneral';
-import {Observable, throwError} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
-import {environment} from '../../../environments/environment.development';
+ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+ import { Injectable,inject } from '@angular/core';
+import { CatDocVerifResponse, CatPaisResponse, CatPerfil, CatPerfilResponse, CatSubperfilResponse } from '@models/catalogoGeneral';
+ import { Observable, throwError } from 'rxjs';
+ import { catchError, map } from 'rxjs/operators';
+ import { environment } from '../../../environments/environment.development';
+import { AlertService } from '../services/alert.service';
 
-
-@Injectable({
+ 
+ 
+ @Injectable({
      providedIn: 'root'
  })
  export class CatalogosGeneralesService {
      private VERSION_API:string  = '/v1/';
      private serverEndPointURL = `${environment.api.apiCatalogos + this.VERSION_API+'catalogos'}`;
-
+     protected _alertService: AlertService  ;
+     protected http: HttpClient;
      header = new HttpHeaders({
          'Content-Type': 'application/json',
          'Access-Control-Allow-Origin': '*',
          'Access-Control-Allow-Headers': 'Content-Type',
          'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
      });
-
-     constructor(private http: HttpClient) { }
-
-
+ 
+     constructor() {
+        this.http = inject(HttpClient);
+        this._alertService = inject(AlertService);
+        
+      }
+ 
+ 
      /**Obtener Listado de Perfiles */
      getLstPerfil(): Observable<CatPerfilResponse> {
          return this.http.get<CatPerfilResponse>(this.serverEndPointURL + '/perfiles-medicos', { headers: this.header }).pipe(
@@ -64,14 +71,19 @@ import {environment} from '../../../environments/environment.development';
             })
         );
     }
-
-
-
+ 
+ 
+  
      private handleError(error: HttpErrorResponse) {
-         console.log("Error: ", error);
+        
+        if (error.status) {
+        //this._alertService?.error("Error "+error.status +'. Contácte al administrador');
+        console.log("Error "+error.status +'. Endpoint: '+error.url+'. Contácte al administrador');
          // Return an observable with a user-facing error message.
+        }
          return throwError(error);
      }
-
-
+ 
+ 
  }
+ 
