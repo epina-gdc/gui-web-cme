@@ -89,7 +89,7 @@
                                 <input pInputText class="w-full" type="text" id="curp" placeholder="Ingresa CURP"
                                     maxlength="18" autocomplete="off" formControlName="curp"
                                     (keypress)="inCurp = true" (change)="btnValidarCurp()"
-                                    (keyup)="desbloquearValidar(); convertMayusculas($event);" />
+                                    alphanumericOnly (keyup)="desbloquearValidar(); convertMayusculas($event);" />
                                     @if(inCurp){
                                         @for (validation of msjValidation.curp; track validation.msj) {   
                                             @if(f['curp'].errors?.[validation.type]){
@@ -147,7 +147,8 @@
                                 <input pInputText class="w-full" type="text" id="pasaporte"
                                     placeholder="Ingresa pasaporte" (keypress)="inPasaporte = true" autocomplete="off" formControlName="pasaporte"
                                     maxlength="9" minlength="6"  (keyup)="convertMayusculas($event);"
-                                    (input)="onlyAlphanumeric($event)" />
+                                    
+                                    alphanumericOnly />
                                     @if(inPasaporte){
                                         @for (validation of msjValidation.pasaporte; track validation.msj) {   
                                             @if(f['pasaporte'].errors?.[validation.type]){
@@ -224,7 +225,7 @@
                                 <label class="field-label" for="curp">CURP</label>
                                 <input #input pInputText class="w-full" type="text" id="curp" placeholder="Ingresa CURP"
                                     autocomplete="off" (keypress)="inCurp = true" formControlName="curp" maxlength="18"
-                                    (change)="dinamicoCurp()"
+                                    alphanumericOnly  (change)="dinamicoCurp()"
                                      (keyup)="convertMayusculas($event);" />
                                     @if(inCurp){
                                         @for (validation of msjValidation.curp; track validation.msj) {   
@@ -241,7 +242,7 @@
                                 <label class="field-label" for="rfc">RFC</label>
                                 <input pInputText class="w-full" type="text" id="rfc" placeholder="Ingresa RFC"
                                     autocomplete="off" (keypress)="inRfc = true" formControlName="rfc" maxlength="13" 
-                                    (keyup)="convertMayusculas($event);" />
+                                    alphanumericOnly   (keyup)="convertMayusculas($event);" />
                                     @if(inRfc){
                                         @for (validation of msjValidation.rfc; track validation.msj) {   
                                             @if(f['rfc'].errors?.[validation.type]){
