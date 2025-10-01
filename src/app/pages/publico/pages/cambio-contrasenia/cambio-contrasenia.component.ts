@@ -65,7 +65,7 @@ export class CambioContraseniaComponent {
     }
     const solicitud: CambioContrasenia = this.crearSolicitudCambioPass();
     this.loaderService.activar();
-    this.authService.cambiarPass(solicitud).pipe(
+    this.authService.cambiarPass(solicitud, this.token).pipe(
       finalize(() => this.loaderService.desactivar()))
       .subscribe({
           next: () => this.manejarCambioPassCorrecto(),

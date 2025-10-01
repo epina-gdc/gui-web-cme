@@ -1,9 +1,9 @@
 import {JwtHelperService} from "@auth0/angular-jwt";
-import { UserService } from './user.service';
-import { SesionUser } from '@models/sesion-user.interface';
-import { Payload } from '@models/payload.interface';
-import { Router } from '@angular/router';
-import {HttpClient} from '@angular/common/http';
+import {UserService} from './user.service';
+import {SesionUser} from '@models/sesion-user.interface';
+import {Payload} from '@models/payload.interface';
+import {Router} from '@angular/router';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {environment} from '@env/environment.development';
 import {Login} from '@models/login';
@@ -25,9 +25,9 @@ export class AuthService {
   usuarioService = inject(UserService);
 
   existeUnaSesion$: Observable<boolean> = this.usuarioService.userData$
-  .pipe(
-    map((usuario: SesionUser | null) => !!usuario)
-  )
+    .pipe(
+      map((usuario: SesionUser | null) => !!usuario)
+    )
 
 
   login(login: Login): Observable<any> {
@@ -45,11 +45,18 @@ export class AuthService {
     return this.http.post(`${this.URL_BASE}${this.URL_CAMBIO_CONTRASENIA}`, solicitud)
   }
 
-  cambiarPass(solicitud: CambioContrasenia): Observable<any> {
-    return this.http.post(`${this.URL_BASE}${this.URL_ACTUALIZAR_CONTRASENIA}`, solicitud)
+  cambiarPass(solicitud: CambioContrasenia, token: string): Observable<any> {
+    let headers: HttpHeaders = new HttpHeaders();
+
+    headers = headers.set('Authorization', `Bearer ${token}`);
+    headers = headers.set('Content-Type', 'application/json');
+
+    const httpOptions = {headers: headers};
+
+    return this.http.post(`${this.URL_BASE}${this.URL_ACTUALIZAR_CONTRASENIA}`, solicitud, httpOptions)
   }
 
-  obtenerUsuarioDePayload(token: string): SesionUser | never{
+  obtenerUsuarioDePayload(token: string): SesionUser | never {
     let payload: any | null = new JwtHelperService().decodeToken<Payload>(token);
     if (payload) {
       return {
@@ -67,7 +74,7 @@ export class AuthService {
     }
   }
 
-  cerrarSesion(){
+  cerrarSesion() {
     localStorage.clear();
     this.usuarioService.clearUser()
     void this.router.navigate(['/']);
