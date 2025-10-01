@@ -12,7 +12,6 @@ const checkAuth = (state: RouterStateSnapshot): Observable<boolean> => {
   const auth = inject(AuthService);
   if (localStorage.getItem('access_token')){
     return of(true);
-    auth.settearSession(localStorage.getItem('access_token') as string);
   }
   auth.cerrarSesion();
   return of(false);
