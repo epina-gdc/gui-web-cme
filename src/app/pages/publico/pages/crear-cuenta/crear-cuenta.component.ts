@@ -7,6 +7,7 @@ import {RadioButton, RadioButtonModule} from 'primeng/radiobutton';
 import {GeneralComponent} from '../../../../components/general.component';
 import {CommonModule} from '@angular/common';
 import {RegistroMedico} from '@models/datosMedico';
+import { CatPerfil, CatPerfilResponse, CatSubperfil, CatSubperfilResponse } from '@models/catalogoGeneral';
 
 @Component({
   selector: 'app-crear-cuenta',
@@ -36,22 +37,56 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   blnSeleccionado = false;
 
   lstPerfil !: any;
-  lstModalidad!: any;
+  lstModalidad!: Array<CatSubperfil>;
   lstDocumentos: any;
   registroMedico!: RegistroMedico;
   blnResidente!: boolean;
 
-  ngOnInit() {
+    ngOnInit() {
     this.registroMedico = new RegistroMedico();
     this.blnResidente = true;
     this.blnSeleccionado = false;
-    this.form = this.inicializarForm();
+    this.form = this.inicializarForm();  
 
-    this.lstPerfil = this.getCatalogoPerfiles();
+     this.getCatalogoPerfiles();
+  
+    
+      console.log("perfiles",this.lstPerfil);
+  
 //this._alertServices.exito("este texto muestra algo en <b> negritas<b/>");
+
   }
 
+  getCatalogoPerfiles(): void{
+    this.lstPerfil = new Array<CatPerfil>();
+    this._CatalogoGenService.getLstPerfil().subscribe((response: CatPerfilResponse) => {
 
+      if (response.exito) {
+
+        this.lstPerfil = response.respuesta;
+      
+
+      }
+
+      
+
+    });
+  }
+  
+  getCatalogoModalidad(): void{
+    this.lstModalidad = new Array<CatSubperfil>();
+    this._CatalogoGenService.getLstSubPerfil().subscribe((response: CatSubperfilResponse) => {
+
+      if (response.exito) {
+
+        this.lstModalidad = response.respuesta;
+      
+      }
+
+      
+
+    });
+  }
 
 
   inicializarForm(): FormGroup {
@@ -67,16 +102,16 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
 
 
   public btnAceptar() {
-
+    
+    
     if (this.form.valid) {
-      this.registroMedico.perfil = this.form.controls['perfil'].value;
-      console.log("el valor elegido es ", this.form);
 
-      switch (this.registroMedico.perfil) {
-        case 1:
+
+      switch (this.registroMedico.blnInterno) {
+        case true:
 
           break;
-        case 2:
+        case false:
 
           if (this.form.controls['documento'].value === '1') {
             this.registroMedico.blnPasaporte = false;
@@ -109,21 +144,33 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   cambiaPerfil() {
 
     console.log("hay cambios en el selct ");
-    this.registroMedico.perfil = this.form.controls['perfil'].value;
-    if (this.registroMedico.perfil == 2) {
+   
+    this.perfilSeleccionado();
+   
+    if ( !this.registroMedico.blnInterno) {
 
       this.camposExterno();
 
 
 
-
-    }
-
-    if (this.registroMedico.perfil == 1) {
+    }else{
       this.camposResidente();
 
 
 
+    }
+  }
+
+  perfilSeleccionado(){
+    this.registroMedico.perfil1 = this.form.controls['perfil'].value;
+    let perfil = this.lstPerfil.find((x: { idPerfil: number; })=> x.idPerfil ==  this.registroMedico.perfil1);
+    if(perfil){
+      this.registroMedico.perfil = perfil;
+      if (perfil.nomPerfil.toLowerCase().trim() === 'médico externo') {
+        this.registroMedico.blnInterno = false;
+      }else{
+        this.registroMedico.blnInterno = true;
+      }
     }
   }
 
@@ -132,7 +179,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
     this.blnResidente = true;
   }
   private camposExterno() {
-    this.lstModalidad = this.getCatalogoModalidad();
+    this.getCatalogoModalidad();
     this.lstDocumentos = this.getCatalogoDocumento();
     this.blnResidente = false;
 

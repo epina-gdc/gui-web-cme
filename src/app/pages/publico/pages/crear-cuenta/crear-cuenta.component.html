@@ -20,8 +20,8 @@
                     </div>
                     <div class="flex flex-row">
 
-                        <p-select id="perfil" formControlName="perfil" [options]="lstPerfil" optionLabel="descripcion"
-                            optionValue="id" placeholder="Selecciona un perfil" class="w-full"
+                        <p-select id="perfil" formControlName="perfil" [options]="lstPerfil" optionLabel="nomPerfil"
+                            optionValue="idPerfil" placeholder="Selecciona un perfil" class="w-full"
                             (ngModelChange)="cambiaPerfil()">
                         </p-select>
                     </div>
@@ -34,7 +34,7 @@
                         </div>
                         <div class="flex flex-row">
                             <p-select id="modalidad" formControlName="modalidad" [options]="lstModalidad"
-                                optionLabel="descripcion" optionValue="id" placeholder="Selecciona una modalidad"
+                                optionLabel="nomSubperfil" optionValue="idSubperfil" placeholder="Selecciona una modalidad"
                                 class="w-full" (ngModelChange)="cambiaModalidad()">
                             </p-select>
                         </div>
