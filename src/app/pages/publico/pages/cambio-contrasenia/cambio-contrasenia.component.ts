@@ -95,5 +95,8 @@ export class CambioContraseniaComponent {
     return nuevaContrasena?.value === confirmarContrasena?.value
   }
 
+  get f() {
+    return this.registroForm.controls;
+  }
 
 }

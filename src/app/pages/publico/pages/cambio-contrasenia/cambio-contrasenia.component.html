@@ -36,6 +36,11 @@
               </ng-template>
             </p-password>
           </div>
+          <div class="flex flex-column">
+            @if (f['nuevaContrasena'].errors?.['pattern'] && (f['nuevaContrasena'].dirty || f['nuevaContrasena'].touched)) {
+              <span class="text-danger">{{ mensajes.MSJ_FORMATO_NO_VALIDO }}</span>
+            }
+          </div>
         </div>
         <div class="row mt-3">
           <div class="col-md-12">
@@ -61,6 +66,11 @@
                 </ng-template>
               </p-password>
             </div>
+          </div>
+          <div class="flex flex-column">
+            @if (f['confirmarContrasena'].errors?.['pattern'] && (f['confirmarContrasena'].dirty || f['confirmarContrasena'].touched)) {
+              <span class="text-danger">{{ mensajes.MSJ_FORMATO_NO_VALIDO }}</span>
+            }
           </div>
         </div>
         <div class="flex justify-content-end mt-3">
