@@ -73,6 +73,7 @@ export class RecuperarCuentaComponent {
   }
 
   recuperarContrasenia(): void {
+    if (this.formRecuperarCuenta.invalid) return;
     const solicitud: SolicitudCambioContrasenia = this.generarSolicitudRecuperacionContrasenia();
     this.loaderService.activar();
     this.authService.solicitarCambioPass(solicitud).pipe(
