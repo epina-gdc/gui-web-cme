@@ -10,7 +10,7 @@ export class UserService {
 
   constructor() { }
 
-  private userDataSubject = new BehaviorSubject<any>(null);
+  private readonly userDataSubject = new BehaviorSubject<any>(null);
   userData$ = this.userDataSubject.asObservable();
 
   setUser (data: SesionUser) {

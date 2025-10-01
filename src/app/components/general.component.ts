@@ -36,9 +36,9 @@ export class GeneralComponent {
   }
 
   public onlyNumbers(event: any) {
-    const pattern = /^[0-9]*$/;
+    const pattern = /^\d*$/;
     if (!pattern.test(event.target.value)) {
-      event.target.value = event.target.value.replace(/[^0-9]/g, '');
+      event.target.value = event.target.value.replace(/\D/g, '');
     }
   }
 
