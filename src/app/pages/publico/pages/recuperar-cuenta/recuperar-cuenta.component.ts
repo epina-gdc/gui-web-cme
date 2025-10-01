@@ -78,16 +78,28 @@ export class RecuperarCuentaComponent {
     this.authService.solicitarCambioPass(solicitud).pipe(
       finalize(() => this.loaderService.desactivar())
     ).subscribe({
-      next: () => {
-        this.formRecuperarCuenta.reset();
-        void this.router.navigate(['/iniciar-sesion']);
-        this.alertaService.exito(this.mensajes.MSG017);
-      },
-      error: (error) => {
-        this.alertaService.error(this.mensajes.MSG018);
-      },
-    })
+      next: () => this.manejarSolicitudCambioPassCorrecto(),
+      error: (error) => this.manejarValidarCodigoError(error),
+    });
   }
+
+  manejarSolicitudCambioPassCorrecto(): void {
+    void this.router.navigate(['/iniciar-sesion']);
+    this.alertaService.exito(this.mensajes.MSG017);
+  }
+
+  manejarValidarCodigoError(error: any): void {
+    if (error.mensaje === 'Usuario no encontrado.') {
+      this.alertaService.error(this.mensajes.MSG018);
+      return;
+    }
+    if (!error.mensaje) {
+      this.alertaService.error('Ocurrió un error, por favor intente más tarde.');
+      return;
+    }
+    this.alertaService.error(error.mensaje);
+  }
+
 
   generarSolicitudRecuperacionContrasenia(): SolicitudCambioContrasenia {
     return {
@@ -96,7 +108,7 @@ export class RecuperarCuentaComponent {
     }
   }
 
-  get f(){
+  get f() {
     return this.formRecuperarCuenta.controls;
   }
 
