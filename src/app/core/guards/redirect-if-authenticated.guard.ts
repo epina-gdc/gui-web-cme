@@ -1,6 +1,7 @@
 import {inject} from '@angular/core';
 import {CanActivateFn, Router, RouterStateSnapshot} from '@angular/router';
 import {Observable, of} from 'rxjs';
+import { CME_TOKEN } from '../../utils/constantes';
 
 export const redirectIfAuthenticatedGuard: CanActivateFn = (route, state) => {
   return checkAuth(state);
@@ -8,7 +9,7 @@ export const redirectIfAuthenticatedGuard: CanActivateFn = (route, state) => {
 
 const checkAuth = (state: RouterStateSnapshot): Observable<boolean> => {
   const router = inject(Router);
-  if (localStorage.getItem('access_token')) {
+  if (localStorage.getItem(CME_TOKEN)) {
     void router.navigate(['/privado/inicio']);
     return of(false)
   }

@@ -10,6 +10,7 @@ import {Login} from '@models/login';
 import {map, Observable, tap} from 'rxjs';
 import {SolicitudCambioContrasenia} from '@models/solicitud-cambio-contrasenia.interface';
 import {CambioContrasenia} from '@models/cambio-contrasenia.interface';
+import { CME_TOKEN } from "../../utils/constantes";
 
 @Injectable({
   providedIn: 'root'
@@ -25,20 +26,29 @@ export class AuthService {
   usuarioService = inject(UserService);
 
   existeUnaSesion$: Observable<boolean> = this.usuarioService.userData$
-    .pipe(
-      map((usuario: SesionUser | null) => !!usuario)
-    )
+    .pipe(map((usuario: SesionUser | null) => !!usuario));
 
+
+  constructor(){this.recuperarSesionAlRecargarPagina()}
 
   login(login: Login): Observable<any> {
     return this.http.post<any>(`${this.URL_BASE}${this.URL_AUTH}`, login).pipe(
       tap((respuesta: any) => {
         if (respuesta.exito) {
-          localStorage.setItem('access_token', respuesta.respuesta.token);
+          localStorage.setItem(CME_TOKEN, respuesta.respuesta.token);
           this.settearSession(respuesta.respuesta.token);
         }
       })
     );
+  }
+
+  recuperarSesionAlRecargarPagina(){
+    const token: string | null = localStorage.getItem(CME_TOKEN);
+    if(token){
+      this.settearSession(token);
+    }else{
+      this.cerrarSesion();
+    }
   }
 
   settearSession(token: string){
@@ -68,6 +78,8 @@ export class AuthService {
         idUsuario: payload.idUsuario,
         nomApellidoPaterno: payload.nomApellidoPaterno,
         nomNombre: payload.nomNombre,
+        nomApellidoMaterno: payload.nomApellidoMaterno,
+        cveMatricula: payload.cveMatricula,
         perfil: payload.perfil,
         refCurp: payload.refCurp,
         refEmail: payload.refEmail,
