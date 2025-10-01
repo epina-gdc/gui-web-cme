@@ -11,6 +11,7 @@ import {finalize} from 'rxjs';
 import {AuthService} from '@services/auth.service';
 import {LoaderService} from '../../../../components/loader/services/loader.service';
 import {Mensajes} from '@utils/mensajes';
+import {Button} from 'primeng/button';
 
 @Component({
   selector: 'app-cambio-contrasenia',
@@ -20,7 +21,8 @@ import {Mensajes} from '@utils/mensajes';
     ReactiveFormsModule,
     Password,
     Divider,
-    PrimeTemplate
+    PrimeTemplate,
+    Button
   ],
   templateUrl: './cambio-contrasenia.component.html',
   styleUrl: './cambio-contrasenia.component.scss'
@@ -43,6 +45,7 @@ export class CambioContraseniaComponent {
   constructor() {
     this.token = this.route.snapshot.queryParams['token'];
     this.registroForm = this.crearRegistroForm();
+    console.log(this.token);
   }
 
   crearRegistroForm(): FormGroup {
@@ -83,7 +86,7 @@ export class CambioContraseniaComponent {
   }
 
   manejarValidarCodigoError(error: any): void {
-    this.alertaService.exito(this.mensajes.MSG063);
+    this.alertaService.error(this.mensajes.MSG063);
   }
 
   validarMismoPass(): boolean {
