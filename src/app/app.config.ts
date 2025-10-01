@@ -4,15 +4,18 @@ import Aura from '@primeng/themes/aura';
 import {es} from "primelocale/es.json"
 import {routes} from './app.routes';
 import {providePrimeNG} from 'primeng/config';
-import {provideHttpClient} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {Mensajes} from '@utils/mensajes';
+import {ApiKeyInterceptor} from '@interceptors/api-key.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [Mensajes,
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(),
+    provideHttpClient(
+      withInterceptorsFromDi(),
+    ),
     providePrimeNG(
       {
         theme: {
@@ -26,6 +29,7 @@ export const appConfig: ApplicationConfig = {
         }, translation: es,
       }
     ),
+    {provide: HTTP_INTERCEPTORS, useClass: ApiKeyInterceptor,multi: true},
     provideAnimations(),
   ]
 };

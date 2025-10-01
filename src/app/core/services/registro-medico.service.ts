@@ -4,11 +4,12 @@
  */
  import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
  import { Injectable } from '@angular/core';
+import { environment } from '@env/environment.development';
 import { CatPerfil, CatPerfilResponse } from '@models/catalogoGeneral';
 import { RegistroCurpRequest, RegistroInternoRequest, RegistroPasaporteRequest } from '@models/datosMedico';
  import { Observable, throwError } from 'rxjs';
  import { catchError, map } from 'rxjs/operators';
- import { environment } from '../../../environments/environment.development';
+ 
 
  
  
@@ -17,8 +18,8 @@ import { RegistroCurpRequest, RegistroInternoRequest, RegistroPasaporteRequest }
  })
  export class RegistroMedicoService {
      private VERSION_API:string  = '/v1/';
-     private serverEndPointURL = `${environment.apiCatalogos + this.VERSION_API}`;
-     private serverEndPointURRegistro = `${environment.apiRegistro }`;
+     private serverEndPointURL = environment.api.apiCatalogos + this.VERSION_API;
+     private serverEndPointURRegistro = environment.api.apiRegistro;
  
      header = new HttpHeaders({
          'Content-Type': 'application/json',

@@ -349,7 +349,7 @@
         <article class="flex flex-row flex-wrap">
           <p-tabView class="vertical-tabview flex-grow-1" [activeIndex]="0">
             @for (registro of registrosDocumentosEspecialidad(); track registro.especialidad) {
-              <p-tabPanel>
+              <p-tabPanel style="{ width: 100%}">
                 <ng-template pTemplate="header">
                   <header-tab [title]="registro.especialidad" [numDocs]="registro.documentos.length"
                               class="header-tab"/>
@@ -358,17 +358,18 @@
                   <p-table [value]="registro.documentos" [tableStyle]="{ 'min-width': '50rem' }" class="flex-grow-1">
                     <ng-template pTemplate="header">
                       <tr>
-                        <th scope="col">Tipo documento</th>
-                        <th scope="col">Especialidad médica</th>
-                        <th scope="col">Acciones</th>
+                        <th class="label-th" scope="col">Tipo documento</th>
+                        <th class="label-th" scope="col">Especialidad médica</th>
+                        <th class="label-th" scope="col">Acciones</th>
                       </tr>
                     </ng-template>
-                    <ng-template #body let-registro >
+                    <ng-template #body let-registro>
                       <tr>
-                        <td>{{ registro.tipoDocumento }}</td>
-                        <td>{{ registro.especialidadMedica }}</td>
+                        <td class="label-documento-td">{{ registro.tipoDocumento }}</td>
+                        <td class="label-td">{{ registro.especialidadMedica }}</td>
                         <td>
-                          <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.0rem'}" />
+                          <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.0rem'}"
+                                    (click)="eliminarDocumento(registro.especialidadMedica, registro.tipoDocumento)"/>
                         </td>
                       </tr>
                     </ng-template>
@@ -502,6 +503,26 @@
         </div>
         <div>
           <p></p>
+        </div>
+      </article>
+      <article class="flex flex-row">
+        <div class="col-8">
+          <div class="flex justify-content-between">
+            <label class="field-label" for="institucion">Institución</label>
+            <div class="flex gap-2">
+              @for (institucion of instituciones; track institucion.key) {
+                <div class="flex justify-content-end gap-1 align-items-center">
+                  <p-radiobutton [inputId]="institucion.key" [(ngModel)]="institucionSeleccionada"  >
+                  </p-radiobutton>
+                  <label [for]="institucion.key" class="leyenda-documento mt-4">{{ institucion.name }}</label>
+                </div>
+              }
+            </div>
+          </div>
+          <input pInputText class="w-full" type="text" id="institucion"
+                 placeholder="Especifique institución"/>
+          <p class="leyenda-documento">Especifique el nombre de la institución , si eres sustituto especifica el OOAD de
+            adscripción</p>
         </div>
       </article>
     </p-card>

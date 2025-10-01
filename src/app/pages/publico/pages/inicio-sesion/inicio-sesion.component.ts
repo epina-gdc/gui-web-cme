@@ -1,15 +1,16 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit, signal} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Card} from 'primeng/card';
 import {Button} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
-import {RecuperarCuentaComponent} from '../recuperar-cuenta/recuperar-cuenta.component';
 import {CommonModule} from '@angular/common';
 import {GeneralComponent} from '../../../../components/general.component';
 import {passwordValidator} from '@validators/password-validator';
 import {BloquearCaracterPasswordDirective} from '@directives/bloquear-caracter-password.directive';
 import {PATRON_EMAIL} from '@utils/regex';
-
+import {AuthService} from '@services/auth.service';
+import {ActivatedRoute, RouterLink} from '@angular/router';
+import {HttpRespuesta} from '@models/http-respuesta.interface';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -18,17 +19,23 @@ import {PATRON_EMAIL} from '@utils/regex';
     Button,
     InputTextModule,
     ReactiveFormsModule,
-    RecuperarCuentaComponent,
     CommonModule,
-    BloquearCaracterPasswordDirective
+    BloquearCaracterPasswordDirective,
+    RouterLink
   ],
   templateUrl: './inicio-sesion.component.html',
   styleUrl: './inicio-sesion.component.scss',
-  standalone: true
+  standalone: true,
+  providers: [AuthService]
 })
 export class InicioSesionComponent extends GeneralComponent implements OnInit{
 
+  loginService = inject(AuthService);
   fb = inject(FormBuilder)
+  destroyRef = inject(DestroyRef);
+
+  activatedRoute = inject(ActivatedRoute);
+
   formLogin!: FormGroup;
   vista = signal('login');
   ingresoPass: boolean = false;
@@ -43,13 +50,29 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit{
 
   inicializarFormLogin() : FormGroup{
     return this.fb.group({
-      correoElectronico: ['', [Validators.required]],
+      username: ['', [Validators.required]],
       password: ['', [Validators.required, passwordValidator()]],
     });
   }
 
   iniciarSesion(){
-    console.log("");
+    if(this.formLogin.valid){
+      this.loginService.login(this.formLogin.value)
+      .subscribe({
+        next:(respuesta: HttpRespuesta<any>) => {
+          if(!respuesta.exito){
+            this._alertServices.alerta(respuesta.mensaje);
+            return;
+          }
+          this._router.navigate(['/privado'], {
+            relativeTo: this.activatedRoute,
+          });
+        },
+        error:(error) => {
+          this._alertServices.alerta(error.error.mensaje);
+        }
+      })
+    }
   }
 
   validarCaracterCorreo(event: KeyboardEvent){

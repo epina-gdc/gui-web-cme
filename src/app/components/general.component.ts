@@ -1,13 +1,16 @@
+
 import { CommonModule } from "@angular/common";
 import { Component, OnDestroy, inject } from "@angular/core";
 import { Mensajes } from "@utils/mensajes";
 import { Router } from '@angular/router';
 import { NAV } from "./../core/utils/url-global";
 import { CatalogoGeneral, CatPerfil, CatPerfilResponse } from "@models/catalogoGeneral";
-import { AlertService } from "../core/alert/alert.service";
 import { CatalogosGeneralesService } from "@services/catalogos-generales.service";
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { RegistroMedicoService } from "@services/registro-medico.service";
+
+import {AlertService} from "@services/alert.service";
+
 
 
 @Component({

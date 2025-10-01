@@ -1,7 +1,13 @@
-export const environment = {
-    production: false,
-    apiCatalogos: 'http://10.166.0.120:1054/mscme-catalogos/api',
-    apiAuth:'http://10.166.120:1052/mscme-autenticacion/api',
-    apiRegistro: 'http://10.166.0.120:1053/mscme-registro/api',
-   
-  };
+import {ConfigEnvironment} from '@models/config-environment.interface';
+
+const base: string = 'http://10.166.120:1052/';
+
+export const environment: ConfigEnvironment = {
+  production: false,
+  api: {
+    login: base + 'mscme-autenticacion/api/',
+    apiCatalogos:  base + 'mscme-catalogos/api',
+    apiRegistro:  base + 'mscme-registro/api'
+  }
+}
+

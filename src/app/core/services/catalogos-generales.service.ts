@@ -16,7 +16,7 @@ import { CatPaisResponse, CatPerfil, CatPerfilResponse, CatSubperfilResponse } f
  })
  export class CatalogosGeneralesService {
      private VERSION_API:string  = '/v1/';
-     private serverEndPointURL = `${environment.apiCatalogos + this.VERSION_API+'catalogos'}`;
+     private serverEndPointURL = `${environment.api.apiCatalogos + this.VERSION_API+'catalogos'}`;
  
      header = new HttpHeaders({
          'Content-Type': 'application/json',
