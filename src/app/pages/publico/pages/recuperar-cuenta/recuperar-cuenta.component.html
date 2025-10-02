@@ -30,7 +30,7 @@
               formControlName="curp"/>
             <div class="flex flex-column">
               @if (f['curp'].errors?.['minlength'] && (f['curp'].dirty || f['curp'].touched)) {
-                <span class="text-danger">{{ mensajes.MSJ_PASS_MAX_CARACTER }}</span>
+                <span class="text-danger">{{ mensajes.MSJ_LONG_CURP }}</span>
               }
               @if (f['curp'].errors?.['pattern'] && (f['curp'].dirty || f['curp'].touched)) {
                 <span class="text-danger">{{ mensajes.MSJ_FORMATO_NO_VALIDO }}</span>
