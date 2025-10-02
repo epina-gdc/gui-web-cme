@@ -1,7 +1,7 @@
 import {inject} from '@angular/core';
 import {CanActivateFn, Router, RouterStateSnapshot} from '@angular/router';
 import {Observable, of} from 'rxjs';
-import { CME_TOKEN } from '../../utils/constantes';
+import {CME_TOKEN} from '../../utils/constantes';
 
 export const redirectIfAuthenticatedGuard: CanActivateFn = (route, state) => {
   return checkAuth(state);

@@ -5,7 +5,7 @@
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {CatDocVerifResponse, CatPaisResponse, CatPerfilResponse, CatSubperfilResponse} from '@models/catalogoGeneral';
-import { HttpRespuesta } from '@models/http-respuesta.interface';
+import {HttpRespuesta} from '@models/http-respuesta.interface';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {environment} from '../../../environments/environment.development';
@@ -73,7 +73,7 @@ import {AlertService} from '../services/alert.service';
     }
 
 
-    
+
     getLstSexos(): Observable<HttpRespuesta<any>> {
         return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/sexos', { headers: this.header }).pipe(
             catchError(this.handleError),
@@ -138,7 +138,7 @@ import {AlertService} from '../services/alert.service';
         );
     }
 
-    
+
     getLstZonas(idMunicipio:number): Observable<HttpRespuesta<any>> {
         return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/zonas`, { headers: this.header }).pipe(
             catchError(this.handleError),
