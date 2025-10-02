@@ -10,12 +10,12 @@ import {ConfirmDialog} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
 import {Card} from 'primeng/card';
 import {SolicitudCambioContrasenia} from '@models/solicitud-cambio-contrasenia.interface';
-import {AuthService} from '@services/auth.service';
 import {LoaderService} from '../../../../components/loader/services/loader.service';
 import {finalize} from 'rxjs';
 import {AlertService} from '@services/alert.service';
 import {Mensajes} from '@utils/mensajes';
 import {Router} from '@angular/router';
+import {RecuperacionCredencialesService} from '@services/recuperacion-credenciales.service';
 
 @Component({
   selector: 'app-recuperar-cuenta',
@@ -37,7 +37,7 @@ export class RecuperarCuentaComponent {
   mensajes: Mensajes = new Mensajes();
   formRecuperarCuenta!: FormGroup;
   fb: FormBuilder = inject(FormBuilder);
-  authService: AuthService = inject(AuthService);
+  authService: RecuperacionCredencialesService = inject(RecuperacionCredencialesService);
   loaderService: LoaderService = inject(LoaderService);
   alertaService: AlertService = inject(AlertService);
 

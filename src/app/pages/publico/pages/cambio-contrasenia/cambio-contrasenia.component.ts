@@ -8,10 +8,10 @@ import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {AlertService} from '@services/alert.service';
 import {CambioContrasenia} from '@models/cambio-contrasenia.interface';
 import {finalize} from 'rxjs';
-import {AuthService} from '@services/auth.service';
 import {LoaderService} from '../../../../components/loader/services/loader.service';
 import {Mensajes} from '@utils/mensajes';
 import {Button} from 'primeng/button';
+import {RecuperacionCredencialesService} from '@services/recuperacion-credenciales.service';
 
 @Component({
   selector: 'app-cambio-contrasenia',
@@ -34,7 +34,7 @@ export class CambioContraseniaComponent {
   route: ActivatedRoute = inject(ActivatedRoute);
   router: Router = inject(Router);
   alertaService: AlertService = inject(AlertService);
-  authService: AuthService = inject(AuthService);
+  authService: RecuperacionCredencialesService = inject(RecuperacionCredencialesService);
   loaderService: LoaderService = inject(LoaderService);
 
   fb: FormBuilder = inject(FormBuilder);
