@@ -22,6 +22,7 @@
               (keypress)="validarCaracterCorreo($event)"
               (change)="validarEstructuraCorreo($event)"
               pInputText
+              emailAllowCaracters
               class="w-full"
               type="email"
               id="username"
@@ -29,7 +30,7 @@
               formControlName="username"/>
             <div class="flex flex-column">
               @if (f['username'].errors?.['email']) {
-                <span class="text-danger">{{ _Mensajes.MSJ_PASS_MIN_CARACTER }}</span>
+                <span class="text-danger">El formato del correo electrónico no es válido.</span>
               }
             </div>
           </div>

@@ -13,6 +13,7 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import {HttpRespuesta} from '@models/http-respuesta.interface';
 import {LoaderService} from '../../../../components/loader/services/loader.service';
 import {finalize} from 'rxjs';
+import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.directive';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -23,7 +24,8 @@ import {finalize} from 'rxjs';
     ReactiveFormsModule,
     CommonModule,
     BloquearCaracterPasswordDirective,
-    RouterLink
+    RouterLink,
+    EmailAllowCaractersDirective
   ],
   templateUrl: './inicio-sesion.component.html',
   styleUrl: './inicio-sesion.component.scss',
@@ -79,6 +81,10 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit {
           });
         },
         error: (error) => {
+          if (error.error.mensaje.includes('Usuario no encontrado con email')) {
+            this._alertServices.error('El correo electrónico no está registrado. Verifica tu información o regístrate.');
+            return;
+          }
           if (error) {
             this._alertServices.error(error.error.mensaje);
           }
