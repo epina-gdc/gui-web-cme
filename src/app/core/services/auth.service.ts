@@ -29,7 +29,7 @@ export class AuthService {
     .pipe(map((usuario: SesionUser | null) => !!usuario));
 
 
-  constructor(){this.recuperarSesionAlRecargarPagina()}
+  constructor(){}
 
   login(login: Login): Observable<any> {
     return this.http.post<any>(`${this.URL_BASE}${this.URL_AUTH}`, login).pipe(
