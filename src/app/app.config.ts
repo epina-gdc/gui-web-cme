@@ -8,6 +8,7 @@ import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@ang
 import {provideAnimations} from '@angular/platform-browser/animations';
 import {Mensajes} from '@utils/mensajes';
 import {ApiKeyInterceptor} from '@interceptors/api-key.interceptor';
+import { JwtInterceptorService } from '@interceptors/autentication.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [Mensajes,
@@ -30,6 +31,8 @@ export const appConfig: ApplicationConfig = {
       }
     ),
     {provide: HTTP_INTERCEPTORS, useClass: ApiKeyInterceptor,multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService,multi: true},
+
     provideAnimations(),
   ]
 };
