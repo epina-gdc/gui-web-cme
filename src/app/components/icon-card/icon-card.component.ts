@@ -9,11 +9,12 @@ import {Component, Input} from '@angular/core';
 export class IconCardComponent {
   @Input() iconClass: string = 'pi pi-user'; // Clase del icono (por defecto, pi-user)
   @Input() cardColor: string = '#ff8f01'; // Color principal (por defecto, naranja)
+  @Input() bgColor: string = '#ff8f01'; // Color principal (por defecto, naranja)
   @Input() leftBorderRound: boolean = false; // Opcional: borde redondo inferior izquierda
 
   // Opcional: para un color de fondo con opacidad
   get backgroundColor() {
-    return this.hexToRgbA(this.cardColor, 0.29);
+    return this.hexToRgbA(this.bgColor, 1);
   }
 
   // Función para convertir HEX a RGBA para el fondo

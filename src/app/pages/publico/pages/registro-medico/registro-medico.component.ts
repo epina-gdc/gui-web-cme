@@ -1,27 +1,27 @@
-import { ResponseGeneral } from '@models/responseGeneral';
+import {ResponseGeneral} from '@models/responseGeneral';
 
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { Card } from 'primeng/card';
-import { GeneralComponent } from '../../../../components/general.component';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Card} from 'primeng/card';
+import {GeneralComponent} from '../../../../components/general.component';
 
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { Select } from 'primeng/select';
-import { Button } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { HttpErrorResponse } from '@angular/common/http';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {Select} from 'primeng/select';
+import {Button} from 'primeng/button';
+import {InputTextModule} from 'primeng/inputtext';
+import {HttpErrorResponse} from '@angular/common/http';
 
-import { CommonModule } from '@angular/common';
-import { CatPaisResponse, CatSubperfil, CatSubperfilResponse, Pais } from '@models/catalogoGeneral';
+import {CommonModule} from '@angular/common';
+import {CatPaisResponse, CatSubperfil, CatSubperfilResponse, Pais} from '@models/catalogoGeneral';
 import {
   RegistroCurpRequest,
   RegistroInternoRequest,
   RegistroMedico,
   RegistroPasaporteRequest
 } from '@models/datosMedico';
-import { BtnRegresarComponent } from '../../../../components/btn-regresar/btn-regresar.component';
-import { passwordValidator } from '@validators/password-validator';
-import { PATRON_CURP, PATRON_EMAIL, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_PASAPORTE, PATRON_RFC } from '@utils/regex';
-import { AlphanumericDirective } from '@directives/only-alphanumeric.directive';
+import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regresar.component';
+import {passwordValidator} from '@validators/password-validator';
+import {PATRON_CURP, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_PASAPORTE, PATRON_RFC} from '@utils/regex';
+import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
 
 @Component({
   selector: 'app-registro-medico',
@@ -155,11 +155,11 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
         if (this.medico.blnPasaporte) {
           this.inPasaporte = true;
           this.inPais = true;
-         
+
           break;
         }
 
-     
+
 
 
         break;
@@ -205,7 +205,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.form.controls['modalidad'].updateValueAndValidity();
     this.form.controls['pasaporte'].updateValueAndValidity();
     this.form.controls['pais'].updateValueAndValidity();
-    
+
   }
 
   private isCurp() {
@@ -619,7 +619,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
 
   public dinamicoCurp() {
-    
+
     this.medico.refCurp = this.form.controls['curp'].value
     if (this.medico.refCurp.length > 0) {
       return this.isCurp();

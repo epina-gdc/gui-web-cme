@@ -1,7 +1,7 @@
-import {Component, OnInit, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {IconCardComponent} from "../../../../components/icon-card/icon-card.component";
-import { UserService } from '@services/user.service';
-import { SesionUser } from '@models/sesion-user.interface';
+import {UserService} from '@services/user.service';
+import {SesionUser} from '@models/sesion-user.interface';
 
 @Component({
   selector: 'header-medico-interno',
@@ -14,7 +14,7 @@ import { SesionUser } from '@models/sesion-user.interface';
 export class HeaderMedicoInternoComponent implements OnInit {
   userService = inject(UserService);
   userData: SesionUser | null = null;
-  
+
 
   ngOnInit(){
     this.userService.userData$.subscribe(user => this.userData = user);

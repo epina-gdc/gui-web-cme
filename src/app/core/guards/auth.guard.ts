@@ -2,7 +2,7 @@ import {inject} from '@angular/core';
 import {CanActivateChildFn, RouterStateSnapshot} from '@angular/router';
 import {AuthService} from '@services/auth.service';
 import {Observable, of} from 'rxjs';
-import { CME_TOKEN } from '../../utils/constantes';
+import {CME_TOKEN} from '../../utils/constantes';
 
 export const authGuard: CanActivateChildFn = (childRoute, state) => {
   return checkAuth(state);

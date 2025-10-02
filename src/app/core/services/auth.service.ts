@@ -10,7 +10,7 @@ import {Login} from '@models/login';
 import {map, Observable, tap} from 'rxjs';
 import {SolicitudCambioContrasenia} from '@models/solicitud-cambio-contrasenia.interface';
 import {CambioContrasenia} from '@models/cambio-contrasenia.interface';
-import { CME_TOKEN } from "../../utils/constantes";
+import {CME_TOKEN} from "../../utils/constantes";
 
 @Injectable({
   providedIn: 'root'
