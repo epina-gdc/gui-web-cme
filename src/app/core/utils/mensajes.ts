@@ -10,7 +10,8 @@ export class Mensajes {
   public MSG007: string = "Las contraseñas no coinciden por favor verifica tu información";
   public MSG0077: string = "Los correos no coinciden por favor verifica tu información";
   public MSG008: string = 'Usted es titular de una plaza, por lo que no es posible realizar su registro.';
-  public MSG010: string = 'La información ingresada es incorrecta. Por favor, verifica tu matrícula o CURP.';
+  public MSG010a: string = 'La información ingresada es incorrecta. Por favor, verifica tu matrícula.';
+  public MSG010b: string = 'La información ingresada es incorrecta. Por favor, verifica tu CURP.';
   public MSG011: string = "Ya existe una cuenta registrada con este correo electrónico. Si olvidaste tu contraseña, utiliza la opción <b>Olvidé mi contraseña</b>.";
   public MSG012: string = "Tu registro fue finalizado con éxito, se te enviará un correo con la información de tu registro.";
   public MSG013: string = "Por favor completa todos los campos obligatorios.";

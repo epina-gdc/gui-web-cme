@@ -22,11 +22,17 @@
               (keypress)="validarCaracterCorreo($event)"
               (change)="validarEstructuraCorreo($event)"
               pInputText
+              emailAllowCaracters
               class="w-full"
               type="email"
               id="username"
               placeholder="Ingresa correo electrónico"
               formControlName="username"/>
+            <div class="flex flex-column">
+              @if (f['username'].errors?.['email']) {
+                <span class="text-danger">El formato del correo electrónico no es válido.</span>
+              }
+            </div>
           </div>
           <div class="form-icon">
             <label class="field-label" for="password">Contraseña</label>

@@ -13,6 +13,7 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import {HttpRespuesta} from '@models/http-respuesta.interface';
 import {LoaderService} from '../../../../components/loader/services/loader.service';
 import {finalize} from 'rxjs';
+import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.directive';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -23,14 +24,15 @@ import {finalize} from 'rxjs';
     ReactiveFormsModule,
     CommonModule,
     BloquearCaracterPasswordDirective,
-    RouterLink
+    RouterLink,
+    EmailAllowCaractersDirective
   ],
   templateUrl: './inicio-sesion.component.html',
   styleUrl: './inicio-sesion.component.scss',
   standalone: true,
   providers: [AuthService]
 })
-export class InicioSesionComponent extends GeneralComponent implements OnInit{
+export class InicioSesionComponent extends GeneralComponent implements OnInit {
 
   loginService = inject(AuthService);
   fb = inject(FormBuilder)
@@ -53,21 +55,24 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit{
 
   }
 
-  inicializarFormLogin() : FormGroup{
+  inicializarFormLogin(): FormGroup {
     return this.fb.group({
-      username: ['', [Validators.required]],
+      username: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, passwordValidator()]],
     });
   }
 
-  iniciarSesion(){
-    if(this.formLogin.valid){
-      this.loaderService.activar();
-      this.loginService.login(this.formLogin.value)
-      .pipe(finalize(()=> this.loaderService.desactivar()))
+  iniciarSesion() {
+    if (this.formLogin.invalid) {
+      this._alertServices.alerta('Por favor, completa todos los campos obligatorios.');
+      return;
+    }
+    this.loaderService.activar();
+    this.loginService.login(this.formLogin.value)
+      .pipe(finalize(() => this.loaderService.desactivar()))
       .subscribe({
-        next:(respuesta: HttpRespuesta<any>) => {
-          if(!respuesta.exito){
+        next: (respuesta: HttpRespuesta<any>) => {
+          if (!respuesta.exito) {
             this._alertServices.alerta(respuesta.mensaje);
             return;
           }
@@ -75,29 +80,32 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit{
             relativeTo: this.activatedRoute,
           });
         },
-        error:(error) => {
-          if(error){
+        error: (error) => {
+          if (error.error.mensaje.includes('Usuario no encontrado con email')) {
+            this._alertServices.error('El correo electrónico no está registrado. Verifica tu información o regístrate.');
+            return;
+          }
+          if (error) {
             this._alertServices.error(error.error.mensaje);
           }
         }
       })
-    }
   }
 
-  validarCaracterCorreo(event: KeyboardEvent){
-    if(this.caracteresProhibidos.has(event.key)){
+  validarCaracterCorreo(event: KeyboardEvent) {
+    if (this.caracteresProhibidos.has(event.key)) {
       this._alertServices.alerta(this._Mensajes.MSG002);
       event.preventDefault();
     }
   }
 
-  validarEstructuraCorreo(event: any){
-    if(!PATRON_EMAIL.test(event.target.value)){
+  validarEstructuraCorreo(event: any) {
+    if (!PATRON_EMAIL.test(event.target.value)) {
       this._alertServices.alerta(this._Mensajes.MSG003);
     }
   }
 
-  get f(){
+  get f() {
     return this.formLogin.controls;
   }
 
