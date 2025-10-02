@@ -162,32 +162,32 @@
               <label class="field-label" for="pais">País</label>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <p-select [options]="paises" formControlName="pais" optionLabel="label"
-                      placeholder="Ingresa país" class="w-full"/>
+            <p-select [options]="paises" formControlName="pais" optionLabel="label" optionValue="value"
+                      filterBy="label" [filter]="true" placeholder="Ingresa país" class="w-full"/>
           </div>
           <div class="col-3">
             <div class="flex justify-content-between">
               <label class="field-label" for="estado">Estado</label>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <input pInputText class="w-full" type="text" id="estado" placeholder="Ingresa estado"
-                   formControlName="estado"/>
+            <p-select [options]="estados" formControlName="estado" optionLabel="label" optionValue="value"
+                      filterBy="label" [filter]="true" placeholder="Ingresa estado" class="w-full"/>
           </div>
           <div class="col-3">
             <div class="flex justify-content-between">
               <label class="field-label" for="municipio">Alcaldía o municipio</label>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <input pInputText class="w-full" type="text" id="municipio" placeholder="Ingresa delegación"
-                   formControlName="municipio"/>
+            <p-select [options]="municipios" formControlName="municipio" optionLabel="label" optionValue="value"
+                      filterBy="label" [filter]="true" placeholder="Ingresa municipio" class="w-full"/>
           </div>
           <div class="col-3">
             <div class="flex justify-content-between">
               <label class="field-label" for="colonia">Colonia</label>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <input pInputText class="w-full" type="text" id="colonia" placeholder="Ingresa colonia"
-                   formControlName="colonia"/>
+            <p-select [options]="colonias" formControlName="colonia" optionLabel="label" optionValue="value"
+                      filterBy="label" [filter]="true" placeholder="Ingresa colonia" class="w-full"/>
           </div>
           <div class="col-3">
             <div class="flex justify-content-between">
@@ -220,14 +220,14 @@
               <div class="flex justify-content-between">
                 <label class="field-label" for="ooad">OOAD</label>
               </div>
-              <p-select [options]="dummies" formControlName="ooad" optionLabel="label"
+              <p-select [options]="ooad" formControlName="ooad" optionLabel="label"
                         placeholder="Seleccionar opción" class="w-full" optionValue="value"/>
             </div>
             <div class="col-3">
               <div class="flex justify-content-between">
                 <label class="field-label" for="zonaInteres">Zona de interés</label>
               </div>
-              <p-select [options]="dummies" formControlName="zonaInteres" optionLabel="label"
+              <p-select [options]="zonas" formControlName="zonaInteres" optionLabel="label"
                         placeholder="Seleccionar opción" class="w-full" optionValue="value"/>
             </div>
             <div class="col-3 flex justify-content-start align-items-end">
@@ -512,7 +512,7 @@
             <div class="flex gap-2">
               @for (institucion of instituciones; track institucion.key) {
                 <div class="flex justify-content-end gap-1 align-items-center">
-                  <p-radiobutton [inputId]="institucion.key" [(ngModel)]="institucionSeleccionada"  >
+                  <p-radiobutton [inputId]="institucion.key" [(ngModel)]="institucionSeleccionada">
                   </p-radiobutton>
                   <label [for]="institucion.key" class="leyenda-documento mt-4">{{ institucion.name }}</label>
                 </div>
