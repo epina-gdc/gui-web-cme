@@ -1,13 +1,18 @@
-<div class="flex justify-content-between bg-menu px-4">
+<div class="flex justify-content-between bg-menu px-4 py-3">
   <div class="flex align-items-center">
     <p class="letras-menu-imss pr-4">IMSS</p>
     <span class="border-circle bg-green cmr-texto">CMR</span>
-    <hr class="vertical" />
+    <hr class="vertical"/>
     <p class="menu-nombre-sistema">Convocatoria para médicos residentes</p>
   </div>
   <div class="flex align-items-center">
-    <p class="usuario-menu pr-4">{{userData?.nomNombre}} {{userData?.nomApellidoPaterno}} {{userData?.nomApellidoMaterno}}</p>
-    <p-avatar icon="pi pi-user" [style]="{ 'background-color': '#E0FFFF', color: '#5DC1B9', 'border-color': '#5DC1B9',
-     'border': '2px solid' }" class="mr-2 my-2" size="xlarge" shape="circle" />
+    <p
+      class="usuario-menu pr-4 mr-6">{{ userData?.nomNombre }} {{ userData?.nomApellidoPaterno }} {{ userData?.nomApellidoMaterno }}</p>
+    <p-speeddial [model]="items" direction="down" [transitionDelay]="80"  class="absolute ajuste-avatar">
+      <ng-template pTemplate="button" let-toggleCallback="toggleCallback">
+        <p-avatar icon="pi pi-user" (click)="toggleCallback($event)" [style]="{ 'background-color': '#E0FFFF', color: '#5DC1B9', 'border-color': '#5DC1B9',
+     'border': '2px solid' }" class="mr-2 my-2 cursor-pointer" size="xlarge" shape="circle"/>
+      </ng-template>
+    </p-speeddial>
   </div>
 </div>
