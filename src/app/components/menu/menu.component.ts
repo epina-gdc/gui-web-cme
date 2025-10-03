@@ -3,22 +3,35 @@ import {Avatar} from 'primeng/avatar';
 import {GeneralComponent} from '../general.component';
 import {SesionUser} from '@models/sesion-user.interface';
 import {UserService} from '@services/user.service';
+import {SpeedDial} from 'primeng/speeddial';
+import {MenuItem, PrimeTemplate} from 'primeng/api';
 
 @Component({
   selector: 'app-menu',
   imports: [
-    Avatar
+    Avatar,
+    SpeedDial,
+    PrimeTemplate
   ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss'
 })
-export class MenuComponent extends GeneralComponent implements OnInit{
+export class MenuComponent extends GeneralComponent implements OnInit {
 
   userService = inject(UserService);
   userData: SesionUser | null = null;
+  items: MenuItem[] = [];
 
 
-  ngOnInit(){
+  ngOnInit() {
+    this.items = [
+      {
+        label: 'Cerrar sesión',
+        icon: 'pi pi-sign-out',
+        command: () => {
+        },
+      }
+    ]
     this.userService.userData$.subscribe(user => this.userData = user);
   }
 }
