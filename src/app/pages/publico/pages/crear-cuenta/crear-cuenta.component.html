@@ -1,85 +1,85 @@
 <main class="flex  login-background col-12">
-    <aside class="col-6 flex flex-column justify-content-center align-items-center p-6">
-        <h1 class="login-titulo">Convocatoria para Médicos Especialistas</h1>
-        <h2 class="login-subtitulo">Reclutamiento IMSS 2025</h2>
-    </aside>
-    <section class="col-6  flex justify-content-center align-items-center vertical-align:middle align-items:center">
+  <aside class="col-6 flex flex-column justify-content-center align-items-center p-6">
+    <h1 class="login-titulo">Convocatoria para Médicos Especialistas</h1>
+    <h2 class="login-subtitulo">Reclutamiento IMSS 2025</h2>
+  </aside>
+  <section class="col-6  flex justify-content-center align-items-center vertical-align:middle align-items:center">
 
-        <p-card class="top-rounded-card" [style]="{ width: '45rem', overflow: 'show' }">
-            <form [formGroup]="form" (ngSubmit)="btnAceptar()">
-
-
-                <div class="flex justify-content-center">
-                    <h2 class="login-card-titulo">Crear cuenta</h2>
-                </div>
-                <hr>
-                <article class="flex flex-column">
-                    <div class="flex flex-row">
-
-                        <label class="field-label" for="perfil">Tipo de perfil</label>
-                    </div>
-                    <div class="flex flex-row">
-
-                        <p-select id="perfil" formControlName="perfil" [options]="lstPerfil" optionLabel="nomPerfil"
-                            optionValue="idPerfil" placeholder="Selecciona un perfil" class="w-full"
-                            (ngModelChange)="cambiaPerfil()">
-                        </p-select>
-                    </div>
-
-                    @if(!blnResidente){
-
-                    <div class="flex flex-column" style="margin-top: 25px; margin-bottom: 15px;">
-                        <div class="flex flex-row">
-                            <label class="field-label" for="modalidad">Modalidad del médico</label>
-                        </div>
-                        <div class="flex flex-row">
-                            <p-select id="modalidad" formControlName="modalidad" [options]="lstModalidad"
-                                optionLabel="nomSubperfil" optionValue="idSubperfil"
-                                placeholder="Selecciona una modalidad" class="w-full"
-                                (ngModelChange)="cambiaModalidad()">
-                            </p-select>
-                        </div>
-                    </div>
-                    <div class="flex flex-column">
-                        <div class="flex flex-row">
-                            <label class="field-label" for="documento">Selecciona un documento de verificación</label>
-                        </div>
-                        <div class="flex flex-row">
-                            <div class="flex flex-wrap gap-4">
-
-                                <div class="flex items-center">
+    <p-card class="top-rounded-card" [style]="{ width: '45rem', overflow: 'show' }">
+      <form [formGroup]="form" (ngSubmit)="btnAceptar()">
 
 
+        <div class="flex justify-content-center">
+          <h2 class="login-card-titulo">Crear cuenta</h2>
+        </div>
+        <hr>
+        <article class="flex flex-column">
+          <div class="flex flex-row">
 
-                                @for (documento of lstDocumentos; track documento.idDocumentoVerificacion) {
-                                    <p-radiobutton id="documento" formControlName="documento" name="documento"
-                                     value="{{documento.desDocumentoVerificacion}}"
-                                    inputId="documento" [(ngModel)]="registroMedico.desDocumentoVerificacion" />
-                                <label for="documento" class="ml-2">{{documento.desDocumentoVerificacion}}</label>
-                                }
-                            </div>
+            <label class="field-label" for="perfil">Tipo de perfil</label>
+          </div>
+          <div class="flex flex-row">
 
-                            </div>
+            <p-select id="perfil" formControlName="perfil" [options]="lstPerfil" optionLabel="nomPerfil"
+                      optionValue="idPerfil" placeholder="Selecciona un perfil" class="w-full"
+                      (ngModelChange)="cambiaPerfil()">
+            </p-select>
+          </div>
 
-                        </div>
-                    </div>
+          @if (!blnResidente) {
 
+            <div class="flex flex-column" style="margin-top: 25px; margin-bottom: 15px;">
+              <div class="flex flex-row">
+                <label class="field-label" for="modalidad">Modalidad del médico</label>
+              </div>
+              <div class="flex flex-row">
+                <p-select id="modalidad" formControlName="modalidad" [options]="lstModalidad"
+                          optionLabel="nomSubperfil" optionValue="idSubperfil"
+                          placeholder="Selecciona una modalidad" class="w-full"
+                          (ngModelChange)="cambiaModalidad()">
+                </p-select>
+              </div>
+            </div>
+            <div class="flex flex-column">
+              <div class="flex flex-row">
+                <label class="field-label" for="documento">Selecciona un documento de verificación</label>
+              </div>
+              <div class="flex flex-row">
+                <div class="flex flex-wrap gap-4">
+
+                  <div class="flex gap-2">
+                    @for (documento of lstDocumentos; track documento.idDocumentoVerificacion) {
+                      <div class="flex justify-content-end gap-1 align-items-center">
+                        <p-radiobutton id="documento" formControlName="documento" name="documento"
+                                       value="{{documento.desDocumentoVerificacion}}" class="mb-3"
+                                       inputId="documento" [(ngModel)]="registroMedico.desDocumentoVerificacion"/>
+                        <label for="documento"
+                               class="leyenda-documento ml-1 mt-2" [style]="{ 'font-size': '11px'}">{{ documento.desDocumentoVerificacion }}</label>
+                      </div>
                     }
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+
+          }
 
 
 
 
-                    <div class="flex flex-row justify-content-end" style="margin-top: 40px;">
+          <div class="flex flex-row justify-content-end" style="margin-top: 40px;">
 
-                        <p-button type="submit" label="Aceptar" [disabled]="!form.valid" />
-                    </div>
-                </article>
-            </form>
+            <p-button type="submit" label="Aceptar" [disabled]="!form.valid"/>
+          </div>
+        </article>
+      </form>
 
-        </p-card>
+    </p-card>
 
 
-    </section>
+  </section>
 
 
 </main>
