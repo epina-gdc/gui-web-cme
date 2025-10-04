@@ -92,6 +92,7 @@ export class AuthService {
   cerrarSesion() {
     localStorage.clear();
     this.usuarioService.clearUser()
+    this.usuarioSesionSubject.next(null)
     void this.router.navigate(['/']);
   }
 }
