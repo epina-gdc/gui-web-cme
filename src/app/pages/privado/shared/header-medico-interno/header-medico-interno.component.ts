@@ -16,7 +16,6 @@ export class HeaderMedicoInternoComponent implements OnInit {
   authService = inject(AuthService);
   userData: SesionUser | null = null;
   
-  //TODO: Verificar si la variable la devuelve back o se toma de la hora actual
   fechaActual = new Date();
 
   ngOnInit() {
