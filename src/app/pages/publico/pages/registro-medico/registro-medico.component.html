@@ -1,9 +1,10 @@
-<main class="flex  login-background">
-  <aside class="col-6 flex flex-column justify-content-center align-items-center p-6">
+<main class="flex flex-wrap login-background">
+  <aside class="lg:col-6 md:col-12 flex flex-column justify-content-center align-items-center p-6">
     <h1 class="login-titulo">{{ _Mensajes.MSJ_TITULO_CONVOCATORIA }}</h1>
     <h2 class="login-subtitulo">{{ _Mensajes.MSJ_SUBTITULO_CONVOCATORIA }}</h2>
   </aside>
-  <section class="col-6  flex justify-content-center align-items-center vertical-align:middle align-items:center">
+  <section
+    class="lg:col-6 md:col-12 flex justify-content-center align-items-center vertical-align:middle align-items:center">
     <p-card class="top-rounded-card" [style]="{ width: '45rem', overflow: 'hidden'  }">
       <section class="flex flex-column">
         <article class="flex flex-row p-4">
@@ -97,9 +98,9 @@
 
               </div>
 
-              <div class=" mt-1 row flex">
+              <div class=" mt-1 row flex flex-wrap">
 
-                <div class="field col-6">
+                <div class="field lg:col-6 md:col-12">
                   <label class="field-label" for="rfc">RFC</label>
                   <input pInputText class="w-full" type="text" id="rfc" placeholder="Ingresa RFC"
                          [ngClass]="{'ng-touched ng-dirty ng-invalid': (f['rfc'].errors?.['required'] &&
@@ -113,7 +114,7 @@
                     }
                   }
                 </div>
-                <div class="field col-6">
+                <div class="field lg:col-6 md:col-12">
 
                   <label class="field-label" for="nombre">Nombre(s)</label>
                   <input #input pInputText class="w-full" type="text" id="nombre"
@@ -133,9 +134,9 @@
 
             } @else if (medico.blnPasaporte && !medico.blnInterno) {
 
-              <div class=" mt-1 row flex">
+              <div class=" mt-1 row flex flex-wrap">
 
-                <div class="field col-6">
+                <div class="field lg:col-6 md:col-12">
                   <label class="field-label" for="pasaporte">Pasaporte</label>
                   <input pInputText class="w-full" type="text" id="pasaporte"
                          placeholder="Ingresa pasaporte" (keypress)="inPasaporte = true" autocomplete="off"
@@ -151,7 +152,7 @@
                     }
                   }
                 </div>
-                <div class="field col-6">
+                <div class="field lg:col-6 md:col-12">
 
                   <label class="field-label" for="pais">País</label>
                   <!-- <input #input pInputText class="w-full" type="text" id="pais" placeholder="Ingresa país"
@@ -172,7 +173,7 @@
                 </div>
 
               </div>
-              <div class=" mt-1 row flex">
+              <div class=" mt-1 row flex flex-wrap">
 
                 <div class="field col-12">
                   <label class="field-label" for="nombre">Nombre(s)</label>
@@ -194,8 +195,8 @@
             }
 
 
-            <div class=" mt-1 row flex">
-              <div class="field col-6">
+            <div class=" mt-1 row flex flex-wrap">
+              <div class="field lg:col-6 md:col-12">
                 <label class="field-label" for="apellidoP">Primer apellido</label>
                 <input pInputText class="w-full" type="text" id="apellidoP" autocomplete="off"
                        [ngClass]="{'ng-touched ng-dirty ng-invalid': (f['apellidoP'].errors?.['required'] &&
@@ -210,7 +211,7 @@
                   }
                 }
               </div>
-              <div class="field col-6">
+              <div class="field lg:col-6 md:col-12">
                 <label class="field-label" for="apellidoM">Segundo apellido</label>
                 <input pInputText class="w-full" type="text" id="apellidoM" autocomplete="off"
                        [ngClass]="{'ng-touched ng-dirty ng-invalid': (f['apellidoM'].errors?.['required'] &&
@@ -228,8 +229,8 @@
 
             </div>
             @if (medico.blnPasaporte || medico.blnInterno) {
-              <div class=" mt-1 row flex">
-                <div class="field col-6">
+              <div class=" mt-1 row flex flex-wrap">
+                <div class="field lg:col-6 md:col-12">
 
                   <label class="field-label" for="curp">CURP</label>
                   <input #input pInputText class="w-full" type="text" id="curp" placeholder="Ingresa CURP"
@@ -247,7 +248,7 @@
                   }
                 </div>
 
-                <div class="field col-6">
+                <div class="field lg:col-6 md:col-12">
                   <label class="field-label" for="rfc">RFC</label>
                   <input pInputText class="w-full" type="text" id="rfc" placeholder="Ingresa RFC"
                          autocomplete="off" (keypress)="inRfc = true" formControlName="rfc" maxlength="13"
@@ -266,8 +267,8 @@
             }
 
 
-            <div class=" mt-1 row flex">
-              <div class="field col-6">
+            <div class=" mt-1 row flex flex-wrap">
+              <div class="field lg:col-6 md:col-12">
                 <label class="field-label" for="correo">Correo electrónico</label>
                 <input pInputText class="w-full" type="text" id="correo"
                        placeholder="Ingresa correo electrónico" formControlName="correo"
@@ -283,7 +284,7 @@
                   }
                 }
               </div>
-              <div class="field col-6">
+              <div class="field lg:col-6 md:col-12">
                 <label class="field-label" for="correoc">Confirmar correo electrónico</label>
                 <input pInputText class="w-full" type="text" id="correoc" autocomplete="off"
                        placeholder="Confirmar correo electrónico" (keypress)="inCorreo2 = true"
@@ -302,8 +303,8 @@
 
             </div>
 
-            <div class=" mt-1 row flex">
-              <div class="form-icon col-6">
+            <div class=" mt-1 row flex flex-wrap">
+              <div class="form-icon lg:col-6 md:col-12">
                 <label class="field-label" for="pass">Contraseña</label>
                 <input #input pInputText class="w-full" type="password" id="pass"
                        placeholder="Ingresa contraseña" autocomplete="off" (keypress)="inPass = true"
@@ -322,7 +323,7 @@
                   }
                 }
               </div>
-              <div class="form-icon col-6">
+              <div class="form-icon lg:col-6 md:col-12">
                 <label class="field-label" for="passc">Confirmar contraseña</label>
                 <input #input2 pInputText class="w-full" type="password" id="passc"
                        placeholder="Confirmar contraseña" autocomplete="off" (keypress)="inPass2 = true"
