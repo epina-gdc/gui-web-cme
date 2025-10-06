@@ -2,13 +2,15 @@ import { Component } from '@angular/core';
 import {Card} from 'primeng/card';
 import {Rating} from 'primeng/rating';
 import {FormsModule} from '@angular/forms';
+import {Badge} from 'primeng/badge';
 
 @Component({
   selector: 'oferta-card',
   imports: [
     Card,
     Rating,
-    FormsModule
+    FormsModule,
+    Badge
   ],
   templateUrl: './oferta-card.component.html',
   styleUrl: './oferta-card.component.scss'
