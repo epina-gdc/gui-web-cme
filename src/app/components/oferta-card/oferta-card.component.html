@@ -27,13 +27,18 @@
       <hr>
       <div class="flex flex-row justify-content-start align-items-center gap-2">
         <p class="nombre-unidad-oferta-card">Hospital de Gineco Obstreticia No 60</p>
-        <p-badge [value]="'Nuevo hospital'" severity="warn" />
+        <p-badge [value]="'Nuevo hospital'" severity="warn"/>
       </div>
       <div class="flex flex-row">
         <div class="flex flex-row">
           <div class="flex flex-column col-4">
-            <p class="titulo-label-oferta-card">Ubicación</p>
-            <p class="texto-label-oferta-card">Estado de México</p>
+            <div class="flex flex-row gap-2 align-items-center">
+              <i class="pi pi-map-marker" [style]="{ 'font-size': '2rem'}"></i>
+              <div class="flex flex-column">
+                <p class="titulo-label-oferta-card">Ubicación</p>
+                <p class="texto-label-oferta-card">Estado de México</p>
+              </div>
+            </div>
           </div>
           <div class="flex flex-column col-2">
             <p class="titulo-label-oferta-card">Zona</p>
