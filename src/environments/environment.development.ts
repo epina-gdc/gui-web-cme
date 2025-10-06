@@ -8,7 +8,7 @@ export const environment: ConfigEnvironment = {
     login: base + 'mscme-autenticacion/api/',
     apiCatalogos: 'http://10.166.120:1054/mscme-catalogos/api',
     apiRegistro:   'http://10.166.120:1053/mscme-registro/api',
-    apiConvocatoria:   'http://10.166.120:1053/mscme-convocatoria/api'
+    apiConvocatoria:   'http://localhost:8085/mscme-convocatoria/api'
   }
 }
 
