@@ -4,66 +4,67 @@
     <article class="col-8">
       <div class="flex flex-row">
         <div class="flex flex-column col-4">
-          <p>Neurocirugía</p>
-          <p>Medicina familar</p>
+          <p class="titulo-oferta-card">Neurocirugía</p>
+          <p class="especificacion-oferta-card">Medicina familar</p>
         </div>
         <div class="flex flex-column col-2">
-          <p>Regimen</p>
-          <p>Ordinario</p>
+          <p class="titulo-label-oferta-card">Regimen</p>
+          <p class="texto-label-oferta-card">Ordinario</p>
         </div>
         <div class="flex flex-column col-2">
-          <p>Turno</p>
-          <p>Matutino</p>
+          <p class="titulo-label-oferta-card">Turno</p>
+          <p class="texto-label-oferta-card">Matutino</p>
         </div>
         <div class="flex flex-column col-2">
-          <p>Tipo de plaza</p>
-          <p>Operativa base</p>
+          <p class="titulo-label-oferta-card">Tipo de plaza</p>
+          <p class="texto-label-oferta-card">Operativa base</p>
         </div>
         <div class="flex flex-column col-2">
-          <p>Marca de ocupación</p>
-          <p>Definitiva</p>
+          <p class="titulo-label-oferta-card">Marca de ocupación</p>
+          <p class="texto-label-oferta-card">Definitiva</p>
         </div>
       </div>
       <hr>
-      <div class="flex flex-row">
-        <p>Hospital de Gineco Obstreticia No 60</p>
+      <div class="flex flex-row justify-content-start">
+        <p class="nombre-unidad-oferta-card">Hospital de Gineco Obstreticia No 60</p>
       </div>
       <div class="flex flex-row">
         <div class="flex flex-row">
           <div class="flex flex-column col-4">
-            <p>Ubicación</p>
-            <p>Estado de México</p>
+            <p class="titulo-label-oferta-card">Ubicación</p>
+            <p class="texto-label-oferta-card">Estado de México</p>
           </div>
           <div class="flex flex-column col-2">
-            <p>Zona</p>
-            <p>Tlalnepantla</p>
+            <p class="titulo-label-oferta-card">Zona</p>
+            <p class="texto-label-oferta-card">Tlalnepantla</p>
           </div>
           <div class="flex flex-column col-6">
-            <p>Dirección</p>
-            <p>Carr. Federal Pachuca - México Manzana 036, Urbana Ixhuatepec, 55349 Ecatepec de Morelos, Méx</p>
+            <p class="titulo-label-oferta-card">Dirección</p>
+            <p class="texto-label-oferta-card">Carr. Federal Pachuca - México Manzana 036, Urbana Ixhuatepec, 55349
+              Ecatepec de Morelos, Méx</p>
           </div>
         </div>
       </div>
     </article>
-    <article class="col-4 flex flex-column gap-2">
+    <article class="col-4 flex flex-column gap-2 justify-content-between">
       <div class="flex justify-content-end">
-        <p-rating [(ngModel)]="value" [stars]="1" />
+        <p-rating [(ngModel)]="value" [stars]="1"/>
       </div>
-      <div class="flex justify-content-center">
-        <p>Sueldo mensual</p>
+      <div class="flex">
+        <p class="leyenda-sueldo">Sueldo mensual</p>
       </div>
       <div class="flex justify-content-evenly">
         <div class="flex flex-column align-items-center gap-2">
-          <p> $45,520 </p>
-          <p> Estimado bruto </p>
+          <p class="texto-sueldo"> $45,520 </p>
+          <p class="leyenda-sueldo"> Estimado bruto </p>
         </div>
         <div class="flex flex-column align-items-center gap-2">
-          <p> $41,140 </p>
-          <p> Estimado neto </p>
+          <p class="texto-sueldo"> $41,140 </p>
+          <p class="leyenda-sueldo"> Estimado neto </p>
         </div>
       </div>
       <div class="flex justify-content-center">
-        <p>Ver más</p>
+        <a class="link-ver-mas-oferta-card">Ver más</a>
       </div>
     </article>
   </div>
