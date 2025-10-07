@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {Avatar} from 'primeng/avatar';
 import {Card} from 'primeng/card';
 
@@ -12,5 +12,7 @@ import {Card} from 'primeng/card';
   styleUrl: './kpi-card.component.scss'
 })
 export class KpiCardComponent {
+  @Input() encabezado: string = '';
+  @Input() descripcion: string = '';
 
 }

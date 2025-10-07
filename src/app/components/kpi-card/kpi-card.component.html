@@ -1,12 +1,13 @@
 <div class="my-4"></div>
 <p-card class="empty-card" styleClass="shadow-4">
-  <div class="flex">
-    <div>
-      <p-avatar icon="pi pi-user"></p-avatar>
+  <div class="flex flex-row">
+    <div class="flex col-3 justify-content-center align-items-center">
+      <p-avatar shape="circle" icon="pi pi-user" size="xlarge"
+                [style]="{ 'background-color': '#9CE2C2', color: '#fff' }"></p-avatar>
     </div>
-    <div class="flex flex-column">
-      <p>Total de ofertas</p>
-      <p>180</p>
+    <div class="flex col-9 flex-column">
+      <p class="kpi-title">{{ encabezado }}</p>
+      <p class="kpi-text">{{ descripcion }}</p>
     </div>
   </div>
 </p-card>
