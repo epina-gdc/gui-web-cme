@@ -15,10 +15,10 @@ import {AuthService} from '@services/auth.service';
 export class HeaderMedicoInternoComponent implements OnInit {
   authService = inject(AuthService);
   userData: SesionUser | null = null;
-
+  
+  fechaActual = new Date();
 
   ngOnInit() {
-    console.log(this.authService.usuarioSesion);
     this.userData = this.authService.usuarioSesion;
   }
 
