@@ -27,11 +27,11 @@ import {LoaderService} from '../../../../components/loader/services/loader.servi
 import {finalize} from 'rxjs';
 import {OfertaCardComponent} from '../../../../components/oferta-card/oferta-card.component';
 import {KpiCardComponent} from '../../../../components/kpi-card/kpi-card.component';
-import { UserService } from '@services/user.service';
-import { SesionUser } from '@models/sesion-user.interface';
-import { OnlyNumbersDirective } from '@directives/only-numbers.directive';
-import { GeneralComponent } from '../../../../components/general.component';
-import { EmailAllowCaractersDirective } from '@directives/email-allow-caracters.directive';
+import {UserService} from '@services/user.service';
+import {SesionUser} from '@models/sesion-user.interface';
+import {OnlyNumbersDirective} from '@directives/only-numbers.directive';
+import {GeneralComponent} from '../../../../components/general.component';
+import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.directive';
 
 @Component({
   selector: 'app-inicio',
@@ -55,7 +55,7 @@ import { EmailAllowCaractersDirective } from '@directives/email-allow-caracters.
     HeaderMedicoInternoComponent,
     EmptyTabComponent,
     OnlyNumbersDirective,
-    EmailAllowCaractersDirective
+    EmailAllowCaractersDirective,
     EmptyTabComponent,
     OfertaCardComponent,
     KpiCardComponent
@@ -63,7 +63,7 @@ import { EmailAllowCaractersDirective } from '@directives/email-allow-caracters.
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
 })
-export class InicioComponent {
+export class InicioComponent extends GeneralComponent {
 
   readonly dependientes = DEPENDIENTES;
   readonly instituciones = INSTITUCIONES;
@@ -129,13 +129,13 @@ export class InicioComponent {
     return this.fb.group({
       rfc: [],
       nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
-      fechaNacimiento: [{value: '', disabled:true}],
-      sexo: [{value: '', disabled:true}],
+      fechaNacimiento: [{value: '', disabled: true}],
+      sexo: [{value: '', disabled: true}],
       estadoCivil: [],
       dependientes: [],
-      hijos: [{value: '', disabled: true},[Validators.required, Validators.min(1)]],
-      otros: [{value: '', disabled: true},[Validators.required]],
-      correo: [{value: '', disabled:true}],
+      hijos: [{value: '', disabled: true}, [Validators.required, Validators.min(1)]],
+      otros: [{value: '', disabled: true}, [Validators.required]],
+      correo: [{value: '', disabled: true}],
       correoAdicional: [],
       telefonoCasa: [],
       telefonoCelular: [],
@@ -166,10 +166,10 @@ export class InicioComponent {
     this.formRegistro.get('correo')?.setValue(this.userData.refEmail);
   }
 
-  obtenerFechaNacimientoDeCURP(curp: string): Date{
+  obtenerFechaNacimientoDeCURP(curp: string): Date {
     let anio = parseInt(curp.substring(4, 6), 10).toString();
-    const mes = curp.substring(6,8);
-    const dia = curp.substring(8,10);
+    const mes = curp.substring(6, 8);
+    const dia = curp.substring(8, 10);
     anio.length == 1 ? anio = 20 + anio : anio = 19 + anio;
     return new Date(parseInt(anio, 10), parseInt(mes, 10) - 1, parseInt(dia, 10));
   }
@@ -184,8 +184,7 @@ export class InicioComponent {
   }
 
   subscribirseACambioComponentes(): void {
-    this.formRegistro.get('dependientes')?.valueChanges.subscribe(value =>
-      {
+    this.formRegistro.get('dependientes')?.valueChanges.subscribe(value => {
         this.formRegistro.get('hijos')?.disable();
         this.formRegistro.get('otros')?.disable();
         this.formRegistro.get('hijos')?.patchValue(null);
@@ -193,10 +192,10 @@ export class InicioComponent {
         this.formRegistro.get('hijos')?.reset;
         this.formRegistro.get('otros')?.reset;
 
-        if(this.formRegistro.get('dependientes')?.value === this.dependientes[1]){
+        if (this.formRegistro.get('dependientes')?.value === this.dependientes[1]) {
           this.formRegistro.get('hijos')?.enable();
         }
-        if(this.formRegistro.get('dependientes')?.value === this.dependientes[3]){
+        if (this.formRegistro.get('dependientes')?.value === this.dependientes[3]) {
           this.formRegistro.get('otros')?.enable();
         }
       }
@@ -289,12 +288,12 @@ export class InicioComponent {
   }
 
   devolverTextoOoad(idOOAD: string): string {
-    const ooad =  this.ooad.find(element => idOOAD == element.value);
+    const ooad = this.ooad.find(element => idOOAD == element.value);
     return ooad?.label || "";
   }
 
   devolverTextoZonaInnteres(idZona: string): string {
-    const zona =  this.zonas.find(element => idZona == element.value);
+    const zona = this.zonas.find(element => idZona == element.value);
     return zona?.label || "";
   }
 
@@ -390,11 +389,8 @@ export class InicioComponent {
   }
 
   siguientePasoStepper(): void {
-    if(this.indice() == 0){
-      if(this.formRegistro.invalid){
-        this._alertServices.alerta(this._Mensajes.MSG023);
-
-      }
+    if (this.indice() == 0 || this.formRegistro.invalid) {
+      this._alertServices.alerta(this._Mensajes.MSG023);
     }
     this.indice.update(value => value + 1);
   }
