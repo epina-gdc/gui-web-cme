@@ -29,6 +29,7 @@ import { UserService } from '@services/user.service';
 import { SesionUser } from '@models/sesion-user.interface';
 import { OnlyNumbersDirective } from '@directives/only-numbers.directive';
 import { GeneralComponent } from '../../../../components/general.component';
+import { EmailAllowCaractersDirective } from '@directives/email-allow-caracters.directive';
 
 @Component({
   selector: 'app-inicio',
@@ -51,7 +52,8 @@ import { GeneralComponent } from '../../../../components/general.component';
     FormsModule,
     HeaderMedicoInternoComponent,
     EmptyTabComponent,
-    OnlyNumbersDirective
+    OnlyNumbersDirective,
+    EmailAllowCaractersDirective
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
@@ -120,7 +122,7 @@ export class InicioComponent extends GeneralComponent{
       dependientes: [],
       hijos: [{value: '', disabled: true},[Validators.required, Validators.min(1)]],
       otros: [{value: '', disabled: true},[Validators.required]],
-      correo: [],
+      correo: [{value: '', disabled:true}],
       correoAdicional: [],
       telefonoCasa: [],
       telefonoCelular: [],
@@ -139,7 +141,7 @@ export class InicioComponent extends GeneralComponent{
   suscribirObservables(): void {
     this.formRegistro.get('pais')?.valueChanges.subscribe(value => this.obtenerEstadoPorPais(value));
     this.formRegistro.get('estado')?.valueChanges.subscribe(value => this.obtenerMunicipioPorEstado(value));
-    this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerValoresPorMunicipio(value)); 
+    this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerValoresPorMunicipio(value));
   }
 
   settearDatosUsuario(): void {
@@ -147,10 +149,11 @@ export class InicioComponent extends GeneralComponent{
     const fecha = this.obtenerFechaNacimientoDeCURP(this.userData.refCurp);
     const sexo = this.obtenerSexoDeCurp(this.userData.refCurp);
     this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
-    this.formRegistro.get('sexo')?.setValue(sexo); 
+    this.formRegistro.get('sexo')?.setValue(sexo);
+    this.formRegistro.get('correo')?.setValue(this.userData.refEmail);
   }
 
-  obtenerFechaNacimientoDeCURP(curp: string): Date{ 
+  obtenerFechaNacimientoDeCURP(curp: string): Date{
     let anio = parseInt(curp.substring(4, 6), 10).toString();
     const mes = curp.substring(6,8);
     const dia = curp.substring(8,10);
@@ -159,16 +162,16 @@ export class InicioComponent extends GeneralComponent{
   }
 
   obtenerSexoDeCurp(curp: string): any {
-    const sexo = curp[10] as 'H' | 'M'; 
+    const sexo = curp[10] as 'H' | 'M';
     const sexosMap = {
       'H': this.sexos.find(sexo => sexo.label === 'Masculino'),
       'M': this.sexos.find(sexo => sexo.label === 'Mujer')
     };
-    return sexosMap[sexo]; 
+    return sexosMap[sexo];
   }
-  
+
   subscribirseACambioComponentes(): void {
-    this.formRegistro.get('dependientes')?.valueChanges.subscribe(value => 
+    this.formRegistro.get('dependientes')?.valueChanges.subscribe(value =>
       {
         this.formRegistro.get('hijos')?.disable();
         this.formRegistro.get('otros')?.disable();
@@ -272,6 +275,16 @@ export class InicioComponent extends GeneralComponent{
     this.formZonaInteres.reset();
   }
 
+  devolverTextoOoad(idOOAD: string): string {
+    const ooad =  this.ooad.find(element => idOOAD == element.value);
+    return ooad?.label || "";
+  }
+
+  devolverTextoZonaInnteres(idZona: string): string {
+    const zona =  this.zonas.find(element => idZona == element.value);
+    return zona?.label || "";
+  }
+
   obtenerCatalogos(): void {
     this.activatedRoute.data.subscribe(({respuesta}) => {
       const [sexos, estadosCiviles, paises, lugaresNacimiento] = respuesta;
@@ -367,7 +380,7 @@ export class InicioComponent extends GeneralComponent{
     if(this.indice() == 0){
       if(this.formRegistro.invalid){
         this._alertServices.alerta(this._Mensajes.MSG023);
-        
+
       }
     }
     this.indice.update(value => value + 1);

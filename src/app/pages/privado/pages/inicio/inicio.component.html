@@ -112,7 +112,8 @@
             </div>
             <input pInputText class="w-full" type="text" id="correoAdicional"
                    placeholder="Ingresa correo electrónico adicional"
-                   formControlName="correoAdicional"/>
+                   formControlName="correoAdicional"
+                   emailAllowCaracters/>
           </div>
           <div class="col-3">
             <div class="flex justify-content-between">
@@ -120,7 +121,7 @@
               <p class="label-obligatorio">Obligatorio</p>
             </div>
             <input pInputText class="w-full" type="text" id="telefonoCasa" placeholder="Ingresa teléfono de casa"
-                   formControlName="telefonoCasa"/>
+                   formControlName="telefonoCasa" appOnlyNumbers maxlength="10"/>
           </div>
           <div class="col-3">
             <div class="flex justify-content-between">
@@ -128,7 +129,7 @@
               <p class="label-obligatorio">Obligatorio</p>
             </div>
             <input pInputText class="w-full" type="text" id="telefonoCelular" placeholder="Ingresa teléfono celular"
-                   formControlName="telefonoCelular"/>
+                   formControlName="telefonoCelular" appOnlyNumbers maxlength="10"/>
           </div>
           <div class="col-3">
             <div class="flex justify-content-between">
@@ -195,7 +196,7 @@
               <p class="label-obligatorio">Obligatorio</p>
             </div>
             <input pInputText class="w-full" type="text" id="calle" placeholder="Ingresa calle"
-                   formControlName="calle"/>
+                   formControlName="calle" alphanumericOnly maxLength="200"/>
           </div>
           <div class="col-3">
             <div class="flex justify-content-between">
@@ -203,7 +204,7 @@
               <p class="label-obligatorio">Obligatorio</p>
             </div>
             <input pInputText class="w-full" type="text" id="numeroExterior" placeholder="Ingresa número exterior"
-                   formControlName="numeroExterior"/>
+                   formControlName="numeroExterior" alphanumericOnly maxlength="5"/>
           </div>
         </article>
       </p-card>
@@ -248,8 +249,8 @@
           </ng-template>
           <ng-template #body let-zona let-rowIndex="rowIndex">
             <tr>
-              <td>{{ zona.ooad }}</td>
-              <td>{{ zona.zonaInteres }}</td>
+              <td>{{ devolverTextoOoad(zona.ooad) }}</td>
+              <td>{{ devolverTextoZonaInnteres(zona.zonaInteres) }}</td>
               <td>
                 <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.0rem'}"
                           (click)="(eliminarZonaInteres(rowIndex))"/>
