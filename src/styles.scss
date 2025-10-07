@@ -36,6 +36,11 @@
     @media screen and (min-width: 1900px) {
       --cme-max-width: 2100px;
     }
+
+    --p-rating-icon-size: 1.5rem;
+    --p-rating-focus-ring-color: #fede82;
+    --p-rating-icon-hover-color: #fede82;
+    --p-rating-icon-active-color: #fede82;
   }
 
   .container {
