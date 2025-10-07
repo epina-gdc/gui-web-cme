@@ -14,5 +14,7 @@ import {Card} from 'primeng/card';
 export class KpiCardComponent {
   @Input() encabezado: string = '';
   @Input() descripcion: string = '';
+  @Input() icono: string = 'pi pi-user';
+  @Input() bg_color: string = '#9CE2C2';
 
 }
