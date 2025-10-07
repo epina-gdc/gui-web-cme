@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import {Avatar} from 'primeng/avatar';
+import {Card} from 'primeng/card';
 
 @Component({
-  selector: 'app-kpi-card',
+  selector: 'kpi-card',
   imports: [
-    Avatar
+    Avatar,
+    Card
   ],
   templateUrl: './kpi-card.component.html',
   styleUrl: './kpi-card.component.scss'
