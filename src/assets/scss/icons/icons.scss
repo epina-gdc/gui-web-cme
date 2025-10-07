@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src: url('../../../../public/assets/fonts/icomoon.eot?yno2q2');
-  src: url('../../../../public/assets/fonts/icomoon.eot?yno2q2#iefix') format('embedded-opentype'),
-  url('../../../../public/assets/fonts/icomoon.ttf?yno2q2') format('truetype'),
-  url('../../../../public/assets/fonts/icomoon.woff?yno2q2') format('woff'),
-  url('../../../../public/assets/fonts/icomoon.svg?yno2q2#icomoon') format('svg');
+  src: url('../../../../public/assets/fonts/icomoon.eot?iu8g5k');
+  src: url('../../../../public/assets/fonts/icomoon.eot?iu8g5k#iefix') format('embedded-opentype'),
+  url('../../../../public/assets/fonts/icomoon.ttf?iu8g5k') format('truetype'),
+  url('../../../../public/assets/fonts/icomoon.woff?iu8g5k') format('woff'),
+  url('../../../../public/assets/fonts/icomoon.svg?iu8g5k#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,6 +25,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.cme-deals:before {
+  content: "\e90c";
+}
+.cme-search:before {
+  content: "\e90e";
+}
+.cme-fav:before {
+  content: "\e90f";
+}
+.cme-money:before {
+  content: "\e910";
+}
 .cme-file:before {
   content: "\e900";
 }
