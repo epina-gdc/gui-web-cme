@@ -36,7 +36,7 @@
                 <p class="label-obligatorio">Obligatorio</p>
               </div>
               <input pInputText class="w-full" type="text" id="nss" placeholder="Ingresa NSS"
-                     formControlName="nss"/>
+                     formControlName="nss" appOnlyNumbers maxlength="11"/>
             </div>
             <div class="col-4">
               <div class="flex justify-content-between">
@@ -83,7 +83,7 @@
                 <p class="label-obligatorio">Obligatorio</p>
               </div>
               <input pInputText class="w-full" type="text" id="hijos" placeholder="Número de hijos"
-                     formControlName="hijos"/>
+                     formControlName="hijos" appOnlyNumbers/>
             </div>
             <div class="col-4">
               <div class="flex justify-content-between">

@@ -25,6 +25,10 @@ import {mapearArregloTipoDropdown} from '@utils/funciones';
 import {CatalogosGeneralesService} from '@services/catalogos-generales.service';
 import {LoaderService} from '../../../../components/loader/services/loader.service';
 import {finalize} from 'rxjs';
+import { UserService } from '@services/user.service';
+import { SesionUser } from '@models/sesion-user.interface';
+import { OnlyNumbersDirective } from '@directives/only-numbers.directive';
+import { GeneralComponent } from '../../../../components/general.component';
 
 @Component({
   selector: 'app-inicio',
@@ -46,12 +50,13 @@ import {finalize} from 'rxjs';
     HeaderTabComponent,
     FormsModule,
     HeaderMedicoInternoComponent,
-    EmptyTabComponent
+    EmptyTabComponent,
+    OnlyNumbersDirective
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
 })
-export class InicioComponent {
+export class InicioComponent extends GeneralComponent{
 
   readonly dependientes = DEPENDIENTES;
   readonly instituciones = INSTITUCIONES;
@@ -74,6 +79,7 @@ export class InicioComponent {
   sustituto!: any;
   empleo!: any;
   institucionSeleccionada = true;
+  userData!: SesionUser;
 
   dummies = [{label: 'Dummie', value: 'Dummie'}, {label: 'Dummie 2', value: 'Dummie 2'}];
 
@@ -91,25 +97,29 @@ export class InicioComponent {
 
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
   loaderService: LoaderService = inject(LoaderService);
+  userService: UserService = inject(UserService);
 
   constructor(private readonly activatedRoute: ActivatedRoute) {
+    super();
     this.formRegistro = this.asignarFormularioRegistro();
     this.formZonaInteres = this.asignarFormularioZonaInteres();
     this.formDocumentosEspecialidad = this.asignarFormularioDocumentosEspecialidad();
     this.obtenerCatalogos();
     this.suscribirObservables();
+    this.subscribirseACambioComponentes();
+    this.settearDatosUsuario();
   }
 
   asignarFormularioRegistro(): FormGroup {
     return this.fb.group({
       rfc: [],
       nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
-      fechaNacimiento: [],
-      sexo: [],
+      fechaNacimiento: [{value: '', disabled:true}],
+      sexo: [{value: '', disabled:true}],
       estadoCivil: [],
       dependientes: [],
-      hijos: [{value: '', disabled: true}],
-      otros: [{value: '', disabled: true}],
+      hijos: [{value: '', disabled: true},[Validators.required, Validators.min(1)]],
+      otros: [{value: '', disabled: true},[Validators.required]],
       correo: [],
       correoAdicional: [],
       telefonoCasa: [],
@@ -129,7 +139,52 @@ export class InicioComponent {
   suscribirObservables(): void {
     this.formRegistro.get('pais')?.valueChanges.subscribe(value => this.obtenerEstadoPorPais(value));
     this.formRegistro.get('estado')?.valueChanges.subscribe(value => this.obtenerMunicipioPorEstado(value));
-    this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerValoresPorMunicipio(value));
+    this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerValoresPorMunicipio(value)); 
+  }
+
+  settearDatosUsuario(): void {
+    this.userService.userData$.subscribe({next: (info) => this.userData = info});
+    const fecha = this.obtenerFechaNacimientoDeCURP(this.userData.refCurp);
+    const sexo = this.obtenerSexoDeCurp(this.userData.refCurp);
+    this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
+    this.formRegistro.get('sexo')?.setValue(sexo); 
+  }
+
+  obtenerFechaNacimientoDeCURP(curp: string): Date{ 
+    let anio = parseInt(curp.substring(4, 6), 10).toString();
+    const mes = curp.substring(6,8);
+    const dia = curp.substring(8,10);
+    anio.length == 1 ? anio = 20 + anio : anio = 19 + anio;
+    return new Date(parseInt(anio, 10), parseInt(mes, 10) - 1, parseInt(dia, 10));
+  }
+
+  obtenerSexoDeCurp(curp: string): any {
+    const sexo = curp[10] as 'H' | 'M'; 
+    const sexosMap = {
+      'H': this.sexos.find(sexo => sexo.label === 'Masculino'),
+      'M': this.sexos.find(sexo => sexo.label === 'Mujer')
+    };
+    return sexosMap[sexo]; 
+  }
+  
+  subscribirseACambioComponentes(): void {
+    this.formRegistro.get('dependientes')?.valueChanges.subscribe(value => 
+      {
+        this.formRegistro.get('hijos')?.disable();
+        this.formRegistro.get('otros')?.disable();
+        this.formRegistro.get('hijos')?.patchValue(null);
+        this.formRegistro.get('otros')?.patchValue(null);
+        this.formRegistro.get('hijos')?.reset;
+        this.formRegistro.get('otros')?.reset;
+
+        if(this.formRegistro.get('dependientes')?.value === this.dependientes[1]){
+          this.formRegistro.get('hijos')?.enable();
+        }
+        if(this.formRegistro.get('dependientes')?.value === this.dependientes[3]){
+          this.formRegistro.get('otros')?.enable();
+        }
+      }
+    );
   }
 
   obtenerEstadoPorPais(pais: number): void {
@@ -309,6 +364,12 @@ export class InicioComponent {
   }
 
   siguientePasoStepper(): void {
+    if(this.indice() == 0){
+      if(this.formRegistro.invalid){
+        this._alertServices.alerta(this._Mensajes.MSG023);
+        
+      }
+    }
     this.indice.update(value => value + 1);
   }
 
