@@ -25,6 +25,8 @@ import {mapearArregloTipoDropdown} from '@utils/funciones';
 import {CatalogosGeneralesService} from '@services/catalogos-generales.service';
 import {LoaderService} from '../../../../components/loader/services/loader.service';
 import {finalize} from 'rxjs';
+import {OfertaCardComponent} from '../../../../components/oferta-card/oferta-card.component';
+import {KpiCardComponent} from '../../../../components/kpi-card/kpi-card.component';
 
 @Component({
   selector: 'app-inicio',
@@ -46,7 +48,9 @@ import {finalize} from 'rxjs';
     HeaderTabComponent,
     FormsModule,
     HeaderMedicoInternoComponent,
-    EmptyTabComponent
+    EmptyTabComponent,
+    OfertaCardComponent,
+    KpiCardComponent
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
@@ -61,6 +65,7 @@ export class InicioComponent {
   formRegistro!: FormGroup;
   formZonaInteres!: FormGroup;
   formDocumentosEspecialidad!: FormGroup;
+  formTablero!: FormGroup;
 
   zonasInteres: WritableSignal<any[]> = signal([]);
   registrosDocumentosEspecialidad: WritableSignal<TabNode[]> = signal([]);
@@ -87,7 +92,13 @@ export class InicioComponent {
   ooad: TipoDropdown[] = [];
   zonas: TipoDropdown[] = [];
 
-  indice: WritableSignal<number> = signal<number>(0);
+  ooad_tablero: TipoDropdown[] = [];
+  zona_tablero: TipoDropdown[] = [];
+  especialidad_tablero: TipoDropdown[] = [];
+  regimen_tablero: TipoDropdown[] = [];
+  bono_tablero: TipoDropdown[] = [];
+
+  indice: WritableSignal<number> = signal<number>(2);
 
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
   loaderService: LoaderService = inject(LoaderService);
@@ -96,6 +107,7 @@ export class InicioComponent {
     this.formRegistro = this.asignarFormularioRegistro();
     this.formZonaInteres = this.asignarFormularioZonaInteres();
     this.formDocumentosEspecialidad = this.asignarFormularioDocumentosEspecialidad();
+    this.formTablero = this.asignarFormTablero();
     this.obtenerCatalogos();
     this.suscribirObservables();
   }
@@ -314,5 +326,15 @@ export class InicioComponent {
 
   anteriorPasoStepper(): void {
     this.indice.update(value => value - 1);
+  }
+
+  asignarFormTablero(): FormGroup {
+    return this.fb.group({
+      ooad_tablero: [],
+      zona_tablero: [],
+      especialidad_tablero: [],
+      regimen_tablero: [],
+      bono_tablero: []
+    })
   }
 }
