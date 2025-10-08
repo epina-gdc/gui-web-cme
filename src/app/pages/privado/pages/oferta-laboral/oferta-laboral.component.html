@@ -1,0 +1,101 @@
+<div class="flex flex-wrap">
+  <div class="col-12 mt-4">
+    <p-card class="empty-border">
+      <div class="flex flex-column justify-content-center align-items-center">
+        <p>Tablero oferta laboral</p>
+        <p>La disponibilidad de plazas puede variar. Esta información se proporciona con fines exclusivamente
+          informativos.</p>
+      </div>
+    </p-card>
+  </div>
+  <div class="col-2 min-h-full">
+    <p-card class="empty-border" styleClass="min-h-full">
+      <div class="flex flex-column">
+        <p>Oferta laboral</p>
+        <div class="flex flex-column flex-wrap">
+          <ul class="m-0 p-0 list-none p-1 flex flex-column gap-2 w-full">
+            @for (product of data; track product.id) {
+              <li
+                class="p-2 hover:bg-surface-100 dark:hover:bg-surface-800 rounded border border-transparent transition-all transition-duration-200">
+                <div class="flex p-2 gap-2">
+                  <div class="flex justify-content-center align-items-center">
+                    <i class="cme-pin" [style]="{ 'font-size': '2.2rem'}"></i>
+                  </div>
+                  <div class="flex flex-column gap-1 flex-1">
+                    <p class="menu-titulo">{{ product.name }}</p>
+                    <p class="menu-descripcion">{{ product.description }}</p>
+                  </div>
+                  <div class="justify-content-end align-items-start">
+                    <p class="menu-cantidad">{{ product.price }}</p>
+                  </div>
+                </div>
+              </li>
+            }
+          </ul>
+        </div>
+      </div>
+    </p-card>
+  </div>
+  <div class="col-10 flex flex-column gap-4">
+    <p-card class="empty-border">
+      <form [formGroup]="formTablero">
+        <div class="flex flex-wrap flex-row">
+          <div class="col-4">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="ooad_tablero">OOAD</label>
+            </div>
+            <p-select [options]="ooad_tablero" formControlName="ooad_tablero" optionLabel="label"
+                      placeholder="Selecciona una OOAD" class="w-full"/>
+          </div>
+          <div class="col-4">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="zona_tablero">Zona</label>
+            </div>
+            <p-select [options]="zona_tablero" formControlName="zona_tablero" optionLabel="label"
+                      placeholder="Selecciona una zona" class="w-full"/>
+          </div>
+          <div class="col-4">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="especialidad_tablero">Especialidad</label>
+            </div>
+            <p-select [options]="especialidad_tablero" formControlName="especialidad_tablero" optionLabel="label"
+                      placeholder="Selecciona una especialidad" class="w-full"/>
+          </div>
+          <div class="col-4">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="regimen_tablero">Regimen</label>
+            </div>
+            <p-select [options]="regimen_tablero" formControlName="regimen_tablero"
+                      optionLabel="label"
+                      placeholder="Selecciona un regimen" class="w-full"/>
+          </div>
+          <div class="col-4">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="bono_tablero">Bono dificil cobertura</label>
+            </div>
+            <p-select [options]="bono_tablero" formControlName="bono_tablero" optionLabel="label"
+                      placeholder="Selecciona un bono" class="w-full"/>
+          </div>
+          <div class="col-4 flex justify-content-start align-items-end">
+            <p-button type="button" label="Consultar"/>
+          </div>
+        </div>
+      </form>
+    </p-card>
+
+    <p-card class="empty-border">
+      <div class="flex flex-wrap">
+        <div class="col-4">
+          <kpi-card encabezado="Total de ofertas" descripcion="180" icono="cme-deals"></kpi-card>
+        </div>
+        <div class="col-4">
+          <kpi-card encabezado="Nuevos hospitales" descripcion="12" icono="cme-hospital"></kpi-card>
+        </div>
+        <div class="col-4">
+          <kpi-card encabezado="Salario promedio" descripcion="$ 43,399" icono="cme-money"></kpi-card>
+        </div>
+      </div>
+      <oferta-card/>
+    </p-card>
+  </div>
+</div>
