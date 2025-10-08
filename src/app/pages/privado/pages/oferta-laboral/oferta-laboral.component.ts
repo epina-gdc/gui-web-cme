@@ -72,7 +72,6 @@ export class OfertaLaboralComponent {
       name: 'Preguntas frecuentes',
       icono: 'cme-quest',
       description: 'Respuestas a las preguntas del proceso',
-      price: 79,
     },
   ];
 

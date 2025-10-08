@@ -48,4 +48,20 @@
   .bg-blue-oferta-laboral {
     background: #41ABCA;
   }
+
+  .ayuda-pregunta {
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+
+  .ayuda-respuesta {
+    color: var(--Grays-Tone3, #7781A5);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
 }
