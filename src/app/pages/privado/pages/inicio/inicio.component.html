@@ -27,7 +27,7 @@
                 <label class="field-label" for="rfc">RFC</label>
                 <p class="label-obligatorio">Obligatorio</p>
               </div>
-              <input pInputText class="w-full" type="text" id="rfc" placeholder="Ingresa RFC"
+              <input pInputText class="w-full" (keyup)="convertMayusculas($event);" type="text" id="rfc" placeholder="Ingresa RFC"
                      formControlName="rfc"/>
             </div>
             <div class="col-4">
@@ -36,6 +36,7 @@
                 <p class="label-obligatorio">Obligatorio</p>
               </div>
               <input pInputText class="w-full" type="text" id="nss" placeholder="Ingresa NSS"
+              (input)="onlyNumbers($event)"
                      formControlName="nss"/>
             </div>
             <div class="col-4">

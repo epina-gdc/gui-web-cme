@@ -1,12 +1,30 @@
 
+import { Documento, Participacion } from "./datosDocumento";
+import { DatosPersonales } from "./datosPersonales";
+import { ResponseGeneral } from "./responseGeneral";
+
 
 export class FotografiaRequest {
-    datosPersonales!: Array<DatosPersonales>;
-    fotografia!: Array<Fotografia>
+  
+    datosPersonales!: DatosPersonales;
+    fotografia!: Fotografia;
+}
+
+export class FotografiaResponse{
+    participacion!: Participacion;
+    datosPersonales!: DatosPersonales;
+    fotografia!: Fotografia
 }
 
 
 export class Fotografia {
-    refGuidDocumento!: string;
+    idFotografia!: number;
+    documento!: Documento;
+   
 }
+
+export class DataFotografia extends ResponseGeneral{
+ respuesta!: FotografiaResponse;
+}
+
 
