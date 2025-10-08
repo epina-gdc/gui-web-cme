@@ -1,8 +1,7 @@
 @layer app-components {
-  .p-card-body{
+  .p-card-body {
     border-top: 18px solid var(--bs-primary-hex-color);
     border-radius: 10px 10px 0 0;
-
   }
 
   .card-padding-0 > .p-card-body {
@@ -29,5 +28,9 @@
 
   .empty-border .p-card-content {
     padding: 1rem;
+  }
+
+  .bg-blue-oferta-laboral > .p-card {
+    background: #41ABCA;
   }
 }
