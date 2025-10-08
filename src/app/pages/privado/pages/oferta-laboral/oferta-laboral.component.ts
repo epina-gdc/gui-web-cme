@@ -52,18 +52,21 @@ export class OfertaLaboralComponent {
     {
       id: '1000',
       name: 'Ver oportunidades',
+      icono: 'cme-search',
       description: 'Oportunidades de trabajo',
       price: 65,
     },
     {
       id: '1001',
       name: 'Mis favoritos',
+      icono: 'cme-fav',
       description: 'Ver solicitudes seleccionadas',
       price: 72,
     },
     {
       id: '1002',
       name: 'Preguntas frecuentes',
+      icono: 'cme-quest',
       description: 'Respuestas a las preguntas del proceso',
       price: 79,
     },
