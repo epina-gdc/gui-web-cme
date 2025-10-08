@@ -32,6 +32,7 @@ import {SesionUser} from '@models/sesion-user.interface';
 import {OnlyNumbersDirective} from '@directives/only-numbers.directive';
 import {GeneralComponent} from '../../../../components/general.component';
 import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.directive';
+import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
 
 @Component({
   selector: 'app-inicio',
@@ -58,7 +59,8 @@ import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.di
     EmailAllowCaractersDirective,
     EmptyTabComponent,
     OfertaCardComponent,
-    KpiCardComponent
+    KpiCardComponent,
+    AlphanumericDirective
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
