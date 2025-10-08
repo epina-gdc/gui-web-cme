@@ -8,6 +8,7 @@ import {Select} from 'primeng/select';
 import {KpiCardComponent} from '../../../../components/kpi-card/kpi-card.component';
 import {OfertaCardComponent} from '../../../../components/oferta-card/oferta-card.component';
 import {Button} from 'primeng/button';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-oferta-laboral',
@@ -17,7 +18,8 @@ import {Button} from 'primeng/button';
     Select,
     KpiCardComponent,
     OfertaCardComponent,
-    Button
+    Button,
+    NgClass
   ],
   templateUrl: './oferta-laboral.component.html',
   styleUrl: './oferta-laboral.component.scss'
@@ -25,6 +27,8 @@ import {Button} from 'primeng/button';
 export class OfertaLaboralComponent {
 
   fb: FormBuilder = inject(FormBuilder);
+
+  activeTab: WritableSignal<number> = signal(0);
 
   formTablero!: FormGroup;
 
@@ -50,25 +54,29 @@ export class OfertaLaboralComponent {
 
   data = [
     {
-      id: '1000',
+      id: 0,
       name: 'Ver oportunidades',
       icono: 'cme-search',
       description: 'Oportunidades de trabajo',
       price: 65,
     },
     {
-      id: '1001',
+      id: 1,
       name: 'Mis favoritos',
       icono: 'cme-fav',
       description: 'Ver solicitudes seleccionadas',
       price: 72,
     },
     {
-      id: '1002',
+      id: 2,
       name: 'Preguntas frecuentes',
       icono: 'cme-quest',
       description: 'Respuestas a las preguntas del proceso',
       price: 79,
     },
   ];
+
+  actualizarTab(id: number) {
+    this.activeTab.update(() => id);
+  }
 }
