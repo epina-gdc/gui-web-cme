@@ -46,7 +46,7 @@ export class ConvocatoriaService {
         );
     }
 
-    
+
     getDatosEmpleo(idUsuario: number): Observable<any> {
         return this.http.get<any>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-empleo/${idUsuario}`, { headers: this.header }).pipe(
             catchError(this.handleError),
@@ -65,7 +65,7 @@ export class ConvocatoriaService {
         );
     }
 
-    
+
     getDatosInteresLaboral(idUsuario: number): Observable<any> {
         return this.http.get<any>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-interes-laboral/${idUsuario}`, { headers: this.header }).pipe(
             catchError(this.handleError),
@@ -84,9 +84,9 @@ export class ConvocatoriaService {
         );
     }
 
-    
+
     getDatosDocumentos(idUsuario: number): Observable<any> {
-        return this.http.get<DatosDocumentoResponse>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-documentos/ ${idUsuario}`, { headers: this.header }).pipe(
+        return this.http.get<DatosDocumentoResponse>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-documentos/${idUsuario}`, { headers: this.header }).pipe(
             catchError(this.handleError),
             map((response: DatosDocumentoResponse) => {
                 return response;
@@ -115,7 +115,7 @@ export class ConvocatoriaService {
 
     guardarVerificacionAspirante(aspirante: AspiranteRequest): Observable<any> {
         let ruta = `${this.serverEndPointURLConvocatoria}/verificacion/aspirante'`;
-        return this.http.post<any>(ruta,aspirante, { headers: this.header }).pipe(
+        return this.http.post<any>(ruta, aspirante, { headers: this.header }).pipe(
             catchError(this.handleError),
             map((response: any) => {
                 return response;
@@ -125,7 +125,7 @@ export class ConvocatoriaService {
 
     guardarFoto(foto: FotografiaRequest): Observable<any> {
         let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-fotografia'`;
-        return this.http.post<any>(ruta,foto, { headers: this.header }).pipe(
+        return this.http.post<any>(ruta, foto, { headers: this.header }).pipe(
             catchError(this.handleError),
             map((response: any) => {
                 return response;
@@ -136,50 +136,50 @@ export class ConvocatoriaService {
     guardarDocumento(documento: any): Observable<any> {
         let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-documentos`
         return this.http.post<any>(ruta, documento, { headers: this.header }).pipe(
-          catchError(this.handleError),
-          map((response: any) => {
-            return response
-          }),
+            catchError(this.handleError),
+            map((response: any) => {
+                return response
+            }),
         )
-    
-        
-      }
 
-      guardarInteresLaboral(interes: InteresLaboralRequest): Observable<any> {
+
+    }
+
+    guardarInteresLaboral(interes: InteresLaboralRequest): Observable<any> {
         let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-interes-laboral`
         return this.http.post<any>(ruta, interes, { headers: this.header }).pipe(
-          catchError(this.handleError),
-          map((response: any) => {
-            return response
-          }),
+            catchError(this.handleError),
+            map((response: any) => {
+                return response
+            }),
         )
-    
-        
-      }
 
-      guardarContacto(datosContacto: ContactoRequest): Observable<any> {
+
+    }
+
+    guardarContacto(datosContacto: ContactoRequest): Observable<any> {
         let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-contacto`
         return this.http.post<any>(ruta, datosContacto, { headers: this.header }).pipe(
-          catchError(this.handleError),
-          map((response: any) => {
-            return response
-          }),
+            catchError(this.handleError),
+            map((response: any) => {
+                return response
+            }),
         )
-    
-        
-      }
 
-      guardarResidencia(residencia: ResidenciaRequest): Observable<any> {
+
+    }
+
+    guardarResidencia(residencia: ResidenciaRequest): Observable<any> {
         let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-residencia`
         return this.http.post<any>(ruta, residencia, { headers: this.header }).pipe(
-          catchError(this.handleError),
-          map((response: any) => {
-            return response
-          }),
+            catchError(this.handleError),
+            map((response: any) => {
+                return response
+            }),
         )
-    
-        
-      }
+
+
+    }
 
     private handleError(error: HttpErrorResponse) {
 

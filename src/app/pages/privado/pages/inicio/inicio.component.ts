@@ -17,6 +17,7 @@ import { HeaderTabComponent } from '../../../../components/header-tab/header-tab
 import {
   HeaderMedicoInternoComponent
 } from '@pages/privado/shared/header-medico-interno/header-medico-interno.component';
+
 import { EmptyTabComponent } from '../../../../components/empty-tab/empty-tab.component';
 import { TabDocumento, TabNode } from '@models/tab-node.interface';
 import { ActivatedRoute } from '@angular/router';
@@ -41,6 +42,10 @@ import { DataFotografia, FotografiaRequest, FotografiaResponse } from '@models/f
 import { DatosPersonales } from '@models/datosPersonales';
 import { Sexo } from '@models/sexo';
 
+import { OnlyNumbersDirective } from '@directives/only-numbers.directive';
+import { EmailAllowCaractersDirective } from '@directives/email-allow-caracters.directive';
+
+
 @Component({
   selector: 'app-inicio',
   imports: [
@@ -61,14 +66,15 @@ import { Sexo } from '@models/sexo';
     HeaderTabComponent,
     FormsModule,
     HeaderMedicoInternoComponent,
-    EmptyTabComponent
+    EmptyTabComponent,
+    OnlyNumbersDirective,
+    EmailAllowCaractersDirective
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
 })
-export class InicioComponent extends GeneralComponent {
 
-
+export class InicioComponent extends GeneralComponent{
 
 
   readonly dependientes = DEPENDIENTES;
@@ -93,6 +99,7 @@ export class InicioComponent extends GeneralComponent {
   sustituto!: any;
   empleo!: any;
   institucionSeleccionada = true;
+ // userData!: SesionUser;
 
   dummies = [{ label: 'Dummie', value: 'Dummie' }, { label: 'Dummie 2', value: 'Dummie 2' }];
 
@@ -111,32 +118,38 @@ export class InicioComponent extends GeneralComponent {
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
   _ConvocatoriaService: ConvocatoriaService = inject(ConvocatoriaService);
   loaderService: LoaderService = inject(LoaderService);
+  
 
   constructor(private readonly activatedRoute: ActivatedRoute) {
+
     super()
     this.userService.userData$.subscribe(user => this.userData = user);
+
     this.formRegistro = this.asignarFormularioRegistro();
     this.formZonaInteres = this.asignarFormularioZonaInteres();
     this.formDocumentosEspecialidad = this.asignarFormularioDocumentosEspecialidad();
     this.obtenerCatalogos();
     this.suscribirObservables();
 
-    this.obtenerDatosContacto(this.userData?.idUsuario);
-    this.obtenerDatosDomicilio(this.userData?.idUsuario);
-    this.obtenerDatosFotografia(this.userData?.idUsuario);
-  }
+this.obtenerDatosContacto(this.userData?.idUsuario);
+this.obtenerDatosDocumento(this.userData?.idUsuario);
+this.obtenerDatosDomicilio(this.userData?.idUsuario);
+this.obtenerDatosFotografia(this.userData?.idUsuario);
 
+  }
   asignarFormularioRegistro(): FormGroup {
     return this.fb.group({
       rfc: [],
-      nss: [{ value: '', disabled: false }, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
-      fechaNacimiento: [],
-      sexo: [],
+
+      nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
+      fechaNacimiento: [{value: '', disabled:true}],
+      sexo: [{value: '', disabled:true}],
       estadoCivil: [],
       dependientes: [],
-      hijos: [{ value: '', disabled: true }],
-      otros: [{ value: '', disabled: true }],
-      correo: [],
+      hijos: [{value: '', disabled: true},[Validators.required, Validators.min(1)]],
+      otros: [{value: '', disabled: true},[Validators.required]],
+      correo: [{value: '', disabled:true}],
+
       correoAdicional: [],
       telefonoCasa: [],
       telefonoCelular: [],
@@ -156,6 +169,52 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.get('pais')?.valueChanges.subscribe(value => this.obtenerEstadoPorPais(value));
     this.formRegistro.get('estado')?.valueChanges.subscribe(value => this.obtenerMunicipioPorEstado(value));
     this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerValoresPorMunicipio(value));
+  }
+
+  settearDatosUsuario(): void {
+    this.userService.userData$.subscribe({next: (info) => this.userData = info});
+    const fecha = this.obtenerFechaNacimientoDeCURP(this.userData?.refCurp+'');
+    const sexo = this.obtenerSexoDeCurp(this.userData?.refCurp+'');
+    this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
+    this.formRegistro.get('sexo')?.setValue(sexo);
+    this.formRegistro.get('correo')?.setValue(this.userData?.refEmail+'');
+  }
+
+  obtenerFechaNacimientoDeCURP(curp: string): Date{
+    let anio = parseInt(curp.substring(4, 6), 10).toString();
+    const mes = curp.substring(6,8);
+    const dia = curp.substring(8,10);
+    anio.length == 1 ? anio = 20 + anio : anio = 19 + anio;
+    return new Date(parseInt(anio, 10), parseInt(mes, 10) - 1, parseInt(dia, 10));
+  }
+
+  obtenerSexoDeCurp(curp: string): any {
+    const sexo = curp[10] as 'H' | 'M';
+    const sexosMap = {
+      'H': this.sexos.find(sexo => sexo.label === 'Masculino'),
+      'M': this.sexos.find(sexo => sexo.label === 'Mujer')
+    };
+    return sexosMap[sexo];
+  }
+
+  subscribirseACambioComponentes(): void {
+    this.formRegistro.get('dependientes')?.valueChanges.subscribe(value =>
+      {
+        this.formRegistro.get('hijos')?.disable();
+        this.formRegistro.get('otros')?.disable();
+        this.formRegistro.get('hijos')?.patchValue(null);
+        this.formRegistro.get('otros')?.patchValue(null);
+        this.formRegistro.get('hijos')?.reset;
+        this.formRegistro.get('otros')?.reset;
+
+        if(this.formRegistro.get('dependientes')?.value === this.dependientes[1]){
+          this.formRegistro.get('hijos')?.enable();
+        }
+        if(this.formRegistro.get('dependientes')?.value === this.dependientes[3]){
+          this.formRegistro.get('otros')?.enable();
+        }
+      }
+    );
   }
 
   obtenerEstadoPorPais(pais: number): void {
@@ -241,6 +300,16 @@ export class InicioComponent extends GeneralComponent {
     const nuevaZona = this.crearRegistroZonaInteres();
     this.zonasInteres.update(value => [...value, nuevaZona]);
     this.formZonaInteres.reset();
+  }
+
+  devolverTextoOoad(idOOAD: string): string {
+    const ooad =  this.ooad.find(element => idOOAD == element.value);
+    return ooad?.label || "";
+  }
+
+  devolverTextoZonaInnteres(idZona: string): string {
+    const zona =  this.zonas.find(element => idZona == element.value);
+    return zona?.label || "";
   }
 
   obtenerCatalogos(): void {
@@ -335,7 +404,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   datosDocumento!: DatosDocumentoResponse;
-  obtenerDatosDocumento(idusuario: number): void {
+  obtenerDatosDocumento(idusuario: number | undefined): void {
     if (!idusuario) return;
     this.loaderService.activar();
     this._ConvocatoriaService.getDatosDocumentos(idusuario).pipe(
@@ -558,7 +627,18 @@ export class InicioComponent extends GeneralComponent {
 
   siguientePasoStepper(): void {
 
-    this.btnGuardar(this.indice());
+
+   // 
+
+    if(this.indice() == 0){
+      if(this.formRegistro.invalid){
+        this._alertServices.alerta(this._Mensajes.MSG023);
+
+      }else{
+        this.btnGuardar(this.indice());
+      }
+    }
+
     this.indice.update(value => value + 1);
 
 

@@ -1,5 +1,7 @@
 
-import {  LugarNacimiento } from "./aspirante";
+
+
+import { LugarNacimiento } from "./aspirante";
 import { Participacion } from "./datosDocumento";
 import { DatosPersonales } from "./datosPersonales";
 import { ResponseGeneral } from "./responseGeneral";
