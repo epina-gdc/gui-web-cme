@@ -28,6 +28,12 @@ export class InteresLaboralRequest {
 }
 
 
+export class InteresLaboral{
+    ooad!: InteresOoads;
+    zona!: InteresZona;
+}
+
+
 
 
 
