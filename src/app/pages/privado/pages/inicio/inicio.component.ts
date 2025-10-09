@@ -488,7 +488,7 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
 
 
   private setDatosDomicilio() {
-    this.formRegistro.controls['codigoPostal'].setValue(this.datosDomicilio.datosResidenciaActual?.refCodigoPostal);
+    this.formRegistro.controls['codigoPostal'].setValue(this.datosDomicilio.datosResidenciaActual?.codigoPostal);
     this.formRegistro.controls['pais'].setValue(this.datosDomicilio.datosResidenciaActual?.pais);
     this.formRegistro.controls['estado'].setValue(this.datosDomicilio.datosResidenciaActual?.estado);
     this.formRegistro.controls['municipio'].setValue(this.datosDomicilio.datosResidenciaActual?.municipio);
@@ -548,7 +548,7 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
     this.obtenerColonia(idColonia);
     this.datosDomicilio.datosResidenciaActual.nomCalle = this.formRegistro.controls['calle'].value;
     this.datosDomicilio.datosResidenciaActual.refNumero = this.formRegistro.controls['numeroExterior'].value;
-    this.datosDomicilio.datosResidenciaActual.refCodigoPostal = this.formRegistro.controls['codigoPostal'].value;
+    this.datosDomicilio.datosResidenciaActual.codigoPostal = this.formRegistro.controls['codigoPostal'].value;
     this.datosDomicilio.datosResidenciaActual.pais = this.formRegistro.controls['pais'].value;
     this.datosDomicilio.datosResidenciaActual.estado = this.formRegistro.controls['estado'].value;
     this.datosDomicilio.datosResidenciaActual.municipio = this.formRegistro.controls['municipio'].value;
