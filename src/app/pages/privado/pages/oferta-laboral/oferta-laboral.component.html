@@ -1,4 +1,4 @@
-<div class="flex flex-wrap">
+<div class="grid">
   <div class="col-12 mt-4">
     <p-card class="empty-border">
       <div class="flex flex-column justify-content-center align-items-center gap-1 m-2">
@@ -8,10 +8,10 @@
       </div>
     </p-card>
   </div>
-  <div class="col-2 min-h-full">
+  <div class="col-fixed min-h-full" style="width:280px">
     <p-card class="empty-border" styleClass="min-h-full">
       <div class="flex flex-column">
-        <p class="titulo-seccion">Oferta laboral</p>
+        <p class="seccion-menu-titulo mb-2">Oferta laboral</p>
         <div class="flex flex-column flex-wrap">
           <ul class="m-0 p-0 list-none p-1 flex flex-column gap-2 w-full">
             @for (item of data; track item.id) {
@@ -42,7 +42,7 @@
       </div>
     </p-card>
   </div>
-  <div class="col-10 flex flex-column gap-4">
+  <div class="col flex flex-column gap-4">
     @if (activeTab() === 0) {
       <p-card class="empty-border">
         <form [formGroup]="formTablero">
