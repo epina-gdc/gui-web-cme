@@ -238,6 +238,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.form.controls['modalidad'].updateValueAndValidity();
     this.form.controls['pasaporte'].updateValueAndValidity();
     this.form.controls['pais'].updateValueAndValidity();
+      this.dinamicoCurp();
 
   }
 
