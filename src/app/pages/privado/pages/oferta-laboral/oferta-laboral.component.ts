@@ -1,7 +1,5 @@
 import {Component, inject, signal, WritableSignal} from '@angular/core';
 import {Card} from 'primeng/card';
-import {CatalogosGeneralesService} from '@services/catalogos-generales.service';
-import {LoaderService} from '../../../../components/loader/services/loader.service';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
 import {Select} from 'primeng/select';
@@ -9,6 +7,8 @@ import {KpiCardComponent} from '../../../../components/kpi-card/kpi-card.compone
 import {OfertaCardComponent} from '../../../../components/oferta-card/oferta-card.component';
 import {Button} from 'primeng/button';
 import {NgClass} from '@angular/common';
+import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
+import {DetalleOfertaLaboralComponent} from '@privado/detalle-oferta-laboral/detalle-oferta-laboral.component';
 
 @Component({
   selector: 'app-oferta-laboral',
@@ -22,11 +22,13 @@ import {NgClass} from '@angular/common';
     NgClass
   ],
   templateUrl: './oferta-laboral.component.html',
-  styleUrl: './oferta-laboral.component.scss'
+  styleUrl: './oferta-laboral.component.scss',
+  providers: [DialogService]
 })
 export class OfertaLaboralComponent {
 
   fb: FormBuilder = inject(FormBuilder);
+  ref: DynamicDialogRef | undefined;
 
   activeTab: WritableSignal<number> = signal(0);
 
@@ -38,7 +40,7 @@ export class OfertaLaboralComponent {
   regimen_tablero: TipoDropdown[] = [];
   bono_tablero: TipoDropdown[] = [];
 
-  constructor() {
+  constructor(public dialogService: DialogService) {
     this.formTablero = this.asignarFormTablero();
   }
 
@@ -77,5 +79,22 @@ export class OfertaLaboralComponent {
 
   actualizarTab(id: number) {
     this.activeTab.update(() => id);
+  }
+
+  show() {
+    this.ref = this.dialogService.open(DetalleOfertaLaboralComponent, {
+      modal: true,
+      width: '60vw',
+      height: '100vh',
+      focusOnShow: false,
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw'
+      },
+      templates: {
+
+      }
+
+    });
   }
 }
