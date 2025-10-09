@@ -17,6 +17,8 @@ export class CatPerfil{
     idPerfil!: number;
     nomPerfil!: string;
     indActivo!: number;
+
+    desPerfil?: string;
 }
 
 
@@ -25,6 +27,8 @@ export class CatSubperfil{
   nomSubperfil!: string;
   idPerfil!: number;
   indActivo!: number;
+
+  desSubperfil?:string;
 }
 
 export class CatDocumentoVerificacion{

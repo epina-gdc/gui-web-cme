@@ -21,7 +21,7 @@ export class MenuComponent extends GeneralComponent implements OnInit {
 
   userService = inject(UserService);
   userData: SesionUser | null = null;
-  authService = inject(AuthService);
+//  authService = inject(AuthService);
   items: MenuItem[] = [];
 
 

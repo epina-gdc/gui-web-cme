@@ -7,6 +7,7 @@ import {CatalogosGeneralesService} from "@services/catalogos-generales.service";
 import {RegistroMedicoService} from "@services/registro-medico.service";
 
 import {AlertService} from "@services/alert.service";
+import { AuthService } from "@services/auth.service";
 
 
 @Component({
@@ -25,7 +26,7 @@ export class GeneralComponent {
   protected _alertServices: AlertService;
   protected _CatalogoGenService: CatalogosGeneralesService;
   protected _RegistroMedicoService: RegistroMedicoService;
-
+  protected authService = inject(AuthService);
 
   constructor() {
     this._Mensajes = inject(Mensajes);
@@ -33,6 +34,7 @@ export class GeneralComponent {
     this._alertServices = inject(AlertService);
     this._CatalogoGenService = inject(CatalogosGeneralesService);
     this._RegistroMedicoService = inject(RegistroMedicoService);
+    this.authService = inject(AuthService);
   }
 
   public onlyNumbers(event: any) {
