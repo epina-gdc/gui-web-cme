@@ -374,13 +374,14 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
   public btnValidarCurp() {
-    if (!this.blnBtnValidar) {
-      this.medico.refCurp = this.form.controls['curp'].value;
-      if (this.medico.refCurp.length == 18) {
+    this.medico.refCurp = this.form.controls['curp'].value;
+    if (this.existeCURP(this.medico.refCurp)) {
         this.validarCURP();
-      }
+        return;
     }
-
+    this._alertServices.alerta(this._Mensajes.MSG010b);
+    this.form.controls['curp'].setValue('');
+    this.medico.refCurp = this.form.controls['curp'].value
   }
 
   private validarCURP() {
@@ -649,6 +650,11 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   private existeMatricula(matricula: string): boolean {
     if (matricula.length !== 10) return false;
     return !['0123456789', '987654321', '2222222222'].includes(matricula);
+  }
+
+  private existeCURP(curp: string): boolean {
+    if (curp.length !== 18) return false;
+    return !['PIGE941226HMCXMD05'].includes(curp);
   }
 
   get habilitarBtnMatricula() {

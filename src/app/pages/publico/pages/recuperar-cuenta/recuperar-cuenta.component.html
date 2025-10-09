@@ -1,9 +1,9 @@
-<main class="flex  login-background">
-  <aside class="col-6 flex flex-column justify-content-center align-items-center p-6">
+<main class="flex flex-wrap login-background">
+  <aside class="lg:col-6 md:col-12 flex flex-column justify-content-center align-items-center p-6">
     <h1 class="login-titulo">Convocatoria para médicos especialistas</h1>
     <h2 class="login-subtitulo">Reclutamiento IMSS 2025</h2>
   </aside>
-  <section class="col-6 flex justify-content-center align-items-center">
+  <section class="lg:col-6 md:col-12 flex justify-content-center align-items-center">
     <p-card class="px-2 login-card border-round-bottom-3xl border-round-bottom"
             [style]="{ width: '45rem', overflow: 'hidden' }">
 
@@ -63,12 +63,11 @@
   </section>
 </main>
 
-
 <p-confirmDialog>
   <ng-template #message let-message let-onAccept="onAccept" let-onReject="onReject">
     <div class="flex flex-column align-items-center w-full gap-4 border-b border-surface-200 dark:border-surface-700">
       <i [ngClass]="message.icon" class="text-primary-500" [style]="{ 'font-size': '5rem'}"></i>
-      <p>{{ message.message }}</p>
+      <p class="mb-7">{{ message.message }}</p>
     </div>
   </ng-template>
 </p-confirmDialog>

@@ -45,6 +45,7 @@ import { Sexo } from '@models/sexo';
 import { OnlyNumbersDirective } from '@directives/only-numbers.directive';
 import { EmailAllowCaractersDirective } from '@directives/email-allow-caracters.directive';
 import { EstadoCivil } from '@models/estadoCivil';
+import {OfertaLaboralComponent} from '@privado/oferta-laboral/oferta-laboral.component';
 
 
 @Component({
@@ -69,7 +70,8 @@ import { EstadoCivil } from '@models/estadoCivil';
     HeaderMedicoInternoComponent,
     EmptyTabComponent,
     OnlyNumbersDirective,
-    EmailAllowCaractersDirective
+    EmailAllowCaractersDirective,
+    OfertaLaboralComponent
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
@@ -119,7 +121,7 @@ export class InicioComponent extends GeneralComponent{
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
   _ConvocatoriaService: ConvocatoriaService = inject(ConvocatoriaService);
   loaderService: LoaderService = inject(LoaderService);
-  
+
 
   constructor(private readonly activatedRoute: ActivatedRoute) {
 
@@ -417,7 +419,7 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
     });
   }
 
-  
+
   datosFoto!: FotografiaResponse;
   obtenerDatosFotografia(idusuario: number | undefined): void {
     if (!idusuario) return;
@@ -505,7 +507,7 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
     this.formRegistro.controls['fechaNacimiento'].setValue(this.datosFoto.datosPersonales?.fecNacimiento);
     this.formRegistro.controls['sexo'].setValue(this.datosFoto.datosPersonales?.sexo?.desSexo);
     this.formRegistro.controls['estadoCivil'].setValue(this.datosFoto.datosPersonales?.estadoCivil?.desEstadoCivil);
-    
+
 
 
   }
@@ -586,13 +588,13 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
     this.datosFoto.datosPersonales.sexo = new Sexo();
     this.datosFoto.datosPersonales.estadoCivil = new EstadoCivil();
 
- 
+
     this.datosFoto.datosPersonales.refRfc = this.formRegistro.controls['rfc'].value;
     this.datosFoto.datosPersonales.refNss = this.formRegistro.controls['nss'].value;
     this.datosFoto.datosPersonales.fecNacimiento = this.formRegistro.controls['fechaNacimiento'].value;
     this.datosFoto.datosPersonales.sexo.desSexo = this.formRegistro.controls['sexo'].value;
     this.datosFoto.datosPersonales.estadoCivil.desEstadoCivil = this.formRegistro.controls['estadoCivil'].value;
-    
+
     fotografia.datosPersonales = this.datosFoto.datosPersonales;
     this._ConvocatoriaService.guardarFoto(fotografia).subscribe({
       next: (data: ResponseGeneral) => {
@@ -629,14 +631,14 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
   siguientePasoStepper(): void {
 
 
-   // 
+   //
    this.btnGuardar(this.indice());
     if(this.indice() == 0){
       if(this.formRegistro.invalid){
         this._alertServices.alerta(this._Mensajes.MSG023);
 
       }else{
-       
+
       }
     }
 

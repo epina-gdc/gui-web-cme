@@ -84,8 +84,10 @@ export class CambioContraseniaComponent {
   }
 
   manejarCambioPassCorrecto(): void {
-    void this.router.navigate(['/inicio-sesion']);
     this.alertaService.exito(this.mensajes.MSG062);
+    setTimeout(() => {
+      void this.router.navigate(['/iniciar-sesion']);
+    }, 2000)
   }
 
   manejarValidarCodigoError(error: any): void {
