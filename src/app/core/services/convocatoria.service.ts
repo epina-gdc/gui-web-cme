@@ -11,6 +11,8 @@ import { DatosDocumentoResponse } from '@models/datosDocumento';
 import { DataContacto, ContactoRequest, DatosContactoResponse } from '@models/datosContacto';
 
 import { DataDomicilio, ResidenciaRequest } from '@models/datosDomicilio';
+import { GeneralComponent } from '../../components/general.component';
+import { AlertService } from './alert.service';
 
 @Injectable({
     providedIn: 'root'
@@ -19,7 +21,7 @@ export class ConvocatoriaService {
     private readonly serverEndPointURLConvocatoria = `${environment.api.apiConvocatoria}`;
 
     http: HttpClient = inject(HttpClient);
-
+    _alertServices: AlertService = inject(AlertService);
 
     header: HttpHeaders = new HttpHeaders({
         'Content-Type': 'application/json',
@@ -184,9 +186,10 @@ export class ConvocatoriaService {
     private handleError(error: HttpErrorResponse) {
 
         if (error.status) {
-            //this._alertService?.error("Error "+error.status +'. Contácte al administrador');
+         //   this._alertServices.error("Error "+error.status +'. Contácte al administrador');
             console.log("Error " + error.status + '. Endpoint: ' + error.url + '. Contácte al administrador');
             // Return an observable with a user-facing error message.
+          
         }
         return throwError(error);
     }

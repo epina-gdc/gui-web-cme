@@ -37,13 +37,14 @@ import { DataDomicilio, DatosDomicilio, Residencia, ResidenciaRequest } from '@m
 import { ResponseGeneral } from '@models/responseGeneral';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Colonia } from '@models/colonia';
-import{EstadoCivil} from '@models/aspirante';
+
 import { DataFotografia, FotografiaRequest, FotografiaResponse } from '@models/fotografia';
 import { DatosPersonales } from '@models/datosPersonales';
 import { Sexo } from '@models/sexo';
 
 import { OnlyNumbersDirective } from '@directives/only-numbers.directive';
 import { EmailAllowCaractersDirective } from '@directives/email-allow-caracters.directive';
+import { EstadoCivil } from '@models/estadoCivil';
 
 
 @Component({
@@ -529,8 +530,8 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
         return this._alertServices.error(data.mensaje)
 
       },
-      error: (err: HttpErrorResponse) => {
-        this._alertServices.error(err.message);
+      error: (err: ResponseGeneral) => {
+        this._alertServices.error(err.mensaje);
 
       }
     });
@@ -561,8 +562,8 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
         return this._alertServices.error(data.mensaje)
 
       },
-      error: (err: HttpErrorResponse) => {
-        this._alertServices.error(err.message);
+      error: (err: ResponseGeneral) => {
+        this._alertServices.error(err.mensaje);
 
       }
     });
@@ -602,8 +603,8 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
         return this._alertServices.error(data.mensaje)
 
       },
-      error: (err: HttpErrorResponse) => {
-        this._alertServices.error(err.message);
+      error: (err: ResponseGeneral) => {
+        this._alertServices.error(err.mensaje);
 
       }
     });
@@ -629,13 +630,13 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
 
 
    // 
-
+   this.btnGuardar(this.indice());
     if(this.indice() == 0){
       if(this.formRegistro.invalid){
         this._alertServices.alerta(this._Mensajes.MSG023);
 
       }else{
-        this.btnGuardar(this.indice());
+       
       }
     }
 

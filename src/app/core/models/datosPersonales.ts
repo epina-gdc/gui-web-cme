@@ -1,5 +1,7 @@
-import { EstadoCivil, LugarNacimiento } from "./aspirante";
+
 import { CatPerfil, CatSubperfil } from "./catalogoGeneral";
+import { EstadoCivil } from "./estadoCivil";
+import { LugarNacimiento } from "./lugarNacimiento";
 import { Sexo } from "./sexo";
 
 export class DatosPersonales{

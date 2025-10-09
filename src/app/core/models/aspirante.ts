@@ -29,13 +29,5 @@ export class InteresLaboralRequest {
 
 
 
-export class  LugarNacimiento {
-    idLugarNacimiento!: number;
-    desLugarNacimiento!: string;
-}
 
-export class EstadoCivil{
-    idEstadoCivil!: number;
-    desEstadoCivil!: string;
-}
 
