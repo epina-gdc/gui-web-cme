@@ -1,8 +1,6 @@
 
 export class Zona{
     idZona!: number;
+    desZona!: string;
 }
 
-export class InteresZona{
-    zona!: Array<Zona>;
-}

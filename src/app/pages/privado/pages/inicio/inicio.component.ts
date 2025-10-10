@@ -26,7 +26,7 @@ import { mapearArregloTipoDropdown } from '@utils/funciones';
 import { CatalogosGeneralesService } from '@services/catalogos-generales.service';
 import { ConvocatoriaService } from '@services/convocatoria.service';
 import { LoaderService } from '../../../../components/loader/services/loader.service';
-import { ContactoRequest, DataContacto, DatosContactoResponse } from '@models/datosContacto';
+import { ContactoRequest, DataContacto, DatosContacto, DatosContactoResponse } from '@models/datosContacto';
 import { DatosDocumentoResponse } from '@models/datosDocumento';
 import { finalize } from 'rxjs';
 import { GeneralComponent } from '../../../../components/general.component';
@@ -37,15 +37,22 @@ import { DataDomicilio, DatosDomicilio, Residencia, ResidenciaRequest } from '@m
 import { ResponseGeneral } from '@models/responseGeneral';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Colonia } from '@models/colonia';
+import { Zona } from '@models/zona';
 
 import { DataFotografia, FotografiaRequest, FotografiaResponse } from '@models/fotografia';
-import { DatosPersonales } from '@models/datosPersonales';
+import { DatosPersonales, paisNacimiento } from '@models/datosPersonales';
 import { Sexo } from '@models/sexo';
+import { Dependientes } from '@models/dependiente';
 
 import { OnlyNumbersDirective } from '@directives/only-numbers.directive';
 import { EmailAllowCaractersDirective } from '@directives/email-allow-caracters.directive';
 import { EstadoCivil } from '@models/estadoCivil';
-import {OfertaLaboralComponent} from '@privado/oferta-laboral/oferta-laboral.component';
+import { OfertaLaboralComponent } from '@privado/oferta-laboral/oferta-laboral.component';
+import { DatosGeneralesRequest } from '@models/datosGenerales';
+import { InteresLaboral } from '@models/aspirante';
+import { OOAD } from '@models/ooad';
+import { LugarNacimiento } from '@models/lugarNacimiento';
+import moment from 'moment';
 
 
 @Component({
@@ -77,7 +84,7 @@ import {OfertaLaboralComponent} from '@privado/oferta-laboral/oferta-laboral.com
   styleUrl: './inicio.component.scss',
 })
 
-export class InicioComponent extends GeneralComponent{
+export class InicioComponent extends GeneralComponent {
 
 
   readonly dependientes = DEPENDIENTES;
@@ -102,7 +109,7 @@ export class InicioComponent extends GeneralComponent{
   sustituto!: any;
   empleo!: any;
   institucionSeleccionada = true;
- // userData!: SesionUser;
+  // userData!: SesionUser;
 
   dummies = [{ label: 'Dummie', value: 'Dummie' }, { label: 'Dummie 2', value: 'Dummie 2' }];
 
@@ -133,25 +140,29 @@ export class InicioComponent extends GeneralComponent{
     this.formDocumentosEspecialidad = this.asignarFormularioDocumentosEspecialidad();
     this.obtenerCatalogos();
     this.suscribirObservables();
-
-this.obtenerDatosContacto(this.userData?.idUsuario);
-this.obtenerDatosDocumento(this.userData?.idUsuario);
-this.obtenerDatosDomicilio(this.userData?.idUsuario);
-this.obtenerDatosFotografia(this.userData?.idUsuario);
+this.subscribirseACambioComponentes();
+this.subscribirseEstadoNacimiento();
+this.subscribirseEstadoCivil();
+this.subscribirsePaisNacimiento();
+this.settearDatosUsuario();
+    this.obtenerDatosContacto(this.userData?.idUsuario);
+    this.obtenerDatosDocumento(this.userData?.idUsuario);
+    this.obtenerDatosDomicilio(this.userData?.idUsuario);
+    this.obtenerDatosFotografia(this.userData?.idUsuario);
 
   }
   asignarFormularioRegistro(): FormGroup {
     return this.fb.group({
       rfc: [],
 
-      nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
-      fechaNacimiento: [{value: '', disabled:true}],
-      sexo: [{value: '', disabled:true}],
+      nss: [{ value: '', disabled: false }, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
+      fechaNacimiento: [{ value: '', disabled: true }],
+      sexo: [{ value: '', disabled: true }],
       estadoCivil: [],
       dependientes: [],
-      hijos: [{value: '', disabled: true},[Validators.required, Validators.min(1)]],
-      otros: [{value: '', disabled: true},[Validators.required]],
-      correo: [{value: '', disabled:true}],
+      hijos: [{ value: '', disabled: true }, [Validators.required, Validators.min(1)]],
+      otros: [{ value: '', disabled: true }, [Validators.required]],
+      correo: [{ value: '', disabled: true }],
 
       correoAdicional: [],
       telefonoCasa: [],
@@ -175,18 +186,19 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
   }
 
   settearDatosUsuario(): void {
-    this.userService.userData$.subscribe({next: (info) => this.userData = info});
-    const fecha = this.obtenerFechaNacimientoDeCURP(this.userData?.refCurp+'');
-    const sexo = this.obtenerSexoDeCurp(this.userData?.refCurp+'');
+   // this.userService.userData$.subscribe({ next: (info) => this.userData = info });
+   console.log("this.userData ",this.userData );
+    const fecha = this.obtenerFechaNacimientoDeCURP(this.userData?.refCurp + '');
+    const sexo = this.obtenerSexoDeCurp(this.userData?.refCurp + '');
     this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
     this.formRegistro.get('sexo')?.setValue(sexo);
-    this.formRegistro.get('correo')?.setValue(this.userData?.refEmail+'');
+    this.formRegistro.get('correo')?.setValue(this.userData?.refEmail + '');
   }
 
-  obtenerFechaNacimientoDeCURP(curp: string): Date{
+  obtenerFechaNacimientoDeCURP(curp: string): Date {
     let anio = parseInt(curp.substring(4, 6), 10).toString();
-    const mes = curp.substring(6,8);
-    const dia = curp.substring(8,10);
+    const mes = curp.substring(6, 8);
+    const dia = curp.substring(8, 10);
     anio.length == 1 ? anio = 20 + anio : anio = 19 + anio;
     return new Date(parseInt(anio, 10), parseInt(mes, 10) - 1, parseInt(dia, 10));
   }
@@ -200,23 +212,49 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
     return sexosMap[sexo];
   }
 
-  subscribirseACambioComponentes(): void {
-    this.formRegistro.get('dependientes')?.valueChanges.subscribe(value =>
-      {
-        this.formRegistro.get('hijos')?.disable();
-        this.formRegistro.get('otros')?.disable();
-        this.formRegistro.get('hijos')?.patchValue(null);
-        this.formRegistro.get('otros')?.patchValue(null);
-        this.formRegistro.get('hijos')?.reset;
-        this.formRegistro.get('otros')?.reset;
+  estadoCilvilSeleccionado!: any;
+  subscribirseEstadoCivil(): void {
+  
+    this.formRegistro.get('estadoCivil')?.valueChanges.subscribe(value => {
+     this.estadoCilvilSeleccionado = value;
+    }
+    );
+  }
 
-        if(this.formRegistro.get('dependientes')?.value === this.dependientes[1]){
-          this.formRegistro.get('hijos')?.enable();
-        }
-        if(this.formRegistro.get('dependientes')?.value === this.dependientes[3]){
-          this.formRegistro.get('otros')?.enable();
-        }
+  paisNacimientoSeleccionado!: any;
+  subscribirsePaisNacimiento(): void {
+  
+    this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe(value => {
+     this.paisNacimientoSeleccionado = value;
+    }
+    );
+  }
+  estadoNacimientoSeleccionado!: any;
+  subscribirseEstadoNacimiento(): void {
+  
+    this.formRegistro.get('estadoNacimiento')?.valueChanges.subscribe(value => {
+     this.estadoNacimientoSeleccionado = value;
+    }
+    );
+  }
+
+  subscribirseACambioComponentes(): void {
+  
+    this.formRegistro.get('dependientes')?.valueChanges.subscribe(value => {
+      this.formRegistro.get('hijos')?.disable();
+      this.formRegistro.get('otros')?.disable();
+      this.formRegistro.get('hijos')?.patchValue(null);
+      this.formRegistro.get('otros')?.patchValue(null);
+      this.formRegistro.get('hijos')?.reset;
+      this.formRegistro.get('otros')?.reset;
+
+      if (this.formRegistro.get('dependientes')?.value === this.dependientes[1]) {
+        this.formRegistro.get('hijos')?.enable();
       }
+      if (this.formRegistro.get('dependientes')?.value === this.dependientes[3]) {
+        this.formRegistro.get('otros')?.enable();
+      }
+    }
     );
   }
 
@@ -306,12 +344,12 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
   }
 
   devolverTextoOoad(idOOAD: string): string {
-    const ooad =  this.ooad.find(element => idOOAD == element.value);
+    const ooad = this.ooad.find(element => idOOAD == element.value);
     return ooad?.label || "";
   }
 
   devolverTextoZonaInnteres(idZona: string): string {
-    const zona =  this.zonas.find(element => idZona == element.value);
+    const zona = this.zonas.find(element => idZona == element.value);
     return zona?.label || "";
   }
 
@@ -481,6 +519,7 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
     this.formRegistro.controls['correoAdicional'].setValue(this.datosContacto.datosContacto.refCorreoAdicional);
     this.formRegistro.controls['telefonoCasa'].setValue(this.datosContacto.datosContacto.refTelefonoCasa);
     this.formRegistro.controls['telefonoCelular'].setValue(this.datosContacto.datosContacto.refTelefonoCelular);
+
     this.formRegistro.controls['paisNacimiento'].setValue(this.datosContacto.datosContacto.paisNacimiento);
     this.formRegistro.controls['estadoNacimiento'].setValue(this.datosContacto.datosContacto.lugarNacimiento?.idLugarNacimiento);
 
@@ -504,26 +543,32 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
   private setDatosFoto() {
     this.formRegistro.controls['rfc'].setValue(this.datosFoto.datosPersonales?.refRfc);
     this.formRegistro.controls['nss'].setValue(this.datosFoto.datosPersonales?.refNss);
-    this.formRegistro.controls['fechaNacimiento'].setValue(this.datosFoto.datosPersonales?.fecNacimiento);
-    this.formRegistro.controls['sexo'].setValue(this.datosFoto.datosPersonales?.sexo?.desSexo);
+  //  this.formRegistro.controls['fechaNacimiento'].setValue(this.datosFoto.datosPersonales?.fecNacimiento);
+  //  this.formRegistro.controls['sexo'].setValue(this.datosFoto.datosPersonales?.sexo?.desSexo);
     this.formRegistro.controls['estadoCivil'].setValue(this.datosFoto.datosPersonales?.estadoCivil?.desEstadoCivil);
 
 
 
   }
 
-  private saveContacto() {
-    let contacto = new ContactoRequest();
-    contacto.datosPersonales = this.datosContacto.datosPersonales;
+  private saveContacto(): DatosContacto {
+    let contacto = new DatosContacto();
+    
 
     this.datosContacto.datosContacto.refEmail = this.formRegistro.controls['correo'].value;
     this.datosContacto.datosContacto.refCorreoAdicional = this.formRegistro.controls['correoAdicional'].value;
     this.datosContacto.datosContacto.refTelefonoCasa = this.formRegistro.controls['telefonoCasa'].value;
     this.datosContacto.datosContacto.refTelefonoCelular = this.formRegistro.controls['telefonoCelular'].value;
-    this.datosContacto.datosContacto.paisNacimiento = this.formRegistro.controls['paisNacimiento'].value;
-    this.datosContacto.datosContacto.lugarNacimiento = this.formRegistro.controls['estadoNacimiento'].value;
-    contacto.datosContacto = this.datosContacto.datosContacto;
-    this._ConvocatoriaService.guardarContacto(contacto).subscribe({
+    let pais = new paisNacimiento();
+    pais.idPais = this.paisNacimientoSeleccionado.value;
+    pais.nomPaisNacimiento = this.paisNacimientoSeleccionado.label;
+    this.datosContacto.datosContacto.paisNacimiento = pais;
+
+    let estado = new LugarNacimiento();
+    estado.idLugarNacimiento = this.estadoNacimientoSeleccionado.value;
+    this.datosContacto.datosContacto.lugarNacimiento = estado;
+    contacto = this.datosContacto.datosContacto;
+    /* this._ConvocatoriaService.guardarContacto(contacto).subscribe({
       next: (data: ResponseGeneral) => {
 
         if (data.exito) {
@@ -536,13 +581,13 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
         this._alertServices.error(err.mensaje);
 
       }
-    });
-
+    }); */
+    return contacto;
   }
 
-  private saveDomicilio() {
-    let residencia = new ResidenciaRequest();
-    residencia.datosPersonales = this.datosContacto.datosPersonales;
+  private saveDomicilio():Residencia {
+   // let residencia = new ResidenciaRequest();
+   // residencia.datosPersonales = this.datosContacto.datosPersonales;
 
     this.datosDomicilio.datosResidenciaActual = new Residencia();
 
@@ -550,12 +595,78 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
     this.obtenerColonia(idColonia);
     this.datosDomicilio.datosResidenciaActual.nomCalle = this.formRegistro.controls['calle'].value;
     this.datosDomicilio.datosResidenciaActual.refNumero = this.formRegistro.controls['numeroExterior'].value;
-    this.datosDomicilio.datosResidenciaActual.codigoPostal = this.formRegistro.controls['codigoPostal'].value;
-    this.datosDomicilio.datosResidenciaActual.pais = this.formRegistro.controls['pais'].value;
-    this.datosDomicilio.datosResidenciaActual.estado = this.formRegistro.controls['estado'].value;
-    this.datosDomicilio.datosResidenciaActual.municipio = this.formRegistro.controls['municipio'].value;
-    residencia.datosResidenciaActual = this.datosDomicilio.datosResidenciaActual;
-    this._ConvocatoriaService.guardarResidencia(residencia).subscribe({
+   // this.datosDomicilio.datosResidenciaActual.codigoPostal = this.formRegistro.controls['codigoPostal'].value;
+    //this.datosDomicilio.datosResidenciaActual.pais = this.formRegistro.controls['pais'].value;
+   // this.datosDomicilio.datosResidenciaActual.estado = this.formRegistro.controls['estado'].value;
+  //  this.datosDomicilio.datosResidenciaActual.municipio = this.formRegistro.controls['municipio'].value;
+    
+   // residencia.datosResidenciaActual = this.datosDomicilio.datosResidenciaActual;
+    /*  this._ConvocatoriaService.guardarResidencia(residencia).subscribe({
+       next: (data: ResponseGeneral) => {
+ 
+         if (data.exito) {
+           return this._alertServices.exito(data.mensaje)
+         }
+         return this._alertServices.error(data.mensaje)
+ 
+       },
+       error: (err: ResponseGeneral) => {
+         this._alertServices.error(err.mensaje);
+ 
+       }
+     }); */
+return  this.datosDomicilio.datosResidenciaActual;
+  }
+
+
+  private saveDependientes():Dependientes {
+    let dependientes= new Dependientes();
+    let d = this.formRegistro.controls['dependientes'].value;
+    
+    dependientes.indConyuge= d.key === 'P'?1:0;
+    dependientes.indPadres=d.key === 'A'?1:0;
+    dependientes.refCantidadHijos = this.formRegistro.controls['hijos'].value;
+    dependientes.refOtro = this.formRegistro.controls['otros'].value;
+
+    return dependientes;
+  }
+  private saveDatosGenerales() {
+    let datos = new DatosGeneralesRequest();
+    datos.datosContacto = this.saveContacto();
+    datos.datosResidenciaActual = this.saveDomicilio();
+    datos.datosPersonales = this.saveFoto();
+    datos.dependientes = this.saveDependientes();
+    
+    let zil = new InteresLaboral();
+    
+    datos.zonasInteresLaboral = new Array<InteresLaboral>();
+   
+   
+
+
+
+
+for(let reg of this.zonasInteres()){
+  let zil1 = new InteresLaboral();
+  let oad1 = new OOAD();
+  oad1.idOoad = reg.ooad;
+  let zona1 = new Zona();
+  zona1.idZona = reg.zonaInteres;
+  zil1.ooad = oad1;
+  zil1.zona = zona1;
+  datos.zonasInteresLaboral.push(zil1)
+}
+
+    
+    
+
+
+
+console.log(this.zonasInteres());
+
+    
+
+    this._ConvocatoriaService.guardarDatosGenerales(datos).subscribe({
       next: (data: ResponseGeneral) => {
 
         if (data.exito) {
@@ -573,30 +684,37 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
   }
 
   private obtenerColonia(idColonia: number) {
-    debugger
+    
     let colonia = this.colonias.find(x => x.value == idColonia);
     let asentamiento = new Colonia();
     asentamiento.idColonia = parseInt(colonia?.value + '');
     asentamiento.nomColonia = colonia?.label + '';
+    asentamiento.refCodigoPostal = ''+ this.formRegistro.controls['codigoPostal'].value;
     this.datosDomicilio.datosResidenciaActual.colonia = asentamiento;
   }
-  private saveFoto() {
+  private saveFoto():DatosPersonales {
     let fotografia = new FotografiaRequest();
     fotografia.datosPersonales = this.datosContacto.datosPersonales;
 
     fotografia.datosPersonales = new DatosPersonales();
     this.datosFoto.datosPersonales.sexo = new Sexo();
     this.datosFoto.datosPersonales.estadoCivil = new EstadoCivil();
+    this.datosFoto.datosPersonales.estadoCivil.idEstadoCivil =parseInt(this.estadoCilvilSeleccionado.value.toString());
 
-
+let fecha = this.formRegistro.controls['fechaNacimiento'].value;
+let fechaFormateada = moment(fecha, "DD/MM/YYYY").format('DD/MM/YYYY');
+debugger
     this.datosFoto.datosPersonales.refRfc = this.formRegistro.controls['rfc'].value;
     this.datosFoto.datosPersonales.refNss = this.formRegistro.controls['nss'].value;
-    this.datosFoto.datosPersonales.fecNacimiento = this.formRegistro.controls['fechaNacimiento'].value;
-    this.datosFoto.datosPersonales.sexo.desSexo = this.formRegistro.controls['sexo'].value;
-    this.datosFoto.datosPersonales.estadoCivil.desEstadoCivil = this.formRegistro.controls['estadoCivil'].value;
+    this.datosFoto.datosPersonales.fecNacimiento = fechaFormateada;
+    let sexo =  this.formRegistro.controls['sexo'].value;
+    let sex = new Sexo();
+    sex.idSexo = sexo.value;
+    this.datosFoto.datosPersonales.sexo=sex;
+    
 
     fotografia.datosPersonales = this.datosFoto.datosPersonales;
-    this._ConvocatoriaService.guardarFoto(fotografia).subscribe({
+   /*  this._ConvocatoriaService.guardarFoto(fotografia).subscribe({
       next: (data: ResponseGeneral) => {
 
         if (data.exito) {
@@ -609,18 +727,18 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
         this._alertServices.error(err.mensaje);
 
       }
-    });
-
+    }); */
+return   fotografia.datosPersonales ;
   }
 
   private btnGuardar(paso: number) {
     switch (paso) {
       case 0:
         console.log("el form registro", this.formRegistro);
-        this.saveDomicilio();
-        this.saveContacto();
-        this.saveFoto();
-
+       // this.saveDomicilio();
+       // this.saveContacto();
+       // this.saveFoto();
+this.saveDatosGenerales();
         break;
 
       default:
@@ -631,13 +749,13 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
   siguientePasoStepper(): void {
 
 
-   //
-   this.btnGuardar(this.indice());
-    if(this.indice() == 0){
-      if(this.formRegistro.invalid){
+    //
+    this.btnGuardar(this.indice());
+    if (this.indice() == 0) {
+      if (this.formRegistro.invalid) {
         this._alertServices.alerta(this._Mensajes.MSG023);
 
-      }else{
+      } else {
 
       }
     }

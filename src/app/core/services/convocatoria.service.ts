@@ -126,7 +126,7 @@ export class ConvocatoriaService {
     }
     
     guardarDatosGenerales(aspirante: DatosGeneralesRequest): Observable<any> {
-        let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-generales'`;
+        let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-generales`;
         return this.http.post<any>(ruta, aspirante, { headers: this.header }).pipe(
             catchError(this.handleError),
             map((response: any) => {

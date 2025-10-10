@@ -15,7 +15,7 @@ export class DatosPersonales{
     refRfc!: string;
     refNss!: string;
     fecNacimiento!: string;
-    paisNacimiento!: number;
+    paisNacimiento!: paisNacimiento;
     sexo!: Sexo;
     lugarNacimiento!: LugarNacimiento;
     estadoCivil!: EstadoCivil;
@@ -26,3 +26,7 @@ export class DatosPersonales{
    
 }
 
+export class paisNacimiento{
+    idPais!: number;
+    nomPaisNacimiento!: string;
+}
