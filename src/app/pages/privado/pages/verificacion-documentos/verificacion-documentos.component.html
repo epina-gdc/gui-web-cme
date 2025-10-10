@@ -1,1 +1,43 @@
-<p>verificacion-documentos works!</p>
+<div class="flex justify-content-start align-items-center gap-3">
+  <btn-regresar/>
+  <h3 class="titulo-seccion">Módulo de verificación de documentos</h3>
+</div>
+
+<p-card class="mx-2 empty-border" [header]="'Verificación de documentos'">
+  <form [formGroup]="filtroForm">
+    <article class="flex flex-row">
+      <div class="col-3">
+        <div class="flex justify-content-between">
+          <label class="field-label" for="especialidad">Especialidad</label>
+        </div>
+        <p-select formControlName="especialidad" [options]="especialidad" optionLabel="label" placeholder="Ingresa especialidad" class="w-full" />
+      </div>
+
+      <div class="col-3">
+        <div class="flex justify-content-between">
+          <label class="field-label" for="estatus">Estatus</label>
+        </div>
+        <p-select formControlName="estatus" [options]="estatus" optionLabel="label" placeholder="Ingresa estatus" class="w-full" />
+      </div>
+
+      <div class="col-3">
+        <div class="flex justify-content-between">
+          <label class="field-label" for="matricula">Matrícula</label>
+        </div>
+        <input pInputText class="w-full" type="text" id="matricula"
+                   placeholder="Ingresa matrícula"
+                   formControlName="matricula"
+                   />
+      </div>
+
+      <div class="col-3">
+        <div class="flex justify-content-between">
+          <label class="field-label" for="contratacion">Contratación</label>
+        </div>
+        <p-select formControlName="contratacion" [options]="contratacion" optionLabel="label" placeholder="Ingresa tipo de contratación" class="w-full" />
+      </div>
+
+
+    </article>
+  </form>
+</p-card>
