@@ -1,6 +1,6 @@
 <div class="flex justify-content-start align-items-center gap-3">
   <btn-regresar/>
-  <h3 class="titulo-seccion">Módulo de verificación de documentos</h3>
+  <h3 class="titulo-seccion w-full">Módulo de verificación de documentos</h3>
 </div>
 
 <p-card class="mx-2 empty-border" [header]="'Verificación de documentos'">
@@ -36,8 +36,69 @@
         </div>
         <p-select formControlName="contratacion" [options]="contratacion" optionLabel="label" placeholder="Ingresa tipo de contratación" class="w-full" />
       </div>
-
-
     </article>
+    <div class="flex flex-row justify-content-end mt-3 gap-3">
+      <p-button type="button" variant="outlined" label="Limpiar"/>
+      <p-button type="button" label="Buscar" />
+    </div>
   </form>
+</p-card>
+
+<p-card class="mx-2 empty-border">
+  <ng-template #title>
+     <div class="flex justify-content-between">
+      <span>Verificación de documentos</span>
+      <div class="flex align-items-center">
+        <i class="cme-pin" [style]="{ 'font-size': '2.2rem', color: '#23c8a7'}"></i>
+        <span>Exportar datos</span>
+      </div>
+     </div>
+  </ng-template>
+
+
+
+
+
+  <p-table
+    [value]="usuarioDocumentos()"
+    [scrollable]="true"
+
+    styleClass="mt-4"
+  >
+    <ng-template #header>
+      <tr>
+        <th style="min-width: 200px" pFrozenColumn>Nombre</th>
+        <th style="min-width: 200px">Matrícula/Folio</th>
+        <th style="min-width: 200px">Correo</th>
+        <th style="min-width: 200px">Especialidad</th>
+        <th style="min-width: 200px">Estatus</th>
+        <th style="min-width: 200px">Observaciones</th>
+        <th style="min-width: 200px">Modalidad</th>
+        <th style="min-width: 200px">Tipo de modalidad</th>
+        <th style="min-width: 200px">Fecha de verificación</th>
+        <th
+          style="min-width: 200px"
+          alignFrozen="right"
+          pFrozenColumn
+        >
+          Acciones
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-usuarioDocumentos>
+      <tr>
+        <td>{{usuarioDocumentos.nombre}}</td>
+        <td>{{usuarioDocumentos.matricula}}</td>
+        <td>{{usuarioDocumentos.correo}}</td>
+        <td>{{usuarioDocumentos.especialidad}}</td>
+        <td>{{usuarioDocumentos.estatus}}</td>
+        <td>{{usuarioDocumentos.observaciones}}</td>
+        <td>{{usuarioDocumentos.modalidad}}</td>
+        <td>{{usuarioDocumentos.tipoModalidad}}</td>
+        <td>{{usuarioDocumentos.fecha}}</td>
+        <td alignFrozen="right" pFrozenColumn>acciones</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
 </p-card>

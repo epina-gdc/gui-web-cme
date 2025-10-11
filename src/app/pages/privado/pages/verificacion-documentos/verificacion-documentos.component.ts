@@ -1,5 +1,5 @@
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Component, inject } from '@angular/core';
+import { Component, WritableSignal, inject, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Card } from 'primeng/card';
 import { SelectModule } from 'primeng/select';
@@ -7,6 +7,9 @@ import { InputText } from 'primeng/inputtext';
 import { GeneralComponent } from '../../../../components/general.component';
 import { BtnRegresarComponent } from '../../../../components/btn-regresar/btn-regresar.component';
 import { TipoDropdown } from '@models/tipo-dropdown.interface';
+import { ButtonModule } from 'primeng/button';
+import { DUMMIE_TABLA_VERIFICACION_DOCUMENTOS } from '@utils/dummies';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-verificacion-documentos',
@@ -14,6 +17,8 @@ import { TipoDropdown } from '@models/tipo-dropdown.interface';
     Card,
     SelectModule,
     InputText,
+    TableModule,
+    ButtonModule,
     BtnRegresarComponent,
     ReactiveFormsModule
   ],
@@ -23,8 +28,11 @@ import { TipoDropdown } from '@models/tipo-dropdown.interface';
 export class VerificacionDocumentosComponent extends GeneralComponent{
 
   dummies = [{ label: 'Dummie 1', value: 'Dummie 1' }, { label: 'Dummie 2', value: 'Dummie 2' }];
+  dummiesTabla = DUMMIE_TABLA_VERIFICACION_DOCUMENTOS;
 
   filtroForm!: FormGroup;
+
+  usuarioDocumentos: WritableSignal<any[]> = signal([]);
 
   especialidad: TipoDropdown[] = [];
   estatus: TipoDropdown[] = [];
@@ -38,6 +46,7 @@ export class VerificacionDocumentosComponent extends GeneralComponent{
       super();
       this.filtroForm = this.inicializarForm();
       this.obtenerCatalogos();
+      this.paginar();
   }
 
   obtenerCatalogos(){
@@ -53,6 +62,10 @@ export class VerificacionDocumentosComponent extends GeneralComponent{
       matricula: [],
       contratacion: [],
     });
+  }
+
+  paginar(){
+    this.usuarioDocumentos.set(this.dummiesTabla);
   }
 
 }
