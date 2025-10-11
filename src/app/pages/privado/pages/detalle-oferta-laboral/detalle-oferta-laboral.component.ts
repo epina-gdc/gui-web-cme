@@ -3,6 +3,7 @@ import {Card} from "primeng/card";
 import {Rating} from 'primeng/rating';
 import {FormsModule} from '@angular/forms';
 import {Button} from 'primeng/button';
+import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs';
 
 @Component({
   selector: 'app-detalle-oferta-laboral',
@@ -10,7 +11,12 @@ import {Button} from 'primeng/button';
     Card,
     Rating,
     FormsModule,
-    Button
+    Button,
+    Tabs,
+    TabList,
+    TabPanels,
+    Tab,
+    TabPanel
   ],
   templateUrl: './detalle-oferta-laboral.component.html',
   styleUrl: './detalle-oferta-laboral.component.scss'
