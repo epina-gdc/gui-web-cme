@@ -1,8 +1,23 @@
 <p-tabs value="0">
   <p-tablist>
-    <p-tab value="0">Información general</p-tab>
-    <p-tab value="1">Ubicación y servicios</p-tab>
-    <p-tab value="2">Sedes</p-tab>
+    <p-tab value="0">
+      <div class="header-tab-oferta">
+        <i class="cme-deals" style="color: #8acbde; font-size: 1.4rem"></i>
+        Información general
+      </div>
+    </p-tab>
+    <p-tab value="1">
+      <div class="header-tab-oferta">
+        <i class="cme-pin" style="color: #8acbde; font-size: 1.4rem"></i>
+        Ubicación y servicios
+      </div>
+    </p-tab>
+    <p-tab value="2">
+      <div class="header-tab-oferta">
+        <i class="cme-pin" style="color: #8acbde; font-size: 1.4rem"></i>
+        Sedes
+      </div>
+    </p-tab>
   </p-tablist>
   <p-tabpanels>
     <p-tabpanel value="0">
@@ -62,7 +77,7 @@
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">Ubicación:</p>
-              <p class="texto-detalle-oferta-laboral">Av. Morelos 47, San Javier, 54000 Baja California</p>
+              <p class="texto-detalle-oferta-laboral align-last-right" [appSplitByWidth]="'Av. Morelos 47, San Javier, 54000 Baja California'"></p>
             </div>
           </div>
         </div>
