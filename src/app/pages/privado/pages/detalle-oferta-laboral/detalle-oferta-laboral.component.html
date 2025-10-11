@@ -53,19 +53,21 @@
     </div>
   </div>
   <div class="col-6">
-    <p-card class="empty-border bg-blue-oferta-laboral" styleClass="mx-4">
+    <p-card class="empty-border bg-secondary-blue-oferta-laboral" styleClass="mx-4">
       <div class="flex justify-content-between">
         <p class="card-compensacion-titulo">Compensación</p>
         <p-rating [(ngModel)]="value" [stars]="1"/>
       </div>
       <div class="flex">
-        <div class="flex col-8 flex-column gap-1">
+        <div class="flex col-9 flex-column gap-1">
           <p class="card-compensacion-sub-titulo">Sueldo mensual</p>
           <div class="flex justify-content-between">
             <p class="card-compensacion-seccion">Estimado bruto</p>
             <p class="card-compensacion-seccion">Estimado neto</p>
           </div>
-          <p class="card-compensacion-titulo">$45,520 - $41,140</p>
+          <div class="flex justify-content-center">
+            <p class="card-compensacion-titulo">$45,520 - $41,140</p>
+          </div>
           <div class="flex justify-content-between">
             <p class="card-compensacion-seccion">Bono dif coobertura:</p>
             <p class="card-compensacion-seccion">$1000,00</p>
@@ -82,4 +84,10 @@
       </div>
     </p-card>
   </div>
+  <div class="col-12 flex justify-content-end mt-7">
+    <p-button variant="outlined" label="Agregar a favoritos"/>
+  </div>
 </div>
+
+
+

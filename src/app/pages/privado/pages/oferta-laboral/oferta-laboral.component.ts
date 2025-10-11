@@ -9,6 +9,7 @@ import {Button} from 'primeng/button';
 import {NgClass} from '@angular/common';
 import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {DetalleOfertaLaboralComponent} from '@privado/detalle-oferta-laboral/detalle-oferta-laboral.component';
+import {FooterMedicoComponent} from '@pages/privado/shared/footer-medico/footer-medico.component';
 
 @Component({
   selector: 'app-oferta-laboral',
@@ -92,7 +93,7 @@ export class OfertaLaboralComponent {
         '640px': '90vw'
       },
       templates: {
-
+        footer: FooterMedicoComponent
       }
 
     });

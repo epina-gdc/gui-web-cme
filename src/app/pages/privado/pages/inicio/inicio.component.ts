@@ -318,10 +318,10 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
   obtenerCatalogos(): void {
     this.activatedRoute.data.subscribe(({ respuesta }) => {
       const [sexos, estadosCiviles, paises, lugaresNacimiento] = respuesta;
-      this.sexos = mapearArregloTipoDropdown(sexos.respuesta, 'desSexo', 'idSexo');
-      this.estadosCiviles = mapearArregloTipoDropdown(estadosCiviles.respuesta, 'desEstadoCivil', 'idEstadoCivil');
-      this.paises = mapearArregloTipoDropdown(paises.respuesta, 'desPais', 'idPais');
-      this.lugaresNacimiento = mapearArregloTipoDropdown(lugaresNacimiento.respuesta, 'desLugarNacimiento', 'idLugarNacimiento');
+      this.sexos = mapearArregloTipoDropdown(sexos.respuesta, 'desSexo', 'idSexo') ?? [];
+      this.estadosCiviles = mapearArregloTipoDropdown(estadosCiviles.respuesta, 'desEstadoCivil', 'idEstadoCivil') ?? [];
+      this.paises = mapearArregloTipoDropdown(paises.respuesta, 'desPais', 'idPais') ?? [];
+      this.lugaresNacimiento = mapearArregloTipoDropdown(lugaresNacimiento.respuesta, 'desLugarNacimiento', 'idLugarNacimiento') ?? [];
     });
   }
 
