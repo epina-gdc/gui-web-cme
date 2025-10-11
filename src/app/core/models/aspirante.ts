@@ -29,8 +29,11 @@ export class InteresLaboralRequest {
 
 
 export class InteresLaboral{
-    ooad!: OOAD;
-    zona!:  Zona;
+    idOoad!: number;
+    desOoad!: string;
+    cveOoad!: string;
+    desZona!: string;
+    cveZona!: string;
 }
 
 

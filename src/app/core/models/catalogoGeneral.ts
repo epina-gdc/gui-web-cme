@@ -7,7 +7,7 @@ export class CatalogoGeneral  {
 
 }
 
-export class Pais{
+export class CatPais{
   idPais!: number;
   cvePais!: string;
   desPais!: string;
@@ -48,7 +48,7 @@ export class CatSubperfilResponse extends ResponseGeneral{
 }
 
 export class CatPaisResponse extends ResponseGeneral{
-  respuesta!: Array<Pais>;
+  respuesta!: Array<CatPais>;
 }
 
 
