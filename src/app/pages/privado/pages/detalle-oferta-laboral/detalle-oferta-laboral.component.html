@@ -1,58 +1,85 @@
 <div class="flex flex-wrap flex-row">
   <div class="col-6">
     <div class="flex flex-column">
-      <h4> Información del puesto</h4>
+      <h4 class="titulo-detalle-oferta-laboral"> Información del puesto</h4>
       <div class="flex justify-content-between">
-        <p>Horario:</p>
-        <p>7:30 a 14:00 y 1.5HRS prep ACT. DOC. E INVES.</p>
+        <p class="seccion-detalle-oferta-laboral">Horario:</p>
+        <p class="texto-detalle-oferta-laboral">7:30 a 14:00 y 1.5HRS prep ACT. DOC. E INVES.</p>
       </div>
       <div class="flex justify-content-between">
-        <p>Régimen:</p>
-        <p>Ordinario</p>
+        <p class="seccion-detalle-oferta-laboral">Régimen:</p>
+        <p class="texto-detalle-oferta-laboral">Ordinario</p>
       </div>
       <div class="flex justify-content-between">
-        <p>No de plaza:</p>
-        <p>1436</p>
+        <p class="seccion-detalle-oferta-laboral">No de plaza:</p>
+        <p class="texto-detalle-oferta-laboral">1436</p>
       </div>
       <div class="flex justify-content-between">
-        <p>Categoría:</p>
-        <p>Médico no familiar</p>
+        <p class="seccion-detalle-oferta-laboral">Categoría:</p>
+        <p class="texto-detalle-oferta-laboral">Médico no familiar</p>
       </div>
       <div class="flex justify-content-between">
-        <p>Clasificación:</p>
-        <p>Segundo nivel</p>
+        <p class="seccion-detalle-oferta-laboral">Clasificación:</p>
+        <p class="texto-detalle-oferta-laboral">Segundo nivel</p>
       </div>
       <div class="flex justify-content-between">
-        <p>Tipo de plaza:</p>
-        <p>Operativa base</p>
+        <p class="seccion-detalle-oferta-laboral">Tipo de plaza:</p>
+        <p class="texto-detalle-oferta-laboral">Operativa base</p>
       </div>
       <div class="flex justify-content-between">
-        <p>Marca de ocupación:</p>
-        <p>Definitiva</p>
+        <p class="seccion-detalle-oferta-laboral">Marca de ocupación:</p>
+        <p class="texto-detalle-oferta-laboral">Definitiva</p>
       </div>
     </div>
 
     <div class="flex flex-column mt-4">
-      <h4>Información del hospital</h4>
+      <h4 class="titulo-detalle-oferta-laboral">Información del hospital</h4>
       <div class="flex justify-content-between">
-        <p>OOAD:</p>
-        <p>Estado de México</p>
+        <p class="seccion-detalle-oferta-laboral">OOAD:</p>
+        <p class="texto-detalle-oferta-laboral">Estado de México</p>
       </div>
       <div class="flex justify-content-between">
-        <p>UMF:</p>
-        <p>Hoospital de Gineco Obstreticia No. 60</p>
+        <p class="seccion-detalle-oferta-laboral">UMF:</p>
+        <p class="texto-detalle-oferta-laboral">Hospital de Gineco Obstreticia No. 60</p>
       </div>
       <div class="flex justify-content-between">
-        <p>Zona:</p>
-        <p>Ecatepec de Morelos</p>
+        <p class="seccion-detalle-oferta-laboral">Zona:</p>
+        <p class="texto-detalle-oferta-laboral">Ecatepec de Morelos</p>
       </div>
       <div class="flex justify-content-between">
-        <p>Ubicación:</p>
-        <p>Av. Morelos 47, San Javier, 54000 Baja California</p>
+        <p class="seccion-detalle-oferta-laboral">Ubicación:</p>
+        <p class="texto-detalle-oferta-laboral">Av. Morelos 47, San Javier, 54000 Baja California</p>
       </div>
     </div>
   </div>
   <div class="col-6">
-
+    <p-card class="empty-border bg-blue-oferta-laboral" styleClass="mx-4">
+      <div class="flex justify-content-between">
+        <p class="card-compensacion-titulo">Compensación</p>
+        <p-rating [(ngModel)]="value" [stars]="1"/>
+      </div>
+      <div class="flex">
+        <div class="flex col-8 flex-column gap-1">
+          <p class="card-compensacion-sub-titulo">Sueldo mensual</p>
+          <div class="flex justify-content-between">
+            <p class="card-compensacion-seccion">Estimado bruto</p>
+            <p class="card-compensacion-seccion">Estimado neto</p>
+          </div>
+          <p class="card-compensacion-titulo">$45,520 - $41,140</p>
+          <div class="flex justify-content-between">
+            <p class="card-compensacion-seccion">Bono dif coobertura:</p>
+            <p class="card-compensacion-seccion">$1000,00</p>
+          </div>
+          <div class="flex justify-content-between">
+            <p class="card-compensacion-seccion">Acceso a crédito:</p>
+            <p class="card-compensacion-seccion">Si</p>
+          </div>
+          <div class="flex justify-content-between">
+            <p class="card-compensacion-seccion">% Alto costo de vida:</p>
+            <p class="card-compensacion-seccion">20 %</p>
+          </div>
+        </div>
+      </div>
+    </p-card>
   </div>
 </div>
