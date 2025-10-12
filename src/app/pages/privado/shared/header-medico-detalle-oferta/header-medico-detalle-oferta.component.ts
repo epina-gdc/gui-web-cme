@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import {DynamicDialogRef} from 'primeng/dynamicdialog';
 import {Button} from 'primeng/button';
+import {Badge} from 'primeng/badge';
 
 @Component({
   selector: 'app-header-medico-detalle-oferta',
   imports: [
-    Button
+    Button,
+    Badge
   ],
   templateUrl: './header-medico-detalle-oferta.component.html',
   styleUrl: './header-medico-detalle-oferta.component.scss'
