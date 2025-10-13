@@ -684,11 +684,11 @@ let  i = 1;
     for (let reg of this.zonasInteres()) {
       let zil1 = new InteresLaboral();
      
-      zil1.cveOoad = reg.ooad ;
+      zil1.cveOoad = reg.ooad+i+'';
       zil1.desOoad =  reg.ooad+i+'';
       zil1.desZona =  reg.zonaInteres+ i+'';
     
-      zil1.cveZona =reg.zonaInteres;
+      zil1.cveZona =reg.zonaInteres+ i+'';
       
      
       
