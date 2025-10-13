@@ -178,7 +178,11 @@
     display: block;
   }
 
-  .icon-white .p-button-icon{
+  .oferta-detail .p-tabpanels {
+    padding: 0 !important;
+  }
+
+  .icon-white .p-button-icon {
     color: #fff;
   }
 

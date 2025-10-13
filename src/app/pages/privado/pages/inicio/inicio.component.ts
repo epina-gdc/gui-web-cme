@@ -1,50 +1,50 @@
-import { Component, inject, signal, WritableSignal } from '@angular/core';
-import { Card } from 'primeng/card';
-import { BtnRegresarComponent } from '../../../../components/btn-regresar/btn-regresar.component';
-import { StepsComponent } from '../../../../components/steps/steps.component';
-import { UploadPhotoComponent } from '../../../../components/upload-photo/upload-photo.component';
-import { InputText } from 'primeng/inputtext';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Select } from 'primeng/select';
-import { DatePickerModule } from 'primeng/datepicker';
-import { Button } from 'primeng/button';
-import { TableModule } from 'primeng/table';
-import { UploadDocumentComponent } from '../../../../components/upload-document/upload-document.component';
-import { RadioButton } from 'primeng/radiobutton';
-import { BOOLEAN_OPCIONES, DEPENDIENTES, INSTITUCIONES } from '@utils/constants';
-import { TabPanel, TabView } from 'primeng/tabview';
-import { HeaderTabComponent } from '../../../../components/header-tab/header-tab.component';
+import {Component, inject, signal, WritableSignal} from '@angular/core';
+import {Card} from 'primeng/card';
+import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regresar.component';
+import {StepsComponent} from '../../../../components/steps/steps.component';
+import {UploadPhotoComponent} from '../../../../components/upload-photo/upload-photo.component';
+import {InputText} from 'primeng/inputtext';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Select} from 'primeng/select';
+import {DatePickerModule} from 'primeng/datepicker';
+import {Button} from 'primeng/button';
+import {TableModule} from 'primeng/table';
+import {UploadDocumentComponent} from '../../../../components/upload-document/upload-document.component';
+import {RadioButton} from 'primeng/radiobutton';
+import {BOOLEAN_OPCIONES, DEPENDIENTES, INSTITUCIONES} from '@utils/constants';
+import {TabPanel, TabView} from 'primeng/tabview';
+import {HeaderTabComponent} from '../../../../components/header-tab/header-tab.component';
 import {
   HeaderMedicoInternoComponent
 } from '@pages/privado/shared/header-medico-interno/header-medico-interno.component';
 
-import { EmptyTabComponent } from '../../../../components/empty-tab/empty-tab.component';
-import { TabDocumento, TabNode } from '@models/tab-node.interface';
-import { ActivatedRoute } from '@angular/router';
-import { TipoDropdown } from '@models/tipo-dropdown.interface';
-import { mapearArregloTipoDropdown } from '@utils/funciones';
-import { CatalogosGeneralesService } from '@services/catalogos-generales.service';
-import { ConvocatoriaService } from '@services/convocatoria.service';
-import { LoaderService } from '../../../../components/loader/services/loader.service';
-import { ContactoRequest, DataContacto, DatosContactoResponse } from '@models/datosContacto';
-import { DatosDocumentoResponse } from '@models/datosDocumento';
-import { finalize } from 'rxjs';
-import { GeneralComponent } from '../../../../components/general.component';
-import { AuthService } from '@services/auth.service';
-import { UserService } from '@services/user.service';
-import { SesionUser } from '@models/sesion-user.interface';
-import { DataDomicilio, DatosDomicilio, Residencia, ResidenciaRequest } from '@models/datosDomicilio';
-import { ResponseGeneral } from '@models/responseGeneral';
-import { HttpErrorResponse } from '@angular/common/http';
-import { Colonia } from '@models/colonia';
+import {EmptyTabComponent} from '../../../../components/empty-tab/empty-tab.component';
+import {TabDocumento, TabNode} from '@models/tab-node.interface';
+import {ActivatedRoute} from '@angular/router';
+import {TipoDropdown} from '@models/tipo-dropdown.interface';
+import {mapearArregloTipoDropdown} from '@utils/funciones';
+import {CatalogosGeneralesService} from '@services/catalogos-generales.service';
+import {ConvocatoriaService} from '@services/convocatoria.service';
+import {LoaderService} from '../../../../components/loader/services/loader.service';
+import {ContactoRequest, DataContacto, DatosContactoResponse} from '@models/datosContacto';
+import {DatosDocumentoResponse} from '@models/datosDocumento';
+import {finalize} from 'rxjs';
+import {GeneralComponent} from '../../../../components/general.component';
+import {AuthService} from '@services/auth.service';
+import {UserService} from '@services/user.service';
+import {SesionUser} from '@models/sesion-user.interface';
+import {DataDomicilio, DatosDomicilio, Residencia, ResidenciaRequest} from '@models/datosDomicilio';
+import {ResponseGeneral} from '@models/responseGeneral';
+import {HttpErrorResponse} from '@angular/common/http';
+import {Colonia} from '@models/colonia';
 
-import { DataFotografia, FotografiaRequest, FotografiaResponse } from '@models/fotografia';
-import { DatosPersonales } from '@models/datosPersonales';
-import { Sexo } from '@models/sexo';
+import {DataFotografia, FotografiaRequest, FotografiaResponse} from '@models/fotografia';
+import {DatosPersonales} from '@models/datosPersonales';
+import {Sexo} from '@models/sexo';
 
-import { OnlyNumbersDirective } from '@directives/only-numbers.directive';
-import { EmailAllowCaractersDirective } from '@directives/email-allow-caracters.directive';
-import { EstadoCivil } from '@models/estadoCivil';
+import {OnlyNumbersDirective} from '@directives/only-numbers.directive';
+import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.directive';
+import {EstadoCivil} from '@models/estadoCivil';
 import {OfertaLaboralComponent} from '@privado/oferta-laboral/oferta-laboral.component';
 
 
@@ -77,7 +77,7 @@ import {OfertaLaboralComponent} from '@privado/oferta-laboral/oferta-laboral.com
   styleUrl: './inicio.component.scss',
 })
 
-export class InicioComponent extends GeneralComponent{
+export class InicioComponent extends GeneralComponent {
 
 
   readonly dependientes = DEPENDIENTES;
@@ -94,17 +94,17 @@ export class InicioComponent extends GeneralComponent{
   registrosDocumentosEspecialidad: WritableSignal<TabNode[]> = signal([]);
 
   steps = [
-    { label: 'Información Personal', active: false },
-    { label: 'Documentos de escolaridad', active: false },
-    { label: 'Oferta laboral', active: false },
+    {label: 'Información Personal', active: false},
+    {label: 'Documentos de escolaridad', active: false},
+    {label: 'Oferta laboral', active: false},
   ];
 
   sustituto!: any;
   empleo!: any;
   institucionSeleccionada = true;
- // userData!: SesionUser;
+  // userData!: SesionUser;
 
-  dummies = [{ label: 'Dummie', value: 'Dummie' }, { label: 'Dummie 2', value: 'Dummie 2' }];
+  dummies = [{label: 'Dummie', value: 'Dummie'}, {label: 'Dummie 2', value: 'Dummie 2'}];
 
   sexos: TipoDropdown[] = [];
   estadosCiviles: TipoDropdown[] = [];
@@ -124,34 +124,31 @@ export class InicioComponent extends GeneralComponent{
 
 
   constructor(private readonly activatedRoute: ActivatedRoute) {
-
     super()
     this.userService.userData$.subscribe(user => this.userData = user);
-
     this.formRegistro = this.asignarFormularioRegistro();
     this.formZonaInteres = this.asignarFormularioZonaInteres();
     this.formDocumentosEspecialidad = this.asignarFormularioDocumentosEspecialidad();
     this.obtenerCatalogos();
     this.suscribirObservables();
-
-this.obtenerDatosContacto(this.userData?.idUsuario);
-this.obtenerDatosDocumento(this.userData?.idUsuario);
-this.obtenerDatosDomicilio(this.userData?.idUsuario);
-this.obtenerDatosFotografia(this.userData?.idUsuario);
-
+    this.obtenerDatosContacto(this.userData?.idUsuario);
+    this.obtenerDatosDocumento(this.userData?.idUsuario);
+    this.obtenerDatosDomicilio(this.userData?.idUsuario);
+    this.obtenerDatosFotografia(this.userData?.idUsuario);
   }
+
   asignarFormularioRegistro(): FormGroup {
     return this.fb.group({
       rfc: [],
 
       nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
-      fechaNacimiento: [{value: '', disabled:true}],
-      sexo: [{value: '', disabled:true}],
+      fechaNacimiento: [{value: '', disabled: true}],
+      sexo: [{value: '', disabled: true}],
       estadoCivil: [],
       dependientes: [],
-      hijos: [{value: '', disabled: true},[Validators.required, Validators.min(1)]],
-      otros: [{value: '', disabled: true},[Validators.required]],
-      correo: [{value: '', disabled:true}],
+      hijos: [{value: '', disabled: true}, [Validators.required, Validators.min(1)]],
+      otros: [{value: '', disabled: true}, [Validators.required]],
+      correo: [{value: '', disabled: true}],
 
       correoAdicional: [],
       telefonoCasa: [],
@@ -176,17 +173,17 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
 
   settearDatosUsuario(): void {
     this.userService.userData$.subscribe({next: (info) => this.userData = info});
-    const fecha = this.obtenerFechaNacimientoDeCURP(this.userData?.refCurp+'');
-    const sexo = this.obtenerSexoDeCurp(this.userData?.refCurp+'');
+    const fecha = this.obtenerFechaNacimientoDeCURP(this.userData?.refCurp + '');
+    const sexo = this.obtenerSexoDeCurp(this.userData?.refCurp + '');
     this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
     this.formRegistro.get('sexo')?.setValue(sexo);
-    this.formRegistro.get('correo')?.setValue(this.userData?.refEmail+'');
+    this.formRegistro.get('correo')?.setValue(this.userData?.refEmail + '');
   }
 
-  obtenerFechaNacimientoDeCURP(curp: string): Date{
+  obtenerFechaNacimientoDeCURP(curp: string): Date {
     let anio = parseInt(curp.substring(4, 6), 10).toString();
-    const mes = curp.substring(6,8);
-    const dia = curp.substring(8,10);
+    const mes = curp.substring(6, 8);
+    const dia = curp.substring(8, 10);
     anio.length == 1 ? anio = 20 + anio : anio = 19 + anio;
     return new Date(parseInt(anio, 10), parseInt(mes, 10) - 1, parseInt(dia, 10));
   }
@@ -201,8 +198,7 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
   }
 
   subscribirseACambioComponentes(): void {
-    this.formRegistro.get('dependientes')?.valueChanges.subscribe(value =>
-      {
+    this.formRegistro.get('dependientes')?.valueChanges.subscribe(value => {
         this.formRegistro.get('hijos')?.disable();
         this.formRegistro.get('otros')?.disable();
         this.formRegistro.get('hijos')?.patchValue(null);
@@ -210,10 +206,10 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
         this.formRegistro.get('hijos')?.reset;
         this.formRegistro.get('otros')?.reset;
 
-        if(this.formRegistro.get('dependientes')?.value === this.dependientes[1]){
+        if (this.formRegistro.get('dependientes')?.value === this.dependientes[1]) {
           this.formRegistro.get('hijos')?.enable();
         }
-        if(this.formRegistro.get('dependientes')?.value === this.dependientes[3]){
+        if (this.formRegistro.get('dependientes')?.value === this.dependientes[3]) {
           this.formRegistro.get('otros')?.enable();
         }
       }
@@ -287,8 +283,8 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
 
   asignarFormularioZonaInteres(): FormGroup {
     return this.fb.group({
-      ooad: [{ value: '', disabled: false }, [Validators.required]],
-      zonaInteres: [{ value: '', disabled: false }, [Validators.required]]
+      ooad: [{value: '', disabled: false}, [Validators.required]],
+      zonaInteres: [{value: '', disabled: false}, [Validators.required]]
     })
   }
 
@@ -306,17 +302,17 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
   }
 
   devolverTextoOoad(idOOAD: string): string {
-    const ooad =  this.ooad.find(element => idOOAD == element.value);
+    const ooad = this.ooad.find(element => idOOAD == element.value);
     return ooad?.label || "";
   }
 
   devolverTextoZonaInnteres(idZona: string): string {
-    const zona =  this.zonas.find(element => idZona == element.value);
+    const zona = this.zonas.find(element => idZona == element.value);
     return zona?.label || "";
   }
 
   obtenerCatalogos(): void {
-    this.activatedRoute.data.subscribe(({ respuesta }) => {
+    this.activatedRoute.data.subscribe(({respuesta}) => {
       const [sexos, estadosCiviles, paises, lugaresNacimiento] = respuesta;
       this.sexos = mapearArregloTipoDropdown(sexos.respuesta, 'desSexo', 'idSexo') ?? [];
       this.estadosCiviles = mapearArregloTipoDropdown(estadosCiviles.respuesta, 'desEstadoCivil', 'idEstadoCivil') ?? [];
@@ -331,7 +327,7 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
 
   eliminarZonaInteres(indice: number): void {
     const zonasActualizadas = [...this.zonasInteres().slice(0, indice),
-    ...this.zonasInteres().slice(indice + 1)];
+      ...this.zonasInteres().slice(indice + 1)];
     this.zonasInteres.update(() => zonasActualizadas);
   }
 
@@ -359,7 +355,7 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
     }
 
     // Si la especialidad ya existe, verificamos si el documento es un duplicado
-    const especialidadExistente = { ...especialidades[indiceEspecialidad] };
+    const especialidadExistente = {...especialidades[indiceEspecialidad]};
     const documentoYaExiste = especialidadExistente.documentos.some(doc => doc.tipoDocumento === nuevoDocumento.tipoDocumento);
 
     if (documentoYaExiste) {
@@ -372,7 +368,7 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
 
     const especialidadesActualizadas = [...especialidades.slice(0, indiceEspecialidad),
       especialidadExistente,
-    ...especialidades.slice(indiceEspecialidad + 1)
+      ...especialidades.slice(indiceEspecialidad + 1)
     ];
     this.registrosDocumentosEspecialidad.update(() => especialidadesActualizadas);
   }
@@ -386,13 +382,13 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
       return;
     }
 
-    const especialidadParaModificar = { ...especialidades[indiceEspecialidad] };
+    const especialidadParaModificar = {...especialidades[indiceEspecialidad]};
     const documentosActualizados = especialidadParaModificar.documentos.filter(d => d.tipoDocumento !== tipoDocumento);
 
     // Si la lista de documentos queda vacía, eliminamos la especialidad completa
     if (documentosActualizados.length === 0) {
       const especialidadesSinEspecialidad = [...especialidades.slice(0, indiceEspecialidad),
-      ...especialidades.slice(indiceEspecialidad + 1)
+        ...especialidades.slice(indiceEspecialidad + 1)
       ];
       this.registrosDocumentosEspecialidad.update(() => especialidadesSinEspecialidad);
     } else {
@@ -400,13 +396,14 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
       especialidadParaModificar.documentos = documentosActualizados;
       const especialidadesModificadas = [...especialidades.slice(0, indiceEspecialidad),
         especialidadParaModificar,
-      ...especialidades.slice(indiceEspecialidad + 1)
+        ...especialidades.slice(indiceEspecialidad + 1)
       ];
       this.registrosDocumentosEspecialidad.update(() => especialidadesModificadas);
     }
   }
 
   datosDocumento!: DatosDocumentoResponse;
+
   obtenerDatosDocumento(idusuario: number | undefined): void {
     if (!idusuario) return;
     this.loaderService.activar();
@@ -421,6 +418,7 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
 
 
   datosFoto!: FotografiaResponse;
+
   obtenerDatosFotografia(idusuario: number | undefined): void {
     if (!idusuario) return;
     this.loaderService.activar();
@@ -439,6 +437,7 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
   }
 
   datosContacto!: DatosContactoResponse;
+
   obtenerDatosContacto(idusuario: number | undefined): void {
     if (!idusuario) return;
     this.loaderService.activar();
@@ -457,8 +456,8 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
   }
 
 
-
   datosDomicilio!: DatosDomicilio;
+
   obtenerDatosDomicilio(idusuario: number | undefined): void {
     if (!idusuario) return;
     this.loaderService.activar();
@@ -487,8 +486,6 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
   }
 
 
-
-
   private setDatosDomicilio() {
     this.formRegistro.controls['codigoPostal'].setValue(this.datosDomicilio.datosResidenciaActual?.codigoPostal);
     this.formRegistro.controls['pais'].setValue(this.datosDomicilio.datosResidenciaActual?.pais);
@@ -507,7 +504,6 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
     this.formRegistro.controls['fechaNacimiento'].setValue(this.datosFoto.datosPersonales?.fecNacimiento);
     this.formRegistro.controls['sexo'].setValue(this.datosFoto.datosPersonales?.sexo?.desSexo);
     this.formRegistro.controls['estadoCivil'].setValue(this.datosFoto.datosPersonales?.estadoCivil?.desEstadoCivil);
-
 
 
   }
@@ -580,6 +576,7 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
     asentamiento.nomColonia = colonia?.label + '';
     this.datosDomicilio.datosResidenciaActual.colonia = asentamiento;
   }
+
   private saveFoto() {
     let fotografia = new FotografiaRequest();
     fotografia.datosPersonales = this.datosContacto.datosPersonales;
@@ -631,13 +628,13 @@ this.obtenerDatosFotografia(this.userData?.idUsuario);
   siguientePasoStepper(): void {
 
 
-   //
-   this.btnGuardar(this.indice());
-    if(this.indice() == 0){
-      if(this.formRegistro.invalid){
+    //
+    this.btnGuardar(this.indice());
+    if (this.indice() == 0) {
+      if (this.formRegistro.invalid) {
         this._alertServices.alerta(this._Mensajes.MSG023);
 
-      }else{
+      } else {
 
       }
     }
