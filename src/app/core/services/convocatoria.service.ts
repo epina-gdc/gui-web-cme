@@ -13,7 +13,7 @@ import { DataContacto, ContactoRequest, DatosContactoResponse } from '@models/da
 import { DataDomicilio, ResidenciaRequest } from '@models/datosDomicilio';
 import { GeneralComponent } from '../../components/general.component';
 import { AlertService } from './alert.service';
-import { DatosGeneralesRequest } from '@models/datosGenerales';
+import { dataGenerales, DatosGeneralesRequest } from '@models/datosGenerales';
 import { ResponseGeneral } from '@models/responseGeneral';
 
 @Injectable({
@@ -60,6 +60,16 @@ export class ConvocatoriaService {
         );
     }
 
+    getDatosGenerales(idUsuario: number): Observable<dataGenerales> {
+        return this.http.get<dataGenerales>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-generales/${idUsuario}`, { headers: this.header }).pipe(
+            catchError(this.handleError),
+            map((response: dataGenerales) => {
+                return response;
+            })
+        );
+    }
+
+
     getDatosContacto(idUsuario: number): Observable<any> {
         return this.http.get<DataContacto>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-contacto/${idUsuario}`, { headers: this.header }).pipe(
             catchError(this.handleError),
@@ -98,14 +108,7 @@ export class ConvocatoriaService {
         );
     }
 
-    getDatosGenerales(idUsuario: number): Observable<any> {
-        return this.http.get<any>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-generales/${idUsuario}`, { headers: this.header }).pipe(
-            catchError(this.handleError),
-            map((response: any) => {
-                return response;
-            })
-        );
-    }
+
 
     getVerificacionAspirante(idUsuario: number): Observable<any> {
         return this.http.get<any>(`${this.serverEndPointURLConvocatoria}/verificacion/aspirante/${idUsuario}`, { headers: this.header }).pipe(
