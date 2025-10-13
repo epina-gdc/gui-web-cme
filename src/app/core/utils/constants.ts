@@ -6,7 +6,7 @@ export const DEPENDIENTES = [
 ]
 
 export const BOOLEAN_OPCIONES = [
-  { name: 'Si', key: 'true' },
+  { name: 'Sí', key: 'true' },
   { name: 'No', key: 'false' }
 ]
 
