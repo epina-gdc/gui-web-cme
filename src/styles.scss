@@ -186,4 +186,10 @@
     color: #fff;
   }
 
+  .icon-white .p-button-text:not(:disabled):hover {
+    background: #41ABCA;
+    border-color: transparent;
+    color: #fff;
+  }
+
 }
