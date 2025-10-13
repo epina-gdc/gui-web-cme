@@ -11,7 +11,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {HttpErrorResponse} from '@angular/common/http';
 
 import {CommonModule} from '@angular/common';
-import {CatPaisResponse, CatSubperfil, CatSubperfilResponse, Pais} from '@models/catalogoGeneral';
+import {CatPaisResponse, CatSubperfil, CatSubperfilResponse, CatPais} from '@models/catalogoGeneral';
 import {
   RegistroCurpRequest,
   RegistroInternoRequest,
@@ -47,7 +47,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   strTitulo!: string;
   medico!: RegistroMedico;
   lstModalidad!: Array<CatSubperfil>;
-  lstPais!: Array<Pais>;
+  lstPais!: Array<CatPais>;
 
   ruta: string = '';
 
@@ -110,7 +110,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
   getCatalogoPais(): void {
-    this.lstPais = new Array<Pais>();
+    this.lstPais = new Array<CatPais>();
     this._CatalogoGenService.getLstPais().subscribe((response: CatPaisResponse) => {
       if (response.exito) {
         this.lstPais = response.respuesta;

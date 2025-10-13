@@ -1,11 +1,10 @@
 export class OOAD{
     
         idOoad!:number;
-    
+        desOoad!: string;
+        cveOoad!: string;
 }
 
 
 
-export class InteresOoads{
-    ooad!: Array<OOAD>
-}
+
