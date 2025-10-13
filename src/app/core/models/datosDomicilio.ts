@@ -43,6 +43,7 @@ export class Pais{
     idPais!: number;
     cvePais!: string;
     desPais!: string;
+    nomPaisNacimiento!: string;
 }
 
 export class Estado{
