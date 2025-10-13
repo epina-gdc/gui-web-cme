@@ -137,14 +137,14 @@
               <label class="field-label" for="paisNacimiento">País de nacimiento</label>
             </div>
             <p-select [options]="paises" formControlName="paisNacimiento" optionLabel="label"
-                      placeholder="Ingresa País de nacimiento" class="w-full"/>
+            filterBy="label" [filter]="true"    placeholder="Ingresa País de nacimiento" class="w-full"/>
           </div>
           <div class="col-3">
             <div class="flex justify-content-between">
               <label class="field-label" for="estadoNacimiento">Estado de origen (nacimiento)</label>
             </div>
             <p-select [options]="lugaresNacimiento" formControlName="estadoNacimiento" optionLabel="label"
-                      placeholder="Ingresa estado de origen" class="w-full"/>
+            filterBy="label" [filter]="true"   placeholder="Ingresa estado de origen" class="w-full"/>
           </div>
         </article>
       </p-card>
@@ -214,7 +214,7 @@
         <div class="flex align-items-center gap-4 px-2 py-4">
           <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
           <em class="info-em-texto">Queremos conocer tu interés, elige tres opciones
-            para estar en posibilidad de prindarle una mejor oferta laboral</em>
+            para estar en posibilidad de brindarte una mejor oferta laboral</em>
         </div>
         <form [formGroup]="formZonaInteres" class="mb-4">
           <article class="flex flex-row">

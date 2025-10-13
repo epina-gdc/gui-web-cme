@@ -1,7 +1,9 @@
-import {CatPerfil, CatSubperfil} from "./catalogoGeneral";
-import {EstadoCivil} from "./estadoCivil";
-import {LugarNacimiento} from "./lugarNacimiento";
-import {Sexo} from "./sexo";
+
+import { CatPerfil, CatSubperfil } from "./catalogoGeneral";
+import { Estado, Pais } from "./datosDomicilio";
+import { EstadoCivil } from "./estadoCivil";
+
+import { Sexo } from "./sexo";
 
 export class DatosPersonales{
     idUsuario!: number;
@@ -14,14 +16,14 @@ export class DatosPersonales{
     refRfc!: string;
     refNss!: string;
     fecNacimiento!: string;
-    paisNacimiento!: number;
+    paisNacimiento!: Pais;
     sexo!: Sexo;
-    lugarNacimiento!: LugarNacimiento;
+    lugarNacimiento!: Estado;
     estadoCivil!: EstadoCivil;
     refPasaporte!: string;
     perfil!: CatPerfil;
     subperfil!: CatSubperfil;
 
-
+   
 }
 
