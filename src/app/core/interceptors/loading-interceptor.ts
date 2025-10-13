@@ -1,7 +1,7 @@
-import type { HttpEvent, HttpHandler, HttpInterceptor, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { Observable, finalize } from 'rxjs';
+import type {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {NgxSpinnerService} from 'ngx-spinner';
+import {finalize, Observable} from 'rxjs';
 
 @Injectable()
 export class loadingInterceptor implements HttpInterceptor {
@@ -10,12 +10,12 @@ export class loadingInterceptor implements HttpInterceptor {
 
   private excludeService: Array<string> = [
     '/v1/refreshToken',
-    
+
   ];
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-      
-      
+
+
     if (this.isServiceExcluded(request.url) === false) {
       this.count++;
       this.spinner.show();
@@ -34,10 +34,10 @@ export class loadingInterceptor implements HttpInterceptor {
     }
   }
 
-  
+
   private isServiceExcluded(url: string): boolean {
     const found = this.excludeService.filter((service:any) => {
-      
+
       if (url.includes(service)) {
         return service;
       }

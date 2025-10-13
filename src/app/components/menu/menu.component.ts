@@ -5,7 +5,6 @@ import {SesionUser} from '@models/sesion-user.interface';
 import {UserService} from '@services/user.service';
 import {SpeedDial} from 'primeng/speeddial';
 import {MenuItem, PrimeTemplate} from 'primeng/api';
-import { AuthService } from '@services/auth.service';
 
 @Component({
   selector: 'app-menu',

@@ -7,7 +7,7 @@ import {CatalogosGeneralesService} from "@services/catalogos-generales.service";
 import {RegistroMedicoService} from "@services/registro-medico.service";
 
 import {AlertService} from "@services/alert.service";
-import { AuthService } from "@services/auth.service";
+import {AuthService} from "@services/auth.service";
 
 
 @Component({

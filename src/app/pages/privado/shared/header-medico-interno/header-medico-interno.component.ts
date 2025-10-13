@@ -1,6 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {IconCardComponent} from "../../../../components/icon-card/icon-card.component";
-import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
 import {AuthService} from '@services/auth.service';
 
@@ -15,7 +14,7 @@ import {AuthService} from '@services/auth.service';
 export class HeaderMedicoInternoComponent implements OnInit {
   authService = inject(AuthService);
   userData: SesionUser | null = null;
-  
+
   fechaActual = new Date();
 
   ngOnInit() {

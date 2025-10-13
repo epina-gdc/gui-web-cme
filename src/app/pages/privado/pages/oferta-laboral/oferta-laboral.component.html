@@ -44,7 +44,7 @@
     </p-card>
   </div>
   <div class="col flex flex-column gap-4">
-    @if (activeTab() === 0) {
+    @if ([0,1].includes(activeTab())) {
       <p-card class="empty-border">
         <form [formGroup]="formTablero">
           <div class="flex flex-wrap flex-row">
@@ -93,7 +93,11 @@
       <p-card class="empty-border">
         <div class="flex flex-wrap">
           <div class="col-4">
-            <kpi-card encabezado="Total de ofertas" descripcion="180" icono="cme-deals" bg_color="#9ce2c2"></kpi-card>
+            @if(activeTab() === 0) {
+              <kpi-card encabezado="Total de ofertas" descripcion="180" icono="cme-deals" bg_color="#9ce2c2"></kpi-card>
+            } @else {
+              <kpi-card encabezado="Total de favoritos" descripcion="4" icono="cme-fav" bg_color="#ffdf7f"></kpi-card>
+            }
           </div>
           <div class="col-4">
             <kpi-card encabezado="Nuevos hospitales" descripcion="12" icono="cme-hospital"

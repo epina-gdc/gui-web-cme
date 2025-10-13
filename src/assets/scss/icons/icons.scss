@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src: url('../../../../public/assets/fonts/icomoon.eot?9xtmdr');
-  src: url('../../../../public/assets/fonts/icomoon.eot?9xtmdr#iefix') format('embedded-opentype'),
-  url('../../../../public/assets/fonts/icomoon.ttf?9xtmdr') format('truetype'),
-  url('../../../../public/assets/fonts/icomoon.woff?9xtmdr') format('woff'),
-  url('../../../../public/assets/fonts/icomoon.svg?9xtmdr#icomoon') format('svg');
+  src: url('../../../../public/assets/fonts/icomoon.eot?fp71jw');
+  src: url('../../../../public/assets/fonts/icomoon.eot?fp71jw#iefix') format('embedded-opentype'),
+  url('../../../../public/assets/fonts/icomoon.ttf?fp71jw') format('truetype'),
+  url('../../../../public/assets/fonts/icomoon.woff?fp71jw') format('woff'),
+  url('../../../../public/assets/fonts/icomoon.svg?fp71jw#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,6 +25,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.cme-sedes:before {
+  content: "\e914";
+}
 .cme-quest:before {
   content: "\e911";
 }
