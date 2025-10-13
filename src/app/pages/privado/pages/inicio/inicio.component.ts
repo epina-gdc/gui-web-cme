@@ -30,12 +30,10 @@ import {ContactoRequest, DataContacto, DatosContactoResponse} from '@models/dato
 import {DatosDocumentoResponse} from '@models/datosDocumento';
 import {finalize} from 'rxjs';
 import {GeneralComponent} from '../../../../components/general.component';
-import {AuthService} from '@services/auth.service';
 import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
 import {DataDomicilio, DatosDomicilio, Residencia, ResidenciaRequest} from '@models/datosDomicilio';
 import {ResponseGeneral} from '@models/responseGeneral';
-import {HttpErrorResponse} from '@angular/common/http';
 import {Colonia} from '@models/colonia';
 
 import {DataFotografia, FotografiaRequest, FotografiaResponse} from '@models/fotografia';

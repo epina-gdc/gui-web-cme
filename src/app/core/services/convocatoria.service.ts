@@ -1,19 +1,16 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { environment } from '@env/environment.development';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
-import { SolicitudCambioContrasenia } from '@models/solicitud-cambio-contrasenia.interface';
-import { CambioContrasenia } from '@models/cambio-contrasenia.interface';
-import { AspiranteRequest, InteresLaboralRequest } from '@models/aspirante';
-import { DataFotografia, FotografiaRequest } from '@models/fotografia';
-import { DatosDocumentoResponse } from '@models/datosDocumento';
-import { DataContacto, ContactoRequest, DatosContactoResponse } from '@models/datosContacto';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {inject, Injectable} from '@angular/core';
+import {environment} from '@env/environment.development';
+import {Observable, throwError} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
+import {AspiranteRequest, InteresLaboralRequest} from '@models/aspirante';
+import {DataFotografia, FotografiaRequest} from '@models/fotografia';
+import {DatosDocumentoResponse} from '@models/datosDocumento';
+import {ContactoRequest, DataContacto} from '@models/datosContacto';
 
-import { DataDomicilio, ResidenciaRequest } from '@models/datosDomicilio';
-import { GeneralComponent } from '../../components/general.component';
-import { AlertService } from './alert.service';
-import { DatosGeneralesRequest } from '@models/datosGenerales';
+import {DataDomicilio, ResidenciaRequest} from '@models/datosDomicilio';
+import {AlertService} from './alert.service';
+import {DatosGeneralesRequest} from '@models/datosGenerales';
 
 @Injectable({
     providedIn: 'root'
@@ -124,7 +121,7 @@ export class ConvocatoriaService {
             })
         );
     }
-    
+
     guardarDatosGenerales(aspirante: DatosGeneralesRequest): Observable<any> {
         let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-generales'`;
         return this.http.post<any>(ruta, aspirante, { headers: this.header }).pipe(
@@ -208,7 +205,7 @@ export class ConvocatoriaService {
          //   this._alertServices.error("Error "+error.status +'. Contácte al administrador');
             console.log("Error " + error.status + '. Endpoint: ' + error.url + '. Contácte al administrador');
             // Return an observable with a user-facing error message.
-          
+
         }
         return throwError(error);
     }

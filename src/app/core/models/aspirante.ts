@@ -1,9 +1,7 @@
-import { CatPerfil, CatSubperfil } from "./catalogoGeneral";
-import { DatosPersonales } from "./datosPersonales";
-import { InteresEspecialidad } from "./especialidad";
-import { InteresOoads, OOAD } from "./ooad";
-import { Sexo } from "./sexo";
-import { InteresZona } from "./zona";
+import {DatosPersonales} from "./datosPersonales";
+import {InteresEspecialidad} from "./especialidad";
+import {InteresOoads} from "./ooad";
+import {InteresZona} from "./zona";
 
 export class AspiranteRequest {
     idUsuarioAspirante!: number;

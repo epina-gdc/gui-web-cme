@@ -3,13 +3,11 @@ import {UserService} from './user.service';
 import {SesionUser} from '@models/sesion-user.interface';
 import {Payload} from '@models/payload.interface';
 import {Router} from '@angular/router';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {environment} from '@env/environment.development';
 import {Login} from '@models/login';
 import {BehaviorSubject, map, Observable, tap} from 'rxjs';
-import {SolicitudCambioContrasenia} from '@models/solicitud-cambio-contrasenia.interface';
-import {CambioContrasenia} from '@models/cambio-contrasenia.interface';
 import {CME_TOKEN} from "../../utils/constantes";
 
 @Injectable({

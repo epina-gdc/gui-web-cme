@@ -1,12 +1,12 @@
-import {  EstatusVerificacion } from "./aspirante"
-import { DatosPersonales } from "./datosPersonales";
+import {EstatusVerificacion} from "./aspirante"
+import {DatosPersonales} from "./datosPersonales";
 
 export class DatosDocumentoResponse {
 
     participacion!: Participacion;
     datosPersonales!:DatosPersonales;
     documentosCargados!:Array<DatosDocumento>;
- 
+
 
 }
 
@@ -19,11 +19,11 @@ export class Participacion{
 }
 
 export class ResultadoVerificacion{
-    
+
         idResultadoVerificacion!: number;
         estatusVerificacion!:EstatusVerificacion;
         refObservaciones!: string;
-    
+
 }
 
 export class DatosDocumento{

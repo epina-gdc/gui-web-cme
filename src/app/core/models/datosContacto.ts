@@ -1,7 +1,7 @@
-import { Participacion } from "./datosDocumento";
-import { DatosPersonales } from "./datosPersonales";
-import { LugarNacimiento } from "./lugarNacimiento";
-import { ResponseGeneral } from "./responseGeneral";
+import {Participacion} from "./datosDocumento";
+import {DatosPersonales} from "./datosPersonales";
+import {LugarNacimiento} from "./lugarNacimiento";
+import {ResponseGeneral} from "./responseGeneral";
 
 export class ContactoRequest{
     datosPersonales!: DatosPersonales;
@@ -23,7 +23,7 @@ export class DatosContactoResponse {
     participacion!: Participacion;
     datosPersonales!:DatosPersonales;
     datosContacto!: DatosContacto;
-   
+
 }
 
 export class DataContacto extends ResponseGeneral{

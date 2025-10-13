@@ -1,10 +1,7 @@
-
-import { Participacion } from "./datosDocumento";
-import { ResponseGeneral } from "./responseGeneral";
-import { Colonia } from "./colonia";
-import { DatosPersonales } from "./datosPersonales";
-
-
+import {Participacion} from "./datosDocumento";
+import {ResponseGeneral} from "./responseGeneral";
+import {Colonia} from "./colonia";
+import {DatosPersonales} from "./datosPersonales";
 
 
 export class DatosDomicilio {
@@ -26,7 +23,7 @@ export class Residencia {
     pais!: number;
     estado!: number;
     municipio!: number;
-    
+
     calle!: string;
     numeroExterior!: string;
 }
