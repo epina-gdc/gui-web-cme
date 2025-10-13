@@ -14,6 +14,7 @@ import { DataDomicilio, ResidenciaRequest } from '@models/datosDomicilio';
 import { GeneralComponent } from '../../components/general.component';
 import { AlertService } from './alert.service';
 import { DatosGeneralesRequest } from '@models/datosGenerales';
+import { ResponseGeneral } from '@models/responseGeneral';
 
 @Injectable({
     providedIn: 'root'
@@ -126,7 +127,7 @@ export class ConvocatoriaService {
     }
     
     guardarDatosGenerales(aspirante: DatosGeneralesRequest): Observable<any> {
-        let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-generales'`;
+        let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-generales`;
         return this.http.post<any>(ruta, aspirante, { headers: this.header }).pipe(
             catchError(this.handleError),
             map((response: any) => {
@@ -202,11 +203,11 @@ export class ConvocatoriaService {
 
     }
 
-    private handleError(error: HttpErrorResponse) {
+    private handleError(error: ResponseGeneral) {
 
-        if (error.status) {
-         //   this._alertServices.error("Error "+error.status +'. Contácte al administrador');
-            console.log("Error " + error.status + '. Endpoint: ' + error.url + '. Contácte al administrador');
+        if (!error.exito) {
+            this._alertServices.error("Error: " + error.mensaje?error.mensaje: '. Contácte al administrador');
+            console.log("Error: " + error.mensaje?error.mensaje: '. Contácte al administrador');
             // Return an observable with a user-facing error message.
           
         }

@@ -1,6 +1,8 @@
+
 import { Participacion } from "./datosDocumento";
+import { Estado, Pais } from "./datosDomicilio";
 import { DatosPersonales } from "./datosPersonales";
-import { LugarNacimiento } from "./lugarNacimiento";
+
 import { ResponseGeneral } from "./responseGeneral";
 
 export class ContactoRequest{
@@ -13,8 +15,8 @@ export class DatosContacto{
     refTelefonoCasa!: string;
     refTelefonoCelular!: string;
     refEmail!: string;
-    paisNacimiento: any;
-    lugarNacimiento!: LugarNacimiento;
+    paisNacimiento!: Pais;
+    lugarNacimiento!: Estado;
 }
 
 

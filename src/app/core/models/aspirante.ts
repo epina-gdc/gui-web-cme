@@ -1,9 +1,9 @@
 import { CatPerfil, CatSubperfil } from "./catalogoGeneral";
 import { DatosPersonales } from "./datosPersonales";
 import { InteresEspecialidad } from "./especialidad";
-import { InteresOoads, OOAD } from "./ooad";
+import {  OOAD } from "./ooad";
 import { Sexo } from "./sexo";
-import { InteresZona } from "./zona";
+import {  Zona } from "./zona";
 
 export class AspiranteRequest {
     idUsuarioAspirante!: number;
@@ -22,15 +22,18 @@ export class EstatusVerificacion {
 export class InteresLaboralRequest {
     datosPersonales!: DatosPersonales;
     interesEspecialidad!: InteresEspecialidad;
-    interesOoads!: InteresOoads;
-    interesZonas!: InteresZona;
+    interesOoads!: OOAD;
+    interesZonas!:  Array<Zona>;
 
 }
 
 
 export class InteresLaboral{
-    ooad!: InteresOoads;
-    zona!: InteresZona;
+    idOoad!: number;
+    desOoad!: string;
+    cveOoad!: string;
+    desZona!: string;
+    cveZona!: string;
 }
 
 

@@ -9,7 +9,7 @@ import {provideAnimations} from '@angular/platform-browser/animations';
 import {Mensajes} from '@utils/mensajes';
 import {ApiKeyInterceptor} from '@interceptors/api-key.interceptor';
 import {JwtInterceptorService} from '@interceptors/autentication.interceptor';
-import { loadingInterceptor } from '@interceptors/loading-interceptor';
+import {loadingInterceptor} from '@interceptors/loading-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [Mensajes,
