@@ -9,6 +9,10 @@ import {Button} from 'primeng/button';
 import {NgClass} from '@angular/common';
 import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {DetalleOfertaLaboralComponent} from '@privado/detalle-oferta-laboral/detalle-oferta-laboral.component';
+import {FooterMedicoComponent} from '@pages/privado/shared/footer-medico/footer-medico.component';
+import {
+  HeaderMedicoDetalleOfertaComponent
+} from '@pages/privado/shared/header-medico-detalle-oferta/header-medico-detalle-oferta.component';
 
 @Component({
   selector: 'app-oferta-laboral',
@@ -92,8 +96,10 @@ export class OfertaLaboralComponent {
         '640px': '90vw'
       },
       templates: {
-
-      }
+        footer: FooterMedicoComponent,
+        header: HeaderMedicoDetalleOfertaComponent
+      },
+      styleClass: 'oferta-detail'
 
     });
   }
