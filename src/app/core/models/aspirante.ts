@@ -29,12 +29,14 @@ export class InteresLaboralRequest {
 
 
 export class InteresLaboral{
-    idInteresOoadZona!: number;
-    idOoad!: number;
+    idInteresOoadZona?: number;
+    idOoad?: number;
     desOoad!: string;
     cveOoad!: string;
     desZona!: string;
     cveZona!: string;
+    ooad?:number;
+    zonaInteres?:number;
 }
 
 

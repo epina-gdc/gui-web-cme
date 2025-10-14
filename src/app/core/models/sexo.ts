@@ -1,4 +1,4 @@
 export class Sexo{
     idSexo!: number;
-    desSexo!: string;
+    desSexo?: string;
 }

@@ -468,7 +468,7 @@ export class InicioComponent extends GeneralComponent {
   datosGenerales!: DatosGeneralesResponse;
   obtenerDatosGenerales(idusuario: number | undefined): void {
     if (!idusuario) return;
-    this.loaderService.activar();
+    
     console.log("usuario a buscar: ", idusuario);
     this._ConvocatoriaService.getDatosGenerales(idusuario).pipe(
 
@@ -496,15 +496,27 @@ export class InicioComponent extends GeneralComponent {
 
 
   private setDatosGenerales() {
-    this.formRegistro.controls['correo'].setValue(this.datosGenerales.datosContacto.refEmail);
-    this.formRegistro.controls['correoAdicional'].setValue(this.datosGenerales.datosContacto.refCorreoAdicional);
-    this.formRegistro.controls['telefonoCasa'].setValue(this.datosGenerales.datosContacto.refTelefonoCasa);
-    this.formRegistro.controls['telefonoCelular'].setValue(this.datosGenerales.datosContacto.refTelefonoCelular);
-    debugger
-    this.formRegistro.get('paisNacimiento')?.patchValue(this.datosGenerales.datosPersonales.paisNacimiento?.idPais);
-    this.formRegistro.get('estadoNacimiento')?.patchValue(this.datosGenerales.datosPersonales.lugarNacimiento?.idLugarNacimiento);
+
+    if (this.datosGenerales.datosContacto) {
+      this.formRegistro.controls['correo'].setValue(this.datosGenerales.datosContacto.refEmail);
+      this.formRegistro.controls['correoAdicional'].setValue(this.datosGenerales.datosContacto.refCorreoAdicional);
+      this.formRegistro.controls['telefonoCasa'].setValue(this.datosGenerales.datosContacto.refTelefonoCasa);
+      this.formRegistro.controls['telefonoCelular'].setValue(this.datosGenerales.datosContacto.refTelefonoCelular);
+    }
 
 
+    if (this.datosGenerales.datosPersonales) {
+      this.formRegistro.controls['rfc'].setValue(this.datosGenerales.datosPersonales?.refRfc);
+      this.formRegistro.controls['nss'].setValue(this.datosGenerales.datosPersonales?.refNss);
+     
+        this.formRegistro.get('estadoCivil')?.patchValue(this.datosGenerales.datosPersonales?.estadoCivil?.idEstadoCivil);
+        this.formRegistro.get('paisNacimiento')?.patchValue(this.datosGenerales.datosPersonales.paisNacimiento?.idPais);
+        this.formRegistro.get('estadoNacimiento')?.patchValue(this.datosGenerales.datosPersonales.lugarNacimiento?.idLugarNacimiento);
+
+
+    }
+
+    if (this.datosGenerales.datosResidenciaActual) {
 
     //domicilio
     this.formRegistro.controls['codigoPostal'].setValue(this.datosGenerales.datosResidenciaActual?.colonia?.refCodigoPostal);
@@ -516,45 +528,45 @@ export class InicioComponent extends GeneralComponent {
 
     this.formRegistro.controls['calle'].setValue(this.datosGenerales.datosResidenciaActual?.nomCalle);
     this.formRegistro.controls['numeroExterior'].setValue(this.datosGenerales.datosResidenciaActual?.refNumero);
-
+    }
     //foto
-    this.formRegistro.controls['rfc'].setValue(this.datosGenerales.datosPersonales?.refRfc);
-    this.formRegistro.controls['nss'].setValue(this.datosGenerales.datosPersonales?.refNss);
-    this.formRegistro.get('estadoCivil')?.patchValue(this.datosGenerales.datosPersonales?.estadoCivil.idEstadoCivil);
+
+
 
     if (this.datosGenerales.dependientes?.indPadres == 1 && this.datosGenerales.dependientes?.refCantidadHijos == null) {
       this.formRegistro.get('dependientes')?.setValue(this.dependientes[0]);
-    }else{
+    } else {
       this.formRegistro.get('dependientes')?.setValue(this.dependientes[1]);
     }
 
-    if (this.datosGenerales.dependientes?.indConyuge == 1 ) {
-      this.formRegistro.get('dependientes')?.setValue( this.dependientes[2] );
+    if (this.datosGenerales.dependientes?.indConyuge == 1) {
+      this.formRegistro.get('dependientes')?.setValue(this.dependientes[2]);
     }
-    if(this.datosGenerales.dependientes?.refOtro != null){
-      this.formRegistro.get('dependientes')?.setValue( this.dependientes[3] );
+    if (this.datosGenerales.dependientes?.refOtro != null) {
+      this.formRegistro.get('dependientes')?.setValue(this.dependientes[3]);
     }
     this.subscribirseACambioComponentes();
     this.formRegistro.get('hijos')?.setValue(this.datosGenerales.dependientes?.refCantidadHijos);
     this.formRegistro.get('otros')?.setValue(this.datosGenerales.dependientes?.refOtro);
-    let  lst =[];
+    let lst = [];
 
-for(let zona of this.datosGenerales.zonasInteresLaboral){
-  let z = {
-    idInteresOoadZona: zona.idInteresOoadZona,
-    cveOoad: zona.cveOoad,
-    desOoad: zona.desOoad,
-    cveZona: zona.cveZona,
-    desZona: zona.desZona,
-    ooad: zona.cveOoad,
-    zonaInteres: zona.cveZona
+
+    if (this.datosGenerales.zonasInteresLaboral) {
+
+      const zonasInteresLaboral = this.datosGenerales.zonasInteresLaboral.map((zona:InteresLaboral) =>({ 
+        idInteresOoadZona: zona.idInteresOoadZona,
+        cveOoad: zona.cveOoad,
+        desOoad: zona.desOoad,
+        cveZona: zona.cveZona,
+        desZona: zona.desZona,
+        ooad: zona.cveOoad,
+        zonaInteres: zona.cveZona
+      }));
+
+  
+    this.zonasInteres.set(zonasInteresLaboral);
 
   }
-  lst.push(z);
-}
-this.zonasInteres.set(lst);
-
-
 
 
 
@@ -567,31 +579,36 @@ this.zonasInteres.set(lst);
 
 
   private saveContacto(): DatosContacto {
-    let contacto = this.datosGenerales.datosContacto;
+    let contacto = {...this.datosGenerales.datosContacto}
     contacto.refCorreoAdicional = this.formRegistro.controls['correoAdicional'].value;
     contacto.refTelefonoCasa = this.formRegistro.controls['telefonoCasa'].value;
     contacto.refTelefonoCelular = this.formRegistro.controls['telefonoCelular'].value;
-    let pais = new Pais();
-    pais.nomPaisNacimiento = this.paisNacimientoSeleccionado.label;
-    pais.idPais = this.paisNacimientoSeleccionado.value;
-    contacto.paisNacimiento =pais;
-    let estado = new Estado();
-    estado.idLugarNacimiento = this.estadoNacimientoSeleccionado.value
-    contacto.lugarNacimiento = estado;
-    
+    let pais:Pais ={
+      nomPaisNacimiento: this.paisNacimientoSeleccionado.label,
+      idPais: this.paisNacimientoSeleccionado.value,
+      cvePais: '',
+      desPais: ''
+    }
+    contacto.paisNacimiento = pais;
+    let estado :Estado ={
+      idLugarNacimiento: this.estadoNacimientoSeleccionado.value,
+      idEstado: 0,
+      desEstado: ''
+    }
 
+    contacto.lugarNacimiento = estado;
 
     return contacto;
   }
 
   private saveDomicilio(): Residencia {
- let residencia = new Residencia();
-  
+    let residencia = new Residencia();
+
 
     let idColonia = this.formRegistro.controls['colonia'].value;
-  residencia.colonia=  this.obtenerColonia(idColonia);
-   residencia.nomCalle = this.formRegistro.controls['calle'].value;
-   residencia.refNumero = this.formRegistro.controls['numeroExterior'].value;
+    residencia.colonia = this.obtenerColonia(idColonia);
+    residencia.nomCalle = this.formRegistro.controls['calle'].value;
+    residencia.refNumero = this.formRegistro.controls['numeroExterior'].value;
 
     return residencia;
   }
@@ -601,8 +618,8 @@ this.zonasInteres.set(lst);
     let dependientes = new Dependientes();
     let d = this.formRegistro.controls['dependientes'].value;
 
-    dependientes.indConyuge = d.key === 'P' ? 1 : 0;
-    dependientes.indPadres = d.key === 'A' ? 1 : 0;
+    dependientes.indConyuge = d.key == 'P' ? 1 : 0;
+    dependientes.indPadres = d.key == 'A' ? 1 : 0;
     dependientes.refCantidadHijos = this.formRegistro.controls['hijos'].value;
     dependientes.refOtro = this.formRegistro.controls['otros'].value;
 
@@ -615,22 +632,21 @@ this.zonasInteres.set(lst);
     datos.datosPersonales = this.saveFoto();
     datos.dependientes = this.saveDependientes();
 
-    let zil = new InteresLaboral();
+  
 
-    datos.zonasInteresLaboral = new Array<InteresLaboral>();
+  //  datos.zonasInteresLaboral = new Array<InteresLaboral>();
 
-    // datos.zonasInteresLaboral= this.zonasInteres();
-
+  
+    const zonasInteresLaboral = this.zonasInteres().map((reg:InteresLaboral) =>({ 
+      cveOoad: reg.ooad+'',
+      desOoad : this.devolverTextoOoad(reg.ooad+''),
+      desZona :this.devolverTextoZonaInnteres(reg.zonaInteres+''),
+      cveZona: reg.zonaInteres+''
+    }));
     
-    for (let reg of this.zonasInteres()) {
-      let zil1 = new InteresLaboral();
+      datos.zonasInteresLaboral=zonasInteresLaboral;
 
-      zil1.cveOoad = reg.ooad ;
-      zil1.desOoad =this.devolverTextoOoad(reg.ooad);
-      zil1.desZona =this.devolverTextoZonaInnteres( reg.zonaInteres);
-      zil1.cveZona = reg.zonaInteres;
-      datos.zonasInteresLaboral.push(zil1)
-    }
+
     this._ConvocatoriaService.guardarDatosGenerales(datos).subscribe({
       next: (data: ResponseGeneral) => {
 
@@ -650,37 +666,39 @@ this.zonasInteres.set(lst);
 
   }
 
-  private obtenerColonia(idColonia: number):Colonia {
+  private obtenerColonia(idColonia: number): Colonia {
 
     let colonia = this.colonias.find(x => x.value == idColonia);
-    let asentamiento = new Colonia();
-    asentamiento.idColonia = parseInt(colonia?.value + '');
-    asentamiento.nomColonia = colonia?.label + '';
-    asentamiento.refCodigoPostal = '' + this.formRegistro.controls['codigoPostal'].value;
-    return asentamiento;
+    return {
+    idColonia : parseInt(colonia?.value + ''),
+    nomColonia : colonia?.label + '',
+    refCodigoPostal : '' + this.formRegistro.controls['codigoPostal'].value
+    }
+
   }
   private saveFoto(): DatosPersonales {
     let fotografia = new FotografiaRequest();
     fotografia.datosPersonales = this.datosGenerales.datosPersonales;
 
-    fotografia.datosPersonales = this.datosGenerales.datosPersonales;
-    fotografia.datosPersonales.sexo = new Sexo();
+    
+    
     fotografia.datosPersonales.estadoCivil = new EstadoCivil();
     fotografia.datosPersonales.estadoCivil.idEstadoCivil = parseInt(this.estadoCilvilSeleccionado.value.toString());
 
-    let fecha = this.formRegistro.controls['fechaNacimiento'].value;
-    let fechaFormateada = moment(fecha, "DD/MM/YYYY").format('DD/MM/YYYY');
+    
+    let fechaFormateada = moment(this.formRegistro.controls['fechaNacimiento'].value, "DD/MM/YYYY").format('DD/MM/YYYY');
 
     fotografia.datosPersonales.refRfc = this.formRegistro.controls['rfc'].value;
     fotografia.datosPersonales.refNss = this.formRegistro.controls['nss'].value;
     fotografia.datosPersonales.fecNacimiento = fechaFormateada;
     let sexo = this.formRegistro.controls['sexo'].value;
-    let sex = new Sexo();
-    sex.idSexo = sexo.value;
+    let sex:Sexo = {
+    idSexo : sexo.value,
+    }
     fotografia.datosPersonales.sexo = sex;
 
 
-    fotografia.datosPersonales = fotografia.datosPersonales;
+    
 
     return fotografia.datosPersonales;
   }
@@ -706,12 +724,12 @@ this.zonasInteres.set(lst);
     //
     switch (this.indice()) {
       case 0:
-        if (this.formRegistro.invalid){
+        if (this.formRegistro.invalid) {
           this._alertServices.alerta(this._Mensajes.MSG023);
         }
-         return this.btnGuardar(this.indice());
+        return this.btnGuardar(this.indice());
 
-        
+
 
         break;
 
