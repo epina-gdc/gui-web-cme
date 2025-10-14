@@ -38,7 +38,6 @@ import {Colonia} from '@models/colonia';
 
 import {FotografiaRequest, FotografiaResponse} from '@models/fotografia';
 import {DatosPersonales} from '@models/datosPersonales';
-import {Sexo} from '@models/sexo';
 import {Dependientes} from '@models/dependiente';
 
 import {OnlyNumbersDirective} from '@directives/only-numbers.directive';
