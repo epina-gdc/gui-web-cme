@@ -1,20 +1,20 @@
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Component, OnInit, ViewChild, WritableSignal, inject, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import { Card } from 'primeng/card';
-import { SelectModule } from 'primeng/select';
-import { InputText } from 'primeng/inputtext';
-import { PaginatorModule } from 'primeng/paginator';
-import { ConfirmPopupModule } from 'primeng/confirmpopup';
-import { TableModule } from 'primeng/table';
-import { Popover, PopoverModule } from 'primeng/popover';
-import { GeneralComponent } from '../../../../components/general.component';
-import { BtnRegresarComponent } from '../../../../components/btn-regresar/btn-regresar.component';
-import { TipoDropdown } from '@models/tipo-dropdown.interface';
-import { ButtonModule } from 'primeng/button';
-import { DUMMIE_TABLA_VERIFICACION_DOCUMENTOS } from '@utils/dummies';
-import { EstatusDocumentacion } from '@models/verificacion-documentos.interface';
+import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {Component, OnInit, signal, ViewChild, WritableSignal} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {Card} from 'primeng/card';
+import {SelectModule} from 'primeng/select';
+import {InputText} from 'primeng/inputtext';
+import {PaginatorModule} from 'primeng/paginator';
+import {ConfirmPopupModule} from 'primeng/confirmpopup';
+import {TableModule} from 'primeng/table';
+import {Popover, PopoverModule} from 'primeng/popover';
+import {GeneralComponent} from '../../../../components/general.component';
+import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regresar.component';
+import {TipoDropdown} from '@models/tipo-dropdown.interface';
+import {ButtonModule} from 'primeng/button';
+import {DUMMIE_TABLA_VERIFICACION_DOCUMENTOS} from '@utils/dummies';
+import {EstatusDocumentacion} from '@models/verificacion-documentos.interface';
 
 @Component({
   selector: 'app-verificacion-documentos',

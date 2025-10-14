@@ -1,54 +1,52 @@
-import { Component, inject, signal, WritableSignal } from '@angular/core';
-import { Card } from 'primeng/card';
-import { BtnRegresarComponent } from '../../../../components/btn-regresar/btn-regresar.component';
-import { StepsComponent } from '../../../../components/steps/steps.component';
-import { UploadPhotoComponent } from '../../../../components/upload-photo/upload-photo.component';
-import { InputText } from 'primeng/inputtext';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Select } from 'primeng/select';
-import { DatePickerModule } from 'primeng/datepicker';
-import { Button } from 'primeng/button';
-import { TableModule } from 'primeng/table';
-import { UploadDocumentComponent } from '../../../../components/upload-document/upload-document.component';
-import { RadioButton } from 'primeng/radiobutton';
-import { BOOLEAN_OPCIONES, DEPENDIENTES, INSTITUCIONES } from '@utils/constants';
-import { TabPanel, TabView } from 'primeng/tabview';
-import { HeaderTabComponent } from '../../../../components/header-tab/header-tab.component';
+import {Component, inject, signal, WritableSignal} from '@angular/core';
+import {Card} from 'primeng/card';
+import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regresar.component';
+import {StepsComponent} from '../../../../components/steps/steps.component';
+import {UploadPhotoComponent} from '../../../../components/upload-photo/upload-photo.component';
+import {InputText} from 'primeng/inputtext';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Select} from 'primeng/select';
+import {DatePickerModule} from 'primeng/datepicker';
+import {Button} from 'primeng/button';
+import {TableModule} from 'primeng/table';
+import {UploadDocumentComponent} from '../../../../components/upload-document/upload-document.component';
+import {RadioButton} from 'primeng/radiobutton';
+import {BOOLEAN_OPCIONES, DEPENDIENTES, INSTITUCIONES} from '@utils/constants';
+import {TabPanel, TabView} from 'primeng/tabview';
+import {HeaderTabComponent} from '../../../../components/header-tab/header-tab.component';
 import {
   HeaderMedicoInternoComponent
 } from '@pages/privado/shared/header-medico-interno/header-medico-interno.component';
 
-import { EmptyTabComponent } from '../../../../components/empty-tab/empty-tab.component';
-import { TabDocumento, TabNode } from '@models/tab-node.interface';
-import { ActivatedRoute } from '@angular/router';
-import { TipoDropdown } from '@models/tipo-dropdown.interface';
-import { mapearArregloTipoDropdown } from '@utils/funciones';
-import { CatalogosGeneralesService } from '@services/catalogos-generales.service';
-import { ConvocatoriaService } from '@services/convocatoria.service';
-import { ContactoRequest, DataContacto, DatosContacto, DatosContactoResponse } from '@models/datosContacto';
-import { DatosDocumentoResponse } from '@models/datosDocumento';
-import { finalize } from 'rxjs';
-import { GeneralComponent } from '../../../../components/general.component';
-import { AuthService } from '@services/auth.service';
-import { UserService } from '@services/user.service';
-import { SesionUser } from '@models/sesion-user.interface';
-import { DataDomicilio, DatosDomicilio, Estado, Pais, Residencia } from '@models/datosDomicilio';
-import { ResponseGeneral } from '@models/responseGeneral';
+import {EmptyTabComponent} from '../../../../components/empty-tab/empty-tab.component';
+import {TabDocumento, TabNode} from '@models/tab-node.interface';
+import {ActivatedRoute} from '@angular/router';
+import {TipoDropdown} from '@models/tipo-dropdown.interface';
+import {mapearArregloTipoDropdown} from '@utils/funciones';
+import {CatalogosGeneralesService} from '@services/catalogos-generales.service';
+import {ConvocatoriaService} from '@services/convocatoria.service';
+import {DatosContacto} from '@models/datosContacto';
+import {DatosDocumentoResponse} from '@models/datosDocumento';
+import {GeneralComponent} from '../../../../components/general.component';
+import {UserService} from '@services/user.service';
+import {SesionUser} from '@models/sesion-user.interface';
+import {DatosDomicilio, Estado, Pais, Residencia} from '@models/datosDomicilio';
+import {ResponseGeneral} from '@models/responseGeneral';
 
-import { Colonia } from '@models/colonia';
+import {Colonia} from '@models/colonia';
 
 
-import { DataFotografia, FotografiaRequest, FotografiaResponse } from '@models/fotografia';
-import { DatosPersonales } from '@models/datosPersonales';
-import { Sexo } from '@models/sexo';
-import { Dependientes } from '@models/dependiente';
+import {FotografiaRequest, FotografiaResponse} from '@models/fotografia';
+import {DatosPersonales} from '@models/datosPersonales';
+import {Sexo} from '@models/sexo';
+import {Dependientes} from '@models/dependiente';
 
-import { OnlyNumbersDirective } from '@directives/only-numbers.directive';
-import { EmailAllowCaractersDirective } from '@directives/email-allow-caracters.directive';
-import { EstadoCivil } from '@models/estadoCivil';
-import { OfertaLaboralComponent } from '@privado/oferta-laboral/oferta-laboral.component';
-import { dataGenerales, DatosGeneralesRequest, DatosGeneralesResponse } from '@models/datosGenerales';
-import { InteresLaboral } from '@models/aspirante';
+import {OnlyNumbersDirective} from '@directives/only-numbers.directive';
+import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.directive';
+import {EstadoCivil} from '@models/estadoCivil';
+import {OfertaLaboralComponent} from '@privado/oferta-laboral/oferta-laboral.component';
+import {dataGenerales, DatosGeneralesRequest, DatosGeneralesResponse} from '@models/datosGenerales';
+import {InteresLaboral} from '@models/aspirante';
 
 
 import moment from 'moment';

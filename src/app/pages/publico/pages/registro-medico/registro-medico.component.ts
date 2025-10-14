@@ -11,7 +11,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {HttpErrorResponse} from '@angular/common/http';
 
 import {CommonModule} from '@angular/common';
-import {CatPaisResponse, CatSubperfil, CatSubperfilResponse, CatPais} from '@models/catalogoGeneral';
+import {CatPais, CatPaisResponse, CatSubperfil, CatSubperfilResponse} from '@models/catalogoGeneral';
 import {
   RegistroCurpRequest,
   RegistroInternoRequest,
