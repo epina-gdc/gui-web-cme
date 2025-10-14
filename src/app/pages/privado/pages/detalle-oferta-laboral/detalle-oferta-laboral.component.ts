@@ -5,6 +5,7 @@ import {FormsModule} from '@angular/forms';
 import {Button} from 'primeng/button';
 import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs';
 import {SplitByWidthDirective} from '@directives/split-by-width.directive';
+import {Image} from 'primeng/image';
 
 @Component({
   selector: 'app-detalle-oferta-laboral',
@@ -18,7 +19,8 @@ import {SplitByWidthDirective} from '@directives/split-by-width.directive';
     TabPanels,
     Tab,
     TabPanel,
-    SplitByWidthDirective
+    SplitByWidthDirective,
+    Image
   ],
   templateUrl: './detalle-oferta-laboral.component.html',
   styleUrl: './detalle-oferta-laboral.component.scss'

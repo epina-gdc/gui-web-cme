@@ -77,7 +77,8 @@
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">Ubicación:</p>
-              <p class="texto-detalle-oferta-laboral align-last-right" [appSplitByWidth]="'Av. Morelos 47, San Javier, 54000 Baja California'"></p>
+              <p class="texto-detalle-oferta-laboral align-last-right"
+                 [appSplitByWidth]="'Av. Morelos 47, San Javier, 54000 Baja California'"></p>
             </div>
           </div>
         </div>
@@ -115,6 +116,26 @@
         </div>
         <div class="col-12 flex justify-content-end mt-2">
           <p-button variant="outlined" label="Agregar a favoritos"/>
+        </div>
+      </div>
+    </p-tabpanel>
+    <p-tabpanel value="1">
+      <div class="flex flex-wrap flex-row">
+        <div class="col-6 pr-4 justify-content-center flex">
+          <p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg" alt="Image" width="300" height="350" />
+        </div>
+        <div class="col-6 pl-4">
+
+        </div>
+        <div class="col-12 flex justify-content-end mt-2">
+          <p-button variant="outlined" label="Descargar PDF"/>
+        </div>
+      </div>
+    </p-tabpanel>
+    <p-tabpanel value="2">
+      <div class="flex flex-wrap flex-row">
+        <div class="col-12 flex justify-content-end mt-2">
+          <p-button variant="outlined" label="Descargar PDF"/>
         </div>
       </div>
     </p-tabpanel>
