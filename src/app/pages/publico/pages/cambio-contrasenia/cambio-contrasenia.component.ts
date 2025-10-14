@@ -7,8 +7,6 @@ import {PrimeTemplate} from 'primeng/api';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {AlertService} from '@services/alert.service';
 import {CambioContrasenia} from '@models/cambio-contrasenia.interface';
-import {finalize} from 'rxjs';
-import {LoaderService} from '../../../../components/loader/services/loader.service';
 import {Mensajes} from '@utils/mensajes';
 import {Button} from 'primeng/button';
 import {RecuperacionCredencialesService} from '@services/recuperacion-credenciales.service';
@@ -35,7 +33,6 @@ export class CambioContraseniaComponent {
   router: Router = inject(Router);
   alertaService: AlertService = inject(AlertService);
   authService: RecuperacionCredencialesService = inject(RecuperacionCredencialesService);
-  loaderService: LoaderService = inject(LoaderService);
 
   fb: FormBuilder = inject(FormBuilder);
 
@@ -63,18 +60,15 @@ export class CambioContraseniaComponent {
       return;
     }
     const solicitud: CambioContrasenia = this.crearSolicitudCambioPass();
-    this.loaderService.activar();
     const token = this.route.snapshot.queryParams['token'];
-    this.authService.cambiarPass(solicitud, token).pipe(
-      finalize(() => this.loaderService.desactivar()))
-      .subscribe({
-          next: () => this.manejarCambioPassCorrecto(),
-          error: (error) => {
-            console.log(error);
-            this.manejarValidarCodigoError(error.error)
-          }
+    this.authService.cambiarPass(solicitud, token).subscribe({
+        next: () => this.manejarCambioPassCorrecto(),
+        error: (error) => {
+          console.log(error);
+          this.manejarValidarCodigoError(error.error)
         }
-      );
+      }
+    );
   }
 
   crearSolicitudCambioPass(): CambioContrasenia {

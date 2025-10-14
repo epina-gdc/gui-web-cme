@@ -25,7 +25,6 @@ import { TipoDropdown } from '@models/tipo-dropdown.interface';
 import { mapearArregloTipoDropdown } from '@utils/funciones';
 import { CatalogosGeneralesService } from '@services/catalogos-generales.service';
 import { ConvocatoriaService } from '@services/convocatoria.service';
-import { LoaderService } from '../../../../components/loader/services/loader.service';
 import { ContactoRequest, DataContacto, DatosContacto, DatosContactoResponse } from '@models/datosContacto';
 import { DatosDocumentoResponse } from '@models/datosDocumento';
 import { finalize } from 'rxjs';
@@ -127,8 +126,6 @@ export class InicioComponent extends GeneralComponent {
 
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
   _ConvocatoriaService: ConvocatoriaService = inject(ConvocatoriaService);
-  loaderService: LoaderService = inject(LoaderService);
-
 
   constructor(private readonly activatedRoute: ActivatedRoute) {
 
@@ -261,10 +258,7 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerEstadoPorPais(pais: number): void {
     if (!pais) return;
-    this.loaderService.activar();
-    this.catalogoService.getLstEstadosByPais(pais).pipe(
-      finalize((() => this.loaderService.desactivar()))
-    ).subscribe({
+    this.catalogoService.getLstEstadosByPais(pais).subscribe({
       next: (valor) => {
         this.estados = mapearArregloTipoDropdown(valor.respuesta, 'desEstado', 'idEstado');
       }
@@ -273,10 +267,7 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerMunicipioPorEstado(estado: number): void {
     if (!estado) return;
-    this.loaderService.activar();
-    this.catalogoService.getLstDelegacionesMunicipiosByEstado(estado).pipe(
-      finalize((() => this.loaderService.desactivar()))
-    ).subscribe({
+    this.catalogoService.getLstDelegacionesMunicipiosByEstado(estado).subscribe({
       next: (valor) => {
         this.municipios = mapearArregloTipoDropdown(valor.respuesta, 'desMunicipio', 'idMunicipio');
       }
@@ -291,10 +282,7 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerAlcaldiaPorMunicipio(municipio: number): void {
     if (!municipio) return;
-    this.loaderService.activar();
-    this.catalogoService.getLstColoniasByDelegacion(municipio).pipe(
-      finalize((() => this.loaderService.desactivar()))
-    ).subscribe({
+    this.catalogoService.getLstColoniasByDelegacion(municipio).subscribe({
       next: (valor) => {
         this.colonias = mapearArregloTipoDropdown(valor.respuesta, 'nomColonia', 'idColonia');
       }
@@ -303,10 +291,7 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerOOADPorMunicipio(municipio: number): void {
     if (!municipio) return;
-    this.loaderService.activar();
-    this.catalogoService.getLstOOADS(municipio).pipe(
-      finalize((() => this.loaderService.desactivar()))
-    ).subscribe({
+    this.catalogoService.getLstOOADS(municipio).subscribe({
       next: (valor) => {
         this.ooad = mapearArregloTipoDropdown(valor.respuesta, 'desOoad', 'idOoad');
       }
@@ -315,9 +300,7 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerZonasPorMunicipio(municipio: number): void {
     if (!municipio) return;
-    this.catalogoService.getLstZonas(municipio).pipe(
-      finalize((() => this.loaderService.desactivar()))
-    ).subscribe({
+    this.catalogoService.getLstZonas(municipio).subscribe({
       next: (valor) => {
         this.zonas = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'idZona');
       }
@@ -468,7 +451,7 @@ export class InicioComponent extends GeneralComponent {
   datosGenerales!: DatosGeneralesResponse;
   obtenerDatosGenerales(idusuario: number | undefined): void {
     if (!idusuario) return;
-    
+
     console.log("usuario a buscar: ", idusuario);
     this._ConvocatoriaService.getDatosGenerales(idusuario).pipe(
 
@@ -508,7 +491,7 @@ export class InicioComponent extends GeneralComponent {
     if (this.datosGenerales.datosPersonales) {
       this.formRegistro.controls['rfc'].setValue(this.datosGenerales.datosPersonales?.refRfc);
       this.formRegistro.controls['nss'].setValue(this.datosGenerales.datosPersonales?.refNss);
-     
+
         this.formRegistro.get('estadoCivil')?.patchValue(this.datosGenerales.datosPersonales?.estadoCivil?.idEstadoCivil);
         this.formRegistro.get('paisNacimiento')?.patchValue(this.datosGenerales.datosPersonales.paisNacimiento?.idPais);
         this.formRegistro.get('estadoNacimiento')?.patchValue(this.datosGenerales.datosPersonales.lugarNacimiento?.idLugarNacimiento);
@@ -553,7 +536,7 @@ export class InicioComponent extends GeneralComponent {
 
     if (this.datosGenerales.zonasInteresLaboral) {
 
-      const zonasInteresLaboral = this.datosGenerales.zonasInteresLaboral.map((zona:InteresLaboral) =>({ 
+      const zonasInteresLaboral = this.datosGenerales.zonasInteresLaboral.map((zona:InteresLaboral) =>({
         idInteresOoadZona: zona.idInteresOoadZona,
         cveOoad: zona.cveOoad,
         desOoad: zona.desOoad,
@@ -563,7 +546,7 @@ export class InicioComponent extends GeneralComponent {
         zonaInteres: zona.cveZona
       }));
 
-  
+
     this.zonasInteres.set(zonasInteresLaboral);
 
   }
@@ -632,18 +615,18 @@ export class InicioComponent extends GeneralComponent {
     datos.datosPersonales = this.saveFoto();
     datos.dependientes = this.saveDependientes();
 
-  
+
 
   //  datos.zonasInteresLaboral = new Array<InteresLaboral>();
 
-  
-    const zonasInteresLaboral = this.zonasInteres().map((reg:InteresLaboral) =>({ 
+
+    const zonasInteresLaboral = this.zonasInteres().map((reg:InteresLaboral) =>({
       cveOoad: reg.ooad+'',
       desOoad : this.devolverTextoOoad(reg.ooad+''),
       desZona :this.devolverTextoZonaInnteres(reg.zonaInteres+''),
       cveZona: reg.zonaInteres+''
     }));
-    
+
       datos.zonasInteresLaboral=zonasInteresLaboral;
 
 
@@ -680,12 +663,12 @@ export class InicioComponent extends GeneralComponent {
     let fotografia = new FotografiaRequest();
     fotografia.datosPersonales = this.datosGenerales.datosPersonales;
 
-    
-    
+
+
     fotografia.datosPersonales.estadoCivil = new EstadoCivil();
     fotografia.datosPersonales.estadoCivil.idEstadoCivil = parseInt(this.estadoCilvilSeleccionado.value.toString());
 
-    
+
     let fechaFormateada = moment(this.formRegistro.controls['fechaNacimiento'].value, "DD/MM/YYYY").format('DD/MM/YYYY');
 
     fotografia.datosPersonales.refRfc = this.formRegistro.controls['rfc'].value;
@@ -698,7 +681,7 @@ export class InicioComponent extends GeneralComponent {
     fotografia.datosPersonales.sexo = sex;
 
 
-    
+
 
     return fotografia.datosPersonales;
   }
