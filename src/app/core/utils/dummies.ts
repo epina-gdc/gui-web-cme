@@ -1,5 +1,5 @@
 import {InformacionSesion} from '@models/informacionSesion';
-import { VerificacionDocumentos } from '@models/verificacion-documentos.interface';
+import {VerificacionDocumentos} from '@models/verificacion-documentos.interface';
 
 const DUMMIE_INFORMACION_SESION: InformacionSesion = {
   curp: 'XXXXXXXXX',

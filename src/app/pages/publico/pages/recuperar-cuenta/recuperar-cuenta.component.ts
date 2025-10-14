@@ -10,8 +10,6 @@ import {ConfirmDialog} from 'primeng/confirmdialog';
 import {ConfirmationService} from 'primeng/api';
 import {Card} from 'primeng/card';
 import {SolicitudCambioContrasenia} from '@models/solicitud-cambio-contrasenia.interface';
-import {LoaderService} from '../../../../components/loader/services/loader.service';
-import {finalize} from 'rxjs';
 import {AlertService} from '@services/alert.service';
 import {Mensajes} from '@utils/mensajes';
 import {Router} from '@angular/router';
@@ -38,7 +36,6 @@ export class RecuperarCuentaComponent {
   formRecuperarCuenta!: FormGroup;
   fb: FormBuilder = inject(FormBuilder);
   authService: RecuperacionCredencialesService = inject(RecuperacionCredencialesService);
-  loaderService: LoaderService = inject(LoaderService);
   alertaService: AlertService = inject(AlertService);
 
   private readonly router = inject(Router);
@@ -75,10 +72,7 @@ export class RecuperarCuentaComponent {
   recuperarContrasenia(): void {
     if (this.formRecuperarCuenta.invalid) return;
     const solicitud: SolicitudCambioContrasenia = this.generarSolicitudRecuperacionContrasenia();
-    this.loaderService.activar();
-    this.authService.solicitarCambioPass(solicitud).pipe(
-      finalize(() => this.loaderService.desactivar())
-    ).subscribe({
+    this.authService.solicitarCambioPass(solicitud).subscribe({
       next: (respuesta) => {
         this.alertaService.exito(this.mensajes.MSG017);
         setTimeout(() => {
