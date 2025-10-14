@@ -98,9 +98,9 @@ export class InicioComponent extends GeneralComponent {
   registrosDocumentosEspecialidad: WritableSignal<TabNode[]> = signal([]);
 
   steps = [
-    { label: 'Información Personal', active: false },
-    { label: 'Documentos de escolaridad', active: false },
-    { label: 'Oferta laboral', active: false },
+    {label: 'Información Personal', active: false},
+    {label: 'Documentos de escolaridad', active: false},
+    {label: 'Oferta laboral', active: false},
   ];
 
   sustituto!: any;
@@ -108,7 +108,7 @@ export class InicioComponent extends GeneralComponent {
   institucionSeleccionada = true;
   // userData!: SesionUser;
 
-  dummies = [{ label: 'Dummie', value: 'Dummie' }, { label: 'Dummie 2', value: 'Dummie 2' }];
+  dummies = [{label: 'Dummie', value: 'Dummie'}, {label: 'Dummie 2', value: 'Dummie 2'}];
 
   sexos: TipoDropdown[] = [];
   estadosCiviles: TipoDropdown[] = [];
@@ -143,21 +143,20 @@ export class InicioComponent extends GeneralComponent {
     this.obtenerDatosGenerales(this.userData?.idUsuario);
 
 
-
-
   }
+
   asignarFormularioRegistro(): FormGroup {
     return this.fb.group({
       rfc: [],
 
-      nss: [{ value: '', disabled: false }, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
-      fechaNacimiento: [{ value: '', disabled: true }],
-      sexo: [{ value: '', disabled: true }],
+      nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
+      fechaNacimiento: [{value: '', disabled: true}],
+      sexo: [{value: '', disabled: true}],
       estadoCivil: [],
       dependientes: [],
-      hijos: [{ value: '', disabled: true }, [Validators.required, Validators.min(1)]],
-      otros: [{ value: '', disabled: true }, [Validators.required]],
-      correo: [{ value: '', disabled: true }],
+      hijos: [{value: '', disabled: true}, [Validators.required, Validators.min(1)]],
+      otros: [{value: '', disabled: true}, [Validators.required]],
+      correo: [{value: '', disabled: true}],
 
       correoAdicional: [],
       telefonoCasa: [],
@@ -209,48 +208,52 @@ export class InicioComponent extends GeneralComponent {
   }
 
   estadoCilvilSeleccionado!: any;
+
   subscribirseEstadoCivil(): void {
 
     this.formRegistro.get('estadoCivil')?.valueChanges.subscribe(value => {
-      this.estadoCilvilSeleccionado = value;
-    }
+        this.estadoCilvilSeleccionado = value;
+      }
     );
   }
 
   paisNacimientoSeleccionado!: any;
+
   subscribirsePaisNacimiento(): void {
 
     this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe(value => {
-      this.paisNacimientoSeleccionado = value;
-    }
+        this.paisNacimientoSeleccionado = value;
+      }
     );
   }
+
   estadoNacimientoSeleccionado!: any;
+
   subscribirseEstadoNacimiento(): void {
 
     this.formRegistro.get('estadoNacimiento')?.valueChanges.subscribe(value => {
-      this.estadoNacimientoSeleccionado = value;
-    }
+        this.estadoNacimientoSeleccionado = value;
+      }
     );
   }
 
   subscribirseACambioComponentes(): void {
 
     this.formRegistro.get('dependientes')?.valueChanges.subscribe(value => {
-      this.formRegistro.get('hijos')?.disable();
-      this.formRegistro.get('otros')?.disable();
-      this.formRegistro.get('hijos')?.patchValue(null);
-      this.formRegistro.get('otros')?.patchValue(null);
-      this.formRegistro.get('hijos')?.reset;
-      this.formRegistro.get('otros')?.reset;
+        this.formRegistro.get('hijos')?.disable();
+        this.formRegistro.get('otros')?.disable();
+        this.formRegistro.get('hijos')?.patchValue(null);
+        this.formRegistro.get('otros')?.patchValue(null);
+        this.formRegistro.get('hijos')?.reset;
+        this.formRegistro.get('otros')?.reset;
 
-      if (this.formRegistro.get('dependientes')?.value === this.dependientes[1]) {
-        this.formRegistro.get('hijos')?.enable();
+        if (this.formRegistro.get('dependientes')?.value === this.dependientes[1]) {
+          this.formRegistro.get('hijos')?.enable();
+        }
+        if (this.formRegistro.get('dependientes')?.value === this.dependientes[3]) {
+          this.formRegistro.get('otros')?.enable();
+        }
       }
-      if (this.formRegistro.get('dependientes')?.value === this.dependientes[3]) {
-        this.formRegistro.get('otros')?.enable();
-      }
-    }
     );
   }
 
@@ -307,8 +310,8 @@ export class InicioComponent extends GeneralComponent {
 
   asignarFormularioZonaInteres(): FormGroup {
     return this.fb.group({
-      ooad: [{ value: '', disabled: false }, [Validators.required]],
-      zonaInteres: [{ value: '', disabled: false }, [Validators.required]]
+      ooad: [{value: '', disabled: false}, [Validators.required]],
+      zonaInteres: [{value: '', disabled: false}, [Validators.required]]
     })
   }
 
@@ -330,7 +333,6 @@ export class InicioComponent extends GeneralComponent {
       }
 
 
-
     } else {
       this._alertServices.alerta("Ya seleccionaste tus 3 opciones.");
     }
@@ -348,7 +350,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   obtenerCatalogos(): void {
-    this.activatedRoute.data.subscribe(({ respuesta }) => {
+    this.activatedRoute.data.subscribe(({respuesta}) => {
       const [sexos, estadosCiviles, paises, lugaresNacimiento] = respuesta;
       this.sexos = mapearArregloTipoDropdown(sexos.respuesta, 'desSexo', 'idSexo');
       this.estadosCiviles = mapearArregloTipoDropdown(estadosCiviles.respuesta, 'desEstadoCivil', 'idEstadoCivil');
@@ -363,7 +365,7 @@ export class InicioComponent extends GeneralComponent {
 
   eliminarZonaInteres(indice: number): void {
     const zonasActualizadas = [...this.zonasInteres().slice(0, indice),
-    ...this.zonasInteres().slice(indice + 1)];
+      ...this.zonasInteres().slice(indice + 1)];
     this.zonasInteres.update(() => zonasActualizadas);
   }
 
@@ -391,7 +393,7 @@ export class InicioComponent extends GeneralComponent {
     }
 
     // Si la especialidad ya existe, verificamos si el documento es un duplicado
-    const especialidadExistente = { ...especialidades[indiceEspecialidad] };
+    const especialidadExistente = {...especialidades[indiceEspecialidad]};
     const documentoYaExiste = especialidadExistente.documentos.some(doc => doc.tipoDocumento === nuevoDocumento.tipoDocumento);
 
     if (documentoYaExiste) {
@@ -404,7 +406,7 @@ export class InicioComponent extends GeneralComponent {
 
     const especialidadesActualizadas = [...especialidades.slice(0, indiceEspecialidad),
       especialidadExistente,
-    ...especialidades.slice(indiceEspecialidad + 1)
+      ...especialidades.slice(indiceEspecialidad + 1)
     ];
     this.registrosDocumentosEspecialidad.update(() => especialidadesActualizadas);
   }
@@ -418,13 +420,13 @@ export class InicioComponent extends GeneralComponent {
       return;
     }
 
-    const especialidadParaModificar = { ...especialidades[indiceEspecialidad] };
+    const especialidadParaModificar = {...especialidades[indiceEspecialidad]};
     const documentosActualizados = especialidadParaModificar.documentos.filter(d => d.tipoDocumento !== tipoDocumento);
 
     // Si la lista de documentos queda vacía, eliminamos la especialidad completa
     if (documentosActualizados.length === 0) {
       const especialidadesSinEspecialidad = [...especialidades.slice(0, indiceEspecialidad),
-      ...especialidades.slice(indiceEspecialidad + 1)
+        ...especialidades.slice(indiceEspecialidad + 1)
       ];
       this.registrosDocumentosEspecialidad.update(() => especialidadesSinEspecialidad);
     } else {
@@ -432,7 +434,7 @@ export class InicioComponent extends GeneralComponent {
       especialidadParaModificar.documentos = documentosActualizados;
       const especialidadesModificadas = [...especialidades.slice(0, indiceEspecialidad),
         especialidadParaModificar,
-      ...especialidades.slice(indiceEspecialidad + 1)
+        ...especialidades.slice(indiceEspecialidad + 1)
       ];
       this.registrosDocumentosEspecialidad.update(() => especialidadesModificadas);
     }
@@ -444,9 +446,8 @@ export class InicioComponent extends GeneralComponent {
   datosFoto!: FotografiaResponse;
 
 
-
-
   datosGenerales!: DatosGeneralesResponse;
+
   obtenerDatosGenerales(idusuario: number | undefined): void {
     if (!idusuario) return;
 
@@ -464,17 +465,9 @@ export class InicioComponent extends GeneralComponent {
     });
   }
 
-
-
-
-
-
   datosDomicilio!: DatosDomicilio;
 
-
   datosInteresLaboral!: any;
-
-
 
   private setDatosGenerales() {
 
@@ -485,33 +478,25 @@ export class InicioComponent extends GeneralComponent {
       this.formRegistro.controls['telefonoCelular'].setValue(this.datosGenerales.datosContacto.refTelefonoCelular);
     }
 
-
     if (this.datosGenerales.datosPersonales) {
       this.formRegistro.controls['rfc'].setValue(this.datosGenerales.datosPersonales?.refRfc);
       this.formRegistro.controls['nss'].setValue(this.datosGenerales.datosPersonales?.refNss);
-
-        this.formRegistro.get('estadoCivil')?.patchValue(this.datosGenerales.datosPersonales?.estadoCivil?.idEstadoCivil);
-        this.formRegistro.get('paisNacimiento')?.patchValue(this.datosGenerales.datosPersonales.paisNacimiento?.idPais);
-        this.formRegistro.get('estadoNacimiento')?.patchValue(this.datosGenerales.datosPersonales.lugarNacimiento?.idLugarNacimiento);
-
-
+      this.formRegistro.get('estadoCivil')?.patchValue(this.datosGenerales.datosPersonales?.estadoCivil?.idEstadoCivil);
+      this.formRegistro.get('paisNacimiento')?.patchValue(this.datosGenerales.datosPersonales.paisNacimiento?.idPais);
+      this.formRegistro.get('estadoNacimiento')?.patchValue(this.datosGenerales.datosPersonales.lugarNacimiento?.idLugarNacimiento);
     }
 
     if (this.datosGenerales.datosResidenciaActual) {
-
-    //domicilio
-    this.formRegistro.controls['codigoPostal'].setValue(this.datosGenerales.datosResidenciaActual?.colonia?.refCodigoPostal);
-    this.formRegistro.get('pais')?.patchValue(this.datosGenerales.datosResidenciaActual?.pais?.idPais);
-    this.formRegistro.get('estado')?.patchValue(this.datosGenerales.datosResidenciaActual?.estado?.idEstado);
-    this.formRegistro.get('municipio')?.patchValue(this.datosGenerales.datosResidenciaActual?.delegacion?.idMunicipio);
-    this.formRegistro.get('colonia')?.patchValue(this.datosGenerales.datosResidenciaActual?.colonia?.idColonia);
-
-
-    this.formRegistro.controls['calle'].setValue(this.datosGenerales.datosResidenciaActual?.nomCalle);
-    this.formRegistro.controls['numeroExterior'].setValue(this.datosGenerales.datosResidenciaActual?.refNumero);
+      //domicilio
+      this.formRegistro.controls['codigoPostal'].setValue(this.datosGenerales.datosResidenciaActual?.colonia?.refCodigoPostal);
+      this.formRegistro.get('pais')?.patchValue(this.datosGenerales.datosResidenciaActual?.pais?.idPais);
+      this.formRegistro.get('estado')?.patchValue(this.datosGenerales.datosResidenciaActual?.estado?.idEstado);
+      this.formRegistro.get('municipio')?.patchValue(this.datosGenerales.datosResidenciaActual?.delegacion?.idMunicipio);
+      this.formRegistro.get('colonia')?.patchValue(this.datosGenerales.datosResidenciaActual?.colonia?.idColonia);
+      this.formRegistro.controls['calle'].setValue(this.datosGenerales.datosResidenciaActual?.nomCalle);
+      this.formRegistro.controls['numeroExterior'].setValue(this.datosGenerales.datosResidenciaActual?.refNumero);
     }
     //foto
-
 
 
     if (this.datosGenerales.dependientes?.indPadres == 1 && this.datosGenerales.dependientes?.refCantidadHijos == null) {
@@ -534,7 +519,7 @@ export class InicioComponent extends GeneralComponent {
 
     if (this.datosGenerales.zonasInteresLaboral) {
 
-      const zonasInteresLaboral = this.datosGenerales.zonasInteresLaboral.map((zona:InteresLaboral) =>({
+      const zonasInteresLaboral = this.datosGenerales.zonasInteresLaboral.map((zona: InteresLaboral) => ({
         idInteresOoadZona: zona.idInteresOoadZona,
         cveOoad: zona.cveOoad,
         desOoad: zona.desOoad,
@@ -543,20 +528,11 @@ export class InicioComponent extends GeneralComponent {
         ooad: zona.cveOoad,
         zonaInteres: zona.cveZona
       }));
+      this.zonasInteres.set(zonasInteresLaboral);
 
-
-    this.zonasInteres.set(zonasInteresLaboral);
-
-  }
-
-
+    }
 
   }
-
-
-
-
-
 
 
   private saveContacto(): DatosContacto {
@@ -564,19 +540,19 @@ export class InicioComponent extends GeneralComponent {
     contacto.refCorreoAdicional = this.formRegistro.controls['correoAdicional'].value;
     contacto.refTelefonoCasa = this.formRegistro.controls['telefonoCasa'].value;
     contacto.refTelefonoCelular = this.formRegistro.controls['telefonoCelular'].value;
-    let pais:Pais ={
+    const pais: Pais = {
       nomPaisNacimiento: this.paisNacimientoSeleccionado.label,
       idPais: this.paisNacimientoSeleccionado.value,
       cvePais: '',
       desPais: ''
     }
+
     contacto.paisNacimiento = pais;
-    let estado :Estado ={
+    const estado: Estado = {
       idLugarNacimiento: this.estadoNacimientoSeleccionado.value,
       idEstado: 0,
       desEstado: ''
     }
-
     contacto.lugarNacimiento = estado;
 
     return contacto;
@@ -584,8 +560,6 @@ export class InicioComponent extends GeneralComponent {
 
   private saveDomicilio(): Residencia {
     let residencia = new Residencia();
-
-
     let idColonia = this.formRegistro.controls['colonia'].value;
     residencia.colonia = this.obtenerColonia(idColonia);
     residencia.nomCalle = this.formRegistro.controls['calle'].value;
@@ -606,6 +580,7 @@ export class InicioComponent extends GeneralComponent {
 
     return dependientes;
   }
+
   private saveDatosGenerales() {
     let datos = new DatosGeneralesRequest();
     datos.datosContacto = this.saveContacto();
@@ -613,19 +588,12 @@ export class InicioComponent extends GeneralComponent {
     datos.datosPersonales = this.saveFoto();
     datos.dependientes = this.saveDependientes();
 
-
-
-  //  datos.zonasInteresLaboral = new Array<InteresLaboral>();
-
-
-    const zonasInteresLaboral = this.zonasInteres().map((reg:InteresLaboral) =>({
-      cveOoad: reg.ooad+'',
-      desOoad : this.devolverTextoOoad(reg.ooad+''),
-      desZona :this.devolverTextoZonaInnteres(reg.zonaInteres+''),
-      cveZona: reg.zonaInteres+''
+    datos.zonasInteresLaboral = this.zonasInteres().map((reg: InteresLaboral) => ({
+      cveOoad: reg.ooad + '',
+      desOoad: this.devolverTextoOoad(reg.ooad + ''),
+      desZona: this.devolverTextoZonaInnteres(reg.zonaInteres + ''),
+      cveZona: reg.zonaInteres + ''
     }));
-
-      datos.zonasInteresLaboral=zonasInteresLaboral;
 
 
     this._ConvocatoriaService.guardarDatosGenerales(datos).subscribe({
@@ -651,20 +619,20 @@ export class InicioComponent extends GeneralComponent {
 
     let colonia = this.colonias.find(x => x.value == idColonia);
     return {
-    idColonia : parseInt(colonia?.value + ''),
-    nomColonia : colonia?.label + '',
-    refCodigoPostal : '' + this.formRegistro.controls['codigoPostal'].value
+      idColonia: Number.parseInt(colonia?.value + ''),
+      nomColonia: colonia?.label + '',
+      refCodigoPostal: '' + this.formRegistro.controls['codigoPostal'].value
     }
 
   }
+
   private saveFoto(): DatosPersonales {
     let fotografia = new FotografiaRequest();
     fotografia.datosPersonales = this.datosGenerales.datosPersonales;
 
 
-
     fotografia.datosPersonales.estadoCivil = new EstadoCivil();
-    fotografia.datosPersonales.estadoCivil.idEstadoCivil = parseInt(this.estadoCilvilSeleccionado.value.toString());
+    fotografia.datosPersonales.estadoCivil.idEstadoCivil = Number.parseInt(this.estadoCilvilSeleccionado.value.toString());
 
 
     let fechaFormateada = moment(this.formRegistro.controls['fechaNacimiento'].value, "DD/MM/YYYY").format('DD/MM/YYYY');
@@ -673,13 +641,9 @@ export class InicioComponent extends GeneralComponent {
     fotografia.datosPersonales.refNss = this.formRegistro.controls['nss'].value;
     fotografia.datosPersonales.fecNacimiento = fechaFormateada;
     let sexo = this.formRegistro.controls['sexo'].value;
-    let sex:Sexo = {
-    idSexo : sexo.value,
-    }
-    fotografia.datosPersonales.sexo = sex;
-
-
-
+    fotografia.datosPersonales.sexo = {
+      idSexo: sexo.value,
+    };
 
     return fotografia.datosPersonales;
   }
@@ -698,7 +662,6 @@ export class InicioComponent extends GeneralComponent {
   }
 
 
-
   siguientePasoStepper(): void {
 
 
@@ -709,7 +672,6 @@ export class InicioComponent extends GeneralComponent {
           this._alertServices.alerta(this._Mensajes.MSG023);
         }
         return this.btnGuardar(this.indice());
-
 
 
         break;
@@ -725,10 +687,6 @@ export class InicioComponent extends GeneralComponent {
       default:
         break;
     }
-
-
-
-
 
 
   }
