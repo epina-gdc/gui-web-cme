@@ -1,23 +1,17 @@
-import {HttpClient, HttpHeaders,HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {environment} from '@env/environment.development';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
-import {AspiranteRequest, InteresLaboralRequest} from '@models/aspirante';
-import {DataFotografia, FotografiaRequest} from '@models/fotografia';
-import {DatosDocumentoResponse} from '@models/datosDocumento';
-import {ContactoRequest, DataContacto} from '@models/datosContacto';
-
-import {DataDomicilio, ResidenciaRequest} from '@models/datosDomicilio';
+import {DataFotografia} from '@models/fotografia';
 import {AlertService} from './alert.service';
-import {dataGenerales, DatosGeneralesRequest} from '@models/datosGenerales';
 import {ResponseGeneral} from '@models/responseGeneral';
 
 @Injectable({
     providedIn: 'root'
 })
 export class DocumentoService {
-    
+
     private readonly serverEndPointURLDocumento = `${environment.api.apiDocumentos}`;
 
     http: HttpClient = inject(HttpClient);
@@ -25,7 +19,7 @@ export class DocumentoService {
 
 
     headers :  HttpHeaders = new HttpHeaders({
-        
+
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type',
         'Access-Control-Allow-Methods': 'POST',
@@ -44,8 +38,8 @@ export class DocumentoService {
         const params = new HttpParams()
         .set('idModulo', idModulo)
         .set('idUsuario', idUsuario)
-       
-  
+
+
         let ruta = `${this.serverEndPointURLDocumento}/v1/documentos/repositorio/fotografia?`+params;
         return this.http.post<any>(ruta, foto, { headers: this.headers }).pipe(
             catchError(this.handleError),
@@ -66,12 +60,12 @@ export class DocumentoService {
     }
 
 
-    
+
 
     private handleError(error: ResponseGeneral) {
 
         if (!error.exito) {
-            
+
             console.log("Error: " + error.mensaje?error.mensaje: '. Contácte al administrador');
             // Return an observable with a user-facing error message.
 

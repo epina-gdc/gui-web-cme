@@ -16,14 +16,15 @@ export class SplitByWidthDirective implements OnInit, OnDestroy {
 
   // Escucha los cambios de tamaño de ventana para re-evaluar la división
   @HostListener('window:resize', ['$event'])
-  onResize(event: Event) {
+  onResize() {
     this.splitAndRender();
   }
 
   constructor(
     private readonly el: ElementRef,
     private readonly renderer: Renderer2
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     // El 'setTimeout' es necesario para asegurar que el DOM se renderice antes de medir
@@ -60,7 +61,7 @@ export class SplitByWidthDirective implements OnInit, OnDestroy {
       this.renderer.setStyle(this.tempMeasurer, 'visibility', 'hidden');
       this.renderer.setStyle(this.tempMeasurer, 'white-space', 'nowrap');
       // Copiar el estilo de fuente del elemento original
-      const computedStyle = window.getComputedStyle(this.el.nativeElement);
+      const computedStyle = globalThis.getComputedStyle(this.el.nativeElement);
       this.renderer.setStyle(this.tempMeasurer, 'font-size', computedStyle.fontSize);
       this.renderer.setStyle(this.tempMeasurer, 'font-family', computedStyle.fontFamily);
       this.renderer.appendChild(document.body, this.tempMeasurer);
