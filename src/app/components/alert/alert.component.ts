@@ -1,102 +1,141 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {NavigationStart, Router} from '@angular/router';
-import {Subscription} from 'rxjs';
+import {Subject} from 'rxjs';
+import {filter, takeUntil} from 'rxjs/operators';
 import {Alert} from '@models/alert.model';
 import {AlertService} from '@services/alert.service';
 
-@Component({
-    selector: 'alert',
-    templateUrl: './alert.component.html',
-    styleUrls: ['./alert.component.scss']
+/* Simplificado de referencia a los tipos de alerta */
+enum AlertType {
+  Success = 0,
+  Error = 1,
+  Info = 2,
+  Warning = 3,
+}
 
+@Component({
+  selector: 'alert',
+  templateUrl: './alert.component.html',
+  styleUrls: ['./alert.component.scss'],
 })
 export class AlertComponent implements OnInit, OnDestroy {
-    @Input() id = 'default-alert';
-    @Input() fade = true;
+  private readonly destroy$ = new Subject<void>();
 
-    alerts: Alert[] = [];
-    alertSubscription: Subscription = new Subscription;
-    routeSubscription: Subscription = new Subscription;
+  @Input() public readonly id: string = 'default-alert';
+  @Input() public readonly fade: boolean = true;
+  @Input() public autoCloseTime = 3000;  // Tiempo en ms para auto cerrar
 
-    constructor(private readonly router: Router, private readonly alertService: AlertService) { }
+  public alerts: Alert[] = [];
 
-    ngOnInit() {
-        // subscribe to new alert notifications
-        this.alertSubscription = this.alertService.onAlert(this.id)
-            .subscribe(alert => {
-                // clear alerts when an empty alert is received
-                if (!alert.message) {
-                    // filter out alerts without 'keepAfterRouteChange' flag
-                    this.alerts = this.alerts.filter(x => x.keepAfterRouteChange);
+  constructor(
+    private readonly router: Router,
+    private readonly alertService: AlertService
+  ) {
+  }
 
-                    // remove 'keepAfterRouteChange' flag on the rest
-                    this.alerts.forEach(x => x.keepAfterRouteChange = false);
-                    return;
-                }
+  ngOnInit() {
+    this.subscribeToAlerts();
+    this.subscribeToRouteChanges();
+  }
 
-                // add alert to array
-                this.alerts.push(alert);
+  ngOnDestroy() {
+    // Completar todos los observables para evitar fugas de memoria
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
-                // auto close alert if required
-                if (alert.autoClose) {
-                    setTimeout(() => this.removeAlert(alert), 3000);
-                }
-            });
+  private subscribeToAlerts(): void {
+    this.alertService
+      .onAlert(this.id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((alert) => {
+        // Limpiar alertas cuando se recibe una alerta vacía
+        if (!alert.message) {
+          // Filtrar alertas sin 'keepAfterRouteChange'
+          this.alerts = this.alerts.filter((x) => x.keepAfterRouteChange);
 
-        // clear alerts on location change
-        this.routeSubscription = this.router.events.subscribe(event => {
-            if (event instanceof NavigationStart) {
-                this.alertService.clear(this.id);
-            }
-        });
-    }
-
-    ngOnDestroy() {
-        // unsubscribe to avoid memory leaks
-        this.alertSubscription.unsubscribe();
-        this.routeSubscription.unsubscribe();
-    }
-
-    removeAlert(alert: Alert) {
-        // check if already removed to prevent error on auto close
-        if (!this.alerts.includes(alert)) return;
-
-        if (this.fade) {
-            // fade out alert
-            let ale = this.alerts.find(x => x === alert);
-            if (ale) {
-                ale.fade = true;
-            }
-            // remove alert after faded out
-            setTimeout(() => {
-                this.alerts = this.alerts.filter(x => x !== alert);
-            }, 250);
-        } else {
-            // remove alert
-            this.alerts = this.alerts.filter(x => x !== alert);
+          // Quitar la bandera 'keepAfterRouteChange' en el resto
+          for (const remainingAlert of this.alerts) {
+            remainingAlert.keepAfterRouteChange = false;
+          }
+          return;
         }
+
+        // Añadir alerta al array
+        this.alerts.push(alert);
+
+        // Auto cerrar alerta si es requerido
+        if (alert.autoClose) {
+          setTimeout(() => this.removeAlert(alert), this.autoCloseTime);
+        }
+      });
+  }
+
+  private subscribeToRouteChanges(): void {
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationStart),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.alertService.clear(this.id);
+      });
+  }
+
+  public removeAlert(alert: Alert): void {
+    if (!this.alerts.includes(alert)) {
+      return;
     }
 
-    close(alert: Alert) {
-		this.alerts.splice(this.alerts.indexOf(alert), 1);
-	}
+    if (this.fade) {
+      // Marcar para desvanecer
+      const alertToFade = this.alerts.find((x) => x === alert);
+      if (alertToFade) {
+        alertToFade.fade = true;
+      }
+      // Eliminar después del tiempo de desvanecimiento
+      setTimeout(() => {
+        this.alerts = this.alerts.filter((x) => x !== alert);
+      }, 250);
+    } else {
+      // Eliminar directamente
+      this.alerts = this.alerts.filter((x) => x !== alert);
+    }
+  }
 
+  public close(alert: Alert): void {
+    this.alerts = this.alerts.filter(x => x !== alert);
+  }
 
-    cssClass(alert: Alert) {
-        if (!alert)
-            return;
-        let classes = 'alert';
-        let alertTypeClass = [' alert-success ', ' alert-danger ', ' alert-info ', ' alert-warning ']
-        classes = classes.concat(alertTypeClass[alert.type].toString());
-       return classes;
+  public cssClass(alert: Alert): string {
+    if (!alert) {
+      return '';
     }
 
-    cssIcon(alert: Alert) {
-        if (!alert)
-            return;
-        let classes = '';
-        let alertTypeClass = ['#check-circle-fill', '#exclamation-circle-fill', '#info-fill', '#exclamation-triangle-fill']
-        classes = classes.concat(alertTypeClass[alert.type].toString());
-        return classes;
+    const alertTypeClasses: Record<AlertType, string> = {
+      [AlertType.Success]: 'alert-success',
+      [AlertType.Error]: 'alert-danger',
+      [AlertType.Info]: 'alert-info',
+      [AlertType.Warning]: 'alert-warning',
+    };
+
+    const typeClass = alertTypeClasses[alert.type as AlertType] || '';
+
+    return `alert ${typeClass}`;
+  }
+
+  public cssIcon(alert: Alert): string {
+    if (!alert) {
+      return '';
     }
+
+    const alertTypeIcons: Record<AlertType, string> = {
+      [AlertType.Success]: '#check-circle-fill',
+      [AlertType.Error]: '#exclamation-circle-fill',
+      [AlertType.Info]: '#info-fill',
+      [AlertType.Warning]: '#exclamation-triangle-fill',
+    };
+
+    return alertTypeIcons[alert.type as AlertType] || '';
+  }
 }

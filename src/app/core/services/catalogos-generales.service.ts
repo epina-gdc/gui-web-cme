@@ -8,9 +8,8 @@ import {CatDocVerifResponse, CatPaisResponse, CatPerfilResponse, CatSubperfilRes
 import {HttpRespuesta} from '@models/http-respuesta.interface';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
-import {environment} from '../../../environments/environment.development';
-import {AlertService} from '../services/alert.service';
-
+import {environment} from '@env/environment.development';
+import {AlertService} from '@services/alert.service';
 
 @Injectable({
      providedIn: 'root'

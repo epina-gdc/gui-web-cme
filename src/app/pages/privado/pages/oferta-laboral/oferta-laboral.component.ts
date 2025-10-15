@@ -13,6 +13,15 @@ import {FooterMedicoComponent} from '@pages/privado/shared/footer-medico/footer-
 import {
   HeaderMedicoDetalleOfertaComponent
 } from '@pages/privado/shared/header-medico-detalle-oferta/header-medico-detalle-oferta.component';
+import {Paginator} from 'primeng/paginator';
+import {PrimeTemplate} from 'primeng/api';
+
+interface PageEvent {
+  first: number;
+  rows: number;
+  page: number;
+  pageCount: number;
+}
 
 @Component({
   selector: 'app-oferta-laboral',
@@ -23,7 +32,9 @@ import {
     KpiCardComponent,
     OfertaCardComponent,
     Button,
-    NgClass
+    NgClass,
+    Paginator,
+    PrimeTemplate
   ],
   templateUrl: './oferta-laboral.component.html',
   styleUrl: './oferta-laboral.component.scss',
@@ -102,5 +113,14 @@ export class OfertaLaboralComponent {
       styleClass: 'oferta-detail'
 
     });
+  }
+
+  first: number = 0;
+
+  rows: number = 10;
+
+  onPageChange(event: any) {
+    this.first = event.first;
+    this.rows = event.rows;
   }
 }

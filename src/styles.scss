@@ -196,4 +196,12 @@
     padding: 0.1rem 1rem;
   }
 
+  .paginator-oferta .p-paginator {
+    justify-content: end;
+  }
+
+  .paginator-oferta .p-paginator-first, .paginator-oferta .p-paginator-last {
+    display: none;
+  }
+
 }
