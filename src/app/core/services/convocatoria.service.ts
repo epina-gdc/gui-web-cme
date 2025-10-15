@@ -1,4 +1,4 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders,HttpParams} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {environment} from '@env/environment.development';
 import {Observable, throwError} from 'rxjs';
@@ -18,6 +18,7 @@ import {ResponseGeneral} from '@models/responseGeneral';
 })
 export class ConvocatoriaService {
     private readonly serverEndPointURLConvocatoria = `${environment.api.apiConvocatoria}`;
+    private readonly serverEndPointURLDocumento = `${environment.api.apiDocumentos}`;
 
     http: HttpClient = inject(HttpClient);
     _alertServices: AlertService = inject(AlertService);
@@ -28,6 +29,17 @@ export class ConvocatoriaService {
         'Access-Control-Allow-Headers': 'Content-Type',
         'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
     });
+
+    headers2 :  HttpHeaders = new HttpHeaders({
+        
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST',
+
+    });
+
+    
+
 
     getDatosResidencia(idUsuario: number): Observable<any> {
         return this.http.get<DataDomicilio>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-residencia/${idUsuario}`, { headers: this.header }).pipe(
@@ -145,8 +157,8 @@ export class ConvocatoriaService {
         );
     }
 
-    guardarFoto(foto: FotografiaRequest): Observable<any> {
-        let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-fotografia'`;
+    guardarFoto(foto: any): Observable<any> {
+        let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-fotografia`;
         return this.http.post<any>(ruta, foto, { headers: this.header }).pipe(
             catchError(this.handleError),
             map((response: any) => {
@@ -154,6 +166,10 @@ export class ConvocatoriaService {
             })
         );
     }
+
+
+ 
+
 
     guardarDocumento(documento: any): Observable<any> {
         let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-documentos`
