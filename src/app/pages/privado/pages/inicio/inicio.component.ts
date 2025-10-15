@@ -129,7 +129,7 @@ blnFotoGuardada!: boolean;
 
     super()
     this.userService.userData$.subscribe(user => this.userData = user);
-    
+
     this.formRegistro = this.asignarFormularioRegistro();
     this.formZonaInteres = this.asignarFormularioZonaInteres();
     this.formDocumentosEspecialidad = this.asignarFormularioDocumentosEspecialidad();
@@ -486,13 +486,13 @@ datosFoto!: Fotografia;
                 this.blnFotoGuardada = true;
                   this.selectFile = response;
                 //  this.formRegistro.get('myfile[]')?.patchValue(this.selectFile);
-                
+
                   console.log("blnFotoGuardada",this.blnFotoGuardada);
-                
-        
+
+
               }
             });
-          
+
         }
 
       }
@@ -545,7 +545,6 @@ datosFoto!: Fotografia;
     }
     //foto
 
-
     if (this.datosGenerales.dependientes?.indPadres == 1 && this.datosGenerales.dependientes?.refCantidadHijos == null) {
       this.formRegistro.get('dependientes')?.setValue(this.dependientes[0]);
     } else {
@@ -561,8 +560,6 @@ datosFoto!: Fotografia;
     this.subscribirseACambioComponentes();
     this.formRegistro.get('hijos')?.setValue(this.datosGenerales.dependientes?.refCantidadHijos);
     this.formRegistro.get('otros')?.setValue(this.datosGenerales.dependientes?.refOtro);
-
-
 
     if (this.datosGenerales.zonasInteresLaboral) {
 
@@ -771,7 +768,7 @@ if(this.blnFotoGuardada){
 }else{
   this._alertServices.alerta('La foto no ha sido cargada, selecciona otro archivo.');
 }
-        
+
         break;
 
       default:
@@ -792,7 +789,7 @@ if(this.blnFotoGuardada){
         return this.btnGuardar(this.indice());
 
 
-        
+
 
       case 1:
         if (this.formDocumentosEspecialidad.valid)
