@@ -5,6 +5,6 @@ export interface ConfigEnvironment {
     apiCatalogos:string;
     apiRegistro:string;
     apiConvocatoria:string;
-
+    apiDocumentos:string;
   }
 }
