@@ -50,8 +50,8 @@
     <div class="flex justify-content-between">
       <span class="titulo-tabla">Verificación de Documentos</span>
       <div class="flex align-items-center boton-descargar">
-        <i class="cme-document" [style]="{ 'font-size': '2.2rem', color: '#23c8a7'}"></i>
-        <span class="ms-1 font-medium">Exportar datos</span>
+        <i class="cme-download" [style]="{ 'font-size': '1.8rem', color: '#018699'}"></i>
+        <span class="ms-2 font-medium">Exportar datos</span>
       </div>
     </div>
   </ng-template>
@@ -130,9 +130,9 @@
     </ng-template>
 </p-paginator>
 
-<p-popover #op (onHide)="documentoSeleccionado = null">
+<p-popover #op (onHide)="documentoSeleccionado == null">
   <ng-template #content>
-    <div class="flex align-items-center boton-descargar">
+    <div class="flex align-items-center boton-descargar cursor-pointer" (click)="irDetalleDocumentacion()">
       <i class="cme-document" [style]="{ 'font-size': '1.2rem', color: '#23c8a7'}"></i>
       <span class="ms-2 acciones-tabla">Consultar documentos</span>
     </div>

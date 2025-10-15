@@ -279,3 +279,43 @@
   color: #869fd4;
   font-size: 12px;
 }
+
+.titulo-nombre-aspirante{
+  color: #000;
+  font-family: "Noto Sans";
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 100%; /* 24px */
+}
+
+.detalle-aspirante{
+  span{
+    color: #597190;
+    font-family: "Noto Sans";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+  p{
+    color: #222;
+    font-family: "Noto Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+}
+
+
+.header-tab-documentacion{
+  display: flex;
+  color: #161A1D;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-family: "Noto Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%; /* 16.8px */
+}

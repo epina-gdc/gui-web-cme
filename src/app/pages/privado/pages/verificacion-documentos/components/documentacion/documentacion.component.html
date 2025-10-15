@@ -1,1 +1,57 @@
-<p>documentacion works!</p>
+<div class="flex justify-content-start align-items-center gap-3">
+  <btn-regresar [ruta]="'privado/verificacion-documentos'"/>
+  <h3 class="titulo-seccion w-full">Documentación del aspirante</h3>
+</div>
+<p-card class="mx-2 empty-border" [header]="'Información del médico aspirante'">
+  <div class="flex align-items-center p-4">
+    <img role="presentation" [alt]="'nombre'" src="/assets/images/img_medico.png" width="100" height="100"/>
+    <div class="flex flex-column ms-5 w-6">
+      <div class="flex justify-content-between align-items-center mb-3">
+        <span class="titulo-nombre-aspirante ">Pablo Andrés García Bernal</span>
+        <app-pill [texto]="'No cumple con requisitos'" [pillType]="0" />
+      </div>
+      <div class="flex justify-content-between align-items-center mt-3">
+        <div class="detalle-aspirante ">
+          <span class="acciones-tabla">Matrícula</span>
+          <p>311080212</p>
+        </div>
+        <div class="detalle-aspirante ">
+          <span class="acciones-tabla">Especialidad</span>
+          <p>Cardiología</p>
+        </div>
+        <div class="detalle-aspirante ">
+          <span class="acciones-tabla">Correo electónico</span>
+          <p>pablo_bernal&#64;gmail.com</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</p-card>
+<div class="py-1 px-4 bg-white border-round-xl">
+  <p-tabs value="0" class="tab-documentacion">
+    <p-tablist class="justify-content-between">
+        <p-tab value="0">
+          <div class="header-tab-documentacion">
+            <i class="cme-deals me-3" style="color: #000000; font-size: 1.4rem"></i>
+            <p>Documentos obligatorios</p>
+          </div>
+        </p-tab>
+        <p-tab value="1">
+          <div class="header-tab-documentacion">
+            <i class="cme-deals me-3" style="color: #000000; font-size: 1.4rem"></i>
+          <p>Documentos por especialidad</p>
+          </div>
+        </p-tab>
+        <p-tab value="2">
+          <div class="header-tab-documentacion">
+            <i class="cme-deals me-3" style="color: #000000; font-size: 1.4rem"></i>
+           <p> Constancias de cursos</p>
+          </div>
+        </p-tab>
+    </p-tablist>
+  </p-tabs>
+</div>
+<p-card class="mx-2 empty-border" [header]="'Documentos de especialización'">
+
+</p-card>
