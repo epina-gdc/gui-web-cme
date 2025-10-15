@@ -323,11 +323,11 @@
           </div>
           <div class="col-3">
             <div class="flex justify-content-between mb-1">
-              <p class="field-label">Documentos obligatorios</p>
+              <p class="field-label">Tipo de documento</p>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <p-select [options]="dummies" optionLabel="label" optionValue="value"
-                      placeholder="Selecciona opción" formControlName="documento" class="w-full"/>
+            <p-select [options]="lstTiposDocumentos" optionLabel="label" optionValue="value"
+                      placeholder="Selecciona una opción" formControlName="documento" class="w-full"/>
           </div>
           <div class="col-3">
             <div class="flex justify-content-between mb-1">
