@@ -84,7 +84,15 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
   }
 
   textoEstatus(estatus: number): string {
-    return EstatusDocumentacion[estatus];
+    const tipoEstatus:string[] =[
+      "No cumple con requisitos",
+      "Cumple con requisitos",
+      "Revisión documental",
+      "Pendiente"
+    ];
+
+
+    return tipoEstatus[estatus];
   }
 
   settearClase(estatus: number): string {
@@ -106,12 +114,26 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
 
 
   consultaDocumento(event: any, documento: any){
-    this.op.show(event);
+    if (this.documentoSeleccionado?.matricula === documento.matricula) {
+      this.op.hide();
+      this.documentoSeleccionado = null;
+  } else {
+      this.documentoSeleccionado = documento;
+      this.op.show(event);
+
+      if (this.op.container) {
+          this.op.align();
+      }
+  }
   }
 
   hidePopover() {
     this.op.hide();
-}
+  }
+
+  irDetalleDocumentacion(){
+    this._router.navigate(['privado/',this._nav.documentacionAspirante])
+  }
 
 
 }

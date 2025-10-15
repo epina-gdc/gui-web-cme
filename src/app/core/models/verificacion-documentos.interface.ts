@@ -11,8 +11,8 @@ export interface VerificacionDocumentos {
 }
 
 export enum EstatusDocumentacion {
-  "No cumple con requisitos",
-  "Cumple con requisitos",
-  "Revisión documental",
-  "Pendiente"
+  'noCumple',
+  'cumple',
+  'pendiente',
+  'revision'
 }
