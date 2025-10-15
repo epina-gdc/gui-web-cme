@@ -47,7 +47,7 @@ export class Estado{
     idEstado!: number;
     desEstado!: string;
     idLugarNacimiento!: number;
-
+    desLugarNacimiento?: string;
 }
 
 export class Municipio{
