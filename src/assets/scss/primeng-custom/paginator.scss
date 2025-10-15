@@ -7,11 +7,10 @@
     border-radius: 0 0 10px 10px;
   }
 
-
   .p-paginator-prev{
     color: var(--Neutro-Neutro04, #7D7E7F);
     text-align: center;
-    font-family: Montserrat;
+    font-family: Montserrat, sans-serif;
     font-size: 12px;
     font-style: normal;
     font-weight: 600;
@@ -22,7 +21,7 @@
   .p-paginator-next{
     color: var(--Neutro-Neutro04, #7D7E7F);
     text-align: center;
-    font-family: Montserrat;
+    font-family: Montserrat, sans-serif;
     font-size: 12px;
     font-style: normal;
     font-weight: 600;
@@ -32,7 +31,7 @@
   .p-paginator-pages{
     color: var(--Neutro-Neutro03, #606162);
     text-align: center;
-    font-family: Montserrat;
+    font-family: Montserrat, sans-serif;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -42,7 +41,7 @@
   .p-paginator-page-selected{
     color: #FFF;
     text-align: center;
-    font-family: Montserrat;
+    font-family: Montserrat, sans-serif;
     font-size: 14px;
     font-style: normal;
     font-weight: 600;

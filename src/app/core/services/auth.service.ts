@@ -8,7 +8,7 @@ import {inject, Injectable} from '@angular/core';
 import {environment} from '@env/environment.development';
 import {Login} from '@models/login';
 import {BehaviorSubject, map, Observable, tap} from 'rxjs';
-import {CME_TOKEN} from "../../utils/constantes";
+import {CME_TOKEN} from '@utils/constants';
 
 @Injectable({
   providedIn: 'root'

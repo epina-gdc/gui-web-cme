@@ -7,8 +7,8 @@ import {PATRON_CARACTERES_ASCII} from '@utils/regex';
 export class BloquearCaracterPasswordDirective {
 
 
-  constructor() { }
-
+  constructor() {
+  }
 
   @HostListener('keypress', ['$event'])
   onKeyPress(event: KeyboardEvent) {

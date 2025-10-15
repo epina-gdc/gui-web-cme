@@ -50,7 +50,7 @@ export class UploadDocumentComponent {
       return `0 ${sizes[0]}`;
     }
     const i: number = Math.floor(Math.log(bytes) / Math.log(k));
-    const formattedSize: number = parseFloat((bytes / Math.pow(k, i)).toFixed(dm));
+    const formattedSize: number = Number.parseFloat((bytes / Math.pow(k, i)).toFixed(dm));
     return `${formattedSize} ${sizes[i]}`;
   }
 

@@ -2,14 +2,12 @@ import {CommonModule} from "@angular/common";
 import {Component, inject} from "@angular/core";
 import {Mensajes} from "@utils/mensajes";
 import {Router} from '@angular/router';
-import {NAV} from "./../core/utils/url-global";
+import {NAV} from "@utils/url-global";
 import {CatalogosGeneralesService} from "@services/catalogos-generales.service";
 import {RegistroMedicoService} from "@services/registro-medico.service";
-
 import {AlertService} from "@services/alert.service";
 import {AuthService} from "@services/auth.service";
-import { DocumentoService } from "@services/documentos.service";
-
+import {DocumentoService} from "@services/documentos.service";
 
 @Component({
   selector: 'app-general',
@@ -43,14 +41,14 @@ export class GeneralComponent {
   public onlyNumbers(event: any) {
     const pattern = /^\d*$/;
     if (!pattern.test(event.target.value)) {
-      event.target.value = event.target.value.replace(/\D/g, '');
+      event.target.value = event.target.value.replaceAll(/\D/g, '');
     }
   }
 
   public onlyAlphanumeric(event: any) {
     const pattern = /^[^0-9|A-Z]*$/;
     if (!pattern.test(event.target.value)) {
-      event.target.value = event.target.value.replace(/[^0-9|A-Z]/g, '');
+      event.target.value = event.target.value.replaceAll(/[^0-9|A-Z]/g, '');
     }
   }
 
@@ -65,21 +63,15 @@ export class GeneralComponent {
       event.target.value = event.target.value.toLowerCase();
     }
   }
-  salir() {
 
-  }
-
+  salir() {}
 
 
-
-  irAHome() {
-
-  }
+  irAHome() {}
 
   scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
-
 
   public getSession(objeto: string): any {
     let p: any;
@@ -91,7 +83,6 @@ export class GeneralComponent {
     return p;
   }
 
-
   public saveSession(objeto: string, data: any) {
     sessionStorage.setItem(objeto, window.btoa(encodeURIComponent(JSON.stringify(data))));
   }
@@ -99,17 +90,6 @@ export class GeneralComponent {
   public removeSession(objeto: string) {
     sessionStorage.removeItem(objeto);
   }
-
-
-
-
-
-
-
-
-
-
-
 
   public comparaCampos(texto1: string, texto2: string): boolean {
     let blnIguales = false;

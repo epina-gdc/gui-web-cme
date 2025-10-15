@@ -1,10 +1,10 @@
-import {HttpClient, HttpHeaders,HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {environment} from '@env/environment.development';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {AspiranteRequest, InteresLaboralRequest} from '@models/aspirante';
-import {DataFotografia, FotografiaRequest} from '@models/fotografia';
+import {DataFotografia} from '@models/fotografia';
 import {DatosDocumentoResponse} from '@models/datosDocumento';
 import {ContactoRequest, DataContacto} from '@models/datosContacto';
 
@@ -31,14 +31,14 @@ export class ConvocatoriaService {
     });
 
     headers2 :  HttpHeaders = new HttpHeaders({
-        
+
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type',
         'Access-Control-Allow-Methods': 'POST',
 
     });
 
-    
+
 
 
     getDatosResidencia(idUsuario: number): Observable<any> {
@@ -168,7 +168,7 @@ export class ConvocatoriaService {
     }
 
 
- 
+
 
 
     guardarDocumento(documento: any): Observable<any> {

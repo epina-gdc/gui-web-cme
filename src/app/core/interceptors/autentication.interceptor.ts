@@ -1,6 +1,6 @@
 import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {CME_TOKEN} from "../../utils/constantes";
+import {CME_TOKEN} from '@utils/constants';
 
 export class JwtInterceptorService implements  HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

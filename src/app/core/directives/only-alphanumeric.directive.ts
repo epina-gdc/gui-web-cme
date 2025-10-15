@@ -58,8 +58,8 @@ export class AlphanumericDirective implements ControlValueAccessor {
 }
 
 function filtrarValor(value: string): string {
-  let newValue: string = value.replace(/[^a-zA-Z0-9ñÑ\s]+/g, '');
-  newValue = newValue.replace(/\s+/g, ' ');
+  let newValue: string = value.replaceAll(/[^a-zA-Z0-9ñÑ\s]+/g, '');
+  newValue = newValue.replaceAll(/\s+/g, ' ');
   return newValue;
 }
 
