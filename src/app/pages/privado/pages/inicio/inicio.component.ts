@@ -768,7 +768,7 @@ datosFoto!: Fotografia;
     switch (paso) {
       case 0:
 
-if(this.blnFotoGuardada){
+if(this.blnFotoGuardada || this.selectFile){
   this.saveDatosGenerales();
 }else{
   this._alertServices.alerta('La foto no ha sido cargada, selecciona otro archivo.');
