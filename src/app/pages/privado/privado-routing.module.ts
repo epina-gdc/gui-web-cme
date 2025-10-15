@@ -4,6 +4,7 @@ import {InicioComponent} from '@privado/inicio/inicio.component';
 import {PrivadoComponent} from '@pages/privado/privado.component';
 import {inicioResolver} from '../../core/resolvers/inicio.resolver';
 import {VerificacionDocumentosComponent} from './pages/verificacion-documentos/verificacion-documentos.component';
+import { DocumentacionComponent } from './pages/verificacion-documentos/components/documentacion/documentacion.component';
 
 const routes: Routes = [{
   path: '',
@@ -24,6 +25,10 @@ const routes: Routes = [{
     {
       path: 'verificacion-documentos',
       component: VerificacionDocumentosComponent,
+    },
+    {
+      path: 'documentacion-aspirante',
+      component: DocumentacionComponent,
     },
   ]
 }];
