@@ -1,5 +1,5 @@
 import {Directive, ElementRef, forwardRef, HostListener, Renderer2} from '@angular/core';
-import {NG_VALUE_ACCESSOR} from '@angular/forms';
+import {ControlValueAccessor, NG_VALUE_ACCESSOR} from '@angular/forms';
 
 @Directive({
   selector: 'input[appOnlyNumbers]',
@@ -9,18 +9,16 @@ import {NG_VALUE_ACCESSOR} from '@angular/forms';
     multi: true
   }]
 })
-export class OnlyNumbersDirective {
-
+export class OnlyNumbersDirective implements ControlValueAccessor {
   private onChange!: (val: string) => void;
   private onTouched!: () => void;
   private value!: string;
 
   constructor(
-    private elementRef: ElementRef,
-    private renderer: Renderer2
+    private readonly elementRef: ElementRef,
+    private readonly renderer: Renderer2
   ) {
   }
-
 
   @HostListener('input', ['$event.target.value'])
   onInputChange(value: string): void {
@@ -61,5 +59,5 @@ export class OnlyNumbersDirective {
 }
 
 function filtrarValor(value: string): string {
-  return value.replace(/\D*/g, '');
+  return value.replaceAll(/\D*/g, '');
 }
