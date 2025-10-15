@@ -113,6 +113,7 @@ blnFotoGuardada!: boolean;
   sexos: TipoDropdown[] = [];
   estadosCiviles: TipoDropdown[] = [];
   paises: TipoDropdown[] = [];
+  lstTiposDocumentos: TipoDropdown[] = [];
   lugaresNacimiento: TipoDropdown[] = [];
   estados: TipoDropdown[] = [];
   municipios: TipoDropdown[] = [];
@@ -353,11 +354,12 @@ this.obtenerDatosFoto(this.userData?.idUsuario);
 
   obtenerCatalogos(): void {
     this.activatedRoute.data.subscribe(({ respuesta }) => {
-      const [sexos, estadosCiviles, paises, lugaresNacimiento] = respuesta;
+      const [sexos, estadosCiviles, paises, lugaresNacimiento, tiposDocumentos] = respuesta;
       this.sexos = mapearArregloTipoDropdown(sexos.respuesta, 'desSexo', 'idSexo');
       this.estadosCiviles = mapearArregloTipoDropdown(estadosCiviles.respuesta, 'desEstadoCivil', 'idEstadoCivil');
       this.paises = mapearArregloTipoDropdown(paises.respuesta, 'desPais', 'idPais');
       this.lugaresNacimiento = mapearArregloTipoDropdown(lugaresNacimiento.respuesta, 'desLugarNacimiento', 'idLugarNacimiento');
+      this.lstTiposDocumentos = mapearArregloTipoDropdown(tiposDocumentos.respuesta, 'desDocumento', 'idTipoDcoumento');
     });
   }
 
@@ -471,7 +473,7 @@ datosFoto!: Fotografia;
   obtenerDatosFoto(idusuario: number | undefined): void {
     if (!idusuario) return;
 
-    console.log("usuario a buscar: ", idusuario);
+    
     this._ConvocatoriaService.getDatosFotografia(idusuario).pipe(
 
     ).subscribe({
@@ -487,7 +489,7 @@ datosFoto!: Fotografia;
                   this.selectFile = response;
                 //  this.formRegistro.get('myfile[]')?.patchValue(this.selectFile);
                 
-                  console.log("blnFotoGuardada",this.blnFotoGuardada);
+                  
                 
         
               }
@@ -536,12 +538,12 @@ datosFoto!: Fotografia;
       //domicilio
       this.formRegistro.controls['codigoPostal'].setValue(this.datosGenerales.datosResidenciaActual?.colonia?.refCodigoPostal);
 
-      this.formRegistro.get('pais')?.patchValue(this.datosGenerales.datosResidenciaActual?.pais?.idPais);
-      this.formRegistro.get('estado')?.patchValue(this.datosGenerales.datosResidenciaActual?.estado?.idEstado);
-      this.formRegistro.get('municipio')?.patchValue(this.datosGenerales.datosResidenciaActual?.delegacion?.idMunicipio);
-      this.formRegistro.get('colonia')?.patchValue(this.datosGenerales.datosResidenciaActual?.colonia?.idColonia);
+      this.formRegistro.get('pais')?.patchValue(this.datosGenerales.datosResidenciaActual.pais?.idPais);
+      this.formRegistro.get('estado')?.patchValue(this.datosGenerales.datosResidenciaActual.estado?.idEstado);
+      this.formRegistro.get('municipio')?.patchValue(this.datosGenerales.datosResidenciaActual.delegacion?.idMunicipio);
+      this.formRegistro.get('colonia')?.patchValue(this.datosGenerales.datosResidenciaActual.colonia?.idColonia);
       this.formRegistro.controls['calle'].setValue(this.datosGenerales.datosResidenciaActual.nomCalle);
-      this.formRegistro.controls['numeroExterior'].setValue(this.datosGenerales.datosResidenciaActual?.refNumero);
+      this.formRegistro.controls['numeroExterior'].setValue(this.datosGenerales.datosResidenciaActual.refNumero);
     }
     //foto
 
