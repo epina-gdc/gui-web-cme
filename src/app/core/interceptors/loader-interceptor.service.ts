@@ -14,7 +14,6 @@ export class LoadingInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-
     if (this.isServiceExcluded(request.url)) {
       return next.handle(request);
     }
@@ -31,9 +30,7 @@ export class LoadingInterceptor implements HttpInterceptor {
         }
       })
     );
-
   }
-
 
   private isServiceExcluded(url: string): boolean {
     const found = this.excludeService.filter((service: any) => {
@@ -42,7 +39,6 @@ export class LoadingInterceptor implements HttpInterceptor {
       }
       return null
     });
-
     return found.length > 0;
   }
 
