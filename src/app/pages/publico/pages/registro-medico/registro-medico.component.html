@@ -3,7 +3,8 @@
     <h1 class="login-titulo">{{ _Mensajes.MSJ_TITULO_CONVOCATORIA }}</h1>
     <h2 class="login-subtitulo">{{ _Mensajes.MSJ_SUBTITULO_CONVOCATORIA }}</h2>
   </aside>
-  <section class="col-6 col-sm-12  flex justify-content-center align-items-center vertical-align:middle align-items:center">
+  <section
+    class="col-6 col-sm-12  flex justify-content-center align-items-center vertical-align:middle align-items:center">
     <p-card class="top-rounded-card" [style]="{ width: '45rem', overflow: 'hidden'  }">
       <section class="flex flex-column">
         <article class="flex flex-row p-4">
@@ -158,7 +159,7 @@
                       autocomplete="off" formControlName="pais"   /> -->
                   <p-select id="pais" formControlName="pais" [options]="lstPais"
                             optionLabel="desPais" optionValue="idPais" placeholder="Selecciona un país"
-                            filterBy="desPais" [filter]="true"   class="w-full" (ngModelChange)="cambiaPais()">
+                            filterBy="desPais" [filter]="true" class="w-full" (ngModelChange)="cambiaPais()">
                   </p-select>
                   @if ((f['pais'].dirty || f['pais'].touched)) {
                     @for (validation of msjValidation.pais; track validation.msj) {
@@ -274,7 +275,7 @@
                        autocomplete="off"
                        [ngClass]="{'ng-touched ng-dirty ng-invalid': (f['correo'].errors?.['required'] && (f['correo'].dirty || f['correo'].touched))
                        || (f['correo'].errors?.['pattern'] && (f['correo'].dirty || f['correo'].touched))}"
-                       (change)="validarCorreo()" (change)="compararCorreos()" (keyup)="convertMinusculas($event);"/>
+                       (change)="compararCorreos()" (keyup)="convertMinusculas($event);"/>
                 @if ((f['correo'].dirty || f['correo'].touched)) {
                   @for (validation of msjValidation.correo; track validation.msj) {
                     @if (f['correo'].errors?.[validation.type]) {
