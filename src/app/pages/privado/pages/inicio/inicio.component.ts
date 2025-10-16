@@ -354,12 +354,13 @@ this.obtenerDatosFoto(this.userData?.idUsuario);
 
   obtenerCatalogos(): void {
     this.activatedRoute.data.subscribe(({ respuesta }) => {
+      
       const [sexos, estadosCiviles, paises, lugaresNacimiento, tiposDocumentos] = respuesta;
       this.sexos = mapearArregloTipoDropdown(sexos.respuesta, 'desSexo', 'idSexo');
       this.estadosCiviles = mapearArregloTipoDropdown(estadosCiviles.respuesta, 'desEstadoCivil', 'idEstadoCivil');
       this.paises = mapearArregloTipoDropdown(paises.respuesta, 'desPais', 'idPais');
       this.lugaresNacimiento = mapearArregloTipoDropdown(lugaresNacimiento.respuesta, 'desLugarNacimiento', 'idLugarNacimiento');
-      this.lstTiposDocumentos = mapearArregloTipoDropdown(tiposDocumentos.respuesta, 'desDocumento', 'idTipoDcoumento');
+      this.lstTiposDocumentos = mapearArregloTipoDropdown(tiposDocumentos.respuesta, 'desTipoDocumentoEspecialidad', 'idTipoDocumentoEspecialidad');
     });
   }
 
@@ -768,7 +769,7 @@ datosFoto!: Fotografia;
     switch (paso) {
       case 0:
 
-if(this.blnFotoGuardada || this.selectFile){
+if(this.blnFotoGuardada || this.datosFoto){
   this.saveDatosGenerales();
 }else{
   this._alertServices.alerta('La foto no ha sido cargada, selecciona otro archivo.');
