@@ -238,18 +238,13 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.form.controls['modalidad'].updateValueAndValidity();
     this.form.controls['pasaporte'].updateValueAndValidity();
     this.form.controls['pais'].updateValueAndValidity();
-      this.dinamicoCurp();
-
+    this.dinamicoCurp();
   }
 
   private isCurp() {
-
-
     this.form.controls['curp'].setValidators([Validators.required, Validators.minLength(18),
       Validators.maxLength(18),
       Validators.pattern(PATRON_CURP)]);
-
-
     this.form.controls['curp'].updateValueAndValidity();
     this.inCurp = true;
 
@@ -259,7 +254,6 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.form.controls['curp'].setValidators([]);
     this.form.controls['curp'].updateValueAndValidity();
     this.inCurp = false;
-
   }
 
   private isResidente() {
@@ -277,7 +271,6 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.clearCampos();
     this.form.controls['modalidad'].setValidators([Validators.required]);
     this.form.controls['modalidad'].updateValueAndValidity();
-
   }
 
   msjValidation: any = {};
@@ -362,7 +355,6 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     return this.form.controls;
   }
 
-
   blnBtnValidar!: boolean;
 
   public desbloquearValidar() {
@@ -376,8 +368,8 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   public btnValidarCurp() {
     this.medico.refCurp = this.form.controls['curp'].value;
     if (this.existeCURP(this.medico.refCurp)) {
-        this.validarCURP();
-        return;
+      this.validarCURP();
+      return;
     }
     this._alertServices.alerta(this._Mensajes.MSG010b);
     this.form.controls['curp'].setValue('');
@@ -404,10 +396,6 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this._router.navigate(['publico/' + this._nav.crearCuenta]);
   }
 
-
-  public validarCorreo() {
-
-  }
 
   public btnCrearCuenta() {
     this.asignarDatos();
@@ -547,7 +535,6 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     setTimeout(() => {
       this._alertServices.exito(this._Mensajes.MSG012);
     }, 500);
-
   }
 
   blnCorreosIguales!: boolean;
@@ -556,17 +543,19 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   public compararCorreos() {
     this.medico.refEmail = this.form.controls['correo'].value;
     this.medico.correo2 = this.form.controls['correoc'].value;
-    if (this.medico.refEmail.length > 0 && this.medico.correo2.length > 0) {
-      if (this.comparaCampos(this.medico.refEmail, this.medico.correo2)) {
-        this.blnCorreosIguales = true;
-      } else {
-        this.blnCorreosIguales = false;
-        this._alertServices.alerta(this._Mensajes.MSG0077);
-      }
+
+    if (this.medico.refEmail.length === 0 || this.medico.correo2.length === 0) {
+      this.blnCorreosIguales = false;
+      return;
     }
 
-  }
+    const sonIguales: boolean = this.comparaCampos(this.medico.refEmail, this.medico.correo2);
+    this.blnCorreosIguales = sonIguales;
 
+    if (!sonIguales) {
+      this._alertServices.alerta(this._Mensajes.MSG0077);
+    }
+  }
 
   public compararPassword() {
     this.medico.refContrasenaHash = this.form.controls['pass'].value;
@@ -577,34 +566,25 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
         this.blnPassIguales = true;
         return;
       }
-
       return this._alertServices.alerta(this._Mensajes.MSG007);
-
     }
-
   }
 
   cambiaModalidad() {
-
     this.medico.modalidad = this.form.controls['modalidad'].value;
-
   }
 
   cambiaPais() {
-
     this.medico.pais = this.form.controls['pais'].value;
-
   }
 
 
   public dinamicoCurp() {
-
     this.medico.refCurp = this.form.controls['curp'].value
     if (this.medico.refCurp.length > 0) {
       return this.isCurp();
     }
     return this.isNotCurp();
-
   }
 
 
@@ -626,7 +606,6 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.form.controls['apellidoM'].setValue('Sarmiento');
     this.form.controls['curp'].setValue('VISA900901MTLCRM06');
     this.form.controls['rfc'].setValue('VISA900901L3A');
-
     this.activarCampos(this.medico.blnInterno);
     this.dinamicoCurp();
     this.asignarDatos();
@@ -637,9 +616,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.medico.nomApellidoPaterno = this.form.controls['apellidoP'].value;
     this.medico.nomApellidoMaterno = this.form.controls['apellidoM'].value;
     this.medico.refCurp = this.form.controls['curp'].value;
-
     this.medico.refRfc = this.form.controls['rfc'].value;
-
     if (this.medico.blnPasaporte) {
       this.medico.pasaporte = this.form.controls['pasaporte'].value;
       this.medico.pais = this.form.controls['pais'].value;
