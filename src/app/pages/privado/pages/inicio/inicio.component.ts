@@ -339,13 +339,16 @@ export class InicioComponent extends GeneralComponent {
   }
 
   obtenerCatalogos(): void {
-    this.activatedRoute.data.subscribe(({respuesta}) => {
+
+    this.activatedRoute.data.subscribe(({ respuesta }) => {
+      
+
       const [sexos, estadosCiviles, paises, lugaresNacimiento, tiposDocumentos] = respuesta;
       this.sexos = mapearArregloTipoDropdown(sexos.respuesta, 'desSexo', 'idSexo');
       this.estadosCiviles = mapearArregloTipoDropdown(estadosCiviles.respuesta, 'desEstadoCivil', 'idEstadoCivil');
       this.paises = mapearArregloTipoDropdown(paises.respuesta, 'desPais', 'idPais');
       this.lugaresNacimiento = mapearArregloTipoDropdown(lugaresNacimiento.respuesta, 'desLugarNacimiento', 'idLugarNacimiento');
-      this.lstTiposDocumentos = mapearArregloTipoDropdown(tiposDocumentos.respuesta, 'desDocumento', 'idTipoDcoumento');
+      this.lstTiposDocumentos = mapearArregloTipoDropdown(tiposDocumentos.respuesta, 'desTipoDocumentoEspecialidad', 'idTipoDocumentoEspecialidad');
     });
   }
 
@@ -731,7 +734,9 @@ export class InicioComponent extends GeneralComponent {
         this._alertServices.alerta('La foto no ha sido cargada, selecciona otro archivo.');
         return;
       }
+
       this.saveDatosGenerales();
+
     }
   }
 
