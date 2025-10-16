@@ -31,20 +31,19 @@
     .p-tab-active .border-tab{
       border-bottom: none;
       border-left: 10px;
-
-
-
     }
+
   }
 
 
 
   :host ::ng-deep .p-tablist-tab-list {
     flex-direction: column !important;
+    border: none;
   }
 
   :host ::ng-deep .p-tab-active .border-tab{
-    background: rgba(112, 153, 230, 0.1);
+    background: #fff;
     border-right: 8px solid #5fd350!important;
   }
 
@@ -59,7 +58,13 @@
   :host ::ng-deep .p-tab-active i {
     color: #74dd66!important;
     border-radius: 3px;
-    background: #d7f4d3;
+    background: #d7f4d3!important;
+  }
+
+  :host ::ng-deep .p-tab i {
+    color: #fff;
+    border-radius: 3px;
+    background: #d6ddea;
   }
 
   :host ::ng-deep .p-tablist-active-bar {
