@@ -6,23 +6,24 @@ import {DatosPersonales} from "./datosPersonales";
 import {Dependientes} from "./dependiente";
 import {ResponseGeneral} from "./responseGeneral";
 
-export class DatosGeneralesRequest{
-    datosPersonales!: DatosPersonales;
-    dependientes!: Dependientes;
-    datosContacto!: DatosContacto;
-    datosResidenciaActual!: Residencia;
-    zonasInteresLaboral!:Array<InteresLaboral>;
+export class DatosGeneralesRequest {
+  datosPersonales!: DatosPersonales;
+  dependientes!: Dependientes;
+  datosContacto!: DatosContacto;
+  datosResidenciaActual!: Residencia;
+  zonasInteresLaboral!: Array<InteresLaboral>;
 }
 
-export class DatosGeneralesResponse{
-    participacion!: Participacion;
-    datosPersonales!: DatosPersonales;
-    dependientes!: Dependientes;
-    datosContacto!: DatosContacto;
-    datosResidenciaActual!: Residencia;
-    zonasInteresLaboral!:Array<InteresLaboral>;
+export class DatosGeneralesResponse {
+  participacion!: Participacion;
+  datosPersonales!: DatosPersonales;
+  dependientes!: Dependientes;
+  datosContacto!: DatosContacto;
+  datosResidenciaActual!: Residencia;
+  zonasInteresLaboral!: Array<InteresLaboral>;
 }
 
-export class dataGenerales extends ResponseGeneral{
-    respuesta!:  DatosGeneralesResponse;
+export class dataGenerales extends ResponseGeneral {
+  respuesta!: DatosGeneralesResponse;
 }
+
