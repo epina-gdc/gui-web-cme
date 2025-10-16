@@ -1,0 +1,69 @@
+@layer app-components {
+
+  .header-tab > div{
+    min-width: 350px!important;
+  }
+  .vertical-tabview {
+    display: flex;
+    flex-direction: row;
+
+    .p-tabview-nav {
+      flex-direction: column;
+      border-right: 1px solid #dee2e6;
+      width: 200px;
+
+      .p-tabview-nav-link {
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+        margin-right: -1px;
+      }
+    }
+
+
+    .p-tabview-panels {
+      flex-grow: 1;
+    }
+
+    .p-tabs {
+      flex-direction: row !important;
+    }
+
+    .p-tab-active .border-tab{
+      border-bottom: none;
+      border-left: 10px;
+
+
+
+    }
+  }
+
+
+
+  :host ::ng-deep .p-tablist-tab-list {
+    flex-direction: column !important;
+  }
+
+  :host ::ng-deep .p-tab-active .border-tab{
+    background: rgba(112, 153, 230, 0.1);
+    border-right: 8px solid #5fd350!important;
+  }
+
+
+  :host ::ng-deep .p-tab {
+    border: none;
+  }
+
+  :host ::ng-deep .p-tab-active .titulo-tab {
+    color: #000!important;
+  }
+  :host ::ng-deep .p-tab-active i {
+    color: #74dd66!important;
+    border-radius: 3px;
+    background: #d7f4d3;
+  }
+
+  :host ::ng-deep .p-tablist-active-bar {
+    border: none;
+    background: transparent;
+  }
+}

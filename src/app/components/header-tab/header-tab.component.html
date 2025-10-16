@@ -4,7 +4,9 @@
     <i class="cme-file" style="font-size: 2rem"></i>
     <p class="titulo-tab">{{ title }}</p>
   </div>
-  <div class="documento-tab">
-    <p class="doc-tab">{{ numDocs }} Doc.</p>
-  </div>
+  @if(numDocs){
+    <div class="documento-tab">
+      <p class="doc-tab">{{ numDocs }} Doc.</p>
+    </div>
+  }
 </div>
