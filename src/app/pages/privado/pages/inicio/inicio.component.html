@@ -18,7 +18,7 @@
         <section class="flex">
           <article class="col-3 flex flex-row">
             <p class="field-label">Fotografía</p>
-            <upload-photo   (fileSelected)="onFileSelected($event)" class="mt-6"/>
+            <upload-photo (fileSelected)="onFileSelected($event)" class="mt-6"/>
             <p class="label-obligatorio">Obligatorio</p>
           </article>
           <article class="col-9 flex flex-row flex-wrap">
@@ -27,7 +27,8 @@
                 <label class="field-label" for="rfc">RFC</label>
                 <p class="label-obligatorio">Obligatorio</p>
               </div>
-              <input pInputText class="w-full" (keyup)="convertMayusculas($event);" type="text" id="rfc" placeholder="Ingresa RFC"
+              <input pInputText class="w-full" (keyup)="convertMayusculas($event);" type="text" id="rfc"
+                     placeholder="Ingresa RFC"
                      formControlName="rfc"/>
             </div>
             <div class="col-4">
@@ -60,7 +61,7 @@
                 <label class="field-label" for="estadoCivil">Estado civil</label>
                 <p class="label-obligatorio">Obligatorio</p>
               </div>
-              <p-select [options]="estadosCiviles" formControlName="estadoCivil" optionLabel="label"
+              <p-select [options]="estadosCiviles" formControlName="estadoCivil" optionLabel="label" optionValue="value"
                         placeholder="Ingresa estado civil" class="w-full"/>
             </div>
             <div class="col-4">
@@ -137,14 +138,15 @@
               <label class="field-label" for="paisNacimiento">País de nacimiento</label>
             </div>
             <p-select [options]="paises" formControlName="paisNacimiento" optionLabel="label"
-            filterBy="label" [filter]="true"    placeholder="Ingresa País de nacimiento" class="w-full"/>
+                      filterBy="label" [filter]="true" placeholder="Ingresa País de nacimiento"
+                      class="w-full"/>
           </div>
           <div class="col-3">
             <div class="flex justify-content-between">
               <label class="field-label" for="estadoNacimiento">Estado de origen (nacimiento)</label>
             </div>
-            <p-select [options]="lugaresNacimiento" formControlName="estadoNacimiento" optionLabel="label"
-            filterBy="label" [filter]="true"   placeholder="Ingresa estado de origen" class="w-full"/>
+            <p-select [options]="lugaresNacimiento" formControlName="estadoNacimiento" optionLabel="label" optionValue="value"
+                      filterBy="label" [filter]="true" placeholder="Ingresa estado de origen" class="w-full"/>
           </div>
         </article>
       </p-card>
