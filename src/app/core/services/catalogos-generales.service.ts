@@ -156,6 +156,15 @@ import {AlertService} from '@services/alert.service';
         );
     }
 
+    getLstTiposDocumentos(): Observable<HttpRespuesta<any>> {
+        return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/tiposdocumento-especialidad', { headers: this.header }).pipe(
+            catchError(this.handleError),
+            map((response: HttpRespuesta<any>) => {
+                return response;
+            })
+        );
+    }
+
      private handleError(error: HttpErrorResponse) {
 
         if (error.status) {

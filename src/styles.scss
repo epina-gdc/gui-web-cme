@@ -204,4 +204,36 @@
     display: none;
   }
 
+  .p-carousel-content {
+    position: relative;
+  }
+
+  .p-carousel-prev-button {
+    position: absolute;
+    z-index: 10;
+    left: 10%;
+    color: #fff;
+  }
+
+  .p-carousel-next-button {
+    position: absolute;
+    right: 20%;
+    z-index: 10;
+    color: #fff;
+  }
+
+  .p-carousel-indicator-list {
+    display: none;
+  }
+
+  .p-carousel-viewport {
+    height: 320px !important;
+  }
+
+  .carousel-image {
+    height: 320px;
+    width: 300px;
+    object-fit: fill;
+  }
+
 }

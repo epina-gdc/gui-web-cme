@@ -132,14 +132,12 @@
             [numVisible]="1"
             [numScroll]="1">
             <ng-template let-product #item>
-              <div class="border border-surface-200 dark:border-surface-700 rounded m-2 p-4">
-                <div class="mb-4">
-                  <div class="relative mx-auto">
-                    <p-image
-                      src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}"
-                      [alt]="product.name"
-                      class="w-full rounded-border"/>
-                  </div>
+              <div class="rounded">
+                <div class="relative mx-auto">
+                  <p-image
+                    src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}"
+                    [alt]="product.name" styleClass="carousel-image" width="300" height="320"/>
+                    class="rounded-border"/>
                 </div>
               </div>
             </ng-template>
