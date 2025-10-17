@@ -32,7 +32,7 @@ export class UploadPhotoComponent {
 
   onRemoveTemplatingFile(event: any, file: any, removeFileCallback: any, index: any) {
     removeFileCallback(event, index);
-    this.totalSize -= parseInt(this.formatSize(file.size));
+    this.totalSize -= Number.parseInt(this.formatSize(file.size));
     this.totalSizePercent = this.totalSize / 10;
   }
 
