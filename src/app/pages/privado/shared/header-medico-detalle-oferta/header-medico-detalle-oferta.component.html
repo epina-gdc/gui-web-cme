@@ -2,12 +2,14 @@
   <div class="flex gap-2">
     <div class="border-left-1 vertical-border mx-3"></div>
     <div class="flex flex-column gap-1">
-      <p class="detalle-oferta-laboral-titulo">Cardiología</p>
-      <p class="detalle-oferta-laboral-sub-titulo">Medicina familiar</p>
+      <p class="detalle-oferta-laboral-titulo">{{oferta()?.titulo}}</p>
+      <p class="detalle-oferta-laboral-sub-titulo">{{oferta()?.subTitulo}}</p>
     </div>
-    <div class="flex align-items-center ml-2">
-      <p-badge [value]="'• ' + 'Nuevo hospital'" severity="warn"/>
-    </div>
+    @if (oferta()?.badgeValue) {
+      <div class="flex align-items-center ml-2">
+        <p-badge [value]="'• ' + 'Nuevo hospital'" severity="warn"/>
+      </div>
+    }
   </div>
   <div>
     <p-button icon="pi pi-times" class="icon-white" [rounded]="true" [text]="true" (click)="closeDialog()"/>

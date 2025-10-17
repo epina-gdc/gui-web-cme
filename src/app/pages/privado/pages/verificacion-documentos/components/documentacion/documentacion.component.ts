@@ -1,10 +1,9 @@
 import {Component} from '@angular/core';
-import { CardModule } from 'primeng/card';
-import { TabsModule } from 'primeng/tabs';
+import {CardModule} from 'primeng/card';
+import {TabsModule} from 'primeng/tabs';
 
-import { PillComponent } from '@components/pill/pill.component';
-import { BtnRegresarComponent } from '@components/btn-regresar/btn-regresar.component';
-
+import {PillComponent} from '@components/pill/pill.component';
+import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.component';
 
 
 @Component({
