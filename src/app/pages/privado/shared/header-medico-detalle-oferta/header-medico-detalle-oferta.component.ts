@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {DynamicDialogRef} from 'primeng/dynamicdialog';
 import {Button} from 'primeng/button';
 import {Badge} from 'primeng/badge';
@@ -17,7 +17,7 @@ import {EstadoOfertaService, OfertaEstado} from '@services/estado-oferta.service
 export class HeaderMedicoDetalleOfertaComponent implements OnInit, OnDestroy {
 
   private estadoSubscription: Subscription = new Subscription();
-  oferta: OfertaEstado | null = null;
+  oferta: WritableSignal<null | OfertaEstado> = signal(null);
 
   constructor(public ref: DynamicDialogRef,
               private readonly estadoOfertaService: EstadoOfertaService) {
@@ -32,7 +32,7 @@ export class HeaderMedicoDetalleOfertaComponent implements OnInit, OnDestroy {
     this.estadoSubscription = this.estadoOfertaService.estadoActual$.subscribe(
       (estado: OfertaEstado) => {
         // Asigna los valores recibidos a las propiedades del componente
-        this.oferta = estado;
+        this.oferta.update(value => estado)
       }
     );
   }

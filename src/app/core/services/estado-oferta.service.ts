@@ -14,8 +14,8 @@ export interface OfertaEstado {
 export class EstadoOfertaService {
   // BehaviorSubject: Almacena el estado actual y lo emite a los nuevos suscriptores
   private readonly estadoFuente = new BehaviorSubject<OfertaEstado>({
-    titulo: 'Cardiología',
-    subTitulo: 'Medicina familiar ',
+    titulo: '',
+    subTitulo: '',
     badgeValue: true,
   });
 
