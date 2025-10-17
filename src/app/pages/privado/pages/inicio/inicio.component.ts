@@ -125,7 +125,7 @@ export class InicioComponent extends GeneralComponent {
   ooad: TipoDropdown[] = [];
   zonas: TipoDropdown[] = [];
 
-  indice: WritableSignal<number> = signal<number>(0);
+  indice: WritableSignal<number> = signal<number>(2);
 
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
   _ConvocatoriaService: ConvocatoriaService = inject(ConvocatoriaService);
@@ -341,7 +341,7 @@ export class InicioComponent extends GeneralComponent {
   obtenerCatalogos(): void {
 
     this.activatedRoute.data.subscribe(({ respuesta }) => {
-      
+
 
       const [sexos, estadosCiviles, paises, lugaresNacimiento, tiposDocumentos] = respuesta;
       this.sexos = mapearArregloTipoDropdown(sexos.respuesta, 'desSexo', 'idSexo');
