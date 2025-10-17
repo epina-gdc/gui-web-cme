@@ -89,26 +89,60 @@
               <p-rating [(ngModel)]="value" [stars]="1"/>
             </div>
             <div class="flex">
-              <div class="flex col-9 flex-column gap-1">
+              <div class="flex col-12 flex-column p-0 mt-3">
                 <p class="card-compensacion-sub-titulo">Sueldo mensual</p>
-                <div class="flex justify-content-between">
-                  <p class="card-compensacion-seccion">Estimado bruto</p>
-                  <p class="card-compensacion-seccion">Estimado neto</p>
+                <div class="flex justify-content-start gap-4 my-2">
+                  <div class="flex flex-column">
+                    <p class="card-compensacion-seccion">Estimado bruto</p>
+                    <p class="card-compensacion-titulo">$45,520</p>
+                  </div>
+                  <div class="flex align-items-end">
+                    <p class="card-compensacion-titulo">-</p>
+                  </div>
+                  <div class="flex flex-column">
+                    <p class="card-compensacion-seccion">Estimado neto</p>
+                    <p class="card-compensacion-titulo">$41,140</p>
+                  </div>
                 </div>
-                <div class="flex justify-content-center">
-                  <p class="card-compensacion-titulo">$45,520 - $41,140</p>
+                <div class="flex justify-content-between p-0 mt-1">
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">Créditos:</p>
+                  </div>
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">2 disponibles</p>
+                  </div>
                 </div>
-                <div class="flex justify-content-between">
-                  <p class="card-compensacion-seccion">Bono dif coobertura:</p>
-                  <p class="card-compensacion-seccion">$1000,00</p>
+                <div class="flex justify-content-between p-0 mt-1">
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">Bono dificil:</p>
+                  </div>
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">No</p>
+                  </div>
                 </div>
-                <div class="flex justify-content-between">
-                  <p class="card-compensacion-seccion">Acceso a crédito:</p>
-                  <p class="card-compensacion-seccion">Si</p>
+                <div class="flex justify-content-between p-0 mt-1">
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">Acceso a crédito:</p>
+                  </div>
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">Si</p>
+                  </div>
                 </div>
-                <div class="flex justify-content-between">
-                  <p class="card-compensacion-seccion">% Alto costo de vida:</p>
-                  <p class="card-compensacion-seccion">20 %</p>
+                <div class="flex justify-content-between p-0 mt-1">
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">Crédito automotriz:</p>
+                  </div>
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">Monto máx</p>
+                  </div>
+                </div>
+                <div class="flex justify-content-between p-0 mt-1">
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">Crédito hipotecario:</p>
+                  </div>
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">Monto máx</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -137,7 +171,7 @@
                   <p-image
                     src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}"
                     [alt]="product.name" styleClass="carousel-image" width="300" height="320"/>
-                    class="rounded-border"/>
+                  class="rounded-border"/>
                 </div>
               </div>
             </ng-template>
