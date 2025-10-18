@@ -1,0 +1,44 @@
+<div class="flex">
+  <div class="doc-especialidades w-8">
+    @for (item of docsEspecialidad; track item.idEspecialidad) {
+      <div class="acordeon my-3">
+        <p-accordion [activeIndex]="-1">
+          <p-accordion-panel value="0">
+              <p-accordion-header>
+                <div class="flex gap-2">
+                  <i class="cme-file" style="font-size: 2rem"></i>
+                  <p class="header-accordeon ms-3">{{item.especialidad}}</p>
+                </div>
+              </p-accordion-header>
+              <p-accordion-content>
+                <p-tabs [value]="0">
+                @for (doc of item.docs; track doc.idDoc) {
+                      <p-tablist>
+                          <p-tab [value]="doc.idDoc">
+                            <div class="flex justify-content-between">
+                              <div >
+                                <span class="nombre-doc">{{doc.nombreDoc}}</span>
+                              </div>
+                              <div>
+                                @for (option of credentialOptions; track option.value) {
+                                  <label [for]="option.value + doc.idDoc" class="mx-2 select-option-doc">{{ option.label }}</label>
+                                  <p-radioButton [inputId]="option.value + doc.idDoc" [name]="doc.idDoc" [value]="option.value"[(ngModel)]="doc.selectedOption" />
+                                }
+
+                              </div>
+
+                            </div>
+                          </p-tab>
+                      </p-tablist>
+                    }
+                  </p-tabs>
+              </p-accordion-content>
+          </p-accordion-panel>
+        </p-accordion>
+      </div>
+     }
+  </div>
+  <!--<div class="flex w-6 flex-column">
+    <h6>Previsualización</h6>
+  </div>-->
+</div>

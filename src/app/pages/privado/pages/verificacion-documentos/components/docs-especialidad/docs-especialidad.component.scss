@@ -1,0 +1,18 @@
+@layer app-root{
+
+  :root {
+    --p-tabs-tablist-border-color: transparent
+    --p-tabs-tab-border-color: transparent
+  }
+  .p-tablist-tab-list {
+
+    border: solid 1px #bd9b3b;
+    border-right: solid 6px #BD9B3D;
+    border-radius: 9px 6px 6px 9px;
+  }
+  .p-tab{
+    //background-color: red;
+    width: 100%;
+    border: none!important;
+  }
+}
