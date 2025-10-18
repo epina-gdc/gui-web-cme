@@ -32,7 +32,7 @@ import {SesionUser} from '@models/sesion-user.interface';
 import {DatosDomicilio, Estado, Pais, Residencia} from '@models/datosDomicilio';
 import {ResponseGeneral} from '@models/responseGeneral';
 import {Colonia} from '@models/colonia';
-import {DataFotografia, Fotografia, FotografiaRequest, FotografiaResponse} from '@models/fotografia';
+import {DataFotografia, Fotografia, FotografiaRequest} from '@models/fotografia';
 import {DatosPersonales} from '@models/datosPersonales';
 import {Dependientes} from '@models/dependiente';
 import {OnlyNumbersDirective} from '@directives/only-numbers.directive';

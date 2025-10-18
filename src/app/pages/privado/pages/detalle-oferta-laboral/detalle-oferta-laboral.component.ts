@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Card} from "primeng/card";
 import {Rating} from 'primeng/rating';
 import {FormsModule} from '@angular/forms';
@@ -7,6 +7,7 @@ import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs';
 import {SplitByWidthDirective} from '@directives/split-by-width.directive';
 import {Image} from 'primeng/image';
 import {Carousel} from 'primeng/carousel';
+import {EstadoOfertaService} from '@services/estado-oferta.service';
 
 @Component({
   selector: 'app-detalle-oferta-laboral',
@@ -27,7 +28,20 @@ import {Carousel} from 'primeng/carousel';
   templateUrl: './detalle-oferta-laboral.component.html',
   styleUrl: './detalle-oferta-laboral.component.scss'
 })
-export class DetalleOfertaLaboralComponent {
+export class DetalleOfertaLaboralComponent implements OnInit {
+
+  constructor(private readonly estadoOfertaService: EstadoOfertaService) {
+  }
+
+  ngOnInit() {
+    const nuevoEstado = {
+      titulo: 'Cardiología',
+      subTitulo: 'Medicina Familiar',
+      badgeValue: true,
+    };
+    this.estadoOfertaService.actualizarEstado(nuevoEstado);
+  }
+
   value: any;
   products: any[] = [{
     id: '1000',
@@ -66,4 +80,13 @@ export class DetalleOfertaLaboralComponent {
       rating: 3
     }];
 
+  cambioDatosHeader(step: number): void {
+    const titulo: string = step === 2 ? 'Sedes' : step === 1 ? 'Baja California' : 'Cardiología';
+    const nuevoEstado = {
+      titulo,
+      subTitulo: 'Medicina Familiar',
+      badgeValue: step === 0,
+    };
+    this.estadoOfertaService.actualizarEstado(nuevoEstado);
+  }
 }

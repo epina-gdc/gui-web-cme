@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { EstatusDocumentacion } from '@models/verificacion-documentos.interface';
+import {CommonModule} from '@angular/common';
+import {Component, Input} from '@angular/core';
+import {EstatusDocumentacion} from '@models/verificacion-documentos.interface';
 
 
 @Component({

@@ -14,7 +14,6 @@ import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regr
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
 import {ButtonModule} from 'primeng/button';
 import {DUMMIE_TABLA_VERIFICACION_DOCUMENTOS} from '@utils/dummies';
-import {EstatusDocumentacion} from '@models/verificacion-documentos.interface';
 
 @Component({
   selector: 'app-verificacion-documentos',
