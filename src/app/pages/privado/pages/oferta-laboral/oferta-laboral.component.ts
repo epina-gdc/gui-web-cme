@@ -99,6 +99,12 @@ export class OfertaLaboralComponent {
       icono: 'cme-quest',
       description: 'Respuestas a las preguntas del proceso',
     },
+    {
+      id: 3,
+      name: 'Preguntas frecuentes',
+      icono: 'cme-quest',
+      description: 'Respuestas a las preguntas del proceso',
+    }
   ];
 
   actualizarTab(id: number) {
