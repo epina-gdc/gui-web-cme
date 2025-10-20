@@ -40,7 +40,7 @@ export class RegistroInternoRequest {
   refCurp!: string;
   refRfc!: string;
   areaMedicaData!: AreaMedicaData;
-
+  renapoData!:RenapoData;
   requiereFolio!: boolean;
   
 }
@@ -56,6 +56,8 @@ export class RegistroCurpRequest {
   nomApellidoMaterno!: string;
   refCurp!: string;
   refRfc!: string;
+  requiereFolio!: boolean;
+  areaMedicaData!: AreaMedicaData;
 }
 
 export class RegistroPasaporteRequest {
@@ -103,5 +105,9 @@ export class AreaMedicaData{
   CATEGORIA!: string;
   TIPO_ESPECIALIDAD!:string;
   TIPO!:string;
+
+}
+
+export class RenapoData{
 
 }

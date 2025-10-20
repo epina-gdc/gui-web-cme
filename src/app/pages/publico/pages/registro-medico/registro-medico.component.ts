@@ -1,17 +1,17 @@
-import {ResponseGeneral} from '@models/responseGeneral';
+import { ResponseGeneral } from '@models/responseGeneral';
 
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
-import {Card} from 'primeng/card';
-import {GeneralComponent} from '../../../../components/general.component';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Card } from 'primeng/card';
+import { GeneralComponent } from '../../../../components/general.component';
 
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Select} from 'primeng/select';
-import {Button} from 'primeng/button';
-import {InputTextModule} from 'primeng/inputtext';
-import {HttpErrorResponse} from '@angular/common/http';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { Select } from 'primeng/select';
+import { Button } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { HttpErrorResponse } from '@angular/common/http';
 
-import {CommonModule} from '@angular/common';
-import {CatPais, CatPaisResponse, CatSubperfil, CatSubperfilResponse} from '@models/catalogoGeneral';
+import { CommonModule } from '@angular/common';
+import { CatPais, CatPaisResponse, CatSubperfil, CatSubperfilResponse } from '@models/catalogoGeneral';
 import {
   AreaMedicaData,
   RegistroCurpRequest,
@@ -19,10 +19,10 @@ import {
   RegistroMedico,
   RegistroPasaporteRequest
 } from '@models/datosMedico';
-import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regresar.component';
-import {passwordValidator} from '@validators/password-validator';
-import {PATRON_CURP, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_PASAPORTE, PATRON_RFC} from '@utils/regex';
-import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
+import { BtnRegresarComponent } from '../../../../components/btn-regresar/btn-regresar.component';
+import { passwordValidator } from '@validators/password-validator';
+import { PATRON_CURP, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_PASAPORTE, PATRON_RFC } from '@utils/regex';
+import { AlphanumericDirective } from '@directives/only-alphanumeric.directive';
 
 @Component({
   selector: 'app-registro-medico',
@@ -234,7 +234,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.clearCampos();
     this.form.controls['modalidad'].setValidators([Validators.required]);
     this.form.controls['pasaporte'].setValidators([Validators.required, Validators.minLength(6),
-      Validators.maxLength(9), Validators.pattern(PATRON_PASAPORTE)]);
+    Validators.maxLength(9), Validators.pattern(PATRON_PASAPORTE)]);
     this.form.controls['pais'].setValidators([Validators.required]);
     this.form.controls['modalidad'].updateValueAndValidity();
     this.form.controls['pasaporte'].updateValueAndValidity();
@@ -244,8 +244,8 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
   private isCurp() {
     this.form.controls['curp'].setValidators([Validators.required, Validators.minLength(18),
-      Validators.maxLength(18),
-      Validators.pattern(PATRON_CURP)]);
+    Validators.maxLength(18),
+    Validators.pattern(PATRON_CURP)]);
     this.form.controls['curp'].updateValueAndValidity();
     this.inCurp = true;
 
@@ -261,9 +261,9 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.strTitulo = 'Residente IMSS';
     this.clearCampos();
     this.form.controls['matricula'].setValidators([Validators.required, Validators.minLength(10),
-      Validators.minLength(10),
-      Validators.maxLength(10),
-      Validators.pattern(PATRON_MATRICULA)]);
+    Validators.minLength(10),
+    Validators.maxLength(10),
+    Validators.pattern(PATRON_MATRICULA)]);
     this.form.controls['matricula'].updateValueAndValidity();
   }
 
@@ -279,71 +279,71 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   msjForm(): void {
     this.msjValidation = {
       'modalidad': [
-        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},],
+        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },],
       'matricula': [
-        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
-        {type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_MATRICULA},
-        {type: 'minlength', msj: this._Mensajes.MSJ_LONG_MATRICULA},
+        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
+        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_MATRICULA },
+        { type: 'minlength', msj: this._Mensajes.MSJ_LONG_MATRICULA },
       ],
       'pasaporte': [
-        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
-        {type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO},
-        {type: 'minlength', msj: this._Mensajes.MSJ_LONG_PASAPORTE},
+        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
+        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
+        { type: 'minlength', msj: this._Mensajes.MSJ_LONG_PASAPORTE },
       ],
       'pais': [
-        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},],
+        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },],
       'nombre': [
-        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
-        {type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO},
+        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
+        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
       ],
       'apellidoP': [
-        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
-        {type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO},],
+        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
+        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },],
       'apellidoM': [
-        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
-        {type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO},],
+        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
+        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },],
       'curp': [
-        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
-        {type: 'minlength', msj: this._Mensajes.MSJ_LONG_CURP},
-        {type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO},
+        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
+        { type: 'minlength', msj: this._Mensajes.MSJ_LONG_CURP },
+        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
       ],
 
       'rfc': [
-        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
-        {type: 'minlength', msj: this._Mensajes.MSJ_LONG_RFC},
-        {type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO},
+        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
+        { type: 'minlength', msj: this._Mensajes.MSJ_LONG_RFC },
+        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
       ],
       'correo': [
-        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
-        {type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO},
-        {type: 'email', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO},
+        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
+        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
+        { type: 'email', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
 
       ],
       'correoc': [
-        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
-        {type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO},
-        {type: 'email', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO},
+        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
+        { type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
+        { type: 'email', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
 
       ],
       'pass': [
-        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
+        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
         //{ type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
-        {type: 'caracter', msj: this._Mensajes.MSJ_PASS_CARACTER_ESPECIAL},
-        {type: 'numero', msj: this._Mensajes.MSJ_PASS_NUMERO},
-        {type: 'minLength', msj: this._Mensajes.MSJ_PASS_MIN_CARACTER},
-        {type: 'maxLength', msj: this._Mensajes.MSJ_PASS_MAX_CARACTER},
-        {type: 'mayuscula', msj: this._Mensajes.MSJ_PASS_MAYUSCULA},
-        {type: 'minuscula', msj: this._Mensajes.MSJ_PASS_MINUSCULA},
+        { type: 'caracter', msj: this._Mensajes.MSJ_PASS_CARACTER_ESPECIAL },
+        { type: 'numero', msj: this._Mensajes.MSJ_PASS_NUMERO },
+        { type: 'minLength', msj: this._Mensajes.MSJ_PASS_MIN_CARACTER },
+        { type: 'maxLength', msj: this._Mensajes.MSJ_PASS_MAX_CARACTER },
+        { type: 'mayuscula', msj: this._Mensajes.MSJ_PASS_MAYUSCULA },
+        { type: 'minuscula', msj: this._Mensajes.MSJ_PASS_MINUSCULA },
       ],
       'passc': [
-        {type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO},
+        { type: 'required', msj: this._Mensajes.MSJ_CAMPO_REQUERIDO },
         //{ type: 'pattern', msj: this._Mensajes.MSJ_FORMATO_NO_VALIDO },
-        {type: 'caracter', msj: this._Mensajes.MSJ_PASS_CARACTER_ESPECIAL},
-        {type: 'numero', msj: this._Mensajes.MSJ_PASS_NUMERO},
-        {type: 'minLength', msj: this._Mensajes.MSJ_PASS_MIN_CARACTER},
-        {type: 'maxLength', msj: this._Mensajes.MSJ_PASS_MAX_CARACTER},
-        {type: 'mayuscula', msj: this._Mensajes.MSJ_PASS_MAYUSCULA},
-        {type: 'minuscula', msj: this._Mensajes.MSJ_PASS_MINUSCULA},
+        { type: 'caracter', msj: this._Mensajes.MSJ_PASS_CARACTER_ESPECIAL },
+        { type: 'numero', msj: this._Mensajes.MSJ_PASS_NUMERO },
+        { type: 'minLength', msj: this._Mensajes.MSJ_PASS_MIN_CARACTER },
+        { type: 'maxLength', msj: this._Mensajes.MSJ_PASS_MAX_CARACTER },
+        { type: 'mayuscula', msj: this._Mensajes.MSJ_PASS_MAYUSCULA },
+        { type: 'minuscula', msj: this._Mensajes.MSJ_PASS_MINUSCULA },
       ],
 
 
@@ -377,18 +377,43 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.medico.refCurp = this.form.controls['curp'].value
   }
 
-  private validarCURP() {
-    this.form.controls['nombre'].setValue('Ame');
-    this.form.controls['apellidoP'].setValue('Vcitoria');
-    this.form.controls['apellidoM'].setValue('SArmiento');
-    //this.form.controls['curp'].setValue('VISA900901MTLCRM00');
-    this.inCurp = true;
-    this.form.controls['rfc'].setValue('VISA900901LA3');
+  datosCURP!:any;
 
-    this.medico.nomApellidoPaterno = this.form.controls['apellidoP'].value;
-    this.medico.nomApellidoMaterno = this.form.controls['apellidoM'].value;
-    this.medico.refCurp = this.form.controls['curp'].value;
-    this.medico.refRfc = this.form.controls['rfc'].value;
+  private validarCURP() {
+  
+    this.inCurp = true;
+
+
+    
+
+
+    let datos = {
+      curp: this.medico.refCurp,
+      idPerfil: this.medico.perfil.idPerfil
+
+    }
+
+    this._RegistroMedicoService.getDatosByCurp(datos).subscribe((response: any) => {
+      if (!response.exito) {
+       // this.limpiarMatricula();
+        this._alertServices.error(response.mensaje);
+      } else {
+        this.datosCURP= response.respuesta;
+        this.form.controls['nombre'].setValue(response.respuesta.renapoData.nombres ? response.respuesta.renapoData.nombres : response.respuesta.siapData.nombre);
+        this.form.controls['apellidoP'].setValue(response.respuesta.renapoData.primerApellido ? response.respuesta.renapoData.primerApellido : response.respuesta.siapData.primerApellido);
+        this.form.controls['apellidoM'].setValue(response.respuesta.renapoData.segundoApellido ? response.respuesta.renapoData.segundoApellido : response.respuesta.siapData.segundoApellido);
+        this.form.controls['curp'].setValue(response.respuesta.renapoData.curp ?? '');
+        this.form.controls['rfc'].setValue(response.respuesta.siapData.rfc ?? '');
+        this.activarCampos(this.medico.blnInterno);
+        this.dinamicoCurp();
+        this.asignarDatos();
+      }
+
+
+    });
+
+
+
     this.activarCampos(this.medico.blnInterno);
 
   }
@@ -457,9 +482,9 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     residente.areaMedicaData = new AreaMedicaData();
     residente.areaMedicaData.CURP = this.medico.refCurp;
     residente.areaMedicaData.MATRICULA = this.medico.cveMatricula;
-    residente.areaMedicaData.NOMBRE =  residente.nomNombre;
-    residente.areaMedicaData.APELLIDO_PATERNO =  residente.nomApellidoPaterno;
-    residente.areaMedicaData.APELLIDO_MATERNO =residente.nomApellidoMaterno;
+    residente.areaMedicaData.NOMBRE = residente.nomNombre;
+    residente.areaMedicaData.APELLIDO_PATERNO = residente.nomApellidoPaterno;
+    residente.areaMedicaData.APELLIDO_MATERNO = residente.nomApellidoMaterno;
     this._RegistroMedicoService.registrarResidente(residente).subscribe({
       next: (data: ResponseGeneral) => {
 
@@ -519,9 +544,15 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     curp.nomNombre = this.medico.nomNombre;
     curp.nomApellidoMaterno = this.medico.nomApellidoMaterno;
     curp.nomApellidoPaterno = this.medico.nomApellidoPaterno;
-
+    curp.requiereFolio = true;
     curp.refCurp = this.medico.refCurp;
     curp.refRfc = this.medico.refRfc;
+    curp.areaMedicaData = new AreaMedicaData();
+    curp.areaMedicaData.CURP = curp.refCurp;
+    curp.areaMedicaData.MATRICULA = this.datosCURP.siapData.matricula;
+    curp.areaMedicaData.NOMBRE = curp.nomNombre;
+    curp.areaMedicaData.APELLIDO_PATERNO = curp.nomApellidoPaterno;
+    curp.areaMedicaData.APELLIDO_MATERNO = curp.nomApellidoMaterno;
     this._RegistroMedicoService.registrarCurp(curp).subscribe({
       next: (data: ResponseGeneral) => {
 
@@ -600,54 +631,63 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   public btnValidarMatricula() {
     this.medico.cveMatricula = this.form.controls['matricula'].value;
     if (this.medico.cveMatricula.length != 10) {
-    this.limpiarMatricula();
-    this._alertServices.alerta(this._Mensajes.MSG010a);
+      this.limpiarMatricula();
+      this._alertServices.alerta(this._Mensajes.MSG010a);
 
-   
-  }
-  return  this.validarMatricula();
+
+    }
+    return this.validarMatricula();
   }
 
-  private limpiarMatricula(){
+  private limpiarMatricula() {
     this.form.controls['matricula'].setValue('');
     this.medico.cveMatricula = this.form.controls['matricula'].value
     this.form.reset();
   }
-  public  limpiarMatriculaChange(){
-    
-    let tmp =  this.form.controls['matricula'].value;
+  public limpiarMatriculaChange() {
+
+    let tmp = this.form.controls['matricula'].value;
     this.limpiarMatricula();
     this.form.controls['matricula'].setValue(tmp);
 
   }
 
+
+  public limpiarCurpChange() {
+
+    let tmp = this.form.controls['curp'].value;
+    this.form.reset();
+    this.form.controls['curp'].setValue(tmp);
+
+  }
+
   private validarMatricula() {
 
-    let datos={
-      matricula: this.medico.cveMatricula ,
-      idPerfil:  this.medico.perfil.idPerfil
-  
+    let datos = {
+      matricula: this.medico.cveMatricula,
+      idPerfil: this.medico.perfil.idPerfil
+
     }
-    
+
     this._RegistroMedicoService.getDatosByMatricula(datos).subscribe((response: any) => {
-      if(!response.exito){
+      if (!response.exito) {
         this.limpiarMatricula();
-         this._alertServices.error(response.mensaje);
-      }else{
-      this.form.controls['nombre'].setValue(response.respuesta.areaMedicaData.NOMBRE?response.respuesta.areaMedicaData.NOMBRE:response.respuesta.siapData.nombre);
-      this.form.controls['apellidoP'].setValue(response.respuesta.areaMedicaData.APELLIDO_PATERNO?response.respuesta.areaMedicaData.APELLIDO_PATERNO:response.respuesta.siapData.primerApellido);
-      this.form.controls['apellidoM'].setValue(response.respuesta.areaMedicaData.APELLIDO_MATERNO?response.respuesta.areaMedicaData.APELLIDO_MATERNO:response.respuesta.siapData.segundoApellido);
-      this.form.controls['curp'].setValue(response.respuesta.areaMedicaData.CURP??'');
-      this.form.controls['rfc'].setValue(response.respuesta.siapData.rfc??'');
-      this.activarCampos(this.medico.blnInterno);
-      this.dinamicoCurp();
-       this.asignarDatos();
+        this._alertServices.error(response.mensaje);
+      } else {
+        this.form.controls['nombre'].setValue(response.respuesta.areaMedicaData.NOMBRE ? response.respuesta.areaMedicaData.NOMBRE : response.respuesta.siapData.nombre);
+        this.form.controls['apellidoP'].setValue(response.respuesta.areaMedicaData.APELLIDO_PATERNO ? response.respuesta.areaMedicaData.APELLIDO_PATERNO : response.respuesta.siapData.primerApellido);
+        this.form.controls['apellidoM'].setValue(response.respuesta.areaMedicaData.APELLIDO_MATERNO ? response.respuesta.areaMedicaData.APELLIDO_MATERNO : response.respuesta.siapData.segundoApellido);
+        this.form.controls['curp'].setValue(response.respuesta.areaMedicaData.CURP ?? '');
+        this.form.controls['rfc'].setValue(response.respuesta.siapData.rfc ?? '');
+        this.activarCampos(this.medico.blnInterno);
+        this.dinamicoCurp();
+        this.asignarDatos();
       }
-       
-   
+
+
     });
-  
- 
+
+
   }
 
   private asignarDatos() {
@@ -675,7 +715,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     return matricula.value.length !== 10;
   }
 
-  
+
 
 
 
