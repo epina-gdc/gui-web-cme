@@ -17,6 +17,8 @@ import {Badge} from 'primeng/badge';
 })
 export class OfertaCardComponent {
   value: any;
+
+
   @Output() abrirDetalleEvent =  new EventEmitter<boolean>();
 
   verMas(): void {

@@ -108,20 +108,27 @@
                       bg_color="#7bc1e0"></kpi-card>
           </div>
         </div>
-        <oferta-card (abrirDetalleEvent)="show()"/>
+        @for (registro of registros(); track registro.id) {
+          <oferta-card (abrirDetalleEvent)="show()"/>
+        }
       </p-card>
 
-      <div class="card flex justify-content-end">
-        <p-paginator class="paginator-oferta" (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="120">
-          <ng-template pTemplate="previouspagelinkicon">
-            <p-button type="button" icon="pi pi-angle-left" label="Anterior" styleClass="p-button-text text-black"></p-button>
-          </ng-template>
-          <ng-template pTemplate="nextpagelinkicon">
-            <p-button type="button" icon="pi pi-angle-right" label="Siguiente" [iconPos]="'right'" styleClass="p-button-text text-black"></p-button>
-          </ng-template>
-        </p-paginator>
-      </div>
+      @if (paginasTotales > 1) {
 
+        <div class="card flex justify-content-end">
+          <p-paginator class="paginator-oferta" (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows"
+                       [totalRecords]="120">
+            <ng-template pTemplate="previouspagelinkicon">
+              <p-button type="button" icon="pi pi-angle-left" label="Anterior"
+                        styleClass="p-button-text text-black"></p-button>
+            </ng-template>
+            <ng-template pTemplate="nextpagelinkicon">
+              <p-button type="button" icon="pi pi-angle-right" label="Siguiente" [iconPos]="'right'"
+                        styleClass="p-button-text text-black"></p-button>
+            </ng-template>
+          </p-paginator>
+        </div>
+      }
     }
     @if (activeTab() === 2) {
       <p-card class="empty-border">
