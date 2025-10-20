@@ -19,8 +19,12 @@ export class EstadoOfertaService {
     badgeValue: true,
   });
 
+  private readonly favoritos =  new BehaviorSubject<number>(4)
+
   // Observable público para que los componentes puedan suscribirse
   estadoActual$ = this.estadoFuente.asObservable();
+
+  favoritosActuales$ = this.favoritos.asObservable();
 
   constructor() {
   }
@@ -32,5 +36,9 @@ export class EstadoOfertaService {
   actualizarEstado(nuevoEstado: OfertaEstado): void {
     // Emite el nuevo estado a todos los suscriptores
     this.estadoFuente.next(nuevoEstado);
+  }
+
+  actualizarFavoritos(nuevosFavoritos: number): void {
+    this.favoritos.next(nuevosFavoritos)
   }
 }

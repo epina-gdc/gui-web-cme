@@ -1,4 +1,4 @@
-import {Component, inject, signal, WritableSignal} from '@angular/core';
+import {Component, inject, input, InputSignal, signal, WritableSignal} from '@angular/core';
 import {Card} from 'primeng/card';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
@@ -42,10 +42,19 @@ interface PageEvent {
 })
 export class OfertaLaboralComponent {
 
+  first: number = 0;
+  rows: number = 10;
+
+  numPaginaActual: number = 0;
+  totalElementos: number = 0;
+  paginasTotales: number = 0;
+
   fb: FormBuilder = inject(FormBuilder);
   ref: DynamicDialogRef | undefined;
 
   activeTab: WritableSignal<number> = signal(0);
+
+  registros: InputSignal<any[]> = input([{id: 0}])
 
   formTablero!: FormGroup;
 
@@ -90,6 +99,12 @@ export class OfertaLaboralComponent {
       icono: 'cme-quest',
       description: 'Respuestas a las preguntas del proceso',
     },
+    {
+      id: 3,
+      name: 'Preguntas frecuentes',
+      icono: 'cme-quest',
+      description: 'Respuestas a las preguntas del proceso',
+    }
   ];
 
   actualizarTab(id: number) {
@@ -114,10 +129,6 @@ export class OfertaLaboralComponent {
 
     });
   }
-
-  first: number = 0;
-
-  rows: number = 10;
 
   onPageChange(event: any) {
     this.first = event.first;
