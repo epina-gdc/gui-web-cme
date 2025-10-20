@@ -287,6 +287,7 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerZonasPorMunicipio(municipio: number): void {
     if (!municipio) return;
+    console.log(municipio)
     this.catalogoService.getLstZonas(municipio).subscribe({
       next: (valor) => {
         this.zonas = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'idZona');
@@ -340,10 +341,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   obtenerCatalogos(): void {
-
-    this.activatedRoute.data.subscribe(({ respuesta }) => {
-
-
+    this.activatedRoute.data.subscribe(({respuesta}) => {
       const [sexos, estadosCiviles, paises, lugaresNacimiento, tiposDocumentos] = respuesta;
       this.sexos = mapearArregloTipoDropdown(sexos.respuesta, 'desSexo', 'idSexo');
       this.estadosCiviles = mapearArregloTipoDropdown(estadosCiviles.respuesta, 'desEstadoCivil', 'idEstadoCivil');
