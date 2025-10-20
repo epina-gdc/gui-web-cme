@@ -107,6 +107,7 @@ export class InicioComponent extends GeneralComponent {
   foto!: any;
   archivoFoto!: File;
   selectFile!: File | undefined;
+  defaultFile!: File | undefined;
   datosFoto!: Fotografia;
   datosDomicilio!: DatosDomicilio;
   datosInteresLaboral!: any;
@@ -125,7 +126,7 @@ export class InicioComponent extends GeneralComponent {
   ooad: TipoDropdown[] = [];
   zonas: TipoDropdown[] = [];
 
-  indice: WritableSignal<number> = signal<number>(2);
+  indice: WritableSignal<number> = signal<number>(0);
 
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
   _ConvocatoriaService: ConvocatoriaService = inject(ConvocatoriaService);
@@ -462,6 +463,9 @@ export class InicioComponent extends GeneralComponent {
       next: (response: any) => {
         this.blnFotoGuardada = true;
         this.selectFile = response;
+        const nombreArchivo = 'foto_perfil.png';
+        const tipoArchivo = response.type;
+        this.defaultFile = new File([response], nombreArchivo, {type: tipoArchivo});
       }
     });
   }

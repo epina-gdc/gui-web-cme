@@ -1,6 +1,6 @@
 <div class="card-upload-photo">
   <div class="upload-photo">
-    <p-fileupload name="myfile[]" url="https://www.primefaces.org/cdn/api/upload.php" [multiple]="false"
+    <p-fileupload name="myfile[]" url="https://www.primefaces.org/cdn/api/upload.php" [multiple]="false" #fileUpload
                   accept=".jpg, .jpeg, .png" [invalidFileTypeMessageDetail]="'El formato de documento es incorrecto.'"
                   [invalidFileLimitMessageSummary]="''" [invalidFileTypeMessageSummary]="''"
                   [invalidFileSizeMessageSummary]="''"

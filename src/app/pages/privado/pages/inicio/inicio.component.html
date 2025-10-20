@@ -18,7 +18,7 @@
         <section class="flex">
           <article class="col-3 flex flex-row">
             <p class="field-label">Fotografía</p>
-            <upload-photo (fileSelected)="onFileSelected($event)" class="mt-6"/>
+            <upload-photo (fileSelected)="onFileSelected($event)" [existingFile]="defaultFile" class="mt-6"/>
             <p class="label-obligatorio">Obligatorio</p>
           </article>
           <article class="col-9 flex flex-row flex-wrap">

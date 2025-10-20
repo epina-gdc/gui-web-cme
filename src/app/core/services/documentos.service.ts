@@ -8,68 +8,63 @@ import {AlertService} from './alert.service';
 import {ResponseGeneral} from '@models/responseGeneral';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class DocumentoService {
 
-    private readonly serverEndPointURLDocumento = `${environment.api.apiDocumentos}`;
+  private readonly serverEndPointURLDocumento = `${environment.api.apiDocumentos}`;
 
-    http: HttpClient = inject(HttpClient);
-    _alertServices: AlertService = inject(AlertService);
-
-
-    headers :  HttpHeaders = new HttpHeaders({
-
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'POST',
-
-    });
-
-    header: HttpHeaders = new HttpHeaders({
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
-    });
+  http: HttpClient = inject(HttpClient);
+  _alertServices: AlertService = inject(AlertService);
 
 
-    guardarFoto(foto: FormData, idModulo: number, idUsuario: number): Observable<any> {
-        const params = new HttpParams()
-        .set('idModulo', idModulo)
-        .set('idUsuario', idUsuario)
+  headers: HttpHeaders = new HttpHeaders({
+
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST',
+
+  });
+
+  header: HttpHeaders = new HttpHeaders({
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
+  });
 
 
-        let ruta = `${this.serverEndPointURLDocumento}/v1/documentos/repositorio/fotografia?`+params;
-        return this.http.post<any>(ruta, foto, { headers: this.headers }).pipe(
-            catchError(this.handleError),
-            map((response: any) => {
-                return response;
-            })
-        );
+  guardarFoto(foto: FormData, idModulo: number, idUsuario: number): Observable<any> {
+    const params = new HttpParams()
+      .set('idModulo', idModulo)
+      .set('idUsuario', idUsuario)
+
+
+    let ruta = `${this.serverEndPointURLDocumento}/v1/documentos/repositorio/fotografia?` + params;
+    return this.http.post<any>(ruta, foto, {headers: this.headers}).pipe(
+      catchError(this.handleError),
+      map((response: any) => {
+        return response;
+      })
+    );
+  }
+
+  getFotografia(refGuid: string): Observable<Blob> {
+    return this.http.get(`${this.serverEndPointURLDocumento}/v1/documentos/repositorio/${refGuid}`, {
+      headers: this.header,
+      responseType: 'blob'
+    }).pipe(catchError(this.handleError));
+  }
+
+
+  private handleError(error: ResponseGeneral) {
+
+    if (!error.exito) {
+
+      console.log("Error: " + error.mensaje ? error.mensaje : '. Contácte al administrador');
+      // Return an observable with a user-facing error message.
+
     }
-
-
-    getFotografia(refGuid: string): Observable<DataFotografia> {
-        return this.http.get<any>(`${this.serverEndPointURLDocumento}/v1/documentos/repositorio/${refGuid}`, { headers: this.header }).pipe(
-            catchError(this.handleError),
-            map((response: any) => {
-                return response;
-            })
-        );
-    }
-
-
-
-
-    private handleError(error: ResponseGeneral) {
-
-        if (!error.exito) {
-
-            console.log("Error: " + error.mensaje?error.mensaje: '. Contácte al administrador');
-            // Return an observable with a user-facing error message.
-
-        }
-        return throwError(error);
-    }
+    return throwError(error);
+  }
 }
