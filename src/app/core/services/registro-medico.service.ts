@@ -60,7 +60,14 @@ export class RegistroMedicoService {
       }),
     )
   }
-
+  getDatosByMatricula(datos:any): Observable<any> {
+    return this.http.post<any>(`${this.serverEndPointURRegistro}/validacion/medico-interno`,datos, { headers: this.header }).pipe(
+        catchError(this.handleError),
+        map((response: any) => {
+            return response;
+        })
+    );
+}
 
 
   private handleError(error: HttpErrorResponse) {

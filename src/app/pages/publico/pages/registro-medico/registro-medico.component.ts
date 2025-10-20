@@ -13,6 +13,7 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
 import {CatPais, CatPaisResponse, CatSubperfil, CatSubperfilResponse} from '@models/catalogoGeneral';
 import {
+  AreaMedicaData,
   RegistroCurpRequest,
   RegistroInternoRequest,
   RegistroMedico,
@@ -451,6 +452,14 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     residente.refRfc = this.medico.refRfc;
     residente.refEmail = this.medico.refEmail;
     residente.refContrasenaHash = this.medico.refContrasenaHash;
+    residente.requiereFolio = true;
+
+    residente.areaMedicaData = new AreaMedicaData();
+    residente.areaMedicaData.CURP = this.medico.refCurp;
+    residente.areaMedicaData.MATRICULA = this.medico.cveMatricula;
+    residente.areaMedicaData.NOMBRE =  residente.nomNombre;
+    residente.areaMedicaData.APELLIDO_PATERNO =  residente.nomApellidoPaterno;
+    residente.areaMedicaData.APELLIDO_MATERNO =residente.nomApellidoMaterno;
     this._RegistroMedicoService.registrarResidente(residente).subscribe({
       next: (data: ResponseGeneral) => {
 
@@ -590,25 +599,55 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
   public btnValidarMatricula() {
     this.medico.cveMatricula = this.form.controls['matricula'].value;
-    if (this.existeMatricula(this.medico.cveMatricula)) {
-      this.validarMatricula();
-      return;
-    }
+    if (this.medico.cveMatricula.length != 10) {
+    this.limpiarMatricula();
     this._alertServices.alerta(this._Mensajes.MSG010a);
+
+   
+  }
+  return  this.validarMatricula();
+  }
+
+  private limpiarMatricula(){
     this.form.controls['matricula'].setValue('');
     this.medico.cveMatricula = this.form.controls['matricula'].value
     this.form.reset();
   }
+  public  limpiarMatriculaChange(){
+    
+    let tmp =  this.form.controls['matricula'].value;
+    this.limpiarMatricula();
+    this.form.controls['matricula'].setValue(tmp);
+
+  }
 
   private validarMatricula() {
-    this.form.controls['nombre'].setValue('Ame');
-    this.form.controls['apellidoP'].setValue('Victoria');
-    this.form.controls['apellidoM'].setValue('Sarmiento');
-    this.form.controls['curp'].setValue('VISA900901MTLCRM06');
-    this.form.controls['rfc'].setValue('VISA900901L3A');
-    this.activarCampos(this.medico.blnInterno);
-    this.dinamicoCurp();
-    this.asignarDatos();
+
+    let datos={
+      matricula: this.medico.cveMatricula ,
+      idPerfil:  this.medico.perfil.idPerfil
+  
+    }
+    
+    this._RegistroMedicoService.getDatosByMatricula(datos).subscribe((response: any) => {
+      if(!response.exito){
+        this.limpiarMatricula();
+         this._alertServices.error(response.mensaje);
+      }else{
+      this.form.controls['nombre'].setValue(response.respuesta.areaMedicaData.NOMBRE?response.respuesta.areaMedicaData.NOMBRE:response.respuesta.siapData.nombre);
+      this.form.controls['apellidoP'].setValue(response.respuesta.areaMedicaData.APELLIDO_PATERNO?response.respuesta.areaMedicaData.APELLIDO_PATERNO:response.respuesta.siapData.primerApellido);
+      this.form.controls['apellidoM'].setValue(response.respuesta.areaMedicaData.APELLIDO_MATERNO?response.respuesta.areaMedicaData.APELLIDO_MATERNO:response.respuesta.siapData.segundoApellido);
+      this.form.controls['curp'].setValue(response.respuesta.areaMedicaData.CURP??'');
+      this.form.controls['rfc'].setValue(response.respuesta.siapData.rfc??'');
+      this.activarCampos(this.medico.blnInterno);
+      this.dinamicoCurp();
+       this.asignarDatos();
+      }
+       
+   
+    });
+  
+ 
   }
 
   private asignarDatos() {
@@ -624,10 +663,6 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.dinamicoCurp();
   }
 
-  private existeMatricula(matricula: string): boolean {
-    if (matricula.length !== 10) return false;
-    return !['0123456789', '987654321', '2222222222'].includes(matricula);
-  }
 
   private existeCURP(curp: string): boolean {
     if (curp.length !== 18) return false;
@@ -639,5 +674,10 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     if (!matricula.value) return true;
     return matricula.value.length !== 10;
   }
+
+  
+
+
+
 
 }
