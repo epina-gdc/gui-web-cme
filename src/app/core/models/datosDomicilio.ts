@@ -33,8 +33,8 @@ export class ResidenciaRequest {
 
 export class Pais {
   idPais!: number;
-  //cvePais!: string;
-  //desPais!: string;
+  cvePais!: string;
+  desPais!: string;
   nomPaisNacimiento!: string;
 }
 

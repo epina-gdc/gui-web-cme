@@ -500,15 +500,12 @@ export class InicioComponent extends GeneralComponent {
       this.formRegistro.controls['nss'].setValue(refNss || null);
 
       if (estadoCivil) {
-        this.formRegistro.get('estadoCivil')?.patchValue({
-          label: estadoCivil.desEstadoCivil,
-          value: estadoCivil.idEstadoCivil
-        });
+        this.formRegistro.get('estadoCivil')?.patchValue(estadoCivil.idEstadoCivil);
       }
 
       if (paisNacimiento) {
         this.formRegistro.get('paisNacimiento')?.patchValue({
-          label: paisNacimiento.nomPaisNacimiento,
+          label: paisNacimiento.desPais,
           value: paisNacimiento.idPais
         });
       }
@@ -582,6 +579,8 @@ export class InicioComponent extends GeneralComponent {
     const pais: Pais = {
       nomPaisNacimiento: paisNacimientoSeleccionado.label,
       idPais: paisNacimientoSeleccionado.value as number,
+      cvePais: '',
+      desPais: ''
     }
     contacto.paisNacimiento = pais;
 
