@@ -127,6 +127,7 @@ export class InicioComponent extends GeneralComponent {
   zonas: TipoDropdown[] = [];
 
   indice: WritableSignal<number> = signal<number>(0);
+  tipoMedico: WritableSignal<string> = signal<string>("");
 
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
   _ConvocatoriaService: ConvocatoriaService = inject(ConvocatoriaService);
@@ -149,25 +150,25 @@ export class InicioComponent extends GeneralComponent {
     return this.fb.group({
       rfc: [],
       nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
-      fechaNacimiento: [{value: '', disabled: true}],
-      sexo: [{value: '', disabled: true}],
-      estadoCivil: [],
+      fechaNacimiento: [{value: '', disabled: false}, [Validators.required]],
+      sexo: [{value: '', disabled: false}, [Validators.required]],
+      estadoCivil: [{value: '', disabled: false}, [Validators.required]],
       dependientes: [],
       hijos: [{value: '', disabled: true}, [Validators.required, Validators.min(1)]],
       otros: [{value: '', disabled: true}, [Validators.required]],
       correo: [{value: '', disabled: true}],
       correoAdicional: [],
-      telefonoCasa: [],
-      telefonoCelular: [],
+      telefonoCasa: [{value: '', disabled: false}, [Validators.required]],
+      telefonoCelular: [{value: '', disabled: false}, [Validators.required]],
       paisNacimiento: [],
       estadoNacimiento: [],
-      codigoPostal: [],
+      codigoPostal: [{value: '', disabled: false}, [Validators.required]],
       pais: [],
-      estado: [],
-      municipio: [],
-      colonia: [],
-      calle: [],
-      numeroExterior: []
+      estado: [{value: '', disabled: false},[Validators.required]],
+      municipio: [{value: '', disabled: false},[Validators.required]],
+      colonia: [{value: '', disabled: false},[Validators.required]],
+      calle: [{value: '', disabled: false},[Validators.required]],
+      numeroExterior: [{value: '', disabled: false},[Validators.required]]
     });
   }
 
@@ -176,6 +177,7 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.get('pais')?.valueChanges.subscribe(value => this.obtenerEstadoPorPais(value));
     this.formRegistro.get('estado')?.valueChanges.subscribe(value => this.obtenerMunicipioPorEstado(value));
     this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerAlcaldiaPorMunicipio(value));
+    this.formZonaInteres.get('ooad')?.valueChanges.subscribe(value => this.obtenerZonasPorMunicipio(value))
   }
 
   settearDatosUsuario(): void {
@@ -276,7 +278,7 @@ export class InicioComponent extends GeneralComponent {
   obtenerOOADPorMunicipio(): void {
     this.catalogoService.getLstOOADS().subscribe({
       next: (valor) => {
-        this.ooad = mapearArregloTipoDropdown(valor.respuesta, 'desOoad', 'idOoad');
+        this.ooad = mapearArregloTipoDropdown(valor.respuesta, 'desOoad', 'cveOoad');
       }
     });
   }
@@ -320,12 +322,15 @@ export class InicioComponent extends GeneralComponent {
       this._alertServices.alerta("Ya seleccionaste esta opción anteriormente");
     } else {
       this.zonasInteres.update(value => [...value, nuevaZona]);
+      this.zonas = [];
     }
 
     this.formZonaInteres.reset();
   }
 
   devolverTextoOoad(idOOAD: string): string {
+
+    this.zonasInteres();
     const ooad = this.ooad.find(element => idOOAD == element.value);
     return ooad?.label || "";
   }
@@ -347,7 +352,12 @@ export class InicioComponent extends GeneralComponent {
   }
 
   crearRegistroZonaInteres() {
-    return this.formZonaInteres.value;
+    return {
+      "ooad": this.formZonaInteres.get('ooad')?.value,
+      "zonaInteres": this.formZonaInteres.get('zonaInteres')?.value,
+      "desZonaInteres": this.devolverTextoZonaInnteres(this.formZonaInteres.get('zonaInteres')?.value)
+    }
+
   }
 
   eliminarZonaInteres(indice: number): void {
@@ -737,6 +747,14 @@ export class InicioComponent extends GeneralComponent {
     }
   }
 
+  validacionesNegocio(){
+
+    if(this.userData?.idPerfil == 1){
+      this.formRegistro.get('nss')?.clearValidators;
+      this.formRegistro.get('nss')?.updateValueAndValidity;
+    }
+  }
+
   siguientePasoStepper(): void {
     const currentStep = this.indice();
     const action = this.pasoActions[currentStep];
@@ -751,6 +769,7 @@ export class InicioComponent extends GeneralComponent {
     0: () => {
       if (this.formRegistro.invalid) {
         this._alertServices.alerta(this._Mensajes.MSG023);
+        this.formRegistro.markAllAsTouched();
         return;
       }
       this.btnGuardar(0);

@@ -124,3 +124,42 @@ export const DUMMIE_TABLA_VERIFICACION_DOCUMENTOS: VerificacionDocumentos[] = [
     "fecha": "15/02/2025"
   }
 ];
+
+export const DUMMIE_DOCS_ESPECIALIDAD: any[] = [
+  {
+    "idEspecialidad": 1,
+    "especialidad": 'Especialidad cardiología',
+    "docs": [
+      {
+        "idDoc": 1,
+        "nombreDoc": "Título de la especialidad",
+      },
+      {
+        "idDoc": 2,
+        "nombreDoc": "Cédula profesional de la especialidad",
+      },
+      {
+        "idDoc": 3,
+        "nombreDoc": "Diploma institucional de la especialidad",
+      },
+      {
+        "idDoc": 4,
+        "nombreDoc": "Consejo de la especialidad",
+      }
+    ]
+  },
+  {
+    "idEspecialidad": 2,
+    "especialidad": 'Especialidad pediatría',
+    "docs": [
+      {
+        "idDoc": 5,
+        "nombreDoc": "Título de la especialidad",
+      },
+      {
+        "idDoc": 6,
+        "nombreDoc": "Cédula profesional de la especialidad",
+      }
+    ]
+  }
+]
