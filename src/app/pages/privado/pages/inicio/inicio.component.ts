@@ -511,10 +511,7 @@ export class InicioComponent extends GeneralComponent {
       }
 
       if (lugarNacimiento) {
-        this.formRegistro.get('estadoNacimiento')?.patchValue({
-          label: lugarNacimiento.desLugarNacimiento,
-          value: lugarNacimiento.idLugarNacimiento
-        });
+        this.formRegistro.get('estadoNacimiento')?.patchValue(lugarNacimiento.idLugarNacimiento);
       }
     }
 
