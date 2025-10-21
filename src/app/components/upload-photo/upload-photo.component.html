@@ -33,7 +33,7 @@
           <div class="flex flex-wrap">
             @for (file of files; track file.objectURL; let index = $index) {
               <div class="flex align-items-center justify-content-center
-              flex-column border-dashed border-1 half-border border-circle">
+              flex-column border-dashed border-1 half-border border-circle border-imagen">
                 <img role="presentation" class="border-circle"
                      [alt]="file.name" [src]="file.objectURL" style="object-fit: cover; width: 100%; height: 100%;"/>
                 <p-button icon="cme-camara" [rounded]="true" class="btn-upload image-upload-button"
@@ -79,6 +79,7 @@
           </span>
           <p-button icon="cme-camara" [rounded]="true" class="btn-upload image-upload-button"
                     (click)="seleccionarArchivo()"/>
+
         </div>
       </ng-template>
     </p-fileupload>
