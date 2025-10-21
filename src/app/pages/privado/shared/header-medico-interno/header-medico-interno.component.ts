@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
 import {IconCardComponent} from "../../../../components/icon-card/icon-card.component";
 import {SesionUser} from '@models/sesion-user.interface';
 import {AuthService} from '@services/auth.service';
@@ -13,12 +13,12 @@ import {AuthService} from '@services/auth.service';
 })
 export class HeaderMedicoInternoComponent implements OnInit {
   authService = inject(AuthService);
-  userData: SesionUser | null = null;
+  userData: WritableSignal<SesionUser|null> = signal(null);
 
   fechaActual = new Date();
 
   ngOnInit() {
-    this.userData = this.authService.usuarioSesion;
+    this.userData.set(this.authService.usuarioSesion);
   }
 
 }

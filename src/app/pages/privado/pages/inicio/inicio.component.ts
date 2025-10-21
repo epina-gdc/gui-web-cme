@@ -125,7 +125,8 @@ export class InicioComponent extends GeneralComponent {
   ooad: TipoDropdown[] = [];
   zonas: TipoDropdown[] = [];
 
-  indice: WritableSignal<number> = signal<number>(2);
+  indice: WritableSignal<number> = signal<number>(0);
+  tipoMedico: WritableSignal<string> = signal<string>("");
 
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
   _ConvocatoriaService: ConvocatoriaService = inject(ConvocatoriaService);
@@ -142,39 +143,41 @@ export class InicioComponent extends GeneralComponent {
     this.settearDatosUsuario();
     this.obtenerDatosGenerales(this.userData?.idUsuario);
     this.obtenerDatosFoto(this.userData?.idUsuario);
+    this.validacionesNegocio();
   }
 
   asignarFormularioRegistro(): FormGroup {
     return this.fb.group({
       rfc: [],
       nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
-      fechaNacimiento: [{value: '', disabled: true}],
-      sexo: [{value: '', disabled: true}],
-      estadoCivil: [],
+      fechaNacimiento: [{value: '', disabled: false}, [Validators.required]],
+      sexo: [{value: '', disabled: false}, [Validators.required]],
+      estadoCivil: [{value: '', disabled: false}, [Validators.required]],
       dependientes: [],
       hijos: [{value: '', disabled: true}, [Validators.required, Validators.min(1)]],
       otros: [{value: '', disabled: true}, [Validators.required]],
       correo: [{value: '', disabled: true}],
       correoAdicional: [],
-      telefonoCasa: [],
-      telefonoCelular: [],
+      telefonoCasa: [{value: '', disabled: false}, [Validators.required]],
+      telefonoCelular: [{value: '', disabled: false}, [Validators.required]],
       paisNacimiento: [],
       estadoNacimiento: [],
-      codigoPostal: [],
+      codigoPostal: [{value: '', disabled: false}, [Validators.required]],
       pais: [],
-      estado: [],
-      municipio: [],
-      colonia: [],
-      calle: [],
-      numeroExterior: []
+      estado: [{value: '', disabled: false},[Validators.required]],
+      municipio: [{value: '', disabled: false},[Validators.required]],
+      colonia: [{value: '', disabled: false},[Validators.required]],
+      calle: [{value: '', disabled: false},[Validators.required]],
+      numeroExterior: [{value: '', disabled: false},[Validators.required]]
     });
   }
 
   suscribirObservables(): void {
-    this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe(value => this.obtenerEstadoPorPais(value));
+    this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe(value => this.obtenerEstadoPorPais(value.value));
     this.formRegistro.get('pais')?.valueChanges.subscribe(value => this.obtenerEstadoPorPais(value));
     this.formRegistro.get('estado')?.valueChanges.subscribe(value => this.obtenerMunicipioPorEstado(value));
     this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerValoresPorMunicipio(value));
+    this.formZonaInteres.get('ooad')?.valueChanges.subscribe(value => this.obtenerZonasPorMunicipio(value))
   }
 
   settearDatosUsuario(): void {
@@ -188,6 +191,7 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
     this.formRegistro.get('sexo')?.setValue(sexo);
     this.formRegistro.get('correo')?.setValue(refEmail + '');
+    this.tipoMedico.set(this.userData.perfil)
   }
 
   obtenerFechaNacimientoDeCURP(curp: string): Date {
@@ -262,7 +266,6 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerValoresPorMunicipio(municipio: number): void {
     this.obtenerOOADPorMunicipio(municipio);
-    this.obtenerZonasPorMunicipio(municipio);
     this.obtenerAlcaldiaPorMunicipio(municipio);
   }
 
@@ -279,7 +282,7 @@ export class InicioComponent extends GeneralComponent {
     if (!municipio) return;
     this.catalogoService.getLstOOADS(municipio).subscribe({
       next: (valor) => {
-        this.ooad = mapearArregloTipoDropdown(valor.respuesta, 'desOoad', 'idOoad');
+        this.ooad = mapearArregloTipoDropdown(valor.respuesta, 'desOoad', 'cveOoad');
       }
     });
   }
@@ -288,7 +291,12 @@ export class InicioComponent extends GeneralComponent {
     if (!municipio) return;
     this.catalogoService.getLstZonas(municipio).subscribe({
       next: (valor) => {
-        this.zonas = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'idZona');
+        this.zonas = [];
+        if(valor.respuesta.length > 0){
+          this.zonas = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'cveZona');
+        }else{
+          this._alertServices.alerta(valor.mensaje);
+        }
       }
     });
   }
@@ -308,13 +316,14 @@ export class InicioComponent extends GeneralComponent {
   }
 
   agregarZonaInteres(): void {
+
     if (this.zonasInteres().length >= 2) {
       this._alertServices.alerta("Ya seleccionaste tus 3 opciones.");
       this.formZonaInteres.reset();
       return;
     }
 
-    const nuevaZona = this.crearRegistroZonaInteres();
+    let nuevaZona = this.crearRegistroZonaInteres();
 
     // zE => zona Existente
     const esDuplicado = this.zonasInteres().some((zE: any) => zE.ooad === nuevaZona.ooad && zE.zonaInteres === nuevaZona.zonaInteres);
@@ -323,12 +332,15 @@ export class InicioComponent extends GeneralComponent {
       this._alertServices.alerta("Ya seleccionaste esta opción anteriormente");
     } else {
       this.zonasInteres.update(value => [...value, nuevaZona]);
+      this.zonas = [];
     }
 
     this.formZonaInteres.reset();
   }
 
   devolverTextoOoad(idOOAD: string): string {
+
+    this.zonasInteres();
     const ooad = this.ooad.find(element => idOOAD == element.value);
     return ooad?.label || "";
   }
@@ -353,7 +365,12 @@ export class InicioComponent extends GeneralComponent {
   }
 
   crearRegistroZonaInteres() {
-    return this.formZonaInteres.value;
+    return {
+      "ooad": this.formZonaInteres.get('ooad')?.value,
+      "zonaInteres": this.formZonaInteres.get('zonaInteres')?.value,
+      "desZonaInteres": this.devolverTextoZonaInnteres(this.formZonaInteres.get('zonaInteres')?.value)
+    }
+
   }
 
   eliminarZonaInteres(indice: number): void {
@@ -740,6 +757,14 @@ export class InicioComponent extends GeneralComponent {
     }
   }
 
+  validacionesNegocio(){
+
+    if(this.userData?.idPerfil == 1){
+      this.formRegistro.get('nss')?.clearValidators;
+      this.formRegistro.get('nss')?.updateValueAndValidity;
+    }
+  }
+
   siguientePasoStepper(): void {
     const currentStep = this.indice();
     const action = this.pasoActions[currentStep];
@@ -754,6 +779,7 @@ export class InicioComponent extends GeneralComponent {
     0: () => {
       if (this.formRegistro.invalid) {
         this._alertServices.alerta(this._Mensajes.MSG023);
+        this.formRegistro.markAllAsTouched();
         return;
       }
       this.btnGuardar(0);
