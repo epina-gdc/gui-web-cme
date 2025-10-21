@@ -287,7 +287,7 @@ export class InicioComponent extends GeneralComponent {
     if (!municipio) return;
     this.catalogoService.getLstZonas(municipio).subscribe({
       next: (valor) => {
-        this.zonas = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'idZona');
+        this.zonas = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'cveZona');
       }
     });
   }
@@ -307,7 +307,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   agregarZonaInteres(): void {
-    if (this.zonasInteres().length >= 2) {
+    if (this.zonasInteres().length > 2) {
       this._alertServices.alerta("Ya seleccionaste tus 3 opciones.");
       this.formZonaInteres.reset();
       return;
@@ -342,12 +342,13 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerCatalogos(): void {
     this.activatedRoute.data.subscribe(({respuesta}) => {
-      const [sexos, estadosCiviles, paises, lugaresNacimiento, tiposDocumentos] = respuesta;
+      const [sexos, estadosCiviles, paises, lugaresNacimiento, tiposDocumentos, ooad] = respuesta;
       this.sexos = mapearArregloTipoDropdown(sexos.respuesta, 'desSexo', 'idSexo');
       this.estadosCiviles = mapearArregloTipoDropdown(estadosCiviles.respuesta, 'desEstadoCivil', 'idEstadoCivil');
       this.paises = mapearArregloTipoDropdown(paises.respuesta, 'desPais', 'idPais');
       this.lugaresNacimiento = mapearArregloTipoDropdown(lugaresNacimiento.respuesta, 'desLugarNacimiento', 'idLugarNacimiento');
       this.lstTiposDocumentos = mapearArregloTipoDropdown(tiposDocumentos.respuesta, 'desTipoDocumentoEspecialidad', 'idTipoDocumentoEspecialidad');
+      this.ooad = mapearArregloTipoDropdown(ooad.respuesta, 'desOoad', 'cveOoad');
     });
   }
 
@@ -355,7 +356,8 @@ export class InicioComponent extends GeneralComponent {
     return {
       "ooad": this.formZonaInteres.get('ooad')?.value,
       "zonaInteres": this.formZonaInteres.get('zonaInteres')?.value,
-      "desZonaInteres": this.devolverTextoZonaInnteres(this.formZonaInteres.get('zonaInteres')?.value)
+      "desZona": this.devolverTextoZonaInnteres(this.formZonaInteres.get('zonaInteres')?.value),
+      "desOoad": this.devolverTextoOoad(this.formZonaInteres.get('ooad')?.value)
     }
 
   }
@@ -506,7 +508,7 @@ export class InicioComponent extends GeneralComponent {
 
       if (paisNacimiento) {
         this.formRegistro.get('paisNacimiento')?.patchValue({
-          label: paisNacimiento.desPais,
+          label: paisNacimiento.nomPaisNacimiento,
           value: paisNacimiento.idPais
         });
       }
@@ -580,8 +582,6 @@ export class InicioComponent extends GeneralComponent {
     const pais: Pais = {
       nomPaisNacimiento: paisNacimientoSeleccionado.label,
       idPais: paisNacimientoSeleccionado.value as number,
-      cvePais: '',
-      desPais: ''
     }
     contacto.paisNacimiento = pais;
 
