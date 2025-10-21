@@ -128,7 +128,7 @@ import {AlertService} from '@services/alert.service';
         );
     }
 
-    getLstOOADS(idMunicipio:number): Observable<HttpRespuesta<any>> {
+    getLstOOADS(): Observable<HttpRespuesta<any>> {
         return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/ooads`, { headers: this.header }).pipe(
             catchError(this.handleError),
             map((response: HttpRespuesta<any>) => {
@@ -138,8 +138,8 @@ import {AlertService} from '@services/alert.service';
     }
 
 
-    getLstZonas(idMunicipio:number): Observable<HttpRespuesta<any>> {
-        return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/zonas/${idMunicipio}`, { headers: this.header }).pipe(
+    getLstZonas(ooad:number): Observable<HttpRespuesta<any>> {
+        return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/zonas/${ooad}`, { headers: this.header }).pipe(
             catchError(this.handleError),
             map((response: HttpRespuesta<any>) => {
                 return response;

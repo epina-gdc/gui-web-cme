@@ -18,7 +18,7 @@
         <section class="flex">
           <article class="col-3 flex flex-row">
             <p class="field-label">Fotografía</p>
-            <upload-photo (fileSelected)="onFileSelected($event)" class="mt-6"/>
+            <upload-photo (fileSelected)="onFileSelected($event)" [existingFile]="defaultFile" class="mt-6"/>
             <p class="label-obligatorio">Obligatorio</p>
           </article>
           <article class="col-9 flex flex-row flex-wrap">
@@ -145,7 +145,8 @@
             <div class="flex justify-content-between">
               <label class="field-label" for="estadoNacimiento">Estado de origen (nacimiento)</label>
             </div>
-            <p-select [options]="lugaresNacimiento" formControlName="estadoNacimiento" optionLabel="label" optionValue="value"
+            <p-select [options]="lugaresNacimiento" formControlName="estadoNacimiento" optionLabel="label"
+                      optionValue="value"
                       filterBy="label" [filter]="true" placeholder="Ingresa estado de origen" class="w-full"/>
           </div>
         </article>
@@ -164,6 +165,7 @@
           <div class="col-3">
             <div class="flex justify-content-between">
               <label class="field-label" for="pais">País</label>
+              <p class="label-obligatorio">Obligatorio</p>
             </div>
             <p-select [options]="paises" formControlName="pais" optionLabel="label" optionValue="value"
                       filterBy="label" [filter]="true" placeholder="Ingresa país" class="w-full"/>
@@ -251,8 +253,8 @@
           </ng-template>
           <ng-template #body let-zona let-rowIndex="rowIndex">
             <tr>
-              <td>{{ devolverTextoOoad(zona.ooad) }}</td>
-              <td>{{ zona.desZonaInteres }}</td>
+              <td>{{ zona.desOoad }}</td>
+              <td>{{ zona.desZona }}</td>
               <td>
                 <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.5rem'}"
                           (click)="(eliminarZonaInteres(rowIndex))"/>

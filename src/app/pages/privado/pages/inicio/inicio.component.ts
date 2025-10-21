@@ -107,6 +107,7 @@ export class InicioComponent extends GeneralComponent {
   foto!: any;
   archivoFoto!: File;
   selectFile!: File | undefined;
+  defaultFile!: File | undefined;
   datosFoto!: Fotografia;
   datosDomicilio!: DatosDomicilio;
   datosInteresLaboral!: any;
@@ -143,7 +144,6 @@ export class InicioComponent extends GeneralComponent {
     this.settearDatosUsuario();
     this.obtenerDatosGenerales(this.userData?.idUsuario);
     this.obtenerDatosFoto(this.userData?.idUsuario);
-    this.validacionesNegocio();
   }
 
   asignarFormularioRegistro(): FormGroup {
@@ -173,10 +173,10 @@ export class InicioComponent extends GeneralComponent {
   }
 
   suscribirObservables(): void {
-    this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe(value => this.obtenerEstadoPorPais(value.value));
+    this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe(value => this.obtenerLocalidadPorPais(value));
     this.formRegistro.get('pais')?.valueChanges.subscribe(value => this.obtenerEstadoPorPais(value));
     this.formRegistro.get('estado')?.valueChanges.subscribe(value => this.obtenerMunicipioPorEstado(value));
-    this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerValoresPorMunicipio(value));
+    this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerAlcaldiaPorMunicipio(value));
     this.formZonaInteres.get('ooad')?.valueChanges.subscribe(value => this.obtenerZonasPorMunicipio(value))
   }
 
@@ -191,7 +191,6 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
     this.formRegistro.get('sexo')?.setValue(sexo);
     this.formRegistro.get('correo')?.setValue(refEmail + '');
-    this.tipoMedico.set(this.userData.perfil)
   }
 
   obtenerFechaNacimientoDeCURP(curp: string): Date {
@@ -246,6 +245,9 @@ export class InicioComponent extends GeneralComponent {
     );
   }
 
+  obtenerLocalidadPorPais(pais: number): void {
+  }
+
   obtenerEstadoPorPais(pais: number): void {
     if (!pais) return;
     this.catalogoService.getLstEstadosByPais(pais).subscribe({
@@ -264,11 +266,6 @@ export class InicioComponent extends GeneralComponent {
     });
   }
 
-  obtenerValoresPorMunicipio(municipio: number): void {
-    this.obtenerOOADPorMunicipio(municipio);
-    this.obtenerAlcaldiaPorMunicipio(municipio);
-  }
-
   obtenerAlcaldiaPorMunicipio(municipio: number): void {
     if (!municipio) return;
     this.catalogoService.getLstColoniasByDelegacion(municipio).subscribe({
@@ -278,9 +275,8 @@ export class InicioComponent extends GeneralComponent {
     });
   }
 
-  obtenerOOADPorMunicipio(municipio: number): void {
-    if (!municipio) return;
-    this.catalogoService.getLstOOADS(municipio).subscribe({
+  obtenerOOADPorMunicipio(): void {
+    this.catalogoService.getLstOOADS().subscribe({
       next: (valor) => {
         this.ooad = mapearArregloTipoDropdown(valor.respuesta, 'desOoad', 'cveOoad');
       }
@@ -291,12 +287,7 @@ export class InicioComponent extends GeneralComponent {
     if (!municipio) return;
     this.catalogoService.getLstZonas(municipio).subscribe({
       next: (valor) => {
-        this.zonas = [];
-        if(valor.respuesta.length > 0){
-          this.zonas = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'cveZona');
-        }else{
-          this._alertServices.alerta(valor.mensaje);
-        }
+        this.zonas = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'idZona');
       }
     });
   }
@@ -316,14 +307,13 @@ export class InicioComponent extends GeneralComponent {
   }
 
   agregarZonaInteres(): void {
-
     if (this.zonasInteres().length >= 2) {
       this._alertServices.alerta("Ya seleccionaste tus 3 opciones.");
       this.formZonaInteres.reset();
       return;
     }
 
-    let nuevaZona = this.crearRegistroZonaInteres();
+    const nuevaZona = this.crearRegistroZonaInteres();
 
     // zE => zona Existente
     const esDuplicado = this.zonasInteres().some((zE: any) => zE.ooad === nuevaZona.ooad && zE.zonaInteres === nuevaZona.zonaInteres);
@@ -351,10 +341,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   obtenerCatalogos(): void {
-
-    this.activatedRoute.data.subscribe(({ respuesta }) => {
-
-
+    this.activatedRoute.data.subscribe(({respuesta}) => {
       const [sexos, estadosCiviles, paises, lugaresNacimiento, tiposDocumentos] = respuesta;
       this.sexos = mapearArregloTipoDropdown(sexos.respuesta, 'desSexo', 'idSexo');
       this.estadosCiviles = mapearArregloTipoDropdown(estadosCiviles.respuesta, 'desEstadoCivil', 'idEstadoCivil');
@@ -479,6 +466,9 @@ export class InicioComponent extends GeneralComponent {
       next: (response: any) => {
         this.blnFotoGuardada = true;
         this.selectFile = response;
+        const nombreArchivo = 'foto_perfil.png';
+        const tipoArchivo = response.type;
+        this.defaultFile = new File([response], nombreArchivo, {type: tipoArchivo});
       }
     });
   }
