@@ -11,6 +11,7 @@ export const inicioResolver: ResolveFn<any> = (route, state) => {
   const lugaresNacimiento = catalogosService.getLstLugarNacimiento();
   const tiposDocumentos = catalogosService.getLstTiposDocumentos();
   const ooad = catalogosService.getLstOOADS();
+  const especialidades = catalogosService.getLstEspecialidades();
 
-  return forkJoin([sexos, estadosCiviles, paises, lugaresNacimiento,tiposDocumentos, ooad]);
+  return forkJoin([sexos, estadosCiviles, paises, lugaresNacimiento,tiposDocumentos, ooad, especialidades]);
 };

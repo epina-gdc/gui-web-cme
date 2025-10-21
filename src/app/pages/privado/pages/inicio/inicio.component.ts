@@ -125,8 +125,9 @@ export class InicioComponent extends GeneralComponent {
   colonias: TipoDropdown[] = [];
   ooad: TipoDropdown[] = [];
   zonas: TipoDropdown[] = [];
+  especialidades: TipoDropdown[] = [];
 
-  indice: WritableSignal<number> = signal<number>(0);
+  indice: WritableSignal<number> = signal<number>(1);
   tipoMedico: WritableSignal<string> = signal<string>("");
 
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
@@ -164,11 +165,11 @@ export class InicioComponent extends GeneralComponent {
       estadoNacimiento: [],
       codigoPostal: [{value: '', disabled: false}, [Validators.required]],
       pais: [],
-      estado: [{value: '', disabled: false},[Validators.required]],
-      municipio: [{value: '', disabled: false},[Validators.required]],
-      colonia: [{value: '', disabled: false},[Validators.required]],
-      calle: [{value: '', disabled: false},[Validators.required]],
-      numeroExterior: [{value: '', disabled: false},[Validators.required]]
+      estado: [{value: '', disabled: false}, [Validators.required]],
+      municipio: [{value: '', disabled: false}, [Validators.required]],
+      colonia: [{value: '', disabled: false}, [Validators.required]],
+      calle: [{value: '', disabled: false}, [Validators.required]],
+      numeroExterior: [{value: '', disabled: false}, [Validators.required]]
     });
   }
 
@@ -342,13 +343,14 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerCatalogos(): void {
     this.activatedRoute.data.subscribe(({respuesta}) => {
-      const [sexos, estadosCiviles, paises, lugaresNacimiento, tiposDocumentos, ooad] = respuesta;
+      const [sexos, estadosCiviles, paises, lugaresNacimiento, tiposDocumentos, ooad, especialidades] = respuesta;
       this.sexos = mapearArregloTipoDropdown(sexos.respuesta, 'desSexo', 'idSexo');
       this.estadosCiviles = mapearArregloTipoDropdown(estadosCiviles.respuesta, 'desEstadoCivil', 'idEstadoCivil');
       this.paises = mapearArregloTipoDropdown(paises.respuesta, 'desPais', 'idPais');
       this.lugaresNacimiento = mapearArregloTipoDropdown(lugaresNacimiento.respuesta, 'desLugarNacimiento', 'idLugarNacimiento');
       this.lstTiposDocumentos = mapearArregloTipoDropdown(tiposDocumentos.respuesta, 'desTipoDocumentoEspecialidad', 'idTipoDocumentoEspecialidad');
       this.ooad = mapearArregloTipoDropdown(ooad.respuesta, 'desOoad', 'cveOoad');
+      this.especialidades = mapearArregloTipoDropdown(especialidades, 'desEspecialidad', 'idEspecialidad');
     });
   }
 
@@ -743,9 +745,9 @@ export class InicioComponent extends GeneralComponent {
     }
   }
 
-  validacionesNegocio(){
+  validacionesNegocio() {
 
-    if(this.userData?.idPerfil == 1){
+    if (this.userData?.idPerfil == 1) {
       this.formRegistro.get('nss')?.clearValidators;
       this.formRegistro.get('nss')?.updateValueAndValidity;
     }
