@@ -175,7 +175,7 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe(value => this.obtenerLocalidadPorPais(value));
     this.formRegistro.get('pais')?.valueChanges.subscribe(value => this.obtenerEstadoPorPais(value));
     this.formRegistro.get('estado')?.valueChanges.subscribe(value => this.obtenerMunicipioPorEstado(value));
-    this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerValoresPorMunicipio(value));
+    this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerAlcaldiaPorMunicipio(value));
   }
 
   settearDatosUsuario(): void {
@@ -243,11 +243,11 @@ export class InicioComponent extends GeneralComponent {
     );
   }
 
-  obtenerLocalidadPorPais(pais: number): void {}
+  obtenerLocalidadPorPais(pais: number): void {
+  }
 
   obtenerEstadoPorPais(pais: number): void {
     if (!pais) return;
-    console.log(pais);
     this.catalogoService.getLstEstadosByPais(pais).subscribe({
       next: (valor) => {
         this.estados = mapearArregloTipoDropdown(valor.respuesta, 'desEstado', 'idEstado');
@@ -264,12 +264,6 @@ export class InicioComponent extends GeneralComponent {
     });
   }
 
-  obtenerValoresPorMunicipio(municipio: number): void {
-    this.obtenerOOADPorMunicipio(municipio);
-    this.obtenerZonasPorMunicipio(municipio);
-    this.obtenerAlcaldiaPorMunicipio(municipio);
-  }
-
   obtenerAlcaldiaPorMunicipio(municipio: number): void {
     if (!municipio) return;
     this.catalogoService.getLstColoniasByDelegacion(municipio).subscribe({
@@ -279,9 +273,8 @@ export class InicioComponent extends GeneralComponent {
     });
   }
 
-  obtenerOOADPorMunicipio(municipio: number): void {
-    if (!municipio) return;
-    this.catalogoService.getLstOOADS(municipio).subscribe({
+  obtenerOOADPorMunicipio(): void {
+    this.catalogoService.getLstOOADS().subscribe({
       next: (valor) => {
         this.ooad = mapearArregloTipoDropdown(valor.respuesta, 'desOoad', 'idOoad');
       }
@@ -290,7 +283,6 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerZonasPorMunicipio(municipio: number): void {
     if (!municipio) return;
-    console.log(municipio)
     this.catalogoService.getLstZonas(municipio).subscribe({
       next: (valor) => {
         this.zonas = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'idZona');
