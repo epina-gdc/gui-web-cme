@@ -44,6 +44,7 @@ import {InteresLaboral} from '@models/aspirante';
 import dayjs from 'dayjs';
 import {of, switchMap, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
+import {Tooltip} from 'primeng/tooltip';
 
 
 @Component({
@@ -69,7 +70,8 @@ import {catchError} from 'rxjs/operators';
     EmptyTabComponent,
     OnlyNumbersDirective,
     EmailAllowCaractersDirective,
-    OfertaLaboralComponent
+    OfertaLaboralComponent,
+    Tooltip
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
@@ -350,7 +352,7 @@ export class InicioComponent extends GeneralComponent {
       this.lugaresNacimiento = mapearArregloTipoDropdown(lugaresNacimiento.respuesta, 'desLugarNacimiento', 'idLugarNacimiento');
       this.lstTiposDocumentos = mapearArregloTipoDropdown(tiposDocumentos.respuesta, 'desTipoDocumentoEspecialidad', 'idTipoDocumentoEspecialidad');
       this.ooad = mapearArregloTipoDropdown(ooad.respuesta, 'desOoad', 'cveOoad');
-      this.especialidades = mapearArregloTipoDropdown(especialidades, 'desEspecialidad', 'idEspecialidad');
+      this.especialidades = mapearArregloTipoDropdown(especialidades, 'desEspecialidad', 'cveEspecialidad');
     });
   }
 
@@ -371,9 +373,14 @@ export class InicioComponent extends GeneralComponent {
   }
 
   obtenerNuevoDocumento(): TabDocumento {
+    const tipoDocumento = this.formDocumentosEspecialidad.get('documento')?.value;
+    const documentoLabel = this.lstTiposDocumentos.find(d => d.value === tipoDocumento)?.label as string;
+    const especialidad = this.formDocumentosEspecialidad.get('especialidad')?.value;
+    const especialidadLabel = this.especialidades.find(d => d.value === especialidad)?.label as string;
+
     return {
-      tipoDocumento: this.formDocumentosEspecialidad.get('documento')?.value,
-      especialidadMedica: this.formDocumentosEspecialidad.get('especialidad')?.value
+      tipoDocumento: documentoLabel,
+      especialidadMedica: especialidadLabel
     }
   }
 
