@@ -139,7 +139,7 @@ import {AlertService} from '@services/alert.service';
 
 
     getLstZonas(idMunicipio:number): Observable<HttpRespuesta<any>> {
-        return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/zonas`, { headers: this.header }).pipe(
+        return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/zonas/${idMunicipio}`, { headers: this.header }).pipe(
             catchError(this.handleError),
             map((response: HttpRespuesta<any>) => {
                 return response;

@@ -1,0 +1,12 @@
+@layer app-components {
+
+
+  :host ::ng-deep .p-tablist-tab-list {
+    justify-content: space-between!important;
+  }
+  :host ::ng-deep .p-tab {
+    min-width: 400px;
+    display: flex;
+    justify-content: center;
+  }
+}

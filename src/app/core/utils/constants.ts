@@ -1,7 +1,7 @@
 export const DEPENDIENTES = [
   { name: 'Padres', key: 'A' },
   { name: 'Hijos', key: 'M' },
-  { name: 'Conyuge', key: 'P' },
+  { name: 'Cónyuge', key: 'P' },
   { name: 'Otros', key: 'R' }
 ]
 
