@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
+import {AuthService} from '@services/auth.service';
 
 @Component({
   selector: 'app-footer-medico',
@@ -7,5 +8,8 @@ import {Component} from '@angular/core';
   styleUrl: './footer-medico.component.scss'
 })
 export class FooterMedicoComponent {
+    authService: AuthService = inject(AuthService);
+
+    sesion = this.authService.usuarioSesion;
 
 }
