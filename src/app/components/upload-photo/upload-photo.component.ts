@@ -26,6 +26,15 @@ export class UploadPhotoComponent implements OnChanges {
   totalSizePercent: number = 0;
 
   constructor(private readonly config: PrimeNG) {
+    if (this.existingFile instanceof File) {
+      const file: File = this.existingFile;
+
+      this.fileUpload.clear();
+      const fileList: any[] = [file];
+      this.fileUpload.files = fileList; // La propiedad que usa el template
+      this.files = fileList;
+
+    }
   }
 
   onSelectedFiles(event: any) {
