@@ -44,7 +44,6 @@ import {InteresLaboral} from '@models/aspirante';
 import dayjs from 'dayjs';
 import {of, switchMap, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
-import {Tooltip} from 'primeng/tooltip';
 
 
 @Component({
@@ -71,7 +70,6 @@ import {Tooltip} from 'primeng/tooltip';
     OnlyNumbersDirective,
     EmailAllowCaractersDirective,
     OfertaLaboralComponent,
-    Tooltip
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
