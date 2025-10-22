@@ -83,7 +83,6 @@ export class InicioComponent extends GeneralComponent {
   readonly dependientes = DEPENDIENTES;
   readonly instituciones = INSTITUCIONES;
   readonly opciones_boolean = BOOLEAN_OPCIONES;
-  readonly dias_semana = DIAS;
 
   userService = inject(UserService);
   fb: FormBuilder = inject(FormBuilder);
@@ -128,6 +127,7 @@ export class InicioComponent extends GeneralComponent {
   ooad: TipoDropdown[] = [];
   zonas: TipoDropdown[] = [];
   especialidades: TipoDropdown[] = [];
+  dias_semana: TipoDropdown[] = [];
 
   indice: WritableSignal<number> = signal<number>(1);
   tipoMedico: WritableSignal<string> = signal<string>("");
@@ -372,7 +372,7 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerCatalogos(): void {
     this.activatedRoute.data.subscribe(({respuesta}) => {
-      const [sexos, estadosCiviles, paises, lugaresNacimiento, tiposDocumentos, ooad, especialidades] = respuesta;
+      const [sexos, estadosCiviles, paises, lugaresNacimiento, tiposDocumentos, ooad, especialidades, dias] = respuesta;
       this.sexos = mapearArregloTipoDropdown(sexos.respuesta, 'desSexo', 'idSexo');
       this.estadosCiviles = mapearArregloTipoDropdown(estadosCiviles.respuesta, 'desEstadoCivil', 'idEstadoCivil');
       this.paises = mapearArregloTipoDropdown(paises.respuesta, 'desPais', 'idPais');
@@ -380,6 +380,7 @@ export class InicioComponent extends GeneralComponent {
       this.lstTiposDocumentos = mapearArregloTipoDropdown(tiposDocumentos.respuesta, 'desTipoDocumentoEspecialidad', 'idTipoDocumentoEspecialidad');
       this.ooad = mapearArregloTipoDropdown(ooad.respuesta, 'desOoad', 'cveOoad');
       this.especialidades = mapearArregloTipoDropdown(especialidades, 'desEspecialidad', 'cveEspecialidad');
+      this.dias_semana = mapearArregloTipoDropdown(dias.respuesta, 'descDiaSemana', 'idDiaSemana')
     });
   }
 
