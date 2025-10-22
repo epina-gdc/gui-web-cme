@@ -439,7 +439,9 @@ export class InicioComponent extends GeneralComponent {
         especialidad: nuevoDocumento.especialidadMedica,
         documentos: [nuevoDocumento]
       };
-      this.registrosDocumentosEspecialidad.update(value => [...value, nuevaEspecialidad]);
+      const especialidadesActualizadas: TabNode[] = [...this.registrosDocumentosEspecialidad(), nuevaEspecialidad];
+      this.registrosDocumentosEspecialidad.update(value => especialidadesActualizadas);
+      this.documentosLocalStorageService.guardarRefGuidEspecialidad(especialidadesActualizadas);
       this.limpiarDocumentoEspecialidad();
       return;
     }
@@ -895,6 +897,7 @@ export class InicioComponent extends GeneralComponent {
     const refObligatorio1 = this.documentosLocalStorageService.obtenerRefGuid(1);
     const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
     const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
+    const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
     if (refObligatorio1) {
       this.obtenerDocumento(refObligatorio1, 'obligatorio', 1);
     }
@@ -904,6 +907,8 @@ export class InicioComponent extends GeneralComponent {
     if (refObligatorio3) {
       this.obtenerDocumento(refObligatorio3, 'obligatorio', 3);
     }
+    console.log(especialidades)
+    this.registrosDocumentosEspecialidad.update(valor => especialidades);
   }
 
   obtenerDocumento(refGuid: string, tipo: string, id: number): void {
