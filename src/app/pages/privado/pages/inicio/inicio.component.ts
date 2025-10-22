@@ -989,6 +989,13 @@ export class InicioComponent extends GeneralComponent {
     this.guardarArchivo(formData, 'constancia', id);
   }
 
+  actualizarNombreDocumento(id: number, event: any): void {
+    const refConstancia = this.documentosLocalStorageService.obtenerRefConstancia(id);
+    const nombre = event.target.value;
+    if (!refConstancia.refGuid) return;
+    this.documentosLocalStorageService.guardarRefGuidConstancia(id, refConstancia.refGuid, nombre)
+  }
+
   anteriorPasoStepper(): void {
     this.indice.update(value => value - 1);
   }

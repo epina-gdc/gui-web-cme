@@ -434,7 +434,7 @@
             <p class="label-obligatorio">Obligatorio</p>
           </div>
           <input pInputText class="w-full" type="text" id="constancia2" [(ngModel)]="nombreConstancia2"
-                 placeholder="Especifique el nombre del documento"
+                 placeholder="Especifique el nombre del documento" (change)="actualizarNombreDocumento(2, $event)"
           />
         </div>
         <div class="col-4">
