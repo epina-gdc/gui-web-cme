@@ -143,6 +143,14 @@ export class InicioComponent extends GeneralComponent {
 
   documentoEspecialidad!: File | null;
 
+  archivoConstancia1!: File | undefined;
+  archivoConstancia2!: File | undefined;
+  archivoConstancia3!: File | undefined;
+
+  nombreConstancia1: string = '';
+  nombreConstancia2: string = '';
+  nombreConstancia3: string = '';
+
   constructor(private readonly activatedRoute: ActivatedRoute) {
     super()
     this.userService.userData$.subscribe(user => this.userData = user);
@@ -407,7 +415,7 @@ export class InicioComponent extends GeneralComponent {
 
     const formData = new FormData();
     formData.append('file', this.documentoEspecialidad, this.documentoEspecialidad.name);
-    this.guardarArchivo(formData, 'especialidad')
+    this.guardarArchivo(formData, 'especialidad');
   }
 
   obtenerTipoDocumentoAValidar(): string {
@@ -867,7 +875,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
 
-  private guardarArchivo(datos: FormData, tipo: string, id: number = 0): void {
+  private guardarArchivo(datos: FormData, tipo: 'constancia' | 'obligatorio' | 'especialidad', id: number = 0): void {
 
     const idUsuario = this.datosGenerales?.datosPersonales?.idUsuario;
 
@@ -892,8 +900,19 @@ export class InicioComponent extends GeneralComponent {
         if (tipo === 'especialidad') {
           this.agregarDocumento(data.guid);
         }
+        if (tipo === 'constancia') {
+          this.guardarRefGuidConstancia(id, data.guid);
+        }
       }
     });
+  }
+
+  guardarRefGuidConstancia(id: number, guid: string): void {
+    let nombre = '';
+    if (id === 1) nombre = this.nombreConstancia1;
+    if (id === 2) nombre = this.nombreConstancia2;
+    if (id === 3) nombre = this.nombreConstancia3;
+    this.documentosLocalStorageService.guardarRefGuidConstancia(id, guid, nombre)
   }
 
   revisarDocumentosLocalHost(): void {
@@ -940,6 +959,10 @@ export class InicioComponent extends GeneralComponent {
       return;
     }
 
+
+    const formData = new FormData();
+    formData.append('file', archivo, archivo.name);
+    this.guardarArchivo(formData, 'constancia', id);
   }
 
   anteriorPasoStepper(): void {

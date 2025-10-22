@@ -55,7 +55,7 @@ export class DocumentosLocalstorageService {
 
   }
 
-  guardarRefGuidConstancia(idConstancia: number, refGuid: string) {
+  guardarRefGuidConstancia(idConstancia: number, refGuid: string, nombre: string) {
 
     //  Obtener los datos existentes o inicializar un objeto vacío
     const informacionGuardada = localStorage.getItem(this.DOC_STORAGE_KEY);
@@ -66,7 +66,7 @@ export class DocumentosLocalstorageService {
     };
 
     // Se convierte el idConstancia a string para usarlo como clave de objeto
-    informacionActualizada.constancias[idConstancia] = refGuid;
+    informacionActualizada.constancias[idConstancia] = { refGuid, nombre };
 
     // Guardar el objeto actualizado en localStorage
     localStorage.setItem(this.DOC_STORAGE_KEY, JSON.stringify(informacionActualizada));
