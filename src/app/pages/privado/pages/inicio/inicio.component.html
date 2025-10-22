@@ -34,7 +34,9 @@
             <div class="col-4">
               <div class="flex justify-content-between">
                 <label class="field-label" for="nss">NSS</label>
-                <p class="label-obligatorio">Obligatorio</p>
+                @if(this.userData?.idPerfil == 2){
+                  <p class="label-obligatorio">Obligatorio</p>
+                }
               </div>
               <input pInputText class="w-full" type="text" id="nss" placeholder="Ingresa NSS"
                      formControlName="nss" appOnlyNumbers maxlength="11"/>
@@ -224,6 +226,7 @@
             <div class="col-3">
               <div class="flex justify-content-between">
                 <label class="field-label" for="ooad">OOAD</label>
+                <p class="label-obligatorio">Obligatorio</p>
               </div>
               <p-select [options]="ooad" formControlName="ooad" optionLabel="label"
                         placeholder="Seleccionar opción" class="w-full" optionValue="value"/>
@@ -231,6 +234,7 @@
             <div class="col-3">
               <div class="flex justify-content-between">
                 <label class="field-label" for="zonaInteres">Zona de interés</label>
+                <p class="label-obligatorio">Obligatorio</p>
               </div>
               <p-select [options]="zonas" formControlName="zonaInteres" optionLabel="label"
                         placeholder="Seleccionar opción" class="w-full" optionValue="value"/>
