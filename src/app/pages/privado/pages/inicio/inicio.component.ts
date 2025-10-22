@@ -388,7 +388,9 @@ export class InicioComponent extends GeneralComponent {
 
     return {
       tipoDocumento: documentoLabel,
-      especialidadMedica: especialidadLabel
+      especialidadMedica: especialidadLabel,
+      cveEspecialidad: especialidad,
+      idDocumento: tipoDocumento
     }
   }
 
@@ -405,12 +407,7 @@ export class InicioComponent extends GeneralComponent {
         documentos: [nuevoDocumento]
       };
       this.registrosDocumentosEspecialidad.update(value => [...value, nuevaEspecialidad]);
-      this.formDocumentosEspecialidad.reset();
-      this.documentoEspecialidad = null;
-      const uploader = this.uploaders.find(comp => comp.idArchivo === 'especialidad');
-      if (uploader) {
-        uploader.clear();
-      }
+      this.limpiarDocumentoEspecialidad();
       return;
     }
 
@@ -425,12 +422,22 @@ export class InicioComponent extends GeneralComponent {
 
     // Añadimos el nuevo documento y actualizamos el signal
     especialidadExistente.documentos.push(nuevoDocumento);
+    this.limpiarDocumentoEspecialidad();
 
     const especialidadesActualizadas = [...especialidades.slice(0, indiceEspecialidad),
       especialidadExistente,
       ...especialidades.slice(indiceEspecialidad + 1)
     ];
     this.registrosDocumentosEspecialidad.update(() => especialidadesActualizadas);
+  }
+
+  limpiarDocumentoEspecialidad(): void {
+    this.formDocumentosEspecialidad.reset();
+    this.documentoEspecialidad = null;
+    const uploader = this.uploaders.find(comp => comp.idArchivo === 'especialidad');
+    if (uploader) {
+      uploader.clear();
+    }
   }
 
   eliminarDocumento(especialidadMedica: string, tipoDocumento: string): void {
