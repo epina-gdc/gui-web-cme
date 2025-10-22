@@ -90,6 +90,7 @@ export class InicioComponent extends GeneralComponent {
   formRegistro!: FormGroup;
   formZonaInteres!: FormGroup;
   formDocumentosEspecialidad!: FormGroup;
+  formDatosEmpleo!: FormGroup;
   userData: SesionUser | null = null;
 
   zonasInteres: WritableSignal<any[]> = signal([]);
@@ -104,8 +105,6 @@ export class InicioComponent extends GeneralComponent {
     {label: 'Oferta laboral', active: false},
   ];
 
-  sustituto!: any;
-  empleo!: any;
   datosDocumento!: DatosDocumentoResponse;
   datosGenerales!: DatosGeneralesResponse;
   foto!: any;
@@ -116,8 +115,6 @@ export class InicioComponent extends GeneralComponent {
   datosDomicilio!: DatosDomicilio;
   datosInteresLaboral!: any;
   // userData!: SesionUser;
-
-  dummies = [{label: 'Dummie', value: 'Dummie'}, {label: 'Dummie 2', value: 'Dummie 2'}];
 
   sexos: TipoDropdown[] = [];
   estadosCiviles: TipoDropdown[] = [];
@@ -157,6 +154,7 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro = this.asignarFormularioRegistro();
     this.formZonaInteres = this.asignarFormularioZonaInteres();
     this.formDocumentosEspecialidad = this.asignarFormularioDocumentosEspecialidad();
+    this.formDatosEmpleo = this.asignarFormularioDatosEmpleo();
     this.obtenerCatalogos();
     this.suscribirObservables();
     this.subscribirseACambioComponentes();
@@ -211,6 +209,15 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
     this.formRegistro.get('sexo')?.setValue(sexo);
     this.formRegistro.get('correo')?.setValue(refEmail + '');
+  }
+
+  asignarFormularioDatosEmpleo(): FormGroup {
+    return this.fb.group({
+      otroEmpleo: [{ value: ['0'], disabled: false }],
+      sustituto: [{ value: ['0'], disabled: false }],
+      tipoInstitucion: [{ value: ['0'], disabled: false }],
+      nombreInstitucion: [],
+    })
   }
 
   obtenerFechaNacimientoDeCURP(curp: string): Date {

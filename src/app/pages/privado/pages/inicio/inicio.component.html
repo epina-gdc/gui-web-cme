@@ -457,87 +457,90 @@
     </p-card>
 
     <p-card class="mx-2 empty-border" [header]="'Datos de empleo'">
-      <article class="grid-datos-empleo">
-        <div>
-          <p class="field-label">¿Tienes otro empleo?</p>
-          <div class="flex flex-wrap gap-2">
-            @for (opcion of opciones_boolean; track opcion.key) {
-              <div class="flex align-items-center gap-1">
-                <p-radiobutton class="radio-button-square" [inputId]="opcion.key" [value]="opcion"
-                               [(ngModel)]="empleo">
-                </p-radiobutton>
-                <label [for]="opcion.key" class="field-label mt-4">{{ opcion.name }}</label>
-              </div>
-            }
-          </div>
-        </div>
-        <div>
-          <p class="field-label">¿Eres sustituto 08 IMSS?</p>
-          <div class="flex flex-wrap gap-2">
-            @for (opcion of opciones_boolean; track opcion.key) {
-              <div class="flex align-items-center gap-1">
-                <p-radiobutton class="radio-button-square" [inputId]="opcion.key" [value]="opcion"
-                               [(ngModel)]="sustituto">
-                </p-radiobutton>
-                <label [for]="opcion.key" class="field-label mt-4">{{ opcion.name }}</label>
-              </div>
-            }
-          </div>
-        </div>
-        <div>
-          <div class="flex justify-content-between">
-            <p class="field-label mb-1">Jornada laboral</p>
-          </div>
-          <div class="flex gap-2">
-            <p-datepicker [style]="{ 'width': '100%' }" placeholder="De" [iconDisplay]="'input'"
-                          [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay">
-              <ng-template #inputicon let-clickCallBack="clickCallBack">
-                <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
-              </ng-template>
-            </p-datepicker>
-            <p-datepicker [style]="{ 'width': '100%' }" placeholder="Hasta" [iconDisplay]="'input'"
-                          [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay">
-              <ng-template #inputicon let-clickCallBack="clickCallBack">
-                <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
-              </ng-template>
-            </p-datepicker>
-          </div>
-        </div>
-        <div>
-          <div class="flex justify-content-between">
-            <p class="field-label mb-1">Horario laboral</p>
-          </div>
-          <div class="flex gap-2">
-            <p-datepicker [style]="{ 'width': '100%' }" placeholder="De" [iconDisplay]="'input'"
-                          [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"/>
-            <p-datepicker [style]="{ 'width': '100%' }" placeholder="Hasta" [iconDisplay]="'input'"
-                          [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"/>
-          </div>
-        </div>
-        <div>
-          <p></p>
-        </div>
-      </article>
-      <article class="flex flex-row">
-        <div class="col-8">
-          <div class="flex justify-content-between">
-            <label class="field-label" for="institucion">Institución</label>
-            <div class="flex gap-2">
-              @for (institucion of instituciones; track institucion.key) {
-                <div class="flex justify-content-end gap-1 align-items-center">
-                  <p-radiobutton [inputId]="institucion.key" [(ngModel)]="institucionSeleccionada">
+      <form [formGroup]="formDatosEmpleo">
+        <article class="grid-datos-empleo">
+          <div>
+            <p class="field-label">¿Tienes otro empleo?</p>
+            <div class="flex flex-wrap gap-2">
+              @for (opcion of opciones_boolean; track opcion.key) {
+                <div class="flex align-items-center gap-1">
+                  <p-radiobutton class="radio-button-square" [inputId]="opcion.key" [value]="opcion.key"
+                                 formControlName="otroEmpleo">
                   </p-radiobutton>
-                  <label [for]="institucion.key" class="leyenda-documento mt-4">{{ institucion.name }}</label>
+                  <label [for]="opcion.key" class="field-label mt-4">{{ opcion.name }}</label>
                 </div>
               }
             </div>
           </div>
-          <input pInputText class="w-full" type="text" id="institucion"
-                 placeholder="Especifique institución"/>
-          <p class="leyenda-documento">Especifique el nombre de la institución , si eres sustituto especifica el OOAD de
-            adscripción</p>
-        </div>
-      </article>
+          <div>
+            <p class="field-label">¿Eres sustituto 08 IMSS?</p>
+            <div class="flex flex-wrap gap-2">
+              @for (opcion of opciones_boolean; track opcion.key) {
+                <div class="flex align-items-center gap-1">
+                  <p-radiobutton class="radio-button-square" [inputId]="opcion.key" [value]="opcion.key"
+                                 formControlName="sustituto">
+                  </p-radiobutton>
+                  <label [for]="opcion.key" class="field-label mt-4">{{ opcion.name }}</label>
+                </div>
+              }
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-content-between">
+              <p class="field-label mb-1">Jornada laboral</p>
+            </div>
+            <div class="flex gap-2">
+              <p-datepicker [style]="{ 'width': '100%' }" placeholder="De" [iconDisplay]="'input'"
+                            [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay">
+                <ng-template #inputicon let-clickCallBack="clickCallBack">
+                  <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
+                </ng-template>
+              </p-datepicker>
+              <p-datepicker [style]="{ 'width': '100%' }" placeholder="Hasta" [iconDisplay]="'input'"
+                            [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay">
+                <ng-template #inputicon let-clickCallBack="clickCallBack">
+                  <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
+                </ng-template>
+              </p-datepicker>
+            </div>
+          </div>
+          <div>
+            <div class="flex justify-content-between">
+              <p class="field-label mb-1">Horario laboral</p>
+            </div>
+            <div class="flex gap-2">
+              <p-datepicker [style]="{ 'width': '100%' }" placeholder="De" [iconDisplay]="'input'"
+                            [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"/>
+              <p-datepicker [style]="{ 'width': '100%' }" placeholder="Hasta" [iconDisplay]="'input'"
+                            [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"/>
+            </div>
+          </div>
+          <div>
+            <p></p>
+          </div>
+        </article>
+        <article class="flex flex-row">
+          <div class="col-8">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="institucion">Institución</label>
+              <div class="flex gap-2">
+                @for (institucion of instituciones; track institucion.key) {
+                  <div class="flex justify-content-end gap-1 align-items-center">
+                    <p-radiobutton [inputId]="institucion.key" formControlName="tipoInstitucion" [value]="institucion.key">
+                    </p-radiobutton>
+                    <label [for]="institucion.key" class="leyenda-documento mt-4">{{ institucion.name }}</label>
+                  </div>
+                }
+              </div>
+            </div>
+            <input pInputText class="w-full" type="text" id="institucion" formControlName="nombreInstitucion"
+                   placeholder="Especifique institución"/>
+            <p class="leyenda-documento">Especifique el nombre de la institución , si eres sustituto especifica el OOAD
+              de
+              adscripción</p>
+          </div>
+        </article>
+      </form>
     </p-card>
   }
   @case (2) {
