@@ -44,6 +44,7 @@ import {InteresLaboral} from '@models/aspirante';
 import dayjs from 'dayjs';
 import {of, switchMap, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
+import {DocumentosLocalstorageService} from '@services/documentos-localstorage.service';
 
 
 @Component({
@@ -83,6 +84,7 @@ export class InicioComponent extends GeneralComponent {
 
   userService = inject(UserService);
   fb: FormBuilder = inject(FormBuilder);
+  documentosLocalStorageService = inject(DocumentosLocalstorageService)
   formRegistro!: FormGroup;
   formZonaInteres!: FormGroup;
   formDocumentosEspecialidad!: FormGroup;
@@ -361,7 +363,6 @@ export class InicioComponent extends GeneralComponent {
       "desZona": this.devolverTextoZonaInnteres(this.formZonaInteres.get('zonaInteres')?.value),
       "desOoad": this.devolverTextoOoad(this.formZonaInteres.get('ooad')?.value)
     }
-
   }
 
   eliminarZonaInteres(indice: number): void {
@@ -785,6 +786,43 @@ export class InicioComponent extends GeneralComponent {
       this.btnGuardar(1);
     }
   };
+
+  procesarArchivoObligatorio($event: any, id: number): void {
+    const files: FileList | File[] = $event?.target?.files || $event;
+    const archivo: File | undefined = files?.[0];
+    if (!archivo) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', archivo, archivo.name);
+    this.guardarArchivo(formData, 'obligatorio', id);
+  }
+
+
+  private guardarArchivo(datos: FormData, tipo: string, id: number): void {
+
+    const idUsuario = this.datosGenerales?.datosPersonales?.idUsuario;
+
+    if (!idUsuario) {
+      this._alertServices.error('No se pudo obtener el ID de usuario.');
+      return;
+    }
+
+    // Guardar el archivo (Guardar GUID)
+    this.documentoService.guardarDocumento(datos, idUsuario).subscribe({
+      next: (data: any) => {
+        if (!data?.guid) {
+          this._alertServices.error(data?.mensaje || 'Error al obtener GUID del documento.');
+          return;
+        }
+        if (tipo === 'obligatorio') {
+          this.documentosLocalStorageService.guardarRefGuidObligatorio(id, data.guid);
+        }
+      }
+    });
+  }
+
 
   anteriorPasoStepper(): void {
     this.indice.update(value => value - 1);
