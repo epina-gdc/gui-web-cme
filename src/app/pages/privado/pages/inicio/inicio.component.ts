@@ -794,6 +794,8 @@ export class InicioComponent extends GeneralComponent {
       return;
     }
 
+    console.log(!archivo,  id)
+
     const formData = new FormData();
     formData.append('file', archivo, archivo.name);
     this.guardarArchivo(formData, 'obligatorio', id);
@@ -808,6 +810,9 @@ export class InicioComponent extends GeneralComponent {
       this._alertServices.error('No se pudo obtener el ID de usuario.');
       return;
     }
+
+    datos.append('idModulo', '1')
+    datos.append('idUsuario', idUsuario.toString())
 
     // Guardar el archivo (Guardar GUID)
     this.documentoService.guardarDocumento(datos, idUsuario).subscribe({

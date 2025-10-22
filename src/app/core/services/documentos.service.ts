@@ -56,12 +56,9 @@ export class DocumentoService {
     }).pipe(catchError(this.handleError));
   }
 
-  guardarDocumento(documento: FormData, idUsuario: number, idModulo: number = 1): Observable<any> {
-    const params = new HttpParams()
-      .set('idModulo', idModulo)
-      .set('idUsuario', idUsuario)
+  guardarDocumento(documento: FormData): Observable<any> {
 
-    let ruta = `${this.serverEndPointURLDocumento}/v1/documentos/repositorio` + params;
+    let ruta = `${this.serverEndPointURLDocumento}/v1/documentos/repositorio`;
     return this.http.post<any>(ruta, documento, {headers: this.headers}).pipe(
       catchError(this.handleError),
       map((response: any) => {

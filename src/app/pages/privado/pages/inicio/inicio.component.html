@@ -291,7 +291,7 @@
             <p class="field-label">Identificación Oficial (INE)</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
-          <upload-document/>
+          <upload-document (fileSelected)="procesarArchivoObligatorio($event, 1)"/>
         </div>
         <div class="col-3">
           <div class="flex justify-content-between mb-1">

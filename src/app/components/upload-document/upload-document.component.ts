@@ -16,8 +16,7 @@ import {Button} from 'primeng/button';
 })
 export class UploadDocumentComponent {
   @Input() maxFileSize: number = 5120000;
-  @Input() idTipoDocumento!: number;
-  @Output() fileSelected = new EventEmitter<{ files: any[], idTipoDocumento: number }>();
+  @Output() fileSelected = new EventEmitter<any>();
   @Output() fileRemoved = new EventEmitter<any>();
   files: any[] = [];
   totalSize: number = 0;
@@ -28,7 +27,7 @@ export class UploadDocumentComponent {
 
   onSelectedFiles(event: any) {
     this.files = event.currentFiles;
-    this.fileSelected.emit({files: this.files, idTipoDocumento: this.idTipoDocumento}); // Enviamos el tipo de documento
+    this.fileSelected.emit(this.files); // Enviamos el tipo de documento
   }
 
   onRemoveTemplatingFile(event: any, file: any, removeFileCallback: any, index: any) {
@@ -64,7 +63,7 @@ export class UploadDocumentComponent {
   }
 
   seleccionarArchivo(): void {
-    const elemento: HTMLElement | null = document.getElementById('choose_btn_' + this.idTipoDocumento);
+    const elemento: HTMLElement | null = document.getElementById('choose_btn');
     if (!elemento) return;
     elemento.querySelector('button')?.click();
   }

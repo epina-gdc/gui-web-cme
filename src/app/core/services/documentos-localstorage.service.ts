@@ -5,7 +5,7 @@ import {Injectable} from '@angular/core';
 })
 export class DocumentosLocalstorageService {
 
-  readonly DOC_STORAGE_KEY = 'documentosAspiranteIDs';
+  readonly DOC_STORAGE_KEY = 'docs_aspirante';
 
   constructor() {
   }
