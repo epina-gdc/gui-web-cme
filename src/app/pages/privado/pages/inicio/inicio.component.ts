@@ -1,4 +1,4 @@
-import {Component, inject, signal, WritableSignal} from '@angular/core';
+import {Component, inject, QueryList, signal, ViewChildren, WritableSignal} from '@angular/core';
 import {Card} from 'primeng/card';
 import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.component';
 import {StepsComponent} from '@components/steps/steps.component';
@@ -77,6 +77,8 @@ import {DocumentosLocalstorageService} from '@services/documentos-localstorage.s
 })
 
 export class InicioComponent extends GeneralComponent {
+  @ViewChildren(UploadDocumentComponent)
+  uploaders!: QueryList<UploadDocumentComponent>;
 
   readonly dependientes = DEPENDIENTES;
   readonly instituciones = INSTITUCIONES;
@@ -405,6 +407,10 @@ export class InicioComponent extends GeneralComponent {
       this.registrosDocumentosEspecialidad.update(value => [...value, nuevaEspecialidad]);
       this.formDocumentosEspecialidad.reset();
       this.documentoEspecialidad = null;
+      const uploader = this.uploaders.find(comp => comp.idArchivo === 'especialidad');
+      if (uploader) {
+        uploader.clear();
+      }
       return;
     }
 

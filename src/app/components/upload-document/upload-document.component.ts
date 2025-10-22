@@ -125,4 +125,8 @@ export class UploadDocumentComponent implements OnChanges {
       this.files = [];
     }
   }
+
+  clear() {
+    this.fileUpload.clear();
+  }
 }
