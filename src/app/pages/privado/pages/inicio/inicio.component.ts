@@ -380,7 +380,7 @@ export class InicioComponent extends GeneralComponent {
     this.zonasInteres.update(() => zonasActualizadas);
   }
 
-  obtenerNuevoDocumento(): TabDocumento {
+  obtenerNuevoDocumento(guid: string = ''): TabDocumento {
     const tipoDocumento = this.formDocumentosEspecialidad.get('documento')?.value;
     const documentoLabel = this.lstTiposDocumentos.find(d => d.value === tipoDocumento)?.label as string;
     const especialidad = this.formDocumentosEspecialidad.get('especialidad')?.value;
@@ -390,12 +390,45 @@ export class InicioComponent extends GeneralComponent {
       tipoDocumento: documentoLabel,
       especialidadMedica: especialidadLabel,
       cveEspecialidad: especialidad,
-      idDocumento: tipoDocumento
+      idDocumento: tipoDocumento,
+      guid
     }
   }
 
-  agregarDocumento(): void {
-    const nuevoDocumento = this.obtenerNuevoDocumento();
+  subirDocumentoyObtenerGuid(): void {
+    const tipoDoc = this.obtenerTipoDocumentoAValidar();
+    const especialidadDoc = this.obtenerEspecialidadAValidar();
+
+    if (this.documentoYaExisteParaEspecialidad(tipoDoc, especialidadDoc)) {
+      this._alertServices.alerta(`El documento de tipo ${tipoDoc} ya fue cargado para la especialidad ${especialidadDoc}.`);
+      return;
+    }
+    if (!this.documentoEspecialidad) return;
+
+    const formData = new FormData();
+    formData.append('file', this.documentoEspecialidad, this.documentoEspecialidad.name);
+    this.guardarArchivo(formData, 'especialidad')
+  }
+
+  obtenerTipoDocumentoAValidar(): string {
+    return this.obtenerNuevoDocumento()?.tipoDocumento;
+  }
+
+  obtenerEspecialidadAValidar(): string {
+    return this.obtenerNuevoDocumento()?.especialidadMedica;
+  }
+
+  documentoYaExisteParaEspecialidad(tipoDocumento: string, especialidad: string): boolean {
+    const especialidades = this.registrosDocumentosEspecialidad();
+    const especialidadExistente = especialidades.find(e => e.especialidad === especialidad);
+    if (!especialidadExistente) {
+      return false;
+    }
+    return especialidadExistente.documentos.some(doc => doc.tipoDocumento === tipoDocumento);
+  }
+
+  agregarDocumento(guid: string): void {
+    const nuevoDocumento = this.obtenerNuevoDocumento(guid);
     if (!nuevoDocumento) return;
     const especialidades = this.registrosDocumentosEspecialidad();
     const indiceEspecialidad = especialidades.findIndex(e => e.especialidad === nuevoDocumento.especialidadMedica);
@@ -767,9 +800,7 @@ export class InicioComponent extends GeneralComponent {
         this._alertServices.alerta('La foto no ha sido cargada, selecciona otro archivo.');
         return;
       }
-
       this.saveDatosGenerales();
-
     }
   }
 
@@ -831,7 +862,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
 
-  private guardarArchivo(datos: FormData, tipo: string, id: number): void {
+  private guardarArchivo(datos: FormData, tipo: string, id: number = 0): void {
 
     const idUsuario = this.datosGenerales?.datosPersonales?.idUsuario;
 
@@ -852,6 +883,9 @@ export class InicioComponent extends GeneralComponent {
         }
         if (tipo === 'obligatorio') {
           this.documentosLocalStorageService.guardarRefGuidObligatorio(id, data.guid);
+        }
+        if (tipo === 'especialidad') {
+          this.agregarDocumento(data.guid);
         }
       }
     });

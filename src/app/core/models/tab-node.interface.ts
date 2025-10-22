@@ -8,4 +8,5 @@ export interface TabDocumento {
   especialidadMedica: string,
   cveEspecialidad: string,
   idDocumento: number,
+  guid: string
 }
