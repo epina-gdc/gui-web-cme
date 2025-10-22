@@ -291,21 +291,24 @@
             <p class="field-label">Identificación Oficial (INE)</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
-          <upload-document (fileSelected)="procesarArchivoObligatorio($event, 1)" [existingFile]="archivoINE"/>
+          <upload-document (fileSelected)="procesarArchivoObligatorio($event, 1)" [existingFile]="archivoINE"
+                           idArchivo="INE"/>
         </div>
         <div class="col-3">
           <div class="flex justify-content-between mb-1">
             <p class="field-label">Título Medicina General</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
-          <upload-document/>
+          <upload-document (fileSelected)="procesarArchivoObligatorio($event, 2)" [existingFile]="archivoTitulo"
+                           idArchivo="titulo"/>
         </div>
         <div class="col-3">
           <div class="flex justify-content-between mb-1">
             <p class="field-label">Cédula Profesional Médica General</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
-          <upload-document/>
+          <upload-document (fileSelected)="procesarArchivoObligatorio($event, 3)" [existingFile]="archivoCedula"
+                           idArchivo="cedula"/>
         </div>
       </article>
     </p-card>
@@ -338,10 +341,11 @@
               <p class="field-label">Carga de documento</p>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <upload-document/>
+            <upload-document idArchivo="especialidad" (fileSelected)="procesarArchivoEspecializacion($event)"/>
           </div>
           <div class="col-3 flex justify-content-start align-items-center">
             <p-button label="Agregar" icon="cme-plus" iconPos="right"
+                      [disabled]="formDocumentosEspecialidad.invalid || !documentoEspecialidad"
                       [text]="true" (click)="agregarDocumento()"/>
           </div>
         </article>
@@ -406,7 +410,7 @@
           <div class="flex justify-content-between mb-1">
             <p class="field-label">Constancias de cursos</p>
           </div>
-          <upload-document/>
+          <upload-document idArchivo="constancia_1"/>
           <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
           <div class="flex justify-content-between mb-1">
             <p class="field-label">Nombre de la constancia</p>
@@ -421,7 +425,7 @@
           <div class="flex justify-content-between mb-1">
             <p class="field-label">Constancias de cursos</p>
           </div>
-          <upload-document/>
+          <upload-document idArchivo="constancia_2"/>
           <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
           <div class="flex justify-content-between mb-1">
             <p class="field-label">Nombre de la constancia</p>
@@ -436,7 +440,7 @@
           <div class="flex justify-content-between mb-1">
             <p class="field-label">Constancias de cursos</p>
           </div>
-          <upload-document/>
+          <upload-document idArchivo="constancia_3"/>
           <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
           <div class="flex justify-content-between mb-1">
             <p class="field-label">Nombre de la constancia</p>

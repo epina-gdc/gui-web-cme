@@ -139,6 +139,8 @@ export class InicioComponent extends GeneralComponent {
   archivoTitulo!: File | undefined;
   archivoCedula!: File | undefined;
 
+  documentoEspecialidad!: File | null;
+
   constructor(private readonly activatedRoute: ActivatedRoute) {
     super()
     this.userService.userData$.subscribe(user => this.userData = user);
@@ -309,8 +311,8 @@ export class InicioComponent extends GeneralComponent {
 
   asignarFormularioDocumentosEspecialidad(): FormGroup {
     return this.fb.group({
-      especialidad: [],
-      documento: []
+      especialidad: [{value: '', disabled: false}, [Validators.required]],
+      documento: [{value: '', disabled: false}, [Validators.required]]
     })
   }
 
@@ -401,6 +403,8 @@ export class InicioComponent extends GeneralComponent {
         documentos: [nuevoDocumento]
       };
       this.registrosDocumentosEspecialidad.update(value => [...value, nuevaEspecialidad]);
+      this.formDocumentosEspecialidad.reset();
+      this.documentoEspecialidad = null;
       return;
     }
 
@@ -802,6 +806,15 @@ export class InicioComponent extends GeneralComponent {
     const formData = new FormData();
     formData.append('file', archivo, archivo.name);
     this.guardarArchivo(formData, 'obligatorio', id);
+  }
+
+  procesarArchivoEspecializacion($event: any): void {
+    const files: FileList | File[] = $event?.target?.files || $event;
+    const archivo: File | undefined = files?.[0];
+    if (!archivo) {
+      return;
+    }
+    this.documentoEspecialidad = archivo;
   }
 
 
