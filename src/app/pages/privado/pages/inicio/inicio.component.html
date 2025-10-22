@@ -487,16 +487,16 @@
           </div>
           <div>
             <div class="flex justify-content-between">
-              <p class="field-label mb-1">Jornada laboral</p>
+              <p class="field-label mb-1">Horario laboral</p>
             </div>
             <div class="flex gap-2">
               <p-datepicker [style]="{ 'width': '100%' }" placeholder="De" [iconDisplay]="'input'"
-                            [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay">
+                            [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" [timeOnly]="true">
                 <ng-template #inputicon let-clickCallBack="clickCallBack">
                   <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
                 </ng-template>
               </p-datepicker>
-              <p-datepicker [style]="{ 'width': '100%' }" placeholder="Hasta" [iconDisplay]="'input'"
+              <p-datepicker [style]="{ 'width': '100%' }" placeholder="Hasta" [iconDisplay]="'input'" [timeOnly]="true"
                             [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay">
                 <ng-template #inputicon let-clickCallBack="clickCallBack">
                   <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
@@ -506,13 +506,21 @@
           </div>
           <div>
             <div class="flex justify-content-between">
-              <p class="field-label mb-1">Horario laboral</p>
+              <p class="field-label mb-1">Jornada laboral</p>
             </div>
             <div class="flex gap-2">
-              <p-datepicker [style]="{ 'width': '100%' }" placeholder="De" [iconDisplay]="'input'"
-                            [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"/>
-              <p-datepicker [style]="{ 'width': '100%' }" placeholder="Hasta" [iconDisplay]="'input'"
-                            [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"/>
+              <p-select [options]="dias_semana" optionLabel="label" optionValue="value"
+                        placeholder="De" formControlName="diaInicio" class="w-full">
+                <ng-template #dropdownicon>
+                  <i class="pi pi-calendar"></i>
+                </ng-template>
+              </p-select>
+              <p-select [options]="dias_semana" optionLabel="label" optionValue="value"
+                        placeholder="Hasta" formControlName="diaFin" class="w-full">
+                <ng-template #dropdownicon>
+                  <i class="pi pi-calendar"></i>
+                </ng-template>
+              </p-select>
             </div>
           </div>
           <div>
@@ -526,7 +534,8 @@
               <div class="flex gap-2">
                 @for (institucion of instituciones; track institucion.key) {
                   <div class="flex justify-content-end gap-1 align-items-center">
-                    <p-radiobutton [inputId]="institucion.key" formControlName="tipoInstitucion" [value]="institucion.key">
+                    <p-radiobutton [inputId]="institucion.key" formControlName="tipoInstitucion"
+                                   [value]="institucion.key">
                     </p-radiobutton>
                     <label [for]="institucion.key" class="leyenda-documento mt-4">{{ institucion.name }}</label>
                   </div>

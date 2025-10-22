@@ -11,7 +11,7 @@ import {Button} from 'primeng/button';
 import {TableModule} from 'primeng/table';
 import {UploadDocumentComponent} from '@components/upload-document/upload-document.component';
 import {RadioButton} from 'primeng/radiobutton';
-import {BOOLEAN_OPCIONES, DEPENDIENTES, INSTITUCIONES} from '@utils/constants';
+import {BOOLEAN_OPCIONES, DEPENDIENTES, DIAS, INSTITUCIONES} from '@utils/constants';
 import {TabPanel, TabView} from 'primeng/tabview';
 import {HeaderTabComponent} from '@components/header-tab/header-tab.component';
 import {
@@ -83,6 +83,7 @@ export class InicioComponent extends GeneralComponent {
   readonly dependientes = DEPENDIENTES;
   readonly instituciones = INSTITUCIONES;
   readonly opciones_boolean = BOOLEAN_OPCIONES;
+  readonly dias_semana = DIAS;
 
   userService = inject(UserService);
   fb: FormBuilder = inject(FormBuilder);
@@ -217,6 +218,8 @@ export class InicioComponent extends GeneralComponent {
       sustituto: [{ value: ['0'], disabled: false }],
       tipoInstitucion: [{ value: ['0'], disabled: false }],
       nombreInstitucion: [],
+      diaInicio: [],
+      diaFin: []
     })
   }
 
