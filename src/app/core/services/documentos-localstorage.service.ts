@@ -92,4 +92,14 @@ export class DocumentosLocalstorageService {
     }
     return [];
   }
+
+  obtenerRefConstancia(idDocumentoConstancia: number) {
+    const informacionGuardada = localStorage.getItem(this.DOC_STORAGE_KEY);
+
+    if (informacionGuardada) {
+      const documento = JSON.parse(informacionGuardada);
+      return documento.constancias[idDocumentoConstancia] ?? null;
+    }
+    return null;
+  }
 }

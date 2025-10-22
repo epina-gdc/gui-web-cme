@@ -920,6 +920,9 @@ export class InicioComponent extends GeneralComponent {
     const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
     const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
     const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
+    const refConstancia1 = this.documentosLocalStorageService.obtenerRefConstancia(1);
+    const refConstancia2 = this.documentosLocalStorageService.obtenerRefConstancia(2);
+    const refConstancia3 = this.documentosLocalStorageService.obtenerRefConstancia(3);
     if (refObligatorio1) {
       this.obtenerDocumento(refObligatorio1, 'obligatorio', 1);
     }
@@ -930,9 +933,18 @@ export class InicioComponent extends GeneralComponent {
       this.obtenerDocumento(refObligatorio3, 'obligatorio', 3);
     }
     this.registrosDocumentosEspecialidad.update(valor => especialidades);
+    if (refConstancia1) {
+      this.obtenerDocumento(refConstancia1.refGuid, 'constancia', 1, refConstancia1.nombre);
+    }
+    if (refConstancia2) {
+      this.obtenerDocumento(refConstancia2.refGuid, 'constancia', 2, refConstancia2.nombre);
+    }
+    if (refConstancia3) {
+      this.obtenerDocumento(refConstancia3.refGuid, 'constancia', 3, refConstancia3.nombre);
+    }
   }
 
-  obtenerDocumento(refGuid: string, tipo: string, id: number): void {
+  obtenerDocumento(refGuid: string, tipo: string, id: number, nombre: string = ''): void {
     this.documentoService.obtenerDocumento(refGuid).subscribe({
       next: (response: any) => {
         const tipoArchivo = response.type;
@@ -947,6 +959,18 @@ export class InicioComponent extends GeneralComponent {
         if (tipo === 'obligatorio' && id === 3) {
           const nombreArchivo = 'cedula_profesional';
           this.archivoCedula = new File([response], nombreArchivo, {type: tipoArchivo});
+        }
+        if (tipo === 'constancia' && id === 1) {
+          this.nombreConstancia1 = nombre;
+          this.archivoConstancia1 = new File([response], nombre, {type: tipoArchivo});
+        }
+        if (tipo === 'constancia' && id === 2) {
+          this.nombreConstancia2 = nombre;
+          this.archivoConstancia2 = new File([response], nombre, {type: tipoArchivo});
+        }
+        if (tipo === 'constancia' && id === 3) {
+          this.nombreConstancia3 = nombre;
+          this.archivoConstancia3 = new File([response], nombre, {type: tipoArchivo});
         }
       }
     });

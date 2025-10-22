@@ -410,7 +410,8 @@
           <div class="flex justify-content-between mb-1">
             <p class="field-label">Constancias de cursos</p>
           </div>
-          <upload-document idArchivo="constancia_1" (fileSelected)="procesarConstancia($event, 1)"/>
+          <upload-document idArchivo="constancia_1" (fileSelected)="procesarConstancia($event, 1)"
+                           [existingFile]="archivoConstancia1"/>
           <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
           <div class="flex justify-content-between mb-1">
             <p class="field-label">Nombre de la constancia</p>
@@ -425,7 +426,8 @@
           <div class="flex justify-content-between mb-1">
             <p class="field-label">Constancias de cursos</p>
           </div>
-          <upload-document idArchivo="constancia_2" (fileSelected)="procesarConstancia($event, 2)"/>
+          <upload-document idArchivo="constancia_2" (fileSelected)="procesarConstancia($event, 2)"
+                           [existingFile]="archivoConstancia2"/>
           <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
           <div class="flex justify-content-between mb-1">
             <p class="field-label">Nombre de la constancia</p>
@@ -440,7 +442,8 @@
           <div class="flex justify-content-between mb-1">
             <p class="field-label">Constancias de cursos</p>
           </div>
-          <upload-document idArchivo="constancia_3" (fileSelected)="procesarConstancia($event, 3)"/>
+          <upload-document idArchivo="constancia_3" (fileSelected)="procesarConstancia($event, 3)"
+                           [existingFile]="archivoConstancia3"/>
           <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
           <div class="flex justify-content-between mb-1">
             <p class="field-label">Nombre de la constancia</p>
