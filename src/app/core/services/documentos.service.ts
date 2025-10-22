@@ -57,7 +57,6 @@ export class DocumentoService {
   }
 
   guardarDocumento(documento: FormData): Observable<any> {
-
     let ruta = `${this.serverEndPointURLDocumento}/v1/documentos/repositorio`;
     return this.http.post<any>(ruta, documento, {headers: this.headers}).pipe(
       catchError(this.handleError),
@@ -65,6 +64,13 @@ export class DocumentoService {
         return response;
       })
     );
+  }
+
+  obtenerDocumento(refGuid: string): Observable<Blob> {
+    return this.http.get(`${this.serverEndPointURLDocumento}/v1/documentos/repositorio/${refGuid}`, {
+      headers: this.header,
+      responseType: 'blob'
+    }).pipe(catchError(this.handleError));
   }
 
 

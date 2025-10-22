@@ -135,6 +135,10 @@ export class InicioComponent extends GeneralComponent {
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
   _ConvocatoriaService: ConvocatoriaService = inject(ConvocatoriaService);
 
+  archivoINE!: File | undefined;
+  archivoTitulo!: File | undefined;
+  archivoCedula!: File | undefined;
+
   constructor(private readonly activatedRoute: ActivatedRoute) {
     super()
     this.userService.userData$.subscribe(user => this.userData = user);
@@ -147,6 +151,7 @@ export class InicioComponent extends GeneralComponent {
     this.settearDatosUsuario();
     this.obtenerDatosGenerales(this.userData?.idUsuario);
     this.obtenerDatosFoto(this.userData?.idUsuario);
+    this.revisarDocumentosLocalHost();
   }
 
   asignarFormularioRegistro(): FormGroup {
@@ -794,8 +799,6 @@ export class InicioComponent extends GeneralComponent {
       return;
     }
 
-    console.log(!archivo,  id)
-
     const formData = new FormData();
     formData.append('file', archivo, archivo.name);
     this.guardarArchivo(formData, 'obligatorio', id);
@@ -815,7 +818,7 @@ export class InicioComponent extends GeneralComponent {
     datos.append('idUsuario', idUsuario.toString())
 
     // Guardar el archivo (Guardar GUID)
-    this.documentoService.guardarDocumento(datos, idUsuario).subscribe({
+    this.documentoService.guardarDocumento(datos).subscribe({
       next: (data: any) => {
         if (!data?.guid) {
           this._alertServices.error(data?.mensaje || 'Error al obtener GUID del documento.');
@@ -823,6 +826,41 @@ export class InicioComponent extends GeneralComponent {
         }
         if (tipo === 'obligatorio') {
           this.documentosLocalStorageService.guardarRefGuidObligatorio(id, data.guid);
+        }
+      }
+    });
+  }
+
+  revisarDocumentosLocalHost(): void {
+    const refObligatorio1 = this.documentosLocalStorageService.obtenerRefGuid(1);
+    const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
+    const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
+    if (refObligatorio1) {
+      this.obtenerDocumento(refObligatorio1, 'obligatorio', 1);
+    }
+    if (refObligatorio2) {
+      this.obtenerDocumento(refObligatorio2, 'obligatorio', 2);
+    }
+    if (refObligatorio3) {
+      this.obtenerDocumento(refObligatorio3, 'obligatorio', 3);
+    }
+  }
+
+  obtenerDocumento(refGuid: string, tipo: string, id: number): void {
+    this.documentoService.obtenerDocumento(refGuid).subscribe({
+      next: (response: any) => {
+        const tipoArchivo = response.type;
+        if (tipo === 'obligatorio' && id === 1) {
+          const nombreArchivo = 'identificacion_oficial';
+          this.archivoINE = new File([response], nombreArchivo, {type: tipoArchivo});
+        }
+        if (tipo === 'obligatorio' && id === 2) {
+          const nombreArchivo = 'titulo';
+          this.archivoTitulo = new File([response], nombreArchivo, {type: tipoArchivo});
+        }
+        if (tipo === 'obligatorio' && id === 3) {
+          const nombreArchivo = 'cedula_profesional';
+          this.archivoCedula = new File([response], nombreArchivo, {type: tipoArchivo});
         }
       }
     });

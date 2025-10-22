@@ -1,4 +1,4 @@
-<p-fileupload name="myfile[]" url="https://www.primefaces.org/cdn/api/upload.php" [multiple]="false"
+<p-fileupload #fileDocument name="myfile[]" url="https://www.primefaces.org/cdn/api/upload.php" [multiple]="false"
               accept="application/pdf" [invalidFileTypeMessageDetail]="'El formato de documento es incorrecto.'"
               [invalidFileLimitMessageSummary]="''" [invalidFileTypeMessageSummary]="''"
               [invalidFileSizeMessageSummary]="''"
@@ -26,17 +26,17 @@
                let-removeFileCallback="removeFileCallback"
                let-removeUploadedFileCallback="removeUploadedFileCallback">
     @if (files?.length > 0) {
-      <div class="flex flex-wrap">
+      <div class="flex flex-wrap justify-content-center">
         @for (file of files; track file.objectURL; let index = $index) {
           <div
             class="card m-0 gap-2 mt-3 py-2 px-4 flex flex-row border-1 surface-border align-items-center bg-file border-round">
             <i class="cme-pdf mr-2" style="font-size: 1.2rem; color: red"></i>
             <div class="surface-overlay white-space-nowrap overflow-hidden text-overflow-ellipsis
-                flex align-items-center mt-2 mr-2"
+                flex align-items-center mr-2"
                  style="width:160px; font-size: 12px">
               {{ file.name }}
             </div>
-            <p-button icon="pi pi-times" class="border-circle" [outlined]="true"
+            <p-button icon="pi pi-times" class="border-circle" class="mb-2" [outlined]="true"
                       [text]="true" severity="danger" size="small" (click)="cancelarCargaArchivo()" />
           </div>
         }
