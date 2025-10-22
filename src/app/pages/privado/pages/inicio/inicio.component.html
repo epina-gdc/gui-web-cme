@@ -551,6 +551,13 @@
         </article>
       </form>
     </p-card>
+
+    <div class="flex flex-row justify-content-end gap-3">
+      <p-button type="button" variant="outlined" label="Limpiar formulario"/>
+      <p-button type="button" label="Guardar" (click)="siguientePasoStepper()"/>
+      <p-button type="button" label="Finalizar registro"/>
+    </div>
+
   }
   @case (2) {
     <app-oferta-laboral></app-oferta-laboral>
