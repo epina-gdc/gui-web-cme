@@ -117,10 +117,6 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
       // Opcional: Asignar a su propiedad 'files' para mantener la consistencia
       this.files = fileList;
 
-    } else if (fileChange?.currentValue === null && fileChange.previousValue) {
-      // Lógica de limpieza
-      this.fileUpload.clear();
-      this.files = [];
     }
   }
 

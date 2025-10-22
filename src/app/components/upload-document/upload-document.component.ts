@@ -21,7 +21,7 @@ export class UploadDocumentComponent implements OnChanges {
 
   @Input() maxFileSize: number = 5120000;
   @Input() existingFile: File | undefined = undefined;
-  @Input({ required: true }) idArchivo: string = '';
+  @Input({required: true}) idArchivo: string = '';
   @Output() fileSelected = new EventEmitter<any>();
   @Output() fileRemoved = new EventEmitter<any>();
   files: any[] = [];
@@ -119,10 +119,6 @@ export class UploadDocumentComponent implements OnChanges {
       // Opcional: Asignar a su propiedad 'files' para mantener la consistencia
       this.files = fileList;
 
-    } else if (fileChange?.currentValue === null && fileChange.previousValue) {
-      // Lógica de limpieza
-      this.fileUpload.clear();
-      this.files = [];
     }
   }
 
