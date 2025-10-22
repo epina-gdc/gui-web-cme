@@ -1,7 +1,7 @@
 <p-fileupload #fileDocument name="myfile[]" url="https://www.primefaces.org/cdn/api/upload.php" [multiple]="false"
               accept="application/pdf" [invalidFileTypeMessageDetail]="'El formato de documento es incorrecto.'"
               [invalidFileLimitMessageSummary]="''" [invalidFileTypeMessageSummary]="''"
-              [invalidFileSizeMessageSummary]="''"
+              [invalidFileSizeMessageSummary]="''"  [ngClass]="{'fileupload-not-empty': files.length > 0 }"
               [invalidFileLimitMessageDetail]="'El peso del documento excede al permitido.'"
               [invalidFileSizeMessageDetail]="'El peso del documento excede al permitido.'"
               maxFileSize="5120000" (onUpload)="onTemplatedUpload()" (onSelect)="onSelectedFiles($event)">
@@ -29,7 +29,7 @@
       <div class="flex flex-wrap justify-content-center">
         @for (file of files; track file.objectURL; let index = $index) {
           <div
-            class="card m-0 gap-2 mt-3 py-2 px-4 flex flex-row border-1 surface-border align-items-center bg-file border-round">
+            class="card m-0 gap-2 py-2 px-4 flex flex-row border-1 surface-border align-items-center bg-file border-round">
             <i class="cme-pdf mr-2" style="font-size: 1.2rem; color: red"></i>
             <div class="surface-overlay white-space-nowrap overflow-hidden text-overflow-ellipsis
                 flex align-items-center mr-2"

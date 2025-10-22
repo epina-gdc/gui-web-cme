@@ -3,13 +3,15 @@ import {PrimeNG} from 'primeng/config';
 import {FileUpload} from 'primeng/fileupload';
 import {PrimeTemplate} from 'primeng/api';
 import {Button} from 'primeng/button';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'upload-document',
   imports: [
     FileUpload,
     PrimeTemplate,
-    Button
+    Button,
+    NgClass
   ],
   templateUrl: './upload-document.component.html',
   styleUrl: './upload-document.component.scss'
