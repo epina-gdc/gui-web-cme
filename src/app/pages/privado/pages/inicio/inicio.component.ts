@@ -463,6 +463,7 @@ export class InicioComponent extends GeneralComponent {
       especialidadExistente,
       ...especialidades.slice(indiceEspecialidad + 1)
     ];
+    this.documentosLocalStorageService.guardarRefGuidEspecialidad(especialidadesActualizadas);
     this.registrosDocumentosEspecialidad.update(() => especialidadesActualizadas);
   }
 
@@ -493,6 +494,7 @@ export class InicioComponent extends GeneralComponent {
         ...especialidades.slice(indiceEspecialidad + 1)
       ];
       this.registrosDocumentosEspecialidad.update(() => especialidadesSinEspecialidad);
+      this.documentosLocalStorageService.guardarRefGuidEspecialidad(especialidadesSinEspecialidad);
     } else {
       // Si aún hay documentos, actualizamos la especialidad con la nueva lista
       especialidadParaModificar.documentos = documentosActualizados;
@@ -501,6 +503,7 @@ export class InicioComponent extends GeneralComponent {
         ...especialidades.slice(indiceEspecialidad + 1)
       ];
       this.registrosDocumentosEspecialidad.update(() => especialidadesModificadas);
+      this.documentosLocalStorageService.guardarRefGuidEspecialidad(especialidadesModificadas);
     }
   }
 
@@ -907,7 +910,6 @@ export class InicioComponent extends GeneralComponent {
     if (refObligatorio3) {
       this.obtenerDocumento(refObligatorio3, 'obligatorio', 3);
     }
-    console.log(especialidades)
     this.registrosDocumentosEspecialidad.update(valor => especialidades);
   }
 
@@ -931,6 +933,14 @@ export class InicioComponent extends GeneralComponent {
     });
   }
 
+  procesarConstancia($event: any, id: number): void {
+    const files: FileList | File[] = $event?.target?.files || $event;
+    const archivo: File | undefined = files?.[0];
+    if (!archivo) {
+      return;
+    }
+
+  }
 
   anteriorPasoStepper(): void {
     this.indice.update(value => value - 1);

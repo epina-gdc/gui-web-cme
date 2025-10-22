@@ -16,7 +16,7 @@ export class DocumentosLocalstorageService {
     return data ? JSON.parse(data) : {
       obligatorios: {},
       especialidades: [],
-      constancias: []
+      constancias: {}
     };
   }
 
@@ -27,7 +27,7 @@ export class DocumentosLocalstorageService {
     let informacionActualizada = informacionGuardada ? JSON.parse(informacionGuardada) : {
       obligatorios: {},
       especialidades: [],
-      constancias: []
+      constancias: {}
     };
 
     // Se convierte el idDocumentoObligatorio a string para usarlo como clave de objeto
@@ -44,11 +44,29 @@ export class DocumentosLocalstorageService {
     let informacionActualizada = informacionGuardada ? JSON.parse(informacionGuardada) : {
       obligatorios: {},
       especialidades: [],
-      constancias: []
+      constancias: {}
     };
 
     // Se convierte el idDocumentoObligatorio a string para usarlo como clave de objeto
     informacionActualizada.especialidades = especialidades;
+
+    // Guardar el objeto actualizado en localStorage
+    localStorage.setItem(this.DOC_STORAGE_KEY, JSON.stringify(informacionActualizada));
+
+  }
+
+  guardarRefGuidConstancia(idConstancia: number, refGuid: string) {
+
+    //  Obtener los datos existentes o inicializar un objeto vacío
+    const informacionGuardada = localStorage.getItem(this.DOC_STORAGE_KEY);
+    let informacionActualizada = informacionGuardada ? JSON.parse(informacionGuardada) : {
+      obligatorios: {},
+      especialidades: [],
+      constancias: {}
+    };
+
+    // Se convierte el idConstancia a string para usarlo como clave de objeto
+    informacionActualizada.constancias[idConstancia] = refGuid;
 
     // Guardar el objeto actualizado en localStorage
     localStorage.setItem(this.DOC_STORAGE_KEY, JSON.stringify(informacionActualizada));
