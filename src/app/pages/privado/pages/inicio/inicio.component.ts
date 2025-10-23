@@ -1158,9 +1158,8 @@ export class InicioComponent extends GeneralComponent {
       nomEspecificacionInstitucion: formValues.nombreInstitucion || null,
       cveOoad: cveOoad,
       desOoad: desOoad,
-      // Mapeo de Horario (Horario Inicio/Fin en tu form)
-      refJornadaInicio: formValues.horarioInicio || null, // Asume formato HH:MM
-      refJornadaFin: formValues.horarioFin || null,       // Asume formato HH:MM
+      refJornadaInicio: formValues.horarioInicio || null, // formato HH:MM
+      refJornadaFin: formValues.horarioFin || null,       // formato HH:MM
       diaSemanaInicio: {
         idDiaSemana: formValues.diaInicio || null
       },
