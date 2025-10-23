@@ -1,5 +1,3 @@
-import {TipoDropdown} from '@models/tipo-dropdown.interface';
-
 export const DEPENDIENTES = [
   { name: 'Padres', key: 'A' },
   { name: 'Hijos', key: 'M' },

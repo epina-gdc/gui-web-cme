@@ -11,7 +11,7 @@ import {Button} from 'primeng/button';
 import {TableModule} from 'primeng/table';
 import {UploadDocumentComponent} from '@components/upload-document/upload-document.component';
 import {RadioButton} from 'primeng/radiobutton';
-import {BOOLEAN_OPCIONES, DEPENDIENTES, DIAS, INSTITUCIONES} from '@utils/constants';
+import {BOOLEAN_OPCIONES, DEPENDIENTES, INSTITUCIONES} from '@utils/constants';
 import {TabPanel, TabView} from 'primeng/tabview';
 import {HeaderTabComponent} from '@components/header-tab/header-tab.component';
 import {
