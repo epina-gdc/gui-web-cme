@@ -52,7 +52,8 @@ import {
   SolicitudDocumentoObligatorio, SolicitudGuardarDocumentacion, TipoInstitucion
 } from '@models/solicitud-guardar-documentacion.interface';
 import {
-  RespuestaConsultaDocumentos,
+  ItemDocumentoEspecialidad,
+  RespuestaConsultaDocumentos, RespuestaDocumentosConstancia, RespuestaDocumentosEspecialidad,
   RespuestaDocumentosObligatorios
 } from '@models/respuesta-consulta-documentos.interface';
 
@@ -1332,8 +1333,11 @@ export class InicioComponent extends GeneralComponent {
       next: (response: any) => {
         if (!response.exito) return;
         const respuesta: RespuestaConsultaDocumentos = response.respuesta;
-        console.log(respuesta.documentosObligatorios);
+        console.log(respuesta.especialidadesDocumentos);
         this.procesarDatosObligatoriosObtenidos(respuesta.documentosObligatorios);
+        this.procesarDocumentosContancias(respuesta.documentosConstancias);
+        const especialidades = this.procesarDocumentosEspecialidades(respuesta.especialidadesDocumentos);
+        this.registrosDocumentosEspecialidad.update(valor => especialidades);
       }
     });
   }
@@ -1351,6 +1355,42 @@ export class InicioComponent extends GeneralComponent {
     if (refObligatorio3) {
       this.obtenerDocumento(refObligatorio3, 'obligatorio', 3);
     }
+  }
+
+  procesarDocumentosContancias(datos: RespuestaDocumentosConstancia[]): void {
+    const refConstancia1 = datos.length > 0 ? datos[0].documento.refGuid : null;
+    const refConstancia2 = datos.length > 1 ? datos[1].documento.refGuid : null;
+    const refConstancia3 = datos.length > 1 ? datos[2].documento.refGuid : null;
+    if (refConstancia1) {
+      this.obtenerDocumento(refConstancia1, 'constancia', 1, datos[0].refConstancia);
+    }
+    if (refConstancia2) {
+      this.obtenerDocumento(refConstancia2, 'constancia', 2, datos[1].refConstancia);
+    }
+    if (refConstancia3) {
+      this.obtenerDocumento(refConstancia3, 'constancia', 3, datos[2].refConstancia);
+    }
+  }
+
+  procesarDocumentosEspecialidades(datos: RespuestaDocumentosEspecialidad[]): TabNode[] {
+    return datos.map((data: RespuestaDocumentosEspecialidad) => {
+      const documentosTab: TabDocumento[] = data.documentosEspecialidad.map(
+        (item: ItemDocumentoEspecialidad) => ({
+          tipoDocumento: item.tipoDocumentoEspecialidad.desTipoDocumentoEspecialidad,
+          especialidadMedica: data.desEspecialidad,
+          cveEspecialidad: data.cveEspecialidad,
+          idDocumento: item.idDocumentoEspecialidad,
+          guid: item.documento.refGuid,
+        })
+      );
+
+      const tabNode: TabNode = {
+        especialidad: data.desEspecialidad,
+        documentos: documentosTab,
+      };
+
+      return tabNode;
+    });
   }
 
 }
