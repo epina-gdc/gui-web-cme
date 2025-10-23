@@ -1,4 +1,4 @@
-import {Component, inject, QueryList, signal, ViewChildren, WritableSignal} from '@angular/core';
+import {Component, computed, inject, QueryList, signal, ViewChildren, WritableSignal} from '@angular/core';
 import {Card} from 'primeng/card';
 import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.component';
 import {StepsComponent} from '@components/steps/steps.component';
@@ -1037,7 +1037,32 @@ export class InicioComponent extends GeneralComponent {
     }
   }
 
+  generarSolicitudGuardarDocumentacion(): void {
+  }
+
   anteriorPasoStepper(): void {
     this.indice.update(value => value - 1);
   }
+
+  banderaCargarDocumentacion = computed(() => {
+    const refObligatorio1 = this.documentosLocalStorageService.obtenerRefGuid(1);
+    const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
+    const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
+    const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
+
+    if (!refObligatorio1) {
+      return true;
+    }
+    if (!refObligatorio2) {
+      return true;
+    }
+    if (!refObligatorio3) {
+      return true;
+    }
+    if (especialidades.length === 0) {
+      return true;
+    }
+
+    return false;
+  });
 }

@@ -560,7 +560,7 @@
 
     <div class="flex flex-row justify-content-end gap-3">
       <p-button type="button" variant="outlined" label="Limpiar formulario"/>
-      <p-button type="button" label="Guardar" (click)="guardarDocumentacion()"/>
+      <p-button type="button" label="Guardar" (click)="guardarDocumentacion()" [disabled]="banderaCargarDocumentacion()"/>
       <p-button type="button" label="Finalizar registro"/>
     </div>
 
