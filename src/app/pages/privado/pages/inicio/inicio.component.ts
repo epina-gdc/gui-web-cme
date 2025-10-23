@@ -611,6 +611,11 @@ export class InicioComponent extends GeneralComponent {
   }
 
   private saveDatosGenerales() {
+    if(this.zonasInteres().length == 0){
+      this._alertServices.alerta("Debes agregar al menos una zona de interés")
+      return;
+    }
+
     let datos = new DatosGeneralesRequest();
     datos.datosContacto = this.saveContacto();
     datos.datosResidenciaActual = this.saveDomicilio();
@@ -745,7 +750,7 @@ export class InicioComponent extends GeneralComponent {
 
   validacionesNegocio(){
 
-    if(this.userData?.idPerfil == 1){
+    if(this.userData?.idPerfil == 3){
       this.formRegistro.get('nss')?.clearValidators;
       this.formRegistro.get('nss')?.updateValueAndValidity;
     }
