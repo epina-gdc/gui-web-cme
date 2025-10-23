@@ -163,6 +163,7 @@ export class InicioComponent extends GeneralComponent {
     this.obtenerDatosGenerales(this.userData?.idUsuario);
     this.obtenerDatosFoto(this.userData?.idUsuario);
     this.revisarDocumentosLocalHost();
+    this.suscribirObservablesDatosEmpleo();
   }
 
   asignarFormularioRegistro(): FormGroup {
@@ -216,10 +217,13 @@ export class InicioComponent extends GeneralComponent {
     return this.fb.group({
       otroEmpleo: [{value: ['0'], disabled: false}],
       sustituto: [{value: ['0'], disabled: false}],
-      tipoInstitucion: [{value: ['0'], disabled: false}],
-      nombreInstitucion: [],
-      diaInicio: [],
-      diaFin: []
+      tipoInstitucion: [{value: null, disabled: true}],
+      nombreInstitucion: [{value: null, disabled: true}, [Validators.maxLength(200)]],
+      horarioInicio: [{value: null, disabled: true}],
+      horarioFin: [{value: null, disabled: true}],
+      diaInicio: [{value: null, disabled: true}],
+      diaFin: [{value: null, disabled: true}],
+      ooad: [{ value: null, disabled: true}],
     })
   }
 
@@ -1065,4 +1069,81 @@ export class InicioComponent extends GeneralComponent {
 
     return false;
   });
+
+  suscribirObservablesDatosEmpleo(): void {
+    const form = this.formDatosEmpleo;
+    form.get('otroEmpleo')?.valueChanges.subscribe(value => {
+      const tieneOtroEmpleo = value === '1'; // '1' = Sí
+
+      // Habilitar/Deshabilitar campos asociados a 'otroEmpleo'
+      this.manejoValidaciones(form, 'tipoInstitucion', tieneOtroEmpleo);
+
+      // Reevaluar la dependencia de Horario/Jornada
+      this.actualizarHorarioJornadaState(form);
+    });
+
+    form.get('tipoInstitucion')?.valueChanges.subscribe(() => {
+      // Si 'otroEmpleo' es 'Sí', reevalúa 'nombreInstitucion'
+      const tieneOtroEmpleo = form.get('otroEmpleo')?.value === '1';
+      this.manejarNombreInstitucionLogic(form, tieneOtroEmpleo);
+    });
+
+    form.get('sustituto')?.valueChanges.subscribe(value => {
+      const isSustituto = value === '1'; // '1' = Sí
+
+      // Habilitar/Deshabilitar campo OOAD (Punto 5)
+      this.manejoValidaciones(form, 'ooad', isSustituto, isSustituto);
+
+      // Reevaluar la dependencia de Horario/Jornada
+      this.actualizarHorarioJornadaState(form);
+    });
+
+    form.get('ooad')?.valueChanges.subscribe(() => {
+      this.actualizarHorarioJornadaState(form);
+    });
+  }
+
+  private manejarNombreInstitucionLogic(form: FormGroup, isOtroEmpleo: boolean): void {
+    const control = form.get('nombreInstitucion');
+    const hasTipoInstitucion = !!form.get('tipoInstitucion')?.value; // Verifica si se ha seleccionado Pública o Privada
+
+    // Se habilita si 'otroEmpleo' es 'Sí' Y 'tipoInstitucion' tiene valor.
+    const enable = isOtroEmpleo && hasTipoInstitucion;
+
+    // Es obligatorio si se habilita
+    this.manejoValidaciones(form, 'nombreInstitucion', enable, enable);
+  }
+
+  private actualizarHorarioJornadaState(form: FormGroup): void {
+    const tieneOtroEmpleo = form.get('otroEmpleo')?.value === '1';
+    const esSustituto = form.get('sustituto')?.value === '1';
+    const tieneOoad = !!form.get('ooad')?.value;
+
+    // Habilitar si: (Otro Empleo = Sí) O (Sustituto = Sí Y OOAD tiene valor)
+    const enable = tieneOtroEmpleo || (esSustituto && tieneOoad);
+
+    // Son obligatorios en ambos escenarios si se habilitan
+    this.manejoValidaciones(form, 'horarioInicio', enable, enable);
+    this.manejoValidaciones(form, 'horarioFin', enable, enable);
+    this.manejoValidaciones(form, 'diaInicio', enable, enable);
+    this.manejoValidaciones(form, 'diaFin', enable, enable);
+  }
+
+  private manejoValidaciones(form: FormGroup, controlName: string, enable: boolean, isRequired: boolean = false): void {
+    const control = form.get(controlName);
+    if (control) {
+      if (enable) {
+        control.enable();
+        if (isRequired) {
+          control.setValidators(Validators.required);
+        }
+      } else {
+        control.disable();
+        control.clearValidators();
+        control.setValue(null); // Limpiar valor al deshabilitar
+      }
+      control.updateValueAndValidity();
+    }
+  }
+
 }

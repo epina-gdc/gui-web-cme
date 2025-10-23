@@ -400,62 +400,62 @@
 
     @if (userData?.idPerfil === 3) {
       <p-card class="mx-2 empty-border" [header]="'Constancias de cursos de educación permanente en salud'">
-      <div class="flex align-items-center gap-4 px-2 py-4">
-        <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
-        <em class="info-em-texto">Adjunta hasta 3 documentos de tus cursos de capacitación o actualización
-          post-especialidad (ej. Alta Especialidad, Adiestramientos). considerando el tamaño máximo 5mb.</em>
-      </div>
-      <article class="flex flex-row flex-wrap">
-        <div class="col-4">
-          <p class="titulo-documento">Documento 1</p>
-          <div class="flex justify-content-between mb-1">
-            <p class="field-label">Constancias de cursos</p>
-          </div>
-          <upload-document idArchivo="constancia_1" (fileSelected)="procesarConstancia($event, 1)"
-                           [existingFile]="archivoConstancia1"/>
-          <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
-          <div class="flex justify-content-between mb-1">
-            <p class="field-label">Nombre de la constancia</p>
-            <p class="label-obligatorio">Obligatorio</p>
-          </div>
-          <input pInputText class="w-full" type="text" id="constancia1"
-                 placeholder="Especifique el nombre del documento" [(ngModel)]="nombreConstancia1"
-          />
+        <div class="flex align-items-center gap-4 px-2 py-4">
+          <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
+          <em class="info-em-texto">Adjunta hasta 3 documentos de tus cursos de capacitación o actualización
+            post-especialidad (ej. Alta Especialidad, Adiestramientos). considerando el tamaño máximo 5mb.</em>
         </div>
-        <div class="col-4">
-          <p class="titulo-documento">Documento 2</p>
-          <div class="flex justify-content-between mb-1">
-            <p class="field-label">Constancias de cursos</p>
+        <article class="flex flex-row flex-wrap">
+          <div class="col-4">
+            <p class="titulo-documento">Documento 1</p>
+            <div class="flex justify-content-between mb-1">
+              <p class="field-label">Constancias de cursos</p>
+            </div>
+            <upload-document idArchivo="constancia_1" (fileSelected)="procesarConstancia($event, 1)"
+                             [existingFile]="archivoConstancia1"/>
+            <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
+            <div class="flex justify-content-between mb-1">
+              <p class="field-label">Nombre de la constancia</p>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="constancia1"
+                   placeholder="Especifique el nombre del documento" [(ngModel)]="nombreConstancia1"
+            />
           </div>
-          <upload-document idArchivo="constancia_2" (fileSelected)="procesarConstancia($event, 2)"
-                           [existingFile]="archivoConstancia2"/>
-          <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
-          <div class="flex justify-content-between mb-1">
-            <p class="field-label">Nombre de la constancia</p>
-            <p class="label-obligatorio">Obligatorio</p>
+          <div class="col-4">
+            <p class="titulo-documento">Documento 2</p>
+            <div class="flex justify-content-between mb-1">
+              <p class="field-label">Constancias de cursos</p>
+            </div>
+            <upload-document idArchivo="constancia_2" (fileSelected)="procesarConstancia($event, 2)"
+                             [existingFile]="archivoConstancia2"/>
+            <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
+            <div class="flex justify-content-between mb-1">
+              <p class="field-label">Nombre de la constancia</p>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="constancia2" [(ngModel)]="nombreConstancia2"
+                   placeholder="Especifique el nombre del documento" (change)="actualizarNombreDocumento(2, $event)"
+            />
           </div>
-          <input pInputText class="w-full" type="text" id="constancia2" [(ngModel)]="nombreConstancia2"
-                 placeholder="Especifique el nombre del documento" (change)="actualizarNombreDocumento(2, $event)"
-          />
-        </div>
-        <div class="col-4">
-          <p class="titulo-documento">Documento 3</p>
-          <div class="flex justify-content-between mb-1">
-            <p class="field-label">Constancias de cursos</p>
+          <div class="col-4">
+            <p class="titulo-documento">Documento 3</p>
+            <div class="flex justify-content-between mb-1">
+              <p class="field-label">Constancias de cursos</p>
+            </div>
+            <upload-document idArchivo="constancia_3" (fileSelected)="procesarConstancia($event, 3)"
+                             [existingFile]="archivoConstancia3"/>
+            <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
+            <div class="flex justify-content-between mb-1">
+              <p class="field-label">Nombre de la constancia</p>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="constancia3" [(ngModel)]="nombreConstancia3"
+                   placeholder="Especifique el nombre del documento"
+            />
           </div>
-          <upload-document idArchivo="constancia_3" (fileSelected)="procesarConstancia($event, 3)"
-                           [existingFile]="archivoConstancia3"/>
-          <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
-          <div class="flex justify-content-between mb-1">
-            <p class="field-label">Nombre de la constancia</p>
-            <p class="label-obligatorio">Obligatorio</p>
-          </div>
-          <input pInputText class="w-full" type="text" id="constancia3" [(ngModel)]="nombreConstancia3"
-                 placeholder="Especifique el nombre del documento"
-          />
-        </div>
-      </article>
-    </p-card>
+        </article>
+      </p-card>
     }
 
     @if (userData?.idPerfil === 3) {
@@ -488,19 +488,31 @@
                 }
               </div>
             </div>
+            @if (formDatosEmpleo.get('sustituto')?.value === '1') {
+              <div class="px-4">
+                <div class="flex justify-content-between">
+                  <p class="field-label mb-1">OOAD:</p>
+                </div>
+                <div class="flex gap-2">
+                  <p-select [options]="ooad" formControlName="ooad" optionLabel="label"
+                            placeholder="Seleccionar opción" class="w-full" optionValue="value"/>
+                </div>
+              </div>
+            }
             <div>
               <div class="flex justify-content-between">
                 <p class="field-label mb-1">Horario laboral</p>
               </div>
               <div class="flex gap-2">
                 <p-datepicker [style]="{ 'width': '100%' }" placeholder="De" [iconDisplay]="'input'"
+                              formControlName="horarioInicio"
                               [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" [timeOnly]="true">
                   <ng-template #inputicon let-clickCallBack="clickCallBack">
                     <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
                   </ng-template>
                 </p-datepicker>
                 <p-datepicker [style]="{ 'width': '100%' }" placeholder="Hasta" [iconDisplay]="'input'"
-                              [timeOnly]="true"
+                              [timeOnly]="true" formControlName="horarioFin"
                               [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay">
                   <ng-template #inputicon let-clickCallBack="clickCallBack">
                     <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
@@ -547,11 +559,9 @@
                 </div>
               </div>
               <input pInputText class="w-full" type="text" id="institucion" formControlName="nombreInstitucion"
-                     placeholder="Especifique institución"/>
+                     placeholder="Especifique institución" [maxlength]="200"/>
               <p class="leyenda-documento">Especifique el nombre de la institución , si eres sustituto especifica el
-                OOAD
-                de
-                adscripción</p>
+                OOAD de adscripción</p>
             </div>
           </article>
         </form>
@@ -560,7 +570,8 @@
 
     <div class="flex flex-row justify-content-end gap-3">
       <p-button type="button" variant="outlined" label="Limpiar formulario"/>
-      <p-button type="button" label="Guardar" (click)="guardarDocumentacion()" [disabled]="banderaCargarDocumentacion()"/>
+      <p-button type="button" label="Guardar" (click)="guardarDocumentacion()"
+                [disabled]="banderaCargarDocumentacion()"/>
       <p-button type="button" label="Finalizar registro"/>
     </div>
 
