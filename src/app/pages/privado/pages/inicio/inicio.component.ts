@@ -46,12 +46,20 @@ import {of, switchMap, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {DocumentosLocalstorageService} from '@services/documentos-localstorage.service';
 import {
-  DatosEmpleo,
+  DatosEmpleo, DocumentoConstancia,
   DocumentoEspecialidad,
   RefDocumentoEspecialidad,
   SolicitudDocumentoObligatorio
 } from '@models/solicitud-guardar-documentacion.interface';
 
+interface DocumentoFuente {
+  refGuid: string;
+  nombre: string;
+}
+
+interface EntradaDocumentos {
+  [key: string]: DocumentoFuente; // Clave: '1', '2', '3', etc. (no se usará)
+}
 
 @Component({
   selector: 'app-inicio',
@@ -1054,6 +1062,8 @@ export class InicioComponent extends GeneralComponent {
 
   generarSolicitudGuardarDocumentacion() {
     const externo = this.userData?.idPerfil === 3;
+    const constancias = this.documentosLocalStorageService.obtenerRefConstanciaCompleta();
+
     if (!externo) {
       return {
         datosPersonales: {
@@ -1069,6 +1079,7 @@ export class InicioComponent extends GeneralComponent {
       },
       documentosObligatorios: this.generarDocumentosObligatorios(),
       especialidadesDocumentos: this.generarDocumentosEspecialidad(),
+      documentosConstancias: this.transformarDocumentosConstancia(constancias),
       datosEmpleo: this.transformarFormularioADatosEmpleo()
     }
   }
@@ -1167,6 +1178,23 @@ export class InicioComponent extends GeneralComponent {
         idDiaSemana: formValues.diaFin || null
       }
     };
+  }
+
+  transformarDocumentosConstancia(documentos: EntradaDocumentos): DocumentoConstancia[] {
+    if (!documentos) {
+      return [];
+    }
+
+    return Object.keys(documentos).map(key => {
+      const docData = documentos[key];
+
+      return {
+        refConstancia: docData.nombre,
+        documento: {
+          refGuid: docData.refGuid
+        }
+      };
+    });
   }
 
   anteriorPasoStepper(): void {
