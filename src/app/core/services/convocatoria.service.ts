@@ -188,9 +188,6 @@ export class ConvocatoriaService {
     }
 
 
-
-
-
     guardarDocumento(documento: any): Observable<any> {
         let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-documentos`
         return this.http.post<any>(ruta, documento, { headers: this.header }).pipe(

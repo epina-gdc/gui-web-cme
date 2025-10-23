@@ -51,6 +51,10 @@ import {
   RefDocumentoEspecialidad,
   SolicitudDocumentoObligatorio, SolicitudGuardarDocumentacion, TipoInstitucion
 } from '@models/solicitud-guardar-documentacion.interface';
+import {
+  RespuestaConsultaDocumentos,
+  RespuestaDocumentosObligatorios
+} from '@models/respuesta-consulta-documentos.interface';
 
 interface DocumentoFuente {
   refGuid: string;
@@ -1167,7 +1171,7 @@ export class InicioComponent extends GeneralComponent {
     const indMedicoSustituto = (formValues.sustituto === '1' ? 1 : 0) as 1 | 0;
     const idTipoInstitucion: 1 | 0 | null = formValues.tipoInstitucion ?? null
 
-    let tipoInstitucion: TipoInstitucion | null = { idTipoInstitucion: idTipoInstitucion ?? 0 }
+    let tipoInstitucion: TipoInstitucion | null = {idTipoInstitucion: idTipoInstitucion ?? 0}
 
     const cveOoad = formValues.ooad || null;
     let desOoad: string | null = null;
@@ -1325,11 +1329,28 @@ export class InicioComponent extends GeneralComponent {
     const idusuario = this.userData?.idUsuario;
     if (!idusuario) return;
     this._ConvocatoriaService.getDatosDocumentosEscolares(idusuario).subscribe({
-      next: (response: dataGenerales) => {
+      next: (response: any) => {
         if (!response.exito) return;
-        console.log(response);
+        const respuesta: RespuestaConsultaDocumentos = response.respuesta;
+        console.log(respuesta.documentosObligatorios);
+        this.procesarDatosObligatoriosObtenidos(respuesta.documentosObligatorios);
       }
     });
+  }
+
+  procesarDatosObligatoriosObtenidos(datos: RespuestaDocumentosObligatorios[]): void {
+    const refObligatorio1 = datos.find(d => d.tipoDocumentoObligatorio.idDocumentoObligatorio === 1)?.documento.refGuid;
+    const refObligatorio2 = datos.find(d => d.tipoDocumentoObligatorio.idDocumentoObligatorio === 2)?.documento.refGuid;
+    const refObligatorio3 = datos.find(d => d.tipoDocumentoObligatorio.idDocumentoObligatorio === 3)?.documento.refGuid;
+    if (refObligatorio1) {
+      this.obtenerDocumento(refObligatorio1, 'obligatorio', 1);
+    }
+    if (refObligatorio2) {
+      this.obtenerDocumento(refObligatorio2, 'obligatorio', 2);
+    }
+    if (refObligatorio3) {
+      this.obtenerDocumento(refObligatorio3, 'obligatorio', 3);
+    }
   }
 
 }
