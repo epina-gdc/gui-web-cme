@@ -176,6 +176,7 @@ export class InicioComponent extends GeneralComponent {
     this.settearDatosUsuario();
     this.obtenerDatosGenerales(this.userData?.idUsuario);
     this.obtenerDatosFoto(this.userData?.idUsuario);
+    this.obtenerDatosDocumentosEscolaridad();
     this.revisarDocumentosLocalHost();
     this.suscribirObservablesDatosEmpleo();
   }
@@ -1301,6 +1302,17 @@ export class InicioComponent extends GeneralComponent {
       }
       control.updateValueAndValidity();
     }
+  }
+
+  obtenerDatosDocumentosEscolaridad(): void {
+    const idusuario = this.userData?.idUsuario;
+    if (!idusuario) return;
+    this._ConvocatoriaService.getDatosDocumentosEscolares(idusuario).subscribe({
+      next: (response: dataGenerales) => {
+        if (!response.exito) return;
+        console.log(response);
+      }
+    });
   }
 
 }

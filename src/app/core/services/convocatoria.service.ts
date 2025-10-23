@@ -117,9 +117,17 @@ export class ConvocatoriaService {
         );
     }
 
+  getDatosDocumentosEscolares(idUsuario: number): Observable<any> {
+    return this.http.get<DatosDocumentoResponse>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-documentos-escolaridad/${idUsuario}`, { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: DatosDocumentoResponse) => {
+        return response;
+      })
+    );
+  }
 
 
-    getVerificacionAspirante(idUsuario: number): Observable<any> {
+  getVerificacionAspirante(idUsuario: number): Observable<any> {
         return this.http.get<any>(`${this.serverEndPointURLConvocatoria}/verificacion/aspirante/${idUsuario}`, { headers: this.header }).pipe(
             catchError(this.handleError),
             map((response: any) => {
