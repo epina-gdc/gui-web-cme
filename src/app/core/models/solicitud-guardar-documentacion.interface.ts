@@ -42,21 +42,20 @@ export interface DocumentoConstancia {
 }
 
 export interface DatosEmpleo {
-  "indOtroEmpleo": 1,
-  "indMedicoSustituto": 0,
-  //publica o privada
-  "tipoInstitucion": {
-    "idTipoInstitucion": 1
+  indOtroEmpleo: 1 | 0,
+  indMedicoSustituto: 1 | 0,
+  tipoInstitucion: {
+    idTipoInstitucion: 1 | 0 | null
   },
-  "nomEspecificacionInstitucion": "Especialista en Medicina Interna",
-  "cveOoad": "36",
-  "desOoad": "CDMX",
-  "refJornadaInicio": "09:00",
-  "refJornadaFin": "19:00",
-  "diaSemanaInicio": {
-    "idDiaSemana": "1"
+  nomEspecificacionInstitucion: string | null,
+  cveOoad: string | null,
+  desOoad: string | null,
+  refJornadaInicio: string | null,
+  refJornadaFin: string | null,
+  diaSemanaInicio: {
+    idDiaSemana: string | null
   },
-  "diaSemanaFin": {
-    "idDiaSemana": "5"
+  diaSemanaFin: {
+    idDiaSemana: string | null
   }
 }

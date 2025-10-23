@@ -46,6 +46,7 @@ import {of, switchMap, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {DocumentosLocalstorageService} from '@services/documentos-localstorage.service';
 import {
+  DatosEmpleo,
   DocumentoEspecialidad,
   RefDocumentoEspecialidad,
   SolicitudDocumentoObligatorio
@@ -1068,6 +1069,7 @@ export class InicioComponent extends GeneralComponent {
       },
       documentosObligatorios: this.generarDocumentosObligatorios(),
       especialidadesDocumentos: this.generarDocumentosEspecialidad(),
+      datosEmpleo: this.transformarFormularioADatosEmpleo()
     }
   }
 
@@ -1128,6 +1130,44 @@ export class InicioComponent extends GeneralComponent {
         documentosEspecialidad: documentosEspecialidad
       };
     });
+  }
+
+  transformarFormularioADatosEmpleo(): DatosEmpleo {
+    const formValues = this.formDatosEmpleo.getRawValue();
+
+    const indOtroEmpleo = (formValues.otroEmpleo === '1' ? 1 : 0) as 1 | 0;
+    const indMedicoSustituto = (formValues.sustituto === '1' ? 1 : 0) as 1 | 0;
+    const idTipoInstitucion: 1 | 0 | null = formValues.tipoInstitucion ?? null
+
+    const cveOoad = formValues.ooad || null;
+    let desOoad: string | null = null;
+
+    if (cveOoad) {
+      const ooadSeleccionado = this.ooad.find(item => item.value === cveOoad);
+      if (ooadSeleccionado) {
+        desOoad = ooadSeleccionado.label;
+      }
+    }
+
+    return {
+      indOtroEmpleo: indOtroEmpleo,
+      indMedicoSustituto: indMedicoSustituto,
+      tipoInstitucion: {
+        idTipoInstitucion: idTipoInstitucion
+      },
+      nomEspecificacionInstitucion: formValues.nombreInstitucion || null,
+      cveOoad: cveOoad,
+      desOoad: desOoad,
+      // Mapeo de Horario (Horario Inicio/Fin en tu form)
+      refJornadaInicio: formValues.horarioInicio || null, // Asume formato HH:MM
+      refJornadaFin: formValues.horarioFin || null,       // Asume formato HH:MM
+      diaSemanaInicio: {
+        idDiaSemana: formValues.diaInicio || null
+      },
+      diaSemanaFin: {
+        idDiaSemana: formValues.diaFin || null
+      }
+    };
   }
 
   anteriorPasoStepper(): void {
