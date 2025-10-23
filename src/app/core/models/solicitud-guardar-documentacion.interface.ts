@@ -2,16 +2,16 @@ export interface SolicitudGuardarDocumentacion {
   datosPersonales: {
     idUsuario: number
   },
-  documentosObligatorios: DocumentoObligatorio[],
+  documentosObligatorios: SolicitudDocumentoObligatorio[],
   especialidadesDocumentos: DocumentoEspecialidad[],
   documentosConstancias?: DocumentoConstancia [],
   "datosEmpleo"?: DatosEmpleo
 }
 
-export interface DocumentoObligatorio {
+export interface SolicitudDocumentoObligatorio {
   tipoDocumentoObligatorio: {
     idDocumentoObligatorio: number
-    desDocumentoObligatorio?: "TITULO" | "CEDULA"
+    desDocumentoObligatorio?: "TITULO" | "CEDULA PROFESIONAL"
   },
   documento: {
     refGuid: string

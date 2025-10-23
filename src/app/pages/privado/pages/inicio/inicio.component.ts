@@ -45,6 +45,11 @@ import dayjs from 'dayjs';
 import {of, switchMap, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {DocumentosLocalstorageService} from '@services/documentos-localstorage.service';
+import {
+  DocumentoEspecialidad,
+  RefDocumentoEspecialidad,
+  SolicitudDocumentoObligatorio
+} from '@models/solicitud-guardar-documentacion.interface';
 
 
 @Component({
@@ -215,15 +220,15 @@ export class InicioComponent extends GeneralComponent {
 
   asignarFormularioDatosEmpleo(): FormGroup {
     return this.fb.group({
-      otroEmpleo: [{value: ['0'], disabled: false}],
-      sustituto: [{value: ['0'], disabled: false}],
+      otroEmpleo: [{value: '0', disabled: false}],
+      sustituto: [{value: '0', disabled: false}],
       tipoInstitucion: [{value: null, disabled: true}],
       nombreInstitucion: [{value: null, disabled: true}, [Validators.maxLength(200)]],
       horarioInicio: [{value: null, disabled: true}],
       horarioFin: [{value: null, disabled: true}],
       diaInicio: [{value: null, disabled: true}],
       diaFin: [{value: null, disabled: true}],
-      ooad: [{ value: null, disabled: true}],
+      ooad: [{value: null, disabled: true}],
     })
   }
 
@@ -1046,7 +1051,83 @@ export class InicioComponent extends GeneralComponent {
     }
   }
 
-  generarSolicitudGuardarDocumentacion(): void {
+  generarSolicitudGuardarDocumentacion() {
+    const externo = this.userData?.idPerfil === 3;
+    if (!externo) {
+      return {
+        datosPersonales: {
+          idUsuario: this.userData?.idUsuario,
+        },
+        documentosObligatorios: this.generarDocumentosObligatorios(),
+        especialidadesDocumentos: this.generarDocumentosEspecialidad()
+      }
+    }
+    return {
+      datosPersonales: {
+        idUsuario: this.userData?.idUsuario
+      },
+      documentosObligatorios: this.generarDocumentosObligatorios(),
+      especialidadesDocumentos: this.generarDocumentosEspecialidad(),
+    }
+  }
+
+  generarDocumentosObligatorios(): SolicitudDocumentoObligatorio[] {
+    const refObligatorio1 = this.documentosLocalStorageService.obtenerRefGuid(1);
+    const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
+    const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
+    return [
+      {
+        tipoDocumentoObligatorio: {
+          idDocumentoObligatorio: 1
+        },
+        documento: {
+          refGuid: refObligatorio1
+        }
+      },
+      {
+        tipoDocumentoObligatorio: {
+          idDocumentoObligatorio: 2,
+          desDocumentoObligatorio: "TITULO"
+        },
+        documento: {
+          refGuid: refObligatorio2
+        }
+      },
+      {
+        tipoDocumentoObligatorio: {
+          idDocumentoObligatorio: 3,
+          desDocumentoObligatorio: "CEDULA PROFESIONAL"
+        },
+        documento: {
+          refGuid: refObligatorio3
+        }
+      }
+    ]
+  }
+
+  generarDocumentosEspecialidad(): DocumentoEspecialidad[] {
+    return this.registrosDocumentosEspecialidad().map(node => {
+      const cveEspecialidad = node.documentos.length > 0 ? node.documentos[0].cveEspecialidad : '';
+
+      // Mapear el array de documentos a la estructura RefDocumentoEspecialidad
+      const documentosEspecialidad: RefDocumentoEspecialidad[] = node.documentos.map(doc => {
+        return {
+          tipoDocumentoEspecialidad: {
+            idTipoDocumentoEspecialidad: doc.idDocumento,
+          },
+          documento: {
+            refGuid: doc.guid,
+          }
+        };
+      });
+
+      // 3. Construir el objeto DocumentoEspecialidad final
+      return {
+        cveEspecialidad: cveEspecialidad,
+        desEspecialidad: node.especialidad, // La descripción es el nombre de la especialidad
+        documentosEspecialidad: documentosEspecialidad
+      };
+    });
   }
 
   anteriorPasoStepper(): void {
