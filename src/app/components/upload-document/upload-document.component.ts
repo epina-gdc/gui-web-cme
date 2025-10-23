@@ -123,6 +123,8 @@ export class UploadDocumentComponent implements OnChanges {
   }
 
   clear() {
-    this.fileUpload.clear();
+    if (this.fileUpload) {
+      this.fileUpload.clear();
+    }
   }
 }

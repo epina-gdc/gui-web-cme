@@ -21,6 +21,8 @@ export class Mensajes {
   public MSG023: string = 'Por favor, ingresa la información en los campos faltantes.';
   public MSG024: string = 'Datos guardados correctamente.';
   public MSG026: string = 'Datos guardados correctamente.';
+  public MSG037: string = 'La información está incompleta, favor de verificar.';
+  public MSG039: string = '¡Registro exitoso! Te hemos enviado un correo con los detalles. No olvides revisarlo.';
   public MSG062: string = 'Tu contraseña ha sido actualizada correctamente, te emos enviado un correo con los detalles del cambio de contraseña. Por seguridad, no compartas tu contraseña con nadie.';
   public MSG063: string = 'El enlace ha expirado o no es válido. Por favor, solicita un nuevo cambio de contraseña';
 

@@ -214,9 +214,9 @@ export class InicioComponent extends GeneralComponent {
 
   asignarFormularioDatosEmpleo(): FormGroup {
     return this.fb.group({
-      otroEmpleo: [{ value: ['0'], disabled: false }],
-      sustituto: [{ value: ['0'], disabled: false }],
-      tipoInstitucion: [{ value: ['0'], disabled: false }],
+      otroEmpleo: [{value: ['0'], disabled: false}],
+      sustituto: [{value: ['0'], disabled: false}],
+      tipoInstitucion: [{value: ['0'], disabled: false}],
       nombreInstitucion: [],
       diaInicio: [],
       diaFin: []
@@ -1005,6 +1005,36 @@ export class InicioComponent extends GeneralComponent {
     const nombre = event.target.value;
     if (!refConstancia.refGuid) return;
     this.documentosLocalStorageService.guardarRefGuidConstancia(id, refConstancia.refGuid, nombre)
+  }
+
+  guardarDocumentacion(): void {
+    const refObligatorio1 = this.documentosLocalStorageService.obtenerRefGuid(1);
+    const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
+    const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
+    const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
+
+    if (!refObligatorio1) {
+      this._alertServices.error(this._Mensajes.MSG037);
+      return;
+    }
+    if (!refObligatorio2) {
+      this._alertServices.error(this._Mensajes.MSG037);
+      return;
+    }
+    if (!refObligatorio3) {
+      this._alertServices.error(this._Mensajes.MSG037);
+      return;
+    }
+    if (especialidades.length === 0) {
+      this._alertServices.error(this._Mensajes.MSG037);
+      return;
+    }
+    const cadaEspecialidadTieneDiploma: boolean = especialidades.every(node =>
+      node.documentos.some(documento => documento.idDocumento === 21));
+    if (!cadaEspecialidadTieneDiploma) {
+      this._alertServices.error(this._Mensajes.MSG037);
+      return;
+    }
   }
 
   anteriorPasoStepper(): void {
