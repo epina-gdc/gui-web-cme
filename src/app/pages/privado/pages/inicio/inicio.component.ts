@@ -1016,6 +1016,7 @@ export class InicioComponent extends GeneralComponent {
     const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
     const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
     const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
+    const externo = this.userData?.idPerfil === 3;
 
     if (!refObligatorio1) {
       this._alertServices.error(this._Mensajes.MSG037);
@@ -1039,6 +1040,10 @@ export class InicioComponent extends GeneralComponent {
       this._alertServices.error(this._Mensajes.MSG037);
       return;
     }
+    if (this.formDatosEmpleo.invalid && externo) {
+      this._alertServices.error(this._Mensajes.MSG037);
+      return;
+    }
   }
 
   generarSolicitudGuardarDocumentacion(): void {
@@ -1053,6 +1058,7 @@ export class InicioComponent extends GeneralComponent {
     const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
     const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
     const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
+    const externo = this.userData?.idPerfil === 3;
 
     if (!refObligatorio1) {
       return true;
@@ -1064,6 +1070,9 @@ export class InicioComponent extends GeneralComponent {
       return true;
     }
     if (especialidades.length === 0) {
+      return true;
+    }
+    if (this.formDatosEmpleo.invalid && externo) {
       return true;
     }
 
