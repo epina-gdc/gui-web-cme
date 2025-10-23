@@ -1202,7 +1202,7 @@ export class InicioComponent extends GeneralComponent {
     this.indice.update(value => value - 1);
   }
 
-  banderaCargarDocumentacion = computed(() => {
+  get banderaCargarDocumentacion() {
     const refObligatorio1 = this.documentosLocalStorageService.obtenerRefGuid(1);
     const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
     const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
@@ -1218,15 +1218,12 @@ export class InicioComponent extends GeneralComponent {
     if (!refObligatorio3) {
       return true;
     }
-    if (especialidades.length === 0) {
-      return true;
-    }
     if (this.formDatosEmpleo.invalid && externo) {
       return true;
     }
 
-    return false;
-  });
+    return especialidades.length === 0;
+  }
 
   suscribirObservablesDatosEmpleo(): void {
     const form = this.formDatosEmpleo;
