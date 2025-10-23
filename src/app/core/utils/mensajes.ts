@@ -20,6 +20,7 @@ export class Mensajes {
   public MSG018: string = 'No se encontró ningún registro con los datos proporcionados.';
   public MSG023: string = 'Por favor, ingresa la información en los campos faltantes.';
   public MSG024: string = 'Datos guardados correctamente.';
+  public MSG025: string = 'Por favor, ingresa la información en los campos faltantes.';
   public MSG026: string = 'Datos guardados correctamente.';
   public MSG037: string = 'La información está incompleta, favor de verificar.';
   public MSG039: string = '¡Registro exitoso! Te hemos enviado un correo con los detalles. No olvides revisarlo.';

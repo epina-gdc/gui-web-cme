@@ -1041,7 +1041,7 @@ export class InicioComponent extends GeneralComponent {
       return;
     }
     if (this.formDatosEmpleo.invalid && externo) {
-      this._alertServices.error(this._Mensajes.MSG037);
+      this._alertServices.error(this._Mensajes.MSG025);
       return;
     }
   }
