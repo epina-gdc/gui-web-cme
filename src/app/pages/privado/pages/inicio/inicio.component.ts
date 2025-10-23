@@ -49,7 +49,7 @@ import {
   DatosEmpleo, DocumentoConstancia,
   DocumentoEspecialidad,
   RefDocumentoEspecialidad,
-  SolicitudDocumentoObligatorio
+  SolicitudDocumentoObligatorio, SolicitudGuardarDocumentacion, TipoInstitucion
 } from '@models/solicitud-guardar-documentacion.interface';
 
 interface DocumentoFuente {
@@ -1059,16 +1059,32 @@ export class InicioComponent extends GeneralComponent {
       this._alertServices.error(this._Mensajes.MSG025);
       return;
     }
+
+    const solicitud: SolicitudGuardarDocumentacion = this.generarSolicitudGuardarDocumentacion();
+    this._ConvocatoriaService.guardarDatosDocumentosEscolares(solicitud).subscribe({
+      next: (data: ResponseGeneral) => {
+        if (data.exito) {
+          this.indice.update((value: number) => value + 1);
+          this._alertServices.exito(data.mensaje)
+          this.documentosLocalStorageService.limpiar();
+          return;
+        }
+        this._alertServices.error(data.mensaje)
+      },
+      error: (err: ResponseGeneral) => {
+        this._alertServices.error(err.mensaje);
+      }
+    })
   }
 
-  generarSolicitudGuardarDocumentacion() {
+  generarSolicitudGuardarDocumentacion(): SolicitudGuardarDocumentacion {
     const externo = this.userData?.idPerfil === 3;
     const constancias = this.documentosLocalStorageService.obtenerRefConstanciaCompleta();
 
     if (!externo) {
       return {
         datosPersonales: {
-          idUsuario: this.userData?.idUsuario,
+          idUsuario: this.userData?.idUsuario as number
         },
         documentosObligatorios: this.generarDocumentosObligatorios(),
         especialidadesDocumentos: this.generarDocumentosEspecialidad()
@@ -1076,7 +1092,7 @@ export class InicioComponent extends GeneralComponent {
     }
     return {
       datosPersonales: {
-        idUsuario: this.userData?.idUsuario
+        idUsuario: this.userData?.idUsuario as number
       },
       documentosObligatorios: this.generarDocumentosObligatorios(),
       especialidadesDocumentos: this.generarDocumentosEspecialidad(),
@@ -1151,8 +1167,14 @@ export class InicioComponent extends GeneralComponent {
     const indMedicoSustituto = (formValues.sustituto === '1' ? 1 : 0) as 1 | 0;
     const idTipoInstitucion: 1 | 0 | null = formValues.tipoInstitucion ?? null
 
+    let tipoInstitucion: TipoInstitucion | null = { idTipoInstitucion: idTipoInstitucion ?? 0 }
+
     const cveOoad = formValues.ooad || null;
     let desOoad: string | null = null;
+
+    if (idTipoInstitucion === null) {
+      tipoInstitucion = null
+    }
 
     if (cveOoad) {
       const ooadSeleccionado = this.ooad.find(item => item.value === cveOoad);
@@ -1164,10 +1186,8 @@ export class InicioComponent extends GeneralComponent {
     return {
       indOtroEmpleo: indOtroEmpleo,
       indMedicoSustituto: indMedicoSustituto,
-      tipoInstitucion: {
-        idTipoInstitucion: idTipoInstitucion
-      },
-      nomEspecificacionInstitucion: formValues.nombreInstitucion || null,
+      tipoInstitucion: tipoInstitucion,
+      nomEspecificacionInstitucion: formValues.nombreInstitucion || '',
       cveOoad: cveOoad,
       desOoad: desOoad,
       refJornadaInicio: formValues.horarioInicio || null, // formato HH:MM

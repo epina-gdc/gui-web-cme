@@ -12,6 +12,7 @@ import {DataDomicilio, ResidenciaRequest} from '@models/datosDomicilio';
 import {AlertService} from './alert.service';
 import {dataGenerales, DatosGeneralesRequest} from '@models/datosGenerales';
 import {ResponseGeneral} from '@models/responseGeneral';
+import {SolicitudGuardarDocumentacion} from '@models/solicitud-guardar-documentacion.interface';
 
 @Injectable({
     providedIn: 'root'
@@ -155,6 +156,17 @@ export class ConvocatoriaService {
             })
         );
     }
+
+    guardarDatosDocumentosEscolares(solicitud: SolicitudGuardarDocumentacion): Observable<any> {
+      let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-documentos-escolaridad`;
+      return this.http.post<any>(ruta, solicitud, { headers: this.header }).pipe(
+        catchError(this.handleError),
+        map((response: any) => {
+          return response;
+        })
+      );
+    }
+
     guardarVerificacionAspirante(aspirante: AspiranteRequest): Observable<any> {
         let ruta = `${this.serverEndPointURLConvocatoria}/verificacion/aspirante'`;
         return this.http.post<any>(ruta, aspirante, { headers: this.header }).pipe(

@@ -112,4 +112,8 @@ export class DocumentosLocalstorageService {
     }
     return [];
   }
+
+  limpiar(): void {
+    localStorage.removeItem(this.DOC_STORAGE_KEY);
+  }
 }

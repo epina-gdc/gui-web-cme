@@ -5,7 +5,7 @@ export interface SolicitudGuardarDocumentacion {
   documentosObligatorios: SolicitudDocumentoObligatorio[],
   especialidadesDocumentos: DocumentoEspecialidad[],
   documentosConstancias?: DocumentoConstancia [],
-  "datosEmpleo"?: DatosEmpleo
+  datosEmpleo?: DatosEmpleo
 }
 
 export interface SolicitudDocumentoObligatorio {
@@ -19,9 +19,9 @@ export interface SolicitudDocumentoObligatorio {
 }
 
 export interface DocumentoEspecialidad {
-  "cveEspecialidad": string,
-  "desEspecialidad": string,
-  "documentosEspecialidad": RefDocumentoEspecialidad[]
+  cveEspecialidad: string,
+  desEspecialidad: string,
+  documentosEspecialidad: RefDocumentoEspecialidad[]
 }
 
 export interface RefDocumentoEspecialidad {
@@ -44,9 +44,7 @@ export interface DocumentoConstancia {
 export interface DatosEmpleo {
   indOtroEmpleo: 1 | 0,
   indMedicoSustituto: 1 | 0,
-  tipoInstitucion: {
-    idTipoInstitucion: 1 | 0 | null
-  },
+  tipoInstitucion: TipoInstitucion | null,
   nomEspecificacionInstitucion: string | null,
   cveOoad: string | null,
   desOoad: string | null,
@@ -58,4 +56,8 @@ export interface DatosEmpleo {
   diaSemanaFin: {
     idDiaSemana: string | null
   }
+}
+
+export interface TipoInstitucion {
+  idTipoInstitucion: 1 | 0
 }
