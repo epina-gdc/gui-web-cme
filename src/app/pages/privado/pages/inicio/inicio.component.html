@@ -427,7 +427,7 @@
               <p class="field-label">Nombre de la constancia</p>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <input pInputText class="w-full" type="text" id="constancia1" [disabled]="estatusPendienteDocumentacion"
+            <input pInputText class="w-full" type="text" id="constancia1" [disabled]="estatusPendienteDocumentacion || !archivoConstancia1"
                    placeholder="Especifique el nombre del documento" [(ngModel)]="nombreConstancia1"
             />
           </div>
@@ -437,14 +437,14 @@
               <p class="field-label">Constancias de cursos</p>
             </div>
             <upload-document idArchivo="constancia_2" (fileSelected)="procesarConstancia($event, 2)" [maxFileSize]="52428800"
-                             [existingFile]="archivoConstancia2" [disabled]="estatusPendienteDocumentacion"/>
+                             [existingFile]="archivoConstancia2" [disabled]="estatusPendienteDocumentacion || !archivoConstancia2"/>
             <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
             <div class="flex justify-content-between mb-1">
               <p class="field-label">Nombre de la constancia</p>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
             <input pInputText class="w-full" type="text" id="constancia2" [(ngModel)]="nombreConstancia2"
-                   [disabled]="estatusPendienteDocumentacion"
+                   [disabled]="estatusPendienteDocumentacion || !archivoConstancia3"
                    placeholder="Especifique el nombre del documento" (change)="actualizarNombreDocumento(2, $event)"
             />
           </div>
