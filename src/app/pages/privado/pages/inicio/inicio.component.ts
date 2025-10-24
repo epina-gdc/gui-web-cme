@@ -53,7 +53,7 @@ import {
 } from '@models/solicitud-guardar-documentacion.interface';
 import {
   ItemDocumentoEspecialidad,
-  RespuestaConsultaDocumentos, RespuestaDocumentosConstancia, RespuestaDocumentosEspecialidad,
+  RespuestaConsultaDocumentos, RespuestaDatosEmpleo, RespuestaDocumentosConstancia, RespuestaDocumentosEspecialidad,
   RespuestaDocumentosObligatorios
 } from '@models/respuesta-consulta-documentos.interface';
 
@@ -148,7 +148,7 @@ export class InicioComponent extends GeneralComponent {
   especialidades: TipoDropdown[] = [];
   dias_semana: TipoDropdown[] = [];
 
-  indice: WritableSignal<number> = signal<number>(0);
+  indice: WritableSignal<number> = signal<number>(1);
   tipoMedico: WritableSignal<string> = signal<string>("");
 
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
@@ -722,7 +722,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   private saveDatosGenerales() {
-    if(this.zonasInteres().length == 0){
+    if (this.zonasInteres().length == 0) {
       this._alertServices.alerta("Debes agregar al menos una zona de interés")
       return;
     }
@@ -861,7 +861,7 @@ export class InicioComponent extends GeneralComponent {
 
   validacionesNegocio() {
 
-    if(this.userData?.idPerfil == 3){
+    if (this.userData?.idPerfil == 3) {
       this.formRegistro.get('nss')?.clearValidators;
       this.formRegistro.get('nss')?.updateValueAndValidity;
     }
@@ -1340,11 +1340,11 @@ export class InicioComponent extends GeneralComponent {
       next: (response: any) => {
         if (!response.exito) return;
         const respuesta: RespuestaConsultaDocumentos = response.respuesta;
-        console.log(respuesta.especialidadesDocumentos);
         this.procesarDatosObligatoriosObtenidos(respuesta.documentosObligatorios);
         this.procesarDocumentosContancias(respuesta.documentosConstancias);
         const especialidades = this.procesarDocumentosEspecialidades(respuesta.especialidadesDocumentos);
-        this.registrosDocumentosEspecialidad.update(valor => especialidades);
+        this.registrosDocumentosEspecialidad.update(() => especialidades);
+        this.cargarDatosEmpleoAlFormulario(respuesta.datosEmpleo);
       }
     });
   }
@@ -1397,6 +1397,33 @@ export class InicioComponent extends GeneralComponent {
       };
 
       return tabNode;
+    });
+  }
+
+  cargarDatosEmpleoAlFormulario(datos: RespuestaDatosEmpleo,): void {
+    const otroEmpleoValue = datos.indOtroEmpleo?.toString() || '0';
+    const sustitutoValue = datos.indMedicoSustituto?.toString() || '0';
+    const ooadValue = datos.cveOoad || null;
+
+    this.formDatosEmpleo.patchValue({
+      // Combos Sí/No
+      otroEmpleo: otroEmpleoValue,
+      sustituto: sustitutoValue,
+
+      // OOAD
+      ooad: ooadValue,
+
+      // Tipo de Institución y Nombre
+      tipoInstitucion: datos.tipoInstitucion,
+      nombreInstitucion: datos.nomEspecificacionInstitucion,
+
+      // Horario/Jornada
+      horarioInicio: datos.refJornadaInicio,
+      horarioFin: datos.refJornadaFin,
+
+      // Días
+      diaInicio: datos.diaSemanaInicio,
+      diaFin: datos.diaSemanaFin,
     });
   }
 

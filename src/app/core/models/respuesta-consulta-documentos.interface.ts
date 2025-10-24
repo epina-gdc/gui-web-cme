@@ -1,3 +1,5 @@
+import {TipoInstitucion} from '@models/solicitud-guardar-documentacion.interface';
+
 export interface RespuestaConsultaDocumentos {
   "participacion": {
     "idParticipacion": 103,
@@ -17,22 +19,7 @@ export interface RespuestaConsultaDocumentos {
   documentosObligatorios: RespuestaDocumentosObligatorios[],
   especialidadesDocumentos: RespuestaDocumentosEspecialidad[],
   documentosConstancias: RespuestaDocumentosConstancia[],
-  "datosEmpleo": {
-    "idDatoEmpleo": 63,
-    "indOtroEmpleo": 0,
-    "indMedicoSustituto": 0,
-    "tipoInstitucion": null,
-    "nomInstitucion": null,
-    "nomEspecificacionInstitucion": null,
-    "cveOoad": null,
-    "desOoad": null,
-    "horarioLaboralOtroEmpleo": null,
-    "horarioLaboralMedicoSustituto": null,
-    "refJornadaInicio": null,
-    "refJornadaFin": null,
-    "diaSemanaInicio": null,
-    "diaSemanaFin": null
-  }
+  datosEmpleo: RespuestaDatosEmpleo
 }
 
 export interface RespuestaDocumentosObligatorios {
@@ -77,4 +64,21 @@ export interface ItemDocumentoEspecialidad {
     refExtension: string
   },
   indCubre: null
+}
+
+export interface RespuestaDatosEmpleo {
+  idDatoEmpleo: number,
+  indOtroEmpleo: 1 | 0,
+  indMedicoSustituto: 1 | 0,
+  tipoInstitucion: TipoInstitucion | null,
+  nomInstitucion: string | null,
+  nomEspecificacionInstitucion: string | null,
+  cveOoad: string | null,
+  desOoad: string | null,
+  horarioLaboralOtroEmpleo: string | null,
+  horarioLaboralMedicoSustituto: string | null,
+  refJornadaInicio: string | null,
+  refJornadaFin: string | null,
+  diaSemanaInicio: string | null,
+  diaSemanaFin: string | null
 }
