@@ -34,7 +34,7 @@
             <div class="col-4">
               <div class="flex justify-content-between">
                 <label class="field-label" for="nss">NSS</label>
-                @if(this.userData?.idPerfil == 2){
+                @if (this.userData?.idPerfil == 2) {
                   <p class="label-obligatorio">Obligatorio</p>
                 }
               </div>
@@ -296,7 +296,7 @@
             <p class="label-obligatorio">Obligatorio</p>
           </div>
           <upload-document (fileSelected)="procesarArchivoObligatorio($event, 1)" [existingFile]="archivoINE"
-                           idArchivo="INE"/>
+                           [disabled]="estatusPendienteDocumentacion" idArchivo="INE"/>
         </div>
         <div class="col-3">
           <div class="flex justify-content-between mb-1">
@@ -304,7 +304,7 @@
             <p class="label-obligatorio">Obligatorio</p>
           </div>
           <upload-document (fileSelected)="procesarArchivoObligatorio($event, 2)" [existingFile]="archivoTitulo"
-                           idArchivo="titulo"/>
+                           [disabled]="estatusPendienteDocumentacion" idArchivo="titulo"/>
         </div>
         <div class="col-3">
           <div class="flex justify-content-between mb-1">
@@ -312,7 +312,7 @@
             <p class="label-obligatorio">Obligatorio</p>
           </div>
           <upload-document (fileSelected)="procesarArchivoObligatorio($event, 3)" [existingFile]="archivoCedula"
-                           idArchivo="cedula"/>
+                           [disabled]="estatusPendienteDocumentacion" idArchivo="cedula"/>
         </div>
       </article>
     </p-card>
@@ -345,12 +345,15 @@
               <p class="field-label">Carga de documento</p>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <upload-document idArchivo="especialidad" (fileSelected)="procesarArchivoEspecializacion($event)"/>
+            <upload-document idArchivo="especialidad" (fileSelected)="procesarArchivoEspecializacion($event)"
+                             [disabled]="estatusPendienteDocumentacion"/>
           </div>
           <div class="col-3 flex justify-content-start align-items-center">
-            <p-button label="Agregar" icon="cme-plus" iconPos="right"
-                      [disabled]="formDocumentosEspecialidad.invalid || !documentoEspecialidad"
-                      [text]="true" (click)="subirDocumentoyObtenerGuid()"/>
+            @if (estatusPendienteDocumentacion) {
+              <p-button label="Agregar" icon="cme-plus" iconPos="right"
+                        [disabled]="formDocumentosEspecialidad.invalid || !documentoEspecialidad || estatusPendienteDocumentacion"
+                        [text]="true" (click)="subirDocumentoyObtenerGuid()"/>
+            }
           </div>
         </article>
       </form>
@@ -382,8 +385,10 @@
                         <td class="label-documento-td">{{ registro.tipoDocumento }}</td>
                         <td class="label-td">{{ registro.especialidadMedica }}</td>
                         <td>
-                          <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.0rem'}"
-                                    (click)="eliminarDocumento(registro.especialidadMedica, registro.tipoDocumento)"/>
+                          @if (!estatusPendienteDocumentacion) {
+                            <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.0rem'}"
+                                      (click)="eliminarDocumento(registro.especialidadMedica, registro.tipoDocumento)"/>
+                          }
                         </td>
                       </tr>
                     </ng-template>
@@ -416,13 +421,13 @@
               <p class="field-label">Constancias de cursos</p>
             </div>
             <upload-document idArchivo="constancia_1" (fileSelected)="procesarConstancia($event, 1)"
-                             [existingFile]="archivoConstancia1"/>
+                             [existingFile]="archivoConstancia1" [disabled]="estatusPendienteDocumentacion"/>
             <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
             <div class="flex justify-content-between mb-1">
               <p class="field-label">Nombre de la constancia</p>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <input pInputText class="w-full" type="text" id="constancia1"
+            <input pInputText class="w-full" type="text" id="constancia1" [disabled]="estatusPendienteDocumentacion"
                    placeholder="Especifique el nombre del documento" [(ngModel)]="nombreConstancia1"
             />
           </div>
@@ -432,13 +437,14 @@
               <p class="field-label">Constancias de cursos</p>
             </div>
             <upload-document idArchivo="constancia_2" (fileSelected)="procesarConstancia($event, 2)"
-                             [existingFile]="archivoConstancia2"/>
+                             [existingFile]="archivoConstancia2" [disabled]="estatusPendienteDocumentacion"/>
             <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
             <div class="flex justify-content-between mb-1">
               <p class="field-label">Nombre de la constancia</p>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
             <input pInputText class="w-full" type="text" id="constancia2" [(ngModel)]="nombreConstancia2"
+                   [disabled]="estatusPendienteDocumentacion"
                    placeholder="Especifique el nombre del documento" (change)="actualizarNombreDocumento(2, $event)"
             />
           </div>
@@ -448,14 +454,14 @@
               <p class="field-label">Constancias de cursos</p>
             </div>
             <upload-document idArchivo="constancia_3" (fileSelected)="procesarConstancia($event, 3)"
-                             [existingFile]="archivoConstancia3"/>
+                             [existingFile]="archivoConstancia3" [disabled]="estatusPendienteDocumentacion"/>
             <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
             <div class="flex justify-content-between mb-1">
               <p class="field-label">Nombre de la constancia</p>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
             <input pInputText class="w-full" type="text" id="constancia3" [(ngModel)]="nombreConstancia3"
-                   placeholder="Especifique el nombre del documento"
+                   placeholder="Especifique el nombre del documento" [disabled]="estatusPendienteDocumentacion"
             />
           </div>
         </article>
@@ -573,10 +579,10 @@
     }
 
     <div class="flex flex-row justify-content-end gap-3">
-      <p-button type="button" variant="outlined" label="Limpiar formulario"/>
+      <p-button type="button" variant="outlined" label="Limpiar formulario" [disabled]="estatusPendienteDocumentacion"/>
       <p-button type="button" label="Guardar" (click)="guardarDocumentacion()"
                 [disabled]="banderaCargarDocumentacion"/>
-      <p-button type="button" label="Finalizar registro"/>
+      <p-button type="button" label="Finalizar registro" disabled/>
     </div>
 
   }

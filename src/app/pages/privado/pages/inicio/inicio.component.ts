@@ -168,6 +168,8 @@ export class InicioComponent extends GeneralComponent {
   nombreConstancia2: string = '';
   nombreConstancia3: string = '';
 
+  estatusPendienteDocumentacion: boolean = false;
+
   constructor(private readonly activatedRoute: ActivatedRoute) {
     super()
     this.userService.userData$.subscribe(user => this.userData = user);
@@ -1345,6 +1347,9 @@ export class InicioComponent extends GeneralComponent {
         const especialidades = this.procesarDocumentosEspecialidades(respuesta.especialidadesDocumentos);
         this.registrosDocumentosEspecialidad.update(() => especialidades);
         this.cargarDatosEmpleoAlFormulario(respuesta.datosEmpleo);
+        if (respuesta.participacion.resultadoVerificacion) {
+          this.estatusPendienteDocumentacion = respuesta.participacion.resultadoVerificacion.estatusVerificacion.desEstatus === 'Pendiente';
+        }
       }
     });
   }
@@ -1400,7 +1405,7 @@ export class InicioComponent extends GeneralComponent {
     });
   }
 
-  cargarDatosEmpleoAlFormulario(datos: RespuestaDatosEmpleo,): void {
+  cargarDatosEmpleoAlFormulario(datos: RespuestaDatosEmpleo): void {
     const otroEmpleoValue = datos.indOtroEmpleo?.toString() || '0';
     const sustitutoValue = datos.indMedicoSustituto?.toString() || '0';
     const ooadValue = datos.cveOoad || null;

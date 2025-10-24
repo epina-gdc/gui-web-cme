@@ -22,6 +22,7 @@ export class UploadDocumentComponent implements OnChanges {
   @Input() maxFileSize: number = 5120000;
   @Input() existingFile: File | undefined = undefined;
   @Input({required: true}) idArchivo: string = '';
+  @Input() disabled: boolean = false;
   @Output() fileSelected = new EventEmitter<any>();
   @Output() fileRemoved = new EventEmitter<any>();
   files: any[] = [];
