@@ -57,6 +57,7 @@ import {
   RespuestaDocumentosObligatorios
 } from '@models/respuesta-consulta-documentos.interface';
 import {jornadaLaboralValidator} from '@validators/jornada-validator';
+import {horarioLaboralValidator} from '@validators/horario-validator';
 
 interface DocumentoFuente {
   refGuid: string;
@@ -149,7 +150,7 @@ export class InicioComponent extends GeneralComponent {
   especialidades: TipoDropdown[] = [];
   dias_semana: TipoDropdown[] = [];
 
-  indice: WritableSignal<number> = signal<number>(1);
+  indice: WritableSignal<number> = signal<number>(0);
   tipoMedico: WritableSignal<string> = signal<string>("");
 
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
@@ -247,7 +248,7 @@ export class InicioComponent extends GeneralComponent {
       diaInicio: [{value: null, disabled: true}],
       diaFin: [{value: null, disabled: true}],
       ooad: [{value: null, disabled: true}],
-    }, { validators: jornadaLaboralValidator })
+    }, { validators: [jornadaLaboralValidator, horarioLaboralValidator] })
   }
 
   obtenerFechaNacimientoDeCURP(curp: string): Date {
