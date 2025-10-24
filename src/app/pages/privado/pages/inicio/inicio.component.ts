@@ -1047,6 +1047,11 @@ export class InicioComponent extends GeneralComponent {
     const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
     const externo = this.userData?.idPerfil === 3;
 
+    if (this.estatusPendienteDocumentacion) {
+      this.indice.update((value: number) => value + 1);
+      return;
+    }
+
     if (!refObligatorio1) {
       this._alertServices.error(this._Mensajes.MSG037);
       return;
@@ -1081,7 +1086,7 @@ export class InicioComponent extends GeneralComponent {
       next: (data: ResponseGeneral) => {
         if (data.exito) {
           this.indice.update((value: number) => value + 1);
-          this._alertServices.exito(data.mensaje)
+          this._alertServices.exito(this._Mensajes.MSG039)
           this.documentosLocalStorageService.limpiar();
           return;
         }
@@ -1245,6 +1250,9 @@ export class InicioComponent extends GeneralComponent {
     const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
     const externo = this.userData?.idPerfil === 3;
 
+    if (this.estatusPendienteDocumentacion) {
+      return false;
+    }
     if (!refObligatorio1) {
       return true;
     }
@@ -1440,4 +1448,17 @@ export class InicioComponent extends GeneralComponent {
     });
   }
 
+  mostrarDocumento(guid: string) {
+    this.documentoService.obtenerDocumento(guid).subscribe({
+      next: (response: any) => {
+
+        const tipoArchivo = response.type;
+        const fileBlob = new Blob([response], {type: tipoArchivo});
+        const fileURL = URL.createObjectURL(fileBlob);
+
+        // 3. Abrir en una nueva pestaña
+        window.open(fileURL, '_blank');
+      }
+    });
+  }
 }

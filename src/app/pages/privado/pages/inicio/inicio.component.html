@@ -382,7 +382,7 @@
                     </ng-template>
                     <ng-template #body let-registro>
                       <tr>
-                        <td class="label-documento-td">{{ registro.tipoDocumento }}</td>
+                        <td class="label-documento-td cursor-pointer" (click)="mostrarDocumento(registro.guid)">{{ registro.tipoDocumento }}</td>
                         <td class="label-td">{{ registro.especialidadMedica }}</td>
                         <td>
                           @if (!estatusPendienteDocumentacion) {
