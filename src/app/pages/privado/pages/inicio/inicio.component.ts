@@ -1,4 +1,4 @@
-import {Component, inject, signal, WritableSignal} from '@angular/core';
+import {Component, computed, inject, QueryList, signal, ViewChildren, WritableSignal} from '@angular/core';
 import {Card} from 'primeng/card';
 import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.component';
 import {StepsComponent} from '@components/steps/steps.component';
@@ -44,7 +44,27 @@ import {InteresLaboral} from '@models/aspirante';
 import dayjs from 'dayjs';
 import {of, switchMap, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
+import {DocumentosLocalstorageService} from '@services/documentos-localstorage.service';
+import {
+  DatosEmpleo, DocumentoConstancia,
+  DocumentoEspecialidad,
+  RefDocumentoEspecialidad,
+  SolicitudDocumentoObligatorio, SolicitudGuardarDocumentacion, TipoInstitucion
+} from '@models/solicitud-guardar-documentacion.interface';
+import {
+  ItemDocumentoEspecialidad,
+  RespuestaConsultaDocumentos, RespuestaDocumentosConstancia, RespuestaDocumentosEspecialidad,
+  RespuestaDocumentosObligatorios
+} from '@models/respuesta-consulta-documentos.interface';
 
+interface DocumentoFuente {
+  refGuid: string;
+  nombre: string;
+}
+
+interface EntradaDocumentos {
+  [key: string]: DocumentoFuente; // Clave: '1', '2', '3', etc. (no se usará)
+}
 
 @Component({
   selector: 'app-inicio',
@@ -69,13 +89,15 @@ import {catchError} from 'rxjs/operators';
     EmptyTabComponent,
     OnlyNumbersDirective,
     EmailAllowCaractersDirective,
-    OfertaLaboralComponent
+    OfertaLaboralComponent,
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
 })
 
 export class InicioComponent extends GeneralComponent {
+  @ViewChildren(UploadDocumentComponent)
+  uploaders!: QueryList<UploadDocumentComponent>;
 
   readonly dependientes = DEPENDIENTES;
   readonly instituciones = INSTITUCIONES;
@@ -83,9 +105,11 @@ export class InicioComponent extends GeneralComponent {
 
   userService = inject(UserService);
   fb: FormBuilder = inject(FormBuilder);
+  documentosLocalStorageService = inject(DocumentosLocalstorageService)
   formRegistro!: FormGroup;
   formZonaInteres!: FormGroup;
   formDocumentosEspecialidad!: FormGroup;
+  formDatosEmpleo!: FormGroup;
   userData: SesionUser | null = null;
 
   zonasInteres: WritableSignal<any[]> = signal([]);
@@ -100,8 +124,6 @@ export class InicioComponent extends GeneralComponent {
     {label: 'Oferta laboral', active: false},
   ];
 
-  sustituto!: any;
-  empleo!: any;
   datosDocumento!: DatosDocumentoResponse;
   datosGenerales!: DatosGeneralesResponse;
   foto!: any;
@@ -113,8 +135,6 @@ export class InicioComponent extends GeneralComponent {
   datosInteresLaboral!: any;
   // userData!: SesionUser;
 
-  dummies = [{label: 'Dummie', value: 'Dummie'}, {label: 'Dummie 2', value: 'Dummie 2'}];
-
   sexos: TipoDropdown[] = [];
   estadosCiviles: TipoDropdown[] = [];
   paises: TipoDropdown[] = [];
@@ -125,6 +145,8 @@ export class InicioComponent extends GeneralComponent {
   colonias: TipoDropdown[] = [];
   ooad: TipoDropdown[] = [];
   zonas: TipoDropdown[] = [];
+  especialidades: TipoDropdown[] = [];
+  dias_semana: TipoDropdown[] = [];
 
   indice: WritableSignal<number> = signal<number>(0);
   tipoMedico: WritableSignal<string> = signal<string>("");
@@ -132,18 +154,36 @@ export class InicioComponent extends GeneralComponent {
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
   _ConvocatoriaService: ConvocatoriaService = inject(ConvocatoriaService);
 
+  archivoINE!: File | undefined;
+  archivoTitulo!: File | undefined;
+  archivoCedula!: File | undefined;
+
+  documentoEspecialidad!: File | null;
+
+  archivoConstancia1!: File | undefined;
+  archivoConstancia2!: File | undefined;
+  archivoConstancia3!: File | undefined;
+
+  nombreConstancia1: string = '';
+  nombreConstancia2: string = '';
+  nombreConstancia3: string = '';
+
   constructor(private readonly activatedRoute: ActivatedRoute) {
     super()
     this.userService.userData$.subscribe(user => this.userData = user);
     this.formRegistro = this.asignarFormularioRegistro();
     this.formZonaInteres = this.asignarFormularioZonaInteres();
     this.formDocumentosEspecialidad = this.asignarFormularioDocumentosEspecialidad();
+    this.formDatosEmpleo = this.asignarFormularioDatosEmpleo();
     this.obtenerCatalogos();
     this.suscribirObservables();
     this.subscribirseACambioComponentes();
     this.settearDatosUsuario();
     this.obtenerDatosGenerales(this.userData?.idUsuario);
     this.obtenerDatosFoto(this.userData?.idUsuario);
+    this.obtenerDatosDocumentosEscolaridad();
+    this.revisarDocumentosLocalHost();
+    this.suscribirObservablesDatosEmpleo();
   }
 
   asignarFormularioRegistro(): FormGroup {
@@ -164,11 +204,11 @@ export class InicioComponent extends GeneralComponent {
       estadoNacimiento: [],
       codigoPostal: [{value: '', disabled: false}, [Validators.required]],
       pais: [],
-      estado: [{value: '', disabled: false},[Validators.required]],
-      municipio: [{value: '', disabled: false},[Validators.required]],
-      colonia: [{value: '', disabled: false},[Validators.required]],
-      calle: [{value: '', disabled: false},[Validators.required]],
-      numeroExterior: [{value: '', disabled: false},[Validators.required]]
+      estado: [{value: '', disabled: false}, [Validators.required]],
+      municipio: [{value: '', disabled: false}, [Validators.required]],
+      colonia: [{value: '', disabled: false}, [Validators.required]],
+      calle: [{value: '', disabled: false}, [Validators.required]],
+      numeroExterior: [{value: '', disabled: false}, [Validators.required]]
     });
   }
 
@@ -191,6 +231,20 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
     this.formRegistro.get('sexo')?.setValue(sexo);
     this.formRegistro.get('correo')?.setValue(refEmail + '');
+  }
+
+  asignarFormularioDatosEmpleo(): FormGroup {
+    return this.fb.group({
+      otroEmpleo: [{value: '0', disabled: false}],
+      sustituto: [{value: '0', disabled: false}],
+      tipoInstitucion: [{value: null, disabled: true}],
+      nombreInstitucion: [{value: null, disabled: true}, [Validators.maxLength(200)]],
+      horarioInicio: [{value: null, disabled: true}],
+      horarioFin: [{value: null, disabled: true}],
+      diaInicio: [{value: null, disabled: true}],
+      diaFin: [{value: null, disabled: true}],
+      ooad: [{value: null, disabled: true}],
+    })
   }
 
   obtenerFechaNacimientoDeCURP(curp: string): Date {
@@ -301,8 +355,8 @@ export class InicioComponent extends GeneralComponent {
 
   asignarFormularioDocumentosEspecialidad(): FormGroup {
     return this.fb.group({
-      especialidad: [],
-      documento: []
+      especialidad: [{value: '', disabled: false}, [Validators.required]],
+      documento: [{value: '', disabled: false}, [Validators.required]]
     })
   }
 
@@ -342,13 +396,15 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerCatalogos(): void {
     this.activatedRoute.data.subscribe(({respuesta}) => {
-      const [sexos, estadosCiviles, paises, lugaresNacimiento, tiposDocumentos, ooad] = respuesta;
+      const [sexos, estadosCiviles, paises, lugaresNacimiento, tiposDocumentos, ooad, especialidades, dias] = respuesta;
       this.sexos = mapearArregloTipoDropdown(sexos.respuesta, 'desSexo', 'idSexo');
       this.estadosCiviles = mapearArregloTipoDropdown(estadosCiviles.respuesta, 'desEstadoCivil', 'idEstadoCivil');
       this.paises = mapearArregloTipoDropdown(paises.respuesta, 'desPais', 'idPais');
       this.lugaresNacimiento = mapearArregloTipoDropdown(lugaresNacimiento.respuesta, 'desLugarNacimiento', 'idLugarNacimiento');
       this.lstTiposDocumentos = mapearArregloTipoDropdown(tiposDocumentos.respuesta, 'desTipoDocumentoEspecialidad', 'idTipoDocumentoEspecialidad');
       this.ooad = mapearArregloTipoDropdown(ooad.respuesta, 'desOoad', 'cveOoad');
+      this.especialidades = mapearArregloTipoDropdown(especialidades, 'desEspecialidad', 'cveEspecialidad');
+      this.dias_semana = mapearArregloTipoDropdown(dias.respuesta, 'descDiaSemana', 'idDiaSemana')
     });
   }
 
@@ -359,7 +415,6 @@ export class InicioComponent extends GeneralComponent {
       "desZona": this.devolverTextoZonaInnteres(this.formZonaInteres.get('zonaInteres')?.value),
       "desOoad": this.devolverTextoOoad(this.formZonaInteres.get('ooad')?.value)
     }
-
   }
 
   eliminarZonaInteres(indice: number): void {
@@ -368,15 +423,55 @@ export class InicioComponent extends GeneralComponent {
     this.zonasInteres.update(() => zonasActualizadas);
   }
 
-  obtenerNuevoDocumento(): TabDocumento {
+  obtenerNuevoDocumento(guid: string = ''): TabDocumento {
+    const tipoDocumento = this.formDocumentosEspecialidad.get('documento')?.value;
+    const documentoLabel = this.lstTiposDocumentos.find(d => d.value === tipoDocumento)?.label as string;
+    const especialidad = this.formDocumentosEspecialidad.get('especialidad')?.value;
+    const especialidadLabel = this.especialidades.find(d => d.value === especialidad)?.label as string;
+
     return {
-      tipoDocumento: this.formDocumentosEspecialidad.get('documento')?.value,
-      especialidadMedica: this.formDocumentosEspecialidad.get('especialidad')?.value
+      tipoDocumento: documentoLabel,
+      especialidadMedica: especialidadLabel,
+      cveEspecialidad: especialidad,
+      idDocumento: tipoDocumento,
+      guid
     }
   }
 
-  agregarDocumento(): void {
-    const nuevoDocumento = this.obtenerNuevoDocumento();
+  subirDocumentoyObtenerGuid(): void {
+    const tipoDoc = this.obtenerTipoDocumentoAValidar();
+    const especialidadDoc = this.obtenerEspecialidadAValidar();
+
+    if (this.documentoYaExisteParaEspecialidad(tipoDoc, especialidadDoc)) {
+      this._alertServices.alerta(`El documento de tipo ${tipoDoc} ya fue cargado para la especialidad ${especialidadDoc}.`);
+      return;
+    }
+    if (!this.documentoEspecialidad) return;
+
+    const formData = new FormData();
+    formData.append('file', this.documentoEspecialidad, this.documentoEspecialidad.name);
+    this.guardarArchivo(formData, 'especialidad');
+  }
+
+  obtenerTipoDocumentoAValidar(): string {
+    return this.obtenerNuevoDocumento()?.tipoDocumento;
+  }
+
+  obtenerEspecialidadAValidar(): string {
+    return this.obtenerNuevoDocumento()?.especialidadMedica;
+  }
+
+  documentoYaExisteParaEspecialidad(tipoDocumento: string, especialidad: string): boolean {
+    const especialidades = this.registrosDocumentosEspecialidad();
+    const especialidadExistente = especialidades.find(e => e.especialidad === especialidad);
+    if (!especialidadExistente) {
+      return false;
+    }
+    return especialidadExistente.documentos.some(doc => doc.tipoDocumento === tipoDocumento);
+  }
+
+  agregarDocumento(guid: string): void {
+    const nuevoDocumento = this.obtenerNuevoDocumento(guid);
     if (!nuevoDocumento) return;
     const especialidades = this.registrosDocumentosEspecialidad();
     const indiceEspecialidad = especialidades.findIndex(e => e.especialidad === nuevoDocumento.especialidadMedica);
@@ -387,7 +482,10 @@ export class InicioComponent extends GeneralComponent {
         especialidad: nuevoDocumento.especialidadMedica,
         documentos: [nuevoDocumento]
       };
-      this.registrosDocumentosEspecialidad.update(value => [...value, nuevaEspecialidad]);
+      const especialidadesActualizadas: TabNode[] = [...this.registrosDocumentosEspecialidad(), nuevaEspecialidad];
+      this.registrosDocumentosEspecialidad.update(value => especialidadesActualizadas);
+      this.documentosLocalStorageService.guardarRefGuidEspecialidad(especialidadesActualizadas);
+      this.limpiarDocumentoEspecialidad();
       return;
     }
 
@@ -402,12 +500,23 @@ export class InicioComponent extends GeneralComponent {
 
     // Añadimos el nuevo documento y actualizamos el signal
     especialidadExistente.documentos.push(nuevoDocumento);
+    this.limpiarDocumentoEspecialidad();
 
     const especialidadesActualizadas = [...especialidades.slice(0, indiceEspecialidad),
       especialidadExistente,
       ...especialidades.slice(indiceEspecialidad + 1)
     ];
+    this.documentosLocalStorageService.guardarRefGuidEspecialidad(especialidadesActualizadas);
     this.registrosDocumentosEspecialidad.update(() => especialidadesActualizadas);
+  }
+
+  limpiarDocumentoEspecialidad(): void {
+    this.formDocumentosEspecialidad.reset();
+    this.documentoEspecialidad = null;
+    const uploader = this.uploaders.find(comp => comp.idArchivo === 'especialidad');
+    if (uploader) {
+      uploader.clear();
+    }
   }
 
   eliminarDocumento(especialidadMedica: string, tipoDocumento: string): void {
@@ -428,6 +537,7 @@ export class InicioComponent extends GeneralComponent {
         ...especialidades.slice(indiceEspecialidad + 1)
       ];
       this.registrosDocumentosEspecialidad.update(() => especialidadesSinEspecialidad);
+      this.documentosLocalStorageService.guardarRefGuidEspecialidad(especialidadesSinEspecialidad);
     } else {
       // Si aún hay documentos, actualizamos la especialidad con la nueva lista
       especialidadParaModificar.documentos = documentosActualizados;
@@ -436,6 +546,7 @@ export class InicioComponent extends GeneralComponent {
         ...especialidades.slice(indiceEspecialidad + 1)
       ];
       this.registrosDocumentosEspecialidad.update(() => especialidadesModificadas);
+      this.documentosLocalStorageService.guardarRefGuidEspecialidad(especialidadesModificadas);
     }
   }
 
@@ -748,7 +859,7 @@ export class InicioComponent extends GeneralComponent {
     }
   }
 
-  validacionesNegocio(){
+  validacionesNegocio() {
 
     if(this.userData?.idPerfil == 3){
       this.formRegistro.get('nss')?.clearValidators;
@@ -784,7 +895,509 @@ export class InicioComponent extends GeneralComponent {
     }
   };
 
+  procesarArchivoObligatorio($event: any, id: number): void {
+    const files: FileList | File[] = $event?.target?.files || $event;
+    const archivo: File | undefined = files?.[0];
+    if (!archivo) {
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', archivo, archivo.name);
+    this.guardarArchivo(formData, 'obligatorio', id);
+  }
+
+  procesarArchivoEspecializacion($event: any): void {
+    const files: FileList | File[] = $event?.target?.files || $event;
+    const archivo: File | undefined = files?.[0];
+    if (!archivo) {
+      return;
+    }
+    this.documentoEspecialidad = archivo;
+  }
+
+
+  private guardarArchivo(datos: FormData, tipo: 'constancia' | 'obligatorio' | 'especialidad', id: number = 0): void {
+
+    const idUsuario = this.datosGenerales?.datosPersonales?.idUsuario;
+
+    if (!idUsuario) {
+      this._alertServices.error('No se pudo obtener el ID de usuario.');
+      return;
+    }
+
+    datos.append('idModulo', '1')
+    datos.append('idUsuario', idUsuario.toString())
+
+    // Guardar el archivo (Guardar GUID)
+    this.documentoService.guardarDocumento(datos).subscribe({
+      next: (data: any) => {
+        if (!data?.guid) {
+          this._alertServices.error(data?.mensaje || 'Error al obtener GUID del documento.');
+          return;
+        }
+        if (tipo === 'obligatorio') {
+          this.documentosLocalStorageService.guardarRefGuidObligatorio(id, data.guid);
+        }
+        if (tipo === 'especialidad') {
+          this.agregarDocumento(data.guid);
+        }
+        if (tipo === 'constancia') {
+          this.guardarRefGuidConstancia(id, data.guid);
+        }
+      }
+    });
+  }
+
+  guardarRefGuidConstancia(id: number, guid: string): void {
+    let nombre = '';
+    if (id === 1) nombre = this.nombreConstancia1;
+    if (id === 2) nombre = this.nombreConstancia2;
+    if (id === 3) nombre = this.nombreConstancia3;
+    this.documentosLocalStorageService.guardarRefGuidConstancia(id, guid, nombre)
+  }
+
+  revisarDocumentosLocalHost(): void {
+    const refObligatorio1 = this.documentosLocalStorageService.obtenerRefGuid(1);
+    const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
+    const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
+    const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
+    const refConstancia1 = this.documentosLocalStorageService.obtenerRefConstancia(1);
+    const refConstancia2 = this.documentosLocalStorageService.obtenerRefConstancia(2);
+    const refConstancia3 = this.documentosLocalStorageService.obtenerRefConstancia(3);
+    if (refObligatorio1) {
+      this.obtenerDocumento(refObligatorio1, 'obligatorio', 1);
+    }
+    if (refObligatorio2) {
+      this.obtenerDocumento(refObligatorio2, 'obligatorio', 2);
+    }
+    if (refObligatorio3) {
+      this.obtenerDocumento(refObligatorio3, 'obligatorio', 3);
+    }
+    this.registrosDocumentosEspecialidad.update(valor => especialidades);
+    if (refConstancia1) {
+      this.obtenerDocumento(refConstancia1.refGuid, 'constancia', 1, refConstancia1.nombre);
+    }
+    if (refConstancia2) {
+      this.obtenerDocumento(refConstancia2.refGuid, 'constancia', 2, refConstancia2.nombre);
+    }
+    if (refConstancia3) {
+      this.obtenerDocumento(refConstancia3.refGuid, 'constancia', 3, refConstancia3.nombre);
+    }
+  }
+
+  obtenerDocumento(refGuid: string, tipo: string, id: number, nombre: string = ''): void {
+    this.documentoService.obtenerDocumento(refGuid).subscribe({
+      next: (response: any) => {
+        const tipoArchivo = response.type;
+        if (tipo === 'obligatorio' && id === 1) {
+          const nombreArchivo = 'identificacion_oficial';
+          this.archivoINE = new File([response], nombreArchivo, {type: tipoArchivo});
+        }
+        if (tipo === 'obligatorio' && id === 2) {
+          const nombreArchivo = 'titulo';
+          this.archivoTitulo = new File([response], nombreArchivo, {type: tipoArchivo});
+        }
+        if (tipo === 'obligatorio' && id === 3) {
+          const nombreArchivo = 'cedula_profesional';
+          this.archivoCedula = new File([response], nombreArchivo, {type: tipoArchivo});
+        }
+        if (tipo === 'constancia' && id === 1) {
+          this.nombreConstancia1 = nombre;
+          this.archivoConstancia1 = new File([response], nombre, {type: tipoArchivo});
+        }
+        if (tipo === 'constancia' && id === 2) {
+          this.nombreConstancia2 = nombre;
+          this.archivoConstancia2 = new File([response], nombre, {type: tipoArchivo});
+        }
+        if (tipo === 'constancia' && id === 3) {
+          this.nombreConstancia3 = nombre;
+          this.archivoConstancia3 = new File([response], nombre, {type: tipoArchivo});
+        }
+      }
+    });
+  }
+
+  procesarConstancia($event: any, id: number): void {
+    const files: FileList | File[] = $event?.target?.files || $event;
+    const archivo: File | undefined = files?.[0];
+    if (!archivo) {
+      return;
+    }
+
+
+    const formData = new FormData();
+    formData.append('file', archivo, archivo.name);
+    this.guardarArchivo(formData, 'constancia', id);
+  }
+
+  actualizarNombreDocumento(id: number, event: any): void {
+    const refConstancia = this.documentosLocalStorageService.obtenerRefConstancia(id);
+    const nombre = event.target.value;
+    if (!refConstancia.refGuid) return;
+    this.documentosLocalStorageService.guardarRefGuidConstancia(id, refConstancia.refGuid, nombre)
+  }
+
+  guardarDocumentacion(): void {
+    const refObligatorio1 = this.documentosLocalStorageService.obtenerRefGuid(1);
+    const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
+    const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
+    const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
+    const externo = this.userData?.idPerfil === 3;
+
+    if (!refObligatorio1) {
+      this._alertServices.error(this._Mensajes.MSG037);
+      return;
+    }
+    if (!refObligatorio2) {
+      this._alertServices.error(this._Mensajes.MSG037);
+      return;
+    }
+    if (!refObligatorio3) {
+      this._alertServices.error(this._Mensajes.MSG037);
+      return;
+    }
+    if (especialidades.length === 0) {
+      this._alertServices.error(this._Mensajes.MSG037);
+      return;
+    }
+    const cadaEspecialidadTieneDiploma: boolean = especialidades.every(node =>
+      node.documentos.some(documento => documento.idDocumento === 21));
+    if (!cadaEspecialidadTieneDiploma) {
+      this._alertServices.error(this._Mensajes.MSG037);
+      return;
+    }
+    if (this.formDatosEmpleo.invalid && externo) {
+      this._alertServices.error(this._Mensajes.MSG025);
+      return;
+    }
+
+    const solicitud: SolicitudGuardarDocumentacion = this.generarSolicitudGuardarDocumentacion();
+    this._ConvocatoriaService.guardarDatosDocumentosEscolares(solicitud).subscribe({
+      next: (data: ResponseGeneral) => {
+        if (data.exito) {
+          this.indice.update((value: number) => value + 1);
+          this._alertServices.exito(data.mensaje)
+          this.documentosLocalStorageService.limpiar();
+          return;
+        }
+        this._alertServices.error(data.mensaje)
+      },
+      error: (err: ResponseGeneral) => {
+        this._alertServices.error(err.mensaje);
+      }
+    })
+  }
+
+  generarSolicitudGuardarDocumentacion(): SolicitudGuardarDocumentacion {
+    const externo = this.userData?.idPerfil === 3;
+    const constancias = this.documentosLocalStorageService.obtenerRefConstanciaCompleta();
+
+    if (!externo) {
+      return {
+        datosPersonales: {
+          idUsuario: this.userData?.idUsuario as number
+        },
+        documentosObligatorios: this.generarDocumentosObligatorios(),
+        especialidadesDocumentos: this.generarDocumentosEspecialidad()
+      }
+    }
+    return {
+      datosPersonales: {
+        idUsuario: this.userData?.idUsuario as number
+      },
+      documentosObligatorios: this.generarDocumentosObligatorios(),
+      especialidadesDocumentos: this.generarDocumentosEspecialidad(),
+      documentosConstancias: this.transformarDocumentosConstancia(constancias),
+      datosEmpleo: this.transformarFormularioADatosEmpleo()
+    }
+  }
+
+  generarDocumentosObligatorios(): SolicitudDocumentoObligatorio[] {
+    const refObligatorio1 = this.documentosLocalStorageService.obtenerRefGuid(1);
+    const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
+    const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
+    return [
+      {
+        tipoDocumentoObligatorio: {
+          idDocumentoObligatorio: 1
+        },
+        documento: {
+          refGuid: refObligatorio1
+        }
+      },
+      {
+        tipoDocumentoObligatorio: {
+          idDocumentoObligatorio: 2,
+          desDocumentoObligatorio: "TITULO"
+        },
+        documento: {
+          refGuid: refObligatorio2
+        }
+      },
+      {
+        tipoDocumentoObligatorio: {
+          idDocumentoObligatorio: 3,
+          desDocumentoObligatorio: "CEDULA PROFESIONAL"
+        },
+        documento: {
+          refGuid: refObligatorio3
+        }
+      }
+    ]
+  }
+
+  generarDocumentosEspecialidad(): DocumentoEspecialidad[] {
+    return this.registrosDocumentosEspecialidad().map(node => {
+      const cveEspecialidad = node.documentos.length > 0 ? node.documentos[0].cveEspecialidad : '';
+
+      // Mapear el array de documentos a la estructura RefDocumentoEspecialidad
+      const documentosEspecialidad: RefDocumentoEspecialidad[] = node.documentos.map(doc => {
+        return {
+          tipoDocumentoEspecialidad: {
+            idTipoDocumentoEspecialidad: doc.idDocumento,
+          },
+          documento: {
+            refGuid: doc.guid,
+          }
+        };
+      });
+
+      // 3. Construir el objeto DocumentoEspecialidad final
+      return {
+        cveEspecialidad: cveEspecialidad,
+        desEspecialidad: node.especialidad, // La descripción es el nombre de la especialidad
+        documentosEspecialidad: documentosEspecialidad
+      };
+    });
+  }
+
+  transformarFormularioADatosEmpleo(): DatosEmpleo {
+    const formValues = this.formDatosEmpleo.getRawValue();
+
+    const indOtroEmpleo = (formValues.otroEmpleo === '1' ? 1 : 0) as 1 | 0;
+    const indMedicoSustituto = (formValues.sustituto === '1' ? 1 : 0) as 1 | 0;
+    const idTipoInstitucion: 1 | 0 | null = formValues.tipoInstitucion ?? null
+
+    let tipoInstitucion: TipoInstitucion | null = {idTipoInstitucion: idTipoInstitucion ?? 0}
+
+    const cveOoad = formValues.ooad || null;
+    let desOoad: string | null = null;
+
+    if (idTipoInstitucion === null) {
+      tipoInstitucion = null
+    }
+
+    if (cveOoad) {
+      const ooadSeleccionado = this.ooad.find(item => item.value === cveOoad);
+      if (ooadSeleccionado) {
+        desOoad = ooadSeleccionado.label;
+      }
+    }
+
+    return {
+      indOtroEmpleo: indOtroEmpleo,
+      indMedicoSustituto: indMedicoSustituto,
+      tipoInstitucion: tipoInstitucion,
+      nomEspecificacionInstitucion: formValues.nombreInstitucion || '',
+      cveOoad: cveOoad,
+      desOoad: desOoad,
+      refJornadaInicio: formValues.horarioInicio || null, // formato HH:MM
+      refJornadaFin: formValues.horarioFin || null,       // formato HH:MM
+      diaSemanaInicio: {
+        idDiaSemana: formValues.diaInicio || null
+      },
+      diaSemanaFin: {
+        idDiaSemana: formValues.diaFin || null
+      }
+    };
+  }
+
+  transformarDocumentosConstancia(documentos: EntradaDocumentos): DocumentoConstancia[] {
+    if (!documentos) {
+      return [];
+    }
+
+    return Object.keys(documentos).map(key => {
+      const docData = documentos[key];
+
+      return {
+        refConstancia: docData.nombre,
+        documento: {
+          refGuid: docData.refGuid
+        }
+      };
+    });
+  }
+
   anteriorPasoStepper(): void {
     this.indice.update(value => value - 1);
   }
+
+  get banderaCargarDocumentacion() {
+    const refObligatorio1 = this.documentosLocalStorageService.obtenerRefGuid(1);
+    const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
+    const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
+    const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
+    const externo = this.userData?.idPerfil === 3;
+
+    if (!refObligatorio1) {
+      return true;
+    }
+    if (!refObligatorio2) {
+      return true;
+    }
+    if (!refObligatorio3) {
+      return true;
+    }
+    if (this.formDatosEmpleo.invalid && externo) {
+      return true;
+    }
+
+    return especialidades.length === 0;
+  }
+
+  suscribirObservablesDatosEmpleo(): void {
+    const form = this.formDatosEmpleo;
+    form.get('otroEmpleo')?.valueChanges.subscribe(value => {
+      const tieneOtroEmpleo = value === '1'; // '1' = Sí
+
+      // Habilitar/Deshabilitar campos asociados a 'otroEmpleo'
+      this.manejoValidaciones(form, 'tipoInstitucion', tieneOtroEmpleo);
+
+      // Reevaluar la dependencia de Horario/Jornada
+      this.actualizarHorarioJornadaState(form);
+    });
+
+    form.get('tipoInstitucion')?.valueChanges.subscribe(() => {
+      // Si 'otroEmpleo' es 'Sí', reevalúa 'nombreInstitucion'
+      const tieneOtroEmpleo = form.get('otroEmpleo')?.value === '1';
+      this.manejarNombreInstitucionLogic(form, tieneOtroEmpleo);
+    });
+
+    form.get('sustituto')?.valueChanges.subscribe(value => {
+      const isSustituto = value === '1'; // '1' = Sí
+
+      // Habilitar/Deshabilitar campo OOAD (Punto 5)
+      this.manejoValidaciones(form, 'ooad', isSustituto, isSustituto);
+
+      // Reevaluar la dependencia de Horario/Jornada
+      this.actualizarHorarioJornadaState(form);
+    });
+
+    form.get('ooad')?.valueChanges.subscribe(() => {
+      this.actualizarHorarioJornadaState(form);
+    });
+  }
+
+  private manejarNombreInstitucionLogic(form: FormGroup, isOtroEmpleo: boolean): void {
+    const control = form.get('nombreInstitucion');
+    const hasTipoInstitucion = !!form.get('tipoInstitucion')?.value; // Verifica si se ha seleccionado Pública o Privada
+
+    // Se habilita si 'otroEmpleo' es 'Sí' Y 'tipoInstitucion' tiene valor.
+    const enable = isOtroEmpleo && hasTipoInstitucion;
+
+    // Es obligatorio si se habilita
+    this.manejoValidaciones(form, 'nombreInstitucion', enable, enable);
+  }
+
+  private actualizarHorarioJornadaState(form: FormGroup): void {
+    const tieneOtroEmpleo = form.get('otroEmpleo')?.value === '1';
+    const esSustituto = form.get('sustituto')?.value === '1';
+    const tieneOoad = !!form.get('ooad')?.value;
+
+    // Habilitar si: (Otro Empleo = Sí) O (Sustituto = Sí Y OOAD tiene valor)
+    const enable = tieneOtroEmpleo || (esSustituto && tieneOoad);
+
+    // Son obligatorios en ambos escenarios si se habilitan
+    this.manejoValidaciones(form, 'horarioInicio', enable, enable);
+    this.manejoValidaciones(form, 'horarioFin', enable, enable);
+    this.manejoValidaciones(form, 'diaInicio', enable, enable);
+    this.manejoValidaciones(form, 'diaFin', enable, enable);
+  }
+
+  private manejoValidaciones(form: FormGroup, controlName: string, enable: boolean, isRequired: boolean = false): void {
+    const control = form.get(controlName);
+    if (control) {
+      if (enable) {
+        control.enable();
+        if (isRequired) {
+          control.setValidators(Validators.required);
+        }
+      } else {
+        control.disable();
+        control.clearValidators();
+        control.setValue(null); // Limpiar valor al deshabilitar
+      }
+      control.updateValueAndValidity();
+    }
+  }
+
+  obtenerDatosDocumentosEscolaridad(): void {
+    const idusuario = this.userData?.idUsuario;
+    if (!idusuario) return;
+    this._ConvocatoriaService.getDatosDocumentosEscolares(idusuario).subscribe({
+      next: (response: any) => {
+        if (!response.exito) return;
+        const respuesta: RespuestaConsultaDocumentos = response.respuesta;
+        console.log(respuesta.especialidadesDocumentos);
+        this.procesarDatosObligatoriosObtenidos(respuesta.documentosObligatorios);
+        this.procesarDocumentosContancias(respuesta.documentosConstancias);
+        const especialidades = this.procesarDocumentosEspecialidades(respuesta.especialidadesDocumentos);
+        this.registrosDocumentosEspecialidad.update(valor => especialidades);
+      }
+    });
+  }
+
+  procesarDatosObligatoriosObtenidos(datos: RespuestaDocumentosObligatorios[]): void {
+    const refObligatorio1 = datos.find(d => d.tipoDocumentoObligatorio.idDocumentoObligatorio === 1)?.documento.refGuid;
+    const refObligatorio2 = datos.find(d => d.tipoDocumentoObligatorio.idDocumentoObligatorio === 2)?.documento.refGuid;
+    const refObligatorio3 = datos.find(d => d.tipoDocumentoObligatorio.idDocumentoObligatorio === 3)?.documento.refGuid;
+    if (refObligatorio1) {
+      this.obtenerDocumento(refObligatorio1, 'obligatorio', 1);
+    }
+    if (refObligatorio2) {
+      this.obtenerDocumento(refObligatorio2, 'obligatorio', 2);
+    }
+    if (refObligatorio3) {
+      this.obtenerDocumento(refObligatorio3, 'obligatorio', 3);
+    }
+  }
+
+  procesarDocumentosContancias(datos: RespuestaDocumentosConstancia[]): void {
+    const refConstancia1 = datos.length > 0 ? datos[0].documento.refGuid : null;
+    const refConstancia2 = datos.length > 1 ? datos[1].documento.refGuid : null;
+    const refConstancia3 = datos.length > 1 ? datos[2].documento.refGuid : null;
+    if (refConstancia1) {
+      this.obtenerDocumento(refConstancia1, 'constancia', 1, datos[0].refConstancia);
+    }
+    if (refConstancia2) {
+      this.obtenerDocumento(refConstancia2, 'constancia', 2, datos[1].refConstancia);
+    }
+    if (refConstancia3) {
+      this.obtenerDocumento(refConstancia3, 'constancia', 3, datos[2].refConstancia);
+    }
+  }
+
+  procesarDocumentosEspecialidades(datos: RespuestaDocumentosEspecialidad[]): TabNode[] {
+    return datos.map((data: RespuestaDocumentosEspecialidad) => {
+      const documentosTab: TabDocumento[] = data.documentosEspecialidad.map(
+        (item: ItemDocumentoEspecialidad) => ({
+          tipoDocumento: item.tipoDocumentoEspecialidad.desTipoDocumentoEspecialidad,
+          especialidadMedica: data.desEspecialidad,
+          cveEspecialidad: data.cveEspecialidad,
+          idDocumento: item.idDocumentoEspecialidad,
+          guid: item.documento.refGuid,
+        })
+      );
+
+      const tabNode: TabNode = {
+        especialidad: data.desEspecialidad,
+        documentos: documentosTab,
+      };
+
+      return tabNode;
+    });
+  }
+
 }
