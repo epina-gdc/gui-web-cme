@@ -148,7 +148,7 @@ export class InicioComponent extends GeneralComponent {
   especialidades: TipoDropdown[] = [];
   dias_semana: TipoDropdown[] = [];
 
-  indice: WritableSignal<number> = signal<number>(1);
+  indice: WritableSignal<number> = signal<number>(0);
   tipoMedico: WritableSignal<string> = signal<string>("");
 
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
@@ -167,6 +167,8 @@ export class InicioComponent extends GeneralComponent {
   nombreConstancia1: string = '';
   nombreConstancia2: string = '';
   nombreConstancia3: string = '';
+
+  estatusPendienteDocumentacion: boolean = false;
 
   constructor(private readonly activatedRoute: ActivatedRoute) {
     super()
@@ -1059,12 +1061,14 @@ export class InicioComponent extends GeneralComponent {
     }
     if (especialidades.length === 0) {
       this._alertServices.error(this._Mensajes.MSG037);
+      this._alertServices.error('Al menos debe estar cargada una especialidad');
       return;
     }
     const cadaEspecialidadTieneDiploma: boolean = especialidades.every(node =>
       node.documentos.some(documento => documento.idDocumento === 21));
     if (!cadaEspecialidadTieneDiploma) {
       this._alertServices.error(this._Mensajes.MSG037);
+      this._alertServices.error('Para cada especialidad es necesario el documento Diploma Institucional de Especialidad');
       return;
     }
     if (this.formDatosEmpleo.invalid && externo) {
@@ -1345,8 +1349,17 @@ export class InicioComponent extends GeneralComponent {
         const especialidades = this.procesarDocumentosEspecialidades(respuesta.especialidadesDocumentos);
         this.registrosDocumentosEspecialidad.update(() => especialidades);
         this.cargarDatosEmpleoAlFormulario(respuesta.datosEmpleo);
+        if (respuesta.participacion.resultadoVerificacion) {
+          this.estatusPendienteDocumentacion = respuesta.participacion.resultadoVerificacion.estatusVerificacion.desEstatus === 'Pendiente';
+          this.desactivarForms();
+        }
       }
     });
+  }
+
+  desactivarForms(): void {
+    this.formDocumentosEspecialidad.disable();
+    this.formDatosEmpleo.disable();
   }
 
   procesarDatosObligatoriosObtenidos(datos: RespuestaDocumentosObligatorios[]): void {
@@ -1400,7 +1413,7 @@ export class InicioComponent extends GeneralComponent {
     });
   }
 
-  cargarDatosEmpleoAlFormulario(datos: RespuestaDatosEmpleo,): void {
+  cargarDatosEmpleoAlFormulario(datos: RespuestaDatosEmpleo): void {
     const otroEmpleoValue = datos.indOtroEmpleo?.toString() || '0';
     const sustitutoValue = datos.indMedicoSustituto?.toString() || '0';
     const ooadValue = datos.cveOoad || null;

@@ -22,6 +22,7 @@ export class UploadDocumentComponent implements OnChanges {
   @Input() maxFileSize: number = 5120000;
   @Input() existingFile: File | undefined = undefined;
   @Input({required: true}) idArchivo: string = '';
+  @Input() disabled: boolean = false;
   @Output() fileSelected = new EventEmitter<any>();
   @Output() fileRemoved = new EventEmitter<any>();
   files: any[] = [];
@@ -78,6 +79,7 @@ export class UploadDocumentComponent implements OnChanges {
   }
 
   seleccionarArchivo(): void {
+    if (this.disabled) return;
     const elemento: HTMLElement | null = document.getElementById('choose_btn_' + this.idArchivo);
     if (!elemento) return;
     elemento.querySelector('button')?.click();

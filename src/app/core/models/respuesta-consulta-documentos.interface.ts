@@ -2,17 +2,17 @@ import {TipoInstitucion} from '@models/solicitud-guardar-documentacion.interface
 
 export interface RespuestaConsultaDocumentos {
   "participacion": {
-    "idParticipacion": 103,
-    "idUsuario": 281,
-    "idConvocatoria": 1,
+    "idParticipacion": number,
+    "idUsuario": number,
+    "idConvocatoria": number,
     "desFolioMe": null,
     "resultadoVerificacion": {
-      "idResultadoVerificacion": 62,
+      "idResultadoVerificacion": number,
       "estatusVerificacion": {
-        "idEstatusVerificacion": 1,
+        "idEstatusVerificacion": number,
         "desEstatus": "Pendiente"
       },
-      "refObservaciones": "Aspirante sube documentos"
+      "refObservaciones": string
     }
   },
   datosPersonales: null,

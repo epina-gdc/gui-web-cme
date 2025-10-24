@@ -1,7 +1,7 @@
 <p-fileupload #fileDocument name="myfile[]" url="https://www.primefaces.org/cdn/api/upload.php" [multiple]="false"
               accept="application/pdf" [invalidFileTypeMessageDetail]="'El formato de documento es incorrecto.'"
               [invalidFileLimitMessageSummary]="''" [invalidFileTypeMessageSummary]="''"
-              [invalidFileSizeMessageSummary]="''"  [ngClass]="{'fileupload-not-empty': files.length > 0 }"
+              [invalidFileSizeMessageSummary]="''" [ngClass]="{'fileupload-not-empty': files.length > 0 }"
               [invalidFileLimitMessageDetail]="'El peso del documento excede al permitido.'"
               [invalidFileSizeMessageDetail]="'El peso del documento excede al permitido.'"
               maxFileSize="5120000" (onUpload)="onTemplatedUpload()" (onSelect)="onSelectedFiles($event)">
@@ -36,8 +36,12 @@
                  style="width:160px; font-size: 12px">
               {{ file.name }}
             </div>
-            <p-button icon="pi pi-times" class="border-circle" class="mb-2" [outlined]="true"
-                      [text]="true" severity="danger" size="small" (click)="cancelarCargaArchivo()" />
+            @if (disabled) {
+              <div class="my-1 mx-2" style="width: 24px; height: 26px"></div>
+            } @else {
+              <p-button icon="pi pi-times" class="border-circle mb-2" [outlined]="true"
+                        [text]="true" severity="danger" size="small" (click)="cancelarCargaArchivo()"/>
+            }
           </div>
         }
       </div>
@@ -65,8 +69,8 @@
   </ng-template>
   <ng-template pTemplate="file"></ng-template>
   <ng-template pTemplate="empty">
-    <div class="flex align-items-center justify-content-center flex-row mt-3 gap-2 cursor-pointer"
-         (click)="seleccionarArchivo()">
+    <div class="flex align-items-center justify-content-center flex-row mt-3 gap-2"
+         (click)="seleccionarArchivo()" [ngClass]="{'cursor-pointer': !disabled, 'cursor-default': disabled}">
       <i class="cme-upload" style="font-size: 1.2rem"></i>
       <p style="font-size: 12px">Adjunta un archivo en formato .PDF</p>
     </div>
