@@ -133,4 +133,21 @@ export class DocumentosLocalstorageService {
     localStorage.setItem(this.DOC_STORAGE_KEY, JSON.stringify(informacionActualizada));
 
   }
+
+  eliminarArchivoConstancia(idConstancia: number): void {
+    //  Obtener los datos existentes o inicializar un objeto vacío
+    const informacionGuardada = localStorage.getItem(this.DOC_STORAGE_KEY);
+    let informacionActualizada = informacionGuardada ? JSON.parse(informacionGuardada) : {
+      obligatorios: {},
+      especialidades: [],
+      constancias: {}
+    };
+
+    if (informacionActualizada.constancias[idConstancia]) {
+      delete informacionActualizada.constancias[idConstancia];
+    }
+    // Guardar el objeto actualizado en localStorage
+    localStorage.setItem(this.DOC_STORAGE_KEY, JSON.stringify(informacionActualizada));
+
+  }
 }

@@ -148,7 +148,7 @@ export class InicioComponent extends GeneralComponent {
   especialidades: TipoDropdown[] = [];
   dias_semana: TipoDropdown[] = [];
 
-  indice: WritableSignal<number> = signal<number>(1);
+  indice: WritableSignal<number> = signal<number>(0);
   tipoMedico: WritableSignal<string> = signal<string>("");
 
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
@@ -160,9 +160,9 @@ export class InicioComponent extends GeneralComponent {
 
   documentoEspecialidad!: File | null;
 
-  archivoConstancia1!: File | undefined;
-  archivoConstancia2!: File | undefined;
-  archivoConstancia3!: File | undefined;
+  archivoConstancia1!: File | null;
+  archivoConstancia2!: File | null;
+  archivoConstancia3!: File | null;
 
   nombreConstancia1: string = '';
   nombreConstancia2: string = '';
@@ -1466,5 +1466,33 @@ export class InicioComponent extends GeneralComponent {
 
   eliminarArchivoObligatorio(id: number) {
     this.documentosLocalStorageService.eliminarArchivoObligatorio(id);
+  }
+
+  eliminarConstancia(id: number) {
+    this.documentosLocalStorageService.eliminarArchivoConstancia(id);
+    if (id === 1){
+      this.archivoConstancia1 = null;
+      this.nombreConstancia1 = '';
+      const uploader = this.uploaders.find(comp => comp.idArchivo === 'constancia_1');
+      if (uploader) {
+        uploader.clear();
+      }
+    }
+    if (id === 2){
+      this.archivoConstancia2 = null;
+      this.nombreConstancia2 = '';
+      const uploader = this.uploaders.find(comp => comp.idArchivo === 'constancia_2');
+      if (uploader) {
+        uploader.clear();
+      }
+    }
+    if (id === 3){
+      this.archivoConstancia3 = null;
+      this.nombreConstancia3 = '';
+      const uploader = this.uploaders.find(comp => comp.idArchivo === 'constancia_3');
+      if (uploader) {
+        uploader.clear();
+      }
+    }
   }
 }

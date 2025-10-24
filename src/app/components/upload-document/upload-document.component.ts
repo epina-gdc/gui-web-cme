@@ -20,7 +20,7 @@ export class UploadDocumentComponent implements OnChanges {
   @ViewChild('fileDocument') fileUpload!: FileUpload;
 
   @Input() maxFileSize: number = 5242880;
-  @Input() existingFile: File | undefined = undefined;
+  @Input() existingFile: File | undefined | null = undefined;
   @Input({required: true}) idArchivo: string = '';
   @Input() disabled: boolean = false;
   @Output() fileSelected = new EventEmitter<any>();
