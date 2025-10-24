@@ -148,7 +148,7 @@ export class InicioComponent extends GeneralComponent {
   especialidades: TipoDropdown[] = [];
   dias_semana: TipoDropdown[] = [];
 
-  indice: WritableSignal<number> = signal<number>(0);
+  indice: WritableSignal<number> = signal<number>(1);
   tipoMedico: WritableSignal<string> = signal<string>("");
 
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
@@ -1356,7 +1356,9 @@ export class InicioComponent extends GeneralComponent {
         this.procesarDocumentosContancias(respuesta.documentosConstancias);
         const especialidades = this.procesarDocumentosEspecialidades(respuesta.especialidadesDocumentos);
         this.registrosDocumentosEspecialidad.update(() => especialidades);
-        this.cargarDatosEmpleoAlFormulario(respuesta.datosEmpleo);
+        if (respuesta.datosEmpleo) {
+          this.cargarDatosEmpleoAlFormulario(respuesta.datosEmpleo);
+        }
         if (respuesta.participacion.resultadoVerificacion) {
           this.estatusPendienteDocumentacion = respuesta.participacion.resultadoVerificacion.estatusVerificacion.desEstatus === 'Pendiente';
           this.desactivarForms();
@@ -1460,5 +1462,9 @@ export class InicioComponent extends GeneralComponent {
         window.open(fileURL, '_blank');
       }
     });
+  }
+
+  eliminarArchivoObligatorio(id: number) {
+    this.documentosLocalStorageService.eliminarArchivoObligatorio(id);
   }
 }

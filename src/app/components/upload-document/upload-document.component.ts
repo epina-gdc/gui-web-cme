@@ -53,7 +53,8 @@ export class UploadDocumentComponent implements OnChanges {
   }
 
   onRemoveFile(file: any, index: number) {
-    this.files.splice(index, 1);
+    this.files = [];
+    this.fileUpload.clear();
     this.fileRemoved.emit(this.files);
   }
 
