@@ -1,6 +1,6 @@
 <div class="flex justify-content-start align-items-center gap-3">
   <btn-regresar/>
-  <h3 class="titulo-seccion">Registro de médico interno</h3>
+  <h3 class="titulo-seccion">{{ this.tipoMedico() }}</h3>
 </div>
 <p-card class="mx-2 my-4 no-padding-empty-border">
   <header-medico-interno></header-medico-interno>
@@ -18,7 +18,7 @@
         <section class="flex">
           <article class="col-3 flex flex-row">
             <p class="field-label">Fotografía</p>
-            <upload-photo (fileSelected)="onFileSelected($event)" class="mt-6"/>
+            <upload-photo (fileSelected)="onFileSelected($event)" [existingFile]="defaultFile" class="mt-6"/>
             <p class="label-obligatorio">Obligatorio</p>
           </article>
           <article class="col-9 flex flex-row flex-wrap">
@@ -34,7 +34,9 @@
             <div class="col-4">
               <div class="flex justify-content-between">
                 <label class="field-label" for="nss">NSS</label>
-                <p class="label-obligatorio">Obligatorio</p>
+                @if (this.userData?.idPerfil == 2) {
+                  <p class="label-obligatorio">Obligatorio</p>
+                }
               </div>
               <input pInputText class="w-full" type="text" id="nss" placeholder="Ingresa NSS"
                      formControlName="nss" appOnlyNumbers maxlength="11"/>
@@ -145,7 +147,8 @@
             <div class="flex justify-content-between">
               <label class="field-label" for="estadoNacimiento">Estado de origen (nacimiento)</label>
             </div>
-            <p-select [options]="lugaresNacimiento" formControlName="estadoNacimiento" optionLabel="label" optionValue="value"
+            <p-select [options]="lugaresNacimiento" formControlName="estadoNacimiento" optionLabel="label"
+                      optionValue="value"
                       filterBy="label" [filter]="true" placeholder="Ingresa estado de origen" class="w-full"/>
           </div>
         </article>
@@ -223,6 +226,7 @@
             <div class="col-3">
               <div class="flex justify-content-between">
                 <label class="field-label" for="ooad">OOAD</label>
+                <p class="label-obligatorio">Obligatorio</p>
               </div>
               <p-select [options]="ooad" formControlName="ooad" optionLabel="label"
                         placeholder="Seleccionar opción" class="w-full" optionValue="value"/>
@@ -230,6 +234,7 @@
             <div class="col-3">
               <div class="flex justify-content-between">
                 <label class="field-label" for="zonaInteres">Zona de interés</label>
+                <p class="label-obligatorio">Obligatorio</p>
               </div>
               <p-select [options]="zonas" formControlName="zonaInteres" optionLabel="label"
                         placeholder="Seleccionar opción" class="w-full" optionValue="value"/>
@@ -252,10 +257,10 @@
           </ng-template>
           <ng-template #body let-zona let-rowIndex="rowIndex">
             <tr>
-              <td>{{ devolverTextoOoad(zona.ooad) }}</td>
-              <td>{{ devolverTextoZonaInnteres(zona.zonaInteres) }}</td>
+              <td>{{ zona.desOoad }}</td>
+              <td>{{ zona.desZona }}</td>
               <td>
-                <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.0rem'}"
+                <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.5rem'}"
                           (click)="(eliminarZonaInteres(rowIndex))"/>
               </td>
             </tr>
@@ -275,7 +280,8 @@
 
       <div class="flex flex-row justify-content-end gap-3">
         <p-button type="button" variant="outlined" label="Limpiar formulario"/>
-        <p-button type="button" label="Guardar" (click)="siguientePasoStepper()"/>
+        <p-button type="button" [disabled]="formRegistro.invalid" label="Guardar" (click)="siguientePasoStepper()"/>
+        <!--<p-button type="button"  label="Guardar" (click)="siguientePasoStepper()"/>-->
         <p-button type="button" label="Finalizar registro"/>
       </div>
 
@@ -289,21 +295,27 @@
             <p class="field-label">Identificación Oficial (INE)</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
-          <upload-document/>
+          <upload-document (fileSelected)="procesarArchivoObligatorio($event, 1)" [existingFile]="archivoINE"
+                           (fileRemoved)="eliminarArchivoObligatorio(1)"
+                           [disabled]="estatusPendienteDocumentacion" idArchivo="INE"/>
         </div>
         <div class="col-3">
           <div class="flex justify-content-between mb-1">
             <p class="field-label">Título Medicina General</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
-          <upload-document/>
+          <upload-document (fileSelected)="procesarArchivoObligatorio($event, 2)" [existingFile]="archivoTitulo"
+                           (fileRemoved)="eliminarArchivoObligatorio(2)"
+                           [disabled]="estatusPendienteDocumentacion" idArchivo="titulo"/>
         </div>
         <div class="col-3">
           <div class="flex justify-content-between mb-1">
             <p class="field-label">Cédula Profesional Médica General</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
-          <upload-document/>
+          <upload-document (fileSelected)="procesarArchivoObligatorio($event, 3)" [existingFile]="archivoCedula"
+                           (fileRemoved)="eliminarArchivoObligatorio(3)"
+                           [disabled]="estatusPendienteDocumentacion" idArchivo="cedula"/>
         </div>
       </article>
     </p-card>
@@ -320,7 +332,7 @@
               <p class="field-label">Especialidad</p>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <p-select [options]="dummies" optionLabel="label" optionValue="value"
+            <p-select [options]="especialidades" optionLabel="label" optionValue="value"
                       placeholder="Selecciona opción" formControlName="especialidad" class="w-full"/>
           </div>
           <div class="col-3">
@@ -336,11 +348,15 @@
               <p class="field-label">Carga de documento</p>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <upload-document/>
+            <upload-document idArchivo="especialidad" (fileSelected)="procesarArchivoEspecializacion($event)"
+                             [disabled]="estatusPendienteDocumentacion"/>
           </div>
           <div class="col-3 flex justify-content-start align-items-center">
-            <p-button label="Agregar" icon="cme-plus" iconPos="right"
-                      [text]="true" (click)="agregarDocumento()"/>
+            @if (estatusPendienteDocumentacion) {
+              <p-button label="Agregar" icon="cme-plus" iconPos="right"
+                        [disabled]="formDocumentosEspecialidad.invalid || !documentoEspecialidad || estatusPendienteDocumentacion"
+                        [text]="true" (click)="subirDocumentoyObtenerGuid()"/>
+            }
           </div>
         </article>
       </form>
@@ -369,11 +385,15 @@
                     </ng-template>
                     <ng-template #body let-registro>
                       <tr>
-                        <td class="label-documento-td">{{ registro.tipoDocumento }}</td>
+                        <td class="label-documento-td cursor-pointer"
+                            (click)="mostrarDocumento(registro.guid)">{{ registro.tipoDocumento }}
+                        </td>
                         <td class="label-td">{{ registro.especialidadMedica }}</td>
                         <td>
-                          <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.0rem'}"
-                                    (click)="eliminarDocumento(registro.especialidadMedica, registro.tipoDocumento)"/>
+                          @if (!estatusPendienteDocumentacion) {
+                            <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.0rem'}"
+                                      (click)="eliminarDocumento(registro.especialidadMedica, registro.tipoDocumento)"/>
+                          }
                         </td>
                       </tr>
                     </ng-template>
@@ -392,144 +412,190 @@
       }
     </p-card>
 
-    <p-card class="mx-2 empty-border" [header]="'Constancias de cursos de educación permanente en salud'">
-      <div class="flex align-items-center gap-4 px-2 py-4">
-        <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
-        <em class="info-em-texto">Adjunta hasta 3 documentos de tus cursos de capacitación o actualización
-          post-especialidad (ej. Alta Especialidad, Adiestramientos). considerando el tamaño máximo 50mb.</em>
-      </div>
-      <article class="flex flex-row flex-wrap">
-        <div class="col-4">
-          <p class="titulo-documento">Documento 1</p>
-          <div class="flex justify-content-between mb-1">
-            <p class="field-label">Constancias de cursos</p>
-          </div>
-          <upload-document/>
-          <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
-          <div class="flex justify-content-between mb-1">
-            <p class="field-label">Nombre de la constancia</p>
-            <p class="label-obligatorio">Obligatorio</p>
-          </div>
-          <input pInputText class="w-full" type="text" id="codigoPostal"
-                 placeholder="Especifique el nombre del documento"
-          />
+    @if (userData?.idPerfil === 3) {
+      <p-card class="mx-2 empty-border" [header]="'Constancias de cursos de educación permanente en salud'">
+        <div class="flex align-items-center gap-4 px-2 py-4">
+          <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
+          <em class="info-em-texto">Adjunta hasta 3 documentos de tus cursos de capacitación o actualización
+            post-especialidad (ej. Alta Especialidad, Adiestramientos). considerando el tamaño máximo 50mb.</em>
         </div>
-        <div class="col-4">
-          <p class="titulo-documento">Documento 2</p>
-          <div class="flex justify-content-between mb-1">
-            <p class="field-label">Constancias de cursos</p>
-          </div>
-          <upload-document/>
-          <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
-          <div class="flex justify-content-between mb-1">
-            <p class="field-label">Nombre de la constancia</p>
-            <p class="label-obligatorio">Obligatorio</p>
-          </div>
-          <input pInputText class="w-full" type="text" id="codigoPostal"
-                 placeholder="Especifique el nombre del documento"
-          />
-        </div>
-        <div class="col-4">
-          <p class="titulo-documento">Documento 3</p>
-          <div class="flex justify-content-between mb-1">
-            <p class="field-label">Constancias de cursos</p>
-          </div>
-          <upload-document/>
-          <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
-          <div class="flex justify-content-between mb-1">
-            <p class="field-label">Nombre de la constancia</p>
-            <p class="label-obligatorio">Obligatorio</p>
-          </div>
-          <input pInputText class="w-full" type="text" id="codigoPostal"
-                 placeholder="Especifique el nombre del documento"
-          />
-        </div>
-      </article>
-    </p-card>
-
-    <p-card class="mx-2 empty-border" [header]="'Datos de empleo'">
-      <article class="grid-datos-empleo">
-        <div>
-          <p class="field-label">¿Tienes otro empleo?</p>
-          <div class="flex flex-wrap gap-2">
-            @for (opcion of opciones_boolean; track opcion.key) {
-              <div class="flex align-items-center gap-1">
-                <p-radiobutton class="radio-button-square" [inputId]="opcion.key" [value]="opcion"
-                               [(ngModel)]="empleo">
-                </p-radiobutton>
-                <label [for]="opcion.key" class="field-label mt-4">{{ opcion.name }}</label>
-              </div>
-            }
-          </div>
-        </div>
-        <div>
-          <p class="field-label">¿Eres sustituto 08 IMSS?</p>
-          <div class="flex flex-wrap gap-2">
-            @for (opcion of opciones_boolean; track opcion.key) {
-              <div class="flex align-items-center gap-1">
-                <p-radiobutton class="radio-button-square" [inputId]="opcion.key" [value]="opcion"
-                               [(ngModel)]="sustituto">
-                </p-radiobutton>
-                <label [for]="opcion.key" class="field-label mt-4">{{ opcion.name }}</label>
-              </div>
-            }
-          </div>
-        </div>
-        <div>
-          <div class="flex justify-content-between">
-            <p class="field-label mb-1">Jornada laboral</p>
-          </div>
-          <div class="flex gap-2">
-            <p-datepicker [style]="{ 'width': '100%' }" placeholder="De" [iconDisplay]="'input'"
-                          [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay">
-              <ng-template #inputicon let-clickCallBack="clickCallBack">
-                <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
-              </ng-template>
-            </p-datepicker>
-            <p-datepicker [style]="{ 'width': '100%' }" placeholder="Hasta" [iconDisplay]="'input'"
-                          [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay">
-              <ng-template #inputicon let-clickCallBack="clickCallBack">
-                <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
-              </ng-template>
-            </p-datepicker>
-          </div>
-        </div>
-        <div>
-          <div class="flex justify-content-between">
-            <p class="field-label mb-1">Horario laboral</p>
-          </div>
-          <div class="flex gap-2">
-            <p-datepicker [style]="{ 'width': '100%' }" placeholder="De" [iconDisplay]="'input'"
-                          [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"/>
-            <p-datepicker [style]="{ 'width': '100%' }" placeholder="Hasta" [iconDisplay]="'input'"
-                          [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"/>
-          </div>
-        </div>
-        <div>
-          <p></p>
-        </div>
-      </article>
-      <article class="flex flex-row">
-        <div class="col-8">
-          <div class="flex justify-content-between">
-            <label class="field-label" for="institucion">Institución</label>
-            <div class="flex gap-2">
-              @for (institucion of instituciones; track institucion.key) {
-                <div class="flex justify-content-end gap-1 align-items-center">
-                  <p-radiobutton [inputId]="institucion.key" [(ngModel)]="institucionSeleccionada">
-                  </p-radiobutton>
-                  <label [for]="institucion.key" class="leyenda-documento mt-4">{{ institucion.name }}</label>
-                </div>
-              }
+        <article class="flex flex-row flex-wrap">
+          <div class="col-4">
+            <p class="titulo-documento">Documento 1</p>
+            <div class="flex justify-content-between mb-1">
+              <p class="field-label">Constancias de cursos</p>
             </div>
+            <upload-document idArchivo="constancia_1" (fileSelected)="procesarConstancia($event, 1)"
+                             [maxFileSize]="52428800" (fileRemoved)="eliminarConstancia(1)"
+                             [existingFile]="archivoConstancia1" [disabled]="estatusPendienteDocumentacion"/>
+            <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
+            <div class="flex justify-content-between mb-1">
+              <p class="field-label">Nombre de la constancia</p>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="constancia1"
+                   [disabled]="estatusPendienteDocumentacion"
+                   placeholder="Especifique el nombre del documento" [(ngModel)]="nombreConstancia1"
+            />
           </div>
-          <input pInputText class="w-full" type="text" id="institucion"
-                 placeholder="Especifique institución"/>
-          <p class="leyenda-documento">Especifique el nombre de la institución , si eres sustituto especifica el OOAD de
-            adscripción</p>
-        </div>
-      </article>
-    </p-card>
+          <div class="col-4">
+            <p class="titulo-documento">Documento 2</p>
+            <div class="flex justify-content-between mb-1">
+              <p class="field-label">Constancias de cursos</p>
+            </div>
+            <upload-document idArchivo="constancia_2" (fileSelected)="procesarConstancia($event, 2)"
+                             [maxFileSize]="52428800" (fileRemoved)="eliminarConstancia(2)"
+                             [existingFile]="archivoConstancia2"
+                             [disabled]="estatusPendienteDocumentacion"/>
+            <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
+            <div class="flex justify-content-between mb-1">
+              <p class="field-label">Nombre de la constancia</p>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="constancia2" [(ngModel)]="nombreConstancia2"
+                   [disabled]="estatusPendienteDocumentacion"
+                   placeholder="Especifique el nombre del documento" (change)="actualizarNombreDocumento(2, $event)"
+            />
+          </div>
+          <div class="col-4">
+            <p class="titulo-documento">Documento 3</p>
+            <div class="flex justify-content-between mb-1">
+              <p class="field-label">Constancias de cursos</p>
+            </div>
+            <upload-document idArchivo="constancia_3" (fileSelected)="procesarConstancia($event, 3)"
+                             [maxFileSize]="52428800" (fileRemoved)="eliminarConstancia(3)"
+                             [existingFile]="archivoConstancia3" [disabled]="estatusPendienteDocumentacion"/>
+            <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
+            <div class="flex justify-content-between mb-1">
+              <p class="field-label">Nombre de la constancia</p>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <input pInputText class="w-full" type="text" id="constancia3" [(ngModel)]="nombreConstancia3"
+                   placeholder="Especifique el nombre del documento"
+                   [disabled]="estatusPendienteDocumentacion"
+            />
+          </div>
+        </article>
+      </p-card>
+    }
+
+    @if (userData?.idPerfil === 3) {
+      <p-card class="mx-2 empty-border" [header]="'Datos de empleo'">
+        <form [formGroup]="formDatosEmpleo">
+          <article class="grid-datos-empleo">
+            <div>
+              <p class="field-label">¿Tienes otro empleo?</p>
+              <div class="flex flex-wrap gap-2">
+                @for (opcion of opciones_boolean; track opcion.key) {
+                  <div class="flex align-items-center gap-1">
+                    <p-radiobutton class="radio-button-square" [inputId]="opcion.key" [value]="opcion.key"
+                                   formControlName="otroEmpleo">
+                    </p-radiobutton>
+                    <label [for]="opcion.key" class="field-label mt-4">{{ opcion.name }}</label>
+                  </div>
+                }
+              </div>
+            </div>
+            <div>
+              <p class="field-label">¿Eres sustituto 08 IMSS?</p>
+              <div class="flex flex-wrap gap-2">
+                @for (opcion of opciones_boolean; track opcion.key) {
+                  <div class="flex align-items-center gap-1">
+                    <p-radiobutton class="radio-button-square" [inputId]="opcion.key" [value]="opcion.key"
+                                   formControlName="sustituto">
+                    </p-radiobutton>
+                    <label [for]="opcion.key" class="field-label mt-4">{{ opcion.name }}</label>
+                  </div>
+                }
+              </div>
+            </div>
+            @if (formDatosEmpleo.get('sustituto')?.value === '1') {
+              <div class="px-4">
+                <div class="flex justify-content-between">
+                  <p class="field-label mb-1">OOAD:</p>
+                </div>
+                <div class="flex gap-2">
+                  <p-select [options]="ooad" formControlName="ooad" optionLabel="label"
+                            placeholder="Seleccionar opción" class="w-full" optionValue="value"/>
+                </div>
+              </div>
+            }
+            <div>
+              <div class="flex justify-content-between">
+                <p class="field-label mb-1">Horario laboral</p>
+              </div>
+              <div class="flex gap-2">
+                <p-datepicker [style]="{ 'width': '100%' }" placeholder="De" [iconDisplay]="'input'"
+                              formControlName="horarioInicio"
+                              [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" [timeOnly]="true">
+                  <ng-template #inputicon let-clickCallBack="clickCallBack">
+                    <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
+                  </ng-template>
+                </p-datepicker>
+                <p-datepicker [style]="{ 'width': '100%' }" placeholder="Hasta" [iconDisplay]="'input'"
+                              [timeOnly]="true" formControlName="horarioFin"
+                              [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay">
+                  <ng-template #inputicon let-clickCallBack="clickCallBack">
+                    <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
+                  </ng-template>
+                </p-datepicker>
+              </div>
+            </div>
+            <div>
+              <div class="flex justify-content-between">
+                <p class="field-label mb-1">Jornada laboral</p>
+              </div>
+              <div class="flex gap-2">
+                <p-select [options]="dias_semana" optionLabel="label" optionValue="value"
+                          placeholder="De" formControlName="diaInicio" class="w-full">
+                  <ng-template #dropdownicon>
+                    <i class="pi pi-calendar"></i>
+                  </ng-template>
+                </p-select>
+                <p-select [options]="dias_semana" optionLabel="label" optionValue="value"
+                          placeholder="Hasta" formControlName="diaFin" class="w-full">
+                  <ng-template #dropdownicon>
+                    <i class="pi pi-calendar"></i>
+                  </ng-template>
+                </p-select>
+              </div>
+            </div>
+            <div>
+              <p></p>
+            </div>
+          </article>
+          <article class="flex flex-row">
+            <div class="col-8">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="institucion">Institución</label>
+                <div class="flex gap-2">
+                  @for (institucion of instituciones; track institucion.key) {
+                    <div class="flex justify-content-end gap-1 align-items-center">
+                      <p-radiobutton [inputId]="institucion.key" formControlName="tipoInstitucion"
+                                     [value]="institucion.key">
+                      </p-radiobutton>
+                      <label [for]="institucion.key" class="leyenda-documento mt-4">{{ institucion.name }}</label>
+                    </div>
+                  }
+                </div>
+              </div>
+              <input pInputText class="w-full" type="text" id="institucion" formControlName="nombreInstitucion"
+                     placeholder="Especifique institución" [maxlength]="200"/>
+              <p class="leyenda-documento">Especifique el nombre de la institución , si eres sustituto especifica el
+                OOAD de adscripción</p>
+            </div>
+          </article>
+        </form>
+      </p-card>
+    }
+
+    <div class="flex flex-row justify-content-end gap-3">
+      <p-button type="button" variant="outlined" label="Limpiar formulario" [disabled]="estatusPendienteDocumentacion"/>
+      <p-button type="button" label="Guardar" (click)="guardarDocumentacion()"
+                [disabled]="banderaCargarDocumentacion"/>
+      <p-button type="button" label="Finalizar registro" disabled/>
+    </div>
+
   }
   @case (2) {
     <app-oferta-laboral></app-oferta-laboral>
