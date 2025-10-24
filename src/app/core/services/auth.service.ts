@@ -76,7 +76,7 @@ export class AuthService {
         nomApellidoPaterno: payload.nomApellidoPaterno,
         nomNombre: payload.nomNombre,
         nomApellidoMaterno: payload.nomApellidoMaterno,
-        cveMatricula: payload.cveMatricula,
+        cveMatricula: payload?.cveMatricula,
         perfil: payload.perfil,
         refCurp: payload.refCurp,
         refEmail: payload.refEmail,
@@ -84,7 +84,8 @@ export class AuthService {
         idSubperfil: payload.idSubperfil,
         subperfil: payload.subperfil,
         fechaRegistro: payload.fechaRegistro,
-        refPasaporte: payload.refPasaporte
+        refPasaporte: payload.refPasaporte,
+        refFolio: payload?.refFolio
       };
     } else {
       throw new Error('Error al intentar obtener el usuario del payload en el token');
