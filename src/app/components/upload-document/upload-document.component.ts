@@ -79,6 +79,7 @@ export class UploadDocumentComponent implements OnChanges {
   }
 
   seleccionarArchivo(): void {
+    if (this.disabled) return;
     const elemento: HTMLElement | null = document.getElementById('choose_btn_' + this.idArchivo);
     if (!elemento) return;
     elemento.querySelector('button')?.click();

@@ -69,8 +69,8 @@
   </ng-template>
   <ng-template pTemplate="file"></ng-template>
   <ng-template pTemplate="empty">
-    <div class="flex align-items-center justify-content-center flex-row mt-3 gap-2 cursor-pointer"
-         (click)="seleccionarArchivo()">
+    <div class="flex align-items-center justify-content-center flex-row mt-3 gap-2"
+         (click)="seleccionarArchivo()" [ngClass]="{'cursor-pointer': !disabled, 'cursor-default': disabled}">
       <i class="cme-upload" style="font-size: 1.2rem"></i>
       <p style="font-size: 12px">Adjunta un archivo en formato .PDF</p>
     </div>
