@@ -1349,9 +1349,15 @@ export class InicioComponent extends GeneralComponent {
         this.cargarDatosEmpleoAlFormulario(respuesta.datosEmpleo);
         if (respuesta.participacion.resultadoVerificacion) {
           this.estatusPendienteDocumentacion = respuesta.participacion.resultadoVerificacion.estatusVerificacion.desEstatus === 'Pendiente';
+          this.desactivarForms();
         }
       }
     });
+  }
+
+  desactivarForms(): void {
+    this.formDocumentosEspecialidad.disable();
+    this.formDatosEmpleo.disable();
   }
 
   procesarDatosObligatoriosObtenidos(datos: RespuestaDocumentosObligatorios[]): void {
