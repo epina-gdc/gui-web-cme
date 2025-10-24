@@ -148,7 +148,7 @@ export class InicioComponent extends GeneralComponent {
   especialidades: TipoDropdown[] = [];
   dias_semana: TipoDropdown[] = [];
 
-  indice: WritableSignal<number> = signal<number>(0);
+  indice: WritableSignal<number> = signal<number>(1);
   tipoMedico: WritableSignal<string> = signal<string>("");
 
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
@@ -1267,6 +1267,23 @@ export class InicioComponent extends GeneralComponent {
     }
 
     return especialidades.length === 0;
+  }
+
+  get refConstancia1() {
+    const refConstancia1 = this.documentosLocalStorageService.obtenerRefConstancia(1);
+    return !refConstancia1;
+  }
+
+  get refConstancia2() {
+    const refConstancia2 = this.documentosLocalStorageService.obtenerRefConstancia(2);
+
+    return !refConstancia2;
+  }
+
+  get refConstancia3() {
+    const refConstancia3 = this.documentosLocalStorageService.obtenerRefConstancia(3);
+
+    return !refConstancia3;
   }
 
   suscribirObservablesDatosEmpleo(): void {

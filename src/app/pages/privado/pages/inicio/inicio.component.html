@@ -434,7 +434,7 @@
               <p class="label-obligatorio">Obligatorio</p>
             </div>
             <input pInputText class="w-full" type="text" id="constancia1"
-                   [disabled]="estatusPendienteDocumentacion"
+                   [disabled]="estatusPendienteDocumentacion || refConstancia1"
                    placeholder="Especifique el nombre del documento" [(ngModel)]="nombreConstancia1"
             />
           </div>
@@ -453,7 +453,7 @@
               <p class="label-obligatorio">Obligatorio</p>
             </div>
             <input pInputText class="w-full" type="text" id="constancia2" [(ngModel)]="nombreConstancia2"
-                   [disabled]="estatusPendienteDocumentacion"
+                   [disabled]="estatusPendienteDocumentacion || refConstancia2"
                    placeholder="Especifique el nombre del documento" (change)="actualizarNombreDocumento(2, $event)"
             />
           </div>
@@ -472,7 +472,7 @@
             </div>
             <input pInputText class="w-full" type="text" id="constancia3" [(ngModel)]="nombreConstancia3"
                    placeholder="Especifique el nombre del documento"
-                   [disabled]="estatusPendienteDocumentacion"
+                   [disabled]="estatusPendienteDocumentacion || refConstancia3"
             />
           </div>
         </article>
