@@ -6,13 +6,13 @@ export const DEPENDIENTES = [
 ]
 
 export const BOOLEAN_OPCIONES = [
-  { name: 'Sí', key: 'true' },
-  { name: 'No', key: 'false' }
+  { name: 'Sí', key: '1' },
+  { name: 'No', key: '0' }
 ]
 
 export const INSTITUCIONES = [
-  { name: 'Pública', key: 'true' },
-  { name: 'Privada', key: 'false' }
+  { name: 'Pública', key: '1' },
+  { name: 'Privada', key: '0' }
 ]
 
 export const CME_TOKEN: string = "access_token";
