@@ -1061,12 +1061,14 @@ export class InicioComponent extends GeneralComponent {
     }
     if (especialidades.length === 0) {
       this._alertServices.error(this._Mensajes.MSG037);
+      this._alertServices.error('Al menos debe estar cargada una especialidad');
       return;
     }
     const cadaEspecialidadTieneDiploma: boolean = especialidades.every(node =>
       node.documentos.some(documento => documento.idDocumento === 21));
     if (!cadaEspecialidadTieneDiploma) {
       this._alertServices.error(this._Mensajes.MSG037);
+      this._alertServices.error('Para cada especialidad es necesario el documento Diploma Institucional de Especialidad');
       return;
     }
     if (this.formDatosEmpleo.invalid && externo) {
