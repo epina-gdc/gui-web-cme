@@ -1,4 +1,4 @@
-import {Component, computed, inject, QueryList, signal, ViewChildren, WritableSignal} from '@angular/core';
+import {Component, inject, QueryList, signal, ViewChildren, WritableSignal} from '@angular/core';
 import {Card} from 'primeng/card';
 import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.component';
 import {StepsComponent} from '@components/steps/steps.component';
@@ -56,6 +56,7 @@ import {
   RespuestaConsultaDocumentos, RespuestaDatosEmpleo, RespuestaDocumentosConstancia, RespuestaDocumentosEspecialidad,
   RespuestaDocumentosObligatorios
 } from '@models/respuesta-consulta-documentos.interface';
+import {jornadaLaboralValidator} from '@validators/jornada-validator';
 
 interface DocumentoFuente {
   refGuid: string;
@@ -246,7 +247,7 @@ export class InicioComponent extends GeneralComponent {
       diaInicio: [{value: null, disabled: true}],
       diaFin: [{value: null, disabled: true}],
       ooad: [{value: null, disabled: true}],
-    })
+    }, { validators: jornadaLaboralValidator })
   }
 
   obtenerFechaNacimientoDeCURP(curp: string): Date {
