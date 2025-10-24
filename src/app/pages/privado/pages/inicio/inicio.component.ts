@@ -160,9 +160,9 @@ export class InicioComponent extends GeneralComponent {
 
   documentoEspecialidad!: File | null;
 
-  archivoConstancia1!: File | undefined;
-  archivoConstancia2!: File | undefined;
-  archivoConstancia3!: File | undefined;
+  archivoConstancia1!: File | null;
+  archivoConstancia2!: File | null;
+  archivoConstancia3!: File | null;
 
   nombreConstancia1: string = '';
   nombreConstancia2: string = '';
@@ -1047,6 +1047,11 @@ export class InicioComponent extends GeneralComponent {
     const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
     const externo = this.userData?.idPerfil === 3;
 
+    if (this.estatusPendienteDocumentacion) {
+      this.indice.update((value: number) => value + 1);
+      return;
+    }
+
     if (!refObligatorio1) {
       this._alertServices.error(this._Mensajes.MSG037);
       return;
@@ -1081,7 +1086,7 @@ export class InicioComponent extends GeneralComponent {
       next: (data: ResponseGeneral) => {
         if (data.exito) {
           this.indice.update((value: number) => value + 1);
-          this._alertServices.exito(data.mensaje)
+          this._alertServices.exito(this._Mensajes.MSG039)
           this.documentosLocalStorageService.limpiar();
           return;
         }
@@ -1245,6 +1250,9 @@ export class InicioComponent extends GeneralComponent {
     const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
     const externo = this.userData?.idPerfil === 3;
 
+    if (this.estatusPendienteDocumentacion) {
+      return false;
+    }
     if (!refObligatorio1) {
       return true;
     }
@@ -1348,7 +1356,9 @@ export class InicioComponent extends GeneralComponent {
         this.procesarDocumentosContancias(respuesta.documentosConstancias);
         const especialidades = this.procesarDocumentosEspecialidades(respuesta.especialidadesDocumentos);
         this.registrosDocumentosEspecialidad.update(() => especialidades);
-        this.cargarDatosEmpleoAlFormulario(respuesta.datosEmpleo);
+        if (respuesta.datosEmpleo) {
+          this.cargarDatosEmpleoAlFormulario(respuesta.datosEmpleo);
+        }
         if (respuesta.participacion.resultadoVerificacion) {
           this.estatusPendienteDocumentacion = respuesta.participacion.resultadoVerificacion.estatusVerificacion.desEstatus === 'Pendiente';
           this.desactivarForms();
@@ -1440,4 +1450,49 @@ export class InicioComponent extends GeneralComponent {
     });
   }
 
+  mostrarDocumento(guid: string) {
+    this.documentoService.obtenerDocumento(guid).subscribe({
+      next: (response: any) => {
+
+        const tipoArchivo = response.type;
+        const fileBlob = new Blob([response], {type: tipoArchivo});
+        const fileURL = URL.createObjectURL(fileBlob);
+
+        // 3. Abrir en una nueva pestaña
+        window.open(fileURL, '_blank');
+      }
+    });
+  }
+
+  eliminarArchivoObligatorio(id: number) {
+    this.documentosLocalStorageService.eliminarArchivoObligatorio(id);
+  }
+
+  eliminarConstancia(id: number) {
+    this.documentosLocalStorageService.eliminarArchivoConstancia(id);
+    if (id === 1){
+      this.archivoConstancia1 = null;
+      this.nombreConstancia1 = '';
+      const uploader = this.uploaders.find(comp => comp.idArchivo === 'constancia_1');
+      if (uploader) {
+        uploader.clear();
+      }
+    }
+    if (id === 2){
+      this.archivoConstancia2 = null;
+      this.nombreConstancia2 = '';
+      const uploader = this.uploaders.find(comp => comp.idArchivo === 'constancia_2');
+      if (uploader) {
+        uploader.clear();
+      }
+    }
+    if (id === 3){
+      this.archivoConstancia3 = null;
+      this.nombreConstancia3 = '';
+      const uploader = this.uploaders.find(comp => comp.idArchivo === 'constancia_3');
+      if (uploader) {
+        uploader.clear();
+      }
+    }
+  }
 }

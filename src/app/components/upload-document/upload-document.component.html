@@ -4,7 +4,7 @@
               [invalidFileSizeMessageSummary]="''" [ngClass]="{'fileupload-not-empty': files.length > 0 }"
               [invalidFileLimitMessageDetail]="'El peso del documento excede al permitido.'"
               [invalidFileSizeMessageDetail]="'El peso del documento excede al permitido.'"
-              maxFileSize="5120000" (onUpload)="onTemplatedUpload()" (onSelect)="onSelectedFiles($event)">
+              [maxFileSize]="maxFileSize" (onUpload)="onTemplatedUpload()" (onSelect)="onSelectedFiles($event)">
 
   <ng-template pTemplate="header" let-files let-chooseCallback="chooseCallback"
                let-uploadCallback="uploadCallback" let-clearCallback="clearCallback">
@@ -40,7 +40,7 @@
               <div class="my-1 mx-2" style="width: 24px; height: 26px"></div>
             } @else {
               <p-button icon="pi pi-times" class="border-circle mb-2" [outlined]="true"
-                        [text]="true" severity="danger" size="small" (click)="cancelarCargaArchivo()"/>
+                        [text]="true" severity="danger" size="small" (click)="onRemoveFile(files, 0)"/>
             }
           </div>
         }

@@ -66,7 +66,7 @@ export class DocumentosLocalstorageService {
     };
 
     // Se convierte el idConstancia a string para usarlo como clave de objeto
-    informacionActualizada.constancias[idConstancia] = { refGuid, nombre };
+    informacionActualizada.constancias[idConstancia] = {refGuid, nombre};
 
     // Guardar el objeto actualizado en localStorage
     localStorage.setItem(this.DOC_STORAGE_KEY, JSON.stringify(informacionActualizada));
@@ -115,5 +115,39 @@ export class DocumentosLocalstorageService {
 
   limpiar(): void {
     localStorage.removeItem(this.DOC_STORAGE_KEY);
+  }
+
+  eliminarArchivoObligatorio(idDocumentoObligatorio: number): void {
+    //  Obtener los datos existentes o inicializar un objeto vacío
+    const informacionGuardada = localStorage.getItem(this.DOC_STORAGE_KEY);
+    let informacionActualizada = informacionGuardada ? JSON.parse(informacionGuardada) : {
+      obligatorios: {},
+      especialidades: [],
+      constancias: {}
+    };
+
+    if (informacionActualizada.obligatorios[idDocumentoObligatorio]) {
+      delete informacionActualizada.obligatorios[idDocumentoObligatorio];
+    }
+    // Guardar el objeto actualizado en localStorage
+    localStorage.setItem(this.DOC_STORAGE_KEY, JSON.stringify(informacionActualizada));
+
+  }
+
+  eliminarArchivoConstancia(idConstancia: number): void {
+    //  Obtener los datos existentes o inicializar un objeto vacío
+    const informacionGuardada = localStorage.getItem(this.DOC_STORAGE_KEY);
+    let informacionActualizada = informacionGuardada ? JSON.parse(informacionGuardada) : {
+      obligatorios: {},
+      especialidades: [],
+      constancias: {}
+    };
+
+    if (informacionActualizada.constancias[idConstancia]) {
+      delete informacionActualizada.constancias[idConstancia];
+    }
+    // Guardar el objeto actualizado en localStorage
+    localStorage.setItem(this.DOC_STORAGE_KEY, JSON.stringify(informacionActualizada));
+
   }
 }

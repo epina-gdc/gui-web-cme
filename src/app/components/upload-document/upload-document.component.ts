@@ -19,8 +19,8 @@ import {NgClass} from '@angular/common';
 export class UploadDocumentComponent implements OnChanges {
   @ViewChild('fileDocument') fileUpload!: FileUpload;
 
-  @Input() maxFileSize: number = 5120000;
-  @Input() existingFile: File | undefined = undefined;
+  @Input() maxFileSize: number = 5242880;
+  @Input() existingFile: File | undefined | null = undefined;
   @Input({required: true}) idArchivo: string = '';
   @Input() disabled: boolean = false;
   @Output() fileSelected = new EventEmitter<any>();
@@ -53,7 +53,8 @@ export class UploadDocumentComponent implements OnChanges {
   }
 
   onRemoveFile(file: any, index: number) {
-    this.files.splice(index, 1);
+    this.files = [];
+    this.fileUpload.clear();
     this.fileRemoved.emit(this.files);
   }
 
