@@ -15,8 +15,6 @@ export class HeaderMedicoInternoComponent implements OnInit {
   authService = inject(AuthService);
   userData: WritableSignal<SesionUser|null> = signal(null);
 
-  fechaActual = new Date();
-
   ngOnInit() {
     this.userData.set(this.authService.usuarioSesion);
   }

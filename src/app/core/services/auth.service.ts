@@ -81,6 +81,10 @@ export class AuthService {
         refCurp: payload.refCurp,
         refEmail: payload.refEmail,
         sub: payload.sub,
+        idSubperfil: payload.idSubperfil,
+        subperfil: payload.subperfil,
+        fechaRegistro: payload.fechaRegistro,
+        refPasaporte: payload.refPasaporte
       };
     } else {
       throw new Error('Error al intentar obtener el usuario del payload en el token');

@@ -148,7 +148,7 @@ export class InicioComponent extends GeneralComponent {
   especialidades: TipoDropdown[] = [];
   dias_semana: TipoDropdown[] = [];
 
-  indice: WritableSignal<number> = signal<number>(1);
+  indice: WritableSignal<number> = signal<number>(0);
   tipoMedico: WritableSignal<string> = signal<string>("");
 
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
@@ -722,6 +722,11 @@ export class InicioComponent extends GeneralComponent {
   }
 
   private saveDatosGenerales() {
+    if(this.zonasInteres().length == 0){
+      this._alertServices.alerta("Debes agregar al menos una zona de interés")
+      return;
+    }
+
     let datos = new DatosGeneralesRequest();
     datos.datosContacto = this.saveContacto();
     datos.datosResidenciaActual = this.saveDomicilio();
@@ -848,13 +853,15 @@ export class InicioComponent extends GeneralComponent {
         this._alertServices.alerta('La foto no ha sido cargada, selecciona otro archivo.');
         return;
       }
+
       this.saveDatosGenerales();
+
     }
   }
 
   validacionesNegocio() {
 
-    if (this.userData?.idPerfil == 1) {
+    if(this.userData?.idPerfil == 3){
       this.formRegistro.get('nss')?.clearValidators;
       this.formRegistro.get('nss')?.updateValueAndValidity;
     }
