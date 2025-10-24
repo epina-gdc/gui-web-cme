@@ -9,8 +9,9 @@ export interface SesionUser{
     refCurp: string;
     refEmail: string;
     sub: string;
-    cveMatricula: string;
+    cveMatricula?: string;
+    refFolio: string;
     subperfil: string;
     fechaRegistro: string;
-    refPasaporte: string;
+    refPasaporte?: string;
 }
