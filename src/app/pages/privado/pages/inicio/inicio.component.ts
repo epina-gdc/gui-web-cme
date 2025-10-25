@@ -233,6 +233,13 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
     this.formRegistro.get('sexo')?.setValue(sexo);
     this.formRegistro.get('correo')?.setValue(refEmail + '');
+    this.userService.userData$.subscribe({
+      next:(element) => {
+
+        this.tipoMedico.set(element.perfil)
+      }
+    })
+
   }
 
   asignarFormularioDatosEmpleo(): FormGroup {
@@ -737,8 +744,8 @@ export class InicioComponent extends GeneralComponent {
 
     datos.zonasInteresLaboral = this.zonasInteres().map((reg: InteresLaboral) => ({
       cveOoad: reg.ooad + '',
-      desOoad: this.devolverTextoOoad(reg.ooad + ''),
-      desZona: this.devolverTextoZonaInnteres(reg.zonaInteres + ''),
+      desOoad: reg.desOoad + '',
+      desZona: reg.desZona + '',
       cveZona: reg.zonaInteres + ''
     }));
 
