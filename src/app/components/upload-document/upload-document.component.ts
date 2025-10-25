@@ -1,34 +1,49 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {PrimeNG} from 'primeng/config';
 import {FileUpload} from 'primeng/fileupload';
 import {PrimeTemplate} from 'primeng/api';
 import {Button} from 'primeng/button';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'upload-document',
   imports: [
     FileUpload,
     PrimeTemplate,
-    Button
+    Button,
+    NgClass
   ],
   templateUrl: './upload-document.component.html',
   styleUrl: './upload-document.component.scss'
 })
-export class UploadDocumentComponent {
-  @Input() maxFileSize: number = 5120000;
-  @Input() idTipoDocumento!: number;
-  @Output() fileSelected = new EventEmitter<{ files: any[], idTipoDocumento: number }>();
+export class UploadDocumentComponent implements OnChanges {
+  @ViewChild('fileDocument') fileUpload!: FileUpload;
+
+  @Input() maxFileSize: number = 5242880;
+  @Input() existingFile: File | undefined | null = undefined;
+  @Input({required: true}) idArchivo: string = '';
+  @Input() disabled: boolean = false;
+  @Output() fileSelected = new EventEmitter<any>();
   @Output() fileRemoved = new EventEmitter<any>();
   files: any[] = [];
   totalSize: number = 0;
   totalSizePercent: number = 0;
 
   constructor(private readonly config: PrimeNG) {
+    if (this.existingFile instanceof File) {
+      const file: File = this.existingFile;
+
+      this.fileUpload.clear();
+      const fileList: any[] = [file];
+      this.fileUpload.files = fileList; // La propiedad que usa el template
+      this.files = fileList;
+
+    }
   }
 
   onSelectedFiles(event: any) {
     this.files = event.currentFiles;
-    this.fileSelected.emit({files: this.files, idTipoDocumento: this.idTipoDocumento}); // Enviamos el tipo de documento
+    this.fileSelected.emit(this.files); // Enviamos el tipo de documento
   }
 
   onRemoveTemplatingFile(event: any, file: any, removeFileCallback: any, index: any) {
@@ -38,7 +53,8 @@ export class UploadDocumentComponent {
   }
 
   onRemoveFile(file: any, index: number) {
-    this.files.splice(index, 1);
+    this.files = [];
+    this.fileUpload.clear();
     this.fileRemoved.emit(this.files);
   }
 
@@ -64,7 +80,8 @@ export class UploadDocumentComponent {
   }
 
   seleccionarArchivo(): void {
-    const elemento: HTMLElement | null = document.getElementById('choose_btn_' + this.idTipoDocumento);
+    if (this.disabled) return;
+    const elemento: HTMLElement | null = document.getElementById('choose_btn_' + this.idArchivo);
     if (!elemento) return;
     elemento.querySelector('button')?.click();
   }
@@ -87,4 +104,30 @@ export class UploadDocumentComponent {
     callback();
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    const fileChange = changes['existingFile'];
+
+    if (fileChange?.currentValue instanceof File) {
+      const file: File = fileChange.currentValue;
+
+      // Limpiar la lista de archivos actuales
+      this.fileUpload.clear();
+
+      // Crear una lista de archivos para inyectar
+      const fileList: any[] = [file];
+
+      // Asignar el archivo directamente a las propiedades internas del p-fileUpload
+      this.fileUpload.files = fileList; // La propiedad que usa el template
+
+      // Opcional: Asignar a su propiedad 'files' para mantener la consistencia
+      this.files = fileList;
+
+    }
+  }
+
+  clear() {
+    if (this.fileUpload) {
+      this.fileUpload.clear();
+    }
+  }
 }

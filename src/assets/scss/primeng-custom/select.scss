@@ -8,4 +8,7 @@
   .p-select-label {
     font-size: 1rem;
   }
+  p-select.ng-invalid:not(.ng-untouched){
+    border: 1px solid #e10000;
+  }
 }

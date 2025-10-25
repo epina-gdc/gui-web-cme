@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
 import {PrimeNG} from 'primeng/config';
 import {Button} from 'primeng/button';
 import {PrimeTemplate} from 'primeng/api';
@@ -14,8 +14,11 @@ import {FileUpload} from 'primeng/fileupload';
   templateUrl: './upload-photo.component.html',
   styleUrl: './upload-photo.component.scss'
 })
-export class UploadPhotoComponent {
+export class UploadPhotoComponent implements OnInit, OnChanges {
+  @ViewChild('fileUpload') fileUpload!: FileUpload;
+
   @Input() maxFileSize: number = 5120000;
+  @Input() existingFile: File | undefined = undefined;
   @Output() fileSelected = new EventEmitter<any>();
   @Output() fileRemoved = new EventEmitter<any>();
   files: any[] = [];
@@ -23,6 +26,16 @@ export class UploadPhotoComponent {
   totalSizePercent: number = 0;
 
   constructor(private readonly config: PrimeNG) {
+  }
+
+  ngOnInit() {
+    if (this.existingFile instanceof File) {
+      const file: File = this.existingFile;
+      this.fileUpload.clear();
+      const fileList: any[] = [file];
+      this.fileUpload.files = fileList; // La propiedad que usa el template
+      this.files = fileList;
+    }
   }
 
   onSelectedFiles(event: any) {
@@ -84,6 +97,27 @@ export class UploadPhotoComponent {
 
   uploadEvent(callback: any) {
     callback();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const fileChange = changes['existingFile'];
+
+    if (fileChange?.currentValue instanceof File) {
+      const file: File = fileChange.currentValue;
+
+      // Limpiar la lista de archivos actuales
+      this.fileUpload.clear();
+
+      // Crear una lista de archivos para inyectar
+      const fileList: any[] = [file];
+
+      // Asignar el archivo directamente a las propiedades internas del p-fileUpload
+      this.fileUpload.files = fileList; // La propiedad que usa el template
+
+      // Opcional: Asignar a su propiedad 'files' para mantener la consistencia
+      this.files = fileList;
+
+    }
   }
 
 }

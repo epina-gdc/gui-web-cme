@@ -5,8 +5,13 @@ export interface SesionUser{
     nomApellidoPaterno: string;
     nomNombre: string;
     perfil: string;
+    idSubperfil: number;
     refCurp: string;
     refEmail: string;
     sub: string;
-    cveMatricula: string;
+    cveMatricula?: string;
+    refFolio: string;
+    subperfil: string;
+    fechaRegistro: string;
+    refPasaporte?: string;
 }

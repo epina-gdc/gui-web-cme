@@ -58,5 +58,16 @@
 .btn-upload {
   position: absolute;
   right: 15%;
-  top: 0;
+  top: 2%;
+}
+
+.border-imagen {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
