@@ -73,6 +73,11 @@ export class GeneralComponent {
     window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
+  get anioActual(){
+    let hoy = new Date();
+    return hoy.getFullYear();
+  }
+
   public getSession(objeto: string): any {
     let p: any;
     let encodeJson = sessionStorage.getItem(objeto);

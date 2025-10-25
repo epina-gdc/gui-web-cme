@@ -29,6 +29,7 @@ export class RegistroMedico extends Medico {
 
 
 export class RegistroInternoRequest {
+  
   refEmail!: string;
   refContrasenaHash!: string;
   idPerfil!: number;
@@ -38,6 +39,10 @@ export class RegistroInternoRequest {
   nomApellidoMaterno!: string;
   refCurp!: string;
   refRfc!: string;
+  areaMedicaData!: AreaMedicaData;
+  renapoData!:RenapoData;
+  requiereFolio!: boolean;
+  
 }
 
 export class RegistroCurpRequest {
@@ -51,6 +56,8 @@ export class RegistroCurpRequest {
   nomApellidoMaterno!: string;
   refCurp!: string;
   refRfc!: string;
+  requiereFolio!: boolean;
+  areaMedicaData!: AreaMedicaData;
 }
 
 export class RegistroPasaporteRequest {
@@ -66,4 +73,41 @@ export class RegistroPasaporteRequest {
   nomApellidoMaterno!: string;
   refCurp!: string;
   refRfc!: string;
+}
+
+
+export class AreaMedicaData{
+  lugar!: string;
+  valor_orden!:string;
+  CURP!: string;
+  APELLIDO_PATERNO!: string;
+  APELLIDO_MATERNO!: string;
+  NOMBRE!:string;
+  ESPECIALIDAD!: string;
+  SEDE!:string;
+  R1!:string;
+  R2!:string;
+  R3!:string;
+  R4!:string;
+  R5!:string;
+  R6!:string;
+  PROMEDIO!:string;
+  ERC!:string;
+  LIDER_ERC!:string;
+  PT_BIENESTAR!:string;
+  MENINGITIS!:string;
+  PUNTAJE_CONTRATACION!: string;
+  ENARM!:string;
+  LICENCIATURA!: string;
+  PROMEDIO_EyL!:string;
+  TIPO_CONTRATACION!: string;
+  MATRICULA!:string;
+  CATEGORIA!: string;
+  TIPO_ESPECIALIDAD!:string;
+  TIPO!:string;
+
+}
+
+export class RenapoData{
+
 }
