@@ -11,15 +11,6 @@ export class DocumentosLocalstorageService {
   constructor() {
   }
 
-  getDocumentosIDs() {
-    const data = localStorage.getItem(this.DOC_STORAGE_KEY);
-    return data ? JSON.parse(data) : {
-      obligatorios: {},
-      especialidades: [],
-      constancias: {}
-    };
-  }
-
   guardarRefGuidObligatorio(idDocumentoObligatorio: number, refGuid: string) {
 
     //  Obtener los datos existentes o inicializar un objeto vacío
