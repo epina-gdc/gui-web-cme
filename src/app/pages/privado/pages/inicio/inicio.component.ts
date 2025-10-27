@@ -194,8 +194,8 @@ export class InicioComponent extends GeneralComponent {
     return this.fb.group({
       rfc: [],
       nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
-      fechaNacimiento: [{value: '', disabled: false}, [Validators.required]],
-      sexo: [{value: '', disabled: false}, [Validators.required]],
+      fechaNacimiento: [{value: '', disabled: true}, [Validators.required]],
+      sexo: [{value: '', disabled: true}, [Validators.required]],
       estadoCivil: [{value: '', disabled: false}, [Validators.required]],
       dependientes: [],
       hijos: [{value: '', disabled: true}, [Validators.required, Validators.min(1)]],
@@ -847,6 +847,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   onFileSelected($event: any): void {
+    debugger
     const files: FileList | File[] = $event?.target?.files || $event;
     const archivo: File | undefined = files?.[0];
     if (!archivo) {
@@ -1520,5 +1521,13 @@ export class InicioComponent extends GeneralComponent {
         uploader.clear();
       }
     }
+  }
+
+  limpiarPrimeraSeccion(){
+    this.formRegistro.reset();
+    this.formZonaInteres.reset();
+    this.zonasInteres.set([]);
+    this.defaultFile = undefined;
+    this.settearDatosUsuario();
   }
 }
