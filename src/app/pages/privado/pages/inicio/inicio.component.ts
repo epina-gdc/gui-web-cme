@@ -1,4 +1,4 @@
-import {Component, computed, inject, QueryList, signal, ViewChildren, WritableSignal} from '@angular/core';
+import {Component, inject, QueryList, signal, ViewChildren, WritableSignal} from '@angular/core';
 import {Card} from 'primeng/card';
 import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.component';
 import {StepsComponent} from '@components/steps/steps.component';
@@ -56,6 +56,8 @@ import {
   RespuestaConsultaDocumentos, RespuestaDatosEmpleo, RespuestaDocumentosConstancia, RespuestaDocumentosEspecialidad,
   RespuestaDocumentosObligatorios
 } from '@models/respuesta-consulta-documentos.interface';
+import {jornadaLaboralValidator} from '@validators/jornada-validator';
+import {horarioLaboralValidator} from '@validators/horario-validator';
 
 interface DocumentoFuente {
   refGuid: string;
@@ -233,6 +235,13 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
     this.formRegistro.get('sexo')?.setValue(sexo);
     this.formRegistro.get('correo')?.setValue(refEmail + '');
+    this.userService.userData$.subscribe({
+      next:(element) => {
+
+        this.tipoMedico.set(element.perfil)
+      }
+    })
+
   }
 
   asignarFormularioDatosEmpleo(): FormGroup {
@@ -246,7 +255,7 @@ export class InicioComponent extends GeneralComponent {
       diaInicio: [{value: null, disabled: true}],
       diaFin: [{value: null, disabled: true}],
       ooad: [{value: null, disabled: true}],
-    })
+    }, { validators: [jornadaLaboralValidator, horarioLaboralValidator] })
   }
 
   obtenerFechaNacimientoDeCURP(curp: string): Date {
@@ -737,8 +746,8 @@ export class InicioComponent extends GeneralComponent {
 
     datos.zonasInteresLaboral = this.zonasInteres().map((reg: InteresLaboral) => ({
       cveOoad: reg.ooad + '',
-      desOoad: this.devolverTextoOoad(reg.ooad + ''),
-      desZona: this.devolverTextoZonaInnteres(reg.zonaInteres + ''),
+      desOoad: reg.desOoad + '',
+      desZona: reg.desZona + '',
       cveZona: reg.zonaInteres + ''
     }));
 
@@ -1267,6 +1276,23 @@ export class InicioComponent extends GeneralComponent {
     }
 
     return especialidades.length === 0;
+  }
+
+  get refConstancia1() {
+    const refConstancia1 = this.documentosLocalStorageService.obtenerRefConstancia(1);
+    return !refConstancia1;
+  }
+
+  get refConstancia2() {
+    const refConstancia2 = this.documentosLocalStorageService.obtenerRefConstancia(2);
+
+    return !refConstancia2;
+  }
+
+  get refConstancia3() {
+    const refConstancia3 = this.documentosLocalStorageService.obtenerRefConstancia(3);
+
+    return !refConstancia3;
   }
 
   suscribirObservablesDatosEmpleo(): void {

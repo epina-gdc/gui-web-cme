@@ -1,74 +1,22 @@
-@layer app-components {
-
-  .header-tab > div{
-    min-width: 350px!important;
-  }
-  .vertical-tabview {
-    display: flex;
-    flex-direction: row;
-
-    .p-tabview-nav {
-      flex-direction: column;
-      border-right: 1px solid #dee2e6;
-      width: 200px;
-
-      .p-tabview-nav-link {
-        border-bottom-right-radius: 0;
-        border-top-right-radius: 0;
-        margin-right: -1px;
-      }
+.archivos{
+  div{
+    border: solid 1px #eeeeee;
+    border-radius: 10px 6px 6px 10px;
+    border-right: solid 6px #d6ddea;
+    height: 56px;
+    cursor: pointer;
+    i {
+      color: #fff;
+      border-radius: 3px;
+      background: #d6ddea;
     }
-
-
-    .p-tabview-panels {
-      flex-grow: 1;
+  }
+  div.select{
+    border-right: solid 6px #5fd350;
+    i {
+      color: #74dd66;
+      border-radius: 3px;
+      background: #d7f4d3;
     }
-
-    .p-tabs {
-      flex-direction: row !important;
-    }
-
-    .p-tab-active .border-tab{
-      border-bottom: none;
-      border-left: 10px;
-    }
-
-  }
-
-
-
-  :host ::ng-deep .p-tablist-tab-list {
-    flex-direction: column !important;
-    border: none;
-  }
-
-  :host ::ng-deep .p-tab-active .border-tab{
-    background: #fff;
-    border-right: 8px solid #5fd350!important;
-  }
-
-
-  :host ::ng-deep .p-tab {
-    border: none;
-  }
-
-  :host ::ng-deep .p-tab-active .titulo-tab {
-    color: #000!important;
-  }
-  :host ::ng-deep .p-tab-active i {
-    color: #74dd66!important;
-    border-radius: 3px;
-    background: #d7f4d3!important;
-  }
-
-  :host ::ng-deep .p-tab i {
-    color: #fff;
-    border-radius: 3px;
-    background: #d6ddea;
-  }
-
-  :host ::ng-deep .p-tablist-active-bar {
-    border: none;
-    background: transparent;
   }
 }

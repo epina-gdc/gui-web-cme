@@ -1,6 +1,6 @@
 <div class="flex justify-content-start align-items-center gap-3">
   <btn-regresar/>
-  <h3 class="titulo-seccion">{{ this.tipoMedico() }}</h3>
+  <h3 class="titulo-seccion">Registro de {{ this.tipoMedico().charAt(0).toLowerCase() + this.tipoMedico().slice(1) }}</h3>
 </div>
 <p-card class="mx-2 my-4 no-padding-empty-border">
   <header-medico-interno></header-medico-interno>
@@ -217,7 +217,7 @@
 
       <p-card class="mx-2 empty-border" [header]="'Zona de interes laboral'">
         <div class="flex align-items-center gap-4 px-2 py-4">
-          <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
+          <i class="pi pi-exclamation-circle" style="color: #dfd210; font-size: 2rem; transform: rotate(180deg);"></i>
           <em class="info-em-texto">Queremos conocer tu interés, elige tres opciones
             para estar en posibilidad de brindarte una mejor oferta laboral</em>
         </div>
@@ -281,7 +281,7 @@
       <div class="flex flex-row justify-content-end gap-3">
         <p-button type="button" variant="outlined" label="Limpiar formulario"/>
         <p-button type="button" [disabled]="formRegistro.invalid" label="Guardar" (click)="siguientePasoStepper()"/>
-        <!--<p-button type="button"  label="Guardar" (click)="siguientePasoStepper()"/>-->
+        <!--<p-button type="button"  label="Guardar" (click)="saveDatosGenerales()"/>-->
         <p-button type="button" label="Finalizar registro"/>
       </div>
 
@@ -352,7 +352,7 @@
                              [disabled]="estatusPendienteDocumentacion"/>
           </div>
           <div class="col-3 flex justify-content-start align-items-center">
-            @if (estatusPendienteDocumentacion) {
+            @if (!estatusPendienteDocumentacion) {
               <p-button label="Agregar" icon="cme-plus" iconPos="right"
                         [disabled]="formDocumentosEspecialidad.invalid || !documentoEspecialidad || estatusPendienteDocumentacion"
                         [text]="true" (click)="subirDocumentoyObtenerGuid()"/>
@@ -434,7 +434,7 @@
               <p class="label-obligatorio">Obligatorio</p>
             </div>
             <input pInputText class="w-full" type="text" id="constancia1"
-                   [disabled]="estatusPendienteDocumentacion"
+                   [disabled]="estatusPendienteDocumentacion || refConstancia1"
                    placeholder="Especifique el nombre del documento" [(ngModel)]="nombreConstancia1"
             />
           </div>
@@ -453,7 +453,7 @@
               <p class="label-obligatorio">Obligatorio</p>
             </div>
             <input pInputText class="w-full" type="text" id="constancia2" [(ngModel)]="nombreConstancia2"
-                   [disabled]="estatusPendienteDocumentacion"
+                   [disabled]="estatusPendienteDocumentacion || refConstancia2"
                    placeholder="Especifique el nombre del documento" (change)="actualizarNombreDocumento(2, $event)"
             />
           </div>
@@ -472,7 +472,7 @@
             </div>
             <input pInputText class="w-full" type="text" id="constancia3" [(ngModel)]="nombreConstancia3"
                    placeholder="Especifique el nombre del documento"
-                   [disabled]="estatusPendienteDocumentacion"
+                   [disabled]="estatusPendienteDocumentacion || refConstancia3"
             />
           </div>
         </article>
@@ -521,10 +521,10 @@
               </div>
             }
             <div>
-              <div class="flex justify-content-between">
+              <div class="flex justify-content-between px-2">
                 <p class="field-label mb-1">Horario laboral</p>
               </div>
-              <div class="flex gap-2">
+              <div class="flex gap-2 px-2">
                 <p-datepicker [style]="{ 'width': '100%' }" placeholder="De" [iconDisplay]="'input'"
                               formControlName="horarioInicio"
                               [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" [timeOnly]="true">
@@ -542,10 +542,10 @@
               </div>
             </div>
             <div>
-              <div class="flex justify-content-between">
+              <div class="flex justify-content-between px-2">
                 <p class="field-label mb-1">Jornada laboral</p>
               </div>
-              <div class="flex gap-2">
+              <div class="flex gap-2 px-2">
                 <p-select [options]="dias_semana" optionLabel="label" optionValue="value"
                           placeholder="De" formControlName="diaInicio" class="w-full">
                   <ng-template #dropdownicon>
