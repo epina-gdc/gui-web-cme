@@ -352,7 +352,7 @@
                              [disabled]="estatusPendienteDocumentacion"/>
           </div>
           <div class="col-3 flex justify-content-start align-items-center">
-            @if (estatusPendienteDocumentacion) {
+            @if (!estatusPendienteDocumentacion) {
               <p-button label="Agregar" icon="cme-plus" iconPos="right"
                         [disabled]="formDocumentosEspecialidad.invalid || !documentoEspecialidad || estatusPendienteDocumentacion"
                         [text]="true" (click)="subirDocumentoyObtenerGuid()"/>
