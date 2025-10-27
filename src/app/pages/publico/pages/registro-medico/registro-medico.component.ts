@@ -64,6 +64,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   inCorreo2: boolean = false;
   inPass: boolean = false;
   inPass2: boolean = false;
+  idModalidad!: number;
 
   ngOnInit(): void {
     this.ruta = this._nav.publico + this._nav.crearCuenta;
@@ -76,8 +77,10 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     let x = this.getSession('registroMedico');
     if (x) {
       this.medico = x;
+      //console.log("meduico: ",this.medico);
       this.medico.documentoVerif = x.documentoVerif;
       this.medico.refCurp = '';
+      this.idModalidad = this.medico.modalidad;
       this.form.controls['modalidad'].setValue(this.medico.modalidad);
       if (this.medico.blnInterno) {
 
@@ -368,13 +371,11 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
   public btnValidarCurp() {
     this.medico.refCurp = this.form.controls['curp'].value;
-    if (this.existeCURP(this.medico.refCurp)) {
+    this.form.markAllAsTouched();
       this.validarCURP();
-      return;
-    }
-    this._alertServices.alerta(this._Mensajes.MSG010b);
-    this.form.controls['curp'].setValue('');
-    this.medico.refCurp = this.form.controls['curp'].value
+   
+  //  this._alertServices.alerta(this._Mensajes.MSG010b);
+
   }
 
   datosCURP!:any;
@@ -399,11 +400,14 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
         this._alertServices.error(response.mensaje);
       } else {
         this.datosCURP= response.respuesta;
+        
         this.form.controls['nombre'].setValue(response.respuesta.renapoData.nombres ? response.respuesta.renapoData.nombres : response.respuesta.siapData.nombre);
         this.form.controls['apellidoP'].setValue(response.respuesta.renapoData.primerApellido ? response.respuesta.renapoData.primerApellido : response.respuesta.siapData.primerApellido);
         this.form.controls['apellidoM'].setValue(response.respuesta.renapoData.segundoApellido ? response.respuesta.renapoData.segundoApellido : response.respuesta.siapData.segundoApellido);
         this.form.controls['curp'].setValue(response.respuesta.renapoData.curp ?? '');
-        this.form.controls['rfc'].setValue(response.respuesta.siapData.rfc ?? '');
+        this.form.controls['rfc'].setValue(response.respuesta.siapData?.rfc ?? '');
+        //console.log("meduico: ",this.medico);
+        this.form.controls['modalidad'].setValue(this.idModalidad);
         this.activarCampos(this.medico.blnInterno);
         this.dinamicoCurp();
         this.asignarDatos();
@@ -534,6 +538,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
   postCurp() {
+    
     let curp = new RegistroCurpRequest();
 
     curp.refEmail = this.medico.refEmail;
@@ -549,7 +554,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     curp.refRfc = this.medico.refRfc;
     curp.areaMedicaData = new AreaMedicaData();
     curp.areaMedicaData.CURP = curp.refCurp;
-    curp.areaMedicaData.MATRICULA = this.datosCURP.siapData.matricula;
+    curp.areaMedicaData.MATRICULA = this.datosCURP.siapData?.matricula??'';
     curp.areaMedicaData.NOMBRE = curp.nomNombre;
     curp.areaMedicaData.APELLIDO_PATERNO = curp.nomApellidoPaterno;
     curp.areaMedicaData.APELLIDO_MATERNO = curp.nomApellidoMaterno;
@@ -611,7 +616,9 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
   cambiaModalidad() {
+    
     this.medico.modalidad = this.form.controls['modalidad'].value;
+    
   }
 
   cambiaPais() {
