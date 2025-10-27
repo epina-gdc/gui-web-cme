@@ -117,7 +117,7 @@
             <input pInputText class="w-full" type="text" id="correoAdicional"
                    placeholder="Ingresa correo electrónico adicional"
                    formControlName="correoAdicional"
-                   emailAllowCaracters/>
+                   emailAllowCaracters maxlength="100"/>
           </div>
           <div class="col-3">
             <div class="flex justify-content-between">
@@ -279,7 +279,7 @@
       </p-card>
 
       <div class="flex flex-row justify-content-end gap-3">
-        <p-button type="button" variant="outlined" label="Limpiar formulario"/>
+        <p-button type="button" variant="outlined" (click)="limpiarPrimeraSeccion()" label="Limpiar formulario"/>
         <p-button type="button" [disabled]="formRegistro.invalid" label="Guardar" (click)="siguientePasoStepper()"/>
         <!--<p-button type="button"  label="Guardar" (click)="saveDatosGenerales()"/>-->
         <p-button type="button" label="Finalizar registro"/>
