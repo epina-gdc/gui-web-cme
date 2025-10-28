@@ -333,7 +333,7 @@
               <p class="field-label">Especialidad</p>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <p-select [options]="especialidades" optionLabel="label" optionValue="value"
+            <p-select [options]="especialidades" optionLabel="label" optionValue="value" [filter]="true" [filterBy]="'label'"
                       placeholder="Selecciona opción" formControlName="especialidad" class="w-full"/>
           </div>
           <div class="col-3">
@@ -592,10 +592,9 @@
     }
 
     <div class="flex flex-row justify-content-end gap-3">
-      <p-button type="button" variant="outlined" label="Limpiar formulario" [disabled]="estatusPendienteDocumentacion"/>
-      <p-button type="button" label="Guardar" (click)="guardarDocumentacion()"
+      <p-button type="button" variant="outlined" label="Limpiar formulario" [disabled]="estatusPendienteDocumentacion" (click)="limpiarSegundaSeccion()" />
+      <p-button type="button" label="Finalizar registro" (click)="guardarDocumentacion()"
                 [disabled]="banderaCargarDocumentacion"/>
-      <p-button type="button" label="Finalizar registro" disabled/>
     </div>
 
   }
