@@ -156,9 +156,9 @@ export class InicioComponent extends GeneralComponent {
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
   _ConvocatoriaService: ConvocatoriaService = inject(ConvocatoriaService);
 
-  archivoINE!: File | undefined;
-  archivoTitulo!: File | undefined;
-  archivoCedula!: File | undefined;
+  archivoINE!: File | null;
+  archivoTitulo!: File | null;
+  archivoCedula!: File | null;
 
   documentoEspecialidad!: File | null;
 
@@ -218,9 +218,10 @@ export class InicioComponent extends GeneralComponent {
 
   suscribirObservables(): void {
     this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe(value => this.obtenerLocalidadPorPais(value));
+
     this.formRegistro.get('pais')?.valueChanges.subscribe(value => this.obtenerEstadoPorPais(value));
     this.formRegistro.get('estado')?.valueChanges.subscribe(value => this.obtenerMunicipioPorEstado(value));
-    this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerAlcaldiaPorMunicipio(value));
+    //this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerAlcaldiaPorMunicipio(value));
     this.formZonaInteres.get('ooad')?.valueChanges.subscribe(value => this.obtenerZonasPorMunicipio(value))
   }
 
@@ -313,8 +314,21 @@ export class InicioComponent extends GeneralComponent {
   obtenerLocalidadPorPais(pais: number): void {
   }
 
+  validarCP(){
+    this.catalogoService.getLstCodigosPostales(this.formRegistro.get('codigoPostal')?.value).subscribe({
+      next: (elemento) => {
+        this.formRegistro.get('pais')?.setValue(103)
+        this.formRegistro.get('estado')?.setValue(elemento.respuesta.estado.idEstado);
+        this.formRegistro.get('municipio')?.setValue(elemento.respuesta.delegacionMunicipio.idMunicipio);
+        this.colonias = mapearArregloTipoDropdown(elemento.respuesta.colonias, 'nomColonia', 'idColonia');
+      }
+    })
+  }
+
   obtenerEstadoPorPais(pais: number): void {
     if (!pais) return;
+    this.municipios = [];
+    this.colonias = [];
     this.catalogoService.getLstEstadosByPais(pais).subscribe({
       next: (valor) => {
         this.estados = mapearArregloTipoDropdown(valor.respuesta, 'desEstado', 'idEstado');
@@ -640,7 +654,9 @@ export class InicioComponent extends GeneralComponent {
     if (datosResidenciaActual) {
       const {colonia, pais, estado, delegacion, nomCalle, refNumero} = datosResidenciaActual;
 
+
       this.formRegistro.controls['codigoPostal'].setValue(colonia?.refCodigoPostal || null);
+      this.validarCP();
 
       // PatchValue para IDs de catálogos de domicilio
       this.formRegistro.get('pais')?.patchValue(pais?.idPais || null);
@@ -800,7 +816,7 @@ export class InicioComponent extends GeneralComponent {
       catchError((error) => {
         // Capturamos cualquier error lanzado en switchMap o errores HTTP
         this.blnFotoGuardada = false;
-        this._alertServices.error(error.message || 'Error en el proceso de guardado de la foto.');
+        this._alertServices.error(error.error || 'Error en el proceso de guardado de la foto.');
         return of(null); // Devolvemos un observable nulo para completar el flujo sin error.
       })
     ).subscribe({
@@ -847,7 +863,10 @@ export class InicioComponent extends GeneralComponent {
   }
 
   onFileSelected($event: any): void {
-    debugger
+    if($event.length == 0){
+      this._alertServices.alerta('El peso del archivo excede al permitido.');
+      return;
+    }
     const files: FileList | File[] = $event?.target?.files || $event;
     const archivo: File | undefined = files?.[0];
     if (!archivo) {
@@ -987,6 +1006,7 @@ export class InicioComponent extends GeneralComponent {
       this.obtenerDocumento(refObligatorio3, 'obligatorio', 3);
     }
     this.registrosDocumentosEspecialidad.update(valor => especialidades);
+
     if (refConstancia1) {
       this.obtenerDocumento(refConstancia1.refGuid, 'constancia', 1, refConstancia1.nombre);
     }
@@ -1080,7 +1100,7 @@ export class InicioComponent extends GeneralComponent {
       return;
     }
     const cadaEspecialidadTieneDiploma: boolean = especialidades.every(node =>
-      node.documentos.some(documento => documento.idDocumento === 21));
+      node.documentos.some(documento => documento.idDocumento === 1));
     if (!cadaEspecialidadTieneDiploma) {
       this._alertServices.error(this._Mensajes.MSG037);
       this._alertServices.error('Para cada especialidad es necesario el documento Diploma Institucional de Especialidad');
@@ -1095,8 +1115,9 @@ export class InicioComponent extends GeneralComponent {
     this._ConvocatoriaService.guardarDatosDocumentosEscolares(solicitud).subscribe({
       next: (data: ResponseGeneral) => {
         if (data.exito) {
-          this.indice.update((value: number) => value + 1);
+          // this.indice.update((value: number) => value + 1);
           this._alertServices.exito(this._Mensajes.MSG039)
+          this.estatusPendienteDocumentacion = true;
           this.documentosLocalStorageService.limpiar();
           return;
         }
@@ -1259,6 +1280,9 @@ export class InicioComponent extends GeneralComponent {
     const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
     const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
     const externo = this.userData?.idPerfil === 3;
+    const refConstancia1 = this.documentosLocalStorageService.obtenerRefConstancia(1);
+    const refConstancia2 = this.documentosLocalStorageService.obtenerRefConstancia(2);
+    const refConstancia3 = this.documentosLocalStorageService.obtenerRefConstancia(3);
 
     if (this.estatusPendienteDocumentacion) {
       return false;
@@ -1270,6 +1294,15 @@ export class InicioComponent extends GeneralComponent {
       return true;
     }
     if (!refObligatorio3) {
+      return true;
+    }
+    if (refConstancia1 && !refConstancia1.nombre) {
+      return true;
+    }
+    if (refConstancia2 && !refConstancia2.nombre) {
+      return true;
+    }
+    if (refConstancia3 && !refConstancia3.nombre) {
       return true;
     }
     if (this.formDatosEmpleo.invalid && externo) {
@@ -1379,16 +1412,16 @@ export class InicioComponent extends GeneralComponent {
       next: (response: any) => {
         if (!response.exito) return;
         const respuesta: RespuestaConsultaDocumentos = response.respuesta;
-        this.procesarDatosObligatoriosObtenidos(respuesta.documentosObligatorios);
-        this.procesarDocumentosContancias(respuesta.documentosConstancias);
-        const especialidades = this.procesarDocumentosEspecialidades(respuesta.especialidadesDocumentos);
-        this.registrosDocumentosEspecialidad.update(() => especialidades);
-        if (respuesta.datosEmpleo) {
-          this.cargarDatosEmpleoAlFormulario(respuesta.datosEmpleo);
-        }
         if (respuesta.participacion.resultadoVerificacion) {
           this.estatusPendienteDocumentacion = respuesta.participacion.resultadoVerificacion.estatusVerificacion.desEstatus === 'Pendiente';
+          this.procesarDatosObligatoriosObtenidos(respuesta.documentosObligatorios);
+          this.procesarDocumentosContancias(respuesta.documentosConstancias);
+          const especialidades = this.procesarDocumentosEspecialidades(respuesta.especialidadesDocumentos);
+          this.registrosDocumentosEspecialidad.update(() => especialidades);
           this.desactivarForms();
+        }
+        if (respuesta.datosEmpleo) {
+          this.cargarDatosEmpleoAlFormulario(respuesta.datosEmpleo);
         }
       }
     });
@@ -1523,11 +1556,54 @@ export class InicioComponent extends GeneralComponent {
     }
   }
 
+  eliminarDocumentosObligatorios(id: number) {
+    this.documentosLocalStorageService.eliminarArchivoObligatorio(id);
+    if (id === 1){
+      this.archivoINE = null;
+      const uploader = this.uploaders.find(comp => comp.idArchivo === 'INE');
+      if (uploader) {
+        uploader.clear();
+      }
+    }
+    if (id === 2){
+      this.archivoTitulo = null;
+      this.nombreConstancia2 = '';
+      const uploader = this.uploaders.find(comp => comp.idArchivo === 'titulo');
+      if (uploader) {
+        uploader.clear();
+      }
+    }
+    if (id === 3){
+      this.archivoCedula = null;
+      this.nombreConstancia3 = '';
+      const uploader = this.uploaders.find(comp => comp.idArchivo === 'cedula');
+      if (uploader) {
+        uploader.clear();
+      }
+    }
+  }
+
   limpiarPrimeraSeccion(){
     this.formRegistro.reset();
     this.formZonaInteres.reset();
     this.zonasInteres.set([]);
+    this.municipios = [];
+    this.colonias = [];
     this.defaultFile = undefined;
     this.settearDatosUsuario();
+  }
+
+  limpiarSegundaSeccion() {
+    if (this.estatusPendienteDocumentacion) return;
+    this.eliminarConstancia(1);
+    this.eliminarConstancia(2);
+    this.eliminarConstancia(3);
+    this.eliminarDocumentosObligatorios(1);
+    this.eliminarDocumentosObligatorios(2);
+    this.eliminarDocumentosObligatorios(3);
+    this.limpiarDocumentoEspecialidad();
+    this.formDatosEmpleo.reset({ otroEmpleo: '0', sustituto: '0'});
+    this.registrosDocumentosEspecialidad.update(() => []);
+    this.documentosLocalStorageService.limpiar();
   }
 }
