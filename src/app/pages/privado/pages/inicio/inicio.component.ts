@@ -150,7 +150,7 @@ export class InicioComponent extends GeneralComponent {
   especialidades: TipoDropdown[] = [];
   dias_semana: TipoDropdown[] = [];
 
-  indice: WritableSignal<number> = signal<number>(0);
+  indice: WritableSignal<number> = signal<number>(1);
   tipoMedico: WritableSignal<string> = signal<string>("");
 
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
@@ -1259,6 +1259,9 @@ export class InicioComponent extends GeneralComponent {
     const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
     const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
     const externo = this.userData?.idPerfil === 3;
+    const refConstancia1 = this.documentosLocalStorageService.obtenerRefConstancia(1);
+    const refConstancia2 = this.documentosLocalStorageService.obtenerRefConstancia(2);
+    const refConstancia3 = this.documentosLocalStorageService.obtenerRefConstancia(3);
 
     if (this.estatusPendienteDocumentacion) {
       return false;
@@ -1270,6 +1273,15 @@ export class InicioComponent extends GeneralComponent {
       return true;
     }
     if (!refObligatorio3) {
+      return true;
+    }
+    if (!refConstancia1?.nombre) {
+      return true;
+    }
+    if (!refConstancia2?.nombre) {
+      return true;
+    }
+    if (!refConstancia3?.nombre) {
       return true;
     }
     if (this.formDatosEmpleo.invalid && externo) {

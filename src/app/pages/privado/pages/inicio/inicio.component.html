@@ -1,6 +1,7 @@
 <div class="flex justify-content-start align-items-center gap-3">
   <btn-regresar/>
-  <h3 class="titulo-seccion">Registro de {{ this.tipoMedico().charAt(0).toLowerCase() + this.tipoMedico().slice(1) }}</h3>
+  <h3 class="titulo-seccion">Registro
+    de {{ this.tipoMedico().charAt(0).toLowerCase() + this.tipoMedico().slice(1) }}</h3>
 </div>
 <p-card class="mx-2 my-4 no-padding-empty-border">
   <header-medico-interno></header-medico-interno>
@@ -433,8 +434,9 @@
               <p class="field-label">Nombre de la constancia</p>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <input pInputText class="w-full" type="text" id="constancia1"
+            <input pInputText class="w-full" type="text" id="constancia1" [required]="!refConstancia1"
                    [disabled]="estatusPendienteDocumentacion || refConstancia1"
+                   (change)="actualizarNombreDocumento(1, $event)"
                    placeholder="Especifique el nombre del documento" [(ngModel)]="nombreConstancia1"
             />
           </div>
@@ -453,7 +455,7 @@
               <p class="label-obligatorio">Obligatorio</p>
             </div>
             <input pInputText class="w-full" type="text" id="constancia2" [(ngModel)]="nombreConstancia2"
-                   [disabled]="estatusPendienteDocumentacion || refConstancia2"
+                   [disabled]="estatusPendienteDocumentacion || refConstancia2" [required]="!refConstancia2"
                    placeholder="Especifique el nombre del documento" (change)="actualizarNombreDocumento(2, $event)"
             />
           </div>
@@ -471,8 +473,8 @@
               <p class="label-obligatorio">Obligatorio</p>
             </div>
             <input pInputText class="w-full" type="text" id="constancia3" [(ngModel)]="nombreConstancia3"
-                   placeholder="Especifique el nombre del documento"
-                   [disabled]="estatusPendienteDocumentacion || refConstancia3"
+                   placeholder="Especifique el nombre del documento" (change)="actualizarNombreDocumento(3, $event)"
+                   [disabled]="estatusPendienteDocumentacion || refConstancia3" [required]="!refConstancia3"
             />
           </div>
         </article>
