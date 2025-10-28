@@ -193,7 +193,7 @@ export class InicioComponent extends GeneralComponent {
   asignarFormularioRegistro(): FormGroup {
     return this.fb.group({
       rfc: [],
-      nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
+      nss: [{value: '', disabled: false}, [ Validators.minLength(11), Validators.maxLength(11)]],
       fechaNacimiento: [{value: '', disabled: true}, [Validators.required]],
       sexo: [{value: '', disabled: true}, [Validators.required]],
       estadoCivil: [{value: '', disabled: false}, [Validators.required]],
@@ -630,7 +630,13 @@ export class InicioComponent extends GeneralComponent {
     }
 
     if (datosPersonales) {
-      const {refRfc, refNss, estadoCivil, paisNacimiento, lugarNacimiento} = datosPersonales;
+     
+      const {refRfc, refNss, estadoCivil, paisNacimiento, lugarNacimiento, perfil} = datosPersonales;
+      
+      if(perfil.idPerfil == 2){
+        this.formRegistro.controls['nss'].setValidators([Validators.required]);
+        this.formRegistro.controls['nss'].updateValueAndValidity();
+      }
 
       this.formRegistro.controls['rfc'].setValue(refRfc || null);
       this.formRegistro.controls['nss'].setValue(refNss || null);
