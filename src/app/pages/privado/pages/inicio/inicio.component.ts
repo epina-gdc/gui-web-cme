@@ -1117,6 +1117,7 @@ export class InicioComponent extends GeneralComponent {
         if (data.exito) {
           // this.indice.update((value: number) => value + 1);
           this._alertServices.exito(this._Mensajes.MSG039)
+          this.estatusPendienteDocumentacion = true;
           this.documentosLocalStorageService.limpiar();
           return;
         }
