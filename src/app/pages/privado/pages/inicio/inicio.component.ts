@@ -156,9 +156,9 @@ export class InicioComponent extends GeneralComponent {
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
   _ConvocatoriaService: ConvocatoriaService = inject(ConvocatoriaService);
 
-  archivoINE!: File | undefined;
-  archivoTitulo!: File | undefined;
-  archivoCedula!: File | undefined;
+  archivoINE!: File | null;
+  archivoTitulo!: File | null;
+  archivoCedula!: File | null;
 
   documentoEspecialidad!: File | null;
 
@@ -1536,11 +1536,51 @@ export class InicioComponent extends GeneralComponent {
     }
   }
 
+  eliminarDocumentosObligatorios(id: number) {
+    this.documentosLocalStorageService.eliminarArchivoObligatorio(id);
+    if (id === 1){
+      this.archivoINE = null;
+      const uploader = this.uploaders.find(comp => comp.idArchivo === 'INE');
+      if (uploader) {
+        uploader.clear();
+      }
+    }
+    if (id === 2){
+      this.archivoTitulo = null;
+      this.nombreConstancia2 = '';
+      const uploader = this.uploaders.find(comp => comp.idArchivo === 'titulo');
+      if (uploader) {
+        uploader.clear();
+      }
+    }
+    if (id === 3){
+      this.archivoCedula = null;
+      this.nombreConstancia3 = '';
+      const uploader = this.uploaders.find(comp => comp.idArchivo === 'cedula');
+      if (uploader) {
+        uploader.clear();
+      }
+    }
+  }
+
   limpiarPrimeraSeccion(){
     this.formRegistro.reset();
     this.formZonaInteres.reset();
     this.zonasInteres.set([]);
     this.defaultFile = undefined;
     this.settearDatosUsuario();
+  }
+
+  limpiarSegundaSeccion() {
+    this.eliminarConstancia(1);
+    this.eliminarConstancia(2);
+    this.eliminarConstancia(3);
+    this.eliminarDocumentosObligatorios(1);
+    this.eliminarDocumentosObligatorios(2);
+    this.eliminarDocumentosObligatorios(3);
+    this.limpiarDocumentoEspecialidad();
+    this.formDatosEmpleo.reset({ otroEmpleo: '0', sustituto: '0'});
+    this.registrosDocumentosEspecialidad.update(() => []);
+    this.documentosLocalStorageService.limpiar();
   }
 }
