@@ -146,8 +146,8 @@ export class CatalogosGeneralesService {
     );
   }
 
-  getLstCodigosPostales(idMunicipio: number): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/codigos-postales/buscar/${idMunicipio}`, {headers: this.header}).pipe(
+  getLstCodigosPostales(cp: number): Observable<HttpRespuesta<any>> {
+    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/codigos-postales/buscar/${cp}`, {headers: this.header}).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;

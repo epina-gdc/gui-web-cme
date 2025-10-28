@@ -218,9 +218,10 @@ export class InicioComponent extends GeneralComponent {
 
   suscribirObservables(): void {
     this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe(value => this.obtenerLocalidadPorPais(value));
+
     this.formRegistro.get('pais')?.valueChanges.subscribe(value => this.obtenerEstadoPorPais(value));
     this.formRegistro.get('estado')?.valueChanges.subscribe(value => this.obtenerMunicipioPorEstado(value));
-    this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerAlcaldiaPorMunicipio(value));
+    //this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerAlcaldiaPorMunicipio(value));
     this.formZonaInteres.get('ooad')?.valueChanges.subscribe(value => this.obtenerZonasPorMunicipio(value))
   }
 
@@ -313,8 +314,21 @@ export class InicioComponent extends GeneralComponent {
   obtenerLocalidadPorPais(pais: number): void {
   }
 
+  validarCP(){
+    this.catalogoService.getLstCodigosPostales(this.formRegistro.get('codigoPostal')?.value).subscribe({
+      next: (elemento) => {
+        this.formRegistro.get('pais')?.setValue(103)
+        this.formRegistro.get('estado')?.setValue(elemento.respuesta.estado.idEstado);
+        this.formRegistro.get('municipio')?.setValue(elemento.respuesta.delegacionMunicipio.idMunicipio);
+        this.colonias = mapearArregloTipoDropdown(elemento.respuesta.colonias, 'nomColonia', 'idColonia');
+      }
+    })
+  }
+
   obtenerEstadoPorPais(pais: number): void {
     if (!pais) return;
+    this.municipios = [];
+    this.colonias = [];
     this.catalogoService.getLstEstadosByPais(pais).subscribe({
       next: (valor) => {
         this.estados = mapearArregloTipoDropdown(valor.respuesta, 'desEstado', 'idEstado');
@@ -640,7 +654,9 @@ export class InicioComponent extends GeneralComponent {
     if (datosResidenciaActual) {
       const {colonia, pais, estado, delegacion, nomCalle, refNumero} = datosResidenciaActual;
 
+
       this.formRegistro.controls['codigoPostal'].setValue(colonia?.refCodigoPostal || null);
+      this.validarCP();
 
       // PatchValue para IDs de catálogos de domicilio
       this.formRegistro.get('pais')?.patchValue(pais?.idPais || null);
@@ -800,7 +816,7 @@ export class InicioComponent extends GeneralComponent {
       catchError((error) => {
         // Capturamos cualquier error lanzado en switchMap o errores HTTP
         this.blnFotoGuardada = false;
-        this._alertServices.error(error.message || 'Error en el proceso de guardado de la foto.');
+        this._alertServices.error(error.error || 'Error en el proceso de guardado de la foto.');
         return of(null); // Devolvemos un observable nulo para completar el flujo sin error.
       })
     ).subscribe({
@@ -847,7 +863,10 @@ export class InicioComponent extends GeneralComponent {
   }
 
   onFileSelected($event: any): void {
-    debugger
+    if($event.length == 0){
+      this._alertServices.alerta('El peso del archivo excede al permitido.');
+      return;
+    }
     const files: FileList | File[] = $event?.target?.files || $event;
     const archivo: File | undefined = files?.[0];
     if (!archivo) {
@@ -1567,6 +1586,8 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.reset();
     this.formZonaInteres.reset();
     this.zonasInteres.set([]);
+    this.municipios = [];
+    this.colonias = [];
     this.defaultFile = undefined;
     this.settearDatosUsuario();
   }
