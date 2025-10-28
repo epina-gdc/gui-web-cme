@@ -987,6 +987,7 @@ export class InicioComponent extends GeneralComponent {
       this.obtenerDocumento(refObligatorio3, 'obligatorio', 3);
     }
     this.registrosDocumentosEspecialidad.update(valor => especialidades);
+
     if (refConstancia1) {
       this.obtenerDocumento(refConstancia1.refGuid, 'constancia', 1, refConstancia1.nombre);
     }
@@ -1391,16 +1392,16 @@ export class InicioComponent extends GeneralComponent {
       next: (response: any) => {
         if (!response.exito) return;
         const respuesta: RespuestaConsultaDocumentos = response.respuesta;
-        this.procesarDatosObligatoriosObtenidos(respuesta.documentosObligatorios);
-        this.procesarDocumentosContancias(respuesta.documentosConstancias);
-        const especialidades = this.procesarDocumentosEspecialidades(respuesta.especialidadesDocumentos);
-        this.registrosDocumentosEspecialidad.update(() => especialidades);
-        if (respuesta.datosEmpleo) {
-          this.cargarDatosEmpleoAlFormulario(respuesta.datosEmpleo);
-        }
         if (respuesta.participacion.resultadoVerificacion) {
           this.estatusPendienteDocumentacion = respuesta.participacion.resultadoVerificacion.estatusVerificacion.desEstatus === 'Pendiente';
+          this.procesarDatosObligatoriosObtenidos(respuesta.documentosObligatorios);
+          this.procesarDocumentosContancias(respuesta.documentosConstancias);
+          const especialidades = this.procesarDocumentosEspecialidades(respuesta.especialidadesDocumentos);
+          this.registrosDocumentosEspecialidad.update(() => especialidades);
           this.desactivarForms();
+        }
+        if (respuesta.datosEmpleo) {
+          this.cargarDatosEmpleoAlFormulario(respuesta.datosEmpleo);
         }
       }
     });
