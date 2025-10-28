@@ -1275,13 +1275,13 @@ export class InicioComponent extends GeneralComponent {
     if (!refObligatorio3) {
       return true;
     }
-    if (!refConstancia1?.nombre) {
+    if (refConstancia1 && !refConstancia1.nombre) {
       return true;
     }
-    if (!refConstancia2?.nombre) {
+    if (refConstancia2 && !refConstancia2.nombre) {
       return true;
     }
-    if (!refConstancia3?.nombre) {
+    if (refConstancia3 && !refConstancia3.nombre) {
       return true;
     }
     if (this.formDatosEmpleo.invalid && externo) {
