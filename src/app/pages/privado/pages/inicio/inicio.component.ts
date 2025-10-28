@@ -1115,7 +1115,7 @@ export class InicioComponent extends GeneralComponent {
     this._ConvocatoriaService.guardarDatosDocumentosEscolares(solicitud).subscribe({
       next: (data: ResponseGeneral) => {
         if (data.exito) {
-          this.indice.update((value: number) => value + 1);
+          // this.indice.update((value: number) => value + 1);
           this._alertServices.exito(this._Mensajes.MSG039)
           this.documentosLocalStorageService.limpiar();
           return;
@@ -1593,6 +1593,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   limpiarSegundaSeccion() {
+    if (this.estatusPendienteDocumentacion) return;
     this.eliminarConstancia(1);
     this.eliminarConstancia(2);
     this.eliminarConstancia(3);
