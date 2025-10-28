@@ -1,6 +1,6 @@
 import {
   Component,
-  EventEmitter,
+  EventEmitter, inject,
   Input,
   OnChanges,
   OnInit,
@@ -13,6 +13,7 @@ import {FileUpload} from 'primeng/fileupload';
 import {PrimeTemplate} from 'primeng/api';
 import {Button} from 'primeng/button';
 import {NgClass} from '@angular/common';
+import {AlertService} from '@services/alert.service';
 
 @Component({
   selector: 'upload-document',
@@ -39,6 +40,8 @@ export class UploadDocumentComponent implements OnInit, OnChanges {
   files: any[] = [];
   totalSize: number = 0;
   totalSizePercent: number = 0;
+
+  alertaService: AlertService = inject(AlertService)
 
   constructor(private readonly config: PrimeNG) {
   }
@@ -90,8 +93,26 @@ export class UploadDocumentComponent implements OnInit, OnChanges {
   // --- Manejadores de Eventos del Usuario ---
 
   onSelectedFiles(event: any) {
+    // Verificar si PrimeNG reportó algún archivo no válido
+    // Los archivos inválidos por tamaño, tipo, etc., se encuentran en event.invalidFiles.
+    console.log(event)
+    if (event.currentFiles.length === 0) {
+      this.alertaService.error(`El archivo  excede el tamaño máximo permitido.`);
+
+      // ¡Importante! Evitar que se procese o se emita algún archivo
+      this.files = [];
+      if (this.fileUpload) {
+        this.fileUpload.clear();
+      }
+      this.fileRemoved.emit([]); // Notificar la limpieza
+      return;
+    }
+
+    // Lógica para archivos válidos (que ya tenías)
     this.files = event.currentFiles;
-    this.fileSelected.emit(this.files);
+    if (this.files.length > 0) {
+      this.fileSelected.emit(this.files);
+    }
   }
 
   onRemoveTemplatingFile(event: any, file: any, removeFileCallback: any, index: any) {
