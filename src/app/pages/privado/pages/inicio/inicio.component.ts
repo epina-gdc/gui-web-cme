@@ -150,7 +150,7 @@ export class InicioComponent extends GeneralComponent {
   especialidades: TipoDropdown[] = [];
   dias_semana: TipoDropdown[] = [];
 
-  indice: WritableSignal<number> = signal<number>(0);
+  indice: WritableSignal<number> = signal<number>(1);
   tipoMedico: WritableSignal<string> = signal<string>("");
 
   catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);

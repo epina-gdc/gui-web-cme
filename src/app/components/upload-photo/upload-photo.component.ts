@@ -105,6 +105,8 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
     if (fileChange?.currentValue instanceof File) {
       const file: File = fileChange.currentValue;
 
+      if (!this.fileUpload) return;
+
       // Limpiar la lista de archivos actuales
       this.fileUpload.clear();
 
