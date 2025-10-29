@@ -1360,7 +1360,7 @@ export class InicioComponent extends GeneralComponent {
     const refConstancia3 = this.documentosLocalStorageService.obtenerRefConstancia(3);
 
     if (this.estatusPendienteDocumentacion) {
-      return false;
+      return true;
     }
     if (!refObligatorio1) {
       return true;
