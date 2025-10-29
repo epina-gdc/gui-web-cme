@@ -1621,4 +1621,9 @@ export class InicioComponent extends GeneralComponent {
     this.registrosDocumentosEspecialidad.update(() => []);
     this.documentosLocalStorageService.limpiar();
   }
+
+  cambioDeSeccion($event: any) {
+    if (![0,1].includes($event)) return;
+    this.indice.update(() => $event);
+  }
 }
