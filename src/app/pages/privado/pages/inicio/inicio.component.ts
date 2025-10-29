@@ -1188,8 +1188,7 @@ export class InicioComponent extends GeneralComponent {
       next: (data: ResponseGeneral) => {
         if (data.exito) {
           // this.indice.update((value: number) => value + 1);
-          this._alertServices.exito(this._Mensajes.MSG026)
-          this.documentosLocalStorageService.limpiar();
+          this._alertServices.exito(this._Mensajes.MSG026);
           return;
         }
         this._alertServices.error(data.mensaje)
@@ -1485,11 +1484,17 @@ export class InicioComponent extends GeneralComponent {
         const respuesta: RespuestaConsultaDocumentos = response.respuesta;
         if (respuesta.participacion.resultadoVerificacion) {
           this.estatusPendienteDocumentacion = respuesta.participacion.resultadoVerificacion.estatusVerificacion.desEstatus === 'Pendiente';
+          this.desactivarForms();
+        }
+        if (respuesta.documentosObligatorios) {
           this.procesarDatosObligatoriosObtenidos(respuesta.documentosObligatorios);
-          this.procesarDocumentosContancias(respuesta.documentosConstancias);
+        }
+        if (respuesta.especialidadesDocumentos) {
           const especialidades = this.procesarDocumentosEspecialidades(respuesta.especialidadesDocumentos);
           this.registrosDocumentosEspecialidad.update(() => especialidades);
-          this.desactivarForms();
+        }
+        if (respuesta.documentosConstancias) {
+          this.procesarDocumentosContancias(respuesta.documentosConstancias);
         }
         if (respuesta.datosEmpleo) {
           this.cargarDatosEmpleoAlFormulario(respuesta.datosEmpleo);
