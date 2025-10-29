@@ -264,7 +264,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.strTitulo = 'Residente IMSS';
     this.clearCampos();
     this.form.controls['matricula'].setValidators([Validators.required,
-    Validators.minLength(1),
+    Validators.minLength(6),
     Validators.maxLength(10),
     Validators.pattern(PATRON_MATRICULA)]);
     this.form.controls['matricula'].updateValueAndValidity();
@@ -372,13 +372,13 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   public btnValidarCurp() {
     this.medico.refCurp = this.form.controls['curp'].value;
     this.form.markAllAsTouched();
-      this.validarCURP();
+    this.validarCURP();
 
-  //  this._alertServices.alerta(this._Mensajes.MSG010b);
+    //  this._alertServices.alerta(this._Mensajes.MSG010b);
 
   }
 
-  datosCURP!:any;
+  datosCURP!: any;
 
   private validarCURP() {
 
@@ -396,10 +396,10 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
     this._RegistroMedicoService.getDatosByCurp(datos).subscribe((response: any) => {
       if (!response.exito) {
-       // this.limpiarMatricula();
+        // this.limpiarMatricula();
         this._alertServices.error(response.mensaje);
       } else {
-        this.datosCURP= response.respuesta;
+        this.datosCURP = response.respuesta;
 
         this.form.controls['nombre'].setValue(response.respuesta.renapoData.nombres ? response.respuesta.renapoData.nombres : response.respuesta.siapData.nombre);
         this.form.controls['apellidoP'].setValue(response.respuesta.renapoData.primerApellido ? response.respuesta.renapoData.primerApellido : response.respuesta.siapData.primerApellido);
@@ -561,7 +561,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     curp.refRfc = this.medico.refRfc;
     curp.areaMedicaData = new AreaMedicaData();
     curp.areaMedicaData.CURP = curp.refCurp;
-    curp.areaMedicaData.MATRICULA = this.datosCURP.siapData?.matricula??'';
+    curp.areaMedicaData.MATRICULA = this.datosCURP.siapData?.matricula ?? '';
     curp.areaMedicaData.NOMBRE = curp.nomNombre;
     curp.areaMedicaData.APELLIDO_PATERNO = curp.nomApellidoPaterno;
     curp.areaMedicaData.APELLIDO_MATERNO = curp.nomApellidoMaterno;
@@ -648,13 +648,13 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
   public btnValidarMatricula() {
     this.medico.cveMatricula = this.form.controls['matricula'].value;
-        if (this.medico.cveMatricula.length > 10) {
-      this.limpiarMatricula();
-      this._alertServices.alerta(this._Mensajes.MSG010a);
+    if (this.medico.cveMatricula.length >= 6) {
 
 
+
+
+      return this.validarMatricula();
     }
-    return this.validarMatricula();
   }
 
   private limpiarMatricula() {
@@ -739,7 +739,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
 
-  private paginaInicio(mensaje: string){
+  private paginaInicio(mensaje: string) {
     void this._router.navigate(['publico/inicio-sesion']);
     setTimeout(() => {
       this._alertServices.error(mensaje);
