@@ -174,6 +174,7 @@ export class InicioComponent extends GeneralComponent {
 
   constructor(private readonly activatedRoute: ActivatedRoute) {
     super()
+    this.documentosLocalStorageService.limpiar();
     this.userService.userData$.subscribe(user => this.userData = user);
     this.formRegistro = this.asignarFormularioRegistro();
     this.formZonaInteres = this.asignarFormularioZonaInteres();
@@ -1070,26 +1071,32 @@ export class InicioComponent extends GeneralComponent {
         if (tipo === 'obligatorio' && id === 1) {
           const nombreArchivo = 'identificacion_oficial';
           this.archivoINE = new File([response], nombreArchivo, {type: tipoArchivo});
+          this.documentosLocalStorageService.guardarRefGuidObligatorio(id, refGuid);
         }
         if (tipo === 'obligatorio' && id === 2) {
           const nombreArchivo = 'titulo';
           this.archivoTitulo = new File([response], nombreArchivo, {type: tipoArchivo});
+          this.documentosLocalStorageService.guardarRefGuidObligatorio(id, refGuid);
         }
         if (tipo === 'obligatorio' && id === 3) {
           const nombreArchivo = 'cedula_profesional';
           this.archivoCedula = new File([response], nombreArchivo, {type: tipoArchivo});
+          this.documentosLocalStorageService.guardarRefGuidObligatorio(id, refGuid);
         }
         if (tipo === 'constancia' && id === 1) {
           this.nombreConstancia1 = nombre;
           this.archivoConstancia1 = new File([response], nombre, {type: tipoArchivo});
+          this.documentosLocalStorageService.guardarRefGuidConstancia(id, refGuid, nombre)
         }
         if (tipo === 'constancia' && id === 2) {
           this.nombreConstancia2 = nombre;
           this.archivoConstancia2 = new File([response], nombre, {type: tipoArchivo});
+          this.documentosLocalStorageService.guardarRefGuidConstancia(id, refGuid, nombre)
         }
         if (tipo === 'constancia' && id === 3) {
           this.nombreConstancia3 = nombre;
           this.archivoConstancia3 = new File([response], nombre, {type: tipoArchivo});
+          this.documentosLocalStorageService.guardarRefGuidConstancia(id, refGuid, nombre)
         }
       }
     });
@@ -1491,6 +1498,7 @@ export class InicioComponent extends GeneralComponent {
         }
         if (respuesta.especialidadesDocumentos) {
           const especialidades = this.procesarDocumentosEspecialidades(respuesta.especialidadesDocumentos);
+          this.documentosLocalStorageService.guardarRefGuidEspecialidad(especialidades);
           this.registrosDocumentosEspecialidad.update(() => especialidades);
         }
         if (respuesta.documentosConstancias) {
