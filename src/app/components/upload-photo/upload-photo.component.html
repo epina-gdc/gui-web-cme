@@ -1,4 +1,20 @@
 <div class="card-upload-photo">
+  @if (mostrarCamara) {
+    <div class="camera-overlay">
+      <div class="camera-container">
+        @if (errorCamara) {
+          <p-button (onClick)="apagarCamara(true)" label="Cerrar" icon="pi pi-times" severity="secondary" class="mt-2"/>
+        } @else {
+          <video #videoElement autoplay playsinline class="camera-video"></video>
+          <div class="flex justify-content-center gap-3 mt-3">
+            <p-button (onClick)="capturarFoto()" icon="pi pi-camera" label="Capturar" severity="success"/>
+            <p-button (onClick)="apagarCamara(true)" icon="pi pi-times" label="Cancelar" severity="secondary"/>
+          </div>
+        }
+      </div>
+    </div>
+  }
+
   <div class="upload-photo">
     <p-fileupload name="myfile[]" url="https://www.primefaces.org/cdn/api/upload.php" [multiple]="false" #fileUpload
                   accept=".jpg, .jpeg, .png" [invalidFileTypeMessageDetail]="'El formato de documento es incorrecto.'"
@@ -36,8 +52,16 @@
               flex-column border-dashed border-1 half-border border-circle border-imagen">
                 <img role="presentation" class="border-circle"
                      [alt]="file.name" [src]="file.objectURL" style="object-fit: cover; width: 100%; height: 100%;"/>
-                <p-button icon="cme-camara" [rounded]="true" class="btn-upload image-upload-button"
-                          (click)="seleccionarArchivo()"/>
+
+
+                <p-splitbutton dropdownIcon="cme-camara" [rounded]="true" [model]="items" (click)="mostrarOpciones($event)"
+                               styleClass="btn-upload image-upload-button" class="image-upload-button" />
+
+<!--
+                <p-menu #menu [model]="items" [popup]="true" class="menu-photo"></p-menu>
+                  <p-button icon="cme-camara" [rounded]="true" class="btn-upload image-upload-button"
+                            (click)="mostrarOpciones($event)"/>
+-->
               </div>
             }
           </div>
@@ -77,8 +101,9 @@
             <p class="label1-subir-imagen">Sube una foto</p>
             <p class="label-obligatorio">(jpg/png, máx. 1Mb),<br> clara y sin gafas</p>
           </span>
-          <p-button icon="cme-camara" [rounded]="true" class="btn-upload image-upload-button"
-                    (click)="seleccionarArchivo()"/>
+
+          <p-splitbutton dropdownIcon="cme-camara" [rounded]="true" [model]="items" (click)="mostrarOpciones($event)"
+                         styleClass="btn-upload image-upload-button" class="image-upload-button" />
 
         </div>
       </ng-template>
