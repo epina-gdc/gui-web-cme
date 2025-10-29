@@ -15,6 +15,7 @@ import {
   CatSubperfil,
   CatSubperfilResponse
 } from '@models/catalogoGeneral';
+import { BtnRegresarComponent } from '@components/btn-regresar/btn-regresar.component';
 
 @Component({
   selector: 'app-crear-cuenta',
@@ -27,6 +28,7 @@ import {
     RadioButtonModule,
     FormsModule,
     RadioButton,
+    BtnRegresarComponent,
   ],
   standalone: true,
   templateUrl: './crear-cuenta.component.html',
@@ -37,7 +39,8 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   fb = inject(FormBuilder)
   form!: FormGroup;
   blnSeleccionado = false;
-
+  
+  ruta: string = '';
   lstPerfil !: any;
   lstModalidad!: Array<CatSubperfil>;
   lstDocumentos!: Array<CatDocumentoVerificacion>;
@@ -47,6 +50,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   private readonly DOCUMENTO_PASAPORTE: string = 'PASAPORTE';
 
   ngOnInit() {
+    this.ruta = this._nav.publico + this._nav.inicioSesion;
     this.registroMedico = new RegistroMedico();
     this.blnResidente = true;
     this.blnSeleccionado = false;
