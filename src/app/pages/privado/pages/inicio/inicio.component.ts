@@ -1551,7 +1551,7 @@ export class InicioComponent extends GeneralComponent {
           tipoDocumento: item.tipoDocumentoEspecialidad.desTipoDocumentoEspecialidad,
           especialidadMedica: data.desEspecialidad,
           cveEspecialidad: data.cveEspecialidad,
-          idDocumento: item.idDocumentoEspecialidad,
+          idDocumento: item.tipoDocumentoEspecialidad.idTipoDocumentoEspecialidad,
           guid: item.documento.refGuid,
         })
       );
