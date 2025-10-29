@@ -37,7 +37,8 @@ export class Mensajes {
 
   public MSJ_CAMPO_REQUERIDO: string = 'Campo obligatorio';
   public MSJ_FORMATO_MATRICULA: string = 'Formato de matrícula: 0123456789';
-  public MSJ_LONG_MATRICULA: string = 'Longitud de matrícula es de 10';
+  /* public MSJ_LONG_MATRICULA: string = 'Longitud de matrícula es de 10'; */
+  public MSJ_LONG_MATRICULA: string = 'Longitud máxima de matrícula es de 10';
   public MSJ_LONG_PASAPORTE: string = 'Longitud de pasaporte es de 6 a 9';
   public MSJ_LONG_CURP: string = 'Longitud de CURP es de 18';
   public MSJ_LONG_RFC: string = 'Longitud de RFC es de 13';
