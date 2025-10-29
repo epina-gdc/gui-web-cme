@@ -223,6 +223,15 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.get('estado')?.valueChanges.subscribe(value => this.obtenerMunicipioPorEstado(value));
     //this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerAlcaldiaPorMunicipio(value));
     this.formZonaInteres.get('ooad')?.valueChanges.subscribe(value => this.obtenerZonasPorMunicipio(value))
+    this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe((value) =>
+      {
+        this.formRegistro.get('estadoNacimiento')?.disable()
+        this.formRegistro.get('estadoNacimiento')?.reset();
+        if(value.value == 103){
+          this.formRegistro.get('estadoNacimiento')?.enable()
+        }
+      }
+    );
   }
 
   settearDatosUsuario(): void {
@@ -630,9 +639,9 @@ export class InicioComponent extends GeneralComponent {
     }
 
     if (datosPersonales) {
-     
+
       const {refRfc, refNss, estadoCivil, paisNacimiento, lugarNacimiento, perfil} = datosPersonales;
-      
+
       if(perfil.idPerfil == 2){
         this.formRegistro.controls['nss'].setValidators([Validators.required]);
         this.formRegistro.controls['nss'].updateValueAndValidity();
