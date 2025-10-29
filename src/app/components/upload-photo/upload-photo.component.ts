@@ -14,7 +14,6 @@ import {Button} from 'primeng/button';
 import {MenuItem, PrimeTemplate} from 'primeng/api';
 import {FileUpload} from 'primeng/fileupload';
 import {Menu} from 'primeng/menu';
-import {SplitButton} from 'primeng/splitbutton';
 import {AlertService} from '@services/alert.service';
 
 @Component({
@@ -22,9 +21,7 @@ import {AlertService} from '@services/alert.service';
   imports: [
     Button,
     PrimeTemplate,
-    FileUpload,
-    Menu,
-    SplitButton
+    FileUpload
   ],
   templateUrl: './upload-photo.component.html',
   styleUrl: './upload-photo.component.scss'
@@ -81,24 +78,17 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    if (this.existingFile instanceof File) {
-      const file: File = this.existingFile;
-      this.fileUpload.clear();
-      const fileList: any[] = [file];
-      this.fileUpload.files = fileList; // La propiedad que usa el template
-      this.files = fileList;
-    }
+    // Se usa setTimeout para asegurar que el ViewChild 'fileUpload' esté disponible
+    // justo después de que la vista se haya renderizado.
+    setTimeout(() => {
+      this.updateFileUpload(this.existingFile);
+    }, 0);
   }
 
   mostrarOpciones(event: Event): void {
     if (this.menu) {
       this.menu.toggle(event);
     }
-  }
-
-  onSelectedFiles(event: any) {
-    this.files = event.currentFiles;
-    this.fileSelected.emit(this.files);
   }
 
   onRemoveTemplatingFile(event: any, file: any, removeFileCallback: any, index: any) {
@@ -108,7 +98,8 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
   }
 
   onRemoveFile(file: any, index: number) {
-    this.files.splice(index, 1);
+    this.files = [];
+    this.fileUpload.clear();
     this.fileRemoved.emit(this.files);
   }
 
@@ -160,23 +151,60 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     const fileChange = changes['existingFile'];
 
-    if (fileChange?.currentValue instanceof File) {
-      const file: File = fileChange.currentValue;
+    // Se actualiza si el valor de existingFile realmente ha cambiado
+    if (fileChange && fileChange.currentValue !== fileChange.previousValue) {
+      this.updateFileUpload(fileChange.currentValue);
+    }
+  }
 
-      if (!this.fileUpload) return;
+  /**
+   * Actualiza el valor interno del componente p-fileUpload y la lista local 'files'.
+   */
+  private updateFileUpload(file: File | undefined | null): void {
+    if (!this.fileUpload) {
+      // Debería estar disponible gracias a ngOnInit con setTimeou.
+      console.warn('p-fileUpload no está listo para la actualización.');
+      return;
+    }
 
-      // Limpiar la lista de archivos actuales
-      this.fileUpload.clear();
+    // Limpiar el estado anterior
+    this.fileUpload.clear();
+    this.files = [];
+    this.totalSize = 0;
+    this.totalSizePercent = 0;
 
-      // Crear una lista de archivos para inyectar
+    if (file instanceof File) {
       const fileList: any[] = [file];
 
-      // Asignar el archivo directamente a las propiedades internas del p-fileUpload
-      this.fileUpload.files = fileList; // La propiedad que usa el template
+      // **La clave:** Asignar el archivo a la propiedad 'files' del componente PrimeNG
+      this.fileUpload.files = fileList;
+      this.files = fileList; // Actualizar la lista local
+      this.totalSize = file.size;
+    }
 
-      // Opcional: Asignar a su propiedad 'files' para mantener la consistencia
-      this.files = fileList;
+  }
 
+
+  onSelectedFiles(event: any) {
+    // Verificar si PrimeNG reportó algún archivo no válido
+    // Los archivos inválidos por tamaño, tipo, etc., se encuentran en event.invalidFiles.
+    console.log(event)
+    if (event.currentFiles.length === 0) {
+      this.alertaService.error(`El archivo  excede el tamaño máximo permitido.`);
+
+      // ¡Importante! Evitar que se procese o se emita algún archivo
+      this.files = [];
+      if (this.fileUpload) {
+        this.fileUpload.clear();
+      }
+      this.fileRemoved.emit([]); // Notificar la limpieza
+      return;
+    }
+
+    // Lógica para archivos válidos (que ya tenías)
+    this.files = event.currentFiles;
+    if (this.files.length > 0) {
+      this.fileSelected.emit(this.files);
     }
   }
 
@@ -196,8 +224,8 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
       this.stream = await navigator.mediaDevices.getUserMedia({
         video: {
           // facingMode: { ideal: 'environment' }, // Comenta esta línea por ahora para probar
-          width: { ideal: 1280 },
-          height: { ideal: 720 }
+          width: {ideal: 1280},
+          height: {ideal: 720}
         }
       });
 
@@ -221,7 +249,7 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
         // Si es un OverconstrainedError, puede ser por width/height/facingMode.
         // Se Intenta con restricciones más flexibles:
         try {
-          this.stream = await navigator.mediaDevices.getUserMedia({ video: true }); // Solo pedir video
+          this.stream = await navigator.mediaDevices.getUserMedia({video: true}); // Solo pedir video
           if (this.videoElement && this.videoElement.nativeElement) {
             this.videoElement.nativeElement.srcObject = this.stream;
             this.videoElement.nativeElement.play();
@@ -230,8 +258,7 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
           this.alertaService.error('No se puede tomar la fotografía" (Error al reintentar: ' + retryErr.name + ').');
           this.apagarCamara(false);
         }
-      }
-      else {
+      } else {
         this.alertaService.error('No se puede tomar la fotografía (' + err.name + ': ' + err.message + ').');
       }
       console.error('Error al acceder a la cámara:', err);
@@ -291,6 +318,11 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
 
     // Emite el evento como si se hubiera seleccionado
     this.fileSelected.emit(this.files);
+  }
+
+
+  clear() {
+    this.updateFileUpload(null); // Se usa la función de actualización para limpiar
   }
 
 }
