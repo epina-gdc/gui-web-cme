@@ -654,6 +654,8 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
 
       return this.validarMatricula();
+    }else{
+     return  this._alertServices.alerta(this._Mensajes.MSG010a);
     }
   }
 
