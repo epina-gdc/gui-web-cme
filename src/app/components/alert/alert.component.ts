@@ -23,7 +23,7 @@ export class AlertComponent implements OnInit, OnDestroy {
 
   @Input() public readonly id: string = 'default-alert';
   @Input() public readonly fade: boolean = true;
-  @Input() public autoCloseTime = 3000;  // Tiempo en ms para auto cerrar
+  @Input() public autoCloseTime = 6000;  // Tiempo en ms para auto cerrar
 
   public alerts: Alert[] = [];
 
