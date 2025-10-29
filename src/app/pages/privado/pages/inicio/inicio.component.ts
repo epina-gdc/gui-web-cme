@@ -1319,8 +1319,8 @@ export class InicioComponent extends GeneralComponent {
       nomEspecificacionInstitucion: formValues.nombreInstitucion || '',
       cveOoad: cveOoad,
       desOoad: desOoad,
-      refJornadaInicio: formValues.horarioInicio || null, // formato HH:MM
-      refJornadaFin: formValues.horarioFin || null,       // formato HH:MM
+      refJornadaInicio: this.obtenerHoraHHMM(formValues.horarioInicio) || null, // formato HH:MM
+      refJornadaFin: this.obtenerHoraHHMM(formValues.horarioFin) || null,       // formato HH:MM
       diaSemanaInicio: {
         idDiaSemana: formValues.diaInicio || null
       },
@@ -1694,5 +1694,24 @@ export class InicioComponent extends GeneralComponent {
   cambioDeSeccion($event: any) {
     if (![0,1].includes($event)) return;
     this.indice.update(() => $event);
+  }
+
+    obtenerHoraHHMM(date: Date) {
+    if (!date) {
+      return null;
+    }
+    // 2. Obtener las horas (getHours() usa la hora local del navegador).
+    // Si tu backend es 'Z' (UTC) y quieres la hora UTC, usa getUTCHours().
+    const hours = date.getHours();
+
+    // 3. Obtener los minutos.
+    const minutes = date.getMinutes();
+
+    // 4. Formatear para asegurar el "0" inicial si es menor a 10.
+    const formattedHours = String(hours).padStart(2, '0');
+    const formattedMinutes = String(minutes).padStart(2, '0');
+
+    // 5. Retornar el formato HH:MM.
+    return `${formattedHours}:${formattedMinutes}`;
   }
 }
