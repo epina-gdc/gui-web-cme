@@ -269,27 +269,64 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
     if (!this.stream || !this.videoElement || !this.videoElement.nativeElement) return;
 
     const video = this.videoElement.nativeElement;
-    const canvas = document.createElement('canvas');
-    canvas.width = video.videoWidth;
-    canvas.height = video.videoHeight;
-    const context = canvas.getContext('2d');
+    const originalCanvas = document.createElement('canvas');
+    originalCanvas.width = video.videoWidth;
+    originalCanvas.height = video.videoHeight;
+    const originalContext = originalCanvas.getContext('2d');
 
-    if (context) {
-      // Dibuja el cuadro actual del video en el canvas
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+    if (originalContext) {
+      originalContext.drawImage(video, 0, 0, originalCanvas.width, originalCanvas.height);
 
-      // Convierte el canvas a Blob y luego a objeto File
-      canvas.toBlob((blob) => {
-        if (blob) {
-          // Crea un nombre de archivo único
-          const fileName = `foto-capturada-${new Date().getTime()}.png`;
-          const file = new File([blob], fileName, {type: 'image/png'});
-          this.manejarArchivoCapturado(file);
+      const maxWidth = 1024;
+      const maxHeight = 768;
+      const quality = 0.8;
+
+      let width = originalCanvas.width;
+      let height = originalCanvas.height;
+
+      if (width > height) {
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
         }
-      }, 'image/png');
+      } else {
+        if (height > maxHeight) {
+          width = Math.round((width * maxHeight) / height);
+          height = maxHeight;
+        }
+      }
+
+      const resizedCanvas = document.createElement('canvas');
+      resizedCanvas.width = width;
+      resizedCanvas.height = height;
+      const resizedContext = resizedCanvas.getContext('2d');
+
+      if (resizedContext) {
+        resizedContext.drawImage(originalCanvas, 0, 0, width, height);
+
+        resizedCanvas.toBlob((blob) => {
+          if (blob) {
+            const fileName = `foto-capturada-${new Date().getTime()}.jpeg`;
+            const file = new File([blob], fileName, { type: 'image/jpeg' });
+
+            if (file.size > this.maxFileSize) {
+                this.errorCamara = `MSG033: La foto es demasiado grande (${this.formatSize(file.size)}). Intenta de nuevo.`;
+                this.apagarCamara(false);
+                return;
+            }
+
+            this.manejarArchivoCapturado(file);
+          } else {
+              this.errorCamara = 'MSG033: Error al comprimir la imagen.';
+              this.apagarCamara(false);
+          }
+        }, 'image/jpeg', quality);
+      }
     }
 
-    this.apagarCamara(); // Cierra la vista de la cámara
+    if (!this.errorCamara) {
+      this.apagarCamara(true);
+    }
   }
 
   // Método para cerrar el stream de la cámara
