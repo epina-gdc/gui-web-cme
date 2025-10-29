@@ -53,15 +53,12 @@
                 <img role="presentation" class="border-circle"
                      [alt]="file.name" [src]="file.objectURL" style="object-fit: cover; width: 100%; height: 100%;"/>
 
-
+              <!--
                 <p-splitbutton dropdownIcon="cme-camara" [rounded]="true" [model]="items" (click)="mostrarOpciones($event)"
                                styleClass="btn-upload image-upload-button" class="image-upload-button" />
-
-<!--
-                <p-menu #menu [model]="items" [popup]="true" class="menu-photo"></p-menu>
-                  <p-button icon="cme-camara" [rounded]="true" class="btn-upload image-upload-button"
-                            (click)="mostrarOpciones($event)"/>
--->
+                -->
+                <p-button icon="cme-camara" [rounded]="true" class="btn-upload image-upload-button"
+                          (click)="seleccionarArchivo()"/>
               </div>
             }
           </div>
@@ -101,10 +98,13 @@
             <p class="label1-subir-imagen">Sube una foto</p>
             <p class="label-obligatorio">(jpg/png, máx. 1Mb),<br> clara y sin gafas</p>
           </span>
-
+        <!--
           <p-splitbutton dropdownIcon="cme-camara" [rounded]="true" [model]="items" (click)="mostrarOpciones($event)"
                          styleClass="btn-upload image-upload-button" class="image-upload-button" />
+                         -->
 
+          <p-button icon="cme-camara" [rounded]="true" class="btn-upload image-upload-button"
+                    (click)="seleccionarArchivo()"/>
         </div>
       </ng-template>
     </p-fileupload>

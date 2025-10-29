@@ -1,4 +1,4 @@
-import {Component, input, Input, InputSignal} from '@angular/core';
+import {Component, EventEmitter, input, Input, InputSignal, Output} from '@angular/core';
 import {NgClass} from '@angular/common';
 import {StepItemInterno} from '@models/step-item.interface';
 
@@ -13,6 +13,11 @@ import {StepItemInterno} from '@models/step-item.interface';
 export class StepsComponent {
   @Input() steps: StepItemInterno[] = [];
   currentStepIndex: InputSignal<number> = input(1);
+  @Output() stepClick = new EventEmitter<number>();
+
+  handleStepClick(index: number): void {
+    this.stepClick.emit(index);
+  }
 
   getStepClass(index: number): string {
     if (index === this.currentStepIndex()) {
