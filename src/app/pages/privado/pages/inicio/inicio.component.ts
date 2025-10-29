@@ -172,6 +172,7 @@ export class InicioComponent extends GeneralComponent {
 
   constructor(private readonly activatedRoute: ActivatedRoute) {
     super()
+    this.documentosLocalStorageService.limpiar();
     this.userService.userData$.subscribe(user => this.userData = user);
     this.formRegistro = this.asignarFormularioRegistro();
     this.formZonaInteres = this.asignarFormularioZonaInteres();
@@ -1068,26 +1069,32 @@ export class InicioComponent extends GeneralComponent {
         if (tipo === 'obligatorio' && id === 1) {
           const nombreArchivo = 'identificacion_oficial';
           this.archivoINE = new File([response], nombreArchivo, {type: tipoArchivo});
+          this.documentosLocalStorageService.guardarRefGuidObligatorio(id, refGuid);
         }
         if (tipo === 'obligatorio' && id === 2) {
           const nombreArchivo = 'titulo';
           this.archivoTitulo = new File([response], nombreArchivo, {type: tipoArchivo});
+          this.documentosLocalStorageService.guardarRefGuidObligatorio(id, refGuid);
         }
         if (tipo === 'obligatorio' && id === 3) {
           const nombreArchivo = 'cedula_profesional';
           this.archivoCedula = new File([response], nombreArchivo, {type: tipoArchivo});
+          this.documentosLocalStorageService.guardarRefGuidObligatorio(id, refGuid);
         }
         if (tipo === 'constancia' && id === 1) {
           this.nombreConstancia1 = nombre;
           this.archivoConstancia1 = new File([response], nombre, {type: tipoArchivo});
+          this.documentosLocalStorageService.guardarRefGuidConstancia(id, refGuid, nombre)
         }
         if (tipo === 'constancia' && id === 2) {
           this.nombreConstancia2 = nombre;
           this.archivoConstancia2 = new File([response], nombre, {type: tipoArchivo});
+          this.documentosLocalStorageService.guardarRefGuidConstancia(id, refGuid, nombre)
         }
         if (tipo === 'constancia' && id === 3) {
           this.nombreConstancia3 = nombre;
           this.archivoConstancia3 = new File([response], nombre, {type: tipoArchivo});
+          this.documentosLocalStorageService.guardarRefGuidConstancia(id, refGuid, nombre)
         }
       }
     });
@@ -1113,7 +1120,7 @@ export class InicioComponent extends GeneralComponent {
     this.documentosLocalStorageService.guardarRefGuidConstancia(id, refConstancia.refGuid, nombre)
   }
 
-  guardarDocumentacion(): void {
+  guardarDocumentacion(finalizarRegistro: boolean = false): void {
     const refObligatorio1 = this.documentosLocalStorageService.obtenerRefGuid(1);
     const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
     const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
@@ -1155,7 +1162,16 @@ export class InicioComponent extends GeneralComponent {
     }
 
     const solicitud: SolicitudGuardarDocumentacion = this.generarSolicitudGuardarDocumentacion();
-    this._ConvocatoriaService.guardarDatosDocumentosEscolares(solicitud).subscribe({
+    if (finalizarRegistro) {
+      this.finalizarRegistro(solicitud);
+    } else {
+      this.guardarSegundaSeccion(solicitud);
+    }
+
+  }
+
+  finalizarRegistro(solicitud: SolicitudGuardarDocumentacion): void {
+    this._ConvocatoriaService.terminarRegistro(solicitud).subscribe({
       next: (data: ResponseGeneral) => {
         if (data.exito) {
           // this.indice.update((value: number) => value + 1);
@@ -1169,7 +1185,23 @@ export class InicioComponent extends GeneralComponent {
       error: (err: ResponseGeneral) => {
         this._alertServices.error(err.mensaje);
       }
-    })
+    });
+  }
+
+  guardarSegundaSeccion(solicitud: SolicitudGuardarDocumentacion): void {
+    this._ConvocatoriaService.guardarDatosDocumentosEscolares(solicitud).subscribe({
+      next: (data: ResponseGeneral) => {
+        if (data.exito) {
+          // this.indice.update((value: number) => value + 1);
+          this._alertServices.exito(this._Mensajes.MSG026);
+          return;
+        }
+        this._alertServices.error(data.mensaje)
+      },
+      error: (err: ResponseGeneral) => {
+        this._alertServices.error(err.mensaje);
+      }
+    });
   }
 
   generarSolicitudGuardarDocumentacion(): SolicitudGuardarDocumentacion {
@@ -1457,11 +1489,18 @@ export class InicioComponent extends GeneralComponent {
         const respuesta: RespuestaConsultaDocumentos = response.respuesta;
         if (respuesta.participacion.resultadoVerificacion) {
           this.estatusPendienteDocumentacion = respuesta.participacion.resultadoVerificacion.estatusVerificacion.desEstatus === 'Pendiente';
-          this.procesarDatosObligatoriosObtenidos(respuesta.documentosObligatorios);
-          this.procesarDocumentosContancias(respuesta.documentosConstancias);
-          const especialidades = this.procesarDocumentosEspecialidades(respuesta.especialidadesDocumentos);
-          this.registrosDocumentosEspecialidad.update(() => especialidades);
           this.desactivarForms();
+        }
+        if (respuesta.documentosObligatorios) {
+          this.procesarDatosObligatoriosObtenidos(respuesta.documentosObligatorios);
+        }
+        if (respuesta.especialidadesDocumentos) {
+          const especialidades = this.procesarDocumentosEspecialidades(respuesta.especialidadesDocumentos);
+          this.documentosLocalStorageService.guardarRefGuidEspecialidad(especialidades);
+          this.registrosDocumentosEspecialidad.update(() => especialidades);
+        }
+        if (respuesta.documentosConstancias) {
+          this.procesarDocumentosContancias(respuesta.documentosConstancias);
         }
         if (respuesta.datosEmpleo) {
           this.cargarDatosEmpleoAlFormulario(respuesta.datosEmpleo);
