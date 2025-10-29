@@ -476,10 +476,22 @@ export class InicioComponent extends GeneralComponent {
     const tipoDoc = this.obtenerTipoDocumentoAValidar();
     const especialidadDoc = this.obtenerEspecialidadAValidar();
 
+    if (this.yaExistenEspecilidadesPermitidas(especialidadDoc)) {
+      this._alertServices.alerta(`El limite de especialidades ha sido alcanzado`);
+      return;
+    }
+
+    if (this.yaExistenDocumentosPermitidos(tipoDoc, especialidadDoc)) {
+      this._alertServices.alerta(`El limite de documentos ya fue alcanzado para la especialidad ${especialidadDoc}.`);
+      return;
+    }
+
+
     if (this.documentoYaExisteParaEspecialidad(tipoDoc, especialidadDoc)) {
       this._alertServices.alerta(`El documento de tipo ${tipoDoc} ya fue cargado para la especialidad ${especialidadDoc}.`);
       return;
     }
+
     if (!this.documentoEspecialidad) return;
 
     const formData = new FormData();
@@ -502,6 +514,24 @@ export class InicioComponent extends GeneralComponent {
       return false;
     }
     return especialidadExistente.documentos.some(doc => doc.tipoDocumento === tipoDocumento);
+  }
+
+  yaExistenEspecilidadesPermitidas(especialidad: string): boolean {
+    const especialidades = this.registrosDocumentosEspecialidad();
+    const especialidadExistente = especialidades.find(e => e.especialidad === especialidad);
+    return !especialidadExistente && this.registrosDocumentosEspecialidad().length === 3;
+
+  }
+
+  yaExistenDocumentosPermitidos(tipoDocumento: string, especialidad: string): boolean {
+    const especialidades = this.registrosDocumentosEspecialidad();
+    const especialidadExistente = especialidades.find(e => e.especialidad === especialidad);
+    if (!especialidadExistente) {
+      return false;
+    }
+    const documentoExistente = especialidadExistente.documentos.some(doc => doc.tipoDocumento === tipoDocumento);
+
+    return !documentoExistente && especialidadExistente.documentos.length === 3;
   }
 
   agregarDocumento(guid: string): void {
