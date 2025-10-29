@@ -80,7 +80,10 @@
   display: none;
 }
 
-/* Añade esto a upload-photo.component.scss */
+::ng-deep .p-tieredmenu-item-link {
+  font-size: 14px;
+}
+
 .camera-overlay {
   position: fixed; /* Para que esté sobre el contenido */
   top: 35%;
@@ -91,7 +94,7 @@
   justify-content: center;
   align-items: center;
   z-index: 9999; /* Asegura que esté por encima de todo */
-  border-radius: 50%; /* Si quieres que el overlay mantenga la forma circular del contenedor principal */
+  border-radius: 50%; /* Mantinee la forma circular del contenedor principal */
 }
 
 .camera-container {
