@@ -263,8 +263,8 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   private isResidente() {
     this.strTitulo = 'Residente IMSS';
     this.clearCampos();
-    this.form.controls['matricula'].setValidators([Validators.required, Validators.minLength(10),
-    Validators.minLength(10),
+    this.form.controls['matricula'].setValidators([Validators.required,
+    Validators.minLength(1),
     Validators.maxLength(10),
     Validators.pattern(PATRON_MATRICULA)]);
     this.form.controls['matricula'].updateValueAndValidity();
@@ -373,7 +373,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.medico.refCurp = this.form.controls['curp'].value;
     this.form.markAllAsTouched();
       this.validarCURP();
-   
+
   //  this._alertServices.alerta(this._Mensajes.MSG010b);
 
   }
@@ -381,11 +381,11 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   datosCURP!:any;
 
   private validarCURP() {
-  
+
     this.inCurp = true;
 
 
-    
+
 
 
     let datos = {
@@ -400,7 +400,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
         this._alertServices.error(response.mensaje);
       } else {
         this.datosCURP= response.respuesta;
-        
+
         this.form.controls['nombre'].setValue(response.respuesta.renapoData.nombres ? response.respuesta.renapoData.nombres : response.respuesta.siapData.nombre);
         this.form.controls['apellidoP'].setValue(response.respuesta.renapoData.primerApellido ? response.respuesta.renapoData.primerApellido : response.respuesta.siapData.primerApellido);
         this.form.controls['apellidoM'].setValue(response.respuesta.renapoData.segundoApellido ? response.respuesta.renapoData.segundoApellido : response.respuesta.siapData.segundoApellido);
@@ -494,9 +494,12 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
         if (data.exito) {
           return this.paginaAnterior();
+        } else {
+          if (data.mensaje.includes('existe una cuenta')) {
+            return this.paginaInicio(data.mensaje);
+          }
+          return this._alertServices.error(data.mensaje);
         }
-        return this._alertServices.error(data.mensaje)
-
       },
       error: (err: HttpErrorResponse) => {
         this._alertServices.error(err.message);
@@ -526,8 +529,12 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
         if (data.exito) {
           return this.paginaAnterior();
+        } else {
+          if (data.mensaje.includes('existe una cuenta')) {
+            return this.paginaInicio(data.mensaje);
+          }
+          return this._alertServices.error(data.mensaje);
         }
-        return this._alertServices.error(data.mensaje)
 
       },
       error: (err: HttpErrorResponse) => {
@@ -538,7 +545,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
   postCurp() {
-    
+
     let curp = new RegistroCurpRequest();
 
     curp.refEmail = this.medico.refEmail;
@@ -563,8 +570,12 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
         if (data.exito) {
           return this.paginaAnterior();
+        } else {
+          if (data.mensaje.includes('existe una cuenta')) {
+            return this.paginaInicio(data.mensaje);
+          }
+          return this._alertServices.error(data.mensaje);
         }
-        return this._alertServices.error(data.mensaje)
 
       },
       error: (err: HttpErrorResponse) => {
@@ -616,9 +627,9 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
   cambiaModalidad() {
-    
+
     this.medico.modalidad = this.form.controls['modalidad'].value;
-    
+
   }
 
   cambiaPais() {
@@ -637,7 +648,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
   public btnValidarMatricula() {
     this.medico.cveMatricula = this.form.controls['matricula'].value;
-    if (this.medico.cveMatricula.length != 10) {
+        if (this.medico.cveMatricula.length > 10) {
       this.limpiarMatricula();
       this._alertServices.alerta(this._Mensajes.MSG010a);
 
@@ -719,12 +730,21 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   get habilitarBtnMatricula() {
     const matricula = this.form.controls['matricula'];
     if (!matricula.value) return true;
-    return matricula.value.length !== 10;
+
+    if (matricula.value.length <= 10) return false;
+
+    return true;
+
+    /* return matricula.value.length !== 10; */
   }
 
 
-
-
+  private paginaInicio(mensaje: string){
+    void this._router.navigate(['publico/inicio-sesion']);
+    setTimeout(() => {
+      this._alertServices.error(mensaje);
+    }, 500);
+  }
 
 
 }
