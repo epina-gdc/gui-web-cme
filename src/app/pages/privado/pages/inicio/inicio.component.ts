@@ -1623,6 +1623,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   cambioDeSeccion($event: any) {
+    if (![0,1].includes($event)) return;
     this.indice.update(() => $event);
   }
 }
