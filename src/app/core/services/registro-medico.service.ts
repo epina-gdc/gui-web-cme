@@ -81,7 +81,7 @@ export class RegistroMedicoService {
 
   private handleError(error: HttpErrorResponse) {
 
-    this.alertas.error("Error " + error.status + '. Contácte al administrador');
+   console.log("Error " + error.status + '. Contácte al administrador');
     // Return an observable with a user-facing error message.
     return throwError(error);
   }
