@@ -1,6 +1,5 @@
 import {Component, inject, QueryList, signal, ViewChildren, WritableSignal} from '@angular/core';
 import {Card} from 'primeng/card';
-import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.component';
 import {StepsComponent} from '@components/steps/steps.component';
 import {UploadPhotoComponent} from '@components/upload-photo/upload-photo.component';
 import {InputText} from 'primeng/inputtext';
@@ -72,7 +71,6 @@ interface EntradaDocumentos {
   selector: 'app-inicio',
   imports: [
     Card,
-    BtnRegresarComponent,
     StepsComponent,
     UploadPhotoComponent,
     InputText,
