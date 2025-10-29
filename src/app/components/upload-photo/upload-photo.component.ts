@@ -1,21 +1,56 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter, inject,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild
+} from '@angular/core';
 import {PrimeNG} from 'primeng/config';
 import {Button} from 'primeng/button';
-import {PrimeTemplate} from 'primeng/api';
+import {MenuItem, PrimeTemplate} from 'primeng/api';
 import {FileUpload} from 'primeng/fileupload';
+import {Menu} from 'primeng/menu';
+import {SplitButton} from 'primeng/splitbutton';
+import {AlertService} from '@services/alert.service';
 
 @Component({
   selector: 'upload-photo',
   imports: [
     Button,
     PrimeTemplate,
-    FileUpload
+    FileUpload,
+    Menu,
+    SplitButton
   ],
   templateUrl: './upload-photo.component.html',
   styleUrl: './upload-photo.component.scss'
 })
 export class UploadPhotoComponent implements OnInit, OnChanges {
   @ViewChild('fileUpload') fileUpload!: FileUpload;
+  @ViewChild('menu') menu!: Menu;
+
+  @ViewChild('videoElement')
+  set videoElementRef(element: ElementRef<HTMLVideoElement>) {
+    this._videoElement = element;
+
+    // Si ya se tiene un stream y el elemento acaba de ser creado, lo asignamos.
+    if (this._videoElement && this.stream && this._videoElement.nativeElement.srcObject !== this.stream) {
+      this._videoElement.nativeElement.srcObject = this.stream;
+      this._videoElement.nativeElement.play();
+    }
+  }
+
+  private _videoElement: ElementRef<HTMLVideoElement> | undefined;
+
+  get videoElement(): ElementRef<HTMLVideoElement> | undefined {
+    return this._videoElement;
+  }
+
+  alertaService: AlertService = inject(AlertService)
 
   @Input() maxFileSize: number = 5120000;
   @Input() existingFile: File | undefined = undefined;
@@ -25,7 +60,24 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
   totalSize: number = 0;
   totalSizePercent: number = 0;
 
+  items: MenuItem[] = []; // Opciones del menú
+  mostrarCamara: boolean = false;
+  stream: MediaStream | null = null;
+  errorCamara: string = '';
+
   constructor(private readonly config: PrimeNG) {
+    this.items = [
+      {
+        label: 'Cargar Fotografía',
+        icon: 'pi pi-upload',
+        command: () => this.seleccionarArchivo()
+      },
+      {
+        label: 'Tomar Fotografía',
+        icon: 'pi pi-camera',
+        command: () => this.tomarFotografia()
+      }
+    ];
   }
 
   ngOnInit() {
@@ -35,6 +87,12 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
       const fileList: any[] = [file];
       this.fileUpload.files = fileList; // La propiedad que usa el template
       this.files = fileList;
+    }
+  }
+
+  mostrarOpciones(event: Event): void {
+    if (this.menu) {
+      this.menu.toggle(event);
     }
   }
 
@@ -120,6 +178,119 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
       this.files = fileList;
 
     }
+  }
+
+  async tomarFotografia(): Promise<void> {
+
+    if (!('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices)) {
+      this.alertaService.error('No se puede tomar la fotografía" (API no soportada).');
+      return;
+    }
+
+    this.mostrarCamara = true; // Mostrar el contenedor de la cámara
+
+    try {
+      // Intenta con facingMode 'environment' (trasera), si falla, intenta 'user' (frontal)
+      // Si ambos fallan, o solo quieres la frontal por defecto, ajusta aquí.
+      // Para depurar, empecemos con una opción más general o 'user'.
+      this.stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          // facingMode: { ideal: 'environment' }, // Comenta esta línea por ahora para probar
+          width: { ideal: 1280 },
+          height: { ideal: 720 }
+        }
+      });
+
+      // Si el videoElement ya está disponible (por el setter @ViewChild), se asignará.
+      // Si no, el setter lo asignará cuando el elemento se renderice.
+      if (this.videoElement?.nativeElement) {
+        this.videoElement.nativeElement.srcObject = this.stream;
+        this.videoElement.nativeElement.play();
+      }
+
+    } catch (err: any) {
+      this.apagarCamara(false); // Apaga el stream, pero mantén el overlay visible para el error
+
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+        this.alertaService.error('No se puede tomar la fotografía (Permiso denegado).');
+      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+        this.alertaService.error('No se puede tomar la fotografía (Cámara no encontrada).');
+      } else if (err.name === 'OverconstrainedError') {
+        this.alertaService.error('No se puede tomar la fotografía (Restricciones de cámara no satisfechas).');
+        console.error('OverconstrainedError: ' + err.message);
+        // Si es un OverconstrainedError, puede ser por width/height/facingMode.
+        // Se Intenta con restricciones más flexibles:
+        try {
+          this.stream = await navigator.mediaDevices.getUserMedia({ video: true }); // Solo pedir video
+          if (this.videoElement && this.videoElement.nativeElement) {
+            this.videoElement.nativeElement.srcObject = this.stream;
+            this.videoElement.nativeElement.play();
+          }
+        } catch (retryErr: any) {
+          this.alertaService.error('No se puede tomar la fotografía" (Error al reintentar: ' + retryErr.name + ').');
+          this.apagarCamara(false);
+        }
+      }
+      else {
+        this.alertaService.error('No se puede tomar la fotografía (' + err.name + ': ' + err.message + ').');
+      }
+      console.error('Error al acceder a la cámara:', err);
+    }
+  }
+
+  capturarFoto(): void {
+    if (!this.stream || !this.videoElement || !this.videoElement.nativeElement) return;
+
+    const video = this.videoElement.nativeElement;
+    const canvas = document.createElement('canvas');
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    const context = canvas.getContext('2d');
+
+    if (context) {
+      // Dibuja el cuadro actual del video en el canvas
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Convierte el canvas a Blob y luego a objeto File
+      canvas.toBlob((blob) => {
+        if (blob) {
+          // Crea un nombre de archivo único
+          const fileName = `foto-capturada-${new Date().getTime()}.png`;
+          const file = new File([blob], fileName, {type: 'image/png'});
+          this.manejarArchivoCapturado(file);
+        }
+      }, 'image/png');
+    }
+
+    this.apagarCamara(); // Cierra la vista de la cámara
+  }
+
+  // Método para cerrar el stream de la cámara
+  apagarCamara(ocultarContenedor: boolean = true): void {
+    if (this.stream) {
+      this.stream.getTracks().forEach(track => track.stop());
+      this.stream = null;
+    }
+    if (ocultarContenedor) {
+      this.errorCamara = ''; // Limpiar el error si se cierra la vista
+      this.mostrarCamara = false;
+    }
+  }
+
+  // Procesa y emite el archivo capturado
+  manejarArchivoCapturado(file: File): void {
+    // Limpia los archivos actuales del p-fileupload
+    this.fileUpload.clear();
+
+    // Crea la lista con el nuevo archivo
+    const fileList: any[] = [file];
+
+    // Inyecta el archivo en la lista interna de PrimeNG
+    this.fileUpload.files = fileList;
+    this.files = fileList;
+
+    // Emite el evento como si se hubiera seleccionado
+    this.fileSelected.emit(this.files);
   }
 
 }
