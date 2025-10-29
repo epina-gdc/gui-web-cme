@@ -15,13 +15,15 @@ import {MenuItem, PrimeTemplate} from 'primeng/api';
 import {FileUpload} from 'primeng/fileupload';
 import {Menu} from 'primeng/menu';
 import {AlertService} from '@services/alert.service';
+import {SplitButton} from 'primeng/splitbutton';
 
 @Component({
   selector: 'upload-photo',
   imports: [
     Button,
     PrimeTemplate,
-    FileUpload
+    FileUpload,
+    SplitButton
   ],
   templateUrl: './upload-photo.component.html',
   styleUrl: './upload-photo.component.scss'
