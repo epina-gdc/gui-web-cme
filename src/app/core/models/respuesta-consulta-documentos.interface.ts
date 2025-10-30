@@ -79,6 +79,6 @@ export interface RespuestaDatosEmpleo {
   horarioLaboralMedicoSustituto: string | null,
   refJornadaInicio: string | null,
   refJornadaFin: string | null,
-  diaSemanaInicio: string | null,
-  diaSemanaFin: string | null
+  diaSemanaInicio: { idDiaSemana: number } | null,
+  diaSemanaFin: { idDiaSemana: number } | null
 }

@@ -1312,9 +1312,9 @@ export class InicioComponent extends GeneralComponent {
 
     const indOtroEmpleo = (formValues.otroEmpleo === '1' ? 1 : 0) as 1 | 0;
     const indMedicoSustituto = (formValues.sustituto === '1' ? 1 : 0) as 1 | 0;
-    const idTipoInstitucion: 1 | 0 | null = formValues.tipoInstitucion ?? null
+    const idTipoInstitucion: 2 | 1 | null = formValues.tipoInstitucion ?? null
 
-    let tipoInstitucion: TipoInstitucion | null = {idTipoInstitucion: idTipoInstitucion ?? 0}
+    let tipoInstitucion: TipoInstitucion | null = {idTipoInstitucion: idTipoInstitucion ?? 2}
 
     const cveOoad = formValues.ooad || null;
     let desOoad: string | null = null;
@@ -1607,7 +1607,7 @@ export class InicioComponent extends GeneralComponent {
       ooad: ooadValue,
 
       // Tipo de Institución y Nombre
-      tipoInstitucion: datos.tipoInstitucion,
+      tipoInstitucion: datos.tipoInstitucion!.idTipoInstitucion,
       nombreInstitucion: datos.nomEspecificacionInstitucion,
 
       // Horario/Jornada
@@ -1615,8 +1615,8 @@ export class InicioComponent extends GeneralComponent {
       horarioFin: datos.refJornadaFin,
 
       // Días
-      diaInicio: datos.diaSemanaInicio,
-      diaFin: datos.diaSemanaFin,
+      diaInicio: datos.diaSemanaInicio!.idDiaSemana,
+      diaFin: datos.diaSemanaFin!.idDiaSemana,
     });
   }
 

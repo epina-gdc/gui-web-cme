@@ -61,5 +61,5 @@ export interface DatosEmpleo {
 }
 
 export interface TipoInstitucion {
-  idTipoInstitucion: 1 | 0
+  idTipoInstitucion: 1 | 2
 }
