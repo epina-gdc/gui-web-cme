@@ -671,7 +671,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.form.controls['matricula'].setValue(tmp);
 
   }
-
+  
 
   public limpiarCurpChange() {
 
