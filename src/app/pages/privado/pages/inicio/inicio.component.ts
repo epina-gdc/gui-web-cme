@@ -58,6 +58,7 @@ import {
 import {jornadaLaboralValidator} from '@validators/jornada-validator';
 import {horarioLaboralValidator} from '@validators/horario-validator';
 import utc from "dayjs/plugin/utc";
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 interface DocumentoFuente {
   refGuid: string;
@@ -69,6 +70,7 @@ interface EntradaDocumentos {
 }
 
 dayjs.extend(utc);
+dayjs.extend(customParseFormat);
 
 @Component({
   selector: 'app-inicio',
@@ -1598,6 +1600,8 @@ export class InicioComponent extends GeneralComponent {
     const sustitutoValue = datos.indMedicoSustituto?.toString() || '0';
     const ooadValue = datos.cveOoad || null;
 
+    console.log(datos.refJornadaInicio, dayjs(datos.refJornadaInicio, 'HH:mm').toDate())
+
     this.formDatosEmpleo.patchValue({
       // Combos Sí/No
       otroEmpleo: otroEmpleoValue,
@@ -1611,8 +1615,8 @@ export class InicioComponent extends GeneralComponent {
       nombreInstitucion: datos.nomEspecificacionInstitucion,
 
       // Horario/Jornada
-      horarioInicio: datos.refJornadaInicio,
-      horarioFin: datos.refJornadaFin,
+      horarioInicio: dayjs(datos.refJornadaInicio, 'HH:mm:ss').toDate(),
+      horarioFin: dayjs(datos.refJornadaFin, 'HH:mm:ss').toDate(),
 
       // Días
       diaInicio: datos.diaSemanaInicio!.idDiaSemana,
