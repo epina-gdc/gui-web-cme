@@ -1,0 +1,21 @@
+<div class="flex ">
+  <div class="archivos col-6 pt-3">
+    @for (doc of documentacion; track doc.idDocumento) {
+      <div class="flex align-items-center px-2 mb-4" [ngClass]="{'select': tabActive() === doc.idDocumento }"
+       (click)="docSeleccionado(doc.idDocumento)">
+        <i class="cme-file" style="font-size: 2rem"></i>
+        <p class="ms-3 texto-campo">{{ doc.nombreDocumento }}</p>
+      </div>
+    }
+  </div>
+
+  <div class="flex flex-column archivos-previsualizacion p-4">
+    <span class="subtitle-previsualizacion">Previsualización</span>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+                    ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
+                    nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
+                    anim id est laborum.
+  </div>
+
+</div>
