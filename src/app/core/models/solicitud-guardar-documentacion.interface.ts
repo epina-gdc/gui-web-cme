@@ -9,6 +9,7 @@ export interface SolicitudGuardarDocumentacion {
 }
 
 export interface SolicitudDocumentoObligatorio {
+  idDocumentoObligatorio?: number,
   tipoDocumentoObligatorio: {
     idDocumentoObligatorio: number
     desDocumentoObligatorio?: "TITULO" | "CEDULA PROFESIONAL"
@@ -25,6 +26,7 @@ export interface DocumentoEspecialidad {
 }
 
 export interface RefDocumentoEspecialidad {
+  idDocumentoEspecialidad?: number,
   tipoDocumentoEspecialidad: {
     idTipoDocumentoEspecialidad: number
   },

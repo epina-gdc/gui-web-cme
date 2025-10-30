@@ -168,6 +168,10 @@ export class InicioComponent extends GeneralComponent {
   nombreConstancia2: string = '';
   nombreConstancia3: string = '';
 
+  idDocumentoINE: number | undefined;
+  idDocumentoCedula: number | undefined;
+  idDocumentoTitulo: number | undefined;
+
   estatusPendienteDocumentacion: boolean = false;
 
   constructor(private readonly activatedRoute: ActivatedRoute) {
@@ -1232,8 +1236,9 @@ export class InicioComponent extends GeneralComponent {
     const refObligatorio1 = this.documentosLocalStorageService.obtenerRefGuid(1);
     const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
     const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
-    return [
+    const registros: SolicitudDocumentoObligatorio[] = [
       {
+        idDocumentoObligatorio: this.idDocumentoINE,
         tipoDocumentoObligatorio: {
           idDocumentoObligatorio: 1
         },
@@ -1242,6 +1247,7 @@ export class InicioComponent extends GeneralComponent {
         }
       },
       {
+        idDocumentoObligatorio: this.idDocumentoTitulo,
         tipoDocumentoObligatorio: {
           idDocumentoObligatorio: 2,
           desDocumentoObligatorio: "TITULO"
@@ -1251,6 +1257,7 @@ export class InicioComponent extends GeneralComponent {
         }
       },
       {
+        idDocumentoObligatorio: this.idDocumentoCedula,
         tipoDocumentoObligatorio: {
           idDocumentoObligatorio: 3,
           desDocumentoObligatorio: "CEDULA PROFESIONAL"
@@ -1260,6 +1267,10 @@ export class InicioComponent extends GeneralComponent {
         }
       }
     ]
+    return registros.map((r: SolicitudDocumentoObligatorio) => {
+      if (!r.idDocumentoObligatorio) delete r.idDocumentoObligatorio
+      return r
+    })
   }
 
   generarDocumentosEspecialidad(): DocumentoEspecialidad[] {
@@ -1269,6 +1280,7 @@ export class InicioComponent extends GeneralComponent {
       // Mapear el array de documentos a la estructura RefDocumentoEspecialidad
       const documentosEspecialidad: RefDocumentoEspecialidad[] = node.documentos.map(doc => {
         return {
+          idDocumentoEspecialidad: doc.idDocumentoEspecialidad,
           tipoDocumentoEspecialidad: {
             idTipoDocumentoEspecialidad: doc.idDocumento,
           },
@@ -1278,11 +1290,16 @@ export class InicioComponent extends GeneralComponent {
         };
       });
 
-      // 3. Construir el objeto DocumentoEspecialidad final
+      const documentosCompletos = documentosEspecialidad.map(d => {
+        if (!d.idDocumentoEspecialidad) delete d.idDocumentoEspecialidad
+        return d;
+      })
+
+      // Construir el objeto DocumentoEspecialidad final
       return {
         cveEspecialidad: cveEspecialidad,
         desEspecialidad: node.especialidad, // La descripción es el nombre de la especialidad
-        documentosEspecialidad: documentosEspecialidad
+        documentosEspecialidad: documentosCompletos
       };
     });
   }
@@ -1520,12 +1537,15 @@ export class InicioComponent extends GeneralComponent {
     const refObligatorio3 = datos.find(d => d.tipoDocumentoObligatorio.idDocumentoObligatorio === 3)?.documento.refGuid;
     if (refObligatorio1) {
       this.obtenerDocumento(refObligatorio1, 'obligatorio', 1);
+      this.idDocumentoINE = datos.find(d => d.tipoDocumentoObligatorio.idDocumentoObligatorio === 1)?.idDocumentoObligatorio;
     }
     if (refObligatorio2) {
       this.obtenerDocumento(refObligatorio2, 'obligatorio', 2);
+      this.idDocumentoTitulo = datos.find(d => d.tipoDocumentoObligatorio.idDocumentoObligatorio === 2)?.idDocumentoObligatorio;
     }
     if (refObligatorio3) {
       this.obtenerDocumento(refObligatorio3, 'obligatorio', 3);
+      this.idDocumentoCedula = datos.find(d => d.tipoDocumentoObligatorio.idDocumentoObligatorio === 3)?.idDocumentoObligatorio;
     }
   }
 
@@ -1548,6 +1568,7 @@ export class InicioComponent extends GeneralComponent {
     return datos.map((data: RespuestaDocumentosEspecialidad) => {
       const documentosTab: TabDocumento[] = data.documentosEspecialidad.map(
         (item: ItemDocumentoEspecialidad) => ({
+          idDocumentoEspecialidad: item.idDocumentoEspecialidad,
           tipoDocumento: item.tipoDocumentoEspecialidad.desTipoDocumentoEspecialidad,
           especialidadMedica: data.desEspecialidad,
           cveEspecialidad: data.cveEspecialidad,
@@ -1555,6 +1576,7 @@ export class InicioComponent extends GeneralComponent {
           guid: item.documento.refGuid,
         })
       );
+
 
       const tabNode: TabNode = {
         especialidad: data.desEspecialidad,
