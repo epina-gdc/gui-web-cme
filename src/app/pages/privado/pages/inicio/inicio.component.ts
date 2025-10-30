@@ -177,6 +177,10 @@ export class InicioComponent extends GeneralComponent {
   idDocumentoCedula: number | undefined;
   idDocumentoTitulo: number | undefined;
 
+  idDocumentoConstancia1: number | undefined;
+  idDocumentoConstancia2: number | undefined;
+  idDocumentoConstancia3: number | undefined;
+
   estatusPendienteDocumentacion: boolean = false;
 
   constructor(private readonly activatedRoute: ActivatedRoute) {
@@ -1358,9 +1362,8 @@ export class InicioComponent extends GeneralComponent {
       return [];
     }
 
-    return Object.keys(documentos).map(key => {
+    const documentosProcesados: DocumentoConstancia[] = Object.keys(documentos).map(key => {
       const docData = documentos[key];
-
       return {
         refConstancia: docData.nombre,
         documento: {
@@ -1368,6 +1371,18 @@ export class InicioComponent extends GeneralComponent {
         }
       };
     });
+
+    if (this.idDocumentoConstancia1) {
+      documentosProcesados[0].idDocumentoConstancia = this.idDocumentoConstancia1
+    }
+    if (this.idDocumentoConstancia2) {
+      documentosProcesados[1].idDocumentoConstancia = this.idDocumentoConstancia2
+    }
+    if (this.idDocumentoConstancia3) {
+      documentosProcesados[2].idDocumentoConstancia = this.idDocumentoConstancia3
+    }
+
+    return documentosProcesados;
   }
 
   anteriorPasoStepper(): void {
@@ -1563,12 +1578,15 @@ export class InicioComponent extends GeneralComponent {
     const refConstancia3 = datos.length > 1 ? datos[2].documento.refGuid : null;
     if (refConstancia1) {
       this.obtenerDocumento(refConstancia1, 'constancia', 1, datos[0].refConstancia);
+      this.idDocumentoConstancia1 = datos[0].idDocumentoConstancia;
     }
     if (refConstancia2) {
       this.obtenerDocumento(refConstancia2, 'constancia', 2, datos[1].refConstancia);
+      this.idDocumentoConstancia2 = datos[1].idDocumentoConstancia;
     }
     if (refConstancia3) {
       this.obtenerDocumento(refConstancia3, 'constancia', 3, datos[2].refConstancia);
+      this.idDocumentoConstancia3 = datos[2].idDocumentoConstancia;
     }
   }
 

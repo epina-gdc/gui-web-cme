@@ -37,6 +37,7 @@ export interface RefDocumentoEspecialidad {
 
 
 export interface DocumentoConstancia {
+  idDocumentoConstancia?: number,
   refConstancia: string,
   documento: {
     refGuid: string
