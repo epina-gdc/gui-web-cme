@@ -4,8 +4,28 @@
     --p-tabs-tablist-border-color: transparent
     --p-tabs-tab-border-color: transparent
   }
-  .p-tablist-tab-list {
 
+
+  .p-accordionheader{
+    border-right: 6px solid #d6ddea;
+    .cme-file{
+      color: white;
+      background: #d6ddea;
+      border-radius: 3px;
+    }
+  }
+
+  .p-accordionpanel-active{
+    .p-accordionheader{
+      border-right: 6px solid #00cd6f;
+      .cme-file{
+        color: #00cd6f;
+        background: #d9f9ef;
+      }
+    }
+  }
+
+  .p-tablist-tab-list {
     border: solid 1px #bd9b3b;
     border-right: solid 6px #BD9B3D;
     border-radius: 9px 6px 6px 9px;
@@ -16,3 +36,34 @@
     border: none!important;
   }
 }
+
+.archivo-especialidad{
+    border: solid 1px #eeeeee;
+    border-radius: 10px 6px 6px 10px;
+    border-right: solid 6px #d6ddea;
+    height: 40px;
+    span{
+      color: #40434E;
+      font-feature-settings: 'liga' off, 'clig' off;
+      font-family: "Noto Sans";
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 300;
+      line-height: 120%; /* 16.8px */
+    }
+}
+.select{
+  border: solid 1px #bd9b3b;
+  border-right: solid 6px #5fd350;
+  .nombreDoc{
+    color: #40434E;
+    font-feature-settings: 'liga' off, 'clig' off;
+    font-family: "Noto Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 120%; /* 16.8px */
+
+  }
+}
+

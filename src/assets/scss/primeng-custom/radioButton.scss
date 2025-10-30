@@ -1,4 +1,12 @@
 @layer app-components {
+  :root {
+    --p-radiobutton-checked-background: white;
+    --p-radiobutton-checked-hover-background: white;
+    --p-radiobutton-checked-border-color: #08865c;
+    --p-radiobutton-checked-hover-border-color: #08865c;
+    --p-radiobutton-icon-checked-color: #08865c;
+    --p-radiobutton-icon-checked-hover-color: #08865c;
+  }
   .radio-button-square .p-radiobutton-box {
     border-radius: 3px;
     height: 15px;

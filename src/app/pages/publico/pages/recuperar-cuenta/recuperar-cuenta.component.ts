@@ -14,6 +14,7 @@ import {AlertService} from '@services/alert.service';
 import {Mensajes} from '@utils/mensajes';
 import {Router} from '@angular/router';
 import {RecuperacionCredencialesService} from '@services/recuperacion-credenciales.service';
+import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.component';
 
 @Component({
   selector: 'app-recuperar-cuenta',
@@ -25,7 +26,8 @@ import {RecuperacionCredencialesService} from '@services/recuperacion-credencial
     EmailAllowCaractersDirective,
     NgClass,
     ConfirmDialog,
-    Card
+    Card,
+    BtnRegresarComponent
   ],
   templateUrl: './recuperar-cuenta.component.html',
   styleUrl: './recuperar-cuenta.component.scss',

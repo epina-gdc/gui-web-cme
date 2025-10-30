@@ -4,6 +4,7 @@ export interface TabNode {
 }
 
 export interface TabDocumento {
+  idDocumentoEspecialidad?: number,
   tipoDocumento: string,
   especialidadMedica: string,
   cveEspecialidad: string,
