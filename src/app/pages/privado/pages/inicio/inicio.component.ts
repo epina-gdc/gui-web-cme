@@ -57,6 +57,8 @@ import {
 } from '@models/respuesta-consulta-documentos.interface';
 import {jornadaLaboralValidator} from '@validators/jornada-validator';
 import {horarioLaboralValidator} from '@validators/horario-validator';
+import utc from "dayjs/plugin/utc";
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 interface DocumentoFuente {
   refGuid: string;
@@ -66,6 +68,9 @@ interface DocumentoFuente {
 interface EntradaDocumentos {
   [key: string]: DocumentoFuente; // Clave: '1', '2', '3', etc. (no se usará)
 }
+
+dayjs.extend(utc);
+dayjs.extend(customParseFormat);
 
 @Component({
   selector: 'app-inicio',
@@ -168,6 +173,14 @@ export class InicioComponent extends GeneralComponent {
   nombreConstancia2: string = '';
   nombreConstancia3: string = '';
 
+  idDocumentoINE: number | undefined;
+  idDocumentoCedula: number | undefined;
+  idDocumentoTitulo: number | undefined;
+
+  idDocumentoConstancia1: number | undefined;
+  idDocumentoConstancia2: number | undefined;
+  idDocumentoConstancia3: number | undefined;
+
   estatusPendienteDocumentacion: boolean = false;
 
   constructor(private readonly activatedRoute: ActivatedRoute) {
@@ -246,7 +259,7 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.get('correo')?.setValue(refEmail + '');
     this.userService.userData$.subscribe({
       next:(element) => {
-
+        if (!element.perfil) return;
         this.tipoMedico.set(element.perfil)
       }
     })
@@ -1232,8 +1245,9 @@ export class InicioComponent extends GeneralComponent {
     const refObligatorio1 = this.documentosLocalStorageService.obtenerRefGuid(1);
     const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
     const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
-    return [
+    const registros: SolicitudDocumentoObligatorio[] = [
       {
+        idDocumentoObligatorio: this.idDocumentoINE,
         tipoDocumentoObligatorio: {
           idDocumentoObligatorio: 1
         },
@@ -1242,6 +1256,7 @@ export class InicioComponent extends GeneralComponent {
         }
       },
       {
+        idDocumentoObligatorio: this.idDocumentoTitulo,
         tipoDocumentoObligatorio: {
           idDocumentoObligatorio: 2,
           desDocumentoObligatorio: "TITULO"
@@ -1251,6 +1266,7 @@ export class InicioComponent extends GeneralComponent {
         }
       },
       {
+        idDocumentoObligatorio: this.idDocumentoCedula,
         tipoDocumentoObligatorio: {
           idDocumentoObligatorio: 3,
           desDocumentoObligatorio: "CEDULA PROFESIONAL"
@@ -1260,6 +1276,10 @@ export class InicioComponent extends GeneralComponent {
         }
       }
     ]
+    return registros.map((r: SolicitudDocumentoObligatorio) => {
+      if (!r.idDocumentoObligatorio) delete r.idDocumentoObligatorio
+      return r
+    })
   }
 
   generarDocumentosEspecialidad(): DocumentoEspecialidad[] {
@@ -1269,6 +1289,7 @@ export class InicioComponent extends GeneralComponent {
       // Mapear el array de documentos a la estructura RefDocumentoEspecialidad
       const documentosEspecialidad: RefDocumentoEspecialidad[] = node.documentos.map(doc => {
         return {
+          idDocumentoEspecialidad: doc.idDocumentoEspecialidad,
           tipoDocumentoEspecialidad: {
             idTipoDocumentoEspecialidad: doc.idDocumento,
           },
@@ -1278,11 +1299,16 @@ export class InicioComponent extends GeneralComponent {
         };
       });
 
-      // 3. Construir el objeto DocumentoEspecialidad final
+      const documentosCompletos = documentosEspecialidad.map(d => {
+        if (!d.idDocumentoEspecialidad) delete d.idDocumentoEspecialidad
+        return d;
+      })
+
+      // Construir el objeto DocumentoEspecialidad final
       return {
         cveEspecialidad: cveEspecialidad,
         desEspecialidad: node.especialidad, // La descripción es el nombre de la especialidad
-        documentosEspecialidad: documentosEspecialidad
+        documentosEspecialidad: documentosCompletos
       };
     });
   }
@@ -1292,9 +1318,9 @@ export class InicioComponent extends GeneralComponent {
 
     const indOtroEmpleo = (formValues.otroEmpleo === '1' ? 1 : 0) as 1 | 0;
     const indMedicoSustituto = (formValues.sustituto === '1' ? 1 : 0) as 1 | 0;
-    const idTipoInstitucion: 1 | 0 | null = formValues.tipoInstitucion ?? null
+    const idTipoInstitucion: 2 | 1 | null = formValues.tipoInstitucion ?? null
 
-    let tipoInstitucion: TipoInstitucion | null = {idTipoInstitucion: idTipoInstitucion ?? 0}
+    let tipoInstitucion: TipoInstitucion | null = {idTipoInstitucion: idTipoInstitucion ?? 2}
 
     const cveOoad = formValues.ooad || null;
     let desOoad: string | null = null;
@@ -1310,6 +1336,9 @@ export class InicioComponent extends GeneralComponent {
       }
     }
 
+    const horaInicio = dayjs.utc(formValues.horarioInicio).local().format('HH:mm');
+    const horaFin = dayjs.utc(formValues.horarioFin).local().format('HH:mm');
+
     return {
       indOtroEmpleo: indOtroEmpleo,
       indMedicoSustituto: indMedicoSustituto,
@@ -1317,8 +1346,8 @@ export class InicioComponent extends GeneralComponent {
       nomEspecificacionInstitucion: formValues.nombreInstitucion || '',
       cveOoad: cveOoad,
       desOoad: desOoad,
-      refJornadaInicio: formValues.horarioInicio || null, // formato HH:MM
-      refJornadaFin: formValues.horarioFin || null,       // formato HH:MM
+      refJornadaInicio: horaInicio || null, // formato HH:MM
+      refJornadaFin: horaFin || null,       // formato HH:MM
       diaSemanaInicio: {
         idDiaSemana: formValues.diaInicio || null
       },
@@ -1333,9 +1362,8 @@ export class InicioComponent extends GeneralComponent {
       return [];
     }
 
-    return Object.keys(documentos).map(key => {
+    const documentosProcesados: DocumentoConstancia[] = Object.keys(documentos).map(key => {
       const docData = documentos[key];
-
       return {
         refConstancia: docData.nombre,
         documento: {
@@ -1343,6 +1371,18 @@ export class InicioComponent extends GeneralComponent {
         }
       };
     });
+
+    if (this.idDocumentoConstancia1) {
+      documentosProcesados[0].idDocumentoConstancia = this.idDocumentoConstancia1
+    }
+    if (this.idDocumentoConstancia2) {
+      documentosProcesados[1].idDocumentoConstancia = this.idDocumentoConstancia2
+    }
+    if (this.idDocumentoConstancia3) {
+      documentosProcesados[2].idDocumentoConstancia = this.idDocumentoConstancia3
+    }
+
+    return documentosProcesados;
   }
 
   anteriorPasoStepper(): void {
@@ -1520,12 +1560,15 @@ export class InicioComponent extends GeneralComponent {
     const refObligatorio3 = datos.find(d => d.tipoDocumentoObligatorio.idDocumentoObligatorio === 3)?.documento.refGuid;
     if (refObligatorio1) {
       this.obtenerDocumento(refObligatorio1, 'obligatorio', 1);
+      this.idDocumentoINE = datos.find(d => d.tipoDocumentoObligatorio.idDocumentoObligatorio === 1)?.idDocumentoObligatorio;
     }
     if (refObligatorio2) {
       this.obtenerDocumento(refObligatorio2, 'obligatorio', 2);
+      this.idDocumentoTitulo = datos.find(d => d.tipoDocumentoObligatorio.idDocumentoObligatorio === 2)?.idDocumentoObligatorio;
     }
     if (refObligatorio3) {
       this.obtenerDocumento(refObligatorio3, 'obligatorio', 3);
+      this.idDocumentoCedula = datos.find(d => d.tipoDocumentoObligatorio.idDocumentoObligatorio === 3)?.idDocumentoObligatorio;
     }
   }
 
@@ -1535,12 +1578,15 @@ export class InicioComponent extends GeneralComponent {
     const refConstancia3 = datos.length > 1 ? datos[2].documento.refGuid : null;
     if (refConstancia1) {
       this.obtenerDocumento(refConstancia1, 'constancia', 1, datos[0].refConstancia);
+      this.idDocumentoConstancia1 = datos[0].idDocumentoConstancia;
     }
     if (refConstancia2) {
       this.obtenerDocumento(refConstancia2, 'constancia', 2, datos[1].refConstancia);
+      this.idDocumentoConstancia2 = datos[1].idDocumentoConstancia;
     }
     if (refConstancia3) {
       this.obtenerDocumento(refConstancia3, 'constancia', 3, datos[2].refConstancia);
+      this.idDocumentoConstancia3 = datos[2].idDocumentoConstancia;
     }
   }
 
@@ -1548,6 +1594,7 @@ export class InicioComponent extends GeneralComponent {
     return datos.map((data: RespuestaDocumentosEspecialidad) => {
       const documentosTab: TabDocumento[] = data.documentosEspecialidad.map(
         (item: ItemDocumentoEspecialidad) => ({
+          idDocumentoEspecialidad: item.idDocumentoEspecialidad,
           tipoDocumento: item.tipoDocumentoEspecialidad.desTipoDocumentoEspecialidad,
           especialidadMedica: data.desEspecialidad,
           cveEspecialidad: data.cveEspecialidad,
@@ -1555,6 +1602,7 @@ export class InicioComponent extends GeneralComponent {
           guid: item.documento.refGuid,
         })
       );
+
 
       const tabNode: TabNode = {
         especialidad: data.desEspecialidad,
@@ -1570,6 +1618,8 @@ export class InicioComponent extends GeneralComponent {
     const sustitutoValue = datos.indMedicoSustituto?.toString() || '0';
     const ooadValue = datos.cveOoad || null;
 
+    console.log(datos.refJornadaInicio, dayjs(datos.refJornadaInicio, 'HH:mm').toDate())
+
     this.formDatosEmpleo.patchValue({
       // Combos Sí/No
       otroEmpleo: otroEmpleoValue,
@@ -1579,16 +1629,16 @@ export class InicioComponent extends GeneralComponent {
       ooad: ooadValue,
 
       // Tipo de Institución y Nombre
-      tipoInstitucion: datos.tipoInstitucion,
+      tipoInstitucion: datos.tipoInstitucion!.idTipoInstitucion,
       nombreInstitucion: datos.nomEspecificacionInstitucion,
 
       // Horario/Jornada
-      horarioInicio: datos.refJornadaInicio,
-      horarioFin: datos.refJornadaFin,
+      horarioInicio: dayjs(datos.refJornadaInicio, 'HH:mm:ss').toDate(),
+      horarioFin: dayjs(datos.refJornadaFin, 'HH:mm:ss').toDate(),
 
       // Días
-      diaInicio: datos.diaSemanaInicio,
-      diaFin: datos.diaSemanaFin,
+      diaInicio: datos.diaSemanaInicio!.idDiaSemana,
+      diaFin: datos.diaSemanaFin!.idDiaSemana,
     });
   }
 

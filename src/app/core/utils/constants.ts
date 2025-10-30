@@ -12,7 +12,7 @@ export const BOOLEAN_OPCIONES = [
 
 export const INSTITUCIONES = [
   { name: 'Pública', key: '1' },
-  { name: 'Privada', key: '0' }
+  { name: 'Privada', key: '2' }
 ]
 
 export const CME_TOKEN: string = "access_token";
