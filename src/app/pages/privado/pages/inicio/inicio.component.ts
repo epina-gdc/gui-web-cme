@@ -57,6 +57,7 @@ import {
 } from '@models/respuesta-consulta-documentos.interface';
 import {jornadaLaboralValidator} from '@validators/jornada-validator';
 import {horarioLaboralValidator} from '@validators/horario-validator';
+import utc from "dayjs/plugin/utc";
 
 interface DocumentoFuente {
   refGuid: string;
@@ -66,6 +67,8 @@ interface DocumentoFuente {
 interface EntradaDocumentos {
   [key: string]: DocumentoFuente; // Clave: '1', '2', '3', etc. (no se usará)
 }
+
+dayjs.extend(utc);
 
 @Component({
   selector: 'app-inicio',
@@ -1327,6 +1330,9 @@ export class InicioComponent extends GeneralComponent {
       }
     }
 
+    const horaInicio = dayjs.utc(formValues.horarioInicio).local().format('HH:mm');
+    const horaFin = dayjs.utc(formValues.horarioFin).local().format('HH:mm');
+
     return {
       indOtroEmpleo: indOtroEmpleo,
       indMedicoSustituto: indMedicoSustituto,
@@ -1334,8 +1340,8 @@ export class InicioComponent extends GeneralComponent {
       nomEspecificacionInstitucion: formValues.nombreInstitucion || '',
       cveOoad: cveOoad,
       desOoad: desOoad,
-      refJornadaInicio: formValues.horarioInicio || null, // formato HH:MM
-      refJornadaFin: formValues.horarioFin || null,       // formato HH:MM
+      refJornadaInicio: horaInicio || null, // formato HH:MM
+      refJornadaFin: horaFin || null,       // formato HH:MM
       diaSemanaInicio: {
         idDiaSemana: formValues.diaInicio || null
       },
