@@ -826,7 +826,7 @@ export class InicioComponent extends GeneralComponent {
     });
   }
 
-  private saveFotoFile(datos: FormData): void {
+  private saveFotoFile(datos: FormData, archivo: File): void {
     this.blnFotoGuardada = false;
 
     const idUsuario = this.datosGenerales?.datosPersonales?.idUsuario;
@@ -871,6 +871,7 @@ export class InicioComponent extends GeneralComponent {
         if (data?.exito) {
           this.blnFotoGuardada = true;
           this._alertServices.exito(data.mensaje);
+          this.defaultFile = archivo;
         } else if (data && !data.exito) {
           this.blnFotoGuardada = false;
           this._alertServices.error(data.mensaje);
@@ -920,7 +921,7 @@ export class InicioComponent extends GeneralComponent {
 
     const formData = new FormData();
     formData.append('file', archivo, archivo.name);
-    this.saveFotoFile(formData);
+    this.saveFotoFile(formData, archivo);
   }
 
   private btnGuardar(paso: number): void {
