@@ -1,14 +1,14 @@
-import { CommonModule } from '@angular/common';
-import { Component, WritableSignal, signal } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DUMMIE_DOCS_ESPECIALIDAD } from '@utils/dummies';
+import {CommonModule} from '@angular/common';
+import {Component, signal, WritableSignal} from '@angular/core';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {DUMMIE_DOCS_ESPECIALIDAD} from '@utils/dummies';
 
-import { AccordionModule } from 'primeng/accordion';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { TabsModule } from 'primeng/tabs';
-import { TextareaModule } from 'primeng/textarea';
-import { CardModule } from 'primeng/card';
-import { ButtonModule } from 'primeng/button';
+import {AccordionModule} from 'primeng/accordion';
+import {RadioButtonModule} from 'primeng/radiobutton';
+import {TabsModule} from 'primeng/tabs';
+import {TextareaModule} from 'primeng/textarea';
+import {CardModule} from 'primeng/card';
+import {ButtonModule} from 'primeng/button';
 
 @Component({
   selector: 'app-docs-especialidad',

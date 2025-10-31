@@ -1,7 +1,8 @@
 import {
   Component,
   ElementRef,
-  EventEmitter, inject,
+  EventEmitter,
+  inject,
   Input,
   OnChanges,
   OnInit,

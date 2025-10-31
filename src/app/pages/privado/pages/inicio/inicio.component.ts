@@ -45,14 +45,20 @@ import {of, switchMap, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {DocumentosLocalstorageService} from '@services/documentos-localstorage.service';
 import {
-  DatosEmpleo, DocumentoConstancia,
+  DatosEmpleo,
+  DocumentoConstancia,
   DocumentoEspecialidad,
   RefDocumentoEspecialidad,
-  SolicitudDocumentoObligatorio, SolicitudGuardarDocumentacion, TipoInstitucion
+  SolicitudDocumentoObligatorio,
+  SolicitudGuardarDocumentacion,
+  TipoInstitucion
 } from '@models/solicitud-guardar-documentacion.interface';
 import {
   ItemDocumentoEspecialidad,
-  RespuestaConsultaDocumentos, RespuestaDatosEmpleo, RespuestaDocumentosConstancia, RespuestaDocumentosEspecialidad,
+  RespuestaConsultaDocumentos,
+  RespuestaDatosEmpleo,
+  RespuestaDocumentosConstancia,
+  RespuestaDocumentosEspecialidad,
   RespuestaDocumentosObligatorios
 } from '@models/respuesta-consulta-documentos.interface';
 import {jornadaLaboralValidator} from '@validators/jornada-validator';
