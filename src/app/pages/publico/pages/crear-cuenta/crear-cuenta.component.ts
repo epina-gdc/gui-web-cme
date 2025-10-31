@@ -15,7 +15,7 @@ import {
   CatSubperfil,
   CatSubperfilResponse
 } from '@models/catalogoGeneral';
-import { BtnRegresarComponent } from '@components/btn-regresar/btn-regresar.component';
+import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.component';
 
 @Component({
   selector: 'app-crear-cuenta',
@@ -39,7 +39,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   fb = inject(FormBuilder)
   form!: FormGroup;
   blnSeleccionado = false;
-  
+
   ruta: string = '';
   lstPerfil !: any;
   lstModalidad!: Array<CatSubperfil>;

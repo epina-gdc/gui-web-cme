@@ -1,7 +1,8 @@
-import { NgClass } from '@angular/common';
-import { Component, WritableSignal, signal } from '@angular/core';
-import { DomSanitizer,SafeResourceUrl } from '@angular/platform-browser';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
+import {NgClass} from '@angular/common';
+import {Component, signal, WritableSignal} from '@angular/core';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {PdfViewerModule} from 'ng2-pdf-viewer';
+
 @Component({
   selector: 'app-docs-obligatorios',
   imports: [NgClass,

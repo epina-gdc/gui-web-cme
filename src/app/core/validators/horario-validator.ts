@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors, ValidatorFn, FormGroup } from '@angular/forms';
+import {AbstractControl, FormGroup, ValidationErrors, ValidatorFn} from '@angular/forms';
 
 /**
  * Validador personalizado para asegurar que la hora de fin no sea anterior a la hora de inicio.
