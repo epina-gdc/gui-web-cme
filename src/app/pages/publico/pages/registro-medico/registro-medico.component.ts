@@ -371,7 +371,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
   public btnValidarCurp() {
     this.medico.refCurp = this.form.controls['curp'].value;
-    this.form.markAllAsTouched();
+   // this.form.markAllAsTouched();
     this.validarCURP();
 
     //  this._alertServices.alerta(this._Mensajes.MSG010b);
