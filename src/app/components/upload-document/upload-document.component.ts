@@ -104,7 +104,12 @@ export class UploadDocumentComponent implements OnInit, OnChanges {
       if (this.fileUpload) {
         this.fileUpload.clear();
       }
-      this.fileRemoved.emit([]); // Notificar la limpieza
+      if (this.existingFile) {
+        this.fileUpload.files = [this.existingFile];
+      } else {
+        this.fileUpload.files = [];
+      }
+      this.files = this.fileUpload.files;
       return;
     }
 
