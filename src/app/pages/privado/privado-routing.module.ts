@@ -5,6 +5,7 @@ import {PrivadoComponent} from '@pages/privado/privado.component';
 import {inicioResolver} from '../../core/resolvers/inicio.resolver';
 import {VerificacionDocumentosComponent} from './pages/verificacion-documentos/verificacion-documentos.component';
 import {DocumentacionComponent} from './pages/verificacion-documentos/components/documentacion/documentacion.component';
+import {NAV} from '@utils/url-global';
 
 const routes: Routes = [{
   path: '',
@@ -27,9 +28,11 @@ const routes: Routes = [{
       component: VerificacionDocumentosComponent,
     },
     {
-      path: 'documentacion-aspirante',
+      path: NAV.documentacionAspirante,
       component: DocumentacionComponent,
     },
+
+
   ]
 }];
 
