@@ -18,12 +18,12 @@
           <strong class="m-2 texto-campo">{{ userData()?.refFolio }}</strong>
         }
       </div>
-      @if (userData()?.refCurp) {
-        <div class="flex flex-column justify-content-center mr-5">
+      <div class="flex flex-column justify-content-center mr-5">
+        @if (userData()?.refCurp) {
           <p class="m-2 label-campo">CURP</p>
           <strong class="m-2 texto-campo">{{ userData()?.refCurp }}</strong>
-        </div>
-      }
+        }
+      </div>
       <icon-card iconClass="cme-document" cardColor="#3CB34F" bgColor="#dbffc0"></icon-card>
       <div class="flex flex-column justify-content-center">
         <p class="m-2 label-campo">Fecha de registro</p>
