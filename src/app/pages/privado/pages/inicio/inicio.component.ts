@@ -258,10 +258,21 @@ export class InicioComponent extends GeneralComponent {
     }
 
     const {refCurp, refEmail} = this.userData;
-    const fecha = this.obtenerFechaNacimientoDeCURP(refCurp + '');
+    let fecha;
     const sexo = this.obtenerSexoDeCurp(refCurp + '');
-    this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
-    this.formRegistro.get('sexo')?.setValue(sexo);
+    if(sexo){
+      this.formRegistro.get('sexo')?.setValue(sexo);
+    }else{
+      this.formRegistro.get('sexo')?.enable();
+    }
+    if(refCurp){
+    fecha  = this.obtenerFechaNacimientoDeCURP(refCurp + '')
+      this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
+    }else{
+      this.formRegistro.get('fechaNacimiento')?.enable();
+    }
+  
+  
     this.formRegistro.get('correo')?.setValue(refEmail + '');
     this.userService.userData$.subscribe({
       next:(element) => {
@@ -826,7 +837,7 @@ export class InicioComponent extends GeneralComponent {
     });
   }
 
-  private saveFotoFile(datos: FormData): void {
+  private saveFotoFile(datos: FormData, archivo: File): void {
     this.blnFotoGuardada = false;
 
     const idUsuario = this.datosGenerales?.datosPersonales?.idUsuario;
@@ -871,6 +882,7 @@ export class InicioComponent extends GeneralComponent {
         if (data?.exito) {
           this.blnFotoGuardada = true;
           this._alertServices.exito(data.mensaje);
+          this.defaultFile = archivo;
         } else if (data && !data.exito) {
           this.blnFotoGuardada = false;
           this._alertServices.error(data.mensaje);
@@ -890,13 +902,15 @@ export class InicioComponent extends GeneralComponent {
   }
 
   private saveFoto(): DatosPersonales {
+    
     const estadoCivilSeleccionado: string = this.formRegistro.get('estadoCivil')?.value;
     let fotografia: FotografiaRequest = new FotografiaRequest();
     fotografia.datosPersonales = this.datosGenerales.datosPersonales;
     fotografia.datosPersonales.estadoCivil = new EstadoCivil();
     fotografia.datosPersonales.estadoCivil.idEstadoCivil = Number.parseInt(estadoCivilSeleccionado);
     let fechaEntrada = this.formRegistro.controls['fechaNacimiento'].value;
-    let fechaFormateada: string = dayjs(fechaEntrada, "DD/MM/YYYY").format('DD/MM/YYYY');
+    
+    let fechaFormateada: string = dayjs.utc(fechaEntrada).local().format('DD/MM/YYYY')
     fotografia.datosPersonales.refRfc = this.formRegistro.controls['rfc'].value;
     fotografia.datosPersonales.refNss = this.formRegistro.controls['nss'].value;
     fotografia.datosPersonales.fecNacimiento = fechaFormateada;
@@ -920,7 +934,7 @@ export class InicioComponent extends GeneralComponent {
 
     const formData = new FormData();
     formData.append('file', archivo, archivo.name);
-    this.saveFotoFile(formData);
+    this.saveFotoFile(formData, archivo);
   }
 
   private btnGuardar(paso: number): void {

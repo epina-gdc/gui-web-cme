@@ -1,7 +1,6 @@
 import {
   Component,
-  EventEmitter,
-  inject,
+  EventEmitter, inject,
   Input,
   OnChanges,
   OnInit,
@@ -69,7 +68,7 @@ export class UploadDocumentComponent implements OnInit, OnChanges {
    */
   private updateFileUpload(file: File | undefined | null): void {
     if (!this.fileUpload) {
-      // Debería estar disponible gracias a ngOnInit con setTimeou.
+      // Debería estar disponible gracias a ngOnInit con setTimeout.
       console.warn('p-fileUpload no está listo para la actualización.');
       return;
     }
@@ -119,11 +118,15 @@ export class UploadDocumentComponent implements OnInit, OnChanges {
       if (this.fileUpload) {
         this.fileUpload.clear();
       }
-      this.fileRemoved.emit([]); // Notificar la limpieza
+      if (this.existingFile) {
+        this.fileUpload.files = [this.existingFile];
+      } else {
+        this.fileUpload.files = [];
+      }
+      this.files = this.fileUpload.files;
       return;
     }
 
-    // Lógica para archivos válidos (que ya tenías)
     this.files = event.currentFiles;
     if (this.files.length > 0) {
       this.fileSelected.emit(this.files);
@@ -134,7 +137,6 @@ export class UploadDocumentComponent implements OnInit, OnChanges {
     removeFileCallback(event, index);
     this.totalSize -= Number.parseInt(this.formatSize(file.size));
     this.totalSizePercent = this.totalSize / 10;
-    // Si necesitas notificar que se eliminó, llama a this.onRemoveFile()
   }
 
   onRemoveFile(file: any, index: number) {

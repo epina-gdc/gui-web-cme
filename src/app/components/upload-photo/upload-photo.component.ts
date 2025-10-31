@@ -200,7 +200,12 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
         if (this.fileUpload) {
           this.fileUpload.clear();
         }
-        this.fileRemoved.emit([]); // Notificar la limpieza
+        if (this.existingFile) {
+          this.fileUpload.files = [this.existingFile];
+        } else {
+          this.fileUpload.files = [];
+        }
+        this.files = this.fileUpload.files;
         return;
       }
     }
@@ -216,7 +221,6 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
       return;
     }
 
-    // Lógica para archivos válidos (que ya tenías)
     this.files = event.currentFiles;
     if (this.files.length > 0) {
       this.fileSelected.emit(this.files);
