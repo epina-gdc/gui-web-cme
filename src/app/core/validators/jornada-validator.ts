@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors, ValidatorFn, FormGroup } from '@angular/forms';
+import {AbstractControl, FormGroup, ValidationErrors, ValidatorFn} from '@angular/forms';
 
 export const jornadaLaboralValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
   const formGroup = control as FormGroup;

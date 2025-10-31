@@ -2,14 +2,14 @@
  * Develop: Ameyalli Victoria S
  * 2025
  */
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { environment } from '@env/environment.development';
-import { RegistroCurpRequest, RegistroInternoRequest, RegistroPasaporteRequest } from '@models/datosMedico';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {inject, Injectable} from '@angular/core';
+import {environment} from '@env/environment.development';
+import {RegistroCurpRequest, RegistroInternoRequest, RegistroPasaporteRequest} from '@models/datosMedico';
+import {Observable, throwError} from 'rxjs';
+import {catchError, map} from 'rxjs/operators';
 
-import { AlertService } from './alert.service';
+import {AlertService} from './alert.service';
 
 @Injectable({
   providedIn: 'root'

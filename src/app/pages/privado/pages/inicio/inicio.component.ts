@@ -45,14 +45,20 @@ import {of, switchMap, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {DocumentosLocalstorageService} from '@services/documentos-localstorage.service';
 import {
-  DatosEmpleo, DocumentoConstancia,
+  DatosEmpleo,
+  DocumentoConstancia,
   DocumentoEspecialidad,
   RefDocumentoEspecialidad,
-  SolicitudDocumentoObligatorio, SolicitudGuardarDocumentacion, TipoInstitucion
+  SolicitudDocumentoObligatorio,
+  SolicitudGuardarDocumentacion,
+  TipoInstitucion
 } from '@models/solicitud-guardar-documentacion.interface';
 import {
   ItemDocumentoEspecialidad,
-  RespuestaConsultaDocumentos, RespuestaDatosEmpleo, RespuestaDocumentosConstancia, RespuestaDocumentosEspecialidad,
+  RespuestaConsultaDocumentos,
+  RespuestaDatosEmpleo,
+  RespuestaDocumentosConstancia,
+  RespuestaDocumentosEspecialidad,
   RespuestaDocumentosObligatorios
 } from '@models/respuesta-consulta-documentos.interface';
 import {jornadaLaboralValidator} from '@validators/jornada-validator';
@@ -408,7 +414,7 @@ export class InicioComponent extends GeneralComponent {
 
   agregarZonaInteres(): void {
     if (this.zonasInteres().length > 2) {
-      this._alertServices.alerta("Recuerda que solo puedes seleccionar hasta tres zonas de interés.");
+      this._alertServices.alerta("Recuerda que solo puedes seleccionar hasta tres zonas de interés.");
       this.formZonaInteres.reset();
       return;
     }
@@ -493,12 +499,6 @@ export class InicioComponent extends GeneralComponent {
       return;
     }
 
-    if (this.yaExistenDocumentosPermitidos(tipoDoc, especialidadDoc)) {
-      this._alertServices.alerta(`El limite de documentos ya fue alcanzado para la especialidad ${especialidadDoc}.`);
-      return;
-    }
-
-
     if (this.documentoYaExisteParaEspecialidad(tipoDoc, especialidadDoc)) {
       this._alertServices.alerta(`El documento de tipo ${tipoDoc} ya fue cargado para la especialidad ${especialidadDoc}.`);
       return;
@@ -532,18 +532,6 @@ export class InicioComponent extends GeneralComponent {
     const especialidades = this.registrosDocumentosEspecialidad();
     const especialidadExistente = especialidades.find(e => e.especialidad === especialidad);
     return !especialidadExistente && this.registrosDocumentosEspecialidad().length === 3;
-
-  }
-
-  yaExistenDocumentosPermitidos(tipoDocumento: string, especialidad: string): boolean {
-    const especialidades = this.registrosDocumentosEspecialidad();
-    const especialidadExistente = especialidades.find(e => e.especialidad === especialidad);
-    if (!especialidadExistente) {
-      return false;
-    }
-    const documentoExistente = especialidadExistente.documentos.some(doc => doc.tipoDocumento === tipoDocumento);
-
-    return !documentoExistente && especialidadExistente.documentos.length === 3;
   }
 
   agregarDocumento(guid: string): void {
@@ -1164,7 +1152,7 @@ export class InicioComponent extends GeneralComponent {
     }
     const cadaEspecialidadTieneDiploma: boolean = especialidades.every(node =>
       node.documentos.some(documento => documento.idDocumento === 1));
-    if (!cadaEspecialidadTieneDiploma) {
+    if (!cadaEspecialidadTieneDiploma && !externo) {
       this._alertServices.error(this._Mensajes.MSG037);
       this._alertServices.error('Para cada especialidad es necesario el documento Diploma Institucional de Especialidad');
       return;

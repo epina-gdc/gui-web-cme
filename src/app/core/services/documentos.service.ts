@@ -3,7 +3,6 @@ import {inject, Injectable} from '@angular/core';
 import {environment} from '@env/environment.development';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
-import {DataFotografia} from '@models/fotografia';
 import {AlertService} from './alert.service';
 import {ResponseGeneral} from '@models/responseGeneral';
 

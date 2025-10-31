@@ -1,7 +1,7 @@
 import {Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
 import {IconCardComponent} from "../../../../components/icon-card/icon-card.component";
 import {SesionUser} from '@models/sesion-user.interface';
-import { UserService } from '@services/user.service';
+import {UserService} from '@services/user.service';
 
 @Component({
   selector: 'header-medico-interno',

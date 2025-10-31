@@ -332,7 +332,8 @@
               <p class="field-label">Especialidad</p>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <p-select [options]="especialidades" optionLabel="label" optionValue="value" [filter]="true" [filterBy]="'label'"
+            <p-select [options]="especialidades" optionLabel="label" optionValue="value" [filter]="true"
+                      [filterBy]="'label'"
                       placeholder="Selecciona opción" formControlName="especialidad" class="w-full"/>
           </div>
           <div class="col-3">
@@ -590,10 +591,20 @@
       </p-card>
     }
 
+    <p-card class="mx-2 empty-border">
+      <div class="flex align-items-center gap-4 px-2 py-4">
+        <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
+        <em class="info-em-texto">Recuerda que al Finalizar tu registro, ya no podrás realizar modificaciones en los
+          datos capturados</em>
+      </div>
+    </p-card>
+
     <div class="flex flex-row justify-content-end gap-3">
-      <p-button type="button" variant="outlined" label="Limpiar formulario" [disabled]="estatusPendienteDocumentacion" (click)="limpiarSegundaSeccion()" />
+      <p-button type="button" variant="outlined" label="Limpiar formulario" [disabled]="estatusPendienteDocumentacion"
+                (click)="limpiarSegundaSeccion()"/>
       <p-button type="button" label="Guardar" (click)="guardarDocumentacion()" [disabled]="banderaCargarDocumentacion"/>
-      <p-button type="button" label="Finalizar registro" (click)="guardarDocumentacion(true)" [disabled]="banderaCargarDocumentacion"/>
+      <p-button type="button" label="Finalizar registro" (click)="guardarDocumentacion(true)"
+                [disabled]="banderaCargarDocumentacion"/>
     </div>
 
   }

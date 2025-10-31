@@ -1,5 +1,5 @@
-import { NgClass } from '@angular/common';
-import { Component, WritableSignal, signal } from '@angular/core';
+import {NgClass} from '@angular/common';
+import {Component, signal, WritableSignal} from '@angular/core';
 
 @Component({
   selector: 'app-constancias-cursos',
