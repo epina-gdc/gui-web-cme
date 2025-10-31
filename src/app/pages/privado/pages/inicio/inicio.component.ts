@@ -1152,7 +1152,7 @@ export class InicioComponent extends GeneralComponent {
     }
     const cadaEspecialidadTieneDiploma: boolean = especialidades.every(node =>
       node.documentos.some(documento => documento.idDocumento === 1));
-    if (!cadaEspecialidadTieneDiploma) {
+    if (!cadaEspecialidadTieneDiploma && !externo) {
       this._alertServices.error(this._Mensajes.MSG037);
       this._alertServices.error('Para cada especialidad es necesario el documento Diploma Institucional de Especialidad');
       return;
