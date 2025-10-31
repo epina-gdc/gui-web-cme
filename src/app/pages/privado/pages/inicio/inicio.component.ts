@@ -258,10 +258,21 @@ export class InicioComponent extends GeneralComponent {
     }
 
     const {refCurp, refEmail} = this.userData;
-    const fecha = this.obtenerFechaNacimientoDeCURP(refCurp + '');
+    let fecha;
     const sexo = this.obtenerSexoDeCurp(refCurp + '');
-    this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
-    this.formRegistro.get('sexo')?.setValue(sexo);
+    if(sexo){
+      this.formRegistro.get('sexo')?.setValue(sexo);
+    }else{
+      this.formRegistro.get('sexo')?.enable();
+    }
+    if(refCurp){
+    fecha  = this.obtenerFechaNacimientoDeCURP(refCurp + '')
+      this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
+    }else{
+      this.formRegistro.get('fechaNacimiento')?.enable();
+    }
+  
+  
     this.formRegistro.get('correo')?.setValue(refEmail + '');
     this.userService.userData$.subscribe({
       next:(element) => {
