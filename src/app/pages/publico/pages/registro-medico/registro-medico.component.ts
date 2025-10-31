@@ -141,7 +141,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
       ])],
       rfc: ['', Validators.compose([
-        Validators.required,
+       // Validators.required,
         Validators.minLength(13),
         Validators.maxLength(13),
         Validators.pattern(PATRON_RFC)
