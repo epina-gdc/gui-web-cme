@@ -202,8 +202,10 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
         }
         if (this.existingFile) {
           this.fileUpload.files = [this.existingFile];
-          this.files = this.fileUpload.files;
+        } else {
+          this.fileUpload.files = [];
         }
+        this.files = this.fileUpload.files;
         return;
       }
     }
