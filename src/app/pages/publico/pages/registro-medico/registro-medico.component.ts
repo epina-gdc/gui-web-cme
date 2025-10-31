@@ -703,8 +703,6 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
         this.dinamicoCurp();
         this.asignarDatos();
       }
-
-
     });
 
 
