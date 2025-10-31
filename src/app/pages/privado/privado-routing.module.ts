@@ -13,18 +13,18 @@ const routes: Routes = [{
   children: [
     {
       path: '',
-      redirectTo: 'inicio',
+      redirectTo: NAV.home,
       pathMatch: 'full',
     },
     {
-      path: 'inicio',
+      path: NAV.home,
       component: InicioComponent,
       resolve: {
         respuesta: inicioResolver
       }
     },
     {
-      path: 'verificacion-documentos',
+      path: NAV.verificacionDocumentos,
       component: VerificacionDocumentosComponent,
     },
     {

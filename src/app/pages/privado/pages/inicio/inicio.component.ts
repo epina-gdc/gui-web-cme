@@ -45,14 +45,20 @@ import {of, switchMap, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
 import {DocumentosLocalstorageService} from '@services/documentos-localstorage.service';
 import {
-  DatosEmpleo, DocumentoConstancia,
+  DatosEmpleo,
+  DocumentoConstancia,
   DocumentoEspecialidad,
   RefDocumentoEspecialidad,
-  SolicitudDocumentoObligatorio, SolicitudGuardarDocumentacion, TipoInstitucion
+  SolicitudDocumentoObligatorio,
+  SolicitudGuardarDocumentacion,
+  TipoInstitucion
 } from '@models/solicitud-guardar-documentacion.interface';
 import {
   ItemDocumentoEspecialidad,
-  RespuestaConsultaDocumentos, RespuestaDatosEmpleo, RespuestaDocumentosConstancia, RespuestaDocumentosEspecialidad,
+  RespuestaConsultaDocumentos,
+  RespuestaDatosEmpleo,
+  RespuestaDocumentosConstancia,
+  RespuestaDocumentosEspecialidad,
   RespuestaDocumentosObligatorios
 } from '@models/respuesta-consulta-documentos.interface';
 import {jornadaLaboralValidator} from '@validators/jornada-validator';
@@ -252,10 +258,21 @@ export class InicioComponent extends GeneralComponent {
     }
 
     const {refCurp, refEmail} = this.userData;
-    const fecha = this.obtenerFechaNacimientoDeCURP(refCurp + '');
+    let fecha;
     const sexo = this.obtenerSexoDeCurp(refCurp + '');
-    this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
-    this.formRegistro.get('sexo')?.setValue(sexo);
+    if(sexo){
+      this.formRegistro.get('sexo')?.setValue(sexo);
+    }else{
+      this.formRegistro.get('sexo')?.enable();
+    }
+    if(refCurp){
+    fecha  = this.obtenerFechaNacimientoDeCURP(refCurp + '')
+      this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
+    }else{
+      this.formRegistro.get('fechaNacimiento')?.enable();
+    }
+  
+  
     this.formRegistro.get('correo')?.setValue(refEmail + '');
     this.userService.userData$.subscribe({
       next:(element) => {
@@ -408,7 +425,7 @@ export class InicioComponent extends GeneralComponent {
 
   agregarZonaInteres(): void {
     if (this.zonasInteres().length > 2) {
-      this._alertServices.alerta("Recuerda que solo puedes seleccionar hasta tres zonas de interés.");
+      this._alertServices.alerta("Recuerda que solo puedes seleccionar hasta tres zonas de interés.");
       this.formZonaInteres.reset();
       return;
     }
@@ -493,12 +510,6 @@ export class InicioComponent extends GeneralComponent {
       return;
     }
 
-    if (this.yaExistenDocumentosPermitidos(tipoDoc, especialidadDoc)) {
-      this._alertServices.alerta(`El limite de documentos ya fue alcanzado para la especialidad ${especialidadDoc}.`);
-      return;
-    }
-
-
     if (this.documentoYaExisteParaEspecialidad(tipoDoc, especialidadDoc)) {
       this._alertServices.alerta(`El documento de tipo ${tipoDoc} ya fue cargado para la especialidad ${especialidadDoc}.`);
       return;
@@ -532,18 +543,6 @@ export class InicioComponent extends GeneralComponent {
     const especialidades = this.registrosDocumentosEspecialidad();
     const especialidadExistente = especialidades.find(e => e.especialidad === especialidad);
     return !especialidadExistente && this.registrosDocumentosEspecialidad().length === 3;
-
-  }
-
-  yaExistenDocumentosPermitidos(tipoDocumento: string, especialidad: string): boolean {
-    const especialidades = this.registrosDocumentosEspecialidad();
-    const especialidadExistente = especialidades.find(e => e.especialidad === especialidad);
-    if (!especialidadExistente) {
-      return false;
-    }
-    const documentoExistente = especialidadExistente.documentos.some(doc => doc.tipoDocumento === tipoDocumento);
-
-    return !documentoExistente && especialidadExistente.documentos.length === 3;
   }
 
   agregarDocumento(guid: string): void {
@@ -838,7 +837,7 @@ export class InicioComponent extends GeneralComponent {
     });
   }
 
-  private saveFotoFile(datos: FormData): void {
+  private saveFotoFile(datos: FormData, archivo: File): void {
     this.blnFotoGuardada = false;
 
     const idUsuario = this.datosGenerales?.datosPersonales?.idUsuario;
@@ -883,6 +882,7 @@ export class InicioComponent extends GeneralComponent {
         if (data?.exito) {
           this.blnFotoGuardada = true;
           this._alertServices.exito(data.mensaje);
+          this.defaultFile = archivo;
         } else if (data && !data.exito) {
           this.blnFotoGuardada = false;
           this._alertServices.error(data.mensaje);
@@ -902,13 +902,15 @@ export class InicioComponent extends GeneralComponent {
   }
 
   private saveFoto(): DatosPersonales {
+    
     const estadoCivilSeleccionado: string = this.formRegistro.get('estadoCivil')?.value;
     let fotografia: FotografiaRequest = new FotografiaRequest();
     fotografia.datosPersonales = this.datosGenerales.datosPersonales;
     fotografia.datosPersonales.estadoCivil = new EstadoCivil();
     fotografia.datosPersonales.estadoCivil.idEstadoCivil = Number.parseInt(estadoCivilSeleccionado);
     let fechaEntrada = this.formRegistro.controls['fechaNacimiento'].value;
-    let fechaFormateada: string = dayjs(fechaEntrada, "DD/MM/YYYY").format('DD/MM/YYYY');
+    
+    let fechaFormateada: string = dayjs.utc(fechaEntrada).local().format('DD/MM/YYYY')
     fotografia.datosPersonales.refRfc = this.formRegistro.controls['rfc'].value;
     fotografia.datosPersonales.refNss = this.formRegistro.controls['nss'].value;
     fotografia.datosPersonales.fecNacimiento = fechaFormateada;
@@ -932,7 +934,7 @@ export class InicioComponent extends GeneralComponent {
 
     const formData = new FormData();
     formData.append('file', archivo, archivo.name);
-    this.saveFotoFile(formData);
+    this.saveFotoFile(formData, archivo);
   }
 
   private btnGuardar(paso: number): void {
@@ -1164,7 +1166,7 @@ export class InicioComponent extends GeneralComponent {
     }
     const cadaEspecialidadTieneDiploma: boolean = especialidades.every(node =>
       node.documentos.some(documento => documento.idDocumento === 1));
-    if (!cadaEspecialidadTieneDiploma) {
+    if (!cadaEspecialidadTieneDiploma && !externo) {
       this._alertServices.error(this._Mensajes.MSG037);
       this._alertServices.error('Para cada especialidad es necesario el documento Diploma Institucional de Especialidad');
       return;

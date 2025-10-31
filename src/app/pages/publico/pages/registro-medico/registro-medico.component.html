@@ -49,7 +49,7 @@
                   <input pInputText class="w-full" type="text" id="nombre" placeholder="Ingresa nombre"
                          [ngClass]="{'ng-touched ng-dirty ng-invalid': (f['nombre'].errors?.['required'] &&
                          (f['nombre'].dirty || f['nombre'].touched))}"
-                         autocomplete="off"
+                         autocomplete="off" oninput="this.value = this.value.toUpperCase()"
                          formControlName="nombre" maxlength="40"/>
                   @if ((f['nombre'].dirty || f['nombre'].touched)) {
                     @for (validation of msjValidation.nombre; track validation.msj) {
@@ -119,7 +119,7 @@
                   <label class="field-label" for="nombre">Nombre(s)</label>
                   <input #input pInputText class="w-full" type="text" id="nombre"
                          [ngClass]="{'ng-touched ng-dirty ng-invalid': (f['nombre'].errors?.['required'] &&
-                         (f['nombre'].dirty || f['nombre'].touched))}"
+                         (f['nombre'].dirty || f['nombre'].touched))}"  oninput="this.value = this.value.toUpperCase()"
                          placeholder="Ingresa nombre(s)" autocomplete="off" formControlName="nombre"
                          maxlength="40"/>
                   @if ((f['nombre'].dirty || f['nombre'].touched)) {
@@ -179,7 +179,7 @@
                   <label class="field-label" for="nombre">Nombre(s)</label>
                   <input pInputText class="w-full" type="text" id="nombre" placeholder="Ingresa nombre"
                          [ngClass]="{'ng-touched ng-dirty ng-invalid': (f['nombre'].errors?.['required'] &&
-                         (f['nombre'].dirty || f['nombre'].touched))}"
+                         (f['nombre'].dirty || f['nombre'].touched))}"  oninput="this.value = this.value.toUpperCase()"
                          autocomplete="off" (keypress)="inNombre = true" formControlName="nombre" maxlength="40"/>
                   @if ((f['nombre'].dirty || f['nombre'].touched)) {
                     @for (validation of msjValidation.nombre; track validation.msj) {
@@ -200,7 +200,7 @@
                 <label class="field-label" for="apellidoP">Primer apellido</label>
                 <input pInputText class="w-full" type="text" id="apellidoP" autocomplete="off"
                        [ngClass]="{'ng-touched ng-dirty ng-invalid': (f['apellidoP'].errors?.['required'] &&
-                         (f['apellidoP'].dirty || f['apellidoP'].touched))}"
+                         (f['apellidoP'].dirty || f['apellidoP'].touched))}"  oninput="this.value = this.value.toUpperCase()"
                        placeholder="Ingresa primer apellido" (keypress)="inAp = true" formControlName="apellidoP"
                        maxlength="40"/>
                 @if ((f['apellidoP'].dirty || f['apellidoP'].touched)) {
@@ -215,7 +215,7 @@
                 <label class="field-label" for="apellidoM">Segundo apellido</label>
                 <input pInputText class="w-full" type="text" id="apellidoM" autocomplete="off"
                        [ngClass]="{'ng-touched ng-dirty ng-invalid': (f['apellidoM'].errors?.['required'] &&
-                         (f['apellidoM'].dirty || f['apellidoM'].touched))}"
+                         (f['apellidoM'].dirty || f['apellidoM'].touched))}"  oninput="this.value = this.value.toUpperCase()"
                        placeholder="Ingresa segundo apellido" (keypress)="inAm = true" formControlName="apellidoM"
                        maxlength="40"/>
                 @if ((f['apellidoM'].dirty || f['apellidoM'].touched)) {

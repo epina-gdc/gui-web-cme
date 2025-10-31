@@ -1,7 +1,8 @@
 import {
   Component,
   ElementRef,
-  EventEmitter, inject,
+  EventEmitter,
+  inject,
   Input,
   OnChanges,
   OnInit,
@@ -190,7 +191,24 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
   onSelectedFiles(event: any) {
     // Verificar si PrimeNG reportó algún archivo no válido
     // Los archivos inválidos por tamaño, tipo, etc., se encuentran en event.invalidFiles.
-    console.log(event)
+    for (const archivo of event.files) {
+      if (!this.esImagenValida(archivo)) {
+
+        // ¡Importante! Evitar que se procese o se emita algún archivo
+        this.files = [];
+        this.alertaService.error(`El archivo que intenta cargar no es válido.`);
+        if (this.fileUpload) {
+          this.fileUpload.clear();
+        }
+        if (this.existingFile) {
+          this.fileUpload.files = [this.existingFile];
+        } else {
+          this.fileUpload.files = [];
+        }
+        this.files = this.fileUpload.files;
+        return;
+      }
+    }
     if (event.currentFiles.length === 0) {
       this.alertaService.error(`El archivo  excede el tamaño máximo permitido.`);
 
@@ -203,7 +221,6 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
       return;
     }
 
-    // Lógica para archivos válidos (que ya tenías)
     this.files = event.currentFiles;
     if (this.files.length > 0) {
       this.fileSelected.emit(this.files);
@@ -357,6 +374,18 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
 
     // Emite el evento como si se hubiera seleccionado
     this.fileSelected.emit(this.files);
+  }
+
+  esImagenValida(archivo: File): boolean {
+    const tiposPermitidos = ['image/jpeg', 'image/png'];
+    const extensionesPermitidas = ['jpg', 'jpeg', 'png'];
+
+    const extension = archivo.name.split('.').pop()?.toLowerCase();
+
+    return (
+      tiposPermitidos.includes(archivo.type) &&
+      extensionesPermitidas.includes(extension || '')
+    );
   }
 
 

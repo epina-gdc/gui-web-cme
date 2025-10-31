@@ -8,5 +8,5 @@ export const NAV = {
   nuevaContrasenia: 'restablecer-contrasenia',
   documentacionAspirante: 'documentacion-aspirante',
   verificacionDocumentos: 'verificacion-documentos',
-  
+  home: 'inicio',
 };

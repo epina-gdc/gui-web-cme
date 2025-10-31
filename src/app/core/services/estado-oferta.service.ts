@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 
 // Definición de la interfaz para el estado compartido (opcional, pero recomendado)
 export interface OfertaEstado {
