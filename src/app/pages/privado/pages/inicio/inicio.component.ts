@@ -408,7 +408,7 @@ export class InicioComponent extends GeneralComponent {
 
   agregarZonaInteres(): void {
     if (this.zonasInteres().length > 2) {
-      this._alertServices.alerta("Ya seleccionaste tus 3 opciones.");
+      this._alertServices.alerta("Recuerda que solo puedes seleccionar hasta tres zonas de interés.");
       this.formZonaInteres.reset();
       return;
     }

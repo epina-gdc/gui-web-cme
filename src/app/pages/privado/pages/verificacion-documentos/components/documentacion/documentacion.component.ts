@@ -8,10 +8,13 @@ import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.compon
 
 import { DocsObligatoriosComponent } from '../docs-obligatorios/docs-obligatorios.component';
 import { DocsEspecialidadComponent } from '../docs-especialidad/docs-especialidad.component';
+import { CardInfoComponent } from '@pages/privado/pages/verificacion-documentos/components/card-info/card-info.component';
 
 @Component({
   selector: 'app-documentacion',
-  imports: [BtnRegresarComponent,CardModule,PillComponent,TabsModule,DocsObligatoriosComponent, DocsEspecialidadComponent, ConstanciasCursosComponent],
+  imports: [BtnRegresarComponent,CardModule,PillComponent,TabsModule,
+    DocsObligatoriosComponent, DocsEspecialidadComponent, ConstanciasCursosComponent,
+  CardInfoComponent],
   templateUrl: './documentacion.component.html',
   styleUrl: './documentacion.component.scss'
 })
