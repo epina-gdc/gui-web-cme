@@ -31,7 +31,7 @@ const routes: Routes = [{
     {
       path: NAV.verificacionDocumentos,
       component: VerificacionDocumentosComponent,
-      canActivate: [validadorGuard]
+      canActivate: [validadorGuard],
       resolve:{
         respuesta: verficacionDocsResolver
       }
