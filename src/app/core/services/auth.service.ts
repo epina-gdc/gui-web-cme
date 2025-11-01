@@ -7,7 +7,7 @@ import {HttpClient} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {environment} from '@env/environment.development';
 import {Login} from '@models/login';
-import {BehaviorSubject, map, Observable, tap} from 'rxjs';
+import {BehaviorSubject, map, Observable, of, tap} from 'rxjs';
 import {CME_TOKEN} from '@utils/constants';
 
 @Injectable({
@@ -43,6 +43,8 @@ export class AuthService {
         if (respuesta.exito) {
           localStorage.setItem(CME_TOKEN, respuesta.respuesta.token);
           this.settearSession(respuesta.respuesta.token);
+
+          console.log(this.usuarioSesion)
         }
       })
     );
@@ -97,5 +99,26 @@ export class AuthService {
     this.usuarioService.clearUser()
     this.usuarioSesionSubject.next(null)
     void this.router.navigate(['/']);
+  }
+
+  checkAuthStatus(): Observable<boolean> {
+    const token: string | null = localStorage.getItem(CME_TOKEN);
+
+    if (!token) {
+      this.cerrarSesion();
+      return of(false);
+    }
+
+    const jwtHelper = new JwtHelperService();
+    if (jwtHelper.isTokenExpired(token)) {
+      this.cerrarSesion();
+      return of(false);
+    }
+
+    if (!this.usuarioSesion) {
+      this.settearSession(token);
+    }
+
+    return of(true);
   }
 }

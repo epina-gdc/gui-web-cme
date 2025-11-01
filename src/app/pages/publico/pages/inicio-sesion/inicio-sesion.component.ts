@@ -71,9 +71,7 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit {
             this._alertServices.alerta(respuesta.mensaje);
             return;
           }
-          void this._router.navigate(['/privado'], {
-            relativeTo: this.activatedRoute,
-          });
+          void this._router.navigate(['/privado/inicio'], { relativeTo: this.activatedRoute,});
         },
         error: (error) => {
           if (error.error.mensaje.includes('Usuario no encontrado con email')) {
