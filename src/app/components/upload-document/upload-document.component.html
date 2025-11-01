@@ -30,11 +30,13 @@
         @for (file of files; track file.objectURL; let index = $index) {
           <div
             class="card m-0 gap-2 py-2 px-4 flex flex-row border-1 surface-border align-items-center bg-file border-round">
-            <i class="cme-pdf mr-2" style="font-size: 1.2rem; color: red"></i>
-            <div class="surface-overlay white-space-nowrap overflow-hidden text-overflow-ellipsis
+            <div class="cursor-pointer gap-2 flex" (click)="descargarArchivo()">
+              <i class="cme-pdf mr-2" style="font-size: 1.2rem; color: red"></i>
+              <div class="surface-overlay white-space-nowrap overflow-hidden text-overflow-ellipsis
                 flex align-items-center mr-2"
-                 style="width:160px; font-size: 12px">
-              {{ file.name }}
+                   style="width:160px; font-size: 12px">
+                {{ file.name }}
+              </div>
             </div>
             @if (disabled) {
               <div class="my-1 mx-2" style="width: 24px; height: 26px"></div>
