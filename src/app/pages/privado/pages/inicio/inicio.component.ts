@@ -539,6 +539,7 @@ export class InicioComponent extends GeneralComponent {
 
     if (this.yaExistenEspecilidadesPermitidas(especialidadDoc)) {
       this._alertServices.alerta(`El limite de especialidades ha sido alcanzado`);
+      this.formDocumentosEspecialidad.reset();
       return;
     }
 
@@ -1626,6 +1627,10 @@ debugger
 
   desactivarForms(): void {
     this.formDocumentosEspecialidad.disable();
+
+    //this.formDatosEmpleo.updateValueAndValidity();
+    this.formRegistro.disable();
+    this.formZonaInteres.disable()
     this.formDatosEmpleo.disable();
   }
 
@@ -1832,11 +1837,4 @@ debugger
     }
   }
 
-
-  obtenerDocumentoObligatorio(id: number){
-
-   var guidDocumento = this.documentosLocalStorageService.obtenerRefGuid(1)
-
-   this.mostrarDocumento(guidDocumento);
-  }
 }
