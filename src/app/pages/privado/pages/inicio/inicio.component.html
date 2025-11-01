@@ -34,9 +34,10 @@
             <div class="col-4">
               <div class="flex justify-content-between">
                 <label class="field-label" for="nss">NSS</label>
-                @if (this.userData?.idPerfil == 2) {
+                 <p class="label-obligatorio">Obligatorio</p>
+                <!-- @if (this.userData?.idPerfil == 2) {
                   <p class="label-obligatorio">Obligatorio</p>
-                }
+                } -->
               </div>
               <input pInputText class="w-full" type="text" id="nss" placeholder="Ingresa NSS"
                      formControlName="nss" appOnlyNumbers maxlength="11"/>
@@ -70,7 +71,7 @@
               <div class="flex justify-content-between">
                 <label class="field-label" for="rfc">Dependientes</label>
               </div>
-              <div class="flex justify-content-between flex-wrap gap-2">
+<!--               <div class="flex justify-content-between flex-wrap gap-2">
                 @for (dependiente of dependientes; track dependiente.key) {
                   <div class="flex align-items-center gap-1">
                     <p-radiobutton class="radio-button-square" [inputId]="dependiente.key" [value]="dependiente"
@@ -79,7 +80,60 @@
                     <label [for]="dependiente.key" class="field-label mt-4">{{ dependiente.name }}</label>
                   </div>
                 }
-              </div>
+              </div> -->
+              <div class="flex justify-content-between flex-wrap gap-2">
+
+
+        <div class="flex align-items-center gap-1">
+
+            <p-checkbox
+                class="checkbox-square"
+                [inputId]="dependientes[0].key"
+                formControlName="indPadres"
+                [binary]="true"
+            >
+            </p-checkbox>
+
+            <label [for]="dependientes[0].key" class="field-label mt-4">{{ dependientes[0].name }}</label>
+        </div>
+         <div class="flex align-items-center gap-1">
+
+            <p-checkbox
+                class="checkbox-square"
+                [inputId]="dependientes[1].key"
+                formControlName="indHijos"
+                [binary]="true"
+            >
+            </p-checkbox>
+
+            <label [for]="dependientes[1].key" class="field-label mt-4">{{ dependientes[1].name }}</label>
+        </div>
+         <div class="flex align-items-center gap-1">
+
+            <p-checkbox
+                class="checkbox-square"
+                [inputId]="dependientes[2].key"
+                formControlName="indConyuge"
+                [binary]="true"
+            >
+            </p-checkbox>
+
+            <label [for]="dependientes[2].key" class="field-label mt-4">{{ dependientes[2].name }}</label>
+        </div>
+         <div class="flex align-items-center gap-1">
+
+            <p-checkbox
+                class="checkbox-square"
+                [inputId]="dependientes[3].key"
+                formControlName="indOtros"
+                [binary]="true"
+            >
+            </p-checkbox>
+
+            <label [for]="dependientes[3].key" class="field-label mt-4">{{ dependientes[3].name }}</label>
+        </div>
+
+</div>
             </div>
             <div class="col-4">
               <div class="flex justify-content-between">
@@ -279,8 +333,8 @@
       </p-card>
 
       <div class="flex flex-row justify-content-end gap-3">
-        <p-button type="button" variant="outlined" (click)="limpiarPrimeraSeccion()" label="Limpiar formulario"/>
-        <p-button type="button" [disabled]="formRegistro.invalid" label="Guardar" (click)="siguientePasoStepper()"/>
+        <p-button type="button" variant="outlined" (click)="limpiarPrimeraSeccion()" label="Limpiar formulario" [disabled]="estatusPendienteDocumentacion"/>
+        <p-button type="button" [disabled]="formRegistro.invalid || estatusPendienteDocumentacion" label="Guardar" (click)="siguientePasoStepper()"/>
         <!--<p-button type="button"  label="Guardar" (click)="saveDatosGenerales()"/>-->
         <p-button type="button" [disabled]="true" label="Finalizar registro"/>
       </div>
@@ -494,7 +548,7 @@
                 @for (opcion of opciones_boolean; track opcion.key) {
                   <div class="flex align-items-center gap-1">
                     <p-radiobutton class="radio-button-square" [inputId]="opcion.key" [value]="opcion.key"
-                                   formControlName="otroEmpleo">
+                                   formControlName="otroEmpleo" >
                     </p-radiobutton>
                     <label [for]="opcion.key" class="field-label mt-4">{{ opcion.name }}</label>
                   </div>
@@ -532,14 +586,19 @@
               <div class="flex gap-2 px-2">
                 <p-datepicker [style]="{ 'width': '100%' }" placeholder="De" [iconDisplay]="'input'"
                               formControlName="horarioInicio"
-                              [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" [timeOnly]="true">
+                              [disabled]="formDatosEmpleo.get('horarioInicio')?.disabled ?? false"
+                              [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" [timeOnly]="true"
+
+                              >
                   <ng-template #inputicon let-clickCallBack="clickCallBack">
                     <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
                   </ng-template>
                 </p-datepicker>
                 <p-datepicker [style]="{ 'width': '100%' }" placeholder="Hasta" [iconDisplay]="'input'"
                               [timeOnly]="true" formControlName="horarioFin"
-                              [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay">
+                              [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
+                              [disabled]="formDatosEmpleo.get('horarioFin')?.disabled ?? false"
+                              >
                   <ng-template #inputicon let-clickCallBack="clickCallBack">
                     <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
                   </ng-template>

@@ -3,7 +3,7 @@ import {Card} from 'primeng/card';
 import {StepsComponent} from '@components/steps/steps.component';
 import {UploadPhotoComponent} from '@components/upload-photo/upload-photo.component';
 import {InputText} from 'primeng/inputtext';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Select} from 'primeng/select';
 import {DatePickerModule} from 'primeng/datepicker';
 import {Button} from 'primeng/button';
@@ -65,6 +65,8 @@ import {jornadaLaboralValidator} from '@validators/jornada-validator';
 import {horarioLaboralValidator} from '@validators/horario-validator';
 import utc from "dayjs/plugin/utc";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { Checkbox } from 'primeng/checkbox';
+import { CommonModule } from '@angular/common';
 
 interface DocumentoFuente {
   refGuid: string;
@@ -81,6 +83,7 @@ dayjs.extend(customParseFormat);
 @Component({
   selector: 'app-inicio',
   imports: [
+    CommonModule,
     Card,
     StepsComponent,
     UploadPhotoComponent,
@@ -92,6 +95,7 @@ dayjs.extend(customParseFormat);
     TableModule,
     UploadDocumentComponent,
     RadioButton,
+    Checkbox,
     TabPanel,
     TabView,
     HeaderTabComponent,
@@ -206,16 +210,21 @@ export class InicioComponent extends GeneralComponent {
     this.obtenerDatosDocumentosEscolaridad();
     this.revisarDocumentosLocalHost();
     this.suscribirObservablesDatosEmpleo();
+
   }
 
   asignarFormularioRegistro(): FormGroup {
     return this.fb.group({
       rfc: [],
-      nss: [{value: '', disabled: false}, [Validators.minLength(11), Validators.maxLength(11)]],
+      nss: [{value: '', disabled: false}, [ Validators.required,Validators.minLength(11), Validators.maxLength(11)]],
       fechaNacimiento: [{value: '', disabled: true}, [Validators.required]],
       sexo: [{value: '', disabled: true}, [Validators.required]],
       estadoCivil: [{value: '', disabled: false}, [Validators.required]],
-      dependientes: [],
+      //dependientes: [],
+      indPadres: [false],
+      indConyuge: [false],
+      indHijos:[false],
+      indOtros:[false],
       hijos: [{value: '', disabled: true}, [Validators.required, Validators.min(1)]],
       otros: [{value: '', disabled: true}, [Validators.required]],
       correo: [{value: '', disabled: true}],
@@ -240,6 +249,8 @@ export class InicioComponent extends GeneralComponent {
     });
   }
 
+
+
   suscribirObservables(): void {
     this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe(value => this.obtenerLocalidadPorPais(value));
 
@@ -255,6 +266,22 @@ export class InicioComponent extends GeneralComponent {
         }
       }
     );
+
+    this.formRegistro.get('indHijos')?.valueChanges.subscribe(value => {
+      if(value){
+        this.formRegistro.get("hijos")?.enable();
+      } else {
+        this.formRegistro.get("hijos")?.disable();
+      }
+      });
+
+    this.formRegistro.get('indOtros')?.valueChanges.subscribe(value => {
+      if(value){
+        this.formRegistro.get("otros")?.enable();
+      } else {
+        this.formRegistro.get("otros")?.disable();
+      }
+      });
   }
 
   settearDatosUsuario(): void {
@@ -512,6 +539,7 @@ export class InicioComponent extends GeneralComponent {
 
     if (this.yaExistenEspecilidadesPermitidas(especialidadDoc)) {
       this._alertServices.alerta(`El limite de especialidades ha sido alcanzado`);
+      this.formDocumentosEspecialidad.reset();
       return;
     }
 
@@ -675,7 +703,7 @@ export class InicioComponent extends GeneralComponent {
       dependientes,
       zonasInteresLaboral
     } = this.datosGenerales;
-
+debugger
     if (datosContacto) {
       const {refEmail, refCorreoAdicional, refTelefonoCasa, refTelefonoCelular} = datosContacto;
       this.formRegistro.controls['correo'].setValue(refEmail || null);
@@ -730,22 +758,29 @@ export class InicioComponent extends GeneralComponent {
     }
 
     if (dependientes) {
+      debugger
       const {indPadres, refCantidadHijos, indConyuge, refOtro} = dependientes;
-      if (indPadres == 1 && refCantidadHijos == null) {
-        this.formRegistro.get('dependientes')?.setValue(this.dependientes[0]);
-      } else {
-        this.formRegistro.get('dependientes')?.setValue(this.dependientes[1]);
+      if (indPadres == 1) {
+        this.formRegistro.get("indPadres")?.setValue(true);
+      }
+
+      if (refCantidadHijos) {
+        this.formRegistro.get("hijos")?.setValue(refCantidadHijos);
+        this.formRegistro.get("indHijos")?.setValue(true);
       }
 
       if (indConyuge == 1) {
-        this.formRegistro.get('dependientes')?.setValue(this.dependientes[2]);
+        this.formRegistro.get("indConyuge")?.setValue(true);
       }
+
       if (refOtro != null) {
-        this.formRegistro.get('dependientes')?.setValue(this.dependientes[3]);
+        this.formRegistro.get("otros")?.setValue(refOtro);
+        this.formRegistro.get("indOtros")?.setValue(true);
       }
+
       this.subscribirseACambioComponentes();
-      this.formRegistro.get('hijos')?.setValue(refCantidadHijos);
-      this.formRegistro.get('otros')?.setValue(refOtro);
+      //this.formRegistro.get('hijos')?.setValue(refCantidadHijos);
+      //this.formRegistro.get('otros')?.setValue(refOtro);
     }
 
     if (zonasInteresLaboral?.length) {
@@ -800,13 +835,22 @@ export class InicioComponent extends GeneralComponent {
   }
 
   private saveDependientes(): Dependientes {
-    let dependientes = new Dependientes();
+    /* let dependientes = new Dependientes();
     let d = this.formRegistro.controls['dependientes'].value;
     dependientes.indConyuge = d.key == 'P' ? 1 : 0;
     dependientes.indPadres = d.key == 'A' ? 1 : 0;
     dependientes.refCantidadHijos = this.formRegistro.controls['hijos'].value;
     dependientes.refOtro = this.formRegistro.controls['otros'].value;
+    return dependientes; */
+
+debugger
+    let dependientes = new Dependientes();
+    dependientes.indPadres = this.formRegistro.get("indPadres")?.value ? 1 : 0;
+    dependientes.indConyuge = this.formRegistro.get("indConyuge")?.value ? 1 : 0;
+    dependientes.refCantidadHijos = this.formRegistro.get("indHijos")?.value ? this.formRegistro.get("hijos")?.value : null;
+    dependientes.refOtro = this.formRegistro.get("indOtros")?.value ? this.formRegistro.get("otros")?.value : null;
     return dependientes;
+
   }
 
   private saveDatosGenerales() {
@@ -908,6 +952,7 @@ export class InicioComponent extends GeneralComponent {
 
   private saveFoto(): DatosPersonales {
 
+
     const estadoCivilSeleccionado: string = this.formRegistro.get('estadoCivil')?.value;
     let fotografia: FotografiaRequest = new FotografiaRequest();
     fotografia.datosPersonales = this.datosGenerales.datosPersonales;
@@ -955,7 +1000,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   validacionesNegocio() {
-
+debugger
     if (this.userData?.idPerfil == 3) {
       this.formRegistro.get('nss')?.clearValidators;
       this.formRegistro.get('nss')?.updateValueAndValidity;
@@ -1085,8 +1130,10 @@ export class InicioComponent extends GeneralComponent {
   obtenerDocumento(refGuid: string, tipo: string, id: number, nombre: string = ''): void {
     this.documentoService.obtenerDocumento(refGuid).subscribe({
       next: (response: any) => {
+
         const tipoArchivo = response.type;
         if (tipo === 'obligatorio' && id === 1) {
+
           const nombreArchivo = 'identificacion_oficial';
           this.archivoINE = new File([response], nombreArchivo, {type: tipoArchivo});
           this.documentosLocalStorageService.guardarRefGuidObligatorio(id, refGuid);
@@ -1452,8 +1499,10 @@ export class InicioComponent extends GeneralComponent {
   }
 
   suscribirObservablesDatosEmpleo(): void {
+
     const form = this.formDatosEmpleo;
     form.get('otroEmpleo')?.valueChanges.subscribe(value => {
+
       const tieneOtroEmpleo = value === '1'; // '1' = Sí
 
       // Habilitar/Deshabilitar campos asociados a 'otroEmpleo'
@@ -1463,7 +1512,8 @@ export class InicioComponent extends GeneralComponent {
       this.actualizarHorarioJornadaState(form);
     });
 
-    form.get('tipoInstitucion')?.valueChanges.subscribe(() => {
+    form.get('tipoInstitucion')?.valueChanges.subscribe((val) => {
+
       // Si 'otroEmpleo' es 'Sí', reevalúa 'nombreInstitucion'
       const tieneOtroEmpleo = form.get('otroEmpleo')?.value === '1';
       this.manejarNombreInstitucionLogic(form, tieneOtroEmpleo);
@@ -1476,7 +1526,8 @@ export class InicioComponent extends GeneralComponent {
       this.manejoValidaciones(form, 'ooad', isSustituto, isSustituto);
 
       // Reevaluar la dependencia de Horario/Jornada
-      this.actualizarHorarioJornadaState(form);
+      /* ooad ya no tendra control sobre los horarios y jornada por peticion*/
+      //this.actualizarHorarioJornadaState(form);
     });
 
     form.get('ooad')?.valueChanges.subscribe(() => {
@@ -1495,13 +1546,31 @@ export class InicioComponent extends GeneralComponent {
     this.manejoValidaciones(form, 'nombreInstitucion', enable, enable);
   }
 
-  private actualizarHorarioJornadaState(form: FormGroup): void {
+/*   private actualizarHorarioJornadaState(form: FormGroup): void {
+
     const tieneOtroEmpleo = form.get('otroEmpleo')?.value === '1';
     const esSustituto = form.get('sustituto')?.value === '1';
     const tieneOoad = !!form.get('ooad')?.value;
 
     // Habilitar si: (Otro Empleo = Sí) O (Sustituto = Sí Y OOAD tiene valor)
     const enable = tieneOtroEmpleo || (esSustituto && tieneOoad);
+
+    // Son obligatorios en ambos escenarios si se habilitan
+    this.manejoValidaciones(form, 'horarioInicio', enable, enable);
+    this.manejoValidaciones(form, 'horarioFin', enable, enable);
+    this.manejoValidaciones(form, 'diaInicio', enable, enable);
+    this.manejoValidaciones(form, 'diaFin', enable, enable);
+  } */
+
+  /* SE CAMBIA LOGICA YA QUE SOLO TIENES OTRO EMPLEO PERMITIRA LLENAR HORARIO Y JORNADA */
+    private actualizarHorarioJornadaState(form: FormGroup): void {
+
+    const tieneOtroEmpleo = form.get('otroEmpleo')?.value === '1';
+    const esSustituto = form.get('sustituto')?.value === '1';
+    const tieneOoad = !!form.get('ooad')?.value;
+
+    // Habilitar si: (Otro Empleo = Sí) O (Sustituto = Sí Y OOAD tiene valor)
+    const enable = tieneOtroEmpleo;
 
     // Son obligatorios en ambos escenarios si se habilitan
     this.manejoValidaciones(form, 'horarioInicio', enable, enable);
@@ -1558,6 +1627,10 @@ export class InicioComponent extends GeneralComponent {
 
   desactivarForms(): void {
     this.formDocumentosEspecialidad.disable();
+
+    //this.formDatosEmpleo.updateValueAndValidity();
+    this.formRegistro.disable();
+    this.formZonaInteres.disable()
     this.formDatosEmpleo.disable();
   }
 
@@ -1621,6 +1694,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   cargarDatosEmpleoAlFormulario(datos: RespuestaDatosEmpleo): void {
+
     const otroEmpleoValue = datos.indOtroEmpleo?.toString() || '0';
     const sustitutoValue = datos.indMedicoSustituto?.toString() || '0';
     const ooadValue = datos.cveOoad || null;
@@ -1762,4 +1836,5 @@ export class InicioComponent extends GeneralComponent {
       this.mostrarDocumento(guid);
     }
   }
+
 }
