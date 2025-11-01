@@ -8,6 +8,7 @@ import {DocumentacionComponent} from './pages/verificacion-documentos/components
 import {NAV} from '@utils/url-global';
 import {medicoGuard} from '@guards/medico.guard';
 import {validadorGuard} from '@guards/validador.guard';
+import {documentacionAspiranteResolver} from '../../core/resolvers/documentacion-aspirante.resolver';
 
 const routes: Routes = [{
   path: '',
@@ -34,6 +35,9 @@ const routes: Routes = [{
     {
       path: NAV.documentacionAspirante,
       component: DocumentacionComponent,
+      resolve: {
+        respuesta: documentacionAspiranteResolver
+      }
     },
 
 
