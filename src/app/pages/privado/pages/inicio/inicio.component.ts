@@ -703,7 +703,7 @@ export class InicioComponent extends GeneralComponent {
       dependientes,
       zonasInteresLaboral
     } = this.datosGenerales;
-debugger
+
     if (datosContacto) {
       const {refEmail, refCorreoAdicional, refTelefonoCasa, refTelefonoCelular} = datosContacto;
       this.formRegistro.controls['correo'].setValue(refEmail || null);
@@ -758,7 +758,7 @@ debugger
     }
 
     if (dependientes) {
-      debugger
+
       const {indPadres, refCantidadHijos, indConyuge, refOtro} = dependientes;
       if (indPadres == 1) {
         this.formRegistro.get("indPadres")?.setValue(true);
@@ -843,7 +843,7 @@ debugger
     dependientes.refOtro = this.formRegistro.controls['otros'].value;
     return dependientes; */
 
-debugger
+
     let dependientes = new Dependientes();
     dependientes.indPadres = this.formRegistro.get("indPadres")?.value ? 1 : 0;
     dependientes.indConyuge = this.formRegistro.get("indConyuge")?.value ? 1 : 0;
@@ -1000,7 +1000,7 @@ debugger
   }
 
   validacionesNegocio() {
-debugger
+
     if (this.userData?.idPerfil == 3) {
       this.formRegistro.get('nss')?.clearValidators;
       this.formRegistro.get('nss')?.updateValueAndValidity;
@@ -1245,6 +1245,7 @@ debugger
           this._alertServices.exito(this._Mensajes.MSG039)
           this.estatusPendienteDocumentacion = true;
           this.documentosLocalStorageService.limpiar();
+          this.desactivarForms();
           return;
         }
         this._alertServices.error(data.mensaje)
@@ -1390,8 +1391,8 @@ debugger
       }
     }
 
-    const horaInicio = dayjs.utc(formValues.horarioInicio).local().format('HH:mm');
-    const horaFin = dayjs.utc(formValues.horarioFin).local().format('HH:mm');
+    const horaInicio = formValues.horarioInicio ? dayjs.utc(formValues.horarioInicio).local().format('HH:mm'): null;
+    const horaFin = formValues.horarioFin ? dayjs.utc(formValues.horarioFin).local().format('HH:mm'): null;
 
     return {
       indOtroEmpleo: indOtroEmpleo,
@@ -1452,6 +1453,9 @@ debugger
     const refConstancia1 = this.documentosLocalStorageService.obtenerRefConstancia(1);
     const refConstancia2 = this.documentosLocalStorageService.obtenerRefConstancia(2);
     const refConstancia3 = this.documentosLocalStorageService.obtenerRefConstancia(3);
+
+
+
 
     if (this.estatusPendienteDocumentacion) {
       return true;
@@ -1627,8 +1631,6 @@ debugger
 
   desactivarForms(): void {
     this.formDocumentosEspecialidad.disable();
-
-    //this.formDatosEmpleo.updateValueAndValidity();
     this.formRegistro.disable();
     this.formZonaInteres.disable()
     this.formDatosEmpleo.disable();
@@ -1821,7 +1823,26 @@ debugger
   }
 
   cambioDeSeccion($event: any) {
+
     if (![0, 1].includes($event)) return;
+
+    if($event == 1){
+      /* validar que el primer formulario este completo */
+      if(this.formRegistro.invalid){
+                this._alertServices.alerta("Recuerde completar los datos del formulario y guardar antes de pasar a la siguiente sección.");
+        return;
+      } else {
+
+        if(!this.blnFotoGuardada || this.zonasInteres().length == 0){
+          this._alertServices.alerta("Recuerde completar los datos del formulario y guardar antes de pasar a la siguiente sección.");
+          return
+        }
+
+      }
+    }
+
+
+
     this.indice.update(() => $event);
   }
 
