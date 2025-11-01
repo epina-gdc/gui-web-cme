@@ -211,7 +211,7 @@ export class InicioComponent extends GeneralComponent {
   asignarFormularioRegistro(): FormGroup {
     return this.fb.group({
       rfc: [],
-      nss: [{value: '', disabled: false}, [ Validators.minLength(11), Validators.maxLength(11)]],
+      nss: [{value: '', disabled: false}, [Validators.minLength(11), Validators.maxLength(11)]],
       fechaNacimiento: [{value: '', disabled: true}, [Validators.required]],
       sexo: [{value: '', disabled: true}, [Validators.required]],
       estadoCivil: [{value: '', disabled: false}, [Validators.required]],
@@ -220,8 +220,14 @@ export class InicioComponent extends GeneralComponent {
       otros: [{value: '', disabled: true}, [Validators.required]],
       correo: [{value: '', disabled: true}],
       correoAdicional: [],
-      telefonoCasa: [{value: '', disabled: false}, [Validators.required,Validators.minLength(10), Validators.maxLength(10)]],
-      telefonoCelular: [{value: '', disabled: false}, [Validators.required,Validators.minLength(10), Validators.maxLength(10)]],
+      telefonoCasa: [{
+        value: '',
+        disabled: false
+      }, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+      telefonoCelular: [{
+        value: '',
+        disabled: false
+      }, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
       paisNacimiento: [],
       estadoNacimiento: [],
       codigoPostal: [{value: '', disabled: false}, [Validators.required]],
@@ -241,11 +247,10 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.get('estado')?.valueChanges.subscribe(value => this.obtenerMunicipioPorEstado(value));
     //this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerAlcaldiaPorMunicipio(value));
     this.formZonaInteres.get('ooad')?.valueChanges.subscribe(value => this.obtenerZonasPorMunicipio(value))
-    this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe((value) =>
-      {
+    this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe((value) => {
         this.formRegistro.get('estadoNacimiento')?.disable()
         this.formRegistro.get('estadoNacimiento')?.reset();
-        if(value.value == 103){
+        if (value.value == 103) {
           this.formRegistro.get('estadoNacimiento')?.enable()
         }
       }
@@ -260,22 +265,22 @@ export class InicioComponent extends GeneralComponent {
     const {refCurp, refEmail} = this.userData;
     let fecha;
     const sexo = this.obtenerSexoDeCurp(refCurp + '');
-    if(sexo){
+    if (sexo) {
       this.formRegistro.get('sexo')?.setValue(sexo);
-    }else{
+    } else {
       this.formRegistro.get('sexo')?.enable();
     }
-    if(refCurp){
-    fecha  = this.obtenerFechaNacimientoDeCURP(refCurp + '')
+    if (refCurp) {
+      fecha = this.obtenerFechaNacimientoDeCURP(refCurp + '')
       this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
-    }else{
+    } else {
       this.formRegistro.get('fechaNacimiento')?.enable();
     }
-  
-  
+
+
     this.formRegistro.get('correo')?.setValue(refEmail + '');
     this.userService.userData$.subscribe({
-      next:(element) => {
+      next: (element) => {
         if (!element.perfil) return;
         this.tipoMedico.set(element.perfil)
       }
@@ -294,7 +299,7 @@ export class InicioComponent extends GeneralComponent {
       diaInicio: [{value: null, disabled: true}],
       diaFin: [{value: null, disabled: true}],
       ooad: [{value: null, disabled: true}],
-    }, { validators: [jornadaLaboralValidator, horarioLaboralValidator] })
+    }, {validators: [jornadaLaboralValidator, horarioLaboralValidator]})
   }
 
   obtenerFechaNacimientoDeCURP(curp: string): Date {
@@ -352,7 +357,7 @@ export class InicioComponent extends GeneralComponent {
   obtenerLocalidadPorPais(pais: number): void {
   }
 
-  validarCP(){
+  validarCP() {
     this.catalogoService.getLstCodigosPostales(this.formRegistro.get('codigoPostal')?.value).subscribe({
       next: (elemento) => {
         this.formRegistro.get('pais')?.setValue(103)
@@ -683,7 +688,7 @@ export class InicioComponent extends GeneralComponent {
 
       const {refRfc, refNss, estadoCivil, paisNacimiento, lugarNacimiento, perfil} = datosPersonales;
 
-      if(perfil.idPerfil == 2){
+      if (perfil.idPerfil == 2) {
         this.formRegistro.controls['nss'].setValidators([Validators.required]);
         this.formRegistro.controls['nss'].updateValueAndValidity();
       }
@@ -902,14 +907,14 @@ export class InicioComponent extends GeneralComponent {
   }
 
   private saveFoto(): DatosPersonales {
-    
+
     const estadoCivilSeleccionado: string = this.formRegistro.get('estadoCivil')?.value;
     let fotografia: FotografiaRequest = new FotografiaRequest();
     fotografia.datosPersonales = this.datosGenerales.datosPersonales;
     fotografia.datosPersonales.estadoCivil = new EstadoCivil();
     fotografia.datosPersonales.estadoCivil.idEstadoCivil = Number.parseInt(estadoCivilSeleccionado);
     let fechaEntrada = this.formRegistro.controls['fechaNacimiento'].value;
-    
+
     let fechaFormateada: string = dayjs.utc(fechaEntrada).local().format('DD/MM/YYYY')
     fotografia.datosPersonales.refRfc = this.formRegistro.controls['rfc'].value;
     fotografia.datosPersonales.refNss = this.formRegistro.controls['nss'].value;
@@ -922,7 +927,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   onFileSelected($event: any): void {
-    if($event.length == 0){
+    if ($event.length == 0) {
       this._alertServices.alerta('El peso del archivo excede al permitido.');
       return;
     }
@@ -1664,7 +1669,7 @@ export class InicioComponent extends GeneralComponent {
 
   eliminarConstancia(id: number) {
     this.documentosLocalStorageService.eliminarArchivoConstancia(id);
-    if (id === 1){
+    if (id === 1) {
       this.archivoConstancia1 = null;
       this.nombreConstancia1 = '';
       const uploader = this.uploaders.find(comp => comp.idArchivo === 'constancia_1');
@@ -1672,7 +1677,7 @@ export class InicioComponent extends GeneralComponent {
         uploader.clear();
       }
     }
-    if (id === 2){
+    if (id === 2) {
       this.archivoConstancia2 = null;
       this.nombreConstancia2 = '';
       const uploader = this.uploaders.find(comp => comp.idArchivo === 'constancia_2');
@@ -1680,7 +1685,7 @@ export class InicioComponent extends GeneralComponent {
         uploader.clear();
       }
     }
-    if (id === 3){
+    if (id === 3) {
       this.archivoConstancia3 = null;
       this.nombreConstancia3 = '';
       const uploader = this.uploaders.find(comp => comp.idArchivo === 'constancia_3');
@@ -1692,14 +1697,14 @@ export class InicioComponent extends GeneralComponent {
 
   eliminarDocumentosObligatorios(id: number) {
     this.documentosLocalStorageService.eliminarArchivoObligatorio(id);
-    if (id === 1){
+    if (id === 1) {
       this.archivoINE = null;
       const uploader = this.uploaders.find(comp => comp.idArchivo === 'INE');
       if (uploader) {
         uploader.clear();
       }
     }
-    if (id === 2){
+    if (id === 2) {
       this.archivoTitulo = null;
       this.nombreConstancia2 = '';
       const uploader = this.uploaders.find(comp => comp.idArchivo === 'titulo');
@@ -1707,7 +1712,7 @@ export class InicioComponent extends GeneralComponent {
         uploader.clear();
       }
     }
-    if (id === 3){
+    if (id === 3) {
       this.archivoCedula = null;
       this.nombreConstancia3 = '';
       const uploader = this.uploaders.find(comp => comp.idArchivo === 'cedula');
@@ -1717,7 +1722,7 @@ export class InicioComponent extends GeneralComponent {
     }
   }
 
-  limpiarPrimeraSeccion(){
+  limpiarPrimeraSeccion() {
     this.formRegistro.reset();
     this.formZonaInteres.reset();
     this.zonasInteres.set([]);
@@ -1736,13 +1741,25 @@ export class InicioComponent extends GeneralComponent {
     this.eliminarDocumentosObligatorios(2);
     this.eliminarDocumentosObligatorios(3);
     this.limpiarDocumentoEspecialidad();
-    this.formDatosEmpleo.reset({ otroEmpleo: '0', sustituto: '0'});
+    this.formDatosEmpleo.reset({otroEmpleo: '0', sustituto: '0'});
     this.registrosDocumentosEspecialidad.update(() => []);
     this.documentosLocalStorageService.limpiar();
   }
 
   cambioDeSeccion($event: any) {
-    if (![0,1].includes($event)) return;
+    if (![0, 1].includes($event)) return;
     this.indice.update(() => $event);
+  }
+
+  obtenerGuidDocumento($event: boolean, tipo: 'obligatorio' | 'constancia', id: number): void {
+    if (!$event) return;
+    if (tipo === 'obligatorio') {
+      const guid = this.documentosLocalStorageService.obtenerRefGuid(id);
+      this.mostrarDocumento(guid);
+    }
+    if (tipo === 'constancia') {
+      const guid = this.documentosLocalStorageService.obtenerRefConstancia(id).refGuid;
+      this.mostrarDocumento(guid);
+    }
   }
 }
