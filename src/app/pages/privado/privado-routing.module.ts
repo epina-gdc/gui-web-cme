@@ -6,6 +6,7 @@ import {inicioResolver} from '../../core/resolvers/inicio.resolver';
 import {VerificacionDocumentosComponent} from './pages/verificacion-documentos/verificacion-documentos.component';
 import {DocumentacionComponent} from './pages/verificacion-documentos/components/documentacion/documentacion.component';
 import {NAV} from '@utils/url-global';
+import { verficacionDocsResolver } from '../../core/resolvers/verificacion-docs.resolver';
 
 const routes: Routes = [{
   path: '',
@@ -26,6 +27,9 @@ const routes: Routes = [{
     {
       path: NAV.verificacionDocumentos,
       component: VerificacionDocumentosComponent,
+      resolve:{
+        respuesta: verficacionDocsResolver
+      }
     },
     {
       path: NAV.documentacionAspirante,

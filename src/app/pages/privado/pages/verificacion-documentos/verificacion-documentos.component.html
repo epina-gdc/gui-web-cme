@@ -27,17 +27,11 @@
                    formControlName="matricula"
                    />
       </div>
-      <div class="col-3">
-        <div class="flex justify-content-between">
-          <label class="field-label" for="contratacion">Contratación</label>
-        </div>
-        <p-select formControlName="contratacion" [options]="contratacion" optionLabel="label" placeholder="Ingresa tipo de contratación" class="w-full" />
+      <div class="flex col-3 justify-content-end align-items-center mt-3 gap-4">
+        <p-button type="button" (onClick)="limpiar()" variant="outlined" label="Limpiar"/>
+        <p-button type="button" (onClick)="paginar()" label="Buscar" />
       </div>
     </article>
-    <div class="flex flex-row justify-content-end mt-3 gap-3">
-      <p-button type="button" variant="outlined" label="Limpiar"/>
-      <p-button type="button" label="Buscar" />
-    </div>
   </form>
 </p-card>
 
@@ -46,7 +40,6 @@
   [scrollable]="true"
 >
   <ng-template #caption>
-
     <div class="flex justify-content-between">
       <span class="titulo-tabla">Verificación de Documentos</span>
       <div class="flex align-items-center boton-descargar">
@@ -60,7 +53,7 @@
       <th scope="col" style="min-width: 200px">Nombre</th>
       <th scope="col" >Matrícula/Folio</th>
       <th scope="col" style="min-width: 200px" >Correo</th>
-      <th scope="col" >Especialidad</th>
+      <th scope="col" style="min-width: 200px">Especialidad</th>
       <th scope="col" style="min-width: 200px">Estatus</th>
       <th scope="col" style="min-width: 300px">Observaciones</th>
       <th scope="col" >Modalidad</th>
@@ -77,21 +70,21 @@
   </ng-template>
   <ng-template #body let-usuarioDocumentos>
     <tr>
-      <td>{{usuarioDocumentos.nombre}}</td>
-      <td>{{usuarioDocumentos.matricula}}</td>
+      <td>{{usuarioDocumentos.nombreCompleto}}</td>
+      <td>{{usuarioDocumentos.matriculaFolio}}</td>
       <td>{{usuarioDocumentos.correo}}</td>
       <td>{{usuarioDocumentos.especialidad}}</td>
       <td>
         <div class="pill flex justify-content-start">
-          <p [ngClass]="settearClase(usuarioDocumentos.estatus)" class="p-2">
-            {{textoEstatus(usuarioDocumentos.estatus)}}
+          <p [ngClass]="settearClase(usuarioDocumentos.idEstatusValidacion)" class="p-2">
+            {{usuarioDocumentos.estatusValidacion}}
           </p>
         </div>
       </td>
       <td>{{usuarioDocumentos.observaciones}}</td>
       <td>{{usuarioDocumentos.modalidad}}</td>
       <td>{{usuarioDocumentos.tipoModalidad}}</td>
-      <td>{{usuarioDocumentos.fecha}}</td>
+      <td>{{usuarioDocumentos.fechaVerificacion}}</td>
       <td alignFrozen="right" pFrozenColumn class="flex justify-content-center">
         <i (click)="consultaDocumento($event, usuarioDocumentos)"  class="cme-document cursor-pointer" [style]="{ 'font-size': '2.2rem', color: '#23c8a7'}"></i>
       </td>
@@ -133,7 +126,7 @@
 <p-popover #op (onHide)="documentoSeleccionado == null">
   <ng-template #content>
     <div class="flex align-items-center boton-descargar cursor-pointer" (click)="irDetalleDocumentacion()">
-      <i class="cme-document" [style]="{ 'font-size': '1.2rem', color: '#23c8a7'}"></i>
+      <i class="icon pi pi-eye" [style]="{ 'font-size': '1.2rem', color: '#869fd4'}"></i>
       <span class="ms-2 acciones-tabla">Consultar documentos</span>
     </div>
   </ng-template>
