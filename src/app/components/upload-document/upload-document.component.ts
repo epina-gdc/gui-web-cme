@@ -36,6 +36,7 @@ export class UploadDocumentComponent implements OnInit, OnChanges {
   @Input() disabled: boolean = false;
   @Output() fileSelected = new EventEmitter<any>();
   @Output() fileRemoved = new EventEmitter<any>();
+  @Output() fileDownload = new EventEmitter<any>();
 
   files: any[] = [];
   totalSize: number = 0;
@@ -137,6 +138,10 @@ export class UploadDocumentComponent implements OnInit, OnChanges {
     removeFileCallback(event, index);
     this.totalSize -= Number.parseInt(this.formatSize(file.size));
     this.totalSizePercent = this.totalSize / 10;
+  }
+
+  descargarArchivo() {
+    this.fileDownload.emit(true);
   }
 
   onRemoveFile(file: any, index: number) {

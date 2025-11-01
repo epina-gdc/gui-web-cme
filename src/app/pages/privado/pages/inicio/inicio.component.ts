@@ -3,7 +3,15 @@ import {Card} from 'primeng/card';
 import {StepsComponent} from '@components/steps/steps.component';
 import {UploadPhotoComponent} from '@components/upload-photo/upload-photo.component';
 import {InputText} from 'primeng/inputtext';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import {Select} from 'primeng/select';
 import {DatePickerModule} from 'primeng/datepicker';
 import {Button} from 'primeng/button';
@@ -65,6 +73,9 @@ import {jornadaLaboralValidator} from '@validators/jornada-validator';
 import {horarioLaboralValidator} from '@validators/horario-validator';
 import utc from "dayjs/plugin/utc";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import {Checkbox} from 'primeng/checkbox';
+import {CommonModule} from '@angular/common';
+import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
 
 interface DocumentoFuente {
   refGuid: string;
@@ -81,6 +92,7 @@ dayjs.extend(customParseFormat);
 @Component({
   selector: 'app-inicio',
   imports: [
+    CommonModule,
     Card,
     StepsComponent,
     UploadPhotoComponent,
@@ -92,6 +104,7 @@ dayjs.extend(customParseFormat);
     TableModule,
     UploadDocumentComponent,
     RadioButton,
+    Checkbox,
     TabPanel,
     TabView,
     HeaderTabComponent,
@@ -101,6 +114,7 @@ dayjs.extend(customParseFormat);
     OnlyNumbersDirective,
     EmailAllowCaractersDirective,
     OfertaLaboralComponent,
+    AlphanumericDirective,
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
@@ -206,22 +220,33 @@ export class InicioComponent extends GeneralComponent {
     this.obtenerDatosDocumentosEscolaridad();
     this.revisarDocumentosLocalHost();
     this.suscribirObservablesDatosEmpleo();
+
   }
 
   asignarFormularioRegistro(): FormGroup {
     return this.fb.group({
       rfc: [],
-      nss: [{value: '', disabled: false}, [ Validators.minLength(11), Validators.maxLength(11)]],
+      nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
       fechaNacimiento: [{value: '', disabled: true}, [Validators.required]],
       sexo: [{value: '', disabled: true}, [Validators.required]],
       estadoCivil: [{value: '', disabled: false}, [Validators.required]],
-      dependientes: [],
+      //dependientes: [],
+      indPadres: [false],
+      indConyuge: [false],
+      indHijos: [false],
+      indOtros: [false],
       hijos: [{value: '', disabled: true}, [Validators.required, Validators.min(1)]],
       otros: [{value: '', disabled: true}, [Validators.required]],
       correo: [{value: '', disabled: true}],
       correoAdicional: [],
-      telefonoCasa: [{value: '', disabled: false}, [Validators.required,Validators.minLength(10), Validators.maxLength(10)]],
-      telefonoCelular: [{value: '', disabled: false}, [Validators.required,Validators.minLength(10), Validators.maxLength(10)]],
+      telefonoCasa: [{
+        value: '',
+        disabled: false
+      }, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
+      telefonoCelular: [{
+        value: '',
+        disabled: false
+      }, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
       paisNacimiento: [],
       estadoNacimiento: [],
       codigoPostal: [{value: '', disabled: false}, [Validators.required]],
@@ -234,6 +259,7 @@ export class InicioComponent extends GeneralComponent {
     });
   }
 
+
   suscribirObservables(): void {
     this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe(value => this.obtenerLocalidadPorPais(value));
 
@@ -241,15 +267,30 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.get('estado')?.valueChanges.subscribe(value => this.obtenerMunicipioPorEstado(value));
     //this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerAlcaldiaPorMunicipio(value));
     this.formZonaInteres.get('ooad')?.valueChanges.subscribe(value => this.obtenerZonasPorMunicipio(value))
-    this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe((value) =>
-      {
+    this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe((value) => {
         this.formRegistro.get('estadoNacimiento')?.disable()
         this.formRegistro.get('estadoNacimiento')?.reset();
-        if(value.value == 103){
+        if (value.value == 103) {
           this.formRegistro.get('estadoNacimiento')?.enable()
         }
       }
     );
+
+    this.formRegistro.get('indHijos')?.valueChanges.subscribe(value => {
+      if (value) {
+        this.formRegistro.get("hijos")?.enable();
+      } else {
+        this.formRegistro.get("hijos")?.disable();
+      }
+    });
+
+    this.formRegistro.get('indOtros')?.valueChanges.subscribe(value => {
+      if (value) {
+        this.formRegistro.get("otros")?.enable();
+      } else {
+        this.formRegistro.get("otros")?.disable();
+      }
+    });
   }
 
   settearDatosUsuario(): void {
@@ -260,22 +301,22 @@ export class InicioComponent extends GeneralComponent {
     const {refCurp, refEmail} = this.userData;
     let fecha;
     const sexo = this.obtenerSexoDeCurp(refCurp + '');
-    if(sexo){
+    if (sexo) {
       this.formRegistro.get('sexo')?.setValue(sexo);
-    }else{
+    } else {
       this.formRegistro.get('sexo')?.enable();
     }
-    if(refCurp){
-    fecha  = this.obtenerFechaNacimientoDeCURP(refCurp + '')
+    if (refCurp) {
+      fecha = this.obtenerFechaNacimientoDeCURP(refCurp + '')
       this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
-    }else{
+    } else {
       this.formRegistro.get('fechaNacimiento')?.enable();
     }
-  
-  
+
+
     this.formRegistro.get('correo')?.setValue(refEmail + '');
     this.userService.userData$.subscribe({
-      next:(element) => {
+      next: (element) => {
         if (!element.perfil) return;
         this.tipoMedico.set(element.perfil)
       }
@@ -294,7 +335,7 @@ export class InicioComponent extends GeneralComponent {
       diaInicio: [{value: null, disabled: true}],
       diaFin: [{value: null, disabled: true}],
       ooad: [{value: null, disabled: true}],
-    }, { validators: [jornadaLaboralValidator, horarioLaboralValidator] })
+    }, {validators: [jornadaLaboralValidator, horarioLaboralValidator]})
   }
 
   obtenerFechaNacimientoDeCURP(curp: string): Date {
@@ -352,7 +393,7 @@ export class InicioComponent extends GeneralComponent {
   obtenerLocalidadPorPais(pais: number): void {
   }
 
-  validarCP(){
+  validarCP() {
     this.catalogoService.getLstCodigosPostales(this.formRegistro.get('codigoPostal')?.value).subscribe({
       next: (elemento) => {
         this.formRegistro.get('pais')?.setValue(103)
@@ -507,6 +548,7 @@ export class InicioComponent extends GeneralComponent {
 
     if (this.yaExistenEspecilidadesPermitidas(especialidadDoc)) {
       this._alertServices.alerta(`El limite de especialidades ha sido alcanzado`);
+      this.formDocumentosEspecialidad.reset();
       return;
     }
 
@@ -683,7 +725,7 @@ export class InicioComponent extends GeneralComponent {
 
       const {refRfc, refNss, estadoCivil, paisNacimiento, lugarNacimiento, perfil} = datosPersonales;
 
-      if(perfil.idPerfil == 2){
+      if (perfil.idPerfil == 2) {
         this.formRegistro.controls['nss'].setValidators([Validators.required]);
         this.formRegistro.controls['nss'].updateValueAndValidity();
       }
@@ -725,22 +767,29 @@ export class InicioComponent extends GeneralComponent {
     }
 
     if (dependientes) {
+
       const {indPadres, refCantidadHijos, indConyuge, refOtro} = dependientes;
-      if (indPadres == 1 && refCantidadHijos == null) {
-        this.formRegistro.get('dependientes')?.setValue(this.dependientes[0]);
-      } else {
-        this.formRegistro.get('dependientes')?.setValue(this.dependientes[1]);
+      if (indPadres == 1) {
+        this.formRegistro.get("indPadres")?.setValue(true);
+      }
+
+      if (refCantidadHijos) {
+        this.formRegistro.get("hijos")?.setValue(refCantidadHijos);
+        this.formRegistro.get("indHijos")?.setValue(true);
       }
 
       if (indConyuge == 1) {
-        this.formRegistro.get('dependientes')?.setValue(this.dependientes[2]);
+        this.formRegistro.get("indConyuge")?.setValue(true);
       }
+
       if (refOtro != null) {
-        this.formRegistro.get('dependientes')?.setValue(this.dependientes[3]);
+        this.formRegistro.get("otros")?.setValue(refOtro);
+        this.formRegistro.get("indOtros")?.setValue(true);
       }
+
       this.subscribirseACambioComponentes();
-      this.formRegistro.get('hijos')?.setValue(refCantidadHijos);
-      this.formRegistro.get('otros')?.setValue(refOtro);
+      //this.formRegistro.get('hijos')?.setValue(refCantidadHijos);
+      //this.formRegistro.get('otros')?.setValue(refOtro);
     }
 
     if (zonasInteresLaboral?.length) {
@@ -795,13 +844,22 @@ export class InicioComponent extends GeneralComponent {
   }
 
   private saveDependientes(): Dependientes {
-    let dependientes = new Dependientes();
+    /* let dependientes = new Dependientes();
     let d = this.formRegistro.controls['dependientes'].value;
     dependientes.indConyuge = d.key == 'P' ? 1 : 0;
     dependientes.indPadres = d.key == 'A' ? 1 : 0;
     dependientes.refCantidadHijos = this.formRegistro.controls['hijos'].value;
     dependientes.refOtro = this.formRegistro.controls['otros'].value;
+    return dependientes; */
+
+
+    let dependientes = new Dependientes();
+    dependientes.indPadres = this.formRegistro.get("indPadres")?.value ? 1 : 0;
+    dependientes.indConyuge = this.formRegistro.get("indConyuge")?.value ? 1 : 0;
+    dependientes.refCantidadHijos = this.formRegistro.get("indHijos")?.value ? this.formRegistro.get("hijos")?.value : null;
+    dependientes.refOtro = this.formRegistro.get("indOtros")?.value ? this.formRegistro.get("otros")?.value : null;
     return dependientes;
+
   }
 
   private saveDatosGenerales() {
@@ -902,14 +960,15 @@ export class InicioComponent extends GeneralComponent {
   }
 
   private saveFoto(): DatosPersonales {
-    
+
+
     const estadoCivilSeleccionado: string = this.formRegistro.get('estadoCivil')?.value;
     let fotografia: FotografiaRequest = new FotografiaRequest();
     fotografia.datosPersonales = this.datosGenerales.datosPersonales;
     fotografia.datosPersonales.estadoCivil = new EstadoCivil();
     fotografia.datosPersonales.estadoCivil.idEstadoCivil = Number.parseInt(estadoCivilSeleccionado);
     let fechaEntrada = this.formRegistro.controls['fechaNacimiento'].value;
-    
+
     let fechaFormateada: string = dayjs.utc(fechaEntrada).local().format('DD/MM/YYYY')
     fotografia.datosPersonales.refRfc = this.formRegistro.controls['rfc'].value;
     fotografia.datosPersonales.refNss = this.formRegistro.controls['nss'].value;
@@ -922,7 +981,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   onFileSelected($event: any): void {
-    if($event.length == 0){
+    if ($event.length == 0) {
       this._alertServices.alerta('El peso del archivo excede al permitido.');
       return;
     }
@@ -1080,8 +1139,10 @@ export class InicioComponent extends GeneralComponent {
   obtenerDocumento(refGuid: string, tipo: string, id: number, nombre: string = ''): void {
     this.documentoService.obtenerDocumento(refGuid).subscribe({
       next: (response: any) => {
+
         const tipoArchivo = response.type;
         if (tipo === 'obligatorio' && id === 1) {
+
           const nombreArchivo = 'identificacion_oficial';
           this.archivoINE = new File([response], nombreArchivo, {type: tipoArchivo});
           this.documentosLocalStorageService.guardarRefGuidObligatorio(id, refGuid);
@@ -1193,6 +1254,7 @@ export class InicioComponent extends GeneralComponent {
           this._alertServices.exito(this._Mensajes.MSG039)
           this.estatusPendienteDocumentacion = true;
           this.documentosLocalStorageService.limpiar();
+          this.desactivarForms();
           return;
         }
         this._alertServices.error(data.mensaje)
@@ -1338,8 +1400,8 @@ export class InicioComponent extends GeneralComponent {
       }
     }
 
-    const horaInicio = dayjs.utc(formValues.horarioInicio).local().format('HH:mm');
-    const horaFin = dayjs.utc(formValues.horarioFin).local().format('HH:mm');
+    const horaInicio = formValues.horarioInicio ? dayjs.utc(formValues.horarioInicio).local().format('HH:mm') : null;
+    const horaFin = formValues.horarioFin ? dayjs.utc(formValues.horarioFin).local().format('HH:mm') : null;
 
     return {
       indOtroEmpleo: indOtroEmpleo,
@@ -1401,6 +1463,7 @@ export class InicioComponent extends GeneralComponent {
     const refConstancia2 = this.documentosLocalStorageService.obtenerRefConstancia(2);
     const refConstancia3 = this.documentosLocalStorageService.obtenerRefConstancia(3);
 
+
     if (this.estatusPendienteDocumentacion) {
       return true;
     }
@@ -1447,8 +1510,10 @@ export class InicioComponent extends GeneralComponent {
   }
 
   suscribirObservablesDatosEmpleo(): void {
+
     const form = this.formDatosEmpleo;
     form.get('otroEmpleo')?.valueChanges.subscribe(value => {
+
       const tieneOtroEmpleo = value === '1'; // '1' = Sí
 
       // Habilitar/Deshabilitar campos asociados a 'otroEmpleo'
@@ -1458,7 +1523,8 @@ export class InicioComponent extends GeneralComponent {
       this.actualizarHorarioJornadaState(form);
     });
 
-    form.get('tipoInstitucion')?.valueChanges.subscribe(() => {
+    form.get('tipoInstitucion')?.valueChanges.subscribe((val) => {
+
       // Si 'otroEmpleo' es 'Sí', reevalúa 'nombreInstitucion'
       const tieneOtroEmpleo = form.get('otroEmpleo')?.value === '1';
       this.manejarNombreInstitucionLogic(form, tieneOtroEmpleo);
@@ -1471,7 +1537,8 @@ export class InicioComponent extends GeneralComponent {
       this.manejoValidaciones(form, 'ooad', isSustituto, isSustituto);
 
       // Reevaluar la dependencia de Horario/Jornada
-      this.actualizarHorarioJornadaState(form);
+      /* ooad ya no tendra control sobre los horarios y jornada por peticion*/
+      //this.actualizarHorarioJornadaState(form);
     });
 
     form.get('ooad')?.valueChanges.subscribe(() => {
@@ -1490,13 +1557,31 @@ export class InicioComponent extends GeneralComponent {
     this.manejoValidaciones(form, 'nombreInstitucion', enable, enable);
   }
 
+  /*   private actualizarHorarioJornadaState(form: FormGroup): void {
+
+      const tieneOtroEmpleo = form.get('otroEmpleo')?.value === '1';
+      const esSustituto = form.get('sustituto')?.value === '1';
+      const tieneOoad = !!form.get('ooad')?.value;
+
+      // Habilitar si: (Otro Empleo = Sí) O (Sustituto = Sí Y OOAD tiene valor)
+      const enable = tieneOtroEmpleo || (esSustituto && tieneOoad);
+
+      // Son obligatorios en ambos escenarios si se habilitan
+      this.manejoValidaciones(form, 'horarioInicio', enable, enable);
+      this.manejoValidaciones(form, 'horarioFin', enable, enable);
+      this.manejoValidaciones(form, 'diaInicio', enable, enable);
+      this.manejoValidaciones(form, 'diaFin', enable, enable);
+    } */
+
+  /* SE CAMBIA LOGICA YA QUE SOLO TIENES OTRO EMPLEO PERMITIRA LLENAR HORARIO Y JORNADA */
   private actualizarHorarioJornadaState(form: FormGroup): void {
+
     const tieneOtroEmpleo = form.get('otroEmpleo')?.value === '1';
     const esSustituto = form.get('sustituto')?.value === '1';
     const tieneOoad = !!form.get('ooad')?.value;
 
     // Habilitar si: (Otro Empleo = Sí) O (Sustituto = Sí Y OOAD tiene valor)
-    const enable = tieneOtroEmpleo || (esSustituto && tieneOoad);
+    const enable = tieneOtroEmpleo;
 
     // Son obligatorios en ambos escenarios si se habilitan
     this.manejoValidaciones(form, 'horarioInicio', enable, enable);
@@ -1553,6 +1638,8 @@ export class InicioComponent extends GeneralComponent {
 
   desactivarForms(): void {
     this.formDocumentosEspecialidad.disable();
+    this.formRegistro.disable();
+    this.formZonaInteres.disable()
     this.formDatosEmpleo.disable();
   }
 
@@ -1616,6 +1703,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   cargarDatosEmpleoAlFormulario(datos: RespuestaDatosEmpleo): void {
+
     const otroEmpleoValue = datos.indOtroEmpleo?.toString() || '0';
     const sustitutoValue = datos.indMedicoSustituto?.toString() || '0';
     const ooadValue = datos.cveOoad || null;
@@ -1664,7 +1752,7 @@ export class InicioComponent extends GeneralComponent {
 
   eliminarConstancia(id: number) {
     this.documentosLocalStorageService.eliminarArchivoConstancia(id);
-    if (id === 1){
+    if (id === 1) {
       this.archivoConstancia1 = null;
       this.nombreConstancia1 = '';
       const uploader = this.uploaders.find(comp => comp.idArchivo === 'constancia_1');
@@ -1672,7 +1760,7 @@ export class InicioComponent extends GeneralComponent {
         uploader.clear();
       }
     }
-    if (id === 2){
+    if (id === 2) {
       this.archivoConstancia2 = null;
       this.nombreConstancia2 = '';
       const uploader = this.uploaders.find(comp => comp.idArchivo === 'constancia_2');
@@ -1680,7 +1768,7 @@ export class InicioComponent extends GeneralComponent {
         uploader.clear();
       }
     }
-    if (id === 3){
+    if (id === 3) {
       this.archivoConstancia3 = null;
       this.nombreConstancia3 = '';
       const uploader = this.uploaders.find(comp => comp.idArchivo === 'constancia_3');
@@ -1692,14 +1780,14 @@ export class InicioComponent extends GeneralComponent {
 
   eliminarDocumentosObligatorios(id: number) {
     this.documentosLocalStorageService.eliminarArchivoObligatorio(id);
-    if (id === 1){
+    if (id === 1) {
       this.archivoINE = null;
       const uploader = this.uploaders.find(comp => comp.idArchivo === 'INE');
       if (uploader) {
         uploader.clear();
       }
     }
-    if (id === 2){
+    if (id === 2) {
       this.archivoTitulo = null;
       this.nombreConstancia2 = '';
       const uploader = this.uploaders.find(comp => comp.idArchivo === 'titulo');
@@ -1707,7 +1795,7 @@ export class InicioComponent extends GeneralComponent {
         uploader.clear();
       }
     }
-    if (id === 3){
+    if (id === 3) {
       this.archivoCedula = null;
       this.nombreConstancia3 = '';
       const uploader = this.uploaders.find(comp => comp.idArchivo === 'cedula');
@@ -1717,7 +1805,7 @@ export class InicioComponent extends GeneralComponent {
     }
   }
 
-  limpiarPrimeraSeccion(){
+  limpiarPrimeraSeccion() {
     this.formRegistro.reset();
     this.formZonaInteres.reset();
     this.zonasInteres.set([]);
@@ -1736,13 +1824,44 @@ export class InicioComponent extends GeneralComponent {
     this.eliminarDocumentosObligatorios(2);
     this.eliminarDocumentosObligatorios(3);
     this.limpiarDocumentoEspecialidad();
-    this.formDatosEmpleo.reset({ otroEmpleo: '0', sustituto: '0'});
+    this.formDatosEmpleo.reset({otroEmpleo: '0', sustituto: '0'});
     this.registrosDocumentosEspecialidad.update(() => []);
     this.documentosLocalStorageService.limpiar();
   }
 
   cambioDeSeccion($event: any) {
-    if (![0,1].includes($event)) return;
+
+    if (![0, 1].includes($event)) return;
+
+    if ($event == 1) {
+      /* validar que el primer formulario este completo */
+      if (this.formRegistro.invalid) {
+        this._alertServices.alerta("Recuerde completar los datos del formulario y guardar antes de pasar a la siguiente sección.");
+        return;
+      }
+
+      if (!this.blnFotoGuardada || this.zonasInteres().length == 0) {
+        this._alertServices.alerta("Recuerde completar los datos del formulario y guardar antes de pasar a la siguiente sección.");
+        return
+      }
+
+
+    }
+
+
     this.indice.update(() => $event);
   }
+
+  obtenerGuidDocumento($event: boolean, tipo: 'obligatorio' | 'constancia', id: number): void {
+    if (!$event) return;
+    if (tipo === 'obligatorio') {
+      const guid = this.documentosLocalStorageService.obtenerRefGuid(id);
+      this.mostrarDocumento(guid);
+    }
+    if (tipo === 'constancia') {
+      const guid = this.documentosLocalStorageService.obtenerRefConstancia(id).refGuid;
+      this.mostrarDocumento(guid);
+    }
+  }
+
 }

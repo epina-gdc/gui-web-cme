@@ -6,7 +6,7 @@ export const NAV = {
   registroMedico: 'registro-medico',
   recuperarContrasenia: 'recuperar-contrasenia',
   nuevaContrasenia: 'restablecer-contrasenia',
-  documentacionAspirante: 'documentacion-aspirante',
+  documentacionAspirante: 'documentacion-aspirante/:id',
   verificacionDocumentos: 'verificacion-documentos',
   home: 'inicio',
 };

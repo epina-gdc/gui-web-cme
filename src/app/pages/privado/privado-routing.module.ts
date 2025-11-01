@@ -6,6 +6,9 @@ import {inicioResolver} from '../../core/resolvers/inicio.resolver';
 import {VerificacionDocumentosComponent} from './pages/verificacion-documentos/verificacion-documentos.component';
 import {DocumentacionComponent} from './pages/verificacion-documentos/components/documentacion/documentacion.component';
 import {NAV} from '@utils/url-global';
+import {medicoGuard} from '@guards/medico.guard';
+import {validadorGuard} from '@guards/validador.guard';
+import {documentacionAspiranteResolver} from '../../core/resolvers/documentacion-aspirante.resolver';
 import { verficacionDocsResolver } from '../../core/resolvers/verificacion-docs.resolver';
 
 const routes: Routes = [{
@@ -22,11 +25,13 @@ const routes: Routes = [{
       component: InicioComponent,
       resolve: {
         respuesta: inicioResolver
-      }
+      },
+      canActivate: [medicoGuard]
     },
     {
       path: NAV.verificacionDocumentos,
       component: VerificacionDocumentosComponent,
+      canActivate: [validadorGuard]
       resolve:{
         respuesta: verficacionDocsResolver
       }
@@ -34,6 +39,9 @@ const routes: Routes = [{
     {
       path: NAV.documentacionAspirante,
       component: DocumentacionComponent,
+      resolve: {
+        respuesta: documentacionAspiranteResolver
+      }
     },
 
 
