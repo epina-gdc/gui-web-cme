@@ -9,6 +9,7 @@ import {NAV} from '@utils/url-global';
 import {medicoGuard} from '@guards/medico.guard';
 import {validadorGuard} from '@guards/validador.guard';
 import {documentacionAspiranteResolver} from '../../core/resolvers/documentacion-aspirante.resolver';
+import { verficacionDocsResolver } from '../../core/resolvers/verificacion-docs.resolver';
 
 const routes: Routes = [{
   path: '',
@@ -30,7 +31,10 @@ const routes: Routes = [{
     {
       path: NAV.verificacionDocumentos,
       component: VerificacionDocumentosComponent,
-      canActivate: [validadorGuard]
+      canActivate: [validadorGuard],
+      resolve:{
+        respuesta: verficacionDocsResolver
+      }
     },
     {
       path: NAV.documentacionAspirante,

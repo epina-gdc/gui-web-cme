@@ -17,6 +17,7 @@ import {AlertService} from '@services/alert.service';
 export class CatalogosGeneralesService {
   private readonly VERSION_API: string = '/v1/';
   private readonly serverEndPointURLCatalogos = `${environment.api.apiCatalogos + this.VERSION_API + 'catalogos'}`;
+  private readonly serverEndPointURLVerificacionDocs = `${environment.api.apiConvocatoria + '/verificacion/catalogos'}`;
   protected _alertService: AlertService;
   protected http: HttpClient;
   header: HttpHeaders = new HttpHeaders({
@@ -166,6 +167,15 @@ export class CatalogosGeneralesService {
 
   getLstEspecialidades(): Observable<HttpRespuesta<any>> {
     return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/especialidades', {headers: this.header}).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<any>) => {
+        return response;
+      })
+    );
+  }
+
+  getLstEstatusVerificacion(): Observable<HttpRespuesta<any>> {
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLVerificacionDocs + '/estatusVerificacion', {headers: this.header}).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;

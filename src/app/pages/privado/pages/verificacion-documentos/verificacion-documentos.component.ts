@@ -1,5 +1,5 @@
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {Component, OnInit, signal, ViewChild, WritableSignal} from '@angular/core';
+import {Component, inject, OnInit, signal, ViewChild, WritableSignal} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {CommonModule} from '@angular/common';
 import {Card} from 'primeng/card';
@@ -14,6 +14,11 @@ import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regr
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
 import {ButtonModule} from 'primeng/button';
 import {DUMMIE_TABLA_VERIFICACION_DOCUMENTOS} from '@utils/dummies';
+import { mapearArregloTipoDropdown } from '@utils/funciones';
+import { VerificacionDocsService } from '@services/verificacion-docs.service';
+import { VerificacionDocsInterface } from '@models/verificacion-docs.interface';
+import { HttpRespuesta } from '@models/http-respuesta.interface';
+import { TablaVerificacionDocsInterface } from '@models/tabla-verificacion-docs.interface';
 
 @Component({
   selector: 'app-verificacion-documentos',
@@ -39,19 +44,27 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
   dummies = [{ label: 'Dummie 1', value: 'Dummie 1' }, { label: 'Dummie 2', value: 'Dummie 2' }];
   dummiesTabla = DUMMIE_TABLA_VERIFICACION_DOCUMENTOS;
 
+  verificacionDocsService = inject(VerificacionDocsService);
+
 
   filtroForm!: FormGroup;
 
-  usuarioDocumentos: WritableSignal<any[]> = signal([]);
+  usuarioDocumentos: WritableSignal<TablaVerificacionDocsInterface[]> = signal([]);
   documentoSeleccionado: any;
   paginaActual: number = 0;
   first: number = 0;
-  totalElementos: number = 50;
+  totalElementos: number = 0;
   rows: number = 10;
 
   especialidad: TipoDropdown[] = [];
   estatus: TipoDropdown[] = [];
-  contratacion: TipoDropdown[] = [];
+
+  clases: Map<number,string> = new Map([
+    [1 , 'pendiente'],
+    [2 , 'revision'],
+    [3 , 'cumple'],
+    [4 , 'noCumple']
+  ]);
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -68,9 +81,11 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
   }
 
   obtenerCatalogos(){
-    this.especialidad = this.dummies;
-    this.estatus = this.dummies;
-    this.contratacion = this.dummies;
+    this.activatedRoute.data.subscribe(({respuesta}) => {
+      const [especialidades,estatusVerificacion] = respuesta;
+      this.especialidad = mapearArregloTipoDropdown(especialidades,'desEspecialidad', 'cveEspecialidad');
+      this.estatus = mapearArregloTipoDropdown(estatusVerificacion.respuesta, 'desEstatus','idEstatusVerificacion');
+    });
   }
 
   inicializarForm(): FormGroup {
@@ -78,7 +93,6 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
       especialidad: [],
       estatus: [],
       matricula: [],
-      contratacion: [],
     });
   }
 
@@ -95,8 +109,7 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
   }
 
   settearClase(estatus: number): string {
-    const clase = ["noCumple", "cumple", "revision", "pendiente"];
-    return clase[estatus];
+    return this.clases.get(estatus) ?? '';
   }
 
   onPageChange(event: any): void {
@@ -107,8 +120,25 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
   }
 
   paginar(){
-    this.usuarioDocumentos.set(this.dummiesTabla);
-    //this.totalElementos = this.usuarioDocumentos().length;
+    this.verificacionDocsService.consultarDocs(this.filtros()).subscribe({
+      next: (respuesta: HttpRespuesta<any>) => {
+        this.usuarioDocumentos.set(respuesta.respuesta['content']);
+
+        //this.first: number = 0;
+        this.totalElementos = respuesta.respuesta.page.totalElements;
+      }
+    })
+  }
+
+  filtros(): VerificacionDocsInterface{
+    return {
+      page: 0,
+      size: 10,
+      idEstatus: (this.filtroForm.get('estatus')?.value)?.value,
+      cveEspecialidad: (this.filtroForm.get('especialidad')?.value)?.value,
+      matriculaFolio: this.filtroForm.get('matricula')?.value,
+
+    }
   }
 
 
@@ -134,5 +164,18 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
     this._router.navigate(['privado/',this._nav.documentacionAspirante])
   }
 
+  limpiar(){
+    this.filtroForm.reset();
+    this.paginar();
+    this.paginaActual = 0;
+    this.first = 0;
+  }
+
+
+  limpiarObjeto<T extends object>(obj: T): Partial<T> {
+    return Object.fromEntries(
+      Object.entries(obj).filter(([_, valor]) => valor !== undefined)
+    ) as Partial<T>;
+  }
 
 }
