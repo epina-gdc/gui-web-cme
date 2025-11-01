@@ -67,6 +67,7 @@ import utc from "dayjs/plugin/utc";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { Checkbox } from 'primeng/checkbox';
 import { CommonModule } from '@angular/common';
+import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
 
 interface DocumentoFuente {
   refGuid: string;
@@ -105,6 +106,7 @@ dayjs.extend(customParseFormat);
     OnlyNumbersDirective,
     EmailAllowCaractersDirective,
     OfertaLaboralComponent,
+    AlphanumericDirective,
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
