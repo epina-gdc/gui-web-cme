@@ -333,10 +333,12 @@
       </p-card>
 
       <div class="flex flex-row justify-content-end gap-3">
-        <p-button type="button" variant="outlined" (click)="limpiarPrimeraSeccion()" label="Limpiar formulario" [disabled]="estatusPendienteDocumentacion"/>
-        <p-button type="button" [disabled]="formRegistro.invalid || estatusPendienteDocumentacion" label="Guardar" (click)="siguientePasoStepper()"/>
-        <!--<p-button type="button"  label="Guardar" (click)="saveDatosGenerales()"/>-->
-        <p-button type="button" [disabled]="true" label="Finalizar registro"/>
+         @if(!estatusPendienteDocumentacion){
+          <p-button type="button" variant="outlined" (click)="limpiarPrimeraSeccion()" label="Limpiar formulario" [disabled]="estatusPendienteDocumentacion"/>
+          <p-button type="button" [disabled]="formRegistro.invalid || estatusPendienteDocumentacion" label="Guardar" (click)="siguientePasoStepper()"/>
+          <!--<p-button type="button"  label="Guardar" (click)="saveDatosGenerales()"/>-->
+          <!-- <p-button type="button" [disabled]="true" label="Finalizar registro"/> -->
+         }
       </div>
 
     </form>
@@ -662,11 +664,15 @@
     </p-card>
 
     <div class="flex flex-row justify-content-end gap-3">
+      @if(!estatusPendienteDocumentacion){
+
+
       <p-button type="button" variant="outlined" label="Limpiar formulario" [disabled]="estatusPendienteDocumentacion"
                 (click)="limpiarSegundaSeccion()"/>
       <p-button type="button" label="Guardar" (click)="guardarDocumentacion()" [disabled]="banderaCargarDocumentacion"/>
       <p-button type="button" label="Finalizar registro" (click)="guardarDocumentacion(true)"
                 [disabled]="banderaCargarDocumentacion"/>
+                }
     </div>
 
   }
