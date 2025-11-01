@@ -351,8 +351,7 @@
             <p class="label-obligatorio">Obligatorio</p>
           </div>
           <upload-document (fileSelected)="procesarArchivoObligatorio($event, 1)" [existingFile]="archivoINE"
-                           (fileRemoved)="eliminarArchivoObligatorio(1)"
-                           (fileClicked)="obtenerDocumentoObligatorio(1)"
+                           (fileRemoved)="eliminarArchivoObligatorio(1)" (fileDownload)="obtenerGuidDocumento($event, 'obligatorio', 1)"
                            [disabled]="estatusPendienteDocumentacion" idArchivo="INE"/>
         </div>
         <div class="col-3">
@@ -361,8 +360,7 @@
             <p class="label-obligatorio">Obligatorio</p>
           </div>
           <upload-document (fileSelected)="procesarArchivoObligatorio($event, 2)" [existingFile]="archivoTitulo"
-                           (fileRemoved)="eliminarArchivoObligatorio(2)"
-                           (fileClicked)="obtenerDocumentoObligatorio(2)"
+                           (fileRemoved)="eliminarArchivoObligatorio(2)" (fileDownload)="obtenerGuidDocumento($event, 'obligatorio', 2)"
                            [disabled]="estatusPendienteDocumentacion" idArchivo="titulo"/>
         </div>
         <div class="col-3">
@@ -371,8 +369,7 @@
             <p class="label-obligatorio">Obligatorio</p>
           </div>
           <upload-document (fileSelected)="procesarArchivoObligatorio($event, 3)" [existingFile]="archivoCedula"
-                           (fileRemoved)="eliminarArchivoObligatorio(3)"
-                           (fileClicked)="obtenerDocumentoObligatorio(3)"
+                           (fileRemoved)="eliminarArchivoObligatorio(3)" (fileDownload)="obtenerGuidDocumento($event, 'obligatorio', 3)"
                            [disabled]="estatusPendienteDocumentacion" idArchivo="cedula"/>
         </div>
       </article>
@@ -486,6 +483,7 @@
             </div>
             <upload-document idArchivo="constancia_1" (fileSelected)="procesarConstancia($event, 1)"
                              [maxFileSize]="52428800" (fileRemoved)="eliminarConstancia(1)"
+                             (fileDownload)="obtenerGuidDocumento($event, 'constancia', 1)"
                              [existingFile]="archivoConstancia1" [disabled]="estatusPendienteDocumentacion"/>
             <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
             <div class="flex justify-content-between mb-1">
@@ -505,6 +503,7 @@
             </div>
             <upload-document idArchivo="constancia_2" (fileSelected)="procesarConstancia($event, 2)"
                              [maxFileSize]="52428800" (fileRemoved)="eliminarConstancia(2)"
+                             (fileDownload)="obtenerGuidDocumento($event, 'constancia', 2)"
                              [existingFile]="archivoConstancia2"
                              [disabled]="estatusPendienteDocumentacion"/>
             <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
@@ -524,6 +523,7 @@
             </div>
             <upload-document idArchivo="constancia_3" (fileSelected)="procesarConstancia($event, 3)"
                              [maxFileSize]="52428800" (fileRemoved)="eliminarConstancia(3)"
+                             (fileDownload)="obtenerGuidDocumento($event, 'constancia', 3)"
                              [existingFile]="archivoConstancia3" [disabled]="estatusPendienteDocumentacion"/>
             <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
             <div class="flex justify-content-between mb-1">
