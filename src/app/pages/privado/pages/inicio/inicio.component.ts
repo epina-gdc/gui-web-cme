@@ -3,7 +3,15 @@ import {Card} from 'primeng/card';
 import {StepsComponent} from '@components/steps/steps.component';
 import {UploadPhotoComponent} from '@components/upload-photo/upload-photo.component';
 import {InputText} from 'primeng/inputtext';
-import {FormArray, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import {Select} from 'primeng/select';
 import {DatePickerModule} from 'primeng/datepicker';
 import {Button} from 'primeng/button';
@@ -65,8 +73,9 @@ import {jornadaLaboralValidator} from '@validators/jornada-validator';
 import {horarioLaboralValidator} from '@validators/horario-validator';
 import utc from "dayjs/plugin/utc";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { Checkbox } from 'primeng/checkbox';
-import { CommonModule } from '@angular/common';
+import {Checkbox} from 'primeng/checkbox';
+import {CommonModule} from '@angular/common';
+import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
 
 interface DocumentoFuente {
   refGuid: string;
@@ -105,6 +114,7 @@ dayjs.extend(customParseFormat);
     OnlyNumbersDirective,
     EmailAllowCaractersDirective,
     OfertaLaboralComponent,
+    AlphanumericDirective,
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
@@ -216,15 +226,15 @@ export class InicioComponent extends GeneralComponent {
   asignarFormularioRegistro(): FormGroup {
     return this.fb.group({
       rfc: [],
-      nss: [{value: '', disabled: false}, [ Validators.required,Validators.minLength(11), Validators.maxLength(11)]],
+      nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
       fechaNacimiento: [{value: '', disabled: true}, [Validators.required]],
       sexo: [{value: '', disabled: true}, [Validators.required]],
       estadoCivil: [{value: '', disabled: false}, [Validators.required]],
       //dependientes: [],
       indPadres: [false],
       indConyuge: [false],
-      indHijos:[false],
-      indOtros:[false],
+      indHijos: [false],
+      indOtros: [false],
       hijos: [{value: '', disabled: true}, [Validators.required, Validators.min(1)]],
       otros: [{value: '', disabled: true}, [Validators.required]],
       correo: [{value: '', disabled: true}],
@@ -250,7 +260,6 @@ export class InicioComponent extends GeneralComponent {
   }
 
 
-
   suscribirObservables(): void {
     this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe(value => this.obtenerLocalidadPorPais(value));
 
@@ -268,20 +277,20 @@ export class InicioComponent extends GeneralComponent {
     );
 
     this.formRegistro.get('indHijos')?.valueChanges.subscribe(value => {
-      if(value){
+      if (value) {
         this.formRegistro.get("hijos")?.enable();
       } else {
         this.formRegistro.get("hijos")?.disable();
       }
-      });
+    });
 
     this.formRegistro.get('indOtros')?.valueChanges.subscribe(value => {
-      if(value){
+      if (value) {
         this.formRegistro.get("otros")?.enable();
       } else {
         this.formRegistro.get("otros")?.disable();
       }
-      });
+    });
   }
 
   settearDatosUsuario(): void {
@@ -1391,8 +1400,8 @@ export class InicioComponent extends GeneralComponent {
       }
     }
 
-    const horaInicio = formValues.horarioInicio ? dayjs.utc(formValues.horarioInicio).local().format('HH:mm'): null;
-    const horaFin = formValues.horarioFin ? dayjs.utc(formValues.horarioFin).local().format('HH:mm'): null;
+    const horaInicio = formValues.horarioInicio ? dayjs.utc(formValues.horarioInicio).local().format('HH:mm') : null;
+    const horaFin = formValues.horarioFin ? dayjs.utc(formValues.horarioFin).local().format('HH:mm') : null;
 
     return {
       indOtroEmpleo: indOtroEmpleo,
@@ -1453,8 +1462,6 @@ export class InicioComponent extends GeneralComponent {
     const refConstancia1 = this.documentosLocalStorageService.obtenerRefConstancia(1);
     const refConstancia2 = this.documentosLocalStorageService.obtenerRefConstancia(2);
     const refConstancia3 = this.documentosLocalStorageService.obtenerRefConstancia(3);
-
-
 
 
     if (this.estatusPendienteDocumentacion) {
@@ -1550,24 +1557,24 @@ export class InicioComponent extends GeneralComponent {
     this.manejoValidaciones(form, 'nombreInstitucion', enable, enable);
   }
 
-/*   private actualizarHorarioJornadaState(form: FormGroup): void {
+  /*   private actualizarHorarioJornadaState(form: FormGroup): void {
 
-    const tieneOtroEmpleo = form.get('otroEmpleo')?.value === '1';
-    const esSustituto = form.get('sustituto')?.value === '1';
-    const tieneOoad = !!form.get('ooad')?.value;
+      const tieneOtroEmpleo = form.get('otroEmpleo')?.value === '1';
+      const esSustituto = form.get('sustituto')?.value === '1';
+      const tieneOoad = !!form.get('ooad')?.value;
 
-    // Habilitar si: (Otro Empleo = Sí) O (Sustituto = Sí Y OOAD tiene valor)
-    const enable = tieneOtroEmpleo || (esSustituto && tieneOoad);
+      // Habilitar si: (Otro Empleo = Sí) O (Sustituto = Sí Y OOAD tiene valor)
+      const enable = tieneOtroEmpleo || (esSustituto && tieneOoad);
 
-    // Son obligatorios en ambos escenarios si se habilitan
-    this.manejoValidaciones(form, 'horarioInicio', enable, enable);
-    this.manejoValidaciones(form, 'horarioFin', enable, enable);
-    this.manejoValidaciones(form, 'diaInicio', enable, enable);
-    this.manejoValidaciones(form, 'diaFin', enable, enable);
-  } */
+      // Son obligatorios en ambos escenarios si se habilitan
+      this.manejoValidaciones(form, 'horarioInicio', enable, enable);
+      this.manejoValidaciones(form, 'horarioFin', enable, enable);
+      this.manejoValidaciones(form, 'diaInicio', enable, enable);
+      this.manejoValidaciones(form, 'diaFin', enable, enable);
+    } */
 
   /* SE CAMBIA LOGICA YA QUE SOLO TIENES OTRO EMPLEO PERMITIRA LLENAR HORARIO Y JORNADA */
-    private actualizarHorarioJornadaState(form: FormGroup): void {
+  private actualizarHorarioJornadaState(form: FormGroup): void {
 
     const tieneOtroEmpleo = form.get('otroEmpleo')?.value === '1';
     const esSustituto = form.get('sustituto')?.value === '1';
@@ -1826,21 +1833,20 @@ export class InicioComponent extends GeneralComponent {
 
     if (![0, 1].includes($event)) return;
 
-    if($event == 1){
+    if ($event == 1) {
       /* validar que el primer formulario este completo */
-      if(this.formRegistro.invalid){
-                this._alertServices.alerta("Recuerde completar los datos del formulario y guardar antes de pasar a la siguiente sección.");
+      if (this.formRegistro.invalid) {
+        this._alertServices.alerta("Recuerde completar los datos del formulario y guardar antes de pasar a la siguiente sección.");
         return;
-      } else {
-
-        if(!this.blnFotoGuardada || this.zonasInteres().length == 0){
-          this._alertServices.alerta("Recuerde completar los datos del formulario y guardar antes de pasar a la siguiente sección.");
-          return
-        }
-
       }
-    }
 
+      if (!this.blnFotoGuardada || this.zonasInteres().length == 0) {
+        this._alertServices.alerta("Recuerde completar los datos del formulario y guardar antes de pasar a la siguiente sección.");
+        return
+      }
+
+
+    }
 
 
     this.indice.update(() => $event);
