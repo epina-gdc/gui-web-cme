@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component, signal, WritableSignal} from '@angular/core';
+import {Component, Input, signal, WritableSignal} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {DUMMIE_DOCS_ESPECIALIDAD} from '@utils/dummies';
 
@@ -9,38 +9,41 @@ import {TabsModule} from 'primeng/tabs';
 import {TextareaModule} from 'primeng/textarea';
 import {CardModule} from 'primeng/card';
 import {ButtonModule} from 'primeng/button';
+import {DetalleDocumentacionEspecialidadDocumento} from '@models/detalleDocumentacionAspirante.interface';
 
 @Component({
   selector: 'app-docs-especialidad',
   imports: [AccordionModule,
-     RadioButtonModule,
-      TabsModule,
-      CommonModule,
-      FormsModule,
-      ReactiveFormsModule,
-      TextareaModule,
-      CardModule,
-      ButtonModule
-    ],
+    RadioButtonModule,
+    TabsModule,
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    TextareaModule,
+    CardModule,
+    ButtonModule
+  ],
   templateUrl: './docs-especialidad.component.html',
   styleUrl: './docs-especialidad.component.scss'
 })
 export class DocsEspecialidadComponent {
 
-  docsEspecialidad = DUMMIE_DOCS_ESPECIALIDAD;
+  @Input() docsEspecialidad: DetalleDocumentacionEspecialidadDocumento[] = [];
+
   selectedTitle: string = "";
   selectedCredential: string = "";
   selectedCategory: any = null;
   observaciones: string = "";
+  opciones: any;
 
   titleOptions = [
-    { label: 'Cubre', value: 'cubre' },
-    { label: 'No cubre', value: 'noCubre' }
+    {label: 'Cubre', value: 'cubre'},
+    {label: 'No cubre', value: 'noCubre'}
   ];
 
   credentialOptions = [
-    { label: 'Cubre', value: 'cubre' },
-    { label: 'No cubre', value: 'noCubre' }
+    {label: 'Cubre', value: 'cubre'},
+    {label: 'No cubre', value: 'noCubre'}
   ];
 
   estatusDocumentos = [
@@ -56,24 +59,23 @@ export class DocsEspecialidadComponent {
 
   constructor(
     private fb: FormBuilder,
-
-  ){
+  ) {
     this.formObservaciones = this.inicializarForm()
   }
 
-  docSeleccionado(id:number) {
+  docSeleccionado(id: number) {
     this.tabActive.set(id);
   }
 
 
-  inicializarForm(): FormGroup{
+  inicializarForm(): FormGroup {
 
     return this.fb.group({
       observaciones: [{value: '', disabled: false}, [Validators.required]],
     })
   }
 
-  get f(){
+  get f() {
     return this.formObservaciones.controls;
   }
 

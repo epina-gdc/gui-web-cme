@@ -1,44 +1,49 @@
 <div class="flex">
   <div class="doc-especialidades w-6">
-    @for (item of docsEspecialidad; track item.idEspecialidad) {
+    @for (item of docsEspecialidad; track item.cveEspecialidad) {
       <div class="flex flex-column acordeon my-3">
         <p-accordion [activeIndex]="-1">
           <p-accordion-panel value="0">
-              <p-accordion-header>
-                <div class="flex gap-2">
-                  <i class="cme-file" style="font-size: 2rem"></i>
-                  <p class="header-accordeon ms-3">{{item.especialidad}}</p>
+            <p-accordion-header>
+              <div class="flex gap-2">
+                <i class="cme-file" style="font-size: 2rem"></i>
+                <p class="header-accordeon ms-3">{{ item.desEspecialidad }}</p>
+              </div>
+            </p-accordion-header>
+            <p-accordion-content>
+              @for (doc of item.documentosEspecialidad; track doc.idDocumentoEspecialidad) {
+                <div class="flex align-items-center cursor-pointer archivo-especialidad"
+                     [ngClass]="{'select': tabActive() === doc.idDocumentoEspecialidad }"
+                     (click)="docSeleccionado(doc.idDocumentoEspecialidad)">
+                  <div class="col-md-1"></div>
+                  <div class="flex col-md-6 justify-content-start">
+                    <span class="nombreDoc">{{ doc.tipoDocumentoEspecialidad.desTipoDocumentoEspecialidad }}</span>
+                  </div>
+                  <div class="col-md-5 flex gap-2 justify-content-center align-items-center">
+                    @for (option of credentialOptions; track option.value) {
+                      <label [for]="option.value + doc.idDocumentoEspecialidad"
+                             class="mt-2 ml-2 select-option-doc">{{ option.label }}</label>
+                      <p-radioButton [inputId]="option.value + doc.idDocumentoEspecialidad"
+                                     [(ngModel)]="opciones" class="flex align-items-center mr-3"
+                                     [name]="doc.documento.refNombre" [value]="option.value" />
+                    }
+                  </div>
                 </div>
-              </p-accordion-header>
-              <p-accordion-content>
-                @for (doc of item.docs; track doc.idDoc) {
-                    <div class="flex align-items-center cursor-pointer archivo-especialidad"
-                    [ngClass]="{'select': tabActive() === doc.idDoc }"
-                    (click)="docSeleccionado(doc.idDoc)">
-                      <div class="col-md-1"></div>
-                      <div class="flex col-md-6 justify-content-start">
-                        <span class="nombreDoc">{{doc.nombreDoc}}</span>
-                      </div>
-                      <div class="col-md-5">
-                        @for (option of credentialOptions; track option.value) {
-                          <label [for]="option.value + doc.idDoc" class="mx-2 mt-2 select-option-doc">{{ option.label }}</label>
-                          <p-radioButton [inputId]="option.value + doc.idDoc" [name]="doc.idDoc" [value]="option.value"[(ngModel)]="doc.selectedOption"  class="me-4"/>
-                        }
-                      </div>
-                    </div>
-                }
-              </p-accordion-content>
+              }
+            </p-accordion-content>
           </p-accordion-panel>
         </p-accordion>
-
 
 
         <div class="flex justify-content-start align-items-center p-3 border-round-xl border ">
 
           @for (option of estatusDocumentos; track option.value) {
-            <div class="flex align-items-center gap-1">
-              <label [for]="option.value + item.idEspecialidad" class="select-option-doc ms-4 me-2 mt-3">{{ option.label }}</label>
-              <p-radioButton [inputId]="option.value + item.idEspecialidad" [name]="item.idEspecialidad" [value]="option.value"[(ngModel)]="item.value"/>
+            <div class="flex align-items-center gap-1 justify-content-center">
+              <label [for]="option.value + item.cveEspecialidad"
+                     class="select-option-doc ms-4 me-2 mb-0">{{ option.label }}</label>
+              <p-radioButton [inputId]="option.value + item.cveEspecialidad" [name]="item.desEspecialidad"
+                             class="flex align-items-center mr-3"
+                             [value]="option.value" [(ngModel)]="opciones"/>
             </div>
           }
 
@@ -52,22 +57,23 @@
           <label class="field-label" for="observaciones">Observaciones</label>
           <p class="label-obligatorio">Obligatorio</p>
         </div>
-        <textarea rows="1" cols="30" class="w-full" [autoResize]="true" pTextarea formControlName="observaciones" maxlength="500"></textarea>
-        <label class="label-obligatorio" for="observaciones">{{f['observaciones'].value.length}}/500</label>
+        <textarea rows="1" cols="30" class="w-full" [autoResize]="true" pTextarea formControlName="observaciones"
+                  maxlength="500"></textarea>
+        <label class="label-obligatorio" for="observaciones">{{ f['observaciones'].value.length }}/500</label>
       </form>
-  </p-card>
+    </p-card>
 
 
   </div>
   <div class="flex p-4 w-6 flex-column">
     <h6>Previsualización</h6>
 
-    @if(tabActive() == 0 ){
+    @if (tabActive() == 0) {
       <p>Seleccione la especialidad que desea obtener la previsualización</p>
-    }@else {
-      Indicador {{tabActive()}}<br/>
+    } @else {
+      Indicador {{ tabActive() }}<br/>
       Lorem ipsum dolor sit amet consectetur adipiscing, elit nostra sem nisl quam habitant, lacinia dignissim auctor lacus commodo. Montes volutpat purus imperdiet nullam convallis sollicitudin platea felis pulvinar dictumst, himenaeos nam ridiculus faucibus litora sociosqu inceptos euismod ut, ad arcu varius magnis curabitur posuere id congue condimentum. Ultrices ad ridiculus ornare accumsan sed libero taciti, enim at leo arcu mollis eget blandit nullam, augue quis mi vivamus platea pharetra.
-      Egestas phasellus tempor cras venenatis per diam cubilia praesent molestie, tortor dapibus cursus nunc senectus odio tempus sociis litora, pellentesque convallis nibh vel duis a montes sagittis. Sociosqu accumsan vulputate fames enim orci nullam auctor senectus aenean nibh, maecenas est diam lacus etiam tempus condimentum dictum posuere, dictumst sollicitudin lobortis in vehicula faucibus dui potenti ligula. Commodo at varius neque metus, tristique nunc habitasse euismod id, porta eleifend nisi.
+        Egestas phasellus tempor cras venenatis per diam cubilia praesent molestie, tortor dapibus cursus nunc senectus odio tempus sociis litora, pellentesque convallis nibh vel duis a montes sagittis. Sociosqu accumsan vulputate fames enim orci nullam auctor senectus aenean nibh, maecenas est diam lacus etiam tempus condimentum dictum posuere, dictumst sollicitudin lobortis in vehicula faucibus dui potenti ligula. Commodo at varius neque metus, tristique nunc habitasse euismod id, porta eleifend nisi.
 
       <div class="flex justify-content-end">
         <p-button type="button" variant="outlined" class="me-2" label="Cancelar"/>
