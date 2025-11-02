@@ -8,6 +8,7 @@ import {RegistroMedicoService} from "@services/registro-medico.service";
 import {AlertService} from "@services/alert.service";
 import {AuthService} from "@services/auth.service";
 import {DocumentoService} from "@services/documentos.service";
+import { SessionTimerService } from "@services/sesion-timer.service";
 
 @Component({
   selector: 'app-general',
@@ -27,6 +28,7 @@ export class GeneralComponent {
   protected _RegistroMedicoService: RegistroMedicoService;
   protected authService = inject(AuthService);
   protected documentoService = inject(DocumentoService);
+  protected sessionTimerService= inject(SessionTimerService);
 
   constructor() {
     this._Mensajes = inject(Mensajes);
