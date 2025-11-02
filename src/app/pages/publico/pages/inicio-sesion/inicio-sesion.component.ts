@@ -12,6 +12,8 @@ import {AuthService} from '@services/auth.service';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {HttpRespuesta} from '@models/http-respuesta.interface';
 import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.directive';
+import { SessionTimerService } from '@services/sesion-timer.service';
+
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -37,6 +39,7 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit {
   destroyRef = inject(DestroyRef);
 
   activatedRoute = inject(ActivatedRoute);
+
 
   formLogin!: FormGroup;
   vista = signal('login');
@@ -71,6 +74,14 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit {
             this._alertServices.alerta(respuesta.mensaje);
             return;
           }
+
+
+          // Guarda el timestamp actual.
+        const loginTime = Date.now();
+        localStorage.setItem('login_time', loginTime.toString());
+
+          this.sessionTimerService.startTimer();
+
           void this._router.navigate(['/privado/inicio'], { relativeTo: this.activatedRoute,});
         },
         error: (error) => {
