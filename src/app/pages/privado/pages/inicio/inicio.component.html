@@ -18,7 +18,7 @@
         <section class="flex">
           <article class="col-3 flex flex-row">
             <p class="field-label">Fotografía</p>
-            <upload-photo (fileSelected)="onFileSelected($event)" [existingFile]="defaultFile" class="mt-6"/>
+            <upload-photo [disableUpload]="estatusPendienteDocumentacion" (fileSelected)="onFileSelected($event)" [existingFile]="defaultFile" class="mt-6"/>
             <p class="label-obligatorio">Obligatorio</p>
           </article>
           <article class="col-9 flex flex-row flex-wrap">
@@ -295,7 +295,7 @@
             </div>
             <div class="col-3 flex justify-content-start align-items-end">
               <p-button label="Agregar" icon="cme-plus" iconPos="right" [text]="true"
-                        [disabled]="formZonaInteres.invalid"
+                        [disabled]="formZonaInteres.invalid || estatusPendienteDocumentacion"
                         (click)="agregarZonaInteres()"/>
             </div>
           </article>
@@ -314,8 +314,11 @@
               <td>{{ zona.desOoad }}</td>
               <td>{{ zona.desZona }}</td>
               <td>
-                <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.5rem'}"
+                @if(!estatusPendienteDocumentacion){
+                  <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.5rem'}"
                           (click)="(eliminarZonaInteres(rowIndex))"/>
+                }
+
               </td>
             </tr>
           </ng-template>
@@ -588,7 +591,7 @@
               <div class="flex gap-2 px-2">
                 <p-datepicker [style]="{ 'width': '100%' }" placeholder="De" [iconDisplay]="'input'"
                               formControlName="horarioInicio"
-                              [disabled]="formDatosEmpleo.get('horarioInicio')?.disabled ?? false"
+
                               [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" [timeOnly]="true"
 
                               >
@@ -599,7 +602,7 @@
                 <p-datepicker [style]="{ 'width': '100%' }" placeholder="Hasta" [iconDisplay]="'input'"
                               [timeOnly]="true" formControlName="horarioFin"
                               [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
-                              [disabled]="formDatosEmpleo.get('horarioFin')?.disabled ?? false"
+
                               >
                   <ng-template #inputicon let-clickCallBack="clickCallBack">
                     <i class="pi pi-clock" (click)="clickCallBack($event)"></i>
@@ -631,7 +634,7 @@
             </div>
           </article>
           <article class="flex flex-row">
-            <div class="col-8">
+            <div class="col-6">
               <div class="flex justify-content-between">
                 <label class="field-label" for="institucion">Institución</label>
                 <div class="flex gap-2">

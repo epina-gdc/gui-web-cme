@@ -223,6 +223,12 @@ export class InicioComponent extends GeneralComponent {
 
   }
 
+  recargarInfo(){
+    this.obtenerDatosGenerales(this.userData?.idUsuario);
+    this.obtenerDatosFoto(this.userData?.idUsuario);
+    this.obtenerDatosDocumentosEscolaridad();
+  }
+
   asignarFormularioRegistro(): FormGroup {
     return this.fb.group({
       rfc: [],
@@ -300,7 +306,9 @@ export class InicioComponent extends GeneralComponent {
 
     const {refCurp, refEmail} = this.userData;
     let fecha;
-    const sexo = this.obtenerSexoDeCurp(refCurp + '');
+
+    //SI EL USUARIO NO TRAE CURP LO SIGUIENTE NO FUNCIONA
+    /* const sexo = this.obtenerSexoDeCurp(refCurp + '');
     if (sexo) {
       this.formRegistro.get('sexo')?.setValue(sexo);
     } else {
@@ -311,7 +319,7 @@ export class InicioComponent extends GeneralComponent {
       this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
     } else {
       this.formRegistro.get('fechaNacimiento')?.enable();
-    }
+    } */
 
 
     this.formRegistro.get('correo')?.setValue(refEmail + '');
@@ -354,6 +362,24 @@ export class InicioComponent extends GeneralComponent {
     }
 
     return new Date(anioCompleto, mesNum - 1, diaNum);
+  }
+
+
+  obtenerFechaDesdeCadena(fecha: string ): Date | null {
+
+    const partes = fecha.split('/');
+
+    // El orden de Date es: Año, Mes (0-11), Día
+    // Restamos 1 al mes porque en JavaScript Enero es 0 y Diciembre es 11.
+    if (partes.length === 3) {
+      const dia = parseInt(partes[0], 10);
+      const mes = parseInt(partes[1], 10) - 1;
+      const anio = parseInt(partes[2], 10);
+
+      return new Date(anio, mes, dia);
+    }
+
+    return null;
   }
 
   obtenerSexoDeCurp(curp: string): any {
@@ -500,6 +526,7 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerCatalogos(): void {
     this.activatedRoute.data.subscribe(({respuesta}) => {
+
       const [sexos, estadosCiviles, paises, lugaresNacimiento, tiposDocumentos, ooad, especialidades, dias] = respuesta;
       this.sexos = mapearArregloTipoDropdown(sexos.respuesta, 'desSexo', 'idSexo');
       this.estadosCiviles = mapearArregloTipoDropdown(estadosCiviles.respuesta, 'desEstadoCivil', 'idEstadoCivil');
@@ -547,13 +574,15 @@ export class InicioComponent extends GeneralComponent {
     const especialidadDoc = this.obtenerEspecialidadAValidar();
 
     if (this.yaExistenEspecilidadesPermitidas(especialidadDoc)) {
+
       this._alertServices.alerta(`El limite de especialidades ha sido alcanzado`);
-      this.formDocumentosEspecialidad.reset();
+      this.limpiarDocumentoEspecialidad()
       return;
     }
 
     if (this.documentoYaExisteParaEspecialidad(tipoDoc, especialidadDoc)) {
       this._alertServices.alerta(`El documento de tipo ${tipoDoc} ya fue cargado para la especialidad ${especialidadDoc}.`);
+      this.limpiarDocumentoEspecialidad();
       return;
     }
 
@@ -723,7 +752,7 @@ export class InicioComponent extends GeneralComponent {
 
     if (datosPersonales) {
 
-      const {refRfc, refNss, estadoCivil, paisNacimiento, lugarNacimiento, perfil} = datosPersonales;
+      const {refRfc, refNss, estadoCivil, paisNacimiento, lugarNacimiento, perfil, sexo, fecNacimiento} = datosPersonales;
 
       if (perfil.idPerfil == 2) {
         this.formRegistro.controls['nss'].setValidators([Validators.required]);
@@ -746,6 +775,20 @@ export class InicioComponent extends GeneralComponent {
 
       if (lugarNacimiento) {
         this.formRegistro.get('estadoNacimiento')?.patchValue(lugarNacimiento.idLugarNacimiento);
+      }
+
+      if(sexo){
+        this.formRegistro.get('sexo')?.patchValue(
+          {
+            label: sexo.desSexo,
+            value: sexo.idSexo
+          }
+        )
+      }
+
+      if(fecNacimiento){
+        var fecha = this.obtenerFechaDesdeCadena(fecNacimiento);
+        this.formRegistro.get('fechaNacimiento')?.setValue(fecha || null);
       }
     }
 
@@ -863,6 +906,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   private saveDatosGenerales() {
+
     if (this.zonasInteres().length == 0) {
       this._alertServices.alerta("Debes agregar al menos una zona de interés")
       return;
@@ -1107,6 +1151,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   revisarDocumentosLocalHost(): void {
+
     const refObligatorio1 = this.documentosLocalStorageService.obtenerRefGuid(1);
     const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
     const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
@@ -1237,6 +1282,7 @@ export class InicioComponent extends GeneralComponent {
       return;
     }
 
+    this.limpiarDocumentoEspecialidad();
     const solicitud: SolicitudGuardarDocumentacion = this.generarSolicitudGuardarDocumentacion();
     if (finalizarRegistro) {
       this.finalizarRegistro(solicitud);
@@ -1255,6 +1301,7 @@ export class InicioComponent extends GeneralComponent {
           this.estatusPendienteDocumentacion = true;
           this.documentosLocalStorageService.limpiar();
           this.desactivarForms();
+          this.recargarInfo();
           return;
         }
         this._alertServices.error(data.mensaje)
@@ -1271,6 +1318,7 @@ export class InicioComponent extends GeneralComponent {
         if (data.exito) {
           // this.indice.update((value: number) => value + 1);
           this._alertServices.exito(this._Mensajes.MSG026);
+          this.recargarInfo();
           return;
         }
         this._alertServices.error(data.mensaje)
@@ -1513,24 +1561,27 @@ export class InicioComponent extends GeneralComponent {
 
     const form = this.formDatosEmpleo;
     form.get('otroEmpleo')?.valueChanges.subscribe(value => {
+      if(!this.estatusPendienteDocumentacion){
+        const tieneOtroEmpleo = value === '1'; // '1' = Sí
 
-      const tieneOtroEmpleo = value === '1'; // '1' = Sí
+        // Habilitar/Deshabilitar campos asociados a 'otroEmpleo'
+        this.manejoValidaciones(form, 'tipoInstitucion', tieneOtroEmpleo);
 
-      // Habilitar/Deshabilitar campos asociados a 'otroEmpleo'
-      this.manejoValidaciones(form, 'tipoInstitucion', tieneOtroEmpleo);
-
-      // Reevaluar la dependencia de Horario/Jornada
-      this.actualizarHorarioJornadaState(form);
+        // Reevaluar la dependencia de Horario/Jornada
+        this.actualizarHorarioJornadaState(form);
+      }
     });
 
     form.get('tipoInstitucion')?.valueChanges.subscribe((val) => {
-
-      // Si 'otroEmpleo' es 'Sí', reevalúa 'nombreInstitucion'
-      const tieneOtroEmpleo = form.get('otroEmpleo')?.value === '1';
-      this.manejarNombreInstitucionLogic(form, tieneOtroEmpleo);
+      if(!this.estatusPendienteDocumentacion){
+        // Si 'otroEmpleo' es 'Sí', reevalúa 'nombreInstitucion'
+        const tieneOtroEmpleo = form.get('otroEmpleo')?.value === '1';
+        this.manejarNombreInstitucionLogic(form, tieneOtroEmpleo);
+      }
     });
 
     form.get('sustituto')?.valueChanges.subscribe(value => {
+      if(!this.estatusPendienteDocumentacion){
       const isSustituto = value === '1'; // '1' = Sí
 
       // Habilitar/Deshabilitar campo OOAD (Punto 5)
@@ -1539,10 +1590,11 @@ export class InicioComponent extends GeneralComponent {
       // Reevaluar la dependencia de Horario/Jornada
       /* ooad ya no tendra control sobre los horarios y jornada por peticion*/
       //this.actualizarHorarioJornadaState(form);
+      }
     });
 
     form.get('ooad')?.valueChanges.subscribe(() => {
-      this.actualizarHorarioJornadaState(form);
+      //this.actualizarHorarioJornadaState(form);
     });
   }
 
@@ -1588,6 +1640,11 @@ export class InicioComponent extends GeneralComponent {
     this.manejoValidaciones(form, 'horarioFin', enable, enable);
     this.manejoValidaciones(form, 'diaInicio', enable, enable);
     this.manejoValidaciones(form, 'diaFin', enable, enable);
+
+/*     //Cuando se esta en estatusPendienteDocumentacion, no se esta deshabilitan estos campos
+    if(this.estatusPendienteDocumentacion){
+      this.formDatosEmpleo.disable();
+    } */
   }
 
   private manejoValidaciones(form: FormGroup, controlName: string, enable: boolean, isRequired: boolean = false): void {
@@ -1605,9 +1662,10 @@ export class InicioComponent extends GeneralComponent {
       }
       control.updateValueAndValidity();
     }
-  }
 
+  }
   obtenerDatosDocumentosEscolaridad(): void {
+
     const idusuario = this.userData?.idUsuario;
     if (!idusuario) return;
     this._ConvocatoriaService.getDatosDocumentosEscolares(idusuario).subscribe({
@@ -1719,8 +1777,8 @@ export class InicioComponent extends GeneralComponent {
       ooad: ooadValue,
 
       // Tipo de Institución y Nombre
-      tipoInstitucion: datos.tipoInstitucion!.idTipoInstitucion,
-      nombreInstitucion: datos.nomEspecificacionInstitucion,
+      tipoInstitucion: (datos.tipoInstitucion ? datos.tipoInstitucion.idTipoInstitucion : null) || null,
+      nombreInstitucion: datos.nomEspecificacionInstitucion || null,
 
       // Horario/Jornada
       horarioInicio: dayjs(datos.refJornadaInicio, 'HH:mm:ss').toDate(),
@@ -1730,6 +1788,10 @@ export class InicioComponent extends GeneralComponent {
       diaInicio: datos.diaSemanaInicio!.idDiaSemana,
       diaFin: datos.diaSemanaFin!.idDiaSemana,
     });
+/*     if(this.estatusPendienteDocumentacion){
+
+      this.formDatosEmpleo.disable();
+    } */
   }
 
   mostrarDocumento(guid: string) {
