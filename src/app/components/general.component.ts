@@ -1,14 +1,15 @@
-import {CommonModule} from "@angular/common";
-import {Component, inject} from "@angular/core";
-import {Mensajes} from "@utils/mensajes";
-import {Router} from '@angular/router';
-import {NAV} from "@utils/url-global";
-import {CatalogosGeneralesService} from "@services/catalogos-generales.service";
-import {RegistroMedicoService} from "@services/registro-medico.service";
-import {AlertService} from "@services/alert.service";
-import {AuthService} from "@services/auth.service";
-import {DocumentoService} from "@services/documentos.service";
+import { CommonModule } from "@angular/common";
+import { Component, inject } from "@angular/core";
+import { Mensajes } from "@utils/mensajes";
+import { Router } from '@angular/router';
+import { NAV } from "@utils/url-global";
+import { CatalogosGeneralesService } from "@services/catalogos-generales.service";
+import { RegistroMedicoService } from "@services/registro-medico.service";
+import { AlertService } from "@services/alert.service";
+import { AuthService } from "@services/auth.service";
+import { DocumentoService } from "@services/documentos.service";
 import { SessionTimerService } from "@services/sesion-timer.service";
+import { ConvocatoriaService } from "@services/convocatoria.service";
 
 @Component({
   selector: 'app-general',
@@ -26,10 +27,12 @@ export class GeneralComponent {
   protected _alertServices: AlertService;
   protected _CatalogoGenService: CatalogosGeneralesService;
   protected _RegistroMedicoService: RegistroMedicoService;
+  protected _ConvocatoriaService: ConvocatoriaService;
   protected authService = inject(AuthService);
   protected documentoService = inject(DocumentoService);
   /* SE COMENTA TIMER */
   /* protected sessionTimerService= inject(SessionTimerService); */
+
 
   constructor() {
     this._Mensajes = inject(Mensajes);
@@ -37,6 +40,7 @@ export class GeneralComponent {
     this._alertServices = inject(AlertService);
     this._CatalogoGenService = inject(CatalogosGeneralesService);
     this._RegistroMedicoService = inject(RegistroMedicoService);
+    this._ConvocatoriaService = inject(ConvocatoriaService);
     this.authService = inject(AuthService);
     this.documentoService = inject(DocumentoService);
   }
@@ -67,16 +71,16 @@ export class GeneralComponent {
     }
   }
 
-  salir() {}
+  salir() { }
 
 
-  irAHome() {}
+  irAHome() { }
 
   scrollToTop() {
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  get anioActual(){
+  get anioActual() {
     let hoy = new Date();
     return hoy.getFullYear();
   }
