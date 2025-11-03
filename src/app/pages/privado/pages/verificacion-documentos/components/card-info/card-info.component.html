@@ -4,10 +4,14 @@
 </div>
 <p-card class="mx-2 empty-border" [header]="'Información del médico aspirante'">
   <div class="flex align-items-center p-4">
-    <img class="foto" role="presentation" [alt]="nombreFoto" [title]="nombreFoto" [src]="defaultFile" width="100" height="100"/>
+    <div class="flex align-items-center justify-content-center
+              flex-column border-1 half-border border-circle border-imagen-sm">
+      <img class="foto" role="presentation" [alt]="nombreFoto" [title]="nombreFoto" [src]="defaultFile"
+           style="object-fit: cover; height: 100%; width: 100%"/>
+    </div>
     <div class="flex-column ms-5 w-9">
       <div class="flex justify-content-between align-items-center mb-3">
-        <span class="titulo-nombre-aspirante ">{{ datosPersonales.nombreCompleto | titlecase}}</span>
+        <span class="titulo-nombre-aspirante ">{{ datosPersonales.nombreCompleto | titlecase }}</span>
         <app-pill [texto]="'No cumple con requisitos'" [pillType]="0"/>
       </div>
       <div class="flex justify-content-between align-items-start mt-3">
