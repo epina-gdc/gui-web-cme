@@ -1,31 +1,30 @@
 <div class="flex justify-content-start align-items-center gap-3">
-    <btn-regresar [ruta]="'privado/verificacion-documentos'"/>
-    <h3 class="titulo-seccion w-full">Documentación del aspirante</h3>
-  </div>
-  <p-card class="mx-2 empty-border" [header]="'Información del médico aspirante'">
-    <div class="flex align-items-center p-4">
-      <img role="presentation" [alt]="'nombre'" src="/assets/images/img_medico.png" width="100" height="100"/>
-      <div class="flex flex-column ms-5 w-6">
-        <div class="flex justify-content-between align-items-center mb-3">
-          <span class="titulo-nombre-aspirante ">Pablo Andrés García Bernal</span>
-          <app-pill [texto]="'No cumple con requisitos'" [pillType]="0" />
+  <btn-regresar [ruta]="'privado/verificacion-documentos'"/>
+  <h3 class="titulo-seccion w-full">Documentación del aspirante</h3>
+</div>
+<p-card class="mx-2 empty-border" [header]="'Información del médico aspirante'">
+  <div class="flex align-items-center p-4">
+    <img role="presentation" [alt]="'nombre'" src="/assets/images/img_medico.png" width="100" height="100"/>
+    <div class="flex-column ms-5 w-9">
+      <div class="flex justify-content-between align-items-center mb-3">
+        <span class="titulo-nombre-aspirante ">{{ datosPersonales.nombreCompleto | titlecase}}</span>
+        <app-pill [texto]="'No cumple con requisitos'" [pillType]="0"/>
+      </div>
+      <div class="flex justify-content-between align-items-start mt-3">
+        <div class="detalle-aspirante col-2">
+          <span class="acciones-tabla">Matrícula</span>
+          <p>{{ datosPersonales.cveMatricula }}</p>
         </div>
-        <div class="flex justify-content-between align-items-center mt-3">
-          <div class="detalle-aspirante ">
-            <span class="acciones-tabla">Matrícula</span>
-            <p>311080212</p>
-          </div>
-          <div class="detalle-aspirante ">
-            <span class="acciones-tabla">Especialidad</span>
-            <p>Cardiología</p>
-          </div>
-          <div class="detalle-aspirante ">
-            <span class="acciones-tabla">Correo electónico</span>
-            <p>pablo_bernal&#64;gmail.com</p>
-          </div>
-  
+        <div class="detalle-aspirante col-6">
+          <span class="acciones-tabla">Especialidad</span>
+          <p>{{ datosPersonales.especialidad }}</p>
         </div>
+        <div class="detalle-aspirante col-4">
+          <span class="acciones-tabla">Correo electónico</span>
+          <p>{{ datosPersonales.refEmail }}</p>
+        </div>
+
       </div>
     </div>
-  </p-card>
- 
+  </div>
+</p-card>

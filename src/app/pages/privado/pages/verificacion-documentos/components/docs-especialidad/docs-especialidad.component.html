@@ -12,7 +12,7 @@
             </p-accordion-header>
             <p-accordion-content>
               @for (doc of item.documentosEspecialidad; track doc.idDocumentoEspecialidad) {
-                <div class="flex align-items-center cursor-pointer archivo-especialidad"
+                <div class="flex align-items-center cursor-pointer archivo-especialidad mt-2"
                      [ngClass]="{'select': tabActive() === doc.idDocumentoEspecialidad }"
                      (click)="docSeleccionado(doc.idDocumentoEspecialidad, doc.documento.refGuid)">
                   <div class="col-md-1"></div>
@@ -35,8 +35,7 @@
         </p-accordion>
 
 
-        <div class="flex justify-content-start align-items-center p-3 border-round-xl border ">
-
+        <div class="flex justify-content-start align-items-center p-3 border-round-xl border mt-2">
           @for (option of estatusDocumentos; track option.value) {
             <div class="flex align-items-center gap-1 justify-content-center">
               <label [for]="option.value + item.cveEspecialidad"
