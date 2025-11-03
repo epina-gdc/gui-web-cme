@@ -340,7 +340,7 @@ export class InicioComponent extends GeneralComponent {
     return this.fb.group({
       otroEmpleo: [{value: '0', disabled: false}],
       sustituto: [{value: '0', disabled: false}],
-      tipoInstitucion: [{value: null}, []],
+      tipoInstitucion: [[]],
       nombreInstitucion: [{value: null, disabled: true}, [Validators.maxLength(200)]],
       horarioInicio: [{value: null, disabled: true}],
       horarioFin: [{value: null, disabled: true}],
