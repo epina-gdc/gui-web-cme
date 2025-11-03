@@ -52,6 +52,7 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
 
   alertaService: AlertService = inject(AlertService)
 
+  @Input() disableUpload = false;
   @Input() maxFileSize: number = 5120000;
   @Input() existingFile: File | undefined = undefined;
   @Output() fileSelected = new EventEmitter<any>();
