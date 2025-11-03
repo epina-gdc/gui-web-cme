@@ -4,9 +4,7 @@ import {StepsComponent} from '@components/steps/steps.component';
 import {UploadPhotoComponent} from '@components/upload-photo/upload-photo.component';
 import {InputText} from 'primeng/inputtext';
 import {
-  FormArray,
   FormBuilder,
-  FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
@@ -203,7 +201,7 @@ export class InicioComponent extends GeneralComponent {
 
   estatusPendienteDocumentacion: boolean = false;
 
-  idsConstanciasExistentes: number[] = [];
+  constanciasPorEliminar: number[] = [];
 
   especialidadesPorEliminar: number[] = [];
 
@@ -1319,6 +1317,7 @@ export class InicioComponent extends GeneralComponent {
           this._alertServices.exito(this._Mensajes.MSG039)
           this.estatusPendienteDocumentacion = true;
           this.especialidadesPorEliminar = [];
+          this.constanciasPorEliminar = [];
           this.documentosLocalStorageService.limpiar();
           this.desactivarForms();
           this.recargarInfo();
@@ -1338,6 +1337,7 @@ export class InicioComponent extends GeneralComponent {
         if (data.exito) {
           // this.indice.update((value: number) => value + 1);
           this.especialidadesPorEliminar = [];
+          this.constanciasPorEliminar = [];
           this._alertServices.exito(this._Mensajes.MSG026);
           this.recargarInfo();
           return;
@@ -1361,7 +1361,7 @@ export class InicioComponent extends GeneralComponent {
         },
         documentosObligatorios: this.generarDocumentosObligatorios(),
         especialidadesDocumentos: this.generarDocumentosEspecialidad(),
-        documentosEspecialidadesEliminar: this.especialidadesPorEliminar
+        documentosEspecialidadesEliminar: this.especialidadesPorEliminar,
       }
     }
     return {
@@ -1372,7 +1372,8 @@ export class InicioComponent extends GeneralComponent {
       especialidadesDocumentos: this.generarDocumentosEspecialidad(),
       documentosConstancias: this.transformarDocumentosConstancia(constancias),
       datosEmpleo: this.transformarFormularioADatosEmpleo(),
-      documentosEspecialidadesEliminar: this.especialidadesPorEliminar
+      documentosEspecialidadesEliminar: this.especialidadesPorEliminar,
+      documentosConstanciasEliminar: this.constanciasPorEliminar
     }
   }
 
@@ -1518,10 +1519,6 @@ export class InicioComponent extends GeneralComponent {
     }
 
     return documentosProcesados;
-  }
-
-  anteriorPasoStepper(): void {
-    this.indice.update(value => value - 1);
   }
 
   get banderaCargarDocumentacion() {
@@ -1773,7 +1770,6 @@ export class InicioComponent extends GeneralComponent {
         })
       );
 
-
       const tabNode: TabNode = {
         especialidad: data.desEspecialidad,
         documentos: documentosTab,
@@ -1842,6 +1838,10 @@ export class InicioComponent extends GeneralComponent {
       if (uploader) {
         uploader.clear();
       }
+      const idEliminado = this.constanciasPorEliminar.some(id => id === this.idDocumentoConstancia1);
+      if (this.idDocumentoConstancia1 && !idEliminado) {
+        this.constanciasPorEliminar.push(this.idDocumentoConstancia1);
+      }
     }
     if (id === 2) {
       this.archivoConstancia2 = null;
@@ -1850,6 +1850,10 @@ export class InicioComponent extends GeneralComponent {
       if (uploader) {
         uploader.clear();
       }
+      const idEliminado = this.constanciasPorEliminar.some(id => id === this.idDocumentoConstancia2);
+      if (this.idDocumentoConstancia2 && !idEliminado) {
+        this.constanciasPorEliminar.push(this.idDocumentoConstancia2);
+      }
     }
     if (id === 3) {
       this.archivoConstancia3 = null;
@@ -1857,6 +1861,10 @@ export class InicioComponent extends GeneralComponent {
       const uploader = this.uploaders.find(comp => comp.idArchivo === 'constancia_3');
       if (uploader) {
         uploader.clear();
+      }
+      const idEliminado = this.constanciasPorEliminar.some(id => id === this.idDocumentoConstancia3);
+      if (this.idDocumentoConstancia3 && !idEliminado) {
+        this.constanciasPorEliminar.push(this.idDocumentoConstancia3);
       }
     }
   }
