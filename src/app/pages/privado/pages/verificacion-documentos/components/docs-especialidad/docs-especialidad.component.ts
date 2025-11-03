@@ -149,7 +149,30 @@ export class DocsEspecialidadComponent implements OnInit {
   }
 
   finalizarVerificacion(): void {
+    if (this.formularioValidacion.invalid) {
+      console.error("El formulario es inválido. Revise los campos requeridos.");
+      return;
+    }
+
     const solicitud = this.formularioValidacion.getRawValue();
+
+    solicitud.especialidadesDocumentos = solicitud.especialidadesDocumentos.map(
+      (especialidad: any) => {
+
+        const idEstatus = especialidad.evaluacionEspecialidad.estatusVerificacion.idEstatusVerificacion;
+
+        // Buscar la descripción (label) en la lista de opciones (estatusDocumentos)
+        const estatusSeleccionado = this.estatusDocumentos.find(o => o.value === idEstatus);
+
+        // 3. Inyectar el campo desEstatus
+        if (estatusSeleccionado) {
+          especialidad.evaluacionEspecialidad.estatusVerificacion.desEstatus = estatusSeleccionado.label;
+        }
+
+        return especialidad;
+      }
+    );
+
     console.log(solicitud);
   }
 
