@@ -4,9 +4,7 @@ import {StepsComponent} from '@components/steps/steps.component';
 import {UploadPhotoComponent} from '@components/upload-photo/upload-photo.component';
 import {InputText} from 'primeng/inputtext';
 import {
-  FormArray,
   FormBuilder,
-  FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
@@ -203,6 +201,10 @@ export class InicioComponent extends GeneralComponent {
 
   estatusPendienteDocumentacion: boolean = false;
 
+  constanciasPorEliminar: number[] = [];
+
+  especialidadesPorEliminar: number[] = [];
+
   constructor(private readonly activatedRoute: ActivatedRoute) {
     super()
     this.documentosLocalStorageService.limpiar();
@@ -220,10 +222,9 @@ export class InicioComponent extends GeneralComponent {
     this.obtenerDatosDocumentosEscolaridad();
     this.revisarDocumentosLocalHost();
     this.suscribirObservablesDatosEmpleo();
-
   }
 
-  recargarInfo(){
+  recargarInfo() {
     this.obtenerDatosGenerales(this.userData?.idUsuario);
     this.obtenerDatosFoto(this.userData?.idUsuario);
     this.obtenerDatosDocumentosEscolaridad();
@@ -365,7 +366,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
 
-  obtenerFechaDesdeCadena(fecha: string ): Date | null {
+  obtenerFechaDesdeCadena(fecha: string): Date | null {
 
     const partes = fecha.split('/');
 
@@ -675,6 +676,13 @@ export class InicioComponent extends GeneralComponent {
     }
 
     const especialidadParaModificar = {...especialidades[indiceEspecialidad]};
+
+    const idDocumentoEspecialidad = especialidadParaModificar.documentos.find(d => d.tipoDocumento === tipoDocumento)?.idDocumentoEspecialidad;
+
+    if (idDocumentoEspecialidad) {
+      this.especialidadesPorEliminar.push(idDocumentoEspecialidad);
+    }
+
     const documentosActualizados = especialidadParaModificar.documentos.filter(d => d.tipoDocumento !== tipoDocumento);
 
     // Si la lista de documentos queda vacía, eliminamos la especialidad completa
@@ -752,7 +760,16 @@ export class InicioComponent extends GeneralComponent {
 
     if (datosPersonales) {
 
-      const {refRfc, refNss, estadoCivil, paisNacimiento, lugarNacimiento, perfil, sexo, fecNacimiento} = datosPersonales;
+      const {
+        refRfc,
+        refNss,
+        estadoCivil,
+        paisNacimiento,
+        lugarNacimiento,
+        perfil,
+        sexo,
+        fecNacimiento
+      } = datosPersonales;
 
       if (perfil.idPerfil == 2) {
         this.formRegistro.controls['nss'].setValidators([Validators.required]);
@@ -777,7 +794,7 @@ export class InicioComponent extends GeneralComponent {
         this.formRegistro.get('estadoNacimiento')?.patchValue(lugarNacimiento.idLugarNacimiento);
       }
 
-      if(sexo){
+      if (sexo) {
         this.formRegistro.get('sexo')?.patchValue(
           {
             label: sexo.desSexo,
@@ -786,7 +803,7 @@ export class InicioComponent extends GeneralComponent {
         )
       }
 
-      if(fecNacimiento){
+      if (fecNacimiento) {
         var fecha = this.obtenerFechaDesdeCadena(fecNacimiento);
         this.formRegistro.get('fechaNacimiento')?.setValue(fecha || null);
       }
@@ -1299,6 +1316,8 @@ export class InicioComponent extends GeneralComponent {
           // this.indice.update((value: number) => value + 1);
           this._alertServices.exito(this._Mensajes.MSG039)
           this.estatusPendienteDocumentacion = true;
+          this.especialidadesPorEliminar = [];
+          this.constanciasPorEliminar = [];
           this.documentosLocalStorageService.limpiar();
           this.desactivarForms();
           this.recargarInfo();
@@ -1317,6 +1336,8 @@ export class InicioComponent extends GeneralComponent {
       next: (data: ResponseGeneral) => {
         if (data.exito) {
           // this.indice.update((value: number) => value + 1);
+          this.especialidadesPorEliminar = [];
+          this.constanciasPorEliminar = [];
           this._alertServices.exito(this._Mensajes.MSG026);
           this.recargarInfo();
           return;
@@ -1339,7 +1360,8 @@ export class InicioComponent extends GeneralComponent {
           idUsuario: this.userData?.idUsuario as number
         },
         documentosObligatorios: this.generarDocumentosObligatorios(),
-        especialidadesDocumentos: this.generarDocumentosEspecialidad()
+        especialidadesDocumentos: this.generarDocumentosEspecialidad(),
+        documentosEspecialidadesEliminar: this.especialidadesPorEliminar,
       }
     }
     return {
@@ -1349,7 +1371,9 @@ export class InicioComponent extends GeneralComponent {
       documentosObligatorios: this.generarDocumentosObligatorios(),
       especialidadesDocumentos: this.generarDocumentosEspecialidad(),
       documentosConstancias: this.transformarDocumentosConstancia(constancias),
-      datosEmpleo: this.transformarFormularioADatosEmpleo()
+      datosEmpleo: this.transformarFormularioADatosEmpleo(),
+      documentosEspecialidadesEliminar: this.especialidadesPorEliminar,
+      documentosConstanciasEliminar: this.constanciasPorEliminar
     }
   }
 
@@ -1484,21 +1508,17 @@ export class InicioComponent extends GeneralComponent {
       };
     });
 
-    if (this.idDocumentoConstancia1) {
+    if (this.idDocumentoConstancia1 && documentosProcesados[0]) {
       documentosProcesados[0].idDocumentoConstancia = this.idDocumentoConstancia1
     }
-    if (this.idDocumentoConstancia2) {
+    if (this.idDocumentoConstancia2 && documentosProcesados[1]) {
       documentosProcesados[1].idDocumentoConstancia = this.idDocumentoConstancia2
     }
-    if (this.idDocumentoConstancia3) {
+    if (this.idDocumentoConstancia3 && documentosProcesados[2]) {
       documentosProcesados[2].idDocumentoConstancia = this.idDocumentoConstancia3
     }
 
     return documentosProcesados;
-  }
-
-  anteriorPasoStepper(): void {
-    this.indice.update(value => value - 1);
   }
 
   get banderaCargarDocumentacion() {
@@ -1558,10 +1578,9 @@ export class InicioComponent extends GeneralComponent {
   }
 
   suscribirObservablesDatosEmpleo(): void {
-
     const form = this.formDatosEmpleo;
     form.get('otroEmpleo')?.valueChanges.subscribe(value => {
-      if(!this.estatusPendienteDocumentacion){
+      if (!this.estatusPendienteDocumentacion) {
         const tieneOtroEmpleo = value === '1'; // '1' = Sí
 
         // Habilitar/Deshabilitar campos asociados a 'otroEmpleo'
@@ -1573,7 +1592,7 @@ export class InicioComponent extends GeneralComponent {
     });
 
     form.get('tipoInstitucion')?.valueChanges.subscribe((val) => {
-      if(!this.estatusPendienteDocumentacion){
+      if (!this.estatusPendienteDocumentacion) {
         // Si 'otroEmpleo' es 'Sí', reevalúa 'nombreInstitucion'
         const tieneOtroEmpleo = form.get('otroEmpleo')?.value === '1';
         this.manejarNombreInstitucionLogic(form, tieneOtroEmpleo);
@@ -1581,15 +1600,15 @@ export class InicioComponent extends GeneralComponent {
     });
 
     form.get('sustituto')?.valueChanges.subscribe(value => {
-      if(!this.estatusPendienteDocumentacion){
-      const isSustituto = value === '1'; // '1' = Sí
+      if (!this.estatusPendienteDocumentacion) {
+        const isSustituto = value === '1'; // '1' = Sí
 
-      // Habilitar/Deshabilitar campo OOAD (Punto 5)
-      this.manejoValidaciones(form, 'ooad', isSustituto, isSustituto);
+        // Habilitar/Deshabilitar campo OOAD (Punto 5)
+        this.manejoValidaciones(form, 'ooad', isSustituto, isSustituto);
 
-      // Reevaluar la dependencia de Horario/Jornada
-      /* ooad ya no tendra control sobre los horarios y jornada por peticion*/
-      //this.actualizarHorarioJornadaState(form);
+        // Reevaluar la dependencia de Horario/Jornada
+        /* ooad ya no tendra control sobre los horarios y jornada por peticion*/
+        //this.actualizarHorarioJornadaState(form);
       }
     });
 
@@ -1641,10 +1660,10 @@ export class InicioComponent extends GeneralComponent {
     this.manejoValidaciones(form, 'diaInicio', enable, enable);
     this.manejoValidaciones(form, 'diaFin', enable, enable);
 
-/*     //Cuando se esta en estatusPendienteDocumentacion, no se esta deshabilitan estos campos
-    if(this.estatusPendienteDocumentacion){
-      this.formDatosEmpleo.disable();
-    } */
+    /*     //Cuando se esta en estatusPendienteDocumentacion, no se esta deshabilitan estos campos
+        if(this.estatusPendienteDocumentacion){
+          this.formDatosEmpleo.disable();
+        } */
   }
 
   private manejoValidaciones(form: FormGroup, controlName: string, enable: boolean, isRequired: boolean = false): void {
@@ -1664,6 +1683,7 @@ export class InicioComponent extends GeneralComponent {
     }
 
   }
+
   obtenerDatosDocumentosEscolaridad(): void {
 
     const idusuario = this.userData?.idUsuario;
@@ -1722,7 +1742,7 @@ export class InicioComponent extends GeneralComponent {
   procesarDocumentosContancias(datos: RespuestaDocumentosConstancia[]): void {
     const refConstancia1 = datos.length > 0 ? datos[0].documento.refGuid : null;
     const refConstancia2 = datos.length > 1 ? datos[1].documento.refGuid : null;
-    const refConstancia3 = datos.length > 1 ? datos[2].documento.refGuid : null;
+    const refConstancia3 = datos.length > 2 ? datos[2].documento.refGuid : null;
     if (refConstancia1) {
       this.obtenerDocumento(refConstancia1, 'constancia', 1, datos[0].refConstancia);
       this.idDocumentoConstancia1 = datos[0].idDocumentoConstancia;
@@ -1750,7 +1770,6 @@ export class InicioComponent extends GeneralComponent {
         })
       );
 
-
       const tabNode: TabNode = {
         especialidad: data.desEspecialidad,
         documentos: documentosTab,
@@ -1765,8 +1784,6 @@ export class InicioComponent extends GeneralComponent {
     const otroEmpleoValue = datos.indOtroEmpleo?.toString() || '0';
     const sustitutoValue = datos.indMedicoSustituto?.toString() || '0';
     const ooadValue = datos.cveOoad || null;
-
-    console.log(datos.refJornadaInicio, dayjs(datos.refJornadaInicio, 'HH:mm').toDate())
 
     this.formDatosEmpleo.patchValue({
       // Combos Sí/No
@@ -1788,10 +1805,10 @@ export class InicioComponent extends GeneralComponent {
       diaInicio: datos.diaSemanaInicio!.idDiaSemana,
       diaFin: datos.diaSemanaFin!.idDiaSemana,
     });
-/*     if(this.estatusPendienteDocumentacion){
+    /*     if(this.estatusPendienteDocumentacion){
 
-      this.formDatosEmpleo.disable();
-    } */
+          this.formDatosEmpleo.disable();
+        } */
   }
 
   mostrarDocumento(guid: string) {
@@ -1821,6 +1838,10 @@ export class InicioComponent extends GeneralComponent {
       if (uploader) {
         uploader.clear();
       }
+      const idEliminado = this.constanciasPorEliminar.some(id => id === this.idDocumentoConstancia1);
+      if (this.idDocumentoConstancia1 && !idEliminado) {
+        this.constanciasPorEliminar.push(this.idDocumentoConstancia1);
+      }
     }
     if (id === 2) {
       this.archivoConstancia2 = null;
@@ -1829,6 +1850,10 @@ export class InicioComponent extends GeneralComponent {
       if (uploader) {
         uploader.clear();
       }
+      const idEliminado = this.constanciasPorEliminar.some(id => id === this.idDocumentoConstancia2);
+      if (this.idDocumentoConstancia2 && !idEliminado) {
+        this.constanciasPorEliminar.push(this.idDocumentoConstancia2);
+      }
     }
     if (id === 3) {
       this.archivoConstancia3 = null;
@@ -1836,6 +1861,10 @@ export class InicioComponent extends GeneralComponent {
       const uploader = this.uploaders.find(comp => comp.idArchivo === 'constancia_3');
       if (uploader) {
         uploader.clear();
+      }
+      const idEliminado = this.constanciasPorEliminar.some(id => id === this.idDocumentoConstancia3);
+      if (this.idDocumentoConstancia3 && !idEliminado) {
+        this.constanciasPorEliminar.push(this.idDocumentoConstancia3);
       }
     }
   }
@@ -1892,7 +1921,6 @@ export class InicioComponent extends GeneralComponent {
   }
 
   cambioDeSeccion($event: any) {
-
     if (![0, 1].includes($event)) return;
 
     if ($event == 1) {
@@ -1906,10 +1934,7 @@ export class InicioComponent extends GeneralComponent {
         this._alertServices.alerta("Recuerde completar los datos del formulario y guardar antes de pasar a la siguiente sección.");
         return
       }
-
-
     }
-
 
     this.indice.update(() => $event);
   }

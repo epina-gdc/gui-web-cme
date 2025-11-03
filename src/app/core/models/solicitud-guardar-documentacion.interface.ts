@@ -5,7 +5,9 @@ export interface SolicitudGuardarDocumentacion {
   documentosObligatorios: SolicitudDocumentoObligatorio[],
   especialidadesDocumentos: DocumentoEspecialidad[],
   documentosConstancias?: DocumentoConstancia [],
-  datosEmpleo?: DatosEmpleo
+  datosEmpleo?: DatosEmpleo,
+  documentosEspecialidadesEliminar?: number[],
+  documentosConstanciasEliminar?: number[],
 }
 
 export interface SolicitudDocumentoObligatorio {
