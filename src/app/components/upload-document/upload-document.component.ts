@@ -36,6 +36,7 @@ export class UploadDocumentComponent implements OnInit, OnChanges {
   @Input() disabled: boolean = false;
   @Output() fileSelected = new EventEmitter<any>();
   @Output() fileRemoved = new EventEmitter<any>();
+  @Output() fileDownload = new EventEmitter<any>();
 
   files: any[] = [];
   totalSize: number = 0;
@@ -95,7 +96,21 @@ export class UploadDocumentComponent implements OnInit, OnChanges {
   onSelectedFiles(event: any) {
     // Verificar si PrimeNG reportó algún archivo no válido
     // Los archivos inválidos por tamaño, tipo, etc., se encuentran en event.invalidFiles.
-    console.log(event)
+
+    for (const archivo of event.files) {
+      if (!this.esArchivoValido(archivo)) {
+
+        // ¡Importante! Evitar que se procese o se emita algún archivo
+        this.files = [];
+        this.alertaService.error(`El archivo que intenta cargar no es válido.`);
+        if (this.fileUpload) {
+          this.fileUpload.clear();
+        }
+        this.fileRemoved.emit([]); // Notificar la limpieza
+        return;
+      }
+    }
+
     if (event.currentFiles.length === 0) {
       this.alertaService.error(`El archivo  excede el tamaño máximo permitido.`);
 
@@ -123,6 +138,10 @@ export class UploadDocumentComponent implements OnInit, OnChanges {
     removeFileCallback(event, index);
     this.totalSize -= Number.parseInt(this.formatSize(file.size));
     this.totalSizePercent = this.totalSize / 10;
+  }
+
+  descargarArchivo() {
+    this.fileDownload.emit(true);
   }
 
   onRemoveFile(file: any, index: number) {
@@ -179,6 +198,19 @@ export class UploadDocumentComponent implements OnInit, OnChanges {
   uploadEvent(callback: any) {
     callback();
   }
+
+  esArchivoValido(archivo: File): boolean {
+    const tiposPermitidos = ['application/pdf'];
+    const extensionesPermitidas = ['pdf'];
+
+    const extension = archivo.name.split('.').pop()?.toLowerCase();
+
+    return (
+      tiposPermitidos.includes(archivo.type) &&
+      extensionesPermitidas.includes(extension || '')
+    );
+  }
+
 
   clear() {
     this.updateFileUpload(null); // Se usa la función de actualización para limpiar
