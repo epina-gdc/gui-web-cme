@@ -2,7 +2,10 @@ import {Component, Input, OnInit} from '@angular/core';
 import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.component';
 import {PillComponent} from '@components/pill/pill.component';
 import {Card} from 'primeng/card';
-import {DetalleDocumentacionDatosPersonales} from '@models/detalleDocumentacionAspirante.interface';
+import {
+  DetalleDocumentacionDatosPersonales,
+  DetalleDocumentacionEvaluacionEspecialidad
+} from '@models/detalleDocumentacionAspirante.interface';
 import {TitleCasePipe} from '@angular/common';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {GeneralComponent} from '@components/general.component';
@@ -15,6 +18,7 @@ import {GeneralComponent} from '@components/general.component';
 })
 export class CardInfoComponent extends GeneralComponent implements OnInit {
   @Input() datosPersonales!: DetalleDocumentacionDatosPersonales;
+  @Input() evaluacion!: DetalleDocumentacionEvaluacionEspecialidad;
 
   ruta: string;
   datosFoto!: any;

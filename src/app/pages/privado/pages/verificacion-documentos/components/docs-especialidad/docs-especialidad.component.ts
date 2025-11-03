@@ -38,6 +38,7 @@ export class DocsEspecialidadComponent implements OnInit {
 
   @Input() docsEspecialidad: DetalleDocumentacionEspecialidadDocumento[] = [];
   @Input() idUsuario: number | null = null;
+  @Input() observaciones: string = '';
 
   formularioValidacion!: FormGroup;
 
@@ -71,7 +72,7 @@ export class DocsEspecialidadComponent implements OnInit {
       datosPersonales: this.fb.group({
         idUsuario: [this.idUsuario, Validators.required]
       }),
-      refObservaciones: ['', [Validators.required]],
+      refObservaciones: [this.observaciones, [Validators.required]],
       especialidadesDocumentos: this.fb.array(
         this.docsEspecialidad.map(especialidad =>
           this.crearGrupoEspecialidad(especialidad)

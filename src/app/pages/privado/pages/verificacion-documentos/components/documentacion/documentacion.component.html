@@ -33,7 +33,8 @@
     }
     @case (1) {
       <app-docs-especialidad [docsEspecialidad]="detalleAspirante.especialidadesDocumentos"
-       [idUsuario]="detalleAspirante.datosPersonales.idUsuario"/>
+                             [idUsuario]="detalleAspirante.datosPersonales.idUsuario"
+                             [observaciones]="detalleAspirante.refObservaciones"/>
     }
     @case (2) {
       <app-constancias-cursos [docsConstancias]="detalleAspirante.documentosConstancias"/>

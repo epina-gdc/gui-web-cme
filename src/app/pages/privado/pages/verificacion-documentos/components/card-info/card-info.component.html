@@ -12,7 +12,11 @@
     <div class="flex-column ms-5 w-9">
       <div class="flex justify-content-between align-items-center mb-3">
         <span class="titulo-nombre-aspirante ">{{ datosPersonales.nombreCompleto | titlecase }}</span>
-        <app-pill [texto]="'No cumple con requisitos'" [pillType]="0"/>
+        @if (!evaluacion || evaluacion.estatusVerificacion.idEstatusVerificacion === 4) {
+          <app-pill [texto]="'No cumple con requisitos'" [pillType]="0"/>
+        } @else {
+          <app-pill [texto]="evaluacion.estatusVerificacion.desEstatus" [pillType]="0"/>
+        }
       </div>
       <div class="flex justify-content-between align-items-start mt-3">
         <div class="detalle-aspirante col-2">

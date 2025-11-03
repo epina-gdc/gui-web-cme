@@ -24,7 +24,12 @@ export interface DetalleDocumentacionEstatusVerificacion {
 }
 
 export interface DetalleDocumentacionEvaluacionEspecialidad {
-  // Estructura a definir si se llega a poblar
+  idEspecialidadEvaluacion: number,
+  estatusVerificacion: {
+    idEstatusVerificacion: number,
+    desEstatus: string
+  },
+  indActivo: 1
 }
 
 export interface DetalleDocumentacionTipoDocumentoObligatorio {
