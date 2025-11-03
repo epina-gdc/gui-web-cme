@@ -75,12 +75,12 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit {
             return;
           }
 
-
-          // Guarda el timestamp actual.
+    /* SE COMENTA TIMER
+    // Guarda el timestamp actual.
         const loginTime = Date.now();
         localStorage.setItem('login_time', loginTime.toString());
 
-          this.sessionTimerService.startTimer();
+          this.sessionTimerService.startTimer(); */
 
           void this._router.navigate(['/privado/inicio'], { relativeTo: this.activatedRoute,});
         },

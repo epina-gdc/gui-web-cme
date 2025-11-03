@@ -30,7 +30,9 @@ export class GeneralComponent {
   protected _ConvocatoriaService: ConvocatoriaService;
   protected authService = inject(AuthService);
   protected documentoService = inject(DocumentoService);
-  protected sessionTimerService = inject(SessionTimerService);
+  /* SE COMENTA TIMER */
+  /* protected sessionTimerService= inject(SessionTimerService); */
+
 
   constructor() {
     this._Mensajes = inject(Mensajes);
