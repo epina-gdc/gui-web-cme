@@ -294,9 +294,9 @@
                         placeholder="Seleccionar opción" class="w-full" optionValue="value"/>
             </div>
             <div class="col-3 flex justify-content-start align-items-end">
-              @if(estatusPendienteDocumentacion){
+              @if(!estatusPendienteDocumentacion){
                 <p-button label="Agregar" icon="cme-plus" iconPos="right" [text]="true"
-                        [disabled]="formZonaInteres.invalid || estatusPendienteDocumentacion"
+                        [disabled]="formZonaInteres.invalid"
                         (click)="agregarZonaInteres()"/>
               }
 
