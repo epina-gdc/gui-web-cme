@@ -1,4 +1,4 @@
-import {ApplicationConfig, provideZoneChangeDetection} from '@angular/core';
+import {ApplicationConfig, importProvidersFrom, provideZoneChangeDetection} from '@angular/core';
 import {provideRouter} from '@angular/router';
 import Aura from '@primeng/themes/aura';
 import {es} from "primelocale/es.json"
@@ -10,10 +10,20 @@ import {Mensajes} from '@utils/mensajes';
 import {ApiKeyInterceptor} from '@interceptors/api-key.interceptor';
 import {JwtInterceptorService} from '@interceptors/autentication.interceptor';
 import {LoadingInterceptor} from '@interceptors/loader-interceptor.service';
+import {provideUserIdleConfig} from "angular-user-idle";
+import {TIEMPO_MAXIMO_SESION} from '@utils/tokens';
+import {TiempoSesion} from '@models/tiempo-sesion.interface';
 
 export const appConfig: ApplicationConfig = {
   providers: [Mensajes,
-    provideZoneChangeDetection({ eventCoalescing: true }),
+    provideZoneChangeDetection({eventCoalescing: true}),
+    {
+      provide: TIEMPO_MAXIMO_SESION,
+      useValue: {
+        tiempoMaximoInactividad: 600,
+        mostrarAlertaCuandoFalten: 60,
+      } as TiempoSesion,
+    },
     provideRouter(routes),
     provideHttpClient(
       withInterceptorsFromDi(),
@@ -31,10 +41,10 @@ export const appConfig: ApplicationConfig = {
         }, translation: es,
       }
     ),
-    {provide: HTTP_INTERCEPTORS, useClass: ApiKeyInterceptor,multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService,multi: true},
-    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
-
+    {provide: HTTP_INTERCEPTORS, useClass: ApiKeyInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
     provideAnimations(),
+    provideUserIdleConfig({idle: 540, timeout: 60, ping: 120}),
   ]
 };

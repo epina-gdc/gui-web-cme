@@ -4,11 +4,14 @@ import {SesionUser} from '@models/sesion-user.interface';
 import {Payload} from '@models/payload.interface';
 import {Router} from '@angular/router';
 import {HttpClient} from '@angular/common/http';
-import {inject, Injectable} from '@angular/core';
+import {Inject, inject, Injectable} from '@angular/core';
 import {environment} from '@env/environment.development';
 import {Login} from '@models/login';
-import {BehaviorSubject, map, Observable, of, tap} from 'rxjs';
+import {BehaviorSubject, map, Observable, of, Subject, tap} from 'rxjs';
 import {CME_TOKEN} from '@utils/constants';
+import {UserIdleService} from 'angular-user-idle';
+import {TIEMPO_MAXIMO_SESION} from '@utils/tokens';
+import {TiempoSesion} from '@models/tiempo-sesion.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +21,8 @@ export class AuthService {
   private readonly URL_AUTH: string = 'authenticate';
   private readonly URL_CAMBIO_CONTRASENIA: string = 'solicitud-cambio-contrasena';
   private readonly URL_ACTUALIZAR_CONTRASENIA: string = 'cambio-contrasena';
+  private mostrarAlertaSesionInactivaSubject = new Subject<boolean>();
+  mostrarAlertaSesionInactivaS: Observable<boolean> = this.mostrarAlertaSesionInactivaSubject.asObservable();
 
   private readonly usuarioSesionSubject = new BehaviorSubject<SesionUser | null>(null);
 
@@ -33,7 +38,8 @@ export class AuthService {
     .pipe(map((usuario: SesionUser | null) => !!usuario));
 
 
-  constructor() {
+  constructor(private userIdleService: UserIdleService,
+              @Inject(TIEMPO_MAXIMO_SESION) private tiempoSesion: TiempoSesion) {
     this.recuperarSesionAlRecargarPagina()
   }
 
@@ -62,6 +68,7 @@ export class AuthService {
   settearSession(token: string) {
     this.agregarUsuarioSesion(token);
     this.usuarioService.setUser(this.obtenerUsuarioDePayload(token));
+    this.iniciarTemporizadorSesion();
   }
 
   private agregarUsuarioSesion(accessToken: string): void {
@@ -96,8 +103,9 @@ export class AuthService {
 
   cerrarSesion() {
     localStorage.clear();
-    this.usuarioService.clearUser()
-    this.usuarioSesionSubject.next(null)
+    this.usuarioService.clearUser();
+    this.usuarioSesionSubject.next(null);
+    this.detenerTemporizadorSesion();
     void this.router.navigate(['/']);
   }
 
@@ -121,4 +129,25 @@ export class AuthService {
 
     return of(true);
   }
+
+
+  iniciarTemporizadorSesion(): void {
+    this.userIdleService.startWatching(); // Inicia el temporizador de inactividad
+    this.userIdleService.onTimerStart().subscribe(count => {
+      if (count === this.tiempoSesion.mostrarAlertaCuandoFalten / 60) {
+        this.mostrarAlertaSesionInactivaSubject.next(true); // Muestra la alerta
+      }
+    });
+    this.userIdleService.onTimeout().subscribe(() => this.cerrarSesion());
+  }
+
+  resetearTemporizadorSesion(): void {
+    this.userIdleService.resetTimer(); // Reinicia el temporizador
+    this.mostrarAlertaSesionInactivaSubject.next(false); // Oculta la alerta
+  }
+
+  detenerTemporizadorSesion(): void {
+    this.userIdleService.stopWatching(); // Detiene el temporizador
+  }
+
 }
