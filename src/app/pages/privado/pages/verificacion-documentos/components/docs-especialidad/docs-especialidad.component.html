@@ -1,8 +1,8 @@
 <div class="flex" [formGroup]="formularioValidacion">
+
   <div class="doc-especialidades w-6">
 
     <div formArrayName="especialidadesDocumentos">
-
       @for (item of docsEspecialidad; track item.cveEspecialidad; let i = $index) {
 
         <div [formGroupName]="i" class="flex flex-column acordeon my-3">
@@ -15,14 +15,14 @@
                   <p class="header-accordeon ms-3">{{ item.desEspecialidad }}</p>
                 </div>
               </p-accordion-header>
+
               <p-accordion-content>
 
-                <div formArrayName="documentosEspecialidad">
+                <div [formArrayName]="'documentosEspecialidad'">
 
                   @for (doc of item.documentosEspecialidad; track doc.idDocumentoEspecialidad; let j = $index) {
 
-                    <div [formGroupName]="j"
-                         class="flex align-items-center cursor-pointer archivo-especialidad mt-2"
+                    <div [formGroupName]="j" class="flex align-items-center cursor-pointer archivo-especialidad mt-2"
                          [ngClass]="{'select': tabActive() === doc.idDocumentoEspecialidad }"
                          (click)="docSeleccionado(doc.idDocumentoEspecialidad, doc.documento.refGuid)">
 
@@ -38,7 +38,8 @@
                           <p-radioButton [inputId]="option.value + doc.idDocumentoEspecialidad"
                                          class="flex align-items-center mr-3"
                                          [value]="option.value === '1'"
-                                         [formControlName]="'indCubre'"/>
+                                         [formControl]="getFormControl(getDocumentosArray(i).at(j), 'indCubre')"
+                                         [name]="'cubre_' + doc.idDocumentoEspecialidad"/>
                         }
                       </div>
                     </div>
@@ -49,10 +50,9 @@
           </p-accordion>
 
 
-          <div formGroupName="evaluacionEspecialidad"
-               class="flex justify-content-start align-items-center p-3 border-round-xl border mt-2">
-
-            <div formGroupName="estatusVerificacion" class="w-full flex">
+          <div formGroupName="evaluacionEspecialidad">
+            <div formGroupName="estatusVerificacion"
+                 class="flex justify-content-start align-items-center p-3 border-round-xl border mt-2">
               @for (option of estatusDocumentos; track option.value) {
                 <div class="flex align-items-center gap-1 justify-content-center">
                   <label [for]="option.value + item.cveEspecialidad"
@@ -60,15 +60,16 @@
                   <p-radioButton [inputId]="option.value + item.cveEspecialidad"
                                  class="flex align-items-center mr-3"
                                  [value]="option.value"
-                                 [formControlName]="'idEstatusVerificacion'"/>
+                                 [formControl]="getFormControl(getEstatusGroup(i), 'idEstatusVerificacion')"
+                                 [name]="'estatus_' + item.cveEspecialidad"/>
                 </div>
               }
             </div>
           </div>
         </div>
       }
-    </div>
 
+    </div>
 
     <p-card>
       <div class="flex justify-content-between">
@@ -77,12 +78,11 @@
       </div>
       <textarea rows="1" cols="30" class="w-full" [autoResize]="true" pTextarea formControlName="refObservaciones"
                 maxlength="500"></textarea>
-      <label class="label-obligatorio" for="refObservaciones">
-        {{ formularioValidacion.get('refObservaciones')?.value?.length || 0 }}/500</label>
+      <label class="label-obligatorio"
+             for="refObservaciones">{{ formularioValidacion.get('refObservaciones')?.value?.length || 0 }}/500</label>
     </p-card>
-
-
   </div>
+
   <div class="flex p-4 w-6 flex-column">
     <h6>Previsualización</h6>
 
@@ -101,6 +101,7 @@
     }
   </div>
 </div>
+
 <div class="flex justify-content-end">
   <p-button type="button" variant="outlined" class="me-2" label="Cancelar"/>
   <p-button type="submit" [disabled]="formularioValidacion.invalid" label="Finalizar verificación"/>

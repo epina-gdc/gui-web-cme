@@ -1,7 +1,8 @@
 import {CommonModule} from '@angular/common';
 import {Component, inject, Input, OnInit, signal, WritableSignal} from '@angular/core';
 import {
-  FormBuilder,
+  AbstractControl, FormArray,
+  FormBuilder, FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
@@ -122,6 +123,31 @@ export class DocsEspecialidadComponent implements OnInit {
         console.error('Error al obtener el documento', err);
       }
     });
+  }
+
+  // Getter para acceder al FormArray principal (ya deberías tenerlo)
+  get especialidadesDocumentosArray(): FormArray {
+    return this.formularioValidacion.get('especialidadesDocumentos') as FormArray;
+  }
+
+// Función para obtener el FormGroup de una especialidad específica por índice
+  getEspecialidadGroup(index: number): FormGroup {
+    return this.especialidadesDocumentosArray.at(index) as FormGroup;
+  }
+
+// Función para obtener el FormArray de documentos de una especialidad específica
+  getDocumentosArray(index: number): FormArray {
+    return this.getEspecialidadGroup(index).get('documentosEspecialidad') as FormArray;
+  }
+
+// Función para obtener el FormControl específico (usado para [formControl])
+  getFormControl(parentControl: AbstractControl, controlName: string): FormControl {
+    return parentControl.get(controlName) as FormControl;
+  }
+
+// Función para obtener el FormGroup de estatus de verificación
+  getEstatusGroup(index: number): FormGroup {
+    return this.getEspecialidadGroup(index).get('evaluacionEspecialidad')?.get('estatusVerificacion') as FormGroup;
   }
 
 }
