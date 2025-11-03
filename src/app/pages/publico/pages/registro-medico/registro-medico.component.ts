@@ -721,20 +721,11 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.dinamicoCurp();
   }
 
-
-  private existeCURP(curp: string): boolean {
-    if (curp.length !== 18) return false;
-    return !['PIGE941226HMCXMD05'].includes(curp);
-  }
-
   get habilitarBtnMatricula() {
     const matricula = this.form.controls['matricula'];
     if (!matricula.value) return true;
 
-    if (matricula.value.length <= 10) return false;
-
-    return true;
-
+    return matricula.value.length > 10;
     /* return matricula.value.length !== 10; */
   }
 
