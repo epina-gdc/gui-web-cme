@@ -50,8 +50,8 @@ export class DocsEspecialidadComponent implements OnInit {
   ];
 
   estatusDocumentos = [
-    {label: 'Cumple con requisitos', value: '1'},
-    {label: 'No cumple con requisitos', value: '0'},
+    {label: 'Cumple con requisitos', value: '3'},
+    {label: 'No cumple con requisitos', value: '4'},
     {label: 'Revisión documental', value: '2'},
   ];
 
@@ -164,7 +164,7 @@ export class DocsEspecialidadComponent implements OnInit {
         // Buscar la descripción (label) en la lista de opciones (estatusDocumentos)
         const estatusSeleccionado = this.estatusDocumentos.find(o => o.value === idEstatus);
 
-        // 3. Inyectar el campo desEstatus
+        // Inyectar el campo desEstatus
         if (estatusSeleccionado) {
           especialidad.evaluacionEspecialidad.estatusVerificacion.desEstatus = estatusSeleccionado.label;
         }
