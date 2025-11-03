@@ -17,6 +17,7 @@ import {ButtonModule} from 'primeng/button';
 import {DetalleDocumentacionEspecialidadDocumento} from '@models/detalleDocumentacionAspirante.interface';
 import {DocumentoService} from '@services/documentos.service';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {VerificacionDocsService} from '@services/verificacion-docs.service';
 
 @Component({
   selector: 'app-docs-especialidad',
@@ -39,6 +40,8 @@ export class DocsEspecialidadComponent implements OnInit {
   @Input() idUsuario: number | null = null;
 
   formularioValidacion!: FormGroup;
+
+  verificacionDocsService: VerificacionDocsService = inject(VerificacionDocsService)
 
   pdfUrl: SafeResourceUrl | undefined;
 
@@ -155,16 +158,10 @@ export class DocsEspecialidadComponent implements OnInit {
     }
 
     const solicitud = this.formularioValidacion.getRawValue();
-
     solicitud.especialidadesDocumentos = solicitud.especialidadesDocumentos.map(
       (especialidad: any) => {
-
         const idEstatus = especialidad.evaluacionEspecialidad.estatusVerificacion.idEstatusVerificacion;
-
-        // Buscar la descripción (label) en la lista de opciones (estatusDocumentos)
         const estatusSeleccionado = this.estatusDocumentos.find(o => o.value === idEstatus);
-
-        // Inyectar el campo desEstatus
         if (estatusSeleccionado) {
           especialidad.evaluacionEspecialidad.estatusVerificacion.desEstatus = estatusSeleccionado.label;
         }
@@ -174,6 +171,12 @@ export class DocsEspecialidadComponent implements OnInit {
     );
 
     console.log(solicitud);
+
+    this.verificacionDocsService.verificarRegistro(solicitud).subscribe({
+      next: (respuesta) => {
+        console.log(respuesta);
+      }
+    })
   }
 
 
