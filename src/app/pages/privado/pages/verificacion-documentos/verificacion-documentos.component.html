@@ -86,7 +86,7 @@
       <td>{{usuarioDocumentos.tipoModalidad}}</td>
       <td>{{usuarioDocumentos.fechaVerificacion}}</td>
       <td alignFrozen="right" pFrozenColumn class="flex justify-content-center">
-        <i (click)="consultaDocumento($event, usuarioDocumentos)"  class="cme-document cursor-pointer" [style]="{ 'font-size': '2.2rem', color: '#23c8a7'}"></i>
+        <i (click)="consultaDocumento($event, usuarioDocumentos)"  class="cme-ellipsis cursor-pointer border-round-3xl" [style]="{ 'font-size': '2.2rem', color: '#a9c9f8', background: '#f6faff' }"></i>
       </td>
     </tr>
   </ng-template>
@@ -126,7 +126,7 @@
 <p-popover #op (onHide)="documentoSeleccionado == null">
   <ng-template #content>
     <div class="flex align-items-center boton-descargar cursor-pointer" (click)="irDetalleDocumentacion(documentoSeleccionado)">
-      <i class="icon pi pi-eye" [style]="{ 'font-size': '1.2rem', color: '#869fd4'}"></i>
+      <i class="icon pi pi-eye" [style]="{ 'font-size': '1.2rem', color: '#a9c9f8'}"></i>
       <span class="ms-2 acciones-tabla">Consultar documentos</span>
     </div>
   </ng-template>
