@@ -192,6 +192,25 @@ export class CatalogosGeneralesService {
     );
   }
 
+  
+  getLstRegimen(): Observable<HttpRespuesta<any>> {
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/especialidades', {headers: this.header}).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<any>) => {
+        return response;
+      })
+    );
+  }
+
+  getLstBono(): Observable<HttpRespuesta<any>> {
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/especialidades', {headers: this.header}).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<any>) => {
+        return response;
+      })
+    );
+  }
+
   private handleError(error: HttpErrorResponse) {
 
     if (error.status) {
