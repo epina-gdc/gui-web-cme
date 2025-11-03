@@ -148,4 +148,10 @@ export class DocsEspecialidadComponent implements OnInit {
     return this.getEspecialidadGroup(index).get('evaluacionEspecialidad')?.get('estatusVerificacion') as FormGroup;
   }
 
+  finalizarVerificacion(): void {
+    const solicitud = this.formularioValidacion.getRawValue();
+    console.log(solicitud);
+  }
+
+
 }
