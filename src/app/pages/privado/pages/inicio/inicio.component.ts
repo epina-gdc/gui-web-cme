@@ -1511,10 +1511,10 @@ export class InicioComponent extends GeneralComponent {
     if (this.idDocumentoConstancia1) {
       documentosProcesados[0].idDocumentoConstancia = this.idDocumentoConstancia1
     }
-    if (this.idDocumentoConstancia2) {
+    if (this.idDocumentoConstancia2 && documentosProcesados[1]) {
       documentosProcesados[1].idDocumentoConstancia = this.idDocumentoConstancia2
     }
-    if (this.idDocumentoConstancia3) {
+    if (this.idDocumentoConstancia3 && documentosProcesados[2]) {
       documentosProcesados[2].idDocumentoConstancia = this.idDocumentoConstancia3
     }
 
@@ -1742,7 +1742,7 @@ export class InicioComponent extends GeneralComponent {
   procesarDocumentosContancias(datos: RespuestaDocumentosConstancia[]): void {
     const refConstancia1 = datos.length > 0 ? datos[0].documento.refGuid : null;
     const refConstancia2 = datos.length > 1 ? datos[1].documento.refGuid : null;
-    const refConstancia3 = datos.length > 1 ? datos[2].documento.refGuid : null;
+    const refConstancia3 = datos.length > 2 ? datos[2].documento.refGuid : null;
     if (refConstancia1) {
       this.obtenerDocumento(refConstancia1, 'constancia', 1, datos[0].refConstancia);
       this.idDocumentoConstancia1 = datos[0].idDocumentoConstancia;
