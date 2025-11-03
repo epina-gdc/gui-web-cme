@@ -231,10 +231,10 @@ export class InicioComponent extends GeneralComponent {
 
   asignarFormularioRegistro(): FormGroup {
     return this.fb.group({
-      rfc: [],
+      rfc: [{value: ''} , [Validators.required, Validators.minLength(13), Validators.maxLength(13)]],
       nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
-      fechaNacimiento: [{value: '', disabled: true}, [Validators.required]],
-      sexo: [{value: '', disabled: true}, [Validators.required]],
+      fechaNacimiento: [{value: ''}, [Validators.required]],
+      sexo: [{value: ''}, [Validators.required]],
       estadoCivil: [{value: '', disabled: false}, [Validators.required]],
       //dependientes: [],
       indPadres: [false],
@@ -286,6 +286,7 @@ export class InicioComponent extends GeneralComponent {
       if (value) {
         this.formRegistro.get("hijos")?.enable();
       } else {
+        this.formRegistro.get("hijos")?.setValue('');
         this.formRegistro.get("hijos")?.disable();
       }
     });
@@ -294,6 +295,7 @@ export class InicioComponent extends GeneralComponent {
       if (value) {
         this.formRegistro.get("otros")?.enable();
       } else {
+        this.formRegistro.get("otros")?.setValue('');
         this.formRegistro.get("otros")?.disable();
       }
     });
@@ -308,7 +310,8 @@ export class InicioComponent extends GeneralComponent {
     let fecha;
 
     //SI EL USUARIO NO TRAE CURP LO SIGUIENTE NO FUNCIONA
-    /* const sexo = this.obtenerSexoDeCurp(refCurp + '');
+    debugger
+    const sexo = this.obtenerSexoDeCurp(refCurp + '');
     if (sexo) {
       this.formRegistro.get('sexo')?.setValue(sexo);
     } else {
@@ -319,7 +322,7 @@ export class InicioComponent extends GeneralComponent {
       this.formRegistro.get('fechaNacimiento')?.setValue(fecha);
     } else {
       this.formRegistro.get('fechaNacimiento')?.enable();
-    } */
+    }
 
 
     this.formRegistro.get('correo')?.setValue(refEmail + '');
@@ -336,7 +339,7 @@ export class InicioComponent extends GeneralComponent {
     return this.fb.group({
       otroEmpleo: [{value: '0', disabled: false}],
       sustituto: [{value: '0', disabled: false}],
-      tipoInstitucion: [{value: null, disabled: true}],
+      tipoInstitucion: [{value: null}, []],
       nombreInstitucion: [{value: null, disabled: true}, [Validators.maxLength(200)]],
       horarioInicio: [{value: null, disabled: true}],
       horarioFin: [{value: null, disabled: true}],
@@ -389,7 +392,7 @@ export class InicioComponent extends GeneralComponent {
 
     const codigoSexo = curp[10];
     const sexosMap: { [key: string]: any } = {
-      'H': this.sexos.find(sexo => sexo.label === 'Masculino'),
+      'H': this.sexos.find(sexo => sexo.label === 'Hombre'),
       'M': this.sexos.find(sexo => sexo.label === 'Mujer')
     };
 
@@ -777,19 +780,26 @@ export class InicioComponent extends GeneralComponent {
         this.formRegistro.get('estadoNacimiento')?.patchValue(lugarNacimiento.idLugarNacimiento);
       }
 
-      if(sexo){
+      /* CUANDO NO EXISTE CURP DEJA DE FUNCIONAR LA OBTENCION POR CURP */
+      if(perfil.idPerfil == 3){
+        if(sexo){
         this.formRegistro.get('sexo')?.patchValue(
           {
             label: sexo.desSexo,
             value: sexo.idSexo
           }
         )
+      } else {
+        this.formRegistro.get('sexo')?.enable();
       }
 
       if(fecNacimiento){
         var fecha = this.obtenerFechaDesdeCadena(fecNacimiento);
         this.formRegistro.get('fechaNacimiento')?.setValue(fecha || null);
+      } else {
+        this.formRegistro.get('fechaNacimiento')?.enable();
       }
+    }
     }
 
     if (datosResidenciaActual) {
@@ -1061,6 +1071,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   siguientePasoStepper(): void {
+    debugger
     const currentStep = this.indice();
     const action = this.pasoActions[currentStep];
 
@@ -1242,6 +1253,12 @@ export class InicioComponent extends GeneralComponent {
   }
 
   guardarDocumentacion(finalizarRegistro: boolean = false): void {
+    debugger
+
+    if(this.banderaCargarDocumentacion){
+      this._alertServices.error(this._Mensajes.MSG037);
+      return;
+    }
     const refObligatorio1 = this.documentosLocalStorageService.obtenerRefGuid(1);
     const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
     const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
@@ -1533,9 +1550,18 @@ export class InicioComponent extends GeneralComponent {
     if (refConstancia3 && !refConstancia3.nombre) {
       return true;
     }
+
+/*     const hasTipoInstitucion = this.formDatosEmpleo.get('tipoInstitucion')?.value;
+    if(!hasTipoInstitucion){
+      debugger
+      return true;
+    } */
     if (this.formDatosEmpleo.invalid && externo) {
       return true;
     }
+
+
+
 
     return especialidades.length === 0;
   }
@@ -1563,9 +1589,9 @@ export class InicioComponent extends GeneralComponent {
     form.get('otroEmpleo')?.valueChanges.subscribe(value => {
       if(!this.estatusPendienteDocumentacion){
         const tieneOtroEmpleo = value === '1'; // '1' = Sí
-
+        debugger
         // Habilitar/Deshabilitar campos asociados a 'otroEmpleo'
-        this.manejoValidaciones(form, 'tipoInstitucion', tieneOtroEmpleo);
+        this.manejoValidaciones(form, 'tipoInstitucion', tieneOtroEmpleo, tieneOtroEmpleo);
 
         // Reevaluar la dependencia de Horario/Jornada
         this.actualizarHorarioJornadaState(form);
@@ -1599,6 +1625,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   private manejarNombreInstitucionLogic(form: FormGroup, isOtroEmpleo: boolean): void {
+    debugger
     const control = form.get('nombreInstitucion');
     const hasTipoInstitucion = !!form.get('tipoInstitucion')?.value; // Verifica si se ha seleccionado Pública o Privada
 

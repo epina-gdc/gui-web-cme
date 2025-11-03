@@ -12,7 +12,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-root',
   imports: [RouterOutlet, FooterComponent, AlertComponent, NgxSpinnerModule, ConfirmDialog, CommonModule],
   providers: [
-    SessionTimerService,
+    /* SE COMENTA TIMER */
+    //SessionTimerService,
     ConfirmationService
   ],
   templateUrl: './app.component.html',
@@ -22,14 +23,15 @@ import { CommonModule } from '@angular/common';
 export class AppComponent {
   title: string = 'Convocatoria para Médicos Especialistas';
 
-    confirmationService = inject(ConfirmationService);
+  /* SE COMENTA TIMER */
+    /* confirmationService = inject(ConfirmationService);
 
 
   acceptConfirmation(): void {
     // Nota: Aunque el nombre es 'accept', PrimeNG lo usa para disparar
     // la función que está en el callback 'accept' de tu objeto Confirmation.
     this.confirmationService.onAccept();
-  }
+  } */
 
 
 
