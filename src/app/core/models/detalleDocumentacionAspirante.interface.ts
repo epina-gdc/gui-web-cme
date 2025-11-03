@@ -77,7 +77,7 @@ export interface DetalleDocumentacionDocumentoEspecialidad {
   idDocumentoEspecialidad: number;
   tipoDocumentoEspecialidad: DetalleDocumentacionTipoDocumentoEspecialidad;
   documento: DetalleDocumentacionDocumento;
-  indCubre: string | null;
+  indCubre: boolean | null;
 }
 
 export interface DetalleDocumentacionEspecialidadDocumento {

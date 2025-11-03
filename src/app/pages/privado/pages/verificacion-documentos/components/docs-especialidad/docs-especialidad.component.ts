@@ -86,7 +86,7 @@ export class DocsEspecialidadComponent implements OnInit {
       this.fb.group({
         idDocumentoEspecialidad: [doc.idDocumentoEspecialidad],
         // Convertir '1' a true, '0' a false, y null a false
-        indCubre: [doc.indCubre === '1' ? true : doc.indCubre === '0' ? false : null]
+        indCubre: [doc.indCubre ?? null]
       }));
 
     const idEstatusVerificacionInicial = especialidad.evaluacionEspecialidad
