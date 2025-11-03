@@ -1820,12 +1820,12 @@ export class InicioComponent extends GeneralComponent {
       nombreInstitucion: datos.nomEspecificacionInstitucion || null,
 
       // Horario/Jornada
-      horarioInicio: dayjs(datos.refJornadaInicio, 'HH:mm:ss').toDate(),
-      horarioFin: dayjs(datos.refJornadaFin, 'HH:mm:ss').toDate(),
+      horarioInicio: datos.refJornadaInicio ? dayjs(datos.refJornadaInicio, 'HH:mm:ss').toDate(): null,
+      horarioFin: datos.refJornadaInicio ? dayjs(datos.refJornadaFin, 'HH:mm:ss').toDate(): null,
 
       // Días
-      diaInicio: datos.diaSemanaInicio!.idDiaSemana,
-      diaFin: datos.diaSemanaFin!.idDiaSemana,
+      diaInicio: datos.diaSemanaInicio?.idDiaSemana ?? null,
+      diaFin: datos.diaSemanaFin?.idDiaSemana ?? null,
     });
     /*     if(this.estatusPendienteDocumentacion){
 
