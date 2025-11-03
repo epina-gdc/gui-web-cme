@@ -1,4 +1,8 @@
 .foto{
-    border-radius: 100%;
+    border-radius: 50%;
     overflow: hidden;
+    background-size: cover;
+    position: relative; 
+    width: 120px; /* Ancho del óvalo */
+  height: 160px; /* Alto del óvalo */
 }

@@ -1,9 +1,9 @@
-import {Component, Input,OnInit} from '@angular/core';
-import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.component';
-import {PillComponent} from '@components/pill/pill.component';
-import {Card} from 'primeng/card';
-import {DetalleDocumentacionDatosPersonales} from '@models/detalleDocumentacionAspirante.interface';
-import {TitleCasePipe} from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
+import { BtnRegresarComponent } from '@components/btn-regresar/btn-regresar.component';
+import { PillComponent } from '@components/pill/pill.component';
+import { Card } from 'primeng/card';
+import { DetalleDocumentacionDatosPersonales } from '@models/detalleDocumentacionAspirante.interface';
+import { TitleCasePipe } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { GeneralComponent } from '@components/general.component';
 
@@ -16,20 +16,20 @@ import { GeneralComponent } from '@components/general.component';
   templateUrl: './card-info.component.html',
   styleUrl: './card-info.component.scss'
 })
-export class CardInfoComponent  extends GeneralComponent  implements OnInit {
+export class CardInfoComponent extends GeneralComponent implements OnInit {
   @Input() datosPersonales!: DetalleDocumentacionDatosPersonales;
 
-  ruta:string;
+  ruta: string;
   datosFoto!: any;
-  selectFile!: File | undefined;
+nombreFoto!:string;
   defaultFile!: SafeResourceUrl | undefined;
-  constructor(    private sanitizer: DomSanitizer) {
+  constructor(private sanitizer: DomSanitizer) {
     super()
-   this.ruta = this._nav.privado+this._nav.verificacionDocumentos;
+    this.ruta = this._nav.privado + this._nav.verificacionDocumentos;
 
   }
-  ngOnInit(){
-    console.log("---",this.datosPersonales);
+  ngOnInit() {
+    
     this.obtenerDatosFoto(this.datosPersonales.idUsuario);
   }
 
@@ -49,12 +49,17 @@ export class CardInfoComponent  extends GeneralComponent  implements OnInit {
     this.documentoService.getFotografia(this.datosFoto.documento.refGuid).pipe(
     ).subscribe({
       next: (response: any) => {
-        
-        this.selectFile = response;
-        const nombreArchivo = 'foto_perfil.png';
-        const tipoArchivo = response.type;
- const blob= new Blob([response],  {type: 'blob'});
- this.defaultFile = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
+        let extension = ['png', 'jpeg', 'jpg'];
+        if (extension.includes(this.datosFoto.documento.refExtension.toLowerCase())) { 
+          this.nombreFoto = this.datosFoto.documento.refNombre;
+          const blob = new Blob([response], { type: 'blob' });
+          this.defaultFile = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
+        }
+        else{
+this.nombreFoto ='Sin foto'
+        }
+
+       
       }
     });
   }
