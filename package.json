@@ -23,7 +23,6 @@
     "@primeng/themes": "^19.1.4",
     "dayjs": "^1.11.18",
     "moment": "^2.30.1",
-    "ng2-pdf-viewer": "^10.4.0",
     "ngx-spinner": "^19.0.0",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",

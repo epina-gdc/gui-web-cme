@@ -1,18 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { BtnRegresarComponent } from '@components/btn-regresar/btn-regresar.component';
-import { PillComponent } from '@components/pill/pill.component';
-import { Card } from 'primeng/card';
-import { DetalleDocumentacionDatosPersonales } from '@models/detalleDocumentacionAspirante.interface';
-import { TitleCasePipe } from '@angular/common';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { GeneralComponent } from '@components/general.component';
+import {Component, Input, OnInit} from '@angular/core';
+import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.component';
+import {PillComponent} from '@components/pill/pill.component';
+import {Card} from 'primeng/card';
+import {DetalleDocumentacionDatosPersonales} from '@models/detalleDocumentacionAspirante.interface';
+import {TitleCasePipe} from '@angular/common';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {GeneralComponent} from '@components/general.component';
 
 @Component({
   selector: 'app-card-info',
-  imports: [BtnRegresarComponent,
-    PillComponent,
-
-    Card, TitleCasePipe],
+  imports: [BtnRegresarComponent, PillComponent, Card, TitleCasePipe],
   templateUrl: './card-info.component.html',
   styleUrl: './card-info.component.scss'
 })
@@ -21,15 +18,15 @@ export class CardInfoComponent extends GeneralComponent implements OnInit {
 
   ruta: string;
   datosFoto!: any;
-nombreFoto!:string;
+  nombreFoto!: string;
   defaultFile!: SafeResourceUrl | undefined;
+
   constructor(private sanitizer: DomSanitizer) {
     super()
     this.ruta = this._nav.privado + this._nav.verificacionDocumentos;
-
   }
+
   ngOnInit() {
-    
     this.obtenerDatosFoto(this.datosPersonales.idUsuario);
   }
 
@@ -50,16 +47,13 @@ nombreFoto!:string;
     ).subscribe({
       next: (response: any) => {
         let extension = ['png', 'jpeg', 'jpg'];
-        if (extension.includes(this.datosFoto.documento.refExtension.toLowerCase())) { 
+        if (extension.includes(this.datosFoto.documento.refExtension.toLowerCase())) {
           this.nombreFoto = this.datosFoto.documento.refNombre;
-          const blob = new Blob([response], { type: 'blob' });
+          const blob = new Blob([response], {type: 'blob'});
           this.defaultFile = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
+        } else {
+          this.nombreFoto = 'Sin foto'
         }
-        else{
-this.nombreFoto ='Sin foto'
-        }
-
-       
       }
     });
   }

@@ -1,8 +1,8 @@
 import {NgClass} from '@angular/common';
-import {Component,Input, signal, WritableSignal} from '@angular/core';
-import { GeneralComponent } from '@components/general.component';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { DetalleDocumentacionDocumentoConstancia } from '@models/detalleDocumentacionAspirante.interface';
+import {Component, Input, signal, WritableSignal} from '@angular/core';
+import {GeneralComponent} from '@components/general.component';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {DetalleDocumentacionDocumentoConstancia} from '@models/detalleDocumentacionAspirante.interface';
 
 @Component({
   selector: 'app-constancias-cursos',
@@ -11,43 +11,42 @@ import { DetalleDocumentacionDocumentoConstancia } from '@models/detalleDocument
   styleUrl: './constancias-cursos.component.scss'
 })
 export class ConstanciasCursosComponent extends GeneralComponent {
-  @Input()docsConstancias:DetalleDocumentacionDocumentoConstancia[] = [];
+  @Input() docsConstancias: DetalleDocumentacionDocumentoConstancia[] = [];
 
   tabActive: WritableSignal<number> = signal(0);
   pdfSrc: SafeResourceUrl | undefined;
   blnShowImg!: boolean;
+
   constructor(
-    
     private sanitizer: DomSanitizer
-   ) {
+  ) {
     super();
     this.blnShowImg = false;
-    
+
   }
 
-  docSeleccionado(id: number, guid: string,extension:string) {
+  docSeleccionado(id: number, guid: string, extension: string) {
     this.tabActive.set(id);
-this.obtenerPrevisualizacionDocumento(guid,extension);
-}
+    this.obtenerPrevisualizacionDocumento(guid, extension);
+  }
 
 
-obtenerPrevisualizacionDocumento(guid: string,extension:string) {
-  this.documentoService.obtenerDocumento(guid).subscribe({
-    next: (response: any) => {
-      let tipo ='application/pdf'
-      let img = ['jpg', 'jpeg', 'png'];
-      if(img.includes(extension.toLowerCase()))
-      {
-        tipo ='blob';
-        this.blnShowImg = true;
+  obtenerPrevisualizacionDocumento(guid: string, extension: string) {
+    this.documentoService.obtenerDocumento(guid).subscribe({
+      next: (response: any) => {
+        let tipo = 'application/pdf'
+        let img = ['jpg', 'jpeg', 'png'];
+        if (img.includes(extension.toLowerCase())) {
+          tipo = 'blob';
+          this.blnShowImg = true;
+        }
+        const blob = new Blob([response], {type: tipo});
+        this.pdfSrc = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
+      },
+      error: (err: any) => {
+        console.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO, err);
+        this._alertServices.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO);
       }
-      const blob = new Blob([response], { type: tipo });
-      this.pdfSrc = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
-    },
-    error: (err: any) => {
-      console.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO, err);
-      this._alertServices.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO);
-    }
-  });
-}
+    });
+  }
 }
