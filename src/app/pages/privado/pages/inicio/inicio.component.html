@@ -29,7 +29,7 @@
               </div>
               <input pInputText class="w-full" (keyup)="convertMayusculas($event);" type="text" id="rfc"
                      placeholder="Ingresa RFC"
-                     formControlName="rfc"/>
+                     formControlName="rfc" maxlength="13"/>
             </div>
             <div class="col-4">
               <div class="flex justify-content-between">
@@ -499,7 +499,7 @@
             </div>
             <input pInputText class="w-full" type="text" id="constancia1" [required]="!refConstancia1"
                    [disabled]="estatusPendienteDocumentacion || refConstancia1"
-                   (change)="actualizarNombreDocumento(1, $event)"
+                   (input)="actualizarNombreDocumento(1, $event)"
                    placeholder="Especifique el nombre del documento" [(ngModel)]="nombreConstancia1"
             />
           </div>
@@ -520,7 +520,7 @@
             </div>
             <input pInputText class="w-full" type="text" id="constancia2" [(ngModel)]="nombreConstancia2"
                    [disabled]="estatusPendienteDocumentacion || refConstancia2" [required]="!refConstancia2"
-                   placeholder="Especifique el nombre del documento" (change)="actualizarNombreDocumento(2, $event)"
+                   placeholder="Especifique el nombre del documento" (input)="actualizarNombreDocumento(2, $event)"
             />
           </div>
           <div class="col-4">
@@ -538,7 +538,7 @@
               <p class="label-obligatorio">Obligatorio</p>
             </div>
             <input pInputText class="w-full" type="text" id="constancia3" [(ngModel)]="nombreConstancia3"
-                   placeholder="Especifique el nombre del documento" (change)="actualizarNombreDocumento(3, $event)"
+                   placeholder="Especifique el nombre del documento" (input)="actualizarNombreDocumento(3, $event)"
                    [disabled]="estatusPendienteDocumentacion || refConstancia3" [required]="!refConstancia3"
             />
           </div>

@@ -311,7 +311,7 @@ export class InicioComponent extends GeneralComponent {
     let fecha;
 
     //SI EL USUARIO NO TRAE CURP LO SIGUIENTE NO FUNCIONA
-    debugger
+
     const sexo = this.obtenerSexoDeCurp(refCurp + '');
     if (sexo) {
       this.formRegistro.get('sexo')?.setValue(sexo);
@@ -1088,7 +1088,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   siguientePasoStepper(): void {
-    debugger
+
     const currentStep = this.indice();
     const action = this.pasoActions[currentStep];
 
@@ -1270,12 +1270,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   guardarDocumentacion(finalizarRegistro: boolean = false): void {
-    debugger
 
-    if(this.banderaCargarDocumentacion){
-      this._alertServices.error(this._Mensajes.MSG037);
-      return;
-    }
     const refObligatorio1 = this.documentosLocalStorageService.obtenerRefGuid(1);
     const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
     const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
@@ -1573,7 +1568,7 @@ export class InicioComponent extends GeneralComponent {
 
 /*     const hasTipoInstitucion = this.formDatosEmpleo.get('tipoInstitucion')?.value;
     if(!hasTipoInstitucion){
-      debugger
+
       return true;
     } */
     if (this.formDatosEmpleo.invalid && externo) {
@@ -1608,7 +1603,7 @@ export class InicioComponent extends GeneralComponent {
     form.get('otroEmpleo')?.valueChanges.subscribe(value => {
       if (!this.estatusPendienteDocumentacion) {
         const tieneOtroEmpleo = value === '1'; // '1' = Sí
-        debugger
+
         // Habilitar/Deshabilitar campos asociados a 'otroEmpleo'
         this.manejoValidaciones(form, 'tipoInstitucion', tieneOtroEmpleo, tieneOtroEmpleo);
 
@@ -1644,7 +1639,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   private manejarNombreInstitucionLogic(form: FormGroup, isOtroEmpleo: boolean): void {
-    debugger
+
     const control = form.get('nombreInstitucion');
     const hasTipoInstitucion = !!form.get('tipoInstitucion')?.value; // Verifica si se ha seleccionado Pública o Privada
 
