@@ -1,10 +1,10 @@
 <div class="flex justify-content-start align-items-center gap-3">
-  <btn-regresar [ruta]="'privado/verificacion-documentos'"/>
+  <btn-regresar [ruta]="ruta"/>
   <h3 class="titulo-seccion w-full">Documentación del aspirante</h3>
 </div>
 <p-card class="mx-2 empty-border" [header]="'Información del médico aspirante'">
   <div class="flex align-items-center p-4">
-    <img role="presentation" [alt]="'nombre'" src="/assets/images/img_medico.png" width="100" height="100"/>
+    <img class="foto" role="presentation" [alt]="'nombre'" [src]="defaultFile" width="100" height="100"/>
     <div class="flex-column ms-5 w-9">
       <div class="flex justify-content-between align-items-center mb-3">
         <span class="titulo-nombre-aspirante ">{{ datosPersonales.nombreCompleto | titlecase}}</span>

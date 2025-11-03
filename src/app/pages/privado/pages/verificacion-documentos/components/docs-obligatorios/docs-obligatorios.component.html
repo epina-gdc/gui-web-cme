@@ -1,24 +1,34 @@
 <div class="flex ">
   <div class="archivos col-6 pt-3">
-    @for (doc of documentacion; track doc.idDocumento) {
-      <div class="flex align-items-center px-2 mb-4" [ngClass]="{'select': tabActive() === doc.idDocumento }"
-       (click)="docSeleccionado(doc.idDocumento)">
-        <i class="cme-file" style="font-size: 2rem"></i>
-        <p class="ms-3 texto-campo">{{ doc.nombreDocumento }}</p>
-      </div>
+    @for (doc of docsObligatorios; track doc.idDocumentoObligatorio) {
+    <div class="flex align-items-center px-2 mb-4" [ngClass]="{'select': tabActive() === doc.idDocumentoObligatorio }"
+      (click)="docSeleccionado(doc.idDocumentoObligatorio, doc.documento.refGuid)">
+      <i class="cme-file" style="font-size: 2rem"></i>
+      <p class="ms-3 texto-campo">{{ doc.tipoDocumentoObligatorio.desDocumentoObligatorio }}</p>
+    </div>
     }
   </div>
 
-  <div class="flex flex-column archivos-previsualizacion p-4">
+  <div class="flex p-4 w-6 flex-column archivos-previsualizacion">
+    @if (docsObligatorios.length != 0) {
     <span class="subtitle-previsualizacion">Previsualización</span>
-    <pdf-viewer [src]="pdfSrc" [render-text]="true" [original-size]="false" ></pdf-viewer>
-    <iframe 
-        width="600"
-        height="400"
-        [src]="trustedUrl"
-        frameborder="0">
-</iframe>
-
+    }@else{
+      <span class="subtitle-previsualizacion">No se han cargado documentos obligatorios</span>
+    }
+    <!--   <pdf-viewer [src]="pdfSrc" [render-text]="true" [original-size]="false"></pdf-viewer> -->
+    @if (tabActive() == 0) {
+    <p>{{_Mensajes.MSJ_SELECCIONAR_DOCUMENTO}}</p>
+    } @else {
+    @if (pdfSrc) {
+    <div style="height: 80vh;" class="my-4">
+      <iframe width="100%" height="100%" [src]="pdfSrc" frameborder="0">
+        <p>{{_Mensajes.MSJ_NOT_SUPPORT_IFRAMES}}</p>
+      </iframe>
+    </div>
+    } @else {
+    <span class="loader">{{_Mensajes.MSJ_CARGANDO_DOCUMENTO}}</span>
+    }
+    }
   </div>
 
 </div>

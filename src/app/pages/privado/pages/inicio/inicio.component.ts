@@ -176,8 +176,8 @@ export class InicioComponent extends GeneralComponent {
   indice: WritableSignal<number> = signal<number>(0);
   tipoMedico: WritableSignal<string> = signal<string>("");
 
-  catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
-  _ConvocatoriaService: ConvocatoriaService = inject(ConvocatoriaService);
+  
+  
 
   archivoINE!: File | null;
   archivoTitulo!: File | null;
@@ -420,7 +420,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   validarCP() {
-    this.catalogoService.getLstCodigosPostales(this.formRegistro.get('codigoPostal')?.value).subscribe({
+    this._CatalogoGenService.getLstCodigosPostales(this.formRegistro.get('codigoPostal')?.value).subscribe({
       next: (elemento) => {
         this.formRegistro.get('pais')?.setValue(103)
         this.formRegistro.get('estado')?.setValue(elemento.respuesta.estado.idEstado);
@@ -434,7 +434,7 @@ export class InicioComponent extends GeneralComponent {
     if (!pais) return;
     this.municipios = [];
     this.colonias = [];
-    this.catalogoService.getLstEstadosByPais(pais).subscribe({
+    this._CatalogoGenService.getLstEstadosByPais(pais).subscribe({
       next: (valor) => {
         this.estados = mapearArregloTipoDropdown(valor.respuesta, 'desEstado', 'idEstado');
       }
@@ -443,7 +443,7 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerMunicipioPorEstado(estado: number): void {
     if (!estado) return;
-    this.catalogoService.getLstDelegacionesMunicipiosByEstado(estado).subscribe({
+    this._CatalogoGenService.getLstDelegacionesMunicipiosByEstado(estado).subscribe({
       next: (valor) => {
         this.municipios = mapearArregloTipoDropdown(valor.respuesta, 'desMunicipio', 'idMunicipio');
       }
@@ -452,7 +452,7 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerAlcaldiaPorMunicipio(municipio: number): void {
     if (!municipio) return;
-    this.catalogoService.getLstColoniasByDelegacion(municipio).subscribe({
+    this._CatalogoGenService.getLstColoniasByDelegacion(municipio).subscribe({
       next: (valor) => {
         this.colonias = mapearArregloTipoDropdown(valor.respuesta, 'nomColonia', 'idColonia');
       }
@@ -460,7 +460,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   obtenerOOADPorMunicipio(): void {
-    this.catalogoService.getLstOOADS().subscribe({
+    this._CatalogoGenService.getLstOOADS().subscribe({
       next: (valor) => {
         this.ooad = mapearArregloTipoDropdown(valor.respuesta, 'desOoad', 'cveOoad');
       }
@@ -469,7 +469,7 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerZonasPorMunicipio(municipio: number): void {
     if (!municipio) return;
-    this.catalogoService.getLstZonas(municipio).subscribe({
+    this._CatalogoGenService.getLstZonas(municipio).subscribe({
       next: (valor) => {
         this.zonas = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'cveZona');
       }
