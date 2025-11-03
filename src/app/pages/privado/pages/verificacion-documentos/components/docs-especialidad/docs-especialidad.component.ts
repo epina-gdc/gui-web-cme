@@ -42,8 +42,6 @@ export class DocsEspecialidadComponent implements OnInit {
 
   pdfUrl: SafeResourceUrl | undefined;
 
-  opciones: any;
-
   documentoService = inject(DocumentoService)
 
   credentialOptions = [
@@ -70,7 +68,7 @@ export class DocsEspecialidadComponent implements OnInit {
       datosPersonales: this.fb.group({
         idUsuario: [this.idUsuario, Validators.required]
       }),
-      refObservaciones: ['', []],
+      refObservaciones: ['', [Validators.required]],
       especialidadesDocumentos: this.fb.array(
         this.docsEspecialidad.map(especialidad =>
           this.crearGrupoEspecialidad(especialidad)
