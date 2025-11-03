@@ -38,6 +38,7 @@
 <p-table
   [value]="usuarioDocumentos()"
   [scrollable]="true"
+
 >
   <ng-template #caption>
     <div class="flex justify-content-between">
@@ -50,12 +51,12 @@
   </ng-template>
   <ng-template #header>
     <tr>
-      <th scope="col" style="min-width: 200px">Nombre</th>
+      <th scope="col" >Nombre</th>
       <th scope="col" >Matrícula/Folio</th>
-      <th scope="col" style="min-width: 200px" >Correo</th>
-      <th scope="col" style="min-width: 200px">Especialidad</th>
-      <th scope="col" style="min-width: 200px">Estatus</th>
-      <th scope="col" style="min-width: 300px">Observaciones</th>
+      <th scope="col"  >Correo</th>
+      <th scope="col" >Especialidad</th>
+      <th scope="col" >Estatus</th>
+      <th scope="col" >Observaciones</th>
       <th scope="col" >Modalidad</th>
       <th scope="col" >Tipo de modalidad</th>
       <th scope="col" >Fecha de verificación</th>
@@ -70,10 +71,10 @@
   </ng-template>
   <ng-template #body let-usuarioDocumentos>
     <tr>
-      <td>{{usuarioDocumentos.nombreCompleto}}</td>
+      <td >{{usuarioDocumentos.nombreCompleto}}</td>
       <td>{{usuarioDocumentos.matriculaFolio}}</td>
       <td>{{usuarioDocumentos.correo}}</td>
-      <td>{{usuarioDocumentos.especialidad}}</td>
+      <td >{{usuarioDocumentos.especialidad}}</td>
       <td>
         <div class="pill flex justify-content-start">
           <p [ngClass]="settearClase(usuarioDocumentos.idEstatusValidacion)" class="p-2">
@@ -85,7 +86,7 @@
       <td>{{usuarioDocumentos.modalidad}}</td>
       <td>{{usuarioDocumentos.tipoModalidad}}</td>
       <td>{{usuarioDocumentos.fechaVerificacion}}</td>
-      <td alignFrozen="right" pFrozenColumn class="flex justify-content-center">
+      <td alignFrozen="right" pFrozenColumn class="flex align-items-center justify-content-center">
         <i (click)="consultaDocumento($event, usuarioDocumentos)"  class="cme-ellipsis cursor-pointer border-round-3xl" [style]="{ 'font-size': '2.2rem', color: '#a9c9f8', background: '#f6faff' }"></i>
       </td>
     </tr>

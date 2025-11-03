@@ -167,9 +167,9 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
 
   limpiar(){
     this.filtroForm.reset();
-    this.paginar();
     this.paginaActual = 0;
     this.first = 0;
+    this.paginar();
   }
 
 
