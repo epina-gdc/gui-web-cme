@@ -1508,7 +1508,7 @@ export class InicioComponent extends GeneralComponent {
       };
     });
 
-    if (this.idDocumentoConstancia1) {
+    if (this.idDocumentoConstancia1 && documentosProcesados[0]) {
       documentosProcesados[0].idDocumentoConstancia = this.idDocumentoConstancia1
     }
     if (this.idDocumentoConstancia2 && documentosProcesados[1]) {
