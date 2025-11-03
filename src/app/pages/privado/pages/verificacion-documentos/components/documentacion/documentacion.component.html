@@ -29,13 +29,13 @@
 
   @switch (tab) {
     @case (0) {
-      <app-docs-obligatorios/>
+      <app-docs-obligatorios [docsObligatorios]="detalleAspirante.documentosObligatorios"/>
     }
     @case (1) {
       <app-docs-especialidad [docsEspecialidad]="detalleAspirante.especialidadesDocumentos"/>
     }
     @case (2) {
-      <app-constancias-cursos/>
+      <app-constancias-cursos [docsConstancias]="detalleAspirante.documentosConstancias"/>
     }
   }
 
