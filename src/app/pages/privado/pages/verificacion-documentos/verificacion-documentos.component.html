@@ -125,7 +125,7 @@
 
 <p-popover #op (onHide)="documentoSeleccionado == null">
   <ng-template #content>
-    <div class="flex align-items-center boton-descargar cursor-pointer" (click)="irDetalleDocumentacion()">
+    <div class="flex align-items-center boton-descargar cursor-pointer" (click)="irDetalleDocumentacion(documentoSeleccionado)">
       <i class="icon pi pi-eye" [style]="{ 'font-size': '1.2rem', color: '#869fd4'}"></i>
       <span class="ms-2 acciones-tabla">Consultar documentos</span>
     </div>

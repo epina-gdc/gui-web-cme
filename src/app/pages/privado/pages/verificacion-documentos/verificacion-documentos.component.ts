@@ -160,8 +160,11 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
     this.op.hide();
   }
 
-  irDetalleDocumentacion(){
-    this._router.navigate(['privado/',this._nav.documentacionAspirante])
+  irDetalleDocumentacion(algo :any){
+    console.log("algo: ",algo);
+    let ruta = this._nav.documentacionAspirante.replace(':id',algo.idUsuario);
+    this._router.navigate([this._nav.privado+ ruta])
+    console.log("algo: ",'/'+ruta);
   }
 
   limpiar(){

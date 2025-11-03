@@ -27,12 +27,16 @@
 </div>
 <p-card class="mx-2 empty-border" [header]="'Documentos de especialidad'">
 
-  @if (tab == 0) {
-    <app-docs-obligatorios/>
-  } @else if (tab == 1) {
-    <app-docs-especialidad [docsEspecialidad]="detalleAspirante.especialidadesDocumentos"/>
-  } @else if (tab == 2) {
-    <app-constancias-cursos/>
+  @switch (tab) {
+    @case (0) {
+      <app-docs-obligatorios/>
+    }
+    @case (1) {
+      <app-docs-especialidad [docsEspecialidad]="detalleAspirante.especialidadesDocumentos"/>
+    }
+    @case (2) {
+      <app-constancias-cursos/>
+    }
   }
 
 </p-card>

@@ -29,7 +29,7 @@ export class DocumentacionComponent {
   obtenerInformacionDocumentos(): void {
     this.activatedRoute.data.subscribe(({respuesta}) => {
       this.detalleAspirante = respuesta.respuesta;
-      console.log(this.detalleAspirante)
+      
     });
   }
 }
