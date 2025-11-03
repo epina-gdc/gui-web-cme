@@ -1,0 +1,11 @@
+.contenedor-password {
+    position: relative;
+    .icon {
+      position: absolute;
+      top: 50%;
+      right: 6px;
+      transform: translate(-25%, -50%);
+      font-size: 18px;
+      color:#adb8cc;
+    }
+  }

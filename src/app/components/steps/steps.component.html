@@ -1,0 +1,25 @@
+<div class="stepper mb-5">
+  @for (step of steps; track i; let i = $index) {
+    <div class="stepper-item">
+      <div class="stepper-step cursor-pointer" [ngClass]="getStepClass(i)" (click)="handleStepClick(i)">
+        @if (i < currentStepIndex()) {
+          <i class="pi pi-check" style="font-size: 1.25rem;"></i>
+        } @else if (i === currentStepIndex()) {
+          <i class="cme-loading" style="font-size: 1.25rem;"></i>
+        } @else {
+          <i class="cme-time" style="font-size: 1.25rem;"></i>
+        }
+      </div>
+      <div class="stepper-label-container">
+        <span class="stepper-label mb-1">{{ step.label }}</span>
+      </div>
+    </div>
+
+    @if (i < steps.length) {
+      <div class="stepper-line"
+           [ngClass]="{'stepper-line-done': i < currentStepIndex(), 'stepper-line-active': i === currentStepIndex(),
+           'stepper-line-pending': i > currentStepIndex()}">
+      </div>
+    }
+  }
+</div>

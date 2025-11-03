@@ -1,0 +1,103 @@
+@layer app-components {
+
+  .seccion-menu-titulo {
+    color: #000;
+    font-feature-settings: 'liga' off, 'clig' off;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+
+  .menu-titulo {
+    color: #58595C;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .menu-descripcion {
+    color: #58595C;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+  }
+
+  .menu-cantidad {
+    color: #58595C;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+
+  .hover\:text-white:hover .menu-cantidad, .hover\:text-white:hover .menu-descripcion, .hover\:text-white:hover .menu-titulo {
+    color: #FFFFFF !important;
+  }
+
+  .text-white .menu-cantidad, .text-white .menu-descripcion, .text-white .menu-titulo {
+    color: #FFFFFF !important;
+  }
+
+  .hover\:bg-blue-oferta-laboral:hover {
+    background: #41ABCA;
+  }
+
+  .bg-blue-oferta-laboral {
+    background: #41ABCA;
+  }
+
+  .ayuda-pregunta {
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+  }
+
+  .ayuda-respuesta {
+    color: var(--Grays-Tone3, #7781A5);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  .ayuda-titulo {
+    color: #FFF;
+    text-align: center;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  }
+
+  .ayuda-descripcion {
+    color: #FFF;
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+  .tablero-titulo {
+    color: #404041;
+    text-align: center;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 136.146%; /* 32.675px */
+  }
+
+  .tablero-descripcion {
+    color: #404041;
+    text-align: center;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+}

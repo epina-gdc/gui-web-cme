@@ -31,7 +31,8 @@
               }
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/ngx-spinner/animations/ball-spin-clockwise.css"
             ],
             "scripts": []
           },
@@ -39,10 +40,10 @@
             "production": {
               "budgets": [
                 {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
+    "type": "initial",
+    "maximumWarning": "1.5mb",
+    "maximumError": "2mb"
+  },
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "4kB",
@@ -96,5 +97,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

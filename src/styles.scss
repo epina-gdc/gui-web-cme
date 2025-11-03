@@ -3,6 +3,22 @@
 @use "primeicons/primeicons.css";
 @use "assets/scss/design-system/index" as design;
 @use "assets/scss/primeng-custom/index" as customprimeng;
+@use "assets/scss/icons/index" as icons;
+
+/* src/styles.css */
+@layer framework {
+  .navbar-expand-md .navbar-nav {
+    margin-left: 0 !important;
+  }
+}
+
+@import url("https://framework-gb.cdn.gob.mx/gm/v3/assets/styles/main.css") layer(framework);
+
+@layer primeng-base {
+  .navbar-expand-md .navbar-nav {
+    margin-left: 0;
+  }
+}
 
 @layer app-components {
 
@@ -44,8 +60,7 @@
 
   body {
     margin: 0;
-    padding: 0;
-    background-color: #fafafa;
+    background-color: var(--gob-mx-gris-tono4);
   }
 
   .login-background {
@@ -54,12 +69,203 @@
     min-height: 100vh;
   }
 
-  header {
-    background-color: var(--gob-mx-pr-rojo-tono1);
+  .footer-cme {
+    background-color: var(--gob-mx-pr-imss-tono1);
   }
 
-  footer {
+  hr.vertical {
+    border: 10px;
+    margin: 10px;
+    border-left: 1px solid #ccc;
+    height: 20px;
+    width: 0;
+    float: left;
+  }
+
+  .bg-green {
     background-color: var(--gob-mx-pr-imss-tono1);
+  }
+
+  .bg-white {
+    background-color: var(--gob-mx-base-blanco);
+  }
+
+  .p-fileupload-content .p-progressbar, .p-fileupload-header, .p-fileupload-file-list, p-progressbar {
+    display: none;
+  }
+
+  p {
+    margin: 0;
+  }
+
+
+  .border-tab {
+    border-right: 8px solid rgba(193, 198, 207, 0.50);
+  }
+
+  .p-tab-active .border-tab {
+    background: rgba(112, 153, 230, 0.1);
+    border-right: 8px solid #5383EB;
+  }
+
+  .border-tab i {
+    background: rgba(193, 198, 207, 0.1);
+  }
+
+  .w-tab {
+    width: 290px;
+  }
+
+  .p-tab-active .border-tab i {
+    color: #455B88;
+    background: rgba(112, 153, 230, 0.1);
+  }
+
+  .p-card-title {
+    border-bottom: 1px solid rgba(193, 198, 207, 0.50);
+  }
+
+  :host ::ng-deep .p-card-body .p-card-title {
+    /* Anula el padding para que el borde se pegue a los lados */
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .alert {
+    text-align: center;
+    font-feature-settings: 'liga' off, 'clig' off;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 21px */
+
+  }
+
+  .alert-success {
+    background: var(--Sistema-Success-100, #D1E7DD);
+    color: var(--Sistema-Success-800, #0A3622);
+
+
+  }
+
+  .alert-info {
+
+  }
+
+  .alert-warning {
+
+  }
+
+  .p-tabpanels, .p-password {
+    width: 100% !important;
+  }
+
+  .p-select-list {
+    font-size: 1rem;
+  }
+
+  .field {
+    margin-bottom: 0.1rem !important;
+  }
+
+  .oferta-detail .p-dialog-footer {
+    padding: 0 !important;
+    display: block;
+  }
+
+  .oferta-detail .p-dialog-header {
+    padding: 0 !important;
+    display: block;
+  }
+
+  .oferta-detail .p-tabpanels {
+    padding: 0 !important;
+  }
+
+  .icon-white .p-button-icon {
+    color: #fff;
+  }
+
+  .icon-white .p-button-text:not(:disabled):hover {
+    background: #41ABCA;
+    border-color: transparent;
+    color: #fff;
+  }
+
+  .oferta-detail .p-tab {
+    padding: 0.1rem 1rem;
+  }
+
+  .paginator-oferta .p-paginator {
+    justify-content: end;
+  }
+
+  .paginator-oferta .p-paginator-first, .paginator-oferta .p-paginator-last {
+    display: none;
+  }
+
+  .p-carousel-content {
+    position: relative;
+  }
+
+  .p-carousel-prev-button {
+    position: absolute;
+    z-index: 10;
+    left: 10%;
+    color: #fff;
+  }
+
+  .p-carousel-next-button {
+    position: absolute;
+    right: 20%;
+    z-index: 10;
+    color: #fff;
+  }
+
+  .p-carousel-indicator-list {
+    display: none;
+  }
+
+  .p-carousel-viewport {
+    height: 320px !important;
+  }
+
+  .carousel-image {
+    height: 320px;
+    width: 300px;
+    object-fit: fill;
+  }
+
+  .loader {
+    color: #FFF;
+    display: inline-block;
+    position: relative;
+    font-size: 48px;
+    font-family: Arial, Helvetica, sans-serif;
+    box-sizing: border-box;
+  }
+  .loader::after {
+    content: '';
+    width: 5px;
+    height: 5px;
+    background: currentColor;
+    position: absolute;
+    bottom: 10px;
+    right: -5px;
+    box-sizing: border-box;
+    animation: animloader 1s linear infinite;
+  }
+
+  @keyframes animloader {
+    0% {
+      box-shadow: 10px 0 rgba(255, 255, 255, 0), 20px 0 rgba(255, 255, 255, 0);
+    }
+    50% {
+      box-shadow: 10px 0 white, 20px 0 rgba(255, 255, 255, 0);
+    }
+    100% {
+      box-shadow: 10px 0 white, 20px 0 white;
+    }
   }
 
 }

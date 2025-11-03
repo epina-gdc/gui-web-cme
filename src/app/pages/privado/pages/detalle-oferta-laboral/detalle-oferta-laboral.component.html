@@ -1,0 +1,197 @@
+<p-tabs value="0">
+  <p-tablist>
+    <p-tab value="0" (click)="cambioDatosHeader(0)">
+      <div class="header-tab-oferta">
+        <i class="cme-deals" style="color: #41ABD9; font-size: 1.4rem"></i>
+        Información general
+      </div>
+    </p-tab>
+    <p-tab value="1" (click)="cambioDatosHeader(1)">
+      <div class="header-tab-oferta">
+        <i class="cme-pin" style="color: #41ABD9; font-size: 1.4rem"></i>
+        Ubicación y servicios
+      </div>
+    </p-tab>
+    <p-tab value="2" (click)="cambioDatosHeader(2)">
+      <div class="header-tab-oferta">
+        <i class="cme-sedes" style="color: #41ABD9; font-size: 1.4rem"></i>
+        Sedes
+      </div>
+    </p-tab>
+  </p-tablist>
+  <p-tabpanels>
+    <p-tabpanel value="0">
+      <div class="flex flex-wrap flex-row">
+        <div class="col-6 pr-4">
+          <div class="flex flex-column">
+            <div class="flex align-items-center gap-4">
+              <i class="pi pi-exclamation-circle" style="color: #41ABD9; font-size: 1.8rem"></i>
+              <h4 class="titulo-detalle-oferta-laboral"> Información del puesto</h4>
+            </div>
+            <div class="flex justify-content-between">
+              <p class="seccion-detalle-oferta-laboral">Horario:</p>
+              <p class="texto-detalle-oferta-laboral">7:30 a 14:00 y 1.5HRS prep ACT. DOC. E INVES.</p>
+            </div>
+            <div class="flex justify-content-between">
+              <p class="seccion-detalle-oferta-laboral">Régimen:</p>
+              <p class="texto-detalle-oferta-laboral">Ordinario</p>
+            </div>
+            <div class="flex justify-content-between">
+              <p class="seccion-detalle-oferta-laboral">No de plaza:</p>
+              <p class="texto-detalle-oferta-laboral">1436</p>
+            </div>
+            <div class="flex justify-content-between">
+              <p class="seccion-detalle-oferta-laboral">Categoría:</p>
+              <p class="texto-detalle-oferta-laboral">Médico no familiar</p>
+            </div>
+            <div class="flex justify-content-between">
+              <p class="seccion-detalle-oferta-laboral">Clasificación:</p>
+              <p class="texto-detalle-oferta-laboral">Segundo nivel</p>
+            </div>
+            <div class="flex justify-content-between">
+              <p class="seccion-detalle-oferta-laboral">Tipo de plaza:</p>
+              <p class="texto-detalle-oferta-laboral">Operativa base</p>
+            </div>
+            <div class="flex justify-content-between">
+              <p class="seccion-detalle-oferta-laboral">Marca de ocupación:</p>
+              <p class="texto-detalle-oferta-laboral">Definitiva</p>
+            </div>
+          </div>
+
+          <div class="flex flex-column mt-4">
+            <div class="flex align-items-center gap-4">
+              <i class="cme-hospital" style="color: #41ABD9; font-size: 2rem"></i>
+              <h4 class="titulo-detalle-oferta-laboral">Información del hospital</h4>
+            </div>
+            <div class="flex justify-content-between">
+              <p class="seccion-detalle-oferta-laboral">OOAD:</p>
+              <p class="texto-detalle-oferta-laboral">Estado de México</p>
+            </div>
+            <div class="flex justify-content-between">
+              <p class="seccion-detalle-oferta-laboral">UMF:</p>
+              <p class="texto-detalle-oferta-laboral">Hospital de Gineco Obstreticia No. 60</p>
+            </div>
+            <div class="flex justify-content-between">
+              <p class="seccion-detalle-oferta-laboral">Zona:</p>
+              <p class="texto-detalle-oferta-laboral">Ecatepec de Morelos</p>
+            </div>
+            <div class="flex justify-content-between">
+              <p class="seccion-detalle-oferta-laboral">Ubicación:</p>
+              <p class="texto-detalle-oferta-laboral align-last-right"
+                 [appSplitByWidth]="'Av. Morelos 47, San Javier, 54000 Baja California'"></p>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 pl-4">
+          <p-card class="empty-border bg-secondary-blue-oferta-laboral">
+            <div class="flex justify-content-between">
+              <p class="card-compensacion-titulo">Compensación</p>
+              <p-rating [(ngModel)]="value" [stars]="1"/>
+            </div>
+            <div class="flex">
+              <div class="flex col-12 flex-column p-0 mt-3">
+                <p class="card-compensacion-sub-titulo">Sueldo mensual</p>
+                <div class="flex justify-content-start gap-4 my-2">
+                  <div class="flex flex-column">
+                    <p class="card-compensacion-seccion">Estimado bruto</p>
+                    <p class="card-compensacion-titulo">$45,520</p>
+                  </div>
+                  <div class="flex align-items-end">
+                    <p class="card-compensacion-titulo">-</p>
+                  </div>
+                  <div class="flex flex-column">
+                    <p class="card-compensacion-seccion">Estimado neto</p>
+                    <p class="card-compensacion-titulo">$41,140</p>
+                  </div>
+                </div>
+                <div class="flex justify-content-between p-0 mt-1">
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">Créditos:</p>
+                  </div>
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">2 disponibles</p>
+                  </div>
+                </div>
+                <div class="flex justify-content-between p-0 mt-1">
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">Bono dificil:</p>
+                  </div>
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">No</p>
+                  </div>
+                </div>
+                <div class="flex justify-content-between p-0 mt-1">
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">Acceso a crédito:</p>
+                  </div>
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">Si</p>
+                  </div>
+                </div>
+                <div class="flex justify-content-between p-0 mt-1">
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">Crédito automotriz:</p>
+                  </div>
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">Monto máx</p>
+                  </div>
+                </div>
+                <div class="flex justify-content-between p-0 mt-1">
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">Crédito hipotecario:</p>
+                  </div>
+                  <div class="col-6 flex justify-content-start p-0">
+                    <p class="card-compensacion-seccion">Monto máx</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </p-card>
+        </div>
+        <div class="col-12 flex justify-content-end mt-2">
+          <p-button variant="outlined" label="Agregar a favoritos"/>
+        </div>
+      </div>
+    </p-tabpanel>
+    <p-tabpanel value="1">
+      <div class="flex flex-wrap flex-row">
+        <div class="col-6 pr-4 justify-content-center flex">
+          <p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg" alt="Image" width="300"
+                   height="320"/>
+        </div>
+        <div class="col-6 pl-4">
+          <p-carousel
+            styleClass="h-full"
+            [value]="products"
+            [numVisible]="1"
+            [numScroll]="1">
+            <ng-template let-product #item>
+              <div class="rounded">
+                <div class="relative mx-auto">
+                  <p-image
+                    src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}"
+                    [alt]="product.name" styleClass="carousel-image" width="300" height="320"/>
+                  class="rounded-border"/>
+                </div>
+              </div>
+            </ng-template>
+          </p-carousel>
+        </div>
+        <div class="col-12 flex justify-content-end mt-2">
+          <p-button variant="outlined" label="Descargar PDF"/>
+        </div>
+      </div>
+    </p-tabpanel>
+    <p-tabpanel value="2">
+      <div class="flex flex-wrap flex-row">
+        <div class="col-12 justify-content-center flex">
+          <p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg" alt="Image" width="700"
+                   height="300"/>
+        </div>
+        <div class="col-12 flex justify-content-end mt-2">
+          <p-button variant="outlined" label="Descargar PDF"/>
+        </div>
+      </div>
+    </p-tabpanel>
+  </p-tabpanels>
+</p-tabs>

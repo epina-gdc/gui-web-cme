@@ -1,0 +1,15 @@
+.alert {
+    z-index: 9999;
+    /* 21px */
+    svg[role=img] {
+      width: 24px;
+      height: 24px;
+    }
+  }
+  
+  // Medium devices (tablets, 768px and up)
+  @media (min-width: 768px) {
+    .alert  {
+      height: 72px ;
+    }
+  }

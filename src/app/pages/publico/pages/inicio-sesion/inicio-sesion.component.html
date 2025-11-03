@@ -1,17 +1,97 @@
-<main class="flex  login-background">
-  <aside class="col-6 flex flex-column justify-content-center align-items-center p-6">
-    <h1 class="login-titulo">Convocatoria para medicos especialistas</h1>
-    <h2 class="login-subtitulo">Reclutamiento IMSS 2025</h2>
+<main class="flex flex-wrap login-background">
+  <aside class="lg:col-6 md:col-12 flex flex-column justify-content-center align-items-center p-6">
+    <h1 class="login-titulo">Convocatoria para Médicos Especialistas</h1>
+    <h2 class="login-subtitulo">Reclutamiento IMSS 2026<!--  {{ fechaActual.getFullYear() }} --></h2>
   </aside>
-  <section class="col-6 flex justify-content-center align-items-center">
-    <p-card class="top-rounded-card" [style]="{ width: '45rem', overflow: 'hidden' }">
-      <ng-template #header>
-        <div class="flex justify-content-center">
-          <h2>Inicio de sesión</h2>
+  <section class="lg:col-6 md:col-12 sm:mb-6 flex justify-content-center align-items-center">
+    <p-card class="px-2 login-card border-round-bottom-3xl border-round-bottom"
+            [style]="{ width: '45rem', overflow: 'hidden' }">
+
+      <div class="flex justify-content-center px-3">
+        <h2 class="login-card-titulo">Inicio de sesión</h2>
+      </div>
+      <div class="px-0">
+        <hr class=" border-1 text-gray-100">
+      </div>
+      <form [formGroup]="formLogin" (ngSubmit)="iniciarSesion()">
+        <div class="login-card-body mt-4">
+          <div class="field">
+            <label class="field-label" for="username">Correo electrónico</label>
+            <input
+              autocomplete="off"
+              (keypress)="validarCaracterCorreo($event)"
+              (change)="validarEstructuraCorreo($event)"
+              pInputText
+              emailAllowCaracters
+              class="w-full"
+              type="email"
+              id="username"
+              placeholder="Ingresa correo electrónico"
+              formControlName="username"/>
+            <div class="flex flex-column">
+              @if (f['username'].errors?.['email']) {
+                <span class="text-danger">El formato del correo electrónico no es válido.</span>
+              }
+            </div>
+          </div>
+          <div class="form-icon">
+            <label class="field-label" for="password">Contraseña</label>
+            <div class="contenedor-password">
+              <input #input
+                     pInputText
+                     class="w-full"
+                     type="password"
+                     id="password"
+                     (keypress)="ingresoPass = true"
+                     appBloquearCaracterPassword
+                     placeholder="Ingresa contraseña"
+                     formControlName="password"
+                     autocomplete="off"/>
+              <i [ngClass]="{'pi-eye': input.type==='password', 'pi-eye-slash':  input.type ==='text'}"
+                 class="cursor-pointer icon pi"
+                 (click)="input.type = input.type==='password'?'text':'password'"></i>
+            </div>
+
+            @if (ingresoPass) {
+              <div class="flex flex-column">
+                @if (f['password'].errors?.['minLength']) {
+                  <span class="text-danger">{{ _Mensajes.MSJ_PASS_MIN_CARACTER }}</span>
+                }
+
+                @if (f['password'].errors?.['maxLength']) {
+                  <span class="text-danger">{{ _Mensajes.MSJ_PASS_MAX_CARACTER }}</span>
+                }
+
+                @if (f['password'].errors?.['mayuscula']) {
+                  <span class="text-danger">{{ _Mensajes.MSJ_PASS_MAYUSCULA }}</span>
+                }
+
+                @if (f['password'].errors?.['minuscula']) {
+                  <span class="text-danger">{{ _Mensajes.MSJ_PASS_MINUSCULA }}</span>
+                }
+
+                @if (f['password'].errors?.['numero']) {
+                  <span class="text-danger">{{ _Mensajes.MSJ_PASS_NUMERO }}</span>
+                }
+
+                @if (f['password'].errors?.['caracter']) {
+                  <span class="text-danger">{{ _Mensajes.MSJ_PASS_CARACTER_ESPECIAL }}</span>
+                }
+              </div>
+            }
+          </div>
+          <div class="flex justify-content-end my-3">
+            <a [routerLink]="'../recuperar-contrasenia'" class="login-hipervinculo cursor-pointer">Olvidé mi
+              contraseña</a>
+          </div>
+          <div class="flex justify-content-between">
+            <a (click)="_router.navigate(['publico/' + _nav.crearCuenta])" class="login-hipervinculo cursor-pointer">Crear
+              cuenta</a>
+            <p-button type="submit" [disabled]="formLogin.invalid" label="Iniciar sesión"/>
+          </div>
         </div>
-        <hr>
-      </ng-template>
-      <p-button label="Primary"/>
+      </form>
+
     </p-card>
   </section>
 </main>
