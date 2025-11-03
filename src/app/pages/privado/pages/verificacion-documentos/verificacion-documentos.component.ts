@@ -132,8 +132,8 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
 
   filtros(): VerificacionDocsInterface{
     return {
-      page: 0,
-      size: 10,
+      page: this.paginaActual,
+      size: this.rows,
       idEstatus: (this.filtroForm.get('estatus')?.value)?.value,
       cveEspecialidad: (this.filtroForm.get('especialidad')?.value)?.value,
       matriculaFolio: this.filtroForm.get('matricula')?.value,
@@ -160,18 +160,16 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
     this.op.hide();
   }
 
-  irDetalleDocumentacion(algo :any){
-    console.log("algo: ",algo);
-    let ruta = this._nav.documentacionAspirante.replace(':id',algo.idUsuario);
+  irDetalleDocumentacion( usuario :TablaVerificacionDocsInterface){
+    let ruta = this._nav.documentacionAspirante.replace(':id', usuario.idUsuario.toString());
     this._router.navigate([this._nav.privado+ ruta])
-    console.log("algo: ",'/'+ruta);
   }
 
   limpiar(){
     this.filtroForm.reset();
-    this.paginar();
     this.paginaActual = 0;
     this.first = 0;
+    this.paginar();
   }
 
 
