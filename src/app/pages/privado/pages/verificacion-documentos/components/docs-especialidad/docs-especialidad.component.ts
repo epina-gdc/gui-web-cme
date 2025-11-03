@@ -1,8 +1,12 @@
 import {CommonModule} from '@angular/common';
-import {Component, inject, Input, signal, WritableSignal} from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {DUMMIE_DOCS_ESPECIALIDAD} from '@utils/dummies';
-
+import {Component, inject, Input, OnInit, signal, WritableSignal} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators
+} from '@angular/forms';
 import {AccordionModule} from 'primeng/accordion';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {TabsModule} from 'primeng/tabs';
@@ -28,46 +32,78 @@ import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
   templateUrl: './docs-especialidad.component.html',
   styleUrl: './docs-especialidad.component.scss'
 })
-export class DocsEspecialidadComponent {
+export class DocsEspecialidadComponent implements OnInit {
 
   @Input() docsEspecialidad: DetalleDocumentacionEspecialidadDocumento[] = [];
+  @Input() idUsuario: number | null = null;
+
+  formularioValidacion!: FormGroup;
 
   pdfUrl: SafeResourceUrl | undefined;
 
-  selectedTitle: string = "";
-  selectedCredential: string = "";
-  selectedCategory: any = null;
-  observaciones: string = "";
   opciones: any;
 
   documentoService = inject(DocumentoService)
 
-  titleOptions = [
-    {label: 'Cubre', value: 'cubre'},
-    {label: 'No cubre', value: 'noCubre'}
-  ];
-
   credentialOptions = [
-    {label: 'Cubre', value: 'cubre'},
-    {label: 'No cubre', value: 'noCubre'}
+    {label: 'Cubre', value: '1'},
+    {label: 'No cubre', value: '0'}
   ];
 
   estatusDocumentos = [
-    {label: 'Cumple con requisitos', value: 'cumple'},
-    {label: 'No cumple con requisitos', value: 'noCumple'},
-    {label: 'Revisión documental', value: 'reivison'},
+    {label: 'Cumple con requisitos', value: '1'},
+    {label: 'No cumple con requisitos', value: '0'},
+    {label: 'Revisión documental', value: '2'},
   ];
 
   tabActive: WritableSignal<number> = signal(0);
-
-  formObservaciones!: FormGroup;
-
 
   constructor(
     private fb: FormBuilder,
     private sanitizer: DomSanitizer
   ) {
-    this.formObservaciones = this.inicializarForm()
+  }
+
+  ngOnInit(): void {
+    this.formularioValidacion = this.fb.group({
+      datosPersonales: this.fb.group({
+        idUsuario: [this.idUsuario, Validators.required]
+      }),
+      refObservaciones: ['', []],
+      especialidadesDocumentos: this.fb.array(
+        this.docsEspecialidad.map(especialidad =>
+          this.crearGrupoEspecialidad(especialidad)
+        )
+      )
+    });
+  }
+
+  crearGrupoEspecialidad(especialidad: DetalleDocumentacionEspecialidadDocumento): FormGroup {
+    const documentosArray = especialidad.documentosEspecialidad.map(doc =>
+      this.fb.group({
+        idDocumentoEspecialidad: [doc.idDocumentoEspecialidad],
+        // Convertir '1' a true, '0' a false, y null a false
+        indCubre: [doc.indCubre === '1' ? true : doc.indCubre === '0' ? false : null]
+      }));
+
+    const idEstatusVerificacionInicial = especialidad.evaluacionEspecialidad
+      ? (especialidad.evaluacionEspecialidad as any)?.estatusVerificacion?.idEstatusVerificacion || null
+      : null;
+
+    return this.fb.group({
+      idEspecialidadDocumento: [especialidad.idEspecialidadDocumento],
+      cveEspecialidad: [especialidad.cveEspecialidad],
+      desEspecialidad: [especialidad.desEspecialidad],
+      documentosEspecialidad: this.fb.array(documentosArray),
+      evaluacionEspecialidad: this.fb.group({
+        // Se incluye idEspecialidadEvaluacion aunque sea null.
+        idEspecialidadEvaluacion: [null],
+        estatusVerificacion: this.fb.group({
+          // Este es el control de selección a nivel de especialidad (Cumple/No Cumple)
+          idEstatusVerificacion: [idEstatusVerificacionInicial, Validators.required]
+        })
+      })
+    });
   }
 
   docSeleccionado(id: number, guid: string) {
@@ -75,16 +111,10 @@ export class DocsEspecialidadComponent {
     this.obtenerPrevisualizacionDocumento(guid);
   }
 
-  inicializarForm(): FormGroup {
-    return this.fb.group({
-      observaciones: [{value: '', disabled: false}, [Validators.required]],
-    })
-  }
-
   obtenerPrevisualizacionDocumento(guid: string) {
     this.documentoService.obtenerDocumento(guid).subscribe({
-      next:(response) => {
-        const blob = new Blob([response], { type: 'application/pdf' });
+      next: (response) => {
+        const blob = new Blob([response], {type: 'application/pdf'});
         const url = URL.createObjectURL(blob);
         this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
       },
@@ -92,10 +122,6 @@ export class DocsEspecialidadComponent {
         console.error('Error al obtener el documento', err);
       }
     });
-  }
-
-  get f() {
-    return this.formObservaciones.controls;
   }
 
 }
