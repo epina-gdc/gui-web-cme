@@ -1,8 +1,11 @@
-.foto{
-    border-radius: 50%;
-    overflow: hidden;
-    background-size: cover;
-    position: relative; 
-    width: 120px; /* Ancho del óvalo */
-  height: 160px; /* Alto del óvalo */
+
+.border-imagen-sm {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
