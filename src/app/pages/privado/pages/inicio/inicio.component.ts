@@ -67,13 +67,12 @@ import {
   RespuestaDocumentosEspecialidad,
   RespuestaDocumentosObligatorios
 } from '@models/respuesta-consulta-documentos.interface';
-import {jornadaLaboralValidator} from '@validators/jornada-validator';
-import {horarioLaboralValidator} from '@validators/horario-validator';
 import utc from "dayjs/plugin/utc";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import {Checkbox} from 'primeng/checkbox';
 import {CommonModule} from '@angular/common';
 import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
+import {PATRON_RFC} from '@utils/regex';
 
 interface DocumentoFuente {
   refGuid: string;
@@ -232,7 +231,7 @@ export class InicioComponent extends GeneralComponent {
 
   asignarFormularioRegistro(): FormGroup {
     return this.fb.group({
-      rfc: [{value: ''} , [Validators.required, Validators.minLength(13), Validators.maxLength(13)]],
+      rfc: [{value: ''} , [Validators.required, Validators.minLength(13), Validators.maxLength(13), Validators.pattern(PATRON_RFC)]],
       nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
       fechaNacimiento: [{value: ''}, [Validators.required]],
       sexo: [{value: ''}, [Validators.required]],
@@ -347,7 +346,9 @@ export class InicioComponent extends GeneralComponent {
       diaInicio: [{value: null, disabled: true}],
       diaFin: [{value: null, disabled: true}],
       ooad: [{value: null, disabled: true}],
-    }, {validators: [jornadaLaboralValidator, horarioLaboralValidator]})
+    }
+  //  , {validators: [jornadaLaboralValidator, horarioLaboralValidator]}
+  )
   }
 
   obtenerFechaNacimientoDeCURP(curp: string): Date {

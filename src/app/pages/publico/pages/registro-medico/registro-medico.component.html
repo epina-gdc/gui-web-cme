@@ -1,7 +1,7 @@
 <main class="flex  login-background">
   <aside class="col-6 col-sm-12  flex flex-column justify-content-center align-items-center p-6">
     <h1 class="login-titulo">{{ _Mensajes.MSJ_TITULO_CONVOCATORIA }}</h1>
-    <h2 class="login-subtitulo">{{ _Mensajes.MSJ_SUBTITULO_CONVOCATORIA + anioActual }}</h2>
+    <h2 class="login-subtitulo">{{ _Mensajes.MSJ_SUBTITULO_CONVOCATORIA }}</h2>
   </aside>
   <section
     class="col-6 col-sm-12  flex justify-content-center align-items-center vertical-align:middle align-items:center">
@@ -23,7 +23,7 @@
                 <div class="field col-9">
                   <label class="field-label" for="matricula">Matrícula</label>
                   <input pInputText class="w-full" type="text" id="matricula"
-                         (input)="onlyNumbers($event)"   (change)="limpiarMatriculaChange()"  
+                         (input)="onlyNumbers($event)"   (change)="limpiarMatriculaChange()"
                          placeholder="Ingresa matrícula" maxlength="10"
                          [ngClass]="{'ng-touched ng-dirty ng-invalid': (f['matricula'].errors?.['required'] &&
                          (f['matricula'].dirty || f['matricula'].touched))}"
