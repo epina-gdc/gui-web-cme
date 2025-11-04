@@ -71,7 +71,7 @@
             </div>
             <div class="col-4">
               <div class="flex justify-content-between">
-                <label class="field-label" for="regimen_tablero">Regimen</label>
+                <label class="field-label" for="regimen_tablero">Régimen</label>
               </div>
               <p-select [options]="regimen_tablero" formControlName="regimen_tablero"
                         optionLabel="label"
@@ -79,13 +79,13 @@
             </div>
             <div class="col-4">
               <div class="flex justify-content-between">
-                <label class="field-label" for="bono_tablero">Bono dificil cobertura</label>
+                <label class="field-label" for="bono_tablero">Bono difícil cobertura</label>
               </div>
               <p-select [options]="bono_tablero" formControlName="bono_tablero" optionLabel="label"
                         placeholder="Selecciona un bono" class="w-full"/>
             </div>
             <div class="col-4 flex justify-content-start align-items-end">
-              <p-button type="button" label="Consultar"/>
+              <p-button type="button" label="Consultar" (click)="btnConsultar()"/>
             </div>
           </div>
         </form>

@@ -1,8 +1,8 @@
 export class Mensajes {
 
 
-  public MSJ_TITULO_CONVOCATORIA: string = "Convocatoria para médicos especialistas";
-  public MSJ_SUBTITULO_CONVOCATORIA: string = "Reclutamiento IMSS ";
+  public MSJ_TITULO_CONVOCATORIA: string = "Convocatoria para Médicos Especialistas";
+  public MSJ_SUBTITULO_CONVOCATORIA: string = "Reclutamiento IMSS 2026";
   public MSG002: string = "El correo contiene caracteres no permitidos.";
   public MSG003: string = "Correo electrónico no válido, por favor verifícalo.";
   public MSG004: string = "El correo electrónico no está registrado. Verifica tu información o regístrate.";

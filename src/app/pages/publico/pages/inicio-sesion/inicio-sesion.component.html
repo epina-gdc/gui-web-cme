@@ -85,7 +85,7 @@
               contraseña</a>
           </div>
           <div class="flex justify-content-between">
-            <a (click)="_router.navigate(['publico/' + _nav.crearCuenta])" class="login-hipervinculo cursor-pointer">Crear
+            <a (click)="crearCuenta()" class="login-hipervinculo cursor-pointer">Crear
               cuenta</a>
             <p-button type="submit" [disabled]="formLogin.invalid" label="Iniciar sesión"/>
           </div>

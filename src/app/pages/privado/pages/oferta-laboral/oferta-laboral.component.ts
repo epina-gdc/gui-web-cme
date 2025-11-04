@@ -15,7 +15,9 @@ import {
 } from '@pages/privado/shared/header-medico-detalle-oferta/header-medico-detalle-oferta.component';
 import {Paginator} from 'primeng/paginator';
 import {PrimeTemplate} from 'primeng/api';
-
+import {GeneralComponent} from '@components/general.component';
+import {mapearArregloTipoDropdown} from '@utils/funciones';
+import {ActivatedRoute} from '@angular/router';
 interface PageEvent {
   first: number;
   rows: number;
@@ -40,7 +42,7 @@ interface PageEvent {
   styleUrl: './oferta-laboral.component.scss',
   providers: [DialogService]
 })
-export class OfertaLaboralComponent {
+export class OfertaLaboralComponent extends GeneralComponent {
 
   first: number = 0;
   rows: number = 10;
@@ -64,8 +66,11 @@ export class OfertaLaboralComponent {
   regimen_tablero: TipoDropdown[] = [];
   bono_tablero: TipoDropdown[] = [];
 
-  constructor(public dialogService: DialogService) {
+  constructor(public dialogService: DialogService,private readonly activatedRoute: ActivatedRoute) {
+    super();
     this.formTablero = this.asignarFormTablero();
+    this.obtenerCatalogos();
+    this.suscribirObservables();
   }
 
   asignarFormTablero(): FormGroup {
@@ -133,5 +138,57 @@ export class OfertaLaboralComponent {
   onPageChange(event: any) {
     this.first = event.first;
     this.rows = event.rows;
+  }
+
+  
+  obtenerCatalogos(): void {
+    
+    this.activatedRoute.data.subscribe(({respuesta}) => {
+
+      const [ooad,  especialidad, regimen, bono] = respuesta;
+      
+      //this.zona_tablero = mapearArregloTipoDropdown(zona.respuesta, 'desTipoDocumentoEspecialidad', 'idTipoDocumentoEspecialidad');
+      this.ooad_tablero = mapearArregloTipoDropdown(ooad.respuesta, 'desOoad', 'cveOoad');
+      this.especialidad_tablero = mapearArregloTipoDropdown(especialidad, 'desEspecialidad', 'cveEspecialidad');
+      this.regimen_tablero = mapearArregloTipoDropdown(regimen, 'desEspecialidad', 'cveEspecialidad')
+      this.bono_tablero = mapearArregloTipoDropdown(bono, 'desEspecialidad', 'cveEspecialidad')
+    });
+  }
+
+
+  suscribirObservables(): void {
+    this.formTablero.get('ooad_tablero')?.valueChanges.subscribe(value => this.obtenerZonasPorOoad(value))
+  }
+
+  obtenerZonasPorOoad(ooad: any): void {
+    
+    if (!ooad) return;
+    this._CatalogoGenService.getLstZonas(ooad.value).subscribe({
+      next: (valor) => {
+        if(valor.exito){
+          if(valor.respuesta.length != 0){
+            return this.zona_tablero = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'cveZona');  
+          }
+          return this._alertServices.alerta(valor.mensaje);
+        }
+return this._alertServices.alerta(valor.mensaje);
+        
+      }
+    });
+  }
+
+  public btnConsultar(){
+   
+      this._alertServices.exito("realzia búsqueda");
+   let ooad=   this.formTablero.get('ooad_tablero')?.value;
+   let zona=   this.formTablero.get('zona_tablero')?.value;
+   let especialidad=   this.formTablero.get('especialidad_tablero')?.value;
+   let regimen=   this.formTablero.get('regimen_tablero')?.value;
+   let bono=   this.formTablero.get('bono_tablero')?.value;
+  
+
+   
+   
+
   }
 }

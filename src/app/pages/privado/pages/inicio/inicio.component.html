@@ -1,6 +1,6 @@
 <div class="flex justify-content-start align-items-center gap-3">
   <h3 class="titulo-seccion">Registro
-    de {{ this.tipoMedico().charAt(0).toLowerCase() + this.tipoMedico().slice(1) }}</h3>
+    de {{ this.tipoMedico() | titlecase }}</h3>
 </div>
 <p-card class="mx-2 my-4 no-padding-empty-border">
   <header-medico-interno></header-medico-interno>
@@ -27,8 +27,9 @@
                 <label class="field-label" for="rfc">RFC</label>
                 <p class="label-obligatorio">Obligatorio</p>
               </div>
-              <input pInputText class="w-full" (keyup)="convertMayusculas($event);" type="text" id="rfc"
+              <input pInputText class="w-full" type="text" id="rfc"
                      placeholder="Ingresa RFC"
+                     oninput="this.value = this.value.toUpperCase()"
                      formControlName="rfc" maxlength="13"/>
             </div>
             <div class="col-4">
@@ -354,7 +355,7 @@
       <article class="flex flex-row flex-wrap">
         <div class="col-3">
           <div class="flex justify-content-between mb-1">
-            <p class="field-label">Identificación Oficial (INE)</p>
+            <p class="field-label">Identificación oficial (INE o Pasaporte)</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
           <upload-document (fileSelected)="procesarArchivoObligatorio($event, 1)" [existingFile]="archivoINE"
@@ -363,7 +364,7 @@
         </div>
         <div class="col-3">
           <div class="flex justify-content-between mb-1">
-            <p class="field-label">Título Medicina General</p>
+            <p class="field-label">Titulo de Medicina General</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
           <upload-document (fileSelected)="procesarArchivoObligatorio($event, 2)" [existingFile]="archivoTitulo"
@@ -372,7 +373,8 @@
         </div>
         <div class="col-3">
           <div class="flex justify-content-between mb-1">
-            <p class="field-label">Cédula Profesional Médica General</p>
+            <p class="field-label">Cédula profesional de Medicina General
+</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
           <upload-document (fileSelected)="procesarArchivoObligatorio($event, 3)" [existingFile]="archivoCedula"
@@ -480,7 +482,7 @@
         <div class="flex align-items-center gap-4 px-2 py-4">
           <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
           <em class="info-em-texto">Adjunta hasta 3 documentos de tus cursos de capacitación o actualización
-            post-especialidad (ej. Alta Especialidad, Adiestramientos). considerando el tamaño máximo 50mb.</em>
+            post-especialidad (ej. Alta Especialidad, Adiestramientos), considerando el tamaño máximo 50mb.</em>
         </div>
         <article class="flex flex-row flex-wrap">
           <div class="col-4">
@@ -492,7 +494,7 @@
                              [maxFileSize]="52428800" (fileRemoved)="eliminarConstancia(1)"
                              (fileDownload)="obtenerGuidDocumento($event, 'constancia', 1)"
                              [existingFile]="archivoConstancia1" [disabled]="estatusPendienteDocumentacion"/>
-            <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
+            <!-- <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p> -->
             <div class="flex justify-content-between mb-1">
               <p class="field-label">Nombre de la constancia</p>
               <p class="label-obligatorio">Obligatorio</p>
@@ -513,7 +515,7 @@
                              (fileDownload)="obtenerGuidDocumento($event, 'constancia', 2)"
                              [existingFile]="archivoConstancia2"
                              [disabled]="estatusPendienteDocumentacion"/>
-            <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
+            <!-- <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p> -->
             <div class="flex justify-content-between mb-1">
               <p class="field-label">Nombre de la constancia</p>
               <p class="label-obligatorio">Obligatorio</p>
@@ -532,7 +534,7 @@
                              [maxFileSize]="52428800" (fileRemoved)="eliminarConstancia(3)"
                              (fileDownload)="obtenerGuidDocumento($event, 'constancia', 3)"
                              [existingFile]="archivoConstancia3" [disabled]="estatusPendienteDocumentacion"/>
-            <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p>
+            <!-- <p class="leyenda-documento my-2">El sistema solo permite adjuntar hasta 3 archivos</p> -->
             <div class="flex justify-content-between mb-1">
               <p class="field-label">Nombre de la constancia</p>
               <p class="label-obligatorio">Obligatorio</p>
@@ -653,8 +655,8 @@
               </div>
               <input pInputText class="w-full" type="text" id="institucion" formControlName="nombreInstitucion"
                      placeholder="Especifique institución" [maxlength]="200"/>
-              <p class="leyenda-documento">Especifique el nombre de la institución , si eres sustituto especifica el
-                OOAD de adscripción</p>
+              <p class="leyenda-documento">Especifique el nombre de la institución, si eres sustituto especifica el
+                OOAD de adscripción.</p>
             </div>
           </article>
         </form>
@@ -665,7 +667,7 @@
       <div class="flex align-items-center gap-4 px-2 py-4">
         <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
         <em class="info-em-texto">Recuerda que al Finalizar tu registro, ya no podrás realizar modificaciones en los
-          datos capturados</em>
+          datos capturados.</em>
       </div>
     </p-card>
 
