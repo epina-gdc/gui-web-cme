@@ -1,6 +1,6 @@
 <div class="flex justify-content-start align-items-center gap-3">
   <h3 class="titulo-seccion">Registro
-    de {{ this.tipoMedico().charAt(0).toLowerCase() + this.tipoMedico().slice(1) }}</h3>
+    de {{ this.tipoMedico() | titlecase }}</h3>
 </div>
 <p-card class="mx-2 my-4 no-padding-empty-border">
   <header-medico-interno></header-medico-interno>
@@ -27,8 +27,9 @@
                 <label class="field-label" for="rfc">RFC</label>
                 <p class="label-obligatorio">Obligatorio</p>
               </div>
-              <input pInputText class="w-full" (keyup)="convertMayusculas($event);" type="text" id="rfc"
+              <input pInputText class="w-full" type="text" id="rfc"
                      placeholder="Ingresa RFC"
+                     oninput="this.value = this.value.toUpperCase()"
                      formControlName="rfc" maxlength="13"/>
             </div>
             <div class="col-4">
