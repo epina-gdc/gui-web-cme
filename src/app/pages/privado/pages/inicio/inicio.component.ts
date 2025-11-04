@@ -347,7 +347,7 @@ export class InicioComponent extends GeneralComponent {
       diaInicio: [{value: null, disabled: true}],
       diaFin: [{value: null, disabled: true}],
       ooad: [{value: null, disabled: true}],
-    }, {validators: [jornadaLaboralValidator, horarioLaboralValidator]})
+    })
   }
 
   obtenerFechaNacimientoDeCURP(curp: string): Date {
