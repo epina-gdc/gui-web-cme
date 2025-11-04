@@ -4,7 +4,7 @@ import {Card} from 'primeng/card';
 import {Button} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
 import {CommonModule} from '@angular/common';
-import {GeneralComponent} from '../../../../components/general.component';
+import {GeneralComponent} from '@components/general.component';
 import {passwordValidator} from '@validators/password-validator';
 import {BloquearCaracterPasswordDirective} from '@directives/bloquear-caracter-password.directive';
 import {PATRON_EMAIL} from '@utils/regex';
@@ -12,8 +12,6 @@ import {AuthService} from '@services/auth.service';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {HttpRespuesta} from '@models/http-respuesta.interface';
 import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.directive';
-import { SessionTimerService } from '@services/sesion-timer.service';
-
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -75,14 +73,14 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit {
             return;
           }
 
-    /* SE COMENTA TIMER
-    // Guarda el timestamp actual.
-        const loginTime = Date.now();
-        localStorage.setItem('login_time', loginTime.toString());
+          /* SE COMENTA TIMER
+          // Guarda el timestamp actual.
+              const loginTime = Date.now();
+              localStorage.setItem('login_time', loginTime.toString());
 
-          this.sessionTimerService.startTimer(); */
+                this.sessionTimerService.startTimer(); */
 
-          void this._router.navigate(['/privado/inicio'], { relativeTo: this.activatedRoute,});
+          void this._router.navigate(['/privado/inicio'], {relativeTo: this.activatedRoute,});
         },
         error: (error) => {
           if (error.error.mensaje.includes('Usuario no encontrado con email')) {
@@ -113,9 +111,7 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit {
     return this.formLogin.controls;
   }
 
-  crearCuenta(){
-    debugger
-
+  crearCuenta() {
     this._router.navigate(['publico/' + this._nav.crearCuenta])
   }
 }
