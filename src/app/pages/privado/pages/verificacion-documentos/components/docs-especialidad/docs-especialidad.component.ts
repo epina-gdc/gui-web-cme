@@ -1,5 +1,5 @@
 import {CommonModule} from '@angular/common';
-import {Component, inject, Input, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, EventEmitter, inject, Input, OnInit, Output, signal, WritableSignal} from '@angular/core';
 import {
   AbstractControl, FormArray,
   FormBuilder, FormControl,
@@ -18,6 +18,7 @@ import {DetalleDocumentacionEspecialidadDocumento} from '@models/detalleDocument
 import {DocumentoService} from '@services/documentos.service';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {VerificacionDocsService} from '@services/verificacion-docs.service';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-docs-especialidad',
@@ -29,7 +30,7 @@ import {VerificacionDocsService} from '@services/verificacion-docs.service';
     ReactiveFormsModule,
     TextareaModule,
     CardModule,
-    ButtonModule
+    ButtonModule, RouterLink
   ],
   templateUrl: './docs-especialidad.component.html',
   styleUrl: './docs-especialidad.component.scss'
@@ -39,6 +40,8 @@ export class DocsEspecialidadComponent implements OnInit {
   @Input() docsEspecialidad: DetalleDocumentacionEspecialidadDocumento[] = [];
   @Input() idUsuario: number | null = null;
   @Input() observaciones: string = '';
+
+  @Output() actualizarRegistro: EventEmitter<boolean> = new EventEmitter();
 
   formularioValidacion!: FormGroup;
 
@@ -173,7 +176,7 @@ export class DocsEspecialidadComponent implements OnInit {
 
     this.verificacionDocsService.verificarRegistro(solicitud).subscribe({
       next: (respuesta) => {
-        console.log(respuesta);
+        this.actualizarRegistro.emit(true);
       }
     })
   }

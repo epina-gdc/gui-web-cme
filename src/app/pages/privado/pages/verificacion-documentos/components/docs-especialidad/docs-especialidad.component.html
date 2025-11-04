@@ -103,6 +103,6 @@
 </div>
 
 <div class="flex justify-content-end">
-  <p-button type="button" variant="outlined" class="me-2" label="Cancelar"/>
+  <p-button type="button" variant="outlined" class="me-2" label="Cancelar" [routerLink]="'privado/verificacion-documentos'"/>
   <p-button type="submit" [disabled]="formularioValidacion.invalid" label="Finalizar verificación" (click)="finalizarVerificacion()"  />
 </div>
