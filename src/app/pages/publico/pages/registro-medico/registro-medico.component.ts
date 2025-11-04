@@ -689,12 +689,22 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
       if (!response.exito) {
         this.limpiarMatricula();
         this._alertServices.error(response.mensaje);
+        this.form.get('nombre')?.enable();
+        this.form.get('apellidoP')?.enable();
+        this.form.get('apellidoM')?.enable();
+        this.form.get('curp')?.enable();
+        this.form.get('rfc')?.enable();
       } else {
         this.form.controls['nombre'].setValue(response.respuesta.areaMedicaData.NOMBRE ? response.respuesta.areaMedicaData.NOMBRE : response.respuesta.siapData.nombre);
         this.form.controls['apellidoP'].setValue(response.respuesta.areaMedicaData.APELLIDO_PATERNO ? response.respuesta.areaMedicaData.APELLIDO_PATERNO : response.respuesta.siapData.primerApellido);
         this.form.controls['apellidoM'].setValue(response.respuesta.areaMedicaData.APELLIDO_MATERNO ? response.respuesta.areaMedicaData.APELLIDO_MATERNO : response.respuesta.siapData.segundoApellido);
         this.form.controls['curp'].setValue(response.respuesta.areaMedicaData.CURP ?? '');
         this.form.controls['rfc'].setValue(response.respuesta.siapData.rfc ?? '');
+        this.form.get('nombre')?.disable();
+        this.form.get('apellidoP')?.disable();
+        this.form.get('apellidoM')?.disable();
+        this.form.get('curp')?.disable();
+        this.form.get('rfc')?.disable();
         this.activarCampos(this.medico.blnInterno);
         this.dinamicoCurp();
         this.asignarDatos();
