@@ -1,5 +1,8 @@
 import {NgClass} from '@angular/common';
-import {Component, signal, WritableSignal} from '@angular/core';
+import {Component, Input, signal, WritableSignal} from '@angular/core';
+import {GeneralComponent} from '@components/general.component';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {DetalleDocumentacionDocumentoConstancia} from '@models/detalleDocumentacionAspirante.interface';
 
 @Component({
   selector: 'app-constancias-cursos',
@@ -7,29 +10,43 @@ import {Component, signal, WritableSignal} from '@angular/core';
   templateUrl: './constancias-cursos.component.html',
   styleUrl: './constancias-cursos.component.scss'
 })
-export class ConstanciasCursosComponent {
+export class ConstanciasCursosComponent extends GeneralComponent {
+  @Input() docsConstancias: DetalleDocumentacionDocumentoConstancia[] = [];
 
   tabActive: WritableSignal<number> = signal(0);
+  pdfSrc: SafeResourceUrl | undefined;
+  blnShowImg!: boolean;
 
-  documentacion: any[] = [
-    {
-      idDocumento: 1,
-      nombreDocumento: "Nombre de la constancia que capturó el usuario 1",
-      doc: []
-    },
-    {
-      idDocumento: 2,
-      nombreDocumento: "Nombre de la constancia que capturó el usuario 2",
-      doc: []
-    },
-    {
-      idDocumento: 3,
-      nombreDocumento: "Nombre de la constancia que capturó el usuario 3",
-      doc: []
-    }
-  ]
+  constructor(
+    private sanitizer: DomSanitizer
+  ) {
+    super();
+    this.blnShowImg = false;
 
-  docSeleccionado(id:number) {
+  }
+
+  docSeleccionado(id: number, guid: string, extension: string) {
     this.tabActive.set(id);
+    this.obtenerPrevisualizacionDocumento(guid, extension);
+  }
+
+
+  obtenerPrevisualizacionDocumento(guid: string, extension: string) {
+    this.documentoService.obtenerDocumento(guid).subscribe({
+      next: (response: any) => {
+        let tipo = 'application/pdf'
+        let img = ['jpg', 'jpeg', 'png'];
+        if (img.includes(extension.toLowerCase())) {
+          tipo = 'blob';
+          this.blnShowImg = true;
+        }
+        const blob = new Blob([response], {type: tipo});
+        this.pdfSrc = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
+      },
+      error: (err: any) => {
+        console.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO, err);
+        this._alertServices.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO);
+      }
+    });
   }
 }
