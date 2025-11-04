@@ -55,7 +55,7 @@ export class AuthService {
     if (token) {
       this.settearSession(token);
     } else {
-      this.cerrarSesion();
+      if(this.router.url != "/publico/crear-cuenta")this.cerrarSesion();
     }
   }
 
@@ -95,6 +95,8 @@ export class AuthService {
   }
 
   cerrarSesion() {
+    debugger
+    console.trace();
     localStorage.clear();
     this.usuarioService.clearUser()
     this.usuarioSesionSubject.next(null)
