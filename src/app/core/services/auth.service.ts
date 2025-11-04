@@ -95,7 +95,6 @@ export class AuthService {
   }
 
   cerrarSesion() {
-    debugger
     console.trace();
     localStorage.clear();
     this.usuarioService.clearUser()
