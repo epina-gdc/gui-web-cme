@@ -100,7 +100,7 @@ export class DocsEspecialidadComponent implements OnInit {
       documentosEspecialidad: this.fb.array(documentosArray),
       evaluacionEspecialidad: this.fb.group({
         // Se incluye idEspecialidadEvaluacion aunque sea null.
-        idEspecialidadEvaluacion: [null],
+        idEspecialidadEvaluacion: [especialidad.evaluacionEspecialidad?.idEspecialidadEvaluacion ?? null],
         estatusVerificacion: this.fb.group({
           // Este es el control de selección a nivel de especialidad (Cumple/No Cumple)
           idEstatusVerificacion: [idEstatusVerificacionInicial, Validators.required]
@@ -170,8 +170,6 @@ export class DocsEspecialidadComponent implements OnInit {
         return especialidad;
       }
     );
-
-    console.log(solicitud);
 
     this.verificacionDocsService.verificarRegistro(solicitud).subscribe({
       next: (respuesta) => {
