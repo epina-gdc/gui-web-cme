@@ -2,7 +2,9 @@ import {Component, Input, OnInit} from '@angular/core';
 import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.component';
 import {PillComponent} from '@components/pill/pill.component';
 import {Card} from 'primeng/card';
-import {DetalleDocumentacionDatosPersonales} from '@models/detalleDocumentacionAspirante.interface';
+import {
+  DetalleDocumentacionDatosPersonales, DetalleDocumentacionResultadoVerificacion
+} from '@models/detalleDocumentacionAspirante.interface';
 import {TitleCasePipe} from '@angular/common';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {GeneralComponent} from '@components/general.component';
@@ -15,6 +17,7 @@ import {GeneralComponent} from '@components/general.component';
 })
 export class CardInfoComponent extends GeneralComponent implements OnInit {
   @Input() datosPersonales!: DetalleDocumentacionDatosPersonales;
+  @Input() evaluacion!: DetalleDocumentacionResultadoVerificacion;
 
   ruta: string;
   datosFoto!: any;
@@ -28,6 +31,7 @@ export class CardInfoComponent extends GeneralComponent implements OnInit {
 
   ngOnInit() {
     this.obtenerDatosFoto(this.datosPersonales.idUsuario);
+    console.log(this.evaluacion)
   }
 
   obtenerDatosFoto(idusuario: number | undefined): void {
