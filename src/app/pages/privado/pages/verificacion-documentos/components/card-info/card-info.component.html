@@ -15,7 +15,8 @@
         @if (!evaluacion || evaluacion.estatusVerificacion.idEstatusVerificacion === 4) {
           <app-pill [texto]="'No cumple con requisitos'" [pillType]="0"/>
         } @else {
-          <app-pill [texto]="evaluacion.estatusVerificacion.desEstatus" [pillType]="0"/>
+          <app-pill [texto]="evaluacion.estatusVerificacion.desEstatus"
+                    [pillType]="evaluacion.estatusVerificacion.idEstatusVerificacion"/>
         }
       </div>
       <div class="flex justify-content-between align-items-start mt-3">
