@@ -347,7 +347,9 @@ export class InicioComponent extends GeneralComponent {
       diaInicio: [{value: null, disabled: true}],
       diaFin: [{value: null, disabled: true}],
       ooad: [{value: null, disabled: true}],
-    }, {validators: [jornadaLaboralValidator, horarioLaboralValidator]})
+    }
+  //  , {validators: [jornadaLaboralValidator, horarioLaboralValidator]}
+  )
   }
 
   obtenerFechaNacimientoDeCURP(curp: string): Date {
@@ -1462,6 +1464,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   transformarFormularioADatosEmpleo(): DatosEmpleo {
+    debugger
     const formValues = this.formDatosEmpleo.getRawValue();
 
     const indOtroEmpleo = (formValues.otroEmpleo === '1' ? 1 : 0) as 1 | 0;

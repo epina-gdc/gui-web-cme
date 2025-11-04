@@ -113,4 +113,9 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit {
     return this.formLogin.controls;
   }
 
+  crearCuenta(){
+    debugger
+
+    this._router.navigate(['publico/' + this._nav.crearCuenta])
+  }
 }

@@ -246,10 +246,18 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
   private isCurp() {
+    debugger
     this.form.controls['curp'].setValidators([Validators.required, Validators.minLength(18),
     Validators.maxLength(18),
     Validators.pattern(PATRON_CURP)]);
     this.form.controls['curp'].updateValueAndValidity();
+
+    this.form.controls['rfc'].setValidators([Validators.required,
+        Validators.minLength(13),
+        Validators.maxLength(13),
+        Validators.pattern(PATRON_RFC)]);
+    this.form.controls['rfc'].updateValueAndValidity();
+
     this.inCurp = true;
 
   }
@@ -263,6 +271,12 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   private isResidente() {
     this.strTitulo = 'Residente IMSS';
     this.clearCampos();
+    this.form.controls['rfc'].setValidators([Validators.required,
+        Validators.minLength(13),
+        Validators.maxLength(13),
+        Validators.pattern(PATRON_RFC)]);
+    this.form.controls['rfc'].updateValueAndValidity();
+
     this.form.controls['matricula'].setValidators([Validators.required,
     Validators.minLength(6),
     Validators.maxLength(10),
