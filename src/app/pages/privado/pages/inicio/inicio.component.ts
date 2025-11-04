@@ -1463,7 +1463,6 @@ export class InicioComponent extends GeneralComponent {
   }
 
   transformarFormularioADatosEmpleo(): DatosEmpleo {
-    debugger
     const formValues = this.formDatosEmpleo.getRawValue();
 
     const indOtroEmpleo = (formValues.otroEmpleo === '1' ? 1 : 0) as 1 | 0;
