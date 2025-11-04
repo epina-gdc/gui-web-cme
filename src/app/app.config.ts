@@ -20,7 +20,7 @@ export const appConfig: ApplicationConfig = {
     {
       provide: TIEMPO_MAXIMO_SESION,
       useValue: {
-        tiempoMaximoInactividad: 600,
+        tiempoMaximoInactividad: 1200,
         mostrarAlertaCuandoFalten: 60,
       } as TiempoSesion,
     },
@@ -45,6 +45,6 @@ export const appConfig: ApplicationConfig = {
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorService, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true},
     provideAnimations(),
-    provideUserIdleConfig({idle: 540, timeout: 60, ping: 120}),
+    provideUserIdleConfig({idle: 1140, timeout: 60, ping: 120}),
   ]
 };
