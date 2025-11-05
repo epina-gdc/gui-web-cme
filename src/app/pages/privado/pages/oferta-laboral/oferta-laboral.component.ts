@@ -1,23 +1,24 @@
-import { Component, inject, input, InputSignal, signal, WritableSignal } from '@angular/core';
-import { Card } from 'primeng/card';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { TipoDropdown } from '@models/tipo-dropdown.interface';
-import { Select } from 'primeng/select';
-import { KpiCardComponent } from '../../../../components/kpi-card/kpi-card.component';
-import { OfertaCardComponent } from '../../../../components/oferta-card/oferta-card.component';
-import { Button } from 'primeng/button';
-import { NgClass } from '@angular/common';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { DetalleOfertaLaboralComponent } from '@privado/detalle-oferta-laboral/detalle-oferta-laboral.component';
-import { FooterMedicoComponent } from '@pages/privado/shared/footer-medico/footer-medico.component';
+import {Component, inject, input, InputSignal, signal, WritableSignal} from '@angular/core';
+import {Card} from 'primeng/card';
+import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {TipoDropdown} from '@models/tipo-dropdown.interface';
+import {Select} from 'primeng/select';
+import {KpiCardComponent} from '../../../../components/kpi-card/kpi-card.component';
+import {OfertaCardComponent} from '../../../../components/oferta-card/oferta-card.component';
+import {Button} from 'primeng/button';
+import {NgClass} from '@angular/common';
+import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
+import {DetalleOfertaLaboralComponent} from '@privado/detalle-oferta-laboral/detalle-oferta-laboral.component';
+import {FooterMedicoComponent} from '@pages/privado/shared/footer-medico/footer-medico.component';
 import {
   HeaderMedicoDetalleOfertaComponent
 } from '@pages/privado/shared/header-medico-detalle-oferta/header-medico-detalle-oferta.component';
-import { Paginator } from 'primeng/paginator';
-import { PrimeTemplate } from 'primeng/api';
-import { GeneralComponent } from '@components/general.component';
-import { mapearArregloTipoDropdown } from '@utils/funciones';
-import { ActivatedRoute } from '@angular/router';
+import {Paginator} from 'primeng/paginator';
+import {PrimeTemplate} from 'primeng/api';
+import {GeneralComponent} from '@components/general.component';
+import {mapearArregloTipoDropdown} from '@utils/funciones';
+import {ActivatedRoute} from '@angular/router';
+
 interface PageEvent {
   first: number;
   rows: number;
@@ -56,7 +57,7 @@ export class OfertaLaboralComponent extends GeneralComponent {
 
   activeTab: WritableSignal<number> = signal(0);
 
-  registros: InputSignal<any[]> = input([{ id: 0 }])
+  registros: InputSignal<any[]> = input([{id: 0}])
 
   formTablero!: FormGroup;
 
@@ -106,13 +107,18 @@ export class OfertaLaboralComponent extends GeneralComponent {
     },
     {
       id: 3,
-      name: 'Preguntas frecuentes',
+      name: 'Ubicación de las Unidades Médicas',
       icono: 'cme-quest',
-      description: 'Respuestas a las preguntas del proceso',
+      description: 'Consulte ubicación de unidades médicas',
+      ruta: 'https://sites.google.com/view/draft-2025/inicio'
     }
   ];
 
   actualizarTab(id: number) {
+    if (id === 3) {
+      const url = this.data[3].ruta;
+      window.open(url, '_blank');
+    }
     this.activeTab.update(() => id);
   }
 
@@ -143,7 +149,7 @@ export class OfertaLaboralComponent extends GeneralComponent {
 
   obtenerCatalogos(): void {
 
-    this.activatedRoute.data.subscribe(({ respuesta }) => {
+    this.activatedRoute.data.subscribe(({respuesta}) => {
 
       const [ooad, especialidad, regimen, bono] = respuesta;
 
@@ -183,20 +189,19 @@ export class OfertaLaboralComponent extends GeneralComponent {
     let bono = this.formTablero.get('bono_tablero')?.value;
 
 
-
     let filtros = {
       "cveEspecialidad": especialidad?.value,
-      "cveOoad": ooad?.value??'',
-      "cveBono": bono?.label??'',
-      "cveRegimen": regimen?.value??'',
-      "cveZona": zona?.value??''
+      "cveOoad": ooad?.value ?? '',
+      "cveBono": bono?.label ?? '',
+      "cveRegimen": regimen?.value ?? '',
+      "cveZona": zona?.value ?? ''
 
     }
     console.log("filstr:S", filtros);
 
     this._ConvocatoriaService.consultarPlazas(filtros, 0).subscribe({
-      next: (valor:any) => {
-       console.log("consulta:",valor);
+      next: (valor: any) => {
+        console.log("consulta:", valor);
 
       }
     });
