@@ -77,6 +77,9 @@
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 16.8px */
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 150px;
 }
 
 .letras-menu-imss {
@@ -285,7 +288,6 @@
 
 .titulo-nombre-aspirante {
   color: #000;
-  font-family: "Noto Sans";
   font-size: 24px;
   font-style: normal;
   font-weight: 700;
@@ -295,7 +297,6 @@
 .detalle-aspirante {
   span {
     color: #597190;
-    font-family: "Noto Sans";
     font-size: 12px;
     font-style: normal;
     font-weight: 600;
@@ -304,7 +305,6 @@
 
   p {
     color: #222;
-    font-family: "Noto Sans";
     font-size: 14px;
     font-style: normal;
     font-weight: 500;
@@ -317,7 +317,6 @@
   display: flex;
   color: #161A1D;
   font-feature-settings: 'liga' off, 'clig' off;
-  font-family: "Noto Sans";
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -327,7 +326,6 @@
 .header-accordeon {
   color: #40434E;
   font-feature-settings: 'liga' off, 'clig' off;
-  font-family: "Noto Sans";
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
@@ -337,7 +335,6 @@
 .nombre-doc {
   color: #40434E;
   font-feature-settings: 'liga' off, 'clig' off;
-  font-family: "Noto Sans";
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -345,7 +342,6 @@
 
 .select-option-doc {
   color: #40434E;
-  font-family: "Noto Sans";
   font-size: 12px;
   font-style: normal;
   font-weight: 600;
@@ -355,12 +351,10 @@
 .subtitle-previsualizacion {
   color: #40434E;
   font-feature-settings: 'liga' off, 'clig' off;
-  font-family: "Noto Sans";
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
   line-height: 120%; /* 21.6px */
-
 }
 
 
@@ -372,5 +366,9 @@
 
   .login-subtitulo {
     font-size: 32px;
+  }
+
+  .usuario-menu {
+    max-width: fit-content;
   }
 }
