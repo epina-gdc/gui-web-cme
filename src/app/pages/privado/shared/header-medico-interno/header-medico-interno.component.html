@@ -6,8 +6,8 @@
           class="m-1 nombre-medico">{{ userData()?.nomNombre }} {{ userData()?.nomApellidoPaterno }} {{ userData()?.nomApellidoMaterno }}</strong>
       </span>
   </article>
-  <article class="flex flex-row">
-    <div class="justify-content-start flex">
+  <article class="flex flex-row flex-wrap">
+    <div class="justify-content-start lg:flex">
       <icon-card iconClass="cme-user" cardColor="#bd9b3b" bgColor="#fede82" [leftBorderRound]="true"></icon-card>
       <div class="flex flex-column justify-content-center mr-5">
         @if (userData()?.cveMatricula) {
