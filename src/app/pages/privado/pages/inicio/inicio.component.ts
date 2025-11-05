@@ -170,11 +170,8 @@ export class InicioComponent extends GeneralComponent {
   especialidades: TipoDropdown[] = [];
   dias_semana: TipoDropdown[] = [];
 
-  indice: WritableSignal<number> = signal<number>(0);
+  indice: WritableSignal<number> = signal<number>(2);
   tipoMedico: WritableSignal<string> = signal<string>("");
-
-  
-  
 
   archivoINE!: File | null;
   archivoTitulo!: File | null;

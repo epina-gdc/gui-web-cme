@@ -1,10 +1,10 @@
-import {Component, inject, input, InputSignal, signal, WritableSignal} from '@angular/core';
+import {Component, OnInit, OnDestroy, inject, input, InputSignal, signal, WritableSignal} from '@angular/core';
 import {Card} from 'primeng/card';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
 import {Select} from 'primeng/select';
-import {KpiCardComponent} from '../../../../components/kpi-card/kpi-card.component';
-import {OfertaCardComponent} from '../../../../components/oferta-card/oferta-card.component';
+import {KpiCardComponent} from '@components/kpi-card/kpi-card.component';
+import {OfertaCardComponent} from '@components/oferta-card/oferta-card.component';
 import {Button} from 'primeng/button';
 import {NgClass} from '@angular/common';
 import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
@@ -18,6 +18,8 @@ import {PrimeTemplate} from 'primeng/api';
 import {GeneralComponent} from '@components/general.component';
 import {mapearArregloTipoDropdown} from '@utils/funciones';
 import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {EstadoOfertaService, OfertaEstado} from '@services/estado-oferta.service';
 
 interface PageEvent {
   first: number;
@@ -43,7 +45,7 @@ interface PageEvent {
   styleUrl: './oferta-laboral.component.scss',
   providers: [DialogService]
 })
-export class OfertaLaboralComponent extends GeneralComponent {
+export class OfertaLaboralComponent extends GeneralComponent implements OnInit, OnDestroy {
 
   first: number = 0;
   rows: number = 10;
@@ -67,7 +69,10 @@ export class OfertaLaboralComponent extends GeneralComponent {
   regimen_tablero: TipoDropdown[] = [];
   bono_tablero: TipoDropdown[] = [];
 
-  constructor(public dialogService: DialogService, private readonly activatedRoute: ActivatedRoute) {
+  private favoritosSubscription: Subscription = new Subscription();
+
+  constructor(public dialogService: DialogService, private readonly activatedRoute: ActivatedRoute,
+              private readonly estadoOfertaService: EstadoOfertaService) {
     super();
     this.formTablero = this.asignarFormTablero();
     this.obtenerCatalogos();
@@ -108,7 +113,7 @@ export class OfertaLaboralComponent extends GeneralComponent {
     {
       id: 3,
       name: 'Ubicación de las Unidades Médicas',
-      icono: 'cme-pin',
+      icono: 'cme-marker-pin',
       description: 'Consulte ubicación de unidades médicas',
       ruta: 'https://sites.google.com/view/draft-2025/inicio'
     }
@@ -147,11 +152,8 @@ export class OfertaLaboralComponent extends GeneralComponent {
     this.rows = event.rows;
   }
 
-
   obtenerCatalogos(): void {
-
     this.activatedRoute.data.subscribe(({respuesta}) => {
-
       const [ooad, especialidad, regimen, bono] = respuesta;
 
       //this.zona_tablero = mapearArregloTipoDropdown(zona.respuesta, 'desTipoDocumentoEspecialidad', 'idTipoDocumentoEspecialidad');
@@ -161,7 +163,6 @@ export class OfertaLaboralComponent extends GeneralComponent {
       this.bono_tablero = mapearArregloTipoDropdown(bono.respuesta, 'bono', 'cveBono')
     });
   }
-
 
   suscribirObservables(): void {
     this.formTablero.get('ooad_tablero')?.valueChanges.subscribe(value => this.obtenerZonasPorOoad(value))
@@ -203,8 +204,21 @@ export class OfertaLaboralComponent extends GeneralComponent {
     this._ConvocatoriaService.consultarPlazas(filtros, 0).subscribe({
       next: (valor: any) => {
         console.log("consulta:", valor);
-
       }
     });
+
+  }
+
+  ngOnInit() {
+    this.favoritosSubscription = this.estadoOfertaService.favoritosActuales$.subscribe(
+      (numeroFavoritos: number) => {
+        const favoritos = this.data[1];
+        favoritos.price = numeroFavoritos;
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    this.favoritosSubscription.unsubscribe();
   }
 }
