@@ -246,16 +246,15 @@ export class ConvocatoriaService {
 
   }
 
-  consultarPlazas(filtros: any,page:number): Observable<any> {
+  consultarPlazas(filtros: any,parameters: any): Observable<any> {
+
+    const {page,size,sort} = parameters;
 
     let parametros = new HttpParams();
-    
+    parametros = parametros.set('page', page);
+    parametros = parametros.set('size',size);
+    parametros = parametros.set('sort', sort);
 
-
-          parametros = parametros.set('page', page);
-          parametros = parametros.set('size',10);
-          parametros = parametros.set('sort', 'idPlaza,asc');
-   
 
     const ruta = `${this.serverEndPointURLConvocatoria}/plazas/consultar`;
     return this.http.post<any>(ruta, filtros,{headers: this.header, params: parametros}).pipe(

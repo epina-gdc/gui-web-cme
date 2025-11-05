@@ -142,6 +142,8 @@ export class OfertaLaboralComponent extends GeneralComponent {
   onPageChange(event: any) {
     this.first = event.first;
     this.rows = event.rows;
+    this.numPaginaActual = event.page;
+    this.btnConsultar("paginado");
   }
 
 
@@ -177,15 +179,16 @@ export class OfertaLaboralComponent extends GeneralComponent {
     });
   }
 
-  public btnConsultar() {
-
-    this._alertServices.exito("realzia búsqueda");
+  public btnConsultar(referencia: string = "btn") {
+    if(referencia == "btn"){
+      this.numPaginaActual = 0;
+      this.first = 0;
+    }
     let ooad = this.formTablero.get('ooad_tablero')?.value;
     let zona = this.formTablero.get('zona_tablero')?.value;
     let especialidad = this.formTablero.get('especialidad_tablero')?.value;
     let regimen = this.formTablero.get('regimen_tablero')?.value;
     let bono = this.formTablero.get('bono_tablero')?.value;
-
 
 
     let filtros = {
@@ -194,11 +197,18 @@ export class OfertaLaboralComponent extends GeneralComponent {
       "cveBono": bono?.label??'',
       "cveRegimen": regimen?.value??'',
       "cveZona": zona?.value??''
-
     }
 
+    let parameters = {
+      "page": this.numPaginaActual,
+      "size": this.rows,
+      "sort": 'idPlaza,asc'
+    }
 
-    this._ConvocatoriaService.consultarPlazas(filtros, 0).subscribe({
+    debugger
+
+
+    this._ConvocatoriaService.consultarPlazas(filtros, parameters).subscribe({
       next: (respuesta: any) => {
         this.cantidadOfertasLaborales.set(respuesta.page.totalElements)
         this.totalElementos = respuesta.page.totalElements;
@@ -206,4 +216,6 @@ export class OfertaLaboralComponent extends GeneralComponent {
       }
     });
   }
+
+
 }

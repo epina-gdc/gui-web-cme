@@ -85,7 +85,7 @@
                         placeholder="Selecciona un bono" class="w-full"/>
             </div>
             <div class="col-4 flex justify-content-start align-items-end">
-              <p-button type="button" label="Consultar" (click)="btnConsultar()"/>
+              <p-button type="button" label="Consultar" (click)="btnConsultar('btn')"/>
             </div>
           </div>
         </form>
@@ -113,11 +113,11 @@
         }
       </p-card>
 
-      <!--@if (paginasTotales > 1) {-->
+      @if (totalElementos > 1) {
 
         <div class="card flex justify-content-end">
           <p-paginator class="paginator-oferta" (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows"
-                       [totalRecords]="120">
+                       [totalRecords]="totalElementos">
             <ng-template pTemplate="previouspagelinkicon">
               <p-button type="button" icon="pi pi-angle-left" label="Anterior"
                         styleClass="p-button-text text-black"></p-button>
@@ -128,7 +128,7 @@
             </ng-template>
           </p-paginator>
         </div>
-      <!--}-->
+      }
     }
     @if (activeTab() === 2) {
       <p-card class="empty-border">
