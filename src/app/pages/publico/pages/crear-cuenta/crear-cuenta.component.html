@@ -39,6 +39,11 @@
                 <p-select id="modalidad" formControlName="modalidad" [options]="lstModalidad" optionLabel="nomSubperfil"
                           optionValue="idSubperfil" placeholder="Selecciona una modalidad" class="w-full"
                           (ngModelChange)="cambiaModalidad()">
+                  <ng-template let-modalidad pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                      <div style="white-space: normal;">{{ modalidad.nomSubperfil }}</div>
+                    </div>
+                  </ng-template>
                 </p-select>
               </div>
             </div>
