@@ -487,9 +487,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     residente.refEmail = this.medico.refEmail;
     residente.refContrasenaHash = this.medico.refContrasenaHash;
     residente.requiereFolio = true;
-    debugger
     residente.areaMedicaData = this.AREA_MEDICA_DATA;
-    debugger
     this._RegistroMedicoService.registrarResidente(residente).subscribe({
       next: (data: ResponseGeneral) => {
 

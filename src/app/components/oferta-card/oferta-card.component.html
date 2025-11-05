@@ -4,50 +4,51 @@
     <article class="col-9">
       <div class="flex flex-row">
         <div class="flex flex-column col-4 p-0">
-          <p class="titulo-oferta-card">Neurocirugía</p>
-          <p class="especificacion-oferta-card">Medicina familar</p>
+          <p class="titulo-oferta-card">{{detalleOportunidad.especialidad}}</p>
+          <p class="especificacion-oferta-card">{{detalleOportunidad.categoria}}</p>
         </div>
         <div class="flex flex-column col-2 p-0">
           <p class="titulo-label-oferta-card">Regimen</p>
-          <p class="texto-label-oferta-card">Ordinario</p>
+          <p class="texto-label-oferta-card">{{detalleOportunidad.regimen}}</p>
         </div>
         <div class="flex flex-column col-2 p-0">
           <p class="titulo-label-oferta-card">Turno</p>
-          <p class="texto-label-oferta-card">Matutino</p>
+          <p class="texto-label-oferta-card">{{detalleOportunidad.turno}}</p>
         </div>
         <div class="flex flex-column col-2 p-0">
           <p class="titulo-label-oferta-card">Tipo de plaza</p>
-          <p class="texto-label-oferta-card">Operativa base</p>
+          <p class="texto-label-oferta-card">{{detalleOportunidad.tipoPlaza}}</p>
         </div>
         <div class="flex flex-column col-2 p-0">
           <p class="titulo-label-oferta-card">Marca de ocupación</p>
-          <p class="texto-label-oferta-card">Definitiva</p>
+          <p class="texto-label-oferta-card">{{detalleOportunidad.marcaOcupacion}}</p>
         </div>
       </div>
       <hr class="my-4">
       <div class="flex flex-row justify-content-start align-items-center gap-2 mb-4">
-        <p class="nombre-unidad-oferta-card">Hospital de Gineco Obstreticia No 60</p>
-        <p-badge [value]="'• ' + 'Nuevo hospital'" severity="warn"/>
+        <p class="nombre-unidad-oferta-card">{{detalleOportunidad.umf}}</p>
+        @if(detalleOportunidad.nuevoHospital == 1){
+          <p-badge [value]="'• ' + 'Nuevo hospital'" severity="warn"/>
+        }
       </div>
       <div class="flex flex-row">
-        <div class="flex flex-row">
+        <div class="flex justify-content-between w-100 flex-row">
           <div class="flex flex-column col-4">
             <div class="flex flex-row gap-2 align-items-center">
               <i class="cme-pin" [style]="{ 'font-size': '2.2rem', color: '#23c8a7'}"></i>
               <div class="flex flex-column">
                 <p class="titulo-label-oferta-card">Ubicación</p>
-                <p class="texto-label-oferta-card">Estado de México</p>
+                <p class="texto-label-oferta-card">{{detalleOportunidad.ubicacion}}</p>
               </div>
             </div>
           </div>
           <div class="flex flex-column col-2 p-0">
             <p class="titulo-label-oferta-card">Zona</p>
-            <p class="texto-label-oferta-card">Tlalnepantla</p>
+            <p class="texto-label-oferta-card">{{detalleOportunidad.zona}}</p>
           </div>
           <div class="flex flex-column col-6 p-0">
             <p class="titulo-label-oferta-card">Dirección</p>
-            <p class="texto-label-oferta-card">Carr. Federal Pachuca - México Manzana 036, Urbana Ixhuatepec, 55349
-              Ecatepec de Morelos, Méx</p>
+            <p class="texto-label-oferta-card">{{detalleOportunidad.direccion}}</p>
           </div>
         </div>
       </div>
@@ -62,11 +63,11 @@
       </div>
       <div class="flex justify-content-evenly">
         <div class="flex flex-column align-items-center gap-2">
-          <p class="texto-sueldo"> $45,520 </p>
+          <p class="texto-sueldo"> ${{detalleOportunidad.sueldoMensualBruto}} </p>
           <p class="leyenda-sueldo"> Estimado bruto </p>
         </div>
         <div class="flex flex-column align-items-center gap-2">
-          <p class="texto-sueldo"> $41,140 </p>
+          <p class="texto-sueldo"> ${{detalleOportunidad.sueldoMensualNeto}} </p>
           <p class="leyenda-sueldo"> Estimado neto </p>
         </div>
       </div>

@@ -8,6 +8,9 @@ import {SplitByWidthDirective} from '@directives/split-by-width.directive';
 import {Image} from 'primeng/image';
 import {Carousel} from 'primeng/carousel';
 import {EstadoOfertaService} from '@services/estado-oferta.service';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { OfertaLaboralComponent } from '../oferta-laboral/oferta-laboral.component';
+import { OportunidadLaboral } from '@models/oportunidad-laboral.interface';
 
 @Component({
   selector: 'app-detalle-oferta-laboral',
@@ -30,16 +33,55 @@ import {EstadoOfertaService} from '@services/estado-oferta.service';
 })
 export class DetalleOfertaLaboralComponent implements OnInit {
 
-  constructor(private readonly estadoOfertaService: EstadoOfertaService) {
+  ofertaSeleccionada: OportunidadLaboral =
+  {
+    idPlaza: 0,
+    cveOoad: null,
+    cvePuesto: null,
+    cveUnidad: null,
+    porcAltoCostoVida: null,
+    especialidad: null,
+    categoria: null,
+    regimen: null,
+    turno: null,
+    tipoPlaza: null,
+    marcaOcupacion: null,
+    umf: null,
+    nuevoHospital: null,
+    ubicacion: null,
+    zona: null,
+    direccion: null,
+    sueldoMensualBruto: null,
+    sueldoMensualNeto: null,
+    horario: null,
+    numPlaza: null,
+    clasificacion: null,
+    ooad: null,
+    creditos: null,
+    bonoDificilCobertura: null,
+    accesoCredito: null,
+    creditoAutomotriz: null,
+    descuentoQuincenalCreditoAutomotriz: null,
+    creditoHipotecario: null,
+    descuentoQuincenalCreditoHipotecario: null,
+  };
+
+  constructor(private readonly estadoOfertaService: EstadoOfertaService,
+    private config: DynamicDialogConfig,
+  ) {
   }
 
   ngOnInit() {
+    if (this.config?.data) {
+      this.ofertaSeleccionada = this.config.data.oportunidad;
+    }
     const nuevoEstado = {
-      titulo: 'Cardiología',
-      subTitulo: 'Medicina Familiar',
-      badgeValue: true,
+      titulo: this.ofertaSeleccionada.especialidad,
+      subTitulo: this.ofertaSeleccionada.categoria,
+      badgeValue: this.ofertaSeleccionada.nuevoHospital == 1,
     };
     this.estadoOfertaService.actualizarEstado(nuevoEstado);
+
   }
 
   value: any;

@@ -50,7 +50,6 @@ export class AuthService {
           localStorage.setItem(CME_TOKEN, respuesta.respuesta.token);
           this.settearSession(respuesta.respuesta.token);
 
-          console.log(this.usuarioSesion)
         }
       })
     );
@@ -102,7 +101,6 @@ export class AuthService {
   }
 
   cerrarSesion() {
-    console.trace();
     localStorage.clear();
     this.usuarioService.clearUser();
     this.usuarioSesionSubject.next(null);

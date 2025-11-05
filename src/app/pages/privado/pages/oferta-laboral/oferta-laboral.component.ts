@@ -21,6 +21,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {EstadoOfertaService, OfertaEstado} from '@services/estado-oferta.service';
 
+import { OportunidadLaboral } from '@models/oportunidad-laboral.interface';
 interface PageEvent {
   first: number;
   rows: number;
@@ -59,7 +60,8 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
 
   activeTab: WritableSignal<number> = signal(0);
 
-  registros: InputSignal<any[]> = input([{id: 0}])
+  registros: WritableSignal<OportunidadLaboral[]> = signal([])
+  cantidadOfertasLaborales: WritableSignal<number> = signal(0);
 
   formTablero!: FormGroup;
 
@@ -95,7 +97,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       name: 'Ver oportunidades',
       icono: 'cme-search',
       description: 'Oportunidades de trabajo',
-      price: 65,
+      price: this.cantidadOfertasLaborales(),
     },
     {
       id: 1,
@@ -128,8 +130,9 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     this.activeTab.update(() => id);
   }
 
-  show() {
+  show(oportunidad: OportunidadLaboral) {
     this.ref = this.dialogService.open(DetalleOfertaLaboralComponent, {
+      data:{oportunidad},
       modal: true,
       width: '60vw',
       height: '100vh',
@@ -150,6 +153,8 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   onPageChange(event: any) {
     this.first = event.first;
     this.rows = event.rows;
+    this.numPaginaActual = event.page;
+    this.btnConsultar("paginado");
   }
 
   obtenerCatalogos(): void {
@@ -181,9 +186,11 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     });
   }
 
-  public btnConsultar() {
-
-    this._alertServices.exito("realzia búsqueda");
+  public btnConsultar(referencia: string = "btn") {
+    if(referencia == "btn"){
+      this.numPaginaActual = 0;
+      this.first = 0;
+    }
     let ooad = this.formTablero.get('ooad_tablero')?.value;
     let zona = this.formTablero.get('zona_tablero')?.value;
     let especialidad = this.formTablero.get('especialidad_tablero')?.value;
@@ -197,13 +204,21 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       "cveBono": bono?.label ?? '',
       "cveRegimen": regimen?.value ?? '',
       "cveZona": zona?.value ?? ''
-
     }
-    console.log("filstr:S", filtros);
 
-    this._ConvocatoriaService.consultarPlazas(filtros, 0).subscribe({
-      next: (valor: any) => {
-        console.log("consulta:", valor);
+    let parameters = {
+      "page": this.numPaginaActual,
+      "size": this.rows,
+      "sort": 'idPlaza,asc'
+    }
+
+
+
+    this._ConvocatoriaService.consultarPlazas(filtros, parameters).subscribe({
+      next: (respuesta: any) => {
+        this.cantidadOfertasLaborales.set(respuesta.page.totalElements)
+        this.totalElementos = respuesta.page.totalElements;
+        this.registros.set(respuesta.content)
       }
     });
 
@@ -221,4 +236,6 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   ngOnDestroy() {
     this.favoritosSubscription.unsubscribe();
   }
+
+
 }
