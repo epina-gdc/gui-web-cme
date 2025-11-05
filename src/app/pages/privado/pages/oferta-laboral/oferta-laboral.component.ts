@@ -205,7 +205,6 @@ export class OfertaLaboralComponent extends GeneralComponent {
       "sort": 'idPlaza,asc'
     }
 
-    debugger
 
 
     this._ConvocatoriaService.consultarPlazas(filtros, parameters).subscribe({
