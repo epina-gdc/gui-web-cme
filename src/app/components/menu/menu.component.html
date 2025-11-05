@@ -11,10 +11,17 @@
     <span class="usuario-menu pr-4 mr-6 text-overflow-ellipsis">
       {{ userData?.nomNombre }} {{ userData?.nomApellidoPaterno }} {{ userData?.nomApellidoMaterno }}
     </span>
-    <p-speeddial [model]="items" direction="down" [transitionDelay]="80" class="absolute ajuste-avatar">
+    <p-speeddial [model]="items" direction="down" [transitionDelay]="80"  class="absolute ajuste-avatar">
       <ng-template pTemplate="button" let-toggleCallback="toggleCallback">
         <p-avatar icon="pi pi-user" (click)="toggleCallback($event)" [style]="{ 'background-color': '#E0FFFF', color: '#5DC1B9', 'border-color': '#5DC1B9',
      'border': '2px solid' }" class="ml-8 my-2 cursor-pointer" size="xlarge" shape="circle"/>
+      </ng-template>
+      <ng-template pTemplate="item" let-item let-toggleCallback="toggleCallback">
+        <div class="flex bg-white justify-content-center align-items-center gap-2 border-round card py-1 px-2 flex-row cursor-pointer hover:bg-gray-300"
+             (click)="toggleCallback($event, item)">
+          <span [class]="item.icon"></span>
+          <span style="font-size: 14px">{{ item.label }}</span>
+        </div>
       </ng-template>
     </p-speeddial>
   </div>
