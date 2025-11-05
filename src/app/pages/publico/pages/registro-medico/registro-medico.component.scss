@@ -22,3 +22,8 @@
       color:var(--p-button-primary-hover-background);
       background-color: var(--gob-mx-base-blanco);
   }
+
+.p-select-item {
+  white-space: normal !important; /* Permite que el texto se envuelva */
+  overflow-wrap: break-word;     /* Rompe palabras largas que desborden */
+}
