@@ -244,6 +244,7 @@
     font-family: Arial, Helvetica, sans-serif;
     box-sizing: border-box;
   }
+
   .loader::after {
     content: '';
     width: 5px;
@@ -265,6 +266,17 @@
     }
     100% {
       box-shadow: 10px 0 white, 20px 0 white;
+    }
+  }
+
+  .width-lg {
+    width: 28rem;
+  }
+
+  @media screen and (min-width: 768px) {
+    .width-lg {
+      width: 45rem;
+      overflow: hidden;
     }
   }
 

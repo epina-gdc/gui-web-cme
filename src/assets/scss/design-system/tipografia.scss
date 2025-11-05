@@ -2,17 +2,17 @@
   color: var(--gob-mx-base-blanco);
   text-align: center;
   font-feature-settings: 'liga' off, 'clig' off;
-  font-size: 56px;
+  font-size: 36px;
   font-style: normal;
   font-weight: 700;
-  line-height: 70px; /* 125% */
+  line-height: 50px;
 }
 
 .login-subtitulo {
   color: var(--gob-mx-base-blanco);
   text-align: center;
   font-feature-settings: 'liga' off, 'clig' off;
-  font-size: 32px;
+  font-size: 22px;
   font-style: normal;
   font-weight: 500;
   line-height: 40px; /* 125% */
@@ -77,6 +77,9 @@
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 16.8px */
+  white-space: nowrap;
+  overflow: hidden;
+  max-width: 150px;
 }
 
 .letras-menu-imss {
@@ -222,8 +225,8 @@
   font-weight: 600;
 }
 
-.text-danger{
-  color: var( --gob-mx-pr-rojo-tono1) !important;
+.text-danger {
+  color: var(--gob-mx-pr-rojo-tono1) !important;
   font-size: 12px;
   font-weight: 500;
 }
@@ -283,27 +286,25 @@
   font-size: 12px;
 }
 
-.titulo-nombre-aspirante{
+.titulo-nombre-aspirante {
   color: #000;
-  font-family: "Noto Sans";
   font-size: 24px;
   font-style: normal;
   font-weight: 700;
   line-height: 100%; /* 24px */
 }
 
-.detalle-aspirante{
-  span{
+.detalle-aspirante {
+  span {
     color: #597190;
-    font-family: "Noto Sans";
     font-size: 12px;
     font-style: normal;
     font-weight: 600;
     line-height: normal;
   }
-  p{
+
+  p {
     color: #222;
-    font-family: "Noto Sans";
     font-size: 14px;
     font-style: normal;
     font-weight: 500;
@@ -312,11 +313,10 @@
 }
 
 
-.header-tab-documentacion{
+.header-tab-documentacion {
   display: flex;
   color: #161A1D;
   font-feature-settings: 'liga' off, 'clig' off;
-  font-family: "Noto Sans";
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
@@ -326,38 +326,49 @@
 .header-accordeon {
   color: #40434E;
   font-feature-settings: 'liga' off, 'clig' off;
-  font-family: "Noto Sans";
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
   line-height: 120%; /* 21.6px */
 }
 
-.nombre-doc{
+.nombre-doc {
   color: #40434E;
   font-feature-settings: 'liga' off, 'clig' off;
-  font-family: "Noto Sans";
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
 }
 
-.select-option-doc{
+.select-option-doc {
   color: #40434E;
-  font-family: "Noto Sans";
   font-size: 12px;
   font-style: normal;
   font-weight: 600;
   line-height: 12px; /* 100% */
 }
 
-.subtitle-previsualizacion{
+.subtitle-previsualizacion {
   color: #40434E;
   font-feature-settings: 'liga' off, 'clig' off;
-  font-family: "Noto Sans";
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
   line-height: 120%; /* 21.6px */
+}
 
+
+@media screen and (min-width: 768px) {
+  .login-titulo {
+    font-size: 56px;
+    line-height: 70px; /* 125% */
+  }
+
+  .login-subtitulo {
+    font-size: 32px;
+  }
+
+  .usuario-menu {
+    max-width: fit-content;
+  }
 }

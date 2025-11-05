@@ -33,4 +33,7 @@ export class DocumentacionComponent {
   }
 
 
+  get estatus(): number {
+    return this.detalleAspirante.participacion?.resultadoVerificacion?.estatusVerificacion?.idEstatusVerificacion;
+  }
 }
