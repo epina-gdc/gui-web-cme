@@ -161,18 +161,14 @@ export class OfertaLaboralComponent extends GeneralComponent {
   }
 
   obtenerZonasPorOoad(ooad: any): void {
-
     if (!ooad) return;
     this._CatalogoGenService.getLstZonas(ooad.value).subscribe({
       next: (valor) => {
-        if (valor.exito) {
-          if (valor.respuesta.length != 0) {
-            return this.zona_tablero = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'cveZona');
-          }
-          return this._alertServices.alerta(valor.mensaje);
+        if (valor.exito && Array.isArray(valor.respuesta) && valor.respuesta.length > 0) {
+          this.zona_tablero = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'cveZona');
+          return;
         }
-        return this._alertServices.alerta(valor.mensaje);
-
+        this._alertServices.alerta(valor.mensaje);
       }
     });
   }
