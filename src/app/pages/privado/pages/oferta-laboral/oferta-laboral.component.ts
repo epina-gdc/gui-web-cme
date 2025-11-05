@@ -108,7 +108,7 @@ export class OfertaLaboralComponent extends GeneralComponent {
     {
       id: 3,
       name: 'Ubicación de las Unidades Médicas',
-      icono: 'cme-quest',
+      icono: 'cme-pin',
       description: 'Consulte ubicación de unidades médicas',
       ruta: 'https://sites.google.com/view/draft-2025/inicio'
     }
@@ -118,6 +118,7 @@ export class OfertaLaboralComponent extends GeneralComponent {
     if (id === 3) {
       const url = this.data[3].ruta;
       window.open(url, '_blank');
+      return;
     }
     this.activeTab.update(() => id);
   }
