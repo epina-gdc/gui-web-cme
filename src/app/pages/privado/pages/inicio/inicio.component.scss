@@ -46,7 +46,14 @@
 
   .grid-datos-empleo {
     display: grid;
-    grid-template-columns: repeat(2, 12.5%) repeat(3, 25%);
+    grid-template-columns: repeat(1, 100%);
+    gap: 1rem;
+  }
+
+  @media screen and (min-width: 768px) {
+    .grid-datos-empleo {
+      grid-template-columns: repeat(2, 12.5%) repeat(3, 25%);
+    }
   }
 
   .table-wrapper {
