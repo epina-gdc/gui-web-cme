@@ -87,7 +87,7 @@
 .camera-overlay {
   position: fixed; /* Para que esté sobre el contenido */
   top: 35%;
-  left: 25%;
+  left: 5%;
   width: 50%;
   height: 50%;
   display: flex;
@@ -125,4 +125,11 @@ video {
 
   /* Asegura que el video se muestre correctamente */
   object-fit: cover !important;
+}
+
+
+@media screen and (min-width: 768px) {
+  .camera-overlay {
+    left: 25%;
+  }
 }
