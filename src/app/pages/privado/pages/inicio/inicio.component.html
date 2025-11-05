@@ -159,14 +159,14 @@
 
       <p-card class="mx-2 empty-border" [header]="'Datos de Contacto'">
         <article class="flex flex-row flex-wrap">
-          <div class="col-3">
+          <div class="lg:col-3 col-12">
             <div class="flex justify-content-between">
               <label class="field-label" for="correo">Correo electrónico</label>
             </div>
             <input pInputText class="w-full" type="text" id="correo" placeholder="Ingresa correo electrónico"
                    formControlName="correo"/>
           </div>
-          <div class="col-3">
+          <div class="lg:col-3 col-12">
             <div class="flex justify-content-between">
               <label class="field-label" for="correoAdicional">Correo electrónico adicional</label>
             </div>
@@ -175,7 +175,7 @@
                    formControlName="correoAdicional"
                    emailAllowCaracters maxlength="100"/>
           </div>
-          <div class="col-3">
+          <div class="lg:col-3 col-12">
             <div class="flex justify-content-between">
               <label class="field-label" for="telefonoCasa">Teléfono de casa</label>
               <p class="label-obligatorio">Obligatorio</p>
@@ -183,7 +183,7 @@
             <input pInputText class="w-full" type="text" id="telefonoCasa" placeholder="Ingresa teléfono de casa"
                    formControlName="telefonoCasa" appOnlyNumbers maxlength="10"/>
           </div>
-          <div class="col-3">
+          <div class="lg:col-3 col-12">
             <div class="flex justify-content-between">
               <label class="field-label" for="telefonoCelular">Teléfono celular</label>
               <p class="label-obligatorio">Obligatorio</p>
@@ -191,7 +191,7 @@
             <input pInputText class="w-full" type="text" id="telefonoCelular" placeholder="Ingresa teléfono celular"
                    formControlName="telefonoCelular" appOnlyNumbers maxlength="10"/>
           </div>
-          <div class="col-3">
+          <div class="lg:col-3 col-12">
             <div class="flex justify-content-between">
               <label class="field-label" for="paisNacimiento">País de nacimiento</label>
             </div>
@@ -199,7 +199,7 @@
                       filterBy="label" [filter]="true" placeholder="Ingresa País de nacimiento"
                       class="w-full"/>
           </div>
-          <div class="col-3">
+          <div class="lg:col-3 col-12">
             <div class="flex justify-content-between">
               <label class="field-label" for="estadoNacimiento">Estado de origen (nacimiento)</label>
             </div>
