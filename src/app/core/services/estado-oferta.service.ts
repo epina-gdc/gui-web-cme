@@ -3,9 +3,9 @@ import {BehaviorSubject} from 'rxjs';
 
 // Definición de la interfaz para el estado compartido (opcional, pero recomendado)
 export interface OfertaEstado {
-  titulo: string;
-  subTitulo: string;
-  badgeValue: boolean;
+  titulo: string | null;
+  subTitulo: string | null;
+  badgeValue: boolean | null;
 }
 
 @Injectable({

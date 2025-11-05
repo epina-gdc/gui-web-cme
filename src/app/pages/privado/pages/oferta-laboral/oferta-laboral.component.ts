@@ -1,3 +1,4 @@
+import { HttpRespuesta } from '@models/http-respuesta.interface';
 import { Component, inject, input, InputSignal, signal, WritableSignal } from '@angular/core';
 import { Card } from 'primeng/card';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -18,6 +19,7 @@ import { PrimeTemplate } from 'primeng/api';
 import { GeneralComponent } from '@components/general.component';
 import { mapearArregloTipoDropdown } from '@utils/funciones';
 import { ActivatedRoute } from '@angular/router';
+import { OportunidadLaboral } from '@models/oportunidad-laboral.interface';
 interface PageEvent {
   first: number;
   rows: number;
@@ -56,7 +58,8 @@ export class OfertaLaboralComponent extends GeneralComponent {
 
   activeTab: WritableSignal<number> = signal(0);
 
-  registros: InputSignal<any[]> = input([{ id: 0 }])
+  registros: WritableSignal<OportunidadLaboral[]> = signal([])
+  cantidadOfertasLaborales: WritableSignal<number> = signal(0);
 
   formTablero!: FormGroup;
 
@@ -89,7 +92,7 @@ export class OfertaLaboralComponent extends GeneralComponent {
       name: 'Ver oportunidades',
       icono: 'cme-search',
       description: 'Oportunidades de trabajo',
-      price: 65,
+      price: this.cantidadOfertasLaborales(),
     },
     {
       id: 1,
@@ -116,8 +119,9 @@ export class OfertaLaboralComponent extends GeneralComponent {
     this.activeTab.update(() => id);
   }
 
-  show() {
+  show(oportunidad: OportunidadLaboral) {
     this.ref = this.dialogService.open(DetalleOfertaLaboralComponent, {
+      data:{oportunidad},
       modal: true,
       width: '60vw',
       height: '100vh',
@@ -192,12 +196,13 @@ export class OfertaLaboralComponent extends GeneralComponent {
       "cveZona": zona?.value??''
 
     }
-    console.log("filstr:S", filtros);
+
 
     this._ConvocatoriaService.consultarPlazas(filtros, 0).subscribe({
-      next: (valor:any) => {
-       console.log("consulta:",valor);
-
+      next: (respuesta: any) => {
+        this.cantidadOfertasLaborales.set(respuesta.page.totalElements)
+        this.totalElementos = respuesta.page.totalElements;
+        this.registros.set(respuesta.content)
       }
     });
   }

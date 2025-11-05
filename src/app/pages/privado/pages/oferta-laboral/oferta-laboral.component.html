@@ -108,12 +108,12 @@
                       bg_color="#7bc1e0"></kpi-card>
           </div>
         </div>
-        @for (registro of registros(); track registro.id) {
-          <oferta-card (abrirDetalleEvent)="show()"/>
+        @for (registro of registros(); track registro.idPlaza) {
+          <oferta-card [detalleOportunidad]="registro"  (abrirDetalleEvent)="show($event)"/>
         }
       </p-card>
 
-      @if (paginasTotales > 1) {
+      <!--@if (paginasTotales > 1) {-->
 
         <div class="card flex justify-content-end">
           <p-paginator class="paginator-oferta" (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows"
@@ -128,7 +128,7 @@
             </ng-template>
           </p-paginator>
         </div>
-      }
+      <!--}-->
     }
     @if (activeTab() === 2) {
       <p-card class="empty-border">
