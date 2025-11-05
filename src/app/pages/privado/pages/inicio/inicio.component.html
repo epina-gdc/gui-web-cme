@@ -278,8 +278,8 @@
             para estar en posibilidad de brindarte una mejor oferta laboral</em>
         </div>
         <form [formGroup]="formZonaInteres" class="mb-4">
-          <article class="flex flex-row">
-            <div class="col-3">
+          <article class="flex flex-row flex-wrap">
+            <div class="lg:col-3 col-12">
               <div class="flex justify-content-between">
                 <label class="field-label" for="ooad">OOAD</label>
                 <p class="label-obligatorio">Obligatorio</p>
@@ -287,7 +287,7 @@
               <p-select [options]="ooad" formControlName="ooad" optionLabel="label"
                         placeholder="Seleccionar opción" class="w-full" optionValue="value"/>
             </div>
-            <div class="col-3">
+            <div class="lg:col-3 col-12">
               <div class="flex justify-content-between">
                 <label class="field-label" for="zonaInteres">Zona de interés</label>
                 <p class="label-obligatorio">Obligatorio</p>
@@ -295,7 +295,7 @@
               <p-select [options]="zonas" formControlName="zonaInteres" optionLabel="label"
                         placeholder="Seleccionar opción" class="w-full" optionValue="value"/>
             </div>
-            <div class="col-3 flex justify-content-start align-items-end">
+            <div class="lg:col-3 col-12 flex justify-content-start align-items-end">
               @if (!estatusPendienteDocumentacion) {
                 <p-button label="Agregar" icon="cme-plus" iconPos="right" [text]="true"
                           [disabled]="formZonaInteres.invalid"
