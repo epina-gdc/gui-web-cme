@@ -61,6 +61,14 @@
     flex-direction: column; /* Apila los elementos hijos verticalmente */
   }
 
+  @media screen and (min-width: 768px) {
+    .vertical-tv {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+
+
 }
 
 

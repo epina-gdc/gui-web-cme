@@ -438,14 +438,14 @@
         </article>
       } @else {
         <article class="lg:flex lg:flex-row lg:flex-wrap">
-          <p-tabView class="lg:vertical-tabview flex-grow-1" [activeIndex]="0">
+          <p-tabView class="vertical-tv flex-grow-1" [activeIndex]="0">
             @for (registro of registrosDocumentosEspecialidad(); track registro.especialidad) {
               <p-tabPanel style="{ width: 100%}">
                 <ng-template pTemplate="header">
                   <header-tab [title]="registro.especialidad" [numDocs]="registro.documentos.length"
                               class="header-tab"/>
                 </ng-template>
-                <div class="flex flex-grow-1">
+                <div class="lg:flex lg:flex-grow-1">
                   <p-table [value]="registro.documentos" [tableStyle]="{ 'min-width': '50rem' }" class="flex-grow-1">
                     <ng-template pTemplate="header">
                       <tr>
