@@ -40,6 +40,7 @@ export class DocsEspecialidadComponent implements OnInit {
   @Input() docsEspecialidad: DetalleDocumentacionEspecialidadDocumento[] = [];
   @Input() idUsuario: number | null = null;
   @Input() observaciones: string = '';
+  @Input() estatusId: number | null = null;
 
   @Output() actualizarRegistro: EventEmitter<boolean> = new EventEmitter();
 

@@ -31,7 +31,6 @@ export class CardInfoComponent extends GeneralComponent implements OnInit {
 
   ngOnInit() {
     this.obtenerDatosFoto(this.datosPersonales.idUsuario);
-    console.log(this.evaluacion)
   }
 
   obtenerDatosFoto(idusuario: number | undefined): void {
