@@ -17,6 +17,7 @@ import {AlertService} from '@services/alert.service';
 export class CatalogosGeneralesService {
   private readonly VERSION_API: string = '/v1/';
   private readonly serverEndPointURLCatalogos = `${environment.api.apiCatalogos + this.VERSION_API + 'catalogos'}`;
+  private readonly serverEndPointURLCatalogos1 = `${environment.api.apiConvocatoria  + '/catalogos'}`;
   private readonly serverEndPointURLVerificacionDocs = `${environment.api.apiConvocatoria + '/verificacion/catalogos'}`;
   protected _alertService: AlertService;
   protected http: HttpClient;
@@ -203,7 +204,7 @@ export class CatalogosGeneralesService {
   }
 
   getLstBono(): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/especialidades', {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos1 + '/bono-dificil-cobertura', {headers: this.header}).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
