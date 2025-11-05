@@ -1,3 +1,4 @@
+import { Especialidad } from './../../../../core/models/especialidad';
 import {ResponseGeneral} from '@models/responseGeneral';
 import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {Card} from 'primeng/card';
@@ -62,6 +63,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   inPass: boolean = false;
   inPass2: boolean = false;
   idModalidad!: number;
+  AREA_MEDICA_DATA: AreaMedicaData = new AreaMedicaData;
 
   ngOnInit(): void {
     this.ruta = this._nav.publico + this._nav.crearCuenta;
@@ -483,13 +485,9 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     residente.refEmail = this.medico.refEmail;
     residente.refContrasenaHash = this.medico.refContrasenaHash;
     residente.requiereFolio = true;
-
-    residente.areaMedicaData = new AreaMedicaData();
-    residente.areaMedicaData.CURP = this.medico.refCurp;
-    residente.areaMedicaData.MATRICULA = this.medico.cveMatricula;
-    residente.areaMedicaData.NOMBRE = residente.nomNombre;
-    residente.areaMedicaData.APELLIDO_PATERNO = residente.nomApellidoPaterno;
-    residente.areaMedicaData.APELLIDO_MATERNO = residente.nomApellidoMaterno;
+    debugger
+    residente.areaMedicaData = this.AREA_MEDICA_DATA;
+    debugger
     this._RegistroMedicoService.registrarResidente(residente).subscribe({
       next: (data: ResponseGeneral) => {
 
@@ -695,6 +693,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
         this.form.get('curp')?.enable();
         this.form.get('rfc')?.enable();
       } else {
+        this.AREA_MEDICA_DATA = response.respuesta.areaMedicaData;
         this.form.controls['nombre'].setValue(response.respuesta.areaMedicaData.NOMBRE ? response.respuesta.areaMedicaData.NOMBRE : response.respuesta.siapData.nombre);
         this.form.controls['apellidoP'].setValue(response.respuesta.areaMedicaData.APELLIDO_PATERNO ? response.respuesta.areaMedicaData.APELLIDO_PATERNO : response.respuesta.siapData.primerApellido);
         this.form.controls['apellidoM'].setValue(response.respuesta.areaMedicaData.APELLIDO_MATERNO ? response.respuesta.areaMedicaData.APELLIDO_MATERNO : response.respuesta.siapData.segundoApellido);
