@@ -212,7 +212,7 @@
 
       <p-card class="mx-2 empty-border" [header]="'Datos del Domicilio'">
         <article class="flex flex-row flex-wrap">
-          <div class="col-3">
+          <div class="lg:col-3 col-12">
             <div class="flex justify-content-between">
               <label class="field-label" for="codigoPostal">Código postal</label>
               <p class="label-obligatorio">Obligatorio</p>
@@ -220,7 +220,7 @@
             <input pInputText class="w-full" type="text" id="codigoPostal" placeholder="Ingresa código postal"
                    formControlName="codigoPostal" (blur)="validarCP()"/>
           </div>
-          <div class="col-3">
+          <div class="lg:col-3 col-12">
             <div class="flex justify-content-between">
               <label class="field-label" for="pais">País</label>
               <p class="label-obligatorio">Obligatorio</p>
@@ -228,7 +228,7 @@
             <p-select [options]="paises" formControlName="pais" optionLabel="label" optionValue="value"
                       filterBy="label" [filter]="true" placeholder="Ingresa país" class="w-full"/>
           </div>
-          <div class="col-3">
+          <div class="lg:col-3 col-12">
             <div class="flex justify-content-between">
               <label class="field-label" for="estado">Estado</label>
               <p class="label-obligatorio">Obligatorio</p>
@@ -236,7 +236,7 @@
             <p-select [options]="estados" formControlName="estado" optionLabel="label" optionValue="value"
                       filterBy="label" [filter]="true" placeholder="Ingresa estado" class="w-full"/>
           </div>
-          <div class="col-3">
+          <div class="lg:col-3 col-12">
             <div class="flex justify-content-between">
               <label class="field-label" for="municipio">Alcaldía o municipio</label>
               <p class="label-obligatorio">Obligatorio</p>
@@ -252,7 +252,7 @@
             <p-select [options]="colonias" formControlName="colonia" optionLabel="label" optionValue="value"
                       filterBy="label" [filter]="true" placeholder="Ingresa colonia" class="w-full"/>
           </div>
-          <div class="col-3">
+          <div class="lg:col-3 col-12">
             <div class="flex justify-content-between">
               <label class="field-label" for="calle">Calle</label>
               <p class="label-obligatorio">Obligatorio</p>
@@ -260,7 +260,7 @@
             <input pInputText class="w-full" type="text" id="calle" placeholder="Ingresa calle"
                    formControlName="calle" alphanumericOnly maxLength="200"/>
           </div>
-          <div class="col-3">
+          <div class="lg:col-3 col-12">
             <div class="flex justify-content-between">
               <label class="field-label" for="numeroExterior">Número exterior</label>
               <p class="label-obligatorio">Obligatorio</p>
