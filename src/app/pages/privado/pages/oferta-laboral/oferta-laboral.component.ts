@@ -1,24 +1,26 @@
-import { HttpRespuesta } from '@models/http-respuesta.interface';
-import { Component, inject, input, InputSignal, signal, WritableSignal } from '@angular/core';
-import { Card } from 'primeng/card';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { TipoDropdown } from '@models/tipo-dropdown.interface';
-import { Select } from 'primeng/select';
-import { KpiCardComponent } from '../../../../components/kpi-card/kpi-card.component';
-import { OfertaCardComponent } from '../../../../components/oferta-card/oferta-card.component';
-import { Button } from 'primeng/button';
-import { NgClass } from '@angular/common';
-import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { DetalleOfertaLaboralComponent } from '@privado/detalle-oferta-laboral/detalle-oferta-laboral.component';
-import { FooterMedicoComponent } from '@pages/privado/shared/footer-medico/footer-medico.component';
+import {Component, OnInit, OnDestroy, inject, input, InputSignal, signal, WritableSignal} from '@angular/core';
+import {Card} from 'primeng/card';
+import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {TipoDropdown} from '@models/tipo-dropdown.interface';
+import {Select} from 'primeng/select';
+import {KpiCardComponent} from '@components/kpi-card/kpi-card.component';
+import {OfertaCardComponent} from '@components/oferta-card/oferta-card.component';
+import {Button} from 'primeng/button';
+import {NgClass} from '@angular/common';
+import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
+import {DetalleOfertaLaboralComponent} from '@privado/detalle-oferta-laboral/detalle-oferta-laboral.component';
+import {FooterMedicoComponent} from '@pages/privado/shared/footer-medico/footer-medico.component';
 import {
   HeaderMedicoDetalleOfertaComponent
 } from '@pages/privado/shared/header-medico-detalle-oferta/header-medico-detalle-oferta.component';
-import { Paginator } from 'primeng/paginator';
-import { PrimeTemplate } from 'primeng/api';
-import { GeneralComponent } from '@components/general.component';
-import { mapearArregloTipoDropdown } from '@utils/funciones';
-import { ActivatedRoute } from '@angular/router';
+import {Paginator} from 'primeng/paginator';
+import {PrimeTemplate} from 'primeng/api';
+import {GeneralComponent} from '@components/general.component';
+import {mapearArregloTipoDropdown} from '@utils/funciones';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {EstadoOfertaService, OfertaEstado} from '@services/estado-oferta.service';
+
 import { OportunidadLaboral } from '@models/oportunidad-laboral.interface';
 interface PageEvent {
   first: number;
@@ -44,7 +46,7 @@ interface PageEvent {
   styleUrl: './oferta-laboral.component.scss',
   providers: [DialogService]
 })
-export class OfertaLaboralComponent extends GeneralComponent {
+export class OfertaLaboralComponent extends GeneralComponent implements OnInit, OnDestroy {
 
   first: number = 0;
   rows: number = 10;
@@ -69,7 +71,10 @@ export class OfertaLaboralComponent extends GeneralComponent {
   regimen_tablero: TipoDropdown[] = [];
   bono_tablero: TipoDropdown[] = [];
 
-  constructor(public dialogService: DialogService, private readonly activatedRoute: ActivatedRoute) {
+  private favoritosSubscription: Subscription = new Subscription();
+
+  constructor(public dialogService: DialogService, private readonly activatedRoute: ActivatedRoute,
+              private readonly estadoOfertaService: EstadoOfertaService) {
     super();
     this.formTablero = this.asignarFormTablero();
     this.obtenerCatalogos();
@@ -109,13 +114,19 @@ export class OfertaLaboralComponent extends GeneralComponent {
     },
     {
       id: 3,
-      name: 'Preguntas frecuentes',
-      icono: 'cme-quest',
-      description: 'Respuestas a las preguntas del proceso',
+      name: 'Ubicación de las Unidades Médicas',
+      icono: 'cme-marker-pin',
+      description: 'Consulte ubicación de unidades médicas',
+      ruta: 'https://sites.google.com/view/draft-2025/inicio'
     }
   ];
 
   actualizarTab(id: number) {
+    if (id === 3) {
+      const url = this.data[3].ruta;
+      window.open(url, '_blank');
+      return;
+    }
     this.activeTab.update(() => id);
   }
 
@@ -146,11 +157,8 @@ export class OfertaLaboralComponent extends GeneralComponent {
     this.btnConsultar("paginado");
   }
 
-
   obtenerCatalogos(): void {
-
-    this.activatedRoute.data.subscribe(({ respuesta }) => {
-
+    this.activatedRoute.data.subscribe(({respuesta}) => {
       const [ooad, especialidad, regimen, bono] = respuesta;
 
       //this.zona_tablero = mapearArregloTipoDropdown(zona.respuesta, 'desTipoDocumentoEspecialidad', 'idTipoDocumentoEspecialidad');
@@ -160,7 +168,6 @@ export class OfertaLaboralComponent extends GeneralComponent {
       this.bono_tablero = mapearArregloTipoDropdown(bono.respuesta, 'bono', 'cveBono')
     });
   }
-
 
   suscribirObservables(): void {
     this.formTablero.get('ooad_tablero')?.valueChanges.subscribe(value => this.obtenerZonasPorOoad(value))
@@ -193,10 +200,10 @@ export class OfertaLaboralComponent extends GeneralComponent {
 
     let filtros = {
       "cveEspecialidad": especialidad?.value,
-      "cveOoad": ooad?.value??'',
-      "cveBono": bono?.label??'',
-      "cveRegimen": regimen?.value??'',
-      "cveZona": zona?.value??''
+      "cveOoad": ooad?.value ?? '',
+      "cveBono": bono?.label ?? '',
+      "cveRegimen": regimen?.value ?? '',
+      "cveZona": zona?.value ?? ''
     }
 
     let parameters = {
@@ -214,6 +221,20 @@ export class OfertaLaboralComponent extends GeneralComponent {
         this.registros.set(respuesta.content)
       }
     });
+
+  }
+
+  ngOnInit() {
+    this.favoritosSubscription = this.estadoOfertaService.favoritosActuales$.subscribe(
+      (numeroFavoritos: number) => {
+        const favoritos = this.data[1];
+        favoritos.price = numeroFavoritos;
+      }
+    );
+  }
+
+  ngOnDestroy() {
+    this.favoritosSubscription.unsubscribe();
   }
 
 

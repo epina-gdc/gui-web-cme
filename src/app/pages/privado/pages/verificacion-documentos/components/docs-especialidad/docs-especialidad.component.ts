@@ -19,6 +19,8 @@ import {DocumentoService} from '@services/documentos.service';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {VerificacionDocsService} from '@services/verificacion-docs.service';
 import {RouterLink} from '@angular/router';
+import {AlertService} from '@services/alert.service';
+import {Mensajes} from '@utils/mensajes';
 
 @Component({
   selector: 'app-docs-especialidad',
@@ -64,6 +66,10 @@ export class DocsEspecialidadComponent implements OnInit {
   ];
 
   tabActive: WritableSignal<number> = signal(0);
+
+  alertaService = inject(AlertService);
+
+  mensajes: Mensajes = new Mensajes();
 
   constructor(
     private fb: FormBuilder,
@@ -177,7 +183,12 @@ export class DocsEspecialidadComponent implements OnInit {
 
     this.verificacionDocsService.verificarRegistro(solicitud).subscribe({
       next: (respuesta) => {
+        if (!respuesta.exito) return;
+        this.alertaService.exito(this.mensajes.MSG026);
         this.actualizarRegistro.emit(true);
+      },
+      error: (error) => {
+        this.alertaService.error(error.mensaje);
       }
     })
   }

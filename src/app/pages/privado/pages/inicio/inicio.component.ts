@@ -173,9 +173,6 @@ export class InicioComponent extends GeneralComponent {
   indice: WritableSignal<number> = signal<number>(0);
   tipoMedico: WritableSignal<string> = signal<string>("");
 
-  
-  
-
   archivoINE!: File | null;
   archivoTitulo!: File | null;
   archivoCedula!: File | null;
