@@ -356,7 +356,7 @@
   @case (1) {
     <p-card class="mx-2 empty-border" [header]="'Documentos obligatorios'">
       <article class="flex flex-row flex-wrap">
-        <div class="col-3">
+        <div class="lg:col-3 col-12">
           <div class="flex justify-content-between mb-1">
             <p class="field-label">Identificación oficial (INE o Pasaporte)</p>
             <p class="label-obligatorio">Obligatorio</p>
@@ -366,7 +366,7 @@
                            (fileDownload)="obtenerGuidDocumento($event, 'obligatorio', 1)"
                            [disabled]="estatusPendienteDocumentacion" idArchivo="INE"/>
         </div>
-        <div class="col-3">
+        <div class="lg:col-3 col-12">
           <div class="flex justify-content-between mb-1">
             <p class="field-label">Titulo de Medicina General</p>
             <p class="label-obligatorio">Obligatorio</p>
@@ -376,7 +376,7 @@
                            (fileDownload)="obtenerGuidDocumento($event, 'obligatorio', 2)"
                            [disabled]="estatusPendienteDocumentacion" idArchivo="titulo"/>
         </div>
-        <div class="col-3">
+        <div class="lg:col-3 col-12">
           <div class="flex justify-content-between mb-1">
             <p class="field-label">Cédula profesional de Medicina General
             </p>
