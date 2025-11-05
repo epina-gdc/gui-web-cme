@@ -397,7 +397,7 @@
       </div>
       <form [formGroup]="formDocumentosEspecialidad">
         <article class="flex flex-row flex-wrap">
-          <div class="col-3">
+          <div class="lg:col-3 col-12">
             <div class="flex justify-content-between mb-1">
               <p class="field-label">Especialidad</p>
               <p class="label-obligatorio">Obligatorio</p>
@@ -406,7 +406,7 @@
                       [filterBy]="'label'"
                       placeholder="Selecciona opción" formControlName="especialidad" class="w-full"/>
           </div>
-          <div class="col-3">
+          <div class="lg:col-3 col-12">
             <div class="flex justify-content-between mb-1">
               <p class="field-label">Tipo de documento</p>
               <p class="label-obligatorio">Obligatorio</p>
@@ -414,7 +414,7 @@
             <p-select [options]="lstTiposDocumentos" optionLabel="label" optionValue="value"
                       placeholder="Selecciona una opción" formControlName="documento" class="w-full"/>
           </div>
-          <div class="col-3">
+          <div class="lg:col-3 col-12">
             <div class="flex justify-content-between mb-1">
               <p class="field-label">Carga de documento</p>
               <p class="label-obligatorio">Obligatorio</p>
@@ -422,7 +422,7 @@
             <upload-document idArchivo="especialidad" (fileSelected)="procesarArchivoEspecializacion($event)"
                              [disabled]="estatusPendienteDocumentacion"/>
           </div>
-          <div class="col-3 flex justify-content-start align-items-center">
+          <div class="lg:col-3 col-12 flex justify-content-start align-items-center">
             @if (!estatusPendienteDocumentacion) {
               <p-button label="Agregar" icon="cme-plus" iconPos="right"
                         [disabled]="formDocumentosEspecialidad.invalid || !documentoEspecialidad || estatusPendienteDocumentacion"
