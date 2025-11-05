@@ -1,4 +1,4 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders,HttpParams} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {environment} from '@env/environment.development';
 import {Observable, throwError} from 'rxjs';
@@ -13,6 +13,7 @@ import {AlertService} from './alert.service';
 import {dataGenerales, DatosGeneralesRequest} from '@models/datosGenerales';
 import {ResponseGeneral} from '@models/responseGeneral';
 import {SolicitudGuardarDocumentacion} from '@models/solicitud-guardar-documentacion.interface';
+import { FiltrosPLazaInterface } from '@models/filtros-plaza.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -243,6 +244,26 @@ export class ConvocatoriaService {
     )
 
 
+  }
+
+  consultarPlazas(filtros: any,page:number): Observable<any> {
+
+    let parametros = new HttpParams();
+    
+
+
+          parametros = parametros.set('page', page);
+          parametros = parametros.set('size',10);
+          parametros = parametros.set('sort', 'idPlaza,asc');
+   
+
+    const ruta = `${this.serverEndPointURLConvocatoria}/plazas/consultar`;
+    return this.http.post<any>(ruta, filtros,{headers: this.header, params: parametros}).pipe(
+      catchError(this.handleError),
+      map((response: any) => {
+        return response
+      }),
+    )
   }
 
   private handleError(error: ResponseGeneral) {

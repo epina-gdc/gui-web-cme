@@ -1,23 +1,23 @@
-import {Component, inject, input, InputSignal, signal, WritableSignal} from '@angular/core';
-import {Card} from 'primeng/card';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {TipoDropdown} from '@models/tipo-dropdown.interface';
-import {Select} from 'primeng/select';
-import {KpiCardComponent} from '../../../../components/kpi-card/kpi-card.component';
-import {OfertaCardComponent} from '../../../../components/oferta-card/oferta-card.component';
-import {Button} from 'primeng/button';
-import {NgClass} from '@angular/common';
-import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
-import {DetalleOfertaLaboralComponent} from '@privado/detalle-oferta-laboral/detalle-oferta-laboral.component';
-import {FooterMedicoComponent} from '@pages/privado/shared/footer-medico/footer-medico.component';
+import { Component, inject, input, InputSignal, signal, WritableSignal } from '@angular/core';
+import { Card } from 'primeng/card';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { TipoDropdown } from '@models/tipo-dropdown.interface';
+import { Select } from 'primeng/select';
+import { KpiCardComponent } from '../../../../components/kpi-card/kpi-card.component';
+import { OfertaCardComponent } from '../../../../components/oferta-card/oferta-card.component';
+import { Button } from 'primeng/button';
+import { NgClass } from '@angular/common';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DetalleOfertaLaboralComponent } from '@privado/detalle-oferta-laboral/detalle-oferta-laboral.component';
+import { FooterMedicoComponent } from '@pages/privado/shared/footer-medico/footer-medico.component';
 import {
   HeaderMedicoDetalleOfertaComponent
 } from '@pages/privado/shared/header-medico-detalle-oferta/header-medico-detalle-oferta.component';
-import {Paginator} from 'primeng/paginator';
-import {PrimeTemplate} from 'primeng/api';
-import {GeneralComponent} from '@components/general.component';
-import {mapearArregloTipoDropdown} from '@utils/funciones';
-import {ActivatedRoute} from '@angular/router';
+import { Paginator } from 'primeng/paginator';
+import { PrimeTemplate } from 'primeng/api';
+import { GeneralComponent } from '@components/general.component';
+import { mapearArregloTipoDropdown } from '@utils/funciones';
+import { ActivatedRoute } from '@angular/router';
 interface PageEvent {
   first: number;
   rows: number;
@@ -56,7 +56,7 @@ export class OfertaLaboralComponent extends GeneralComponent {
 
   activeTab: WritableSignal<number> = signal(0);
 
-  registros: InputSignal<any[]> = input([{id: 0}])
+  registros: InputSignal<any[]> = input([{ id: 0 }])
 
   formTablero!: FormGroup;
 
@@ -66,7 +66,7 @@ export class OfertaLaboralComponent extends GeneralComponent {
   regimen_tablero: TipoDropdown[] = [];
   bono_tablero: TipoDropdown[] = [];
 
-  constructor(public dialogService: DialogService,private readonly activatedRoute: ActivatedRoute) {
+  constructor(public dialogService: DialogService, private readonly activatedRoute: ActivatedRoute) {
     super();
     this.formTablero = this.asignarFormTablero();
     this.obtenerCatalogos();
@@ -140,18 +140,18 @@ export class OfertaLaboralComponent extends GeneralComponent {
     this.rows = event.rows;
   }
 
-  
-  obtenerCatalogos(): void {
-    
-    this.activatedRoute.data.subscribe(({respuesta}) => {
 
-      const [ooad,  especialidad, regimen, bono] = respuesta;
-      
+  obtenerCatalogos(): void {
+
+    this.activatedRoute.data.subscribe(({ respuesta }) => {
+
+      const [ooad, especialidad, regimen, bono] = respuesta;
+
       //this.zona_tablero = mapearArregloTipoDropdown(zona.respuesta, 'desTipoDocumentoEspecialidad', 'idTipoDocumentoEspecialidad');
       this.ooad_tablero = mapearArregloTipoDropdown(ooad.respuesta, 'desOoad', 'cveOoad');
       this.especialidad_tablero = mapearArregloTipoDropdown(especialidad, 'desEspecialidad', 'cveEspecialidad');
       this.regimen_tablero = mapearArregloTipoDropdown(regimen, 'desEspecialidad', 'cveEspecialidad')
-      this.bono_tablero = mapearArregloTipoDropdown(bono, 'desEspecialidad', 'cveEspecialidad')
+      this.bono_tablero = mapearArregloTipoDropdown(bono.respuesta, 'bono', 'cveBono')
     });
   }
 
@@ -161,34 +161,44 @@ export class OfertaLaboralComponent extends GeneralComponent {
   }
 
   obtenerZonasPorOoad(ooad: any): void {
-    
     if (!ooad) return;
     this._CatalogoGenService.getLstZonas(ooad.value).subscribe({
       next: (valor) => {
-        if(valor.exito){
-          if(valor.respuesta.length != 0){
-            return this.zona_tablero = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'cveZona');  
-          }
-          return this._alertServices.alerta(valor.mensaje);
+        if (valor.exito && Array.isArray(valor.respuesta) && valor.respuesta.length > 0) {
+          this.zona_tablero = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'cveZona');
+          return;
         }
-return this._alertServices.alerta(valor.mensaje);
-        
+        this._alertServices.alerta(valor.mensaje);
       }
     });
   }
 
-  public btnConsultar(){
-   
-      this._alertServices.exito("realzia búsqueda");
-   let ooad=   this.formTablero.get('ooad_tablero')?.value;
-   let zona=   this.formTablero.get('zona_tablero')?.value;
-   let especialidad=   this.formTablero.get('especialidad_tablero')?.value;
-   let regimen=   this.formTablero.get('regimen_tablero')?.value;
-   let bono=   this.formTablero.get('bono_tablero')?.value;
-  
+  public btnConsultar() {
 
-   
-   
+    this._alertServices.exito("realzia búsqueda");
+    let ooad = this.formTablero.get('ooad_tablero')?.value;
+    let zona = this.formTablero.get('zona_tablero')?.value;
+    let especialidad = this.formTablero.get('especialidad_tablero')?.value;
+    let regimen = this.formTablero.get('regimen_tablero')?.value;
+    let bono = this.formTablero.get('bono_tablero')?.value;
 
+
+
+    let filtros = {
+      "cveEspecialidad": especialidad?.value,
+      "cveOoad": ooad?.value??'',
+      "cveBono": bono?.label??'',
+      "cveRegimen": regimen?.value??'',
+      "cveZona": zona?.value??''
+
+    }
+    console.log("filstr:S", filtros);
+
+    this._ConvocatoriaService.consultarPlazas(filtros, 0).subscribe({
+      next: (valor:any) => {
+       console.log("consulta:",valor);
+
+      }
+    });
   }
 }
