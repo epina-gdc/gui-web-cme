@@ -161,9 +161,8 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   }
 
   obtenerCatalogos(): void {
-    this.activatedRoute.data.subscribe(({respuesta}) => {
-      console.log(respuesta)
-      const [ooad, especialidad, regimen, bono, preguntas] = respuesta;
+    this.activatedRoute.data.subscribe(({respuesta_oferta}) => {
+      const [ooad, especialidad, regimen, bono, preguntas] = respuesta_oferta;
 
       //this.zona_tablero = mapearArregloTipoDropdown(zona.respuesta, 'desTipoDocumentoEspecialidad', 'idTipoDocumentoEspecialidad');
       this.ooad_tablero = mapearArregloTipoDropdown(ooad.respuesta, 'desOoad', 'cveOoad');

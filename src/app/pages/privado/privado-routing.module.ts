@@ -26,7 +26,8 @@ const routes: Routes = [{
       path: NAV.home,
       component: InicioComponent,
       resolve: {
-        respuesta: inicioResolver
+        respuesta: inicioResolver,
+        respuesta_oferta: ofertaLaboralResolver,
       },
       canActivate: [medicoGuard]
     },
@@ -42,7 +43,7 @@ const routes: Routes = [{
       path: NAV.documentacionAspirante,
       component: DocumentacionComponent,
       resolve: {
-        respuesta: documentacionAspiranteResolver
+        respuesta: documentacionAspiranteResolver,
       }
     },
 
@@ -50,9 +51,9 @@ const routes: Routes = [{
       path: NAV.ofertaLaboral,
       component: OfertaLaboralComponent,
       resolve: {
-        respuesta: ofertaLaboralResolver
+        respuesta_oferta: ofertaLaboralResolver
       }
-     
+
     },
 
 
