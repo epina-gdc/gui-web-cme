@@ -14,6 +14,7 @@ import {dataGenerales, DatosGeneralesRequest} from '@models/datosGenerales';
 import {ResponseGeneral} from '@models/responseGeneral';
 import {SolicitudGuardarDocumentacion} from '@models/solicitud-guardar-documentacion.interface';
 import { FiltrosPLazaInterface } from '@models/filtros-plaza.interface';
+import { HttpRespuesta } from '@models/http-respuesta.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -246,7 +247,7 @@ export class ConvocatoriaService {
 
   }
 
-  consultarPlazas(filtros: any,parameters: any): Observable<any> {
+  consultarPlazas(filtros: any, parameters: any): Observable<any> {
 
     const {page,size,sort} = parameters;
 
@@ -258,6 +259,40 @@ export class ConvocatoriaService {
 
     const ruta = `${this.serverEndPointURLConvocatoria}/plazas/consultar`;
     return this.http.post<any>(ruta, filtros,{headers: this.header, params: parametros}).pipe(
+      catchError(this.handleError),
+      map((response: any) => {
+        return response
+      }),
+    )
+  }
+
+  consultarTotales(
+    filtros: {
+      cveEspecialidad: string | null,
+      cveOoad: string | null,
+      cveBono: string | null,
+      regimen: string | null,
+      cveZona: string | null
+    }
+  ): Observable<HttpRespuesta<any>>{
+
+    return this.http.post<HttpRespuesta<any>>(`${this.serverEndPointURLConvocatoria}/plazas/consultar/totales`, filtros).pipe(
+      catchError(this.handleError),
+      map((response: any) => {
+        return response
+      }),
+    )
+
+  }
+
+  agregarFavorito(
+    datosPlaza: {
+      idUsuario: number,
+      idPlaza: number,
+      esFavorita: boolean
+    }
+  ): Observable<HttpRespuesta<any>> {
+    return this.http.post<HttpRespuesta<any>>(`${this.serverEndPointURLConvocatoria}/plazas-favoritas/guardar`, datosPlaza).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response

@@ -100,11 +100,11 @@
             }
           </div>
           <div class="col-4">
-            <kpi-card encabezado="Nuevos hospitales" descripcion="12" icono="cme-hospital"
+            <kpi-card encabezado="Nuevos hospitales" [descripcion]="cantidadNuevosHospitales().toString()" icono="cme-hospital"
                       bg_color="#abc8f0"></kpi-card>
           </div>
           <div class="col-4">
-            <kpi-card encabezado="Salario promedio" descripcion="$ 43,399" icono="cme-money"
+            <kpi-card encabezado="Salario promedio" [descripcion]="cantidadSalarioPromedio() " icono="cme-money"
                       bg_color="#7bc1e0"></kpi-card>
           </div>
         </div>
