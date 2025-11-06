@@ -168,7 +168,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       //this.zona_tablero = mapearArregloTipoDropdown(zona.respuesta, 'desTipoDocumentoEspecialidad', 'idTipoDocumentoEspecialidad');
       this.ooad_tablero = mapearArregloTipoDropdown(ooad.respuesta, 'desOoad', 'cveOoad');
       this.especialidad_tablero = mapearArregloTipoDropdown(especialidad.respuesta, 'desEspecialidad', 'cveEspecialidad');
-      this.regimen_tablero = mapearArregloTipoDropdown(regimen.respuesta, 'desEspecialidad', 'cveEspecialidad');
+      this.regimen_tablero = mapearArregloTipoDropdown(regimen.respuesta, 'regimen');
       this.bono_tablero = mapearArregloTipoDropdown(bono.respuesta, 'bono', 'cveBono');
       console.log(preguntas)
       this.preguntas_frecuentes.update(pf => preguntas.respuesta);
