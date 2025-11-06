@@ -27,14 +27,11 @@ import {TabDocumento, TabNode} from '@models/tab-node.interface';
 import {ActivatedRoute} from '@angular/router';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
 import {mapearArregloTipoDropdown} from '@utils/funciones';
-import {CatalogosGeneralesService} from '@services/catalogos-generales.service';
-import {ConvocatoriaService} from '@services/convocatoria.service';
 import {DatosContacto} from '@models/datosContacto';
-import {DatosDocumentoResponse} from '@models/datosDocumento';
 import {GeneralComponent} from '@components/general.component';
 import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
-import {DatosDomicilio, Estado, Pais, Residencia} from '@models/datosDomicilio';
+import {Estado, Pais, Residencia} from '@models/datosDomicilio';
 import {ResponseGeneral} from '@models/responseGeneral';
 import {Colonia} from '@models/colonia';
 import {DataFotografia, Fotografia, FotografiaRequest} from '@models/fotografia';
@@ -138,7 +135,6 @@ export class InicioComponent extends GeneralComponent {
   registrosDocumentosEspecialidad: WritableSignal<TabNode[]> = signal([]);
 
   blnFotoGuardada!: boolean;
-  institucionSeleccionada = true;
 
   steps = [
     {label: 'Información Personal', active: false},
@@ -146,17 +142,10 @@ export class InicioComponent extends GeneralComponent {
     {label: 'Oferta laboral', active: false},
   ];
 
-  datosDocumento!: DatosDocumentoResponse;
   datosGenerales!: DatosGeneralesResponse;
-  foto!: any;
-  archivoFoto!: File;
   selectFile!: File | undefined;
   defaultFile!: File | undefined;
   datosFoto!: Fotografia;
-  datosDomicilio!: DatosDomicilio;
-  datosInteresLaboral!: any;
-  // userData!: SesionUser;
-
   sexos: TipoDropdown[] = [];
   estadosCiviles: TipoDropdown[] = [];
   paises: TipoDropdown[] = [];
@@ -196,6 +185,7 @@ export class InicioComponent extends GeneralComponent {
   idDocumentoConstancia3: number | undefined;
 
   estatusPendienteDocumentacion: boolean = false;
+  estatusValidacionCompletada: boolean = false;
 
   constanciasPorEliminar: number[] = [];
 
@@ -228,12 +218,11 @@ export class InicioComponent extends GeneralComponent {
 
   asignarFormularioRegistro(): FormGroup {
     return this.fb.group({
-      rfc: [{value: ''} , [Validators.required, Validators.minLength(13), Validators.maxLength(13), Validators.pattern(PATRON_RFC)]],
+      rfc: [{value: ''}, [Validators.required, Validators.minLength(13), Validators.maxLength(13), Validators.pattern(PATRON_RFC)]],
       nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
       fechaNacimiento: [{value: ''}, [Validators.required]],
       sexo: [{value: ''}, [Validators.required]],
       estadoCivil: [{value: '', disabled: false}, [Validators.required]],
-      //dependientes: [],
       indPadres: [false],
       indConyuge: [false],
       indHijos: [false],
@@ -264,8 +253,6 @@ export class InicioComponent extends GeneralComponent {
 
 
   suscribirObservables(): void {
-    this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe(value => this.obtenerLocalidadPorPais(value));
-
     this.formRegistro.get('pais')?.valueChanges.subscribe(value => this.obtenerEstadoPorPais(value));
     this.formRegistro.get('estado')?.valueChanges.subscribe(value => this.obtenerMunicipioPorEstado(value));
     //this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerAlcaldiaPorMunicipio(value));
@@ -334,18 +321,17 @@ export class InicioComponent extends GeneralComponent {
 
   asignarFormularioDatosEmpleo(): FormGroup {
     return this.fb.group({
-      otroEmpleo: [{value: '0', disabled: false}],
-      sustituto: [{value: '0', disabled: false}],
-      tipoInstitucion: [[]],
-      nombreInstitucion: [{value: null, disabled: true}, [Validators.maxLength(200)]],
-      horarioInicio: [{value: null, disabled: true}],
-      horarioFin: [{value: null, disabled: true}],
-      diaInicio: [{value: null, disabled: true}],
-      diaFin: [{value: null, disabled: true}],
-      ooad: [{value: null, disabled: true}],
-    }
-  //  , {validators: [jornadaLaboralValidator, horarioLaboralValidator]}
-  )
+        otroEmpleo: [{value: '0', disabled: false}],
+        sustituto: [{value: '0', disabled: false}],
+        tipoInstitucion: [[]],
+        nombreInstitucion: [{value: null, disabled: true}, [Validators.maxLength(200)]],
+        horarioInicio: [{value: null, disabled: true}],
+        horarioFin: [{value: null, disabled: true}],
+        diaInicio: [{value: null, disabled: true}],
+        diaFin: [{value: null, disabled: true}],
+        ooad: [{value: null, disabled: true}],
+      }
+    )
   }
 
   obtenerFechaNacimientoDeCURP(curp: string): Date {
@@ -418,8 +404,6 @@ export class InicioComponent extends GeneralComponent {
     );
   }
 
-  obtenerLocalidadPorPais(pais: number): void {
-  }
 
   validarCP() {
     this._CatalogoGenService.getLstCodigosPostales(this.formRegistro.get('codigoPostal')?.value).subscribe({
@@ -448,23 +432,6 @@ export class InicioComponent extends GeneralComponent {
     this._CatalogoGenService.getLstDelegacionesMunicipiosByEstado(estado).subscribe({
       next: (valor) => {
         this.municipios = mapearArregloTipoDropdown(valor.respuesta, 'desMunicipio', 'idMunicipio');
-      }
-    });
-  }
-
-  obtenerAlcaldiaPorMunicipio(municipio: number): void {
-    if (!municipio) return;
-    this._CatalogoGenService.getLstColoniasByDelegacion(municipio).subscribe({
-      next: (valor) => {
-        this.colonias = mapearArregloTipoDropdown(valor.respuesta, 'nomColonia', 'idColonia');
-      }
-    });
-  }
-
-  obtenerOOADPorMunicipio(): void {
-    this._CatalogoGenService.getLstOOADS().subscribe({
-      next: (valor) => {
-        this.ooad = mapearArregloTipoDropdown(valor.respuesta, 'desOoad', 'cveOoad');
       }
     });
   }
@@ -796,25 +763,25 @@ export class InicioComponent extends GeneralComponent {
       }
 
       /* CUANDO NO EXISTE CURP DEJA DE FUNCIONAR LA OBTENCION POR CURP */
-      if(perfil.idPerfil == 3){
-        if(sexo){
-        this.formRegistro.get('sexo')?.patchValue(
-          {
-            label: sexo.desSexo,
-            value: sexo.idSexo
-          }
-        )
-      } else {
-        this.formRegistro.get('sexo')?.enable();
-      }
+      if (perfil.idPerfil == 3) {
+        if (sexo) {
+          this.formRegistro.get('sexo')?.patchValue(
+            {
+              label: sexo.desSexo,
+              value: sexo.idSexo
+            }
+          )
+        } else {
+          this.formRegistro.get('sexo')?.enable();
+        }
 
-      if (fecNacimiento) {
-        var fecha = this.obtenerFechaDesdeCadena(fecNacimiento);
-        this.formRegistro.get('fechaNacimiento')?.setValue(fecha || null);
-      } else {
-        this.formRegistro.get('fechaNacimiento')?.enable();
+        if (fecNacimiento) {
+          var fecha = this.obtenerFechaDesdeCadena(fecNacimiento);
+          this.formRegistro.get('fechaNacimiento')?.setValue(fecha || null);
+        } else {
+          this.formRegistro.get('fechaNacimiento')?.enable();
+        }
       }
-    }
     }
 
     if (datosResidenciaActual) {
@@ -1564,16 +1531,14 @@ export class InicioComponent extends GeneralComponent {
       return true;
     }
 
-/*     const hasTipoInstitucion = this.formDatosEmpleo.get('tipoInstitucion')?.value;
-    if(!hasTipoInstitucion){
+    /*     const hasTipoInstitucion = this.formDatosEmpleo.get('tipoInstitucion')?.value;
+        if(!hasTipoInstitucion){
 
-      return true;
-    } */
+          return true;
+        } */
     if (this.formDatosEmpleo.invalid && externo) {
       return true;
     }
-
-
 
 
     return especialidades.length === 0;
@@ -1713,7 +1678,9 @@ export class InicioComponent extends GeneralComponent {
         if (!response.exito) return;
         const respuesta: RespuestaConsultaDocumentos = response.respuesta;
         if (respuesta.participacion.resultadoVerificacion) {
-          this.estatusPendienteDocumentacion = respuesta.participacion.resultadoVerificacion.estatusVerificacion.desEstatus === 'Pendiente';
+          const estatusVerificacion: number = respuesta.participacion.resultadoVerificacion.estatusVerificacion.idEstatusVerificacion;
+          this.estatusPendienteDocumentacion = [1, 2, 3].includes(estatusVerificacion);
+          this.estatusValidacionCompletada = [3].includes(estatusVerificacion);
           this.desactivarForms();
         }
         if (respuesta.documentosObligatorios) {
@@ -1818,17 +1785,13 @@ export class InicioComponent extends GeneralComponent {
       nombreInstitucion: datos.nomEspecificacionInstitucion || null,
 
       // Horario/Jornada
-      horarioInicio: datos.refJornadaInicio ? dayjs(datos.refJornadaInicio, 'HH:mm:ss').toDate(): null,
-      horarioFin: datos.refJornadaInicio ? dayjs(datos.refJornadaFin, 'HH:mm:ss').toDate(): null,
+      horarioInicio: datos.refJornadaInicio ? dayjs(datos.refJornadaInicio, 'HH:mm:ss').toDate() : null,
+      horarioFin: datos.refJornadaInicio ? dayjs(datos.refJornadaFin, 'HH:mm:ss').toDate() : null,
 
       // Días
       diaInicio: datos.diaSemanaInicio?.idDiaSemana ?? null,
       diaFin: datos.diaSemanaFin?.idDiaSemana ?? null,
     });
-    /*     if(this.estatusPendienteDocumentacion){
-
-          this.formDatosEmpleo.disable();
-        } */
   }
 
   mostrarDocumento(guid: string) {
@@ -1941,9 +1904,10 @@ export class InicioComponent extends GeneralComponent {
   }
 
   cambioDeSeccion($event: any) {
-    if (![0, 1].includes($event)) return;
-
-    if ($event == 1) {
+    if ($event === 2 && !this.estatusValidacionCompletada) {
+      return;
+    }
+    if ($event === 1) {
       /* validar que el primer formulario este completo */
       if (this.formRegistro.invalid) {
         this._alertServices.alerta("Recuerde completar los datos del formulario y guardar antes de pasar a la siguiente sección.");
