@@ -23,6 +23,8 @@ import {EstadoOfertaService, OfertaEstado} from '@services/estado-oferta.service
 
 import {OportunidadLaboral} from '@models/oportunidad-laboral.interface';
 import {PreguntasFrecuentes} from '@models/preguntas-frecuentes.interface';
+import { UserService } from '@services/user.service';
+import { SesionUser } from '@models/sesion-user.interface';
 
 interface PageEvent {
   first: number;
@@ -50,6 +52,9 @@ interface PageEvent {
 })
 export class OfertaLaboralComponent extends GeneralComponent implements OnInit, OnDestroy {
 
+  userService = inject(UserService);
+  userData: SesionUser | null = null;
+
   first: number = 0;
   rows: number = 10;
 
@@ -75,6 +80,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   preguntas_frecuentes: WritableSignal<PreguntasFrecuentes[]> = signal([]);
 
   private favoritosSubscription: Subscription = new Subscription();
+  private ofertasSubscription: Subscription = new Subscription();
 
   constructor(public dialogService: DialogService, private readonly activatedRoute: ActivatedRoute,
               private readonly estadoOfertaService: EstadoOfertaService) {
@@ -100,7 +106,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       name: 'Ver oportunidades',
       icono: 'cme-search',
       description: 'Oportunidades de trabajo',
-      price: this.cantidadOfertasLaborales(),
+      price: 0,
     },
     {
       id: 1,
@@ -205,10 +211,11 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
 
     const filtros = {
       "cveEspecialidad": especialidad?.value,
-      "cveOoad": ooad?.value ?? '',
-      "cveBono": bono?.label ?? '',
-      "cveRegimen": regimen?.value ?? '',
-      "cveZona": zona?.value ?? ''
+      "cveOoad": ooad?.value ?? null,
+      "cveBono": bono?.label ?? null,
+      "cveRegimen": regimen?.value ?? null,
+      "cveZona": zona?.value ?? null,
+      "idUsuario": this.userData?.idUsuario
     }
 
     const parameters = {
@@ -220,6 +227,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     this._ConvocatoriaService.consultarPlazas(filtros, parameters).subscribe({
       next: (respuesta: any) => {
         this.cantidadOfertasLaborales.set(respuesta.page.totalElements)
+        this.estadoOfertaService.actualizarOfertas(respuesta.page.totalElements);
         this.totalElementos = respuesta.page.totalElements;
         this.registros.set(respuesta.content)
       }
@@ -228,16 +236,25 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   }
 
   ngOnInit() {
+    this.userService.userData$.subscribe(user => this.userData = user);
     this.favoritosSubscription = this.estadoOfertaService.favoritosActuales$.subscribe(
       (numeroFavoritos: number) => {
         const favoritos = this.data[1];
         favoritos.price = numeroFavoritos;
       }
     );
+
+    this.ofertasSubscription = this.estadoOfertaService.ofertasActuales$.subscribe((numOfertas => {
+      const ofertas = this.data[0];
+      ofertas.price = numOfertas;
+    }));
+
+
   }
 
   ngOnDestroy() {
     this.favoritosSubscription.unsubscribe();
+    this.ofertasSubscription.unsubscribe();
   }
 
 
