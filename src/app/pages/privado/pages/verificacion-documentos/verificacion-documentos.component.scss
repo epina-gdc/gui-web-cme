@@ -27,6 +27,7 @@
   color: #D48C00;
   background: #ffeac3;
 }
+
 .revision{
   background: #dbeeff;
   color: var(--complementarios-02-AzulClaro_oscuro02, #005FB2);
@@ -34,4 +35,18 @@
 
 td{
   white-space: nowrap;
+}
+
+.seccion-titulo {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+
+@media screen and (min-width: 768px) {
+  .seccion-titulo {
+    flex-direction: row !important;
+    gap: 0;
+  }
 }
