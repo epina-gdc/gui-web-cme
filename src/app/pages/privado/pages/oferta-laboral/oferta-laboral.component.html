@@ -109,7 +109,7 @@
           </div>
         </div>
         @for (registro of registros(); track registro.idPlaza) {
-          <oferta-card [detalleOportunidad]="registro"  (abrirDetalleEvent)="show($event)"/>
+          <oferta-card [detalleOportunidad]="registro" (abrirDetalleEvent)="show($event)"/>
         }
       </p-card>
 
@@ -142,65 +142,16 @@
               </div>
             </p-card>
           </div>
-          <div class="col-6">
-            <p-card class="empty-border" styleClass="min-h-full shadow-4">
-              <div class="flex flex-column gap-3 m-2">
-                <p class="ayuda-pregunta">¿Cómo postularme a una oportunidad?</p>
-                <p class="ayuda-respuesta">Haga clic en "Postularme Ahora" en cualquier oportunidad que le interese.
-                  Complete el formulario de 3
-                  pasos y envíe su solicitud.</p>
-              </div>
-            </p-card>
-          </div>
-          <div class="col-6">
-            <p-card class="empty-border" styleClass="min-h-full shadow-4">
-              <div class="flex flex-column gap-3 m-2">
-                <p class="ayuda-pregunta">¿Cómo funciona el mapa de oportunidades?</p>
-                <p class="ayuda-respuesta">Haga clic en las regiones del mapa para ver hospitales específicos. Los
-                  círculos rojos indican
-                  oportunidades urgentes.</p>
-              </div>
-            </p-card>
-          </div>
-          <div class="col-6">
-            <p-card class="empty-border" styleClass="min-h-full shadow-4">
-              <div class="flex flex-column gap-3 m-2">
-                <p class="ayuda-pregunta">¿Puedo postularme a múltiples ofertas?</p>
-                <p class="ayuda-respuesta">Sí, puede postularse a tantas ofertas como desee. Cada postulación es
-                  independiente.</p>
-              </div>
-            </p-card>
-          </div>
-          <div class="col-6">
-            <p-card class="empty-border" styleClass="min-h-full shadow-4">
-              <div class="flex flex-column gap-3 m-2">
-                <p class="ayuda-pregunta">¿Qué documeentos necesito para postularme?</p>
-                <p class="ayuda-respuesta">Cédula profesional, CV actualizado, y documentos de identidad. Para médicos
-                  externos también se
-                  requiere pasaporte o CURP.</p>
-              </div>
-            </p-card>
-          </div>
-          <div class="col-6">
-            <p-card class="empty-border" styleClass="min-h-full shadow-4">
-              <div class="flex flex-column gap-3 m-2">
-                <p class="ayuda-pregunta">¿Cómo saber si mi postulaación fue recibida?</p>
-                <p class="ayuda-respuesta">Recibirá un email de confirmación inmediatamente. También puede ver el estado
-                  en "Mis
-                  Postulaciones".</p>
-              </div>
-            </p-card>
-          </div>
-          <div class="col-6">
-            <p-card class="empty-border" styleClass="min-h-full shadow-4">
-              <div class="flex flex-column gap-3 m-2">
-                <p class="ayuda-pregunta">¿Cuánto tiempo tarda el proceso de selección?</p>
-                <p class="ayuda-respuesta">El proceso típico toma 2-4 semanas: revisión de documentos (3-5 días),
-                  evaluación técnica (1-2
-                  semanas), entrevista (según disponibilidad).</p>
-              </div>
-            </p-card>
-          </div>
+          @for (pregunta of preguntas_frecuentes(); let idx = $index; track $index) {
+            <div class="col-6">
+              <p-card class="empty-border" styleClass="min-h-full shadow-4">
+                <div class="flex flex-column gap-3 m-2">
+                  <p class="ayuda-pregunta">{{ pregunta.desPregunta }}</p>
+                  <p class="ayuda-respuesta">{{ pregunta.desRespuesta }}</p>
+                </div>
+              </p-card>
+            </div>
+          }
         </div>
       </p-card>
     }

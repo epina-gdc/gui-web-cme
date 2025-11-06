@@ -21,7 +21,9 @@ import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs';
 import {EstadoOfertaService, OfertaEstado} from '@services/estado-oferta.service';
 
-import { OportunidadLaboral } from '@models/oportunidad-laboral.interface';
+import {OportunidadLaboral} from '@models/oportunidad-laboral.interface';
+import {PreguntasFrecuentes} from '@models/preguntas-frecuentes.interface';
+
 interface PageEvent {
   first: number;
   rows: number;
@@ -70,6 +72,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   especialidad_tablero: TipoDropdown[] = [];
   regimen_tablero: TipoDropdown[] = [];
   bono_tablero: TipoDropdown[] = [];
+  preguntas_frecuentes: WritableSignal<PreguntasFrecuentes[]> = signal([]);
 
   private favoritosSubscription: Subscription = new Subscription();
 
@@ -132,7 +135,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
 
   show(oportunidad: OportunidadLaboral) {
     this.ref = this.dialogService.open(DetalleOfertaLaboralComponent, {
-      data:{oportunidad},
+      data: {oportunidad},
       modal: true,
       width: '60vw',
       height: '100vh',
@@ -159,13 +162,16 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
 
   obtenerCatalogos(): void {
     this.activatedRoute.data.subscribe(({respuesta}) => {
-      const [ooad, especialidad, regimen, bono] = respuesta;
+      console.log(respuesta)
+      const [ooad, especialidad, regimen, bono, preguntas] = respuesta;
 
       //this.zona_tablero = mapearArregloTipoDropdown(zona.respuesta, 'desTipoDocumentoEspecialidad', 'idTipoDocumentoEspecialidad');
       this.ooad_tablero = mapearArregloTipoDropdown(ooad.respuesta, 'desOoad', 'cveOoad');
-      this.especialidad_tablero = mapearArregloTipoDropdown(especialidad, 'desEspecialidad', 'cveEspecialidad');
-      this.regimen_tablero = mapearArregloTipoDropdown(regimen, 'desEspecialidad', 'cveEspecialidad')
-      this.bono_tablero = mapearArregloTipoDropdown(bono.respuesta, 'bono', 'cveBono')
+      this.especialidad_tablero = mapearArregloTipoDropdown(especialidad.respuesta, 'desEspecialidad', 'cveEspecialidad');
+      this.regimen_tablero = mapearArregloTipoDropdown(regimen.respuesta, 'desEspecialidad', 'cveEspecialidad');
+      this.bono_tablero = mapearArregloTipoDropdown(bono.respuesta, 'bono', 'cveBono');
+      console.log(preguntas)
+      this.preguntas_frecuentes.update(pf => preguntas.respuesta);
     });
   }
 
@@ -187,18 +193,18 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   }
 
   public btnConsultar(referencia: string = "btn") {
-    if(referencia == "btn"){
+    if (referencia == "btn") {
       this.numPaginaActual = 0;
       this.first = 0;
     }
-    let ooad = this.formTablero.get('ooad_tablero')?.value;
-    let zona = this.formTablero.get('zona_tablero')?.value;
-    let especialidad = this.formTablero.get('especialidad_tablero')?.value;
-    let regimen = this.formTablero.get('regimen_tablero')?.value;
-    let bono = this.formTablero.get('bono_tablero')?.value;
+    const ooad = this.formTablero.get('ooad_tablero')?.value;
+    const zona = this.formTablero.get('zona_tablero')?.value;
+    const especialidad = this.formTablero.get('especialidad_tablero')?.value;
+    const regimen = this.formTablero.get('regimen_tablero')?.value;
+    const bono = this.formTablero.get('bono_tablero')?.value;
 
 
-    let filtros = {
+    const filtros = {
       "cveEspecialidad": especialidad?.value,
       "cveOoad": ooad?.value ?? '',
       "cveBono": bono?.label ?? '',
@@ -206,13 +212,11 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       "cveZona": zona?.value ?? ''
     }
 
-    let parameters = {
+    const parameters = {
       "page": this.numPaginaActual,
       "size": this.rows,
       "sort": 'idPlaza,asc'
     }
-
-
 
     this._ConvocatoriaService.consultarPlazas(filtros, parameters).subscribe({
       next: (respuesta: any) => {

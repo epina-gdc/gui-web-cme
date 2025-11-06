@@ -6,11 +6,11 @@ import {forkJoin} from 'rxjs';
 export const ofertaLaboralResolver: ResolveFn<any> = (route, state) => {
   const catalogosService = inject(CatalogosGeneralesService);
   const ooad = catalogosService.getLstOOADS();
-  
-    const especialidad = catalogosService.getLstEspecialidades();
-    const regimen = catalogosService.getLstRegimen();
-    const bono = catalogosService.getLstBono();
-  
 
-  return forkJoin([ooad,  especialidad, regimen, bono]);
+  const especialidad = catalogosService.getLstEspecialidades();
+  const regimen = catalogosService.getLstRegimen();
+  const bono = catalogosService.getLstBono();
+  const preguntasFrecuentes = catalogosService.getLstPreguntas();
+
+  return forkJoin([ooad, especialidad, regimen, bono, preguntasFrecuentes]);
 };
