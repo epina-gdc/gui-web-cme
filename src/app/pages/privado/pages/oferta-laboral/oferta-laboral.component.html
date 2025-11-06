@@ -94,7 +94,7 @@
         <div class="flex flex-wrap">
           <div class="col-4">
             @if (activeTab() === 0) {
-              <kpi-card encabezado="Total de ofertas" descripcion="180" icono="cme-deals" bg_color="#9ce2c2"></kpi-card>
+              <kpi-card encabezado="Total de ofertas" [descripcion]="cantidadOfertasLaborales().toString()" icono="cme-deals" bg_color="#9ce2c2"></kpi-card>
             } @else {
               <kpi-card encabezado="Total de favoritos" descripcion="4" icono="cme-fav" bg_color="#ffdf7f"></kpi-card>
             }
