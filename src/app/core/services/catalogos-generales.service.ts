@@ -195,7 +195,7 @@ export class CatalogosGeneralesService {
 
 
   getLstRegimen(): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/especialidades', {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos1 + '/regimen', {headers: this.header}).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
