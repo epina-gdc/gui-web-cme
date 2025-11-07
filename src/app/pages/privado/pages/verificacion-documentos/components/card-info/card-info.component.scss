@@ -28,6 +28,11 @@
 }
 
 
+
+:host ::ng-deep .p-tablist-nav-button {
+  display: none;
+}
+
 @media screen and (min-width: 768px) {
   .seccion-nombre {
     flex-direction: row !important;
@@ -36,5 +41,20 @@
 
   .imagen-seccion {
     justify-content: start;
+  }
+}
+
+
+.seccion-titulo {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+
+@media screen and (min-width: 768px) {
+  .seccion-titulo {
+    flex-direction: row !important;
+    gap: 0;
   }
 }
