@@ -1,33 +1,33 @@
-<div class="flex ">
-  <div class="archivos col-6 pt-3">
+<div class="flex flex-wrap">
+  <div class="archivos lg:col-6 col-12 pt-3">
     @for (doc of docsObligatorios; track doc.idDocumentoObligatorio) {
-    <div class="flex align-items-center px-2 mb-4" [ngClass]="{'select': tabActive() === doc.idDocumentoObligatorio }"
-      (click)="docSeleccionado(doc.idDocumentoObligatorio, doc.documento.refGuid)">
-      <i class="cme-file" style="font-size: 2rem"></i>
-      <p class="ms-3 texto-campo">{{ doc.tipoDocumentoObligatorio.desDocumentoObligatorio }}</p>
-    </div>
+      <div class="flex align-items-center px-2 mb-4" [ngClass]="{'select': tabActive() === doc.idDocumentoObligatorio }"
+           (click)="docSeleccionado(doc.idDocumentoObligatorio, doc.documento.refGuid)">
+        <i class="cme-file" style="font-size: 2rem"></i>
+        <p class="ms-3 texto-campo">{{ doc.tipoDocumentoObligatorio.desDocumentoObligatorio }}</p>
+      </div>
     }
   </div>
 
-  <div class="flex p-4 w-6 flex-column archivos-previsualizacion">
+  <div class="flex lg:col-6 col-12 p-4 flex-column archivos-previsualizacion">
     @if (docsObligatorios.length != 0) {
-    <span class="subtitle-previsualizacion">Previsualización</span>
-    }@else{
+      <span class="subtitle-previsualizacion">Previsualización</span>
+    } @else {
       <span class="subtitle-previsualizacion">No se han cargado documentos obligatorios</span>
     }
     <!--   <pdf-viewer [src]="pdfSrc" [render-text]="true" [original-size]="false"></pdf-viewer> -->
     @if (tabActive() == 0) {
-    <p>{{_Mensajes.MSJ_SELECCIONAR_DOCUMENTO}}</p>
+      <p>{{ _Mensajes.MSJ_SELECCIONAR_DOCUMENTO }}</p>
     } @else {
-    @if (pdfSrc) {
-    <div style="height: 80vh;" class="my-4">
-      <iframe width="100%" height="100%" [src]="pdfSrc" frameborder="0">
-        <p>{{_Mensajes.MSJ_NOT_SUPPORT_IFRAMES}}</p>
-      </iframe>
-    </div>
-    } @else {
-    <span class="loader">{{_Mensajes.MSJ_CARGANDO_DOCUMENTO}}</span>
-    }
+      @if (pdfSrc) {
+        <div style="height: 80vh;" class="my-4">
+          <iframe width="100%" height="100%" [src]="pdfSrc" frameborder="0">
+            <p>{{ _Mensajes.MSJ_NOT_SUPPORT_IFRAMES }}</p>
+          </iframe>
+        </div>
+      } @else {
+        <span class="loader">{{ _Mensajes.MSJ_CARGANDO_DOCUMENTO }}</span>
+      }
     }
   </div>
 
