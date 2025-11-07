@@ -54,7 +54,7 @@
             <div formGroupName="estatusVerificacion"
                  class="flex flex-wrap justify-content-start align-items-center p-3 border-round-xl border mt-2">
               @for (option of estatusDocumentos; track option.value) {
-                <div class="flex align-items-center gap-1 justify-content-center">
+                <div class="flex align-items-center gap-1 tab-cve-especialidad">
                   <label [for]="option.value + item.cveEspecialidad"
                          class="select-option-doc ms-4 me-2 mb-0">{{ option.label }}</label>
                   <p-radioButton [inputId]="option.value + item.cveEspecialidad"

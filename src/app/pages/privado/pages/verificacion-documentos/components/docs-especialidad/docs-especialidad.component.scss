@@ -84,3 +84,18 @@
   }
 }
 
+.tab-cve-especialidad {
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+
+@media screen and (min-width: 768px) {
+  .tab-cve-especialidad {
+    width: fit-content;
+    justify-content: start;
+    margin-bottom: 0;
+  }
+}
