@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, inject} from '@angular/core';
 import {Card} from "primeng/card";
 import {Rating} from 'primeng/rating';
 import {FormsModule} from '@angular/forms';
@@ -11,6 +11,11 @@ import {EstadoOfertaService} from '@services/estado-oferta.service';
 import { DynamicDialogConfig } from 'primeng/dynamicdialog';
 import { OfertaLaboralComponent } from '../oferta-laboral/oferta-laboral.component';
 import { OportunidadLaboral } from '@models/oportunidad-laboral.interface';
+import { CommonModule, CurrencyPipe } from '@angular/common';
+import { TooltipModule } from 'primeng/tooltip';
+import { GeneralComponent } from '@components/general.component';
+import { UserService } from '@services/user.service';
+import { SesionUser } from '@models/sesion-user.interface';
 
 @Component({
   selector: 'app-detalle-oferta-laboral',
@@ -26,12 +31,18 @@ import { OportunidadLaboral } from '@models/oportunidad-laboral.interface';
     TabPanel,
     SplitByWidthDirective,
     Image,
-    Carousel
+    Carousel,
+    CommonModule,
+    TooltipModule
   ],
   templateUrl: './detalle-oferta-laboral.component.html',
-  styleUrl: './detalle-oferta-laboral.component.scss'
+  styleUrl: './detalle-oferta-laboral.component.scss',
+  providers: [CurrencyPipe]
 })
-export class DetalleOfertaLaboralComponent implements OnInit {
+export class DetalleOfertaLaboralComponent extends GeneralComponent implements OnInit {
+
+  userService = inject(UserService);
+  userData: SesionUser | null = null;
 
   ofertaSeleccionada: OportunidadLaboral =
   {
@@ -66,12 +77,22 @@ export class DetalleOfertaLaboralComponent implements OnInit {
     descuentoQuincenalCreditoHipotecario: null,
   };
 
+  tooltipOptions = {
+    showDelay: 150,
+    autoHide: false,
+    tooltipEvent: 'hover',
+    tooltipPosition: 'left'
+  }
+
   constructor(private readonly estadoOfertaService: EstadoOfertaService,
     private config: DynamicDialogConfig,
+    private currencyPipe: CurrencyPipe
   ) {
+    super();
   }
 
   ngOnInit() {
+    this.userService.userData$.subscribe(user => this.userData = user);
     if (this.config?.data) {
       this.ofertaSeleccionada = this.config.data.oportunidad;
     }
@@ -83,6 +104,8 @@ export class DetalleOfertaLaboralComponent implements OnInit {
     this.estadoOfertaService.actualizarEstado(nuevoEstado);
 
   }
+
+
 
   value: any;
   products: any[] = [{
@@ -130,5 +153,30 @@ export class DetalleOfertaLaboralComponent implements OnInit {
       badgeValue: step === 0,
     };
     this.estadoOfertaService.actualizarEstado(nuevoEstado);
+  }
+
+  agregarFavorito(){
+    this._ConvocatoriaService.agregarFavorito(
+      {
+        idUsuario: this.userData!.idUsuario,
+        idPlaza: this.ofertaSeleccionada.idPlaza,
+        esFavorita: true
+      }
+    ).subscribe({
+      next: elemento => {
+        this._alertServices.alerta("Exito");
+      }
+    })
+  }
+
+  infoTexto(credito: any){
+    const creditoFormateado = this.currencyPipe.transform(
+      credito,
+      'USD',
+      'symbol',
+      '1.2-2',
+      'en-US'
+    ) ?? '';
+    return `El importe máximo del descuento quincenal es de hasta ${creditoFormateado} pesos`
   }
 }
