@@ -2,11 +2,28 @@
 
 
   :host ::ng-deep .p-tablist-tab-list {
-    justify-content: space-between!important;
+    justify-content: space-between !important;
   }
+
   :host ::ng-deep .p-tab {
     min-width: 400px;
     display: flex;
     justify-content: center;
+  }
+
+  @media (max-width: 768px) {
+
+    :host ::ng-deep .p-tablist-tab-list {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    :host ::ng-deep .p-tab {
+      min-width: fit-content;
+    }
+
+    :host ::ng-deep .p-tablist-active-bar {
+      background: #fff;
+    }
   }
 }
