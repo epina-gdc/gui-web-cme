@@ -9,3 +9,52 @@
   align-items: center;
   justify-content: center;
 }
+
+
+.seccion-nombre {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+
+.imagen-seccion {
+  justify-content: center;
+  gap: 10px;
+}
+
+.titulo-nombre-aspirante {
+  text-align: center;
+}
+
+
+
+:host ::ng-deep .p-tablist-nav-button {
+  display: none;
+}
+
+@media screen and (min-width: 768px) {
+  .seccion-nombre {
+    flex-direction: row !important;
+    gap: 0;
+  }
+
+  .imagen-seccion {
+    justify-content: start;
+  }
+}
+
+
+.seccion-titulo {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+
+@media screen and (min-width: 768px) {
+  .seccion-titulo {
+    flex-direction: row !important;
+    gap: 0;
+  }
+}

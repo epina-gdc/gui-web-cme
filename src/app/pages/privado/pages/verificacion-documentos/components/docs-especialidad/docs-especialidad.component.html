@@ -1,6 +1,6 @@
-<div class="flex" [formGroup]="formularioValidacion">
+<div class="flex flex-wrap" [formGroup]="formularioValidacion">
 
-  <div class="doc-especialidades w-6">
+  <div class="doc-especialidades lg:col-6 col-12">
 
     <div formArrayName="especialidadesDocumentos">
       @for (item of docsEspecialidad; track item.cveEspecialidad; let i = $index) {
@@ -10,7 +10,7 @@
           <p-accordion>
             <p-accordion-panel value="0">
               <p-accordion-header>
-                <div class="flex gap-2">
+                <div class="flex gap-2 tab-especialidad">
                   <i class="cme-file" style="font-size: 2rem"></i>
                   <p class="header-accordeon ms-3">{{ item.desEspecialidad }}</p>
                 </div>
@@ -22,7 +22,7 @@
 
                   @for (doc of item.documentosEspecialidad; track doc.idDocumentoEspecialidad; let j = $index) {
 
-                    <div [formGroupName]="j" class="flex align-items-center cursor-pointer archivo-especialidad mt-2"
+                    <div [formGroupName]="j" class="flex flex-wrap align-items-center cursor-pointer archivo-especialidad mt-2"
                          [ngClass]="{'select': tabActive() === doc.idDocumentoEspecialidad }"
                          (click)="docSeleccionado(doc.idDocumentoEspecialidad, doc.documento.refGuid)">
 
@@ -52,9 +52,9 @@
 
           <div formGroupName="evaluacionEspecialidad">
             <div formGroupName="estatusVerificacion"
-                 class="flex justify-content-start align-items-center p-3 border-round-xl border mt-2">
+                 class="flex flex-wrap justify-content-start align-items-center p-3 border-round-xl border mt-2">
               @for (option of estatusDocumentos; track option.value) {
-                <div class="flex align-items-center gap-1 justify-content-center">
+                <div class="flex align-items-center gap-1 tab-cve-especialidad">
                   <label [for]="option.value + item.cveEspecialidad"
                          class="select-option-doc ms-4 me-2 mb-0">{{ option.label }}</label>
                   <p-radioButton [inputId]="option.value + item.cveEspecialidad"
@@ -83,7 +83,7 @@
     </p-card>
   </div>
 
-  <div class="flex p-4 w-6 flex-column">
+  <div class="flex p-4 lg:col-6 cl-12 flex-column">
     <h6>Previsualización</h6>
 
     @if (tabActive() === 0) {
@@ -91,7 +91,7 @@
     } @else {
       @if (pdfUrl) {
         <div style="height: 80vh;" class="my-4">
-          <iframe [src]="pdfUrl" width="100%" height="100%">
+          <iframe [src]="pdfUrl" width="100%" height="100%" title="Previsualizacion documentacion">
             Tu navegador no soporta iframes.
           </iframe>
         </div>
