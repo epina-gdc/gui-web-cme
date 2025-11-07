@@ -19,7 +19,7 @@ export class EstadoOfertaService {
     badgeValue: true,
   });
 
-  private readonly favoritos =  new BehaviorSubject<number>(4)
+  private readonly favoritos =  new BehaviorSubject<number>(0)
   private readonly ofertas =  new BehaviorSubject<number>(0);
 
   // Observable público para que los componentes puedan suscribirse

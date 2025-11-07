@@ -85,7 +85,7 @@
                         placeholder="Selecciona un bono" class="w-full"/>
             </div>
             <div class="col-4 flex justify-content-start align-items-end">
-              <p-button type="button" label="Consultar" (click)="btnConsultar('btn')"/>
+              <p-button type="button" label="Consultar" (click)="seleccionarPaginacion()"/>
             </div>
           </div>
         </form>
@@ -100,7 +100,7 @@
             }
           </div>
           <div class="col-4">
-            <kpi-card encabezado="Nuevos hospitales" [descripcion]="cantidadNuevosHospitales().toString()" icono="cme-hospital"
+            <kpi-card encabezado="Nuevos hospitales" [descripcion]="cantidadNuevosHospitalesFiltro().toString()" icono="cme-hospital"
                       bg_color="#abc8f0"></kpi-card>
           </div>
           <div class="col-4">
@@ -116,7 +116,7 @@
       @if (totalElementos > 1) {
 
         <div class="card flex justify-content-end">
-          <p-paginator class="paginator-oferta" (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows"
+          <p-paginator class="paginator-oferta" (onPageChange)="cambiarPagina($event)" [first]="first" [rows]="rows"
                        [totalRecords]="totalElementos">
             <ng-template pTemplate="previouspagelinkicon">
               <p-button type="button" icon="pi pi-angle-left" label="Anterior"
