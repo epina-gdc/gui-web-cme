@@ -1,6 +1,6 @@
-<div class="flex" [formGroup]="formularioValidacion">
+<div class="flex flex-wrap" [formGroup]="formularioValidacion">
 
-  <div class="doc-especialidades w-6">
+  <div class="doc-especialidades lg:col-6 col-12">
 
     <div formArrayName="especialidadesDocumentos">
       @for (item of docsEspecialidad; track item.cveEspecialidad; let i = $index) {
@@ -83,7 +83,7 @@
     </p-card>
   </div>
 
-  <div class="flex p-4 w-6 flex-column">
+  <div class="flex p-4 lg:col-6 cl-12 flex-column">
     <h6>Previsualización</h6>
 
     @if (tabActive() === 0) {
@@ -91,7 +91,7 @@
     } @else {
       @if (pdfUrl) {
         <div style="height: 80vh;" class="my-4">
-          <iframe [src]="pdfUrl" width="100%" height="100%">
+          <iframe [src]="pdfUrl" width="100%" height="100%" title="Previsualizacion documentacion">
             Tu navegador no soporta iframes.
           </iframe>
         </div>

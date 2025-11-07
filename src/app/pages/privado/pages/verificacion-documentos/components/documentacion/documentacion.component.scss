@@ -24,6 +24,11 @@
 
     :host ::ng-deep .p-tablist-active-bar {
       background: #fff;
+      width: fit-content !important;
+    }
+
+    :host ::ng-deep .p-tablist-nav-button {
+      display: none !important;
     }
   }
 }
