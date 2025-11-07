@@ -94,14 +94,15 @@
                 <div class="flex justify-content-start gap-4 my-2">
                   <div class="flex flex-column">
                     <p class="card-compensacion-seccion">Estimado bruto</p>
-                    <p class="card-compensacion-titulo">${{ofertaSeleccionada.sueldoMensualBruto}}</p>
+
+                    <p class="card-compensacion-titulo">{{ofertaSeleccionada.sueldoMensualBruto |  currency:'USD':'symbol':'1.2-2'}}</p>
                   </div>
                   <div class="flex align-items-end">
                     <p class="card-compensacion-titulo">-</p>
                   </div>
                   <div class="flex flex-column">
                     <p class="card-compensacion-seccion">Estimado neto</p>
-                    <p class="card-compensacion-titulo">${{ofertaSeleccionada.sueldoMensualNeto}}</p>
+                    <p class="card-compensacion-titulo">{{ofertaSeleccionada.sueldoMensualNeto |  currency:'USD':'symbol':'1.2-2'}}</p>
                   </div>
                 </div>
                 <div class="flex justify-content-between p-0 mt-1">
@@ -134,7 +135,11 @@
                     <p class="card-compensacion-seccion">Crédito automotriz:</p>
                   </div>
                   <div class="col-6 flex justify-content-start p-0">
-                    <p class="card-compensacion-seccion">Monto máx {{ofertaSeleccionada.creditoAutomotriz}}</p>
+                    <p class="card-compensacion-seccion">Monto máx {{ofertaSeleccionada.creditoAutomotriz}}
+                      @if(ofertaSeleccionada.creditoAutomotriz){
+                        <i class="pi pi-question-circle ms-2" style=" font-size: 1rem;"  tooltipPosition="top" [pTooltip]="infoTexto(ofertaSeleccionada.descuentoQuincenalCreditoAutomotriz)"></i>
+                      }
+                    </p>
                   </div>
                 </div>
                 <div class="flex justify-content-between p-0 mt-1">
@@ -142,7 +147,11 @@
                     <p class="card-compensacion-seccion">Crédito hipotecario:</p>
                   </div>
                   <div class="col-6 flex justify-content-start p-0">
-                    <p class="card-compensacion-seccion">Monto máx  {{ofertaSeleccionada.creditoHipotecario}}</p>
+                    <p class="card-compensacion-seccion">Monto máx  {{ofertaSeleccionada.creditoHipotecario}}
+                      @if(ofertaSeleccionada.creditoHipotecario){
+                        <i class="pi pi-question-circle ms-2" style=" font-size: 1rem;"  tooltipPosition="top" [pTooltip]="infoTexto(ofertaSeleccionada.descuentoQuincenalCreditoHipotecario)"></i>
+                      }
+                    </p>
                   </div>
                 </div>
               </div>
@@ -150,7 +159,7 @@
           </p-card>
         </div>
         <div class="col-12 flex justify-content-end mt-2">
-          <p-button variant="outlined" label="Agregar a favoritos"/>
+          <p-button variant="outlined" (onClick)=agregarFavorito() label="Agregar a favoritos"/>
         </div>
       </div>
     </p-tabpanel>

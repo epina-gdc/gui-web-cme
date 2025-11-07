@@ -6,7 +6,7 @@ import {Select} from 'primeng/select';
 import {KpiCardComponent} from '@components/kpi-card/kpi-card.component';
 import {OfertaCardComponent} from '@components/oferta-card/oferta-card.component';
 import {Button} from 'primeng/button';
-import {NgClass} from '@angular/common';
+import {CommonModule, CurrencyPipe, NgClass} from '@angular/common';
 import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {DetalleOfertaLaboralComponent} from '@privado/detalle-oferta-laboral/detalle-oferta-laboral.component';
 import {FooterMedicoComponent} from '@pages/privado/shared/footer-medico/footer-medico.component';
@@ -18,7 +18,7 @@ import {PrimeTemplate} from 'primeng/api';
 import {GeneralComponent} from '@components/general.component';
 import {mapearArregloTipoDropdown} from '@utils/funciones';
 import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs';
+import {Subscription, concatMap, tap} from 'rxjs';
 import {EstadoOfertaService, OfertaEstado} from '@services/estado-oferta.service';
 
 import {OportunidadLaboral} from '@models/oportunidad-laboral.interface';
@@ -44,11 +44,12 @@ interface PageEvent {
     Button,
     NgClass,
     Paginator,
-    PrimeTemplate
+    PrimeTemplate,
+    CommonModule
   ],
   templateUrl: './oferta-laboral.component.html',
   styleUrl: './oferta-laboral.component.scss',
-  providers: [DialogService]
+  providers: [DialogService, CurrencyPipe]
 })
 export class OfertaLaboralComponent extends GeneralComponent implements OnInit, OnDestroy {
 
@@ -69,6 +70,8 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
 
   registros: WritableSignal<OportunidadLaboral[]> = signal([])
   cantidadOfertasLaborales: WritableSignal<number> = signal(0);
+  cantidadNuevosHospitales: WritableSignal<number> = signal(0);
+  cantidadSalarioPromedio: WritableSignal<string> = signal("");
 
   formTablero!: FormGroup;
 
@@ -82,8 +85,11 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   private favoritosSubscription: Subscription = new Subscription();
   private ofertasSubscription: Subscription = new Subscription();
 
-  constructor(public dialogService: DialogService, private readonly activatedRoute: ActivatedRoute,
-              private readonly estadoOfertaService: EstadoOfertaService) {
+  constructor(
+    public dialogService: DialogService,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly estadoOfertaService: EstadoOfertaService,
+    private currencyPipe: CurrencyPipe) {
     super();
     this.formTablero = this.asignarFormTablero();
     this.obtenerCatalogos();
@@ -113,7 +119,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       name: 'Mis favoritos',
       icono: 'cme-fav',
       description: 'Ver solicitudes seleccionadas',
-      price: 72,
+      price: 0,
     },
     {
       id: 2,
@@ -224,12 +230,38 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       "sort": 'idPlaza,asc'
     }
 
-    this._ConvocatoriaService.consultarPlazas(filtros, parameters).subscribe({
+
+    //Encadenamiento de subscribes
+    this._ConvocatoriaService.consultarPlazas(filtros, parameters).pipe(
+      tap(ofertas => {
+        //settear paginado y oferta-card
+        this.totalElementos = ofertas.page.totalElements;
+        this.registros.set(ofertas.content)
+      }),
+      concatMap(()=> this._ConvocatoriaService.consultarTotales(
+        {
+          cveEspecialidad: filtros.cveEspecialidad,
+          cveOoad: filtros.cveOoad,
+          cveBono: filtros.cveBono,
+          regimen: filtros.cveRegimen,
+          cveZona: filtros.cveZona
+        }
+      ))
+    ).subscribe({
       next: (respuesta: any) => {
-        this.cantidadOfertasLaborales.set(respuesta.page.totalElements)
-        this.estadoOfertaService.actualizarOfertas(respuesta.page.totalElements);
-        this.totalElementos = respuesta.page.totalElements;
-        this.registros.set(respuesta.content)
+
+        const salarioFormateado = this.currencyPipe.transform(
+          respuesta.respuesta.promedioSueldosBrutos,
+          'USD',
+          'symbol',
+          '1.2-2',
+          'en-US'
+        ) ?? '';
+
+        this.cantidadOfertasLaborales.set(respuesta.respuesta.totalResultados);
+        this.estadoOfertaService.actualizarOfertas(respuesta.respuesta.totalResultados);
+        this.cantidadNuevosHospitales.set(respuesta.respuesta.totalHospitalesNuevos);
+        this.cantidadSalarioPromedio.set(salarioFormateado);
       }
     });
 
