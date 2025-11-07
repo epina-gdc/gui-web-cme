@@ -10,7 +10,7 @@
           <p-accordion>
             <p-accordion-panel value="0">
               <p-accordion-header>
-                <div class="flex gap-2">
+                <div class="flex gap-2 tab-especialidad">
                   <i class="cme-file" style="font-size: 2rem"></i>
                   <p class="header-accordeon ms-3">{{ item.desEspecialidad }}</p>
                 </div>
@@ -22,7 +22,7 @@
 
                   @for (doc of item.documentosEspecialidad; track doc.idDocumentoEspecialidad; let j = $index) {
 
-                    <div [formGroupName]="j" class="flex align-items-center cursor-pointer archivo-especialidad mt-2"
+                    <div [formGroupName]="j" class="flex flex-wrap align-items-center cursor-pointer archivo-especialidad mt-2"
                          [ngClass]="{'select': tabActive() === doc.idDocumentoEspecialidad }"
                          (click)="docSeleccionado(doc.idDocumentoEspecialidad, doc.documento.refGuid)">
 
@@ -52,7 +52,7 @@
 
           <div formGroupName="evaluacionEspecialidad">
             <div formGroupName="estatusVerificacion"
-                 class="flex justify-content-start align-items-center p-3 border-round-xl border mt-2">
+                 class="flex flex-wrap justify-content-start align-items-center p-3 border-round-xl border mt-2">
               @for (option of estatusDocumentos; track option.value) {
                 <div class="flex align-items-center gap-1 justify-content-center">
                   <label [for]="option.value + item.cveEspecialidad"
