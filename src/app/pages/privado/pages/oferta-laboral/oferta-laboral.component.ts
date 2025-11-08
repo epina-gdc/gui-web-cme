@@ -60,12 +60,8 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   first: number = 0;
   rows: number = 10;
 
-  paginacionConFiltrado: boolean = false;
-  numPaginaActual: number = 1;
-  cantElementosPorPagina: number = 10;
+  numPaginaActual: number = 0;
   totalElementos: number = 0;
-  paginasTotales: number = 0;
-  primeraPagina: number = 1;
 
   fb: FormBuilder = inject(FormBuilder);
   ref: DynamicDialogRef | undefined;
@@ -183,7 +179,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
 
   seleccionarPaginacion(event?: TableLazyLoadEvent): void {
     if (event) {
-      this.numPaginaActual = Math.floor((event.first ?? 0) / (event.rows ?? 1)) + 1;
+      this.numPaginaActual = Math.floor((event.first ?? 0) / (event.rows ?? 1));
     }
     if (this.activeTab() === 0) {
       this.consultarPlazas();
@@ -194,7 +190,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
 
   cambiarPagina(event: PaginatorState): void {
     if (event.page) {
-      this.numPaginaActual = event.page + 1;
+      this.numPaginaActual = event.page;
     }
     if (this.activeTab() === 0) {
       this.consultarPlazas();
@@ -271,7 +267,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
           cveEspecialidad: filtros.cveEspecialidad,
           cveOoad: filtros.cveOoad,
           cveBono: filtros.cveBono,
-          regimen: filtros.cveRegimen,
+          cveRegimen: filtros.cveRegimen,
           cveZona: filtros.cveZona
         }
       ))
@@ -301,6 +297,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     this._ConvocatoriaService.consultarFavoritos(filtros, parametros).pipe(
       tap(ofertas => {
         //settear paginado y oferta-card
+        console.log(ofertas)
         this.totalElementos = ofertas.page.totalElements;
         this.registros.set(ofertas.content)
       }),
@@ -309,7 +306,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
           cveEspecialidad: filtros.cveEspecialidad,
           cveOoad: filtros.cveOoad,
           cveBono: filtros.cveBono,
-          regimen: filtros.cveRegimen,
+          cveRegimen: filtros.cveRegimen,
           cveZona: filtros.cveZona,
           idUsuario: this.userData?.idUsuario as number
         }
@@ -325,7 +322,9 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
           'en-US'
         ) ?? '';
 
-        this.cantidadOfertasLaborales.set(respuesta.respuesta.totalResultados);
+        console.log(respuesta.respuesta)
+
+        this.cantidadOfertasLaborales.set(respuesta.respuesta.totalFavoritas);
         this.cantidadNuevosHospitalesFiltro.set(respuesta.respuesta.totalHospitalesNuevos);
         this.cantidadSalarioPromedio.set(salarioFormateado);
       }
@@ -334,13 +333,19 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   }
 
   generarSolicitudFiltros() {
+    const ooad = this.formTablero.get('ooad_tablero')?.value;
+    const zona = this.formTablero.get('zona_tablero')?.value;
+    const especialidad = this.formTablero.get('especialidad_tablero')?.value;
+    const regimen = this.formTablero.get('regimen_tablero')?.value;
+    const bono = this.formTablero.get('bono_tablero')?.value;
+
     return {
-      cveEspecialidad: this.formTablero.get('especialidad_tablero')?.value,
-      cveOoad: this.formTablero.get('ooad_tablero')?.value,
-      cveBono: this.formTablero.get('bono_tablero')?.value,
-      cveRegimen: this.formTablero.get('regimen_tablero')?.value,
-      cveZona: this.formTablero.get('zona_tablero')?.value,
-      idUsuario: this.userData?.idUsuario as number
+      cveEspecialidad: especialidad?.value,
+      cveOoad: ooad?.value ?? null,
+      cveBono: bono?.label ?? null,
+      cveRegimen: regimen?.value ?? null,
+      cveZona: zona?.value ?? null,
+      idUsuario: this.userData?.idUsuario
     }
   }
 
@@ -349,7 +354,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       cveEspecialidad: null,
       cveOoad: null,
       cveBono: null,
-      regimen: null,
+      cveRegimen: null,
       cveZona: null
     }
   }
@@ -359,7 +364,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       cveEspecialidad: null,
       cveOoad: null,
       cveBono: null,
-      regimen: null,
+      cveRegimen: null,
       cveZona: null,
       idUsuario: this.userData?.idUsuario as number
     }
@@ -386,7 +391,6 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     const solicitud = this.generarSolicitudFiltrosFavoritosTotales();
     this._ConvocatoriaService.consultarTotalesFavoritos({...solicitud}).subscribe({
       next: (respuesta: any) => {
-        console.log(respuesta.respuesta.totalFavoritas);
         this.estadoOfertaService.actualizarFavoritos(respuesta.respuesta.totalFavoritas);
       }
     })

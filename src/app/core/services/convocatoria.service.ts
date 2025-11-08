@@ -271,7 +271,7 @@ export class ConvocatoriaService {
       cveEspecialidad: string | null,
       cveOoad: string | null,
       cveBono: string | null,
-      regimen: string | null,
+      cveRegimen: string | null,
       cveZona: string | null
     }
   ): Observable<HttpRespuesta<any>> {
@@ -289,7 +289,7 @@ export class ConvocatoriaService {
       cveEspecialidad: string | null,
       cveOoad: string | null,
       cveBono: string | null,
-      regimen: string | null,
+      cveRegimen: string | null,
       cveZona: string | null,
       idUsuario: number
     }

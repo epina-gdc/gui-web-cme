@@ -83,7 +83,6 @@ export class OfertaCardComponent implements OnInit {
     this.convocatoriaService.agregarFavorito(solicitud).subscribe({
       next: () => {
         const favoritos = this.estadoOfertaService.totalFavoritos;
-        console.log(favoritos);
         this.estadoOfertaService.actualizarFavoritos(favoritos + 1);
       }
     });
@@ -93,12 +92,11 @@ export class OfertaCardComponent implements OnInit {
     const solicitud = {
       idUsuario: this.userData?.idUsuario as number,
       idPlaza: this.detalleOportunidad.idPlaza,
-      esFavorita: true
+      esFavorita: false
     };
     this.convocatoriaService.agregarFavorito(solicitud).subscribe({
       next: () => {
         const favoritos = this.estadoOfertaService.totalFavoritos;
-        console.log(favoritos)
         this.estadoOfertaService.actualizarFavoritos(favoritos - 1);
       }
     });
