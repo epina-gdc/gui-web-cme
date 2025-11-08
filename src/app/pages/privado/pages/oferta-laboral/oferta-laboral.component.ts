@@ -386,7 +386,8 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     const solicitud = this.generarSolicitudFiltrosFavoritosTotales();
     this._ConvocatoriaService.consultarTotalesFavoritos({...solicitud}).subscribe({
       next: (respuesta: any) => {
-        this.estadoOfertaService.actualizarFavoritos(respuesta.respuesta.totalResultados);
+        console.log(respuesta.respuesta.totalFavoritas);
+        this.estadoOfertaService.actualizarFavoritos(respuesta.respuesta.totalFavoritas);
       }
     })
   }

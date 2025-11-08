@@ -28,6 +28,10 @@ export class EstadoOfertaService {
   favoritosActuales$ = this.favoritos.asObservable();
   ofertasActuales$ = this.ofertas.asObservable();
 
+  get totalFavoritos() {
+    return this.favoritos.value;
+  }
+
   constructor() {
   }
 

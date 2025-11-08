@@ -8,14 +8,13 @@ import {SplitByWidthDirective} from '@directives/split-by-width.directive';
 import {Image} from 'primeng/image';
 import {Carousel} from 'primeng/carousel';
 import {EstadoOfertaService} from '@services/estado-oferta.service';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { OfertaLaboralComponent } from '../oferta-laboral/oferta-laboral.component';
-import { OportunidadLaboral } from '@models/oportunidad-laboral.interface';
-import { CommonModule, CurrencyPipe } from '@angular/common';
-import { TooltipModule } from 'primeng/tooltip';
-import { GeneralComponent } from '@components/general.component';
-import { UserService } from '@services/user.service';
-import { SesionUser } from '@models/sesion-user.interface';
+import {DynamicDialogConfig} from 'primeng/dynamicdialog';
+import {OportunidadLaboral} from '@models/oportunidad-laboral.interface';
+import {CommonModule, CurrencyPipe} from '@angular/common';
+import {TooltipModule} from 'primeng/tooltip';
+import {GeneralComponent} from '@components/general.component';
+import {UserService} from '@services/user.service';
+import {SesionUser} from '@models/sesion-user.interface';
 
 @Component({
   selector: 'app-detalle-oferta-laboral',
@@ -45,37 +44,38 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
   userData: SesionUser | null = null;
 
   ofertaSeleccionada: OportunidadLaboral =
-  {
-    idPlaza: 0,
-    cveOoad: null,
-    cvePuesto: null,
-    cveUnidad: null,
-    porcAltoCostoVida: null,
-    especialidad: null,
-    categoria: null,
-    regimen: null,
-    turno: null,
-    tipoPlaza: null,
-    marcaOcupacion: null,
-    umf: null,
-    nuevoHospital: null,
-    ubicacion: null,
-    zona: null,
-    direccion: null,
-    sueldoMensualBruto: null,
-    sueldoMensualNeto: null,
-    horario: null,
-    numPlaza: null,
-    clasificacion: null,
-    ooad: null,
-    creditos: null,
-    bonoDificilCobertura: null,
-    accesoCredito: null,
-    creditoAutomotriz: null,
-    descuentoQuincenalCreditoAutomotriz: null,
-    creditoHipotecario: null,
-    descuentoQuincenalCreditoHipotecario: null,
-  };
+    {
+      esFavorita: false,
+      idPlaza: 0,
+      cveOoad: null,
+      cvePuesto: null,
+      cveUnidad: null,
+      porcAltoCostoVida: null,
+      especialidad: null,
+      categoria: null,
+      regimen: null,
+      turno: null,
+      tipoPlaza: null,
+      marcaOcupacion: null,
+      umf: null,
+      nuevoHospital: null,
+      ubicacion: null,
+      zona: null,
+      direccion: null,
+      sueldoMensualBruto: null,
+      sueldoMensualNeto: null,
+      horario: null,
+      numPlaza: null,
+      clasificacion: null,
+      ooad: null,
+      creditos: null,
+      bonoDificilCobertura: null,
+      accesoCredito: null,
+      creditoAutomotriz: null,
+      descuentoQuincenalCreditoAutomotriz: null,
+      creditoHipotecario: null,
+      descuentoQuincenalCreditoHipotecario: null
+    };
 
   tooltipOptions = {
     showDelay: 150,
@@ -85,8 +85,8 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
   }
 
   constructor(private readonly estadoOfertaService: EstadoOfertaService,
-    private config: DynamicDialogConfig,
-    private currencyPipe: CurrencyPipe
+              private config: DynamicDialogConfig,
+              private currencyPipe: CurrencyPipe
   ) {
     super();
   }
@@ -104,7 +104,6 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
     this.estadoOfertaService.actualizarEstado(nuevoEstado);
 
   }
-
 
 
   value: any;
@@ -155,7 +154,7 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
     this.estadoOfertaService.actualizarEstado(nuevoEstado);
   }
 
-  agregarFavorito(){
+  agregarFavorito() {
     this._ConvocatoriaService.agregarFavorito(
       {
         idUsuario: this.userData!.idUsuario,
@@ -169,7 +168,7 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
     })
   }
 
-  infoTexto(credito: any){
+  infoTexto(credito: any) {
     const creditoFormateado = this.currencyPipe.transform(
       credito,
       'USD',

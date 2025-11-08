@@ -77,7 +77,6 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
 
   ngOnInit(): void {
     this.paginar();
-
   }
 
   obtenerCatalogos(){

@@ -5,6 +5,7 @@ export interface OportunidadLaboral {
   cveUnidad: string | null,
   porcAltoCostoVida: string | null,
   especialidad: string | null,
+  esFavorita: boolean,
   categoria: string | null,
   regimen: string | null,
   turno: string | null,
