@@ -94,13 +94,16 @@
         <div class="flex flex-wrap">
           <div class="col-4">
             @if (activeTab() === 0) {
-              <kpi-card encabezado="Total de ofertas" [descripcion]="cantidadOfertasLaborales().toString()" icono="cme-deals" bg_color="#9ce2c2"></kpi-card>
+              <kpi-card encabezado="Total de ofertas" [descripcion]="cantidadOfertasLaborales().toString()"
+                        icono="cme-deals" bg_color="#9ce2c2"></kpi-card>
             } @else {
-              <kpi-card encabezado="Total de favoritos" [descripcion]="cantidadOfertasLaborales().toString()" icono="cme-fav" bg_color="#ffdf7f"></kpi-card>
+              <kpi-card encabezado="Total de favoritos" [descripcion]="cantidadOfertasLaborales().toString()"
+                        icono="cme-fav" bg_color="#ffdf7f"></kpi-card>
             }
           </div>
           <div class="col-4">
-            <kpi-card encabezado="Nuevos hospitales" [descripcion]="cantidadNuevosHospitalesFiltro().toString()" icono="cme-hospital"
+            <kpi-card encabezado="Nuevos hospitales" [descripcion]="cantidadNuevosHospitalesFiltro().toString()"
+                      icono="cme-hospital"
                       bg_color="#abc8f0"></kpi-card>
           </div>
           <div class="col-4">
@@ -109,7 +112,8 @@
           </div>
         </div>
         @for (registro of registros(); track registro.idPlaza) {
-          <oferta-card [detalleOportunidad]="registro" (abrirDetalleEvent)="show($event)"/>
+          <oferta-card [detalleOportunidad]="registro" (abrirDetalleEvent)="show($event)"
+                       (actualizarTotales)="obtenerTotalFavoritos()"/>
         }
       </p-card>
 

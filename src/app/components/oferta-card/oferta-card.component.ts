@@ -30,6 +30,7 @@ export class OfertaCardComponent implements OnInit {
   userData!: null | SesionUser;
 
   @Output() abrirDetalleEvent = new EventEmitter<OportunidadLaboral>();
+  @Output() actualizarTotales = new EventEmitter<boolean>();
 
   @Input() detalleOportunidad: OportunidadLaboral =
     {
@@ -82,8 +83,7 @@ export class OfertaCardComponent implements OnInit {
     };
     this.convocatoriaService.agregarFavorito(solicitud).subscribe({
       next: () => {
-        const favoritos = this.estadoOfertaService.totalFavoritos;
-        this.estadoOfertaService.actualizarFavoritos(favoritos + 1);
+        this.actualizarTotales.emit(true)
       }
     });
   }
@@ -96,8 +96,7 @@ export class OfertaCardComponent implements OnInit {
     };
     this.convocatoriaService.agregarFavorito(solicitud).subscribe({
       next: () => {
-        const favoritos = this.estadoOfertaService.totalFavoritos;
-        this.estadoOfertaService.actualizarFavoritos(favoritos - 1);
+        this.actualizarTotales.emit(true)
       }
     });
   }
