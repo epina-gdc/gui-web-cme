@@ -42,6 +42,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
   fb = inject(FormBuilder)
   form!: FormGroup;
+  usuarioValidado = false;
 
   strTitulo!: string;
   medico!: RegistroMedico;
@@ -74,6 +75,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.msjForm();
     this.blnBtnValidar = true;
     let x = this.getSession('registroMedico');
+
     if (x) {
       this.medico = x;
       //console.log("meduico: ",this.medico);
@@ -225,6 +227,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
   private isPasaporte() {
+    this.usuarioValidado = true;
     this.getCatalogoPais();
     this.clearCampos();
     this.form.controls['modalidad'].setValidators([Validators.required]);
@@ -396,12 +399,14 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
     this._RegistroMedicoService.getDatosByCurp(datos).subscribe((response: any) => {
       if (!response.exito) {
+        this.usuarioValidado = false;
         // this.limpiarMatricula();
         this._alertServices.error(response.mensaje);
         this.form.get('nombre')?.enable();
         this.form.get('apellidoP')?.enable();
         this.form.get('apellidoM')?.enable();
       } else {
+        this.usuarioValidado = true;
         this.datosCURP = response.respuesta;
         this.form.controls['nombre'].setValue(response.respuesta.renapoData.nombres ? response.respuesta.renapoData.nombres : response.respuesta.siapData.nombre);
         this.form.controls['apellidoP'].setValue(response.respuesta.renapoData.primerApellido ? response.respuesta.renapoData.primerApellido : response.respuesta.siapData.primerApellido);
@@ -431,8 +436,8 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
 
   public btnCrearCuenta() {
-    this.asignarDatos();
 
+    this.asignarDatos();
 
     if (this.form.valid) {
 
@@ -485,9 +490,9 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     residente.refEmail = this.medico.refEmail;
     residente.refContrasenaHash = this.medico.refContrasenaHash;
     residente.requiereFolio = true;
-    debugger
+
     residente.areaMedicaData = this.AREA_MEDICA_DATA;
-    debugger
+
     this._RegistroMedicoService.registrarResidente(residente).subscribe({
       next: (data: ResponseGeneral) => {
 
@@ -644,6 +649,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
 
   public btnValidarMatricula() {
+
     this.medico.cveMatricula = this.form.controls['matricula'].value;
     if (this.medico.cveMatricula.length >= 6) {
       return this.validarMatricula();
@@ -685,6 +691,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
     this._RegistroMedicoService.getDatosByMatricula(datos).subscribe((response: any) => {
       if (!response.exito) {
+        this.usuarioValidado = false;
         this.limpiarMatricula();
         this._alertServices.error(response.mensaje);
         this.form.get('nombre')?.enable();
@@ -693,6 +700,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
         this.form.get('curp')?.enable();
         this.form.get('rfc')?.enable();
       } else {
+        this.usuarioValidado = true;
         this.AREA_MEDICA_DATA = response.respuesta.areaMedicaData;
         this.form.controls['nombre'].setValue(response.respuesta.areaMedicaData.NOMBRE ? response.respuesta.areaMedicaData.NOMBRE : response.respuesta.siapData.nombre);
         this.form.controls['apellidoP'].setValue(response.respuesta.areaMedicaData.APELLIDO_PATERNO ? response.respuesta.areaMedicaData.APELLIDO_PATERNO : response.respuesta.siapData.primerApellido);
