@@ -39,6 +39,7 @@ import {SesionUser} from '@models/sesion-user.interface';
   providers: [CurrencyPipe]
 })
 export class DetalleOfertaLaboralComponent extends GeneralComponent implements OnInit {
+  valorFavoritos: number = 0;
 
   userService = inject(UserService);
   userData: SesionUser | null = null;
@@ -99,10 +100,10 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
     const nuevoEstado = {
       titulo: this.ofertaSeleccionada.especialidad,
       subTitulo: this.ofertaSeleccionada.categoria,
-      badgeValue: this.ofertaSeleccionada.nuevoHospital == 1,
+      badgeValue: this.ofertaSeleccionada.nuevoHospital === 1,
     };
     this.estadoOfertaService.actualizarEstado(nuevoEstado);
-
+    this.value = this.ofertaSeleccionada.esFavorita ? 1 : 0;
   }
 
 
@@ -162,11 +163,32 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
         esFavorita: true
       }
     ).subscribe({
-      next: elemento => {
+      next: (respuesta) => {
         this._alertServices.alerta("Exito");
+        this.ofertaSeleccionada.esFavorita = true;
+        this.value = 1;
+        this.obtenerTotalFavoritos()
       }
-    })
+    });
   }
+
+  eliminarFavorito() {
+    this._ConvocatoriaService.agregarFavorito(
+      {
+        idUsuario: this.userData!.idUsuario,
+        idPlaza: this.ofertaSeleccionada.idPlaza,
+        esFavorita: false
+      }
+    ).subscribe({
+      next: (respuesta) => {
+        this._alertServices.alerta("Exito");
+        this.value = 0;
+        this.ofertaSeleccionada.esFavorita = false;
+        this.obtenerTotalFavoritos();
+      }
+    });
+  }
+
 
   infoTexto(credito: any) {
     const creditoFormateado = this.currencyPipe.transform(
@@ -177,5 +199,26 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
       'en-US'
     ) ?? '';
     return `El importe máximo del descuento quincenal es de hasta ${creditoFormateado} pesos`
+  }
+
+  obtenerTotalFavoritos(): void {
+    const solicitud = this.generarSolicitudFiltrosFavoritosTotales();
+    this._ConvocatoriaService.consultarTotalesFavoritos({...solicitud}).subscribe({
+      next: (respuesta: any) => {
+        this.estadoOfertaService.actualizarFavoritos(respuesta.respuesta.totalFavoritas);
+      }
+    })
+  }
+
+
+  generarSolicitudFiltrosFavoritosTotales() {
+    return {
+      cveEspecialidad: null,
+      cveOoad: null,
+      cveBono: null,
+      cveRegimen: null,
+      cveZona: null,
+      idUsuario: this.userData?.idUsuario as number
+    }
   }
 }

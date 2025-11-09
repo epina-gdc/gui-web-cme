@@ -115,6 +115,8 @@
           <oferta-card [detalleOportunidad]="registro" (abrirDetalleEvent)="show($event)"
                        (actualizarTotales)="obtenerTotalFavoritos()"/>
         }
+        @if (registros().length === 0) {
+        }
       </p-card>
 
       @if (totalElementos > 1) {
