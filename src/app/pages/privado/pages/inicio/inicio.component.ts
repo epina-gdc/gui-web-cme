@@ -1715,7 +1715,7 @@ export class InicioComponent extends GeneralComponent {
       next: (response: any) => {
         if (!response.exito) return;
         const respuesta: RespuestaConsultaDocumentos = response.respuesta;
-        if (respuesta.participacion.resultadoVerificacion) {
+        if (respuesta.participacion?.resultadoVerificacion) {
           this.estatusPendienteDocumentacion = respuesta.participacion.resultadoVerificacion.estatusVerificacion.desEstatus === 'Pendiente';
           this.desactivarForms();
         }

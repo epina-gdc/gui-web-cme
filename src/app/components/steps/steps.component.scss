@@ -83,3 +83,52 @@
 .stepper-line-active {
   background-color: var(--stepper-active-color);
 }
+
+
+@media (max-width: 767px) {
+  .stepper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .stepper-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+    width: 100%;
+    padding-bottom: 20px;
+  }
+
+  .stepper-header-mobile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+  }
+
+  .stepper-line {
+    display: block;
+    height: 0.20rem;
+    flex-grow: 1;
+    margin-left: 10px;
+    margin-right: 0;
+  }
+
+  .stepper-label-container {
+    position: static;
+    margin-top: 5px;
+    margin-left: 0;
+  }
+
+  .stepper-label {
+    position: static;
+    white-space: normal;
+  }
+
+  .stepper-step {
+    flex-shrink: 0;
+  }
+}
