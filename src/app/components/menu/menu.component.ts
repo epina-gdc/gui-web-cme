@@ -21,6 +21,8 @@ export class MenuComponent extends GeneralComponent implements OnInit {
   userService = inject(UserService);
   userData: SesionUser | null = null;
 
+  speedDialVisible: boolean = false;
+
   items: MenuItem[] = [];
 
   private readonly MOBILE_BREAKPOINT = 768;
@@ -56,4 +58,5 @@ export class MenuComponent extends GeneralComponent implements OnInit {
     if (!event) return;
     this.authService.cerrarSesion();
   }
+
 }
