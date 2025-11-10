@@ -4,7 +4,7 @@ import {Card} from 'primeng/card';
 import {Button} from 'primeng/button';
 import {Select} from 'primeng/select';
 import {RadioButton, RadioButtonModule} from 'primeng/radiobutton';
-import {GeneralComponent} from '../../../../components/general.component';
+import {GeneralComponent} from '@components/general.component';
 import {CommonModule} from '@angular/common';
 import {RegistroMedico} from '@models/datosMedico';
 import {

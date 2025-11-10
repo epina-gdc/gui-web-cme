@@ -1,4 +1,4 @@
-<div class="stepper mb-5">
+<div class="stepper lg:mb-5 mb-7">
   @for (step of steps; track i; let i = $index) {
     <div class="stepper-item">
       <div class="stepper-step cursor-pointer" [ngClass]="getStepClass(i)" (click)="handleStepClick(i)">
@@ -11,7 +11,7 @@
         }
       </div>
       <div class="stepper-label-container">
-        <span class="stepper-label mb-1">{{ step.label }}</span>
+        <span class="stepper-label">{{ step.label }}</span>
       </div>
     </div>
 
