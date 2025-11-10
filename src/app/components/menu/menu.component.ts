@@ -33,8 +33,8 @@ export class MenuComponent extends GeneralComponent implements OnInit {
       {
         label: 'Cerrar sesión',
         icon: 'pi pi-sign-out',
-        command: () => {
-          this.cerrarSesion()
+        command: (event: any) => {
+          this.cerrarSesion(event)
         },
       }
     ]
@@ -52,7 +52,8 @@ export class MenuComponent extends GeneralComponent implements OnInit {
   }
 
 
-  cerrarSesion() {
+  cerrarSesion(event: any) {
+    if (!event) return;
     this.authService.cerrarSesion();
   }
 }
