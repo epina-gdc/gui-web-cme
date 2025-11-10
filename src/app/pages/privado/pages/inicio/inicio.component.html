@@ -323,7 +323,6 @@
                   <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.5rem'}"
                             (click)="(eliminarZonaInteres(rowIndex))"/>
                 }
-
               </td>
             </tr>
           </ng-template>
@@ -336,6 +335,17 @@
                 </div>
               </td>
             </tr>
+          </ng-template>
+          <ng-template #footer>
+            <td colspan="3" class="lg:hidden">
+              <div class="w-full flex justify-center py-4">
+                <img src="/assets/images/touch_icon.png" height="40"
+                     width="40"
+                     alt="Imagen centrada para móvil"
+                     class="w-full imagen-tabla"
+                />
+              </div>
+            </td>
           </ng-template>
         </p-table>
       </p-card>
