@@ -11,7 +11,8 @@
     <span class="usuario-menu pr-4 mr-6 text-overflow-ellipsis">
       {{ userData?.nomNombre }} {{ userData?.nomApellidoPaterno }} {{ userData?.nomApellidoMaterno }}
     </span>
-    <p-speeddial [model]="items" direction="down" [transitionDelay]="80" class="absolute ajuste-avatar">
+    <p-speeddial [model]="items" direction="down" [transitionDelay]="80" class="absolute ajuste-avatar"
+                 [(visible)]="speedDialVisible">
       <ng-template pTemplate="button" let-toggleCallback="toggleCallback">
         <p-avatar icon="pi pi-user" (click)="toggleCallback($event)" [style]="{ 'background-color': '#E0FFFF', color: '#5DC1B9', 'border-color': '#5DC1B9',
      'border': '2px solid' }" class="ml-8 my-2 cursor-pointer" size="xlarge" shape="circle"/>
@@ -30,7 +31,8 @@
                     <small>Matrícula {{ userData?.cveMatricula }}</small>
                   </div>
                 </div>
-                <i class="pi pi-times cursor-pointer" style="font-size: 1.2rem;" (click)="toggleCallback(item)"></i>
+                <i class="pi pi-times cursor-pointer" style="font-size: 1.2rem;"
+                   (click)="speedDialVisible = !speedDialVisible"></i>
               </div>
             </div>
 
