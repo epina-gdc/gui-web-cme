@@ -83,3 +83,59 @@
 .stepper-line-active {
   background-color: var(--stepper-active-color);
 }
+
+
+@media (max-width: 767px) {
+  /* Contenedor principal: Apilamiento vertical de los pasos */
+  .stepper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinea los pasos a la izquierda */
+    width: 100%;
+  }
+
+  /* Ítem individual: Contiene el "encabezado" (icono + línea) y el "texto" */
+  .stepper-item {
+    display: flex;
+    flex-direction: column; /* Apila el encabezado y el texto */
+    align-items: flex-start; /* Alinea contenido a la izquierda */
+    position: relative;
+    width: 100%;
+    padding-bottom: 20px; /* Espacio vertical entre cada bloque de paso */
+  }
+
+  /* Encabezado del paso (Icono + Línea): Horizontal */
+  .stepper-header-mobile {
+    display: flex;
+    flex-direction: row; /* Coloca el icono y la línea en la misma fila */
+    align-items: center; /* Centra verticalmente el icono y la línea */
+    width: 100%; /* Ocupa todo el ancho disponible */
+  }
+
+  /* Línea Horizontal: Ahora ocupará el espacio restante junto al ícono */
+  .stepper-line {
+    display: block; /* Asegura que la línea esté visible */
+    height: 0.20rem;
+    flex-grow: 1; /* ¡La clave! Haz que la línea ocupe todo el espacio restante */
+    margin-left: 10px; /* Espacio entre el ícono y la línea */
+    margin-right: 0;
+  }
+
+  /* Contenedor del Título: Se alinea con el ícono */
+  .stepper-label-container {
+    position: static;
+    margin-top: 5px; /* Pequeña separación del encabezado */
+    margin-left: 0; /* Asegura que empieza desde el borde izquierdo */
+  }
+
+  .stepper-label {
+    position: static;
+    white-space: normal;
+  }
+
+  /* Ajustes para el icono del paso */
+  .stepper-step {
+    /* Tus estilos actuales de tamaño y forma */
+    flex-shrink: 0; /* Asegura que el ícono no se encoja */
+  }
+}
