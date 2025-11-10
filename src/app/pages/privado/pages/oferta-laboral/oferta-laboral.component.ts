@@ -173,12 +173,6 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       },
       styleClass: 'oferta-detail'
     });
-
-    this.ref.onClose.subscribe((respuesta: any) => {
-      if (respuesta.cambioFavoritos) {
-        this.consultarFavoritos();
-      }
-    })
   }
 
 
