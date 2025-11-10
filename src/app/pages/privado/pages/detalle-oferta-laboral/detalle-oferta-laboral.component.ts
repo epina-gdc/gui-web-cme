@@ -1,4 +1,4 @@
-import {Component, OnInit, inject} from '@angular/core';
+import {Component, OnDestroy, OnInit, inject} from '@angular/core';
 import {Card} from "primeng/card";
 import {Rating} from 'primeng/rating';
 import {FormsModule} from '@angular/forms';
@@ -7,7 +7,7 @@ import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs';
 import {SplitByWidthDirective} from '@directives/split-by-width.directive';
 import {Image} from 'primeng/image';
 import {Carousel} from 'primeng/carousel';
-import {EstadoOfertaService} from '@services/estado-oferta.service';
+import {EstadoOfertaService, OfertaEstado} from '@services/estado-oferta.service';
 import {DynamicDialogConfig} from 'primeng/dynamicdialog';
 import {OportunidadLaboral} from '@models/oportunidad-laboral.interface';
 import {CommonModule, CurrencyPipe} from '@angular/common';
@@ -15,6 +15,7 @@ import {TooltipModule} from 'primeng/tooltip';
 import {GeneralComponent} from '@components/general.component';
 import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-detalle-oferta-laboral',
@@ -38,11 +39,13 @@ import {SesionUser} from '@models/sesion-user.interface';
   styleUrl: './detalle-oferta-laboral.component.scss',
   providers: [CurrencyPipe]
 })
-export class DetalleOfertaLaboralComponent extends GeneralComponent implements OnInit {
+export class DetalleOfertaLaboralComponent extends GeneralComponent implements OnInit, OnDestroy {
   valorFavoritos: number = 0;
 
   userService = inject(UserService);
   userData: SesionUser | null = null;
+
+  private estadoSubscription: Subscription = new Subscription();
 
   ofertaSeleccionada: OportunidadLaboral =
     {
@@ -91,6 +94,9 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
   ) {
     super();
   }
+  ngOnDestroy(): void {
+    this.estadoSubscription.unsubscribe();
+  }	
 
   ngOnInit() {
     this.userService.userData$.subscribe(user => this.userData = user);
@@ -145,15 +151,27 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
       rating: 3
     }];
 
-  cambioDatosHeader(step: number): void {
-    const titulo: string = step === 2 ? 'Sedes' : step === 1 ? 'Baja California' : 'Cardiología';
-    const nuevoEstado = {
-      titulo,
-      subTitulo: 'Medicina Familiar',
-      badgeValue: step === 0,
-    };
-    this.estadoOfertaService.actualizarEstado(nuevoEstado);
-  }
+    cambioDatosHeader(step: number): void {
+
+      let cambioEstado: {titulo: string,subTitulo: string,badgeValue: boolean} = {
+        titulo: "",
+        subTitulo: "",
+        badgeValue: false,
+      }
+  
+      const titulos: string[] = [this.ofertaSeleccionada.especialidad!, this.ofertaSeleccionada.ooad!, "Sedes" ]
+      this.estadoSubscription = this.estadoOfertaService.estadoActual$.subscribe(
+        (estado: OfertaEstado) => {
+          cambioEstado = {
+            titulo: titulos[step],
+            subTitulo: estado.subTitulo!,
+            badgeValue: step == 0 ? estado.badgeValue || false : false  
+          }
+        }
+      );
+  
+      this.estadoOfertaService.actualizarEstado(cambioEstado);
+    }
 
   agregarFavorito() {
     this._ConvocatoriaService.agregarFavorito(

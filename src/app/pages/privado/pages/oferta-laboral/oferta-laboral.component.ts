@@ -203,7 +203,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       const [ooad, especialidad, regimen, bono, preguntas] = respuesta_oferta;
 
       this.ooad_tablero = mapearArregloTipoDropdown(ooad.respuesta, 'desOoad', 'cveOoad');
-      this.especialidad_tablero = mapearArregloTipoDropdown(especialidad.respuesta, 'desEspecialidad', 'cveEspecialidad');
+      this.especialidad_tablero = mapearArregloTipoDropdown(especialidad, 'desEspecialidad', 'cveEspecialidad');
       this.regimen_tablero = mapearArregloTipoDropdown(regimen.respuesta, 'regimen');
       this.bono_tablero = mapearArregloTipoDropdown(bono.respuesta, 'bono', 'cveBono');
       this.preguntas_frecuentes.update(pf => preguntas.respuesta);
@@ -238,12 +238,13 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     const regimen = this.formTablero.get('regimen_tablero')?.value;
     const bono = this.formTablero.get('bono_tablero')?.value;
 
+    const bonoParse = bono?.label.replace(/[$,]/g, "") ?? null;
 
     const filtros = {
       "cveEspecialidad": especialidad?.value,
       "cveOoad": ooad?.value ?? null,
-      "cveBono": bono?.label ?? null,
-      "cveRegimen": regimen?.value ?? null,
+      "cveBono": bonoParse,
+      "cveRegimen": regimen?.label ?? null,
       "cveZona": zona?.value ?? null,
       "idUsuario": this.userData?.idUsuario
     }
