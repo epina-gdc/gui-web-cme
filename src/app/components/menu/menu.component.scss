@@ -20,3 +20,15 @@
 .bg-menu-btn {
   background-color: #008f39;
 }
+
+@media (max-width: 767px) {
+    .ajuste-avatar {
+      right: -15%;
+    }
+
+  :host ::ng-deep .ajuste-avatar .p-speeddial-list {
+    position: relative;
+    right: 25%;
+    top: 5px;
+  }
+}
