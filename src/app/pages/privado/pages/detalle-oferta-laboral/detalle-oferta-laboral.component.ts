@@ -40,6 +40,7 @@ import {SesionUser} from '@models/sesion-user.interface';
 })
 export class DetalleOfertaLaboralComponent extends GeneralComponent implements OnInit {
   valorFavoritos: number = 0;
+  cambioFavoritos: boolean = false;
 
   userService = inject(UserService);
   userData: SesionUser | null = null;
@@ -86,8 +87,8 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
   }
 
   constructor(private readonly estadoOfertaService: EstadoOfertaService,
-              private config: DynamicDialogConfig,
-              private currencyPipe: CurrencyPipe
+              private readonly config: DynamicDialogConfig,
+              private readonly currencyPipe: CurrencyPipe
   ) {
     super();
   }
@@ -167,6 +168,7 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
         this._alertServices.alerta("Exito");
         this.ofertaSeleccionada.esFavorita = true;
         this.value = 1;
+        this.cambioFavoritos = true;
         this.obtenerTotalFavoritos()
       }
     });
@@ -183,6 +185,7 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
       next: (respuesta) => {
         this._alertServices.alerta("Exito");
         this.value = 0;
+        this.cambioFavoritos = true;
         this.ofertaSeleccionada.esFavorita = false;
         this.obtenerTotalFavoritos();
       }
