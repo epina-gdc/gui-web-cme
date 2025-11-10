@@ -7,3 +7,11 @@
   top: 90px;
   right: 10px;
 }
+
+@media (max-width: 767px) {
+
+  .menu-nombre-sistema {
+    display: none;
+  }
+
+}

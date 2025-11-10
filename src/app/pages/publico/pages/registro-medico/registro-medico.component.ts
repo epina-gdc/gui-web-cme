@@ -21,6 +21,7 @@ import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.compon
 import {passwordValidator} from '@validators/password-validator';
 import {PATRON_CURP, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_PASAPORTE, PATRON_RFC} from '@utils/regex';
 import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
+import {PrimeTemplate} from 'primeng/api';
 
 @Component({
   selector: 'app-registro-medico',
@@ -33,6 +34,7 @@ import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
     CommonModule,
     BtnRegresarComponent,
     AlphanumericDirective,
+    PrimeTemplate,
   ],
   standalone: true,
   templateUrl: './registro-medico.component.html',

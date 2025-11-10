@@ -53,8 +53,14 @@
   position: absolute;
   top: 100%;
   left: -10px;
-  white-space: nowrap;
   padding-top: 10px;
+}
+
+
+@media screen and (min-width: 768px) {
+  .stepper-label {
+    white-space: nowrap;
+  }
 }
 
 .stepper-line {
