@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, HostListener, inject, OnInit} from '@angular/core';
 import {Avatar} from 'primeng/avatar';
 import {GeneralComponent} from '../general.component';
 import {SesionUser} from '@models/sesion-user.interface';
@@ -20,20 +20,37 @@ export class MenuComponent extends GeneralComponent implements OnInit {
 
   userService = inject(UserService);
   userData: SesionUser | null = null;
-//  authService = inject(AuthService);
+
   items: MenuItem[] = [];
 
+  private readonly MOBILE_BREAKPOINT = 768;
+
+  isMobileView: boolean = false;
 
   ngOnInit() {
+    this.checkScreenSize();
     this.items = [
       {
         label: 'Cerrar sesión',
         icon: 'pi pi-sign-out',
-        command: () => {this.cerrarSesion()},
+        command: () => {
+          this.cerrarSesion()
+        },
       }
     ]
     this.userService.userData$.subscribe(user => this.userData = user);
   }
+
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize(): void {
+    this.isMobileView = window.innerWidth < this.MOBILE_BREAKPOINT;
+  }
+
 
   cerrarSesion() {
     this.authService.cerrarSesion();
