@@ -85,7 +85,7 @@
                         placeholder="Selecciona un bono" class="w-full"/>
             </div>
             <div class="col-4 flex justify-content-start align-items-end">
-              <p-button type="button" label="Consultar" (click)="btnConsultar('btn')"/>
+              <p-button type="button" label="Consultar" (click)="seleccionarPaginacion()"/>
             </div>
           </div>
         </form>
@@ -94,13 +94,16 @@
         <div class="flex flex-wrap">
           <div class="col-4">
             @if (activeTab() === 0) {
-              <kpi-card encabezado="Total de ofertas" [descripcion]="cantidadOfertasLaborales().toString()" icono="cme-deals" bg_color="#9ce2c2"></kpi-card>
+              <kpi-card encabezado="Total de ofertas" [descripcion]="cantidadOfertasLaborales().toString()"
+                        icono="cme-deals" bg_color="#9ce2c2"></kpi-card>
             } @else {
-              <kpi-card encabezado="Total de favoritos" descripcion="4" icono="cme-fav" bg_color="#ffdf7f"></kpi-card>
+              <kpi-card encabezado="Total de favoritos" [descripcion]="cantidadOfertasLaborales().toString()"
+                        icono="cme-fav" bg_color="#ffdf7f"></kpi-card>
             }
           </div>
           <div class="col-4">
-            <kpi-card encabezado="Nuevos hospitales" [descripcion]="cantidadNuevosHospitales().toString()" icono="cme-hospital"
+            <kpi-card encabezado="Nuevos hospitales" [descripcion]="cantidadNuevosHospitalesFiltro().toString()"
+                      icono="cme-hospital"
                       bg_color="#abc8f0"></kpi-card>
           </div>
           <div class="col-4">
@@ -109,14 +112,17 @@
           </div>
         </div>
         @for (registro of registros(); track registro.idPlaza) {
-          <oferta-card [detalleOportunidad]="registro" (abrirDetalleEvent)="show($event)"/>
+          <oferta-card [detalleOportunidad]="registro" (abrirDetalleEvent)="show($event)"
+                       (actualizarTotales)="obtenerTotalFavoritos()"/>
+        }
+        @if (registros().length === 0) {
         }
       </p-card>
 
       @if (totalElementos > 1) {
 
         <div class="card flex justify-content-end">
-          <p-paginator class="paginator-oferta" (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows"
+          <p-paginator class="paginator-oferta" (onPageChange)="cambiarPagina($event)" [first]="first" [rows]="rows"
                        [totalRecords]="totalElementos">
             <ng-template pTemplate="previouspagelinkicon">
               <p-button type="button" icon="pi pi-angle-left" label="Anterior"

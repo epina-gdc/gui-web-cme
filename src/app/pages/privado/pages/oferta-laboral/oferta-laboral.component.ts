@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, inject, input, InputSignal, signal, WritableSignal} from '@angular/core';
+import {Component, OnInit, OnDestroy, inject, signal, WritableSignal} from '@angular/core';
 import {Card} from 'primeng/card';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
@@ -13,18 +13,19 @@ import {FooterMedicoComponent} from '@pages/privado/shared/footer-medico/footer-
 import {
   HeaderMedicoDetalleOfertaComponent
 } from '@pages/privado/shared/header-medico-detalle-oferta/header-medico-detalle-oferta.component';
-import {Paginator} from 'primeng/paginator';
+import {Paginator, PaginatorState} from 'primeng/paginator';
 import {PrimeTemplate} from 'primeng/api';
 import {GeneralComponent} from '@components/general.component';
 import {mapearArregloTipoDropdown} from '@utils/funciones';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription, concatMap, tap} from 'rxjs';
-import {EstadoOfertaService, OfertaEstado} from '@services/estado-oferta.service';
+import {EstadoOfertaService} from '@services/estado-oferta.service';
 
 import {OportunidadLaboral} from '@models/oportunidad-laboral.interface';
 import {PreguntasFrecuentes} from '@models/preguntas-frecuentes.interface';
-import { UserService } from '@services/user.service';
-import { SesionUser } from '@models/sesion-user.interface';
+import {UserService} from '@services/user.service';
+import {SesionUser} from '@models/sesion-user.interface';
+import {TableLazyLoadEvent} from 'primeng/table';
 
 interface PageEvent {
   first: number;
@@ -61,7 +62,6 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
 
   numPaginaActual: number = 0;
   totalElementos: number = 0;
-  paginasTotales: number = 0;
 
   fb: FormBuilder = inject(FormBuilder);
   ref: DynamicDialogRef | undefined;
@@ -71,6 +71,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   registros: WritableSignal<OportunidadLaboral[]> = signal([])
   cantidadOfertasLaborales: WritableSignal<number> = signal(0);
   cantidadNuevosHospitales: WritableSignal<number> = signal(0);
+  cantidadNuevosHospitalesFiltro: WritableSignal<number> = signal(0);
   cantidadSalarioPromedio: WritableSignal<string> = signal("");
 
   formTablero!: FormGroup;
@@ -85,15 +86,17 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   private favoritosSubscription: Subscription = new Subscription();
   private ofertasSubscription: Subscription = new Subscription();
 
+
   constructor(
     public dialogService: DialogService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly estadoOfertaService: EstadoOfertaService,
-    private currencyPipe: CurrencyPipe) {
+    private readonly currencyPipe: CurrencyPipe) {
     super();
     this.formTablero = this.asignarFormTablero();
     this.obtenerCatalogos();
     this.suscribirObservables();
+    this.obtenerTotalesGenerales();
   }
 
   asignarFormTablero(): FormGroup {
@@ -142,6 +145,14 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       window.open(url, '_blank');
       return;
     }
+    if (id === 1) {
+      this.formTablero.reset({});
+      this.consultarFavoritos();
+    }
+    if (id === 0) {
+      this.formTablero.reset({});
+      this.consultarPlazas();
+    }
     this.activeTab.update(() => id);
   }
 
@@ -165,23 +176,37 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     });
   }
 
-  onPageChange(event: any) {
-    this.first = event.first;
-    this.rows = event.rows;
-    this.numPaginaActual = event.page;
-    this.btnConsultar("paginado");
+
+  seleccionarPaginacion(event?: TableLazyLoadEvent): void {
+    if (event) {
+      this.numPaginaActual = Math.floor((event.first ?? 0) / (event.rows ?? 1));
+    }
+    if (this.activeTab() === 0) {
+      this.consultarPlazas();
+    } else {
+      this.consultarFavoritos();
+    }
+  }
+
+  cambiarPagina(event: PaginatorState): void {
+    if (event.page) {
+      this.numPaginaActual = event.page;
+    }
+    if (this.activeTab() === 0) {
+      this.consultarPlazas();
+    } else {
+      this.consultarFavoritos();
+    }
   }
 
   obtenerCatalogos(): void {
     this.activatedRoute.data.subscribe(({respuesta_oferta}) => {
       const [ooad, especialidad, regimen, bono, preguntas] = respuesta_oferta;
 
-      //this.zona_tablero = mapearArregloTipoDropdown(zona.respuesta, 'desTipoDocumentoEspecialidad', 'idTipoDocumentoEspecialidad');
       this.ooad_tablero = mapearArregloTipoDropdown(ooad.respuesta, 'desOoad', 'cveOoad');
       this.especialidad_tablero = mapearArregloTipoDropdown(especialidad.respuesta, 'desEspecialidad', 'cveEspecialidad');
       this.regimen_tablero = mapearArregloTipoDropdown(regimen.respuesta, 'regimen');
       this.bono_tablero = mapearArregloTipoDropdown(bono.respuesta, 'bono', 'cveBono');
-      console.log(preguntas)
       this.preguntas_frecuentes.update(pf => preguntas.respuesta);
     });
   }
@@ -203,7 +228,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     });
   }
 
-  public btnConsultar(referencia: string = "btn") {
+  consultarPlazas(referencia: string = "btn") {
     if (referencia == "btn") {
       this.numPaginaActual = 0;
       this.first = 0;
@@ -230,7 +255,6 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       "sort": 'idPlaza,asc'
     }
 
-
     //Encadenamiento de subscribes
     this._ConvocatoriaService.consultarPlazas(filtros, parameters).pipe(
       tap(ofertas => {
@@ -238,12 +262,12 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
         this.totalElementos = ofertas.page.totalElements;
         this.registros.set(ofertas.content)
       }),
-      concatMap(()=> this._ConvocatoriaService.consultarTotales(
+      concatMap(() => this._ConvocatoriaService.consultarTotales(
         {
           cveEspecialidad: filtros.cveEspecialidad,
           cveOoad: filtros.cveOoad,
           cveBono: filtros.cveBono,
-          regimen: filtros.cveRegimen,
+          cveRegimen: filtros.cveRegimen,
           cveZona: filtros.cveZona
         }
       ))
@@ -259,16 +283,122 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
         ) ?? '';
 
         this.cantidadOfertasLaborales.set(respuesta.respuesta.totalResultados);
-        this.estadoOfertaService.actualizarOfertas(respuesta.respuesta.totalResultados);
-        this.cantidadNuevosHospitales.set(respuesta.respuesta.totalHospitalesNuevos);
+        this.cantidadNuevosHospitalesFiltro.set(respuesta.respuesta.totalHospitalesNuevos);
         this.cantidadSalarioPromedio.set(salarioFormateado);
       }
     });
 
   }
 
+  consultarFavoritos(): void {
+    const filtros = this.generarSolicitudFiltros();
+    const parametros = this.generarSolicitudParametros();
+
+    this._ConvocatoriaService.consultarFavoritos(filtros, parametros).pipe(
+      tap(ofertas => {
+        //settear paginado y oferta-card
+        console.log(ofertas)
+        this.totalElementos = ofertas.page.totalElements;
+        this.registros.set(ofertas.content)
+      }),
+      concatMap(() => this._ConvocatoriaService.consultarTotalesFavoritos(
+        {
+          cveEspecialidad: filtros.cveEspecialidad,
+          cveOoad: filtros.cveOoad,
+          cveBono: filtros.cveBono,
+          cveRegimen: filtros.cveRegimen,
+          cveZona: filtros.cveZona,
+          idUsuario: this.userData?.idUsuario as number
+        }
+      ))
+    ).subscribe({
+      next: (respuesta: any) => {
+
+        const salarioFormateado = this.currencyPipe.transform(
+          respuesta.respuesta.promedioSueldosBrutos,
+          'USD',
+          'symbol',
+          '1.2-2',
+          'en-US'
+        ) ?? '';
+
+        console.log(respuesta.respuesta)
+
+        this.cantidadOfertasLaborales.set(respuesta.respuesta.totalFavoritas);
+        this.cantidadNuevosHospitalesFiltro.set(respuesta.respuesta.totalHospitalesNuevos);
+        this.cantidadSalarioPromedio.set(salarioFormateado);
+      }
+    });
+
+  }
+
+  generarSolicitudFiltros() {
+    const ooad = this.formTablero.get('ooad_tablero')?.value;
+    const zona = this.formTablero.get('zona_tablero')?.value;
+    const especialidad = this.formTablero.get('especialidad_tablero')?.value;
+    const regimen = this.formTablero.get('regimen_tablero')?.value;
+    const bono = this.formTablero.get('bono_tablero')?.value;
+
+    return {
+      cveEspecialidad: especialidad?.value,
+      cveOoad: ooad?.value ?? null,
+      cveBono: bono?.label ?? null,
+      cveRegimen: regimen?.value ?? null,
+      cveZona: zona?.value ?? null,
+      idUsuario: this.userData?.idUsuario
+    }
+  }
+
+  generalSolicitudFiltrosTotales() {
+    return {
+      cveEspecialidad: null,
+      cveOoad: null,
+      cveBono: null,
+      cveRegimen: null,
+      cveZona: null
+    }
+  }
+
+  generarSolicitudFiltrosFavoritosTotales() {
+    return {
+      cveEspecialidad: null,
+      cveOoad: null,
+      cveBono: null,
+      cveRegimen: null,
+      cveZona: null,
+      idUsuario: this.userData?.idUsuario as number
+    }
+  }
+
+  generarSolicitudParametros() {
+    return {
+      page: this.numPaginaActual,
+      size: this.rows,
+      sort: 'idPlaza,asc'
+    }
+  }
+
+  obtenerTotalesGenerales(): void {
+    const solicitud = this.generalSolicitudFiltrosTotales();
+    this._ConvocatoriaService.consultarTotales({...solicitud}).subscribe({
+      next: (respuesta: any) => {
+        this.estadoOfertaService.actualizarOfertas(respuesta.respuesta.totalResultados);
+      }
+    })
+  }
+
+  obtenerTotalFavoritos(): void {
+    const solicitud = this.generarSolicitudFiltrosFavoritosTotales();
+    this._ConvocatoriaService.consultarTotalesFavoritos({...solicitud}).subscribe({
+      next: (respuesta: any) => {
+        this.estadoOfertaService.actualizarFavoritos(respuesta.respuesta.totalFavoritas);
+      }
+    })
+  }
+
   ngOnInit() {
     this.userService.userData$.subscribe(user => this.userData = user);
+    this.obtenerTotalFavoritos();
     this.favoritosSubscription = this.estadoOfertaService.favoritosActuales$.subscribe(
       (numeroFavoritos: number) => {
         const favoritos = this.data[1];
@@ -280,7 +410,6 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       const ofertas = this.data[0];
       ofertas.price = numOfertas;
     }));
-
 
   }
 

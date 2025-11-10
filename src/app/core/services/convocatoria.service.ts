@@ -1,4 +1,4 @@
-import {HttpClient, HttpHeaders,HttpParams} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {environment} from '@env/environment.development';
 import {Observable, throwError} from 'rxjs';
@@ -13,8 +13,8 @@ import {AlertService} from './alert.service';
 import {dataGenerales, DatosGeneralesRequest} from '@models/datosGenerales';
 import {ResponseGeneral} from '@models/responseGeneral';
 import {SolicitudGuardarDocumentacion} from '@models/solicitud-guardar-documentacion.interface';
-import { FiltrosPLazaInterface } from '@models/filtros-plaza.interface';
-import { HttpRespuesta } from '@models/http-respuesta.interface';
+import {FiltrosPLazaInterface} from '@models/filtros-plaza.interface';
+import {HttpRespuesta} from '@models/http-respuesta.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -249,16 +249,16 @@ export class ConvocatoriaService {
 
   consultarPlazas(filtros: any, parameters: any): Observable<any> {
 
-    const {page,size,sort} = parameters;
+    const {page, size, sort} = parameters;
 
     let parametros = new HttpParams();
     parametros = parametros.set('page', page);
-    parametros = parametros.set('size',size);
+    parametros = parametros.set('size', size);
     parametros = parametros.set('sort', sort);
 
 
     const ruta = `${this.serverEndPointURLConvocatoria}/plazas/consultar`;
-    return this.http.post<any>(ruta, filtros,{headers: this.header, params: parametros}).pipe(
+    return this.http.post<any>(ruta, filtros, {headers: this.header, params: parametros}).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response
@@ -271,10 +271,10 @@ export class ConvocatoriaService {
       cveEspecialidad: string | null,
       cveOoad: string | null,
       cveBono: string | null,
-      regimen: string | null,
+      cveRegimen: string | null,
       cveZona: string | null
     }
-  ): Observable<HttpRespuesta<any>>{
+  ): Observable<HttpRespuesta<any>> {
 
     return this.http.post<HttpRespuesta<any>>(`${this.serverEndPointURLConvocatoria}/plazas/consultar/totales`, filtros).pipe(
       catchError(this.handleError),
@@ -282,7 +282,25 @@ export class ConvocatoriaService {
         return response
       }),
     )
+  }
 
+  consultarTotalesFavoritos(
+    filtros: {
+      cveEspecialidad: string | null,
+      cveOoad: string | null,
+      cveBono: string | null,
+      cveRegimen: string | null,
+      cveZona: string | null,
+      idUsuario: number
+    }
+  ): Observable<HttpRespuesta<any>> {
+
+    return this.http.post<HttpRespuesta<any>>(`${this.serverEndPointURLConvocatoria}/plazas-favoritas/consultar/totales`, filtros).pipe(
+      catchError(this.handleError),
+      map((response: any) => {
+        return response
+      }),
+    )
   }
 
   agregarFavorito(
@@ -293,6 +311,26 @@ export class ConvocatoriaService {
     }
   ): Observable<HttpRespuesta<any>> {
     return this.http.post<HttpRespuesta<any>>(`${this.serverEndPointURLConvocatoria}/plazas-favoritas/guardar`, datosPlaza).pipe(
+      catchError(this.handleError),
+      map((response: any) => {
+        return response
+      }),
+    )
+  }
+
+
+  consultarFavoritos(filtros: any, parameters: any): Observable<any> {
+
+    const {page, size, sort} = parameters;
+
+    let parametros = new HttpParams();
+    parametros = parametros.set('page', page);
+    parametros = parametros.set('size', size);
+    parametros = parametros.set('sort', sort);
+
+
+    const ruta = `${this.serverEndPointURLConvocatoria}/plazas-favoritas/consultar`;
+    return this.http.post<any>(ruta, filtros, {headers: this.header, params: parametros}).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response

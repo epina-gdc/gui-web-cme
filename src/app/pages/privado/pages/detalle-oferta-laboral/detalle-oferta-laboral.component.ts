@@ -8,14 +8,13 @@ import {SplitByWidthDirective} from '@directives/split-by-width.directive';
 import {Image} from 'primeng/image';
 import {Carousel} from 'primeng/carousel';
 import {EstadoOfertaService} from '@services/estado-oferta.service';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
-import { OfertaLaboralComponent } from '../oferta-laboral/oferta-laboral.component';
-import { OportunidadLaboral } from '@models/oportunidad-laboral.interface';
-import { CommonModule, CurrencyPipe } from '@angular/common';
-import { TooltipModule } from 'primeng/tooltip';
-import { GeneralComponent } from '@components/general.component';
-import { UserService } from '@services/user.service';
-import { SesionUser } from '@models/sesion-user.interface';
+import {DynamicDialogConfig} from 'primeng/dynamicdialog';
+import {OportunidadLaboral} from '@models/oportunidad-laboral.interface';
+import {CommonModule, CurrencyPipe} from '@angular/common';
+import {TooltipModule} from 'primeng/tooltip';
+import {GeneralComponent} from '@components/general.component';
+import {UserService} from '@services/user.service';
+import {SesionUser} from '@models/sesion-user.interface';
 
 @Component({
   selector: 'app-detalle-oferta-laboral',
@@ -40,42 +39,44 @@ import { SesionUser } from '@models/sesion-user.interface';
   providers: [CurrencyPipe]
 })
 export class DetalleOfertaLaboralComponent extends GeneralComponent implements OnInit {
+  valorFavoritos: number = 0;
 
   userService = inject(UserService);
   userData: SesionUser | null = null;
 
   ofertaSeleccionada: OportunidadLaboral =
-  {
-    idPlaza: 0,
-    cveOoad: null,
-    cvePuesto: null,
-    cveUnidad: null,
-    porcAltoCostoVida: null,
-    especialidad: null,
-    categoria: null,
-    regimen: null,
-    turno: null,
-    tipoPlaza: null,
-    marcaOcupacion: null,
-    umf: null,
-    nuevoHospital: null,
-    ubicacion: null,
-    zona: null,
-    direccion: null,
-    sueldoMensualBruto: null,
-    sueldoMensualNeto: null,
-    horario: null,
-    numPlaza: null,
-    clasificacion: null,
-    ooad: null,
-    creditos: null,
-    bonoDificilCobertura: null,
-    accesoCredito: null,
-    creditoAutomotriz: null,
-    descuentoQuincenalCreditoAutomotriz: null,
-    creditoHipotecario: null,
-    descuentoQuincenalCreditoHipotecario: null,
-  };
+    {
+      esFavorita: false,
+      idPlaza: 0,
+      cveOoad: null,
+      cvePuesto: null,
+      cveUnidad: null,
+      porcAltoCostoVida: null,
+      especialidad: null,
+      categoria: null,
+      regimen: null,
+      turno: null,
+      tipoPlaza: null,
+      marcaOcupacion: null,
+      umf: null,
+      nuevoHospital: null,
+      ubicacion: null,
+      zona: null,
+      direccion: null,
+      sueldoMensualBruto: null,
+      sueldoMensualNeto: null,
+      horario: null,
+      numPlaza: null,
+      clasificacion: null,
+      ooad: null,
+      creditos: null,
+      bonoDificilCobertura: null,
+      accesoCredito: null,
+      creditoAutomotriz: null,
+      descuentoQuincenalCreditoAutomotriz: null,
+      creditoHipotecario: null,
+      descuentoQuincenalCreditoHipotecario: null
+    };
 
   tooltipOptions = {
     showDelay: 150,
@@ -85,8 +86,8 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
   }
 
   constructor(private readonly estadoOfertaService: EstadoOfertaService,
-    private config: DynamicDialogConfig,
-    private currencyPipe: CurrencyPipe
+              private config: DynamicDialogConfig,
+              private currencyPipe: CurrencyPipe
   ) {
     super();
   }
@@ -99,12 +100,11 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
     const nuevoEstado = {
       titulo: this.ofertaSeleccionada.especialidad,
       subTitulo: this.ofertaSeleccionada.categoria,
-      badgeValue: this.ofertaSeleccionada.nuevoHospital == 1,
+      badgeValue: this.ofertaSeleccionada.nuevoHospital === 1,
     };
     this.estadoOfertaService.actualizarEstado(nuevoEstado);
-
+    this.value = this.ofertaSeleccionada.esFavorita ? 1 : 0;
   }
-
 
 
   value: any;
@@ -155,7 +155,7 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
     this.estadoOfertaService.actualizarEstado(nuevoEstado);
   }
 
-  agregarFavorito(){
+  agregarFavorito() {
     this._ConvocatoriaService.agregarFavorito(
       {
         idUsuario: this.userData!.idUsuario,
@@ -163,13 +163,34 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
         esFavorita: true
       }
     ).subscribe({
-      next: elemento => {
+      next: (respuesta) => {
         this._alertServices.alerta("Exito");
+        this.ofertaSeleccionada.esFavorita = true;
+        this.value = 1;
+        this.obtenerTotalFavoritos()
       }
-    })
+    });
   }
 
-  infoTexto(credito: any){
+  eliminarFavorito() {
+    this._ConvocatoriaService.agregarFavorito(
+      {
+        idUsuario: this.userData!.idUsuario,
+        idPlaza: this.ofertaSeleccionada.idPlaza,
+        esFavorita: false
+      }
+    ).subscribe({
+      next: (respuesta) => {
+        this._alertServices.alerta("Exito");
+        this.value = 0;
+        this.ofertaSeleccionada.esFavorita = false;
+        this.obtenerTotalFavoritos();
+      }
+    });
+  }
+
+
+  infoTexto(credito: any) {
     const creditoFormateado = this.currencyPipe.transform(
       credito,
       'USD',
@@ -178,5 +199,26 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
       'en-US'
     ) ?? '';
     return `El importe máximo del descuento quincenal es de hasta ${creditoFormateado} pesos`
+  }
+
+  obtenerTotalFavoritos(): void {
+    const solicitud = this.generarSolicitudFiltrosFavoritosTotales();
+    this._ConvocatoriaService.consultarTotalesFavoritos({...solicitud}).subscribe({
+      next: (respuesta: any) => {
+        this.estadoOfertaService.actualizarFavoritos(respuesta.respuesta.totalFavoritas);
+      }
+    })
+  }
+
+
+  generarSolicitudFiltrosFavoritosTotales() {
+    return {
+      cveEspecialidad: null,
+      cveOoad: null,
+      cveBono: null,
+      cveRegimen: null,
+      cveZona: null,
+      idUsuario: this.userData?.idUsuario as number
+    }
   }
 }
