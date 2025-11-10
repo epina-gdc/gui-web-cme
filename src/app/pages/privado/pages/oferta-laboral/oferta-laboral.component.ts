@@ -172,7 +172,6 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
         header: HeaderMedicoDetalleOfertaComponent
       },
       styleClass: 'oferta-detail'
-
     });
   }
 

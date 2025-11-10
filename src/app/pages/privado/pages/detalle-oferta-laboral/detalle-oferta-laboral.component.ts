@@ -86,8 +86,8 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
   }
 
   constructor(private readonly estadoOfertaService: EstadoOfertaService,
-              private config: DynamicDialogConfig,
-              private currencyPipe: CurrencyPipe
+              private readonly config: DynamicDialogConfig,
+              private readonly currencyPipe: CurrencyPipe
   ) {
     super();
   }
