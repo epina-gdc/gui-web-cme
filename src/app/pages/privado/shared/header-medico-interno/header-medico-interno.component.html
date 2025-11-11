@@ -7,11 +7,11 @@
       </span>
   </article>
   <article class="flex flex-row flex-wrap">
-    <div class="justify-content-start lg:flex ml-3 lg:ml-0">
+    <div class="justify-content-start md:flex ml-3 md:ml-0">
       <icon-card class="icono-header" iconClass="cme-user" cardColor="#bd9b3b" bgColor="#fede82"
                  [leftBorderRound]="true"></icon-card>
-      <div class="flex justify-content-between">
-        <div class="flex flex-column justify-content-center mr-0 lg:mr-5">
+      <div class="flex justify-content-between align-items-start">
+        <div class="flex flex-column justify-content-center mr-0 md:mr-5">
           @if (userData()?.cveMatricula) {
             <p class="m-2 label-campo">Matrícula</p>
             <strong class="m-2 texto-campo">{{ userData()?.cveMatricula }}</strong>
@@ -20,10 +20,10 @@
             <strong class="m-2 texto-campo">{{ userData()?.refFolio }}</strong>
           }
         </div>
-        <div class="flex flex-column justify-content-center mr-0 lg:mr-5">
+        <div class="flex flex-column justify-content-center mr-0 md:mr-5">
           @if (userData()?.refCurp) {
             <p class="m-2 label-campo">CURP</p>
-            <strong class="m-2 texto-campo">{{ userData()?.refCurp }}</strong>
+            <strong class="m-2 texto-campo text-curp">{{ userData()?.refCurp }}</strong>
           }
         </div>
       </div>
