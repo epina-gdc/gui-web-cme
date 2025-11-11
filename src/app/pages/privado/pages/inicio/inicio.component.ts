@@ -956,10 +956,18 @@ export class InicioComponent extends GeneralComponent {
     this._ConvocatoriaService.guardarDatosGenerales(datos).subscribe({
       next: (data: ResponseGeneral) => {
         if (data.exito) {
-          this.indice.update((value: number) => value + 1);
-          return this._alertServices.exito(data.mensaje)
+          //this.indice.update((value: number) => value + 1);
+          //return this._alertServices.exito(data.mensaje)
+
+          this._alertServices.exito(data.mensaje);
+          setTimeout(() => {
+            this.indice.update((value: number) => value + 1);
+          }, 500);
+        } else
+        {
+            return this._alertServices.error(data.mensaje)
         }
-        return this._alertServices.error(data.mensaje)
+
       },
       error: (err: ResponseGeneral) => {
         this._alertServices.error(err.mensaje);
