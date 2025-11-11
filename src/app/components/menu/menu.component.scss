@@ -5,15 +5,17 @@
 
 .ajuste-avatar {
   top: 90px;
-  right: 10px;
+  right: 3%;
 }
 
-@media (max-width: 767px) {
+:host ::ng-deep .p-speeddial {
+  max-width: 50px;
+}
 
-  .menu-nombre-sistema {
-    display: none;
-  }
-
+:host ::ng-deep .ajuste-avatar .p-speeddial-list {
+  position: relative;
+  right: 120%;
+  top: 5px;
 }
 
 
@@ -22,13 +24,37 @@
 }
 
 @media (max-width: 767px) {
-    .ajuste-avatar {
-      right: -15%;
-    }
+  .menu-nombre-sistema {
+    display: none;
+  }
 
-  :host ::ng-deep .ajuste-avatar .p-speeddial-list {
-    position: relative;
-    right: 25%;
-    top: 5px;
+  .ajuste-avatar {
+    right: 8%;
   }
 }
+
+@media (max-width: 540px) {
+
+  .ajuste-avatar {
+    right: 11%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 890px) {
+  .ajuste-avatar {
+    right: 5.5%;
+  }
+}
+
+@media (min-width: 891px) and (max-width: 991px) {
+  .ajuste-avatar {
+    right: 5%;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .ajuste-avatar {
+    right: 4%;
+  }
+}
+
