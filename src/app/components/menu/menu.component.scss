@@ -18,28 +18,37 @@
   top: 5px;
 }
 
-@media (max-width: 767px) {
-
-  .menu-nombre-sistema {
-    display: none;
-  }
-
-}
-
 
 .bg-menu-btn {
   background-color: #008f39;
 }
 
 @media (max-width: 767px) {
+  .menu-nombre-sistema {
+    display: none;
+  }
+
+  .ajuste-avatar {
+    right: 8%;
+  }
+}
+
+@media (max-width: 540px) {
+
   .ajuste-avatar {
     right: 11%;
   }
 }
 
-@media (min-width: 768px) and (max-width: 991px) {
+@media (min-width: 768px) and (max-width: 890px) {
   .ajuste-avatar {
-    right: 6%;
+    right: 5.5%;
+  }
+}
+
+@media (min-width: 891px) and (max-width: 991px) {
+  .ajuste-avatar {
+    right: 5%;
   }
 }
 
