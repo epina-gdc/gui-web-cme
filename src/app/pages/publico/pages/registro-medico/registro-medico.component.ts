@@ -399,7 +399,8 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
       idPerfil: this.medico.perfil.idPerfil
     }
 
-    this._RegistroMedicoService.getDatosByCurp(datos).subscribe((response: any) => {
+    this._RegistroMedicoService.getDatosByCurp(datos).subscribe({
+      next: (response: any) => {
       if (!response.exito) {
         this.usuarioValidado = false;
         // this.limpiarMatricula();
@@ -423,7 +424,29 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
         this.dinamicoCurp();
         this.asignarDatos();
       }
+    },
+      error: (err: HttpErrorResponse) => {
+        const statusCode = err.status;
+          let messageToDisplay: string;
 
+          if (statusCode === 0) {
+            // Es un error de red (como un 504 timeout o desconexión).
+            messageToDisplay = 'Error de conexión. El servidor no respondió a tiempo. Intente de nuevo más tarde.';
+
+            // Opcional: Puedes ver en la consola si hay detalles en err.error
+            console.error('Error de red detectado. Cuerpo de error:', err.error);
+
+          } else if (statusCode >= 400 && statusCode < 600) {
+            // Es un error HTTP estándar (4xx, 5xx), pero con cuerpo de respuesta.
+            // Intenta extraer un mensaje del cuerpo, si lo hay.
+            messageToDisplay = err.error?.message || `Error del servidor (Código ${statusCode}).`;
+          } else {
+            // Cualquier otro caso.
+            messageToDisplay = 'Ocurrió un error desconocido.';
+          }
+
+          this._alertServices.error(messageToDisplay);
+          }
 
     });
 
@@ -683,15 +706,16 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
   }
 
-  private validarMatricula() {
-
+private validarMatricula() {
+    debugger
     let datos = {
       matricula: this.medico.cveMatricula,
       idPerfil: this.medico.perfil.idPerfil
 
     }
 
-    this._RegistroMedicoService.getDatosByMatricula(datos).subscribe((response: any) => {
+    this._RegistroMedicoService.getDatosByMatricula(datos).subscribe({
+      next: (response: any) => {
       if (!response.exito) {
         this.usuarioValidado = false;
         this.limpiarMatricula();
@@ -717,9 +741,30 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
         this.activarCampos(this.medico.blnInterno);
         this.dinamicoCurp();
         this.asignarDatos();
-      }
-    });
+      }},
+      error: (err: HttpErrorResponse) => {
+        const statusCode = err.status;
+          let messageToDisplay: string;
 
+          if (statusCode === 0) {
+            // Es un error de red (como un 504 timeout o desconexión).
+            messageToDisplay = 'Error de conexión. El servidor no respondió a tiempo. Intente de nuevo más tarde.';
+
+            // Opcional: Puedes ver en la consola si hay detalles en err.error
+            console.error('Error de red detectado. Cuerpo de error:', err.error);
+
+          } else if (statusCode >= 400 && statusCode < 600) {
+            // Es un error HTTP estándar (4xx, 5xx), pero con cuerpo de respuesta.
+            // Intenta extraer un mensaje del cuerpo, si lo hay.
+            messageToDisplay = err.error?.message || `Error del servidor (Código ${statusCode}).`;
+          } else {
+            // Cualquier otro caso.
+            messageToDisplay = 'Ocurrió un error desconocido.';
+          }
+
+          this._alertServices.error(messageToDisplay);
+          }
+        });
 
   }
 
