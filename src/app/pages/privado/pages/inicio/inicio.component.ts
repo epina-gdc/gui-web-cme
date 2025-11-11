@@ -328,7 +328,7 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.get('correo')?.setValue(refEmail + '');
     this.userService.userData$.subscribe({
       next: (element) => {
-        if (!element.perfil) return;
+        if (!element) return;
         this.tipoMedico.set(element.perfil)
       }
     })
