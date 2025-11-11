@@ -21,17 +21,20 @@
   </symbol>
 </svg>
 
-<div class="d-flex flex-column w-100 position-absolute justify-content-center align-items-center">
+<div class="alert-fixed-container d-flex flex-column w-100 justify-content-center align-items-center">
   @for (alert of alerts; track alert) {
-    <div class="{{cssClass(alert)}} col-md-11  d-flex align-items-center justify-content-between align-items-center"
+    <div class="{{cssClass(alert)}} col-md-11 d-flex align-items-start justify-content-between" 
          role="alert">
-      <svg class="" role="img" aria-label="Info:">
+      
+      <svg role="img" aria-label="Info:">
         <use attr.xlink:href="{{cssIcon(alert)}}"/>
       </svg>
-      <div class="d-flex flex-column  align-items-center ps-2 pe-2">
+      
+      <div class="message-content d-flex flex-column ps-2 pe-2">
         <span class="fw-400" [innerHTML]="alert.message"></span>
       </div>
-      <div class="">
+      
+      <div class="btn-close-container">
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
                 (click)="removeAlert(alert)">
         </button>
