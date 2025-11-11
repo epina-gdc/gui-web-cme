@@ -34,6 +34,7 @@
   font-style: normal;
   font-weight: 600;
   line-height: 100%; /* 12px */
+  text-align: start;
 }
 
 .login-hipervinculo {
@@ -373,3 +374,11 @@
     max-width: fit-content;
   }
 }
+
+@media screen and (max-width: 350px) {
+  .titulo-tab {
+    font-size: 12px;
+    width: 140px;
+  }
+}
+
