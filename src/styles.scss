@@ -295,4 +295,12 @@
     transform: translateX(-50%);
     z-index: 1000;
   }
+
+  @media screen and (max-width: 350px) {
+    .w-tab {
+      width: 250px;
+    }
+  }
+
+
 }
