@@ -233,7 +233,7 @@ export class InicioComponent extends GeneralComponent {
     return this.fb.group({
       rfc: [{value: ''} , [Validators.required, Validators.minLength(13), Validators.maxLength(13), Validators.pattern(PATRON_RFC)]],
       nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
-      fechaNacimiento: [{value: ''}, [Validators.required]],
+      fechaNacimiento: [null, [Validators.required]],
       sexo: [{value: ''}, [Validators.required]],
       estadoCivil: [{value: '', disabled: false}, [Validators.required]],
       //dependientes: [],
