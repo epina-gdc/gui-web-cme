@@ -21,8 +21,11 @@ export class StepsComponent implements OnInit {
 
   isMobileView: boolean = false;
 
-  ngOnInit() {
+  constructor() {
     this.checkScreenSize();
+  }
+
+  ngOnInit() {
   }
 
   @HostListener('window:resize', ['$event'])
