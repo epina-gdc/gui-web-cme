@@ -27,7 +27,12 @@
                   <p class="font-bold text-lg mb-0">
                     {{ userData?.nomNombre }} {{ userData?.nomApellidoPaterno }} {{ userData?.nomApellidoMaterno }}
                   </p>
-                  <small>Matrícula: {{ userData?.cveMatricula }}</small>
+                  @if (userData?.cveMatricula) {
+                    <small>Matrícula: {{ userData?.cveMatricula }}</small>
+                  }
+                  @if (userData?.refFolio) {
+                    <small>Folio: {{ userData?.refFolio }}</small>
+                  }
                 </div>
               </div>
               <i class="pi pi-times cursor-pointer" style="font-size: 1.2rem;"
