@@ -45,7 +45,7 @@
   <ng-template #caption>
     <div class="flex justify-content-between seccion-titulo">
       <span class="titulo-tabla">Verificación de Documentos</span>
-      <div class="flex align-items-center boton-descargar">
+      <div style="cursor: pointer" class="flex align-items-center boton-descargar" (click)="descargarExcelHistoricoDocs()">
         <i class="cme-download" [style]="{ 'font-size': '1.8rem', color: '#018699'}"></i>
         <span class="ms-2 font-medium">Exportar datos</span>
       </div>
@@ -133,6 +133,11 @@
          (click)="irDetalleDocumentacion(documentoSeleccionado)">
       <i class="icon pi pi-eye" [style]="{ 'font-size': '1.2rem', color: '#a9c9f8'}"></i>
       <span class="ms-2 acciones-tabla">Consultar documentos</span>
+    </div>
+    <div class="flex align-items-center boton-descargar cursor-pointer"
+         (click)="imprimirDocumento(documentoSeleccionado)" *ngIf="documentoSeleccionado && (documentoSeleccionado.idEstatusValidacion === 3 || documentoSeleccionado.idEstatusValidacion === 4)">
+      <i class="icon pi pi-print" [style]="{ 'font-size': '1.2rem', color: '#a9c9f8'}"></i>
+      <span class="ms-2 acciones-tabla">Imprimir documentos</span>
     </div>
   </ng-template>
 </p-popover>

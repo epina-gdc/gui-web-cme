@@ -19,6 +19,11 @@ import { VerificacionDocsService } from '@services/verificacion-docs.service';
 import { VerificacionDocsInterface } from '@models/verificacion-docs.interface';
 import { HttpRespuesta } from '@models/http-respuesta.interface';
 import { TablaVerificacionDocsInterface } from '@models/tabla-verificacion-docs.interface';
+import { VerificacionDocsExcelInterface } from '@models/verificacion-docs-excel.interface';
+import { saveAs } from 'file-saver';
+import { DictamenRespuesta } from '@models/dictamen-respuesta.interface';
+import { AdjuntoOpinion, OpinionTecnicaRespuesta } from '@models/opnion-tecnia-respuesta.interface';
+
 
 @Component({
   selector: 'app-verificacion-documentos',
@@ -129,10 +134,42 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
     })
   }
 
+  descargarExcelHistoricoDocs(){
+    this.verificacionDocsService.descargaExcelHistoricoDocs(this.filtrosExcel()).subscribe({
+      
+      // La respuesta (excelBlob) es ahora el archivo binario (Blob)
+      next: (excelBlob: Blob) => {
+        
+        const nombreArchivo = 'DATOS_VERIFICACION_DOCUMENTOS.xlsx'; 
+        
+        // 1. Usar el Blob directamente para la descarga (¡Adiós Base64 y atob!)
+        saveAs(excelBlob, nombreArchivo); 
+
+        // Las siguientes líneas ya no son relevantes ya que el servicio solo descarga el Excel.
+        // this.usuarioDocumentos.set(...); 
+        // this.totalElementos = ...;
+      },
+      error: (error) => {
+        console.error('Error al descargar el Excel:', error);
+        // ...
+      }
+    });
+}
+
+
   filtros(): VerificacionDocsInterface{
     return {
       page: this.paginaActual,
       size: this.rows,
+      idEstatus: (this.filtroForm.get('estatus')?.value)?.value,
+      cveEspecialidad: (this.filtroForm.get('especialidad')?.value)?.value,
+      matriculaFolio: this.filtroForm.get('matricula')?.value,
+
+    }
+  }
+
+  filtrosExcel(): VerificacionDocsExcelInterface{
+    return {
       idEstatus: (this.filtroForm.get('estatus')?.value)?.value,
       cveEspecialidad: (this.filtroForm.get('especialidad')?.value)?.value,
       matriculaFolio: this.filtroForm.get('matricula')?.value,
@@ -154,6 +191,142 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
       }
   }
   }
+
+  imprimirDocumento(usuario :TablaVerificacionDocsInterface){
+
+    if(usuario.idTipoConvocatoria==1){
+     this.descargaDictamen(usuario.idUsuario);
+    }
+    else{
+      this.descargaOpinion(usuario.idUsuario);
+    }
+  }
+
+
+
+descargaOpinion(idUsuario: number) {
+    this.verificacionDocsService.descargarOpinion(idUsuario).subscribe({
+        next: (respuesta: OpinionTecnicaRespuesta) => {
+            
+            // 1. Validar la respuesta exitosa y que el arreglo no esté vacío
+            if (respuesta.exito && respuesta.respuesta && respuesta.respuesta.length > 0) {
+                
+                // 2. Iterar sobre cada adjunto en el arreglo 'respuesta'
+                respuesta.respuesta.forEach((adjunto: AdjuntoOpinion) => {
+                    
+                    if (adjunto.adjuntoBase64) {
+                        
+                        const base64Data = adjunto.adjuntoBase64;
+                        const contentType = 'application/pdf'; 
+
+                        
+                        const pdfBlob = this.b64toBlob(base64Data, contentType);
+
+                        
+                        const pdfUrl = URL.createObjectURL(pdfBlob);
+
+                        // 5. Abrir la URL en una nueva ventana/pestaña
+                        // Nota: El navegador puede bloquear la apertura de múltiples ventanas si no es en respuesta directa a una acción del usuario.
+                        window.open(pdfUrl, '_blank');
+                        
+                        
+                    }
+                });
+
+            } else {
+                // Manejar el caso donde 'exito' es false o no hay adjuntos
+                const mensaje = respuesta.mensaje || 'No se encontraron opiniones técnicas para descargar.';
+                console.error('Error o falta de datos:', mensaje);
+                // Mostrar notificación al usuario.
+            }
+        },
+        error: (error) => {
+            // Manejar errores de conexión o HTTP
+            console.error('Error de conexión o HTTP al obtener las opiniones:', error);
+        }
+    });
+}
+
+   descargaDictamen(idUsuario: number) {
+    this.verificacionDocsService.descargarDictamen(idUsuario).subscribe({
+        next: (respuesta: DictamenRespuesta) => {
+            
+            
+            if (respuesta.exito) {
+                
+                const adjunto = respuesta.respuesta;
+                
+                if (adjunto && adjunto.adjuntoBase64) {
+                    
+                    const base64Data = adjunto.adjuntoBase64;
+                    const nombreArchivo = adjunto.nombreAdjunto || 'dictamen.pdf';
+                    const contentType = 'application/pdf'; 
+
+                    
+                    const pdfBlob = this.b64toBlob(base64Data, contentType);
+
+                    
+                    const pdfUrl = URL.createObjectURL(pdfBlob);
+
+                    
+                    window.open(pdfUrl, '_blank');
+                    
+                    
+
+                } else {
+                    console.error('Error: El JSON es exitoso pero falta el Base64 del PDF.');
+                    
+                }
+
+            } else {
+                // El backend indicó que la operación falló (exito: false)
+                console.error('Error del servicio:', respuesta.mensaje);
+                // Mostrar notificación al usuario con el mensaje del backend
+            }
+        },
+        error: (error) => {
+            // Manejar errores de conexión o HTTP
+            console.error('Error de conexión o HTTP al obtener el dictamen:', error);
+            // Mostrar notificación de error genérico.
+        }
+    });
+}
+
+private b64toBlob(b64Data: string, contentType: string = '', sliceSize: number = 512): Blob {
+    
+    // 1. Limpieza y manejo del prefijo
+    let base64 = b64Data.split(',')[1] ? b64Data.split(',')[1] : b64Data;
+    
+    // 2. LIMPIEZA AGRESIVA: 
+    // Eliminar CUALQUIER carácter que NO sea una letra/número válido para Base64, 
+    // incluyendo espacios, saltos de línea, y caracteres de control.
+    // Base64 válido solo incluye A-Z, a-z, 0-9, +, / y = (relleno).
+    base64 = base64.replace(/[^A-Za-z0-9+/=]/g, ''); 
+    
+    // 3. Decodificar el Base64
+    try {
+        const byteCharacters = atob(base64);
+        
+        const byteArrays: Uint8Array[] = []; 
+        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+            const slice = byteCharacters.slice(offset, offset + sliceSize);
+            const byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            byteArrays.push(byteArray);
+        }
+        
+        return new Blob(byteArrays as BlobPart[], { type: contentType }); 
+
+    } catch (e) {
+        // Si incluso después de la limpieza falla, la respuesta NO es Base64.
+        console.error("Error crítico: La respuesta HTTP no es un Base64 válido.", e);
+        // Lanza un error genérico o notifica al usuario.
+        throw new Error("El string Base64 no es válido o contiene caracteres ilegales.");
+    }
+}
 
   hidePopover() {
     this.op.hide();
