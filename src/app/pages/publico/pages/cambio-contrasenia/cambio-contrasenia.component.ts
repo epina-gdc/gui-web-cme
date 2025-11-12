@@ -62,7 +62,14 @@ export class CambioContraseniaComponent {
     const solicitud: CambioContrasenia = this.crearSolicitudCambioPass();
     const token = this.route.snapshot.queryParams['token'];
     this.authService.cambiarPass(solicitud, token).subscribe({
-        next: () => this.manejarCambioPassCorrecto(),
+        next: (response) => {
+          if(response.exito){
+              this.manejarCambioPassCorrecto()
+          } else {
+            this.alertaService.error(response.mensaje)
+          }
+
+        },
         error: (error) => {
           console.log(error);
           this.manejarValidarCodigoError(error.error)
