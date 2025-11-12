@@ -12,7 +12,11 @@
       </div>
       @if (isMobileView) {
         <div class="flex justify-content-start mb-3 seccion-nombre">
-          <span class="titulo-nombre-aspirante">{{ datosPersonales.nombreCompleto | titlecase }}</span>
+          <div class="flex flex-column align-content-start">
+            <span class="titulo-nombre-aspirante">{{ datosPersonales.nombre | titlecase }}</span>
+            <span
+              class="apellidos-aspirante">{{ datosPersonales.apellidoPaterno | titlecase }} {{ datosPersonales.apellidoMaterno }}</span>
+          </div>
           @if (!evaluacion || evaluacion.estatusVerificacion.idEstatusVerificacion === 4) {
             <app-pill [texto]="'No cumple con requisitos'" [pillType]="0"/>
           } @else {
@@ -26,7 +30,9 @@
     <div class="flex-column lg:ml-5 lg:w-9">
       @if (!isMobileView) {
         <div class="flex justify-content-between align-items-center mb-3 seccion-nombre">
-          <span class="titulo-nombre-aspirante">{{ datosPersonales.nombreCompleto | titlecase }}</span>
+          <span
+            class="titulo-nombre-aspirante">{{ datosPersonales.nombre | titlecase }} {{ datosPersonales.apellidoPaterno | titlecase }}
+            {{ datosPersonales.apellidoMaterno | titlecase }}</span>
           @if (!evaluacion || evaluacion.estatusVerificacion.idEstatusVerificacion === 4) {
             <app-pill [texto]="'No cumple con requisitos'" [pillType]="0"/>
           } @else {
