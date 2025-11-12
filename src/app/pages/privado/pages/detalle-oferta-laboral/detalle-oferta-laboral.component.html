@@ -153,8 +153,14 @@
                   <div class="col-6 flex justify-content-start p-0">
                     <p class="card-compensacion-seccion">Monto máx {{ ofertaSeleccionada.creditoAutomotriz }}
                       @if (ofertaSeleccionada.creditoAutomotriz) {
-                        <i class="pi pi-question-circle ms-2" style=" font-size: 1rem;" tooltipPosition="top"
-                           [pTooltip]="infoTexto(ofertaSeleccionada.descuentoQuincenalCreditoAutomotriz)"></i>
+                        <i class="pi pi-question-circle ms-2" style=" font-size: 1rem;" tooltipPosition="top" [pTooltip]="tooltipContent"></i>
+                        <ng-template #tooltipContent>
+                          <div class="flex items-center info-monto">
+                            {{infoTexto(ofertaSeleccionada.descuentoQuincenalCreditoAutomotriz)}}
+                          </div>
+                        </ng-template>
+
+
                       }
                     </p>
                   </div>
@@ -167,7 +173,12 @@
                     <p class="card-compensacion-seccion">Monto máx  {{ ofertaSeleccionada.creditoHipotecario }}
                       @if (ofertaSeleccionada.creditoHipotecario) {
                         <i class="pi pi-question-circle ms-2" style=" font-size: 1rem;" tooltipPosition="top"
-                           [pTooltip]="infoTexto(ofertaSeleccionada.descuentoQuincenalCreditoHipotecario)"></i>
+                           [pTooltip]="tooltipCredHipo"></i>
+                           <ng-template #tooltipCredHipo>
+                            <div class="flex items-center info-monto">
+                              {{infoTexto(ofertaSeleccionada.descuentoQuincenalCreditoHipotecario)}}
+                            </div>
+                          </ng-template>
                       }
                     </p>
                   </div>
@@ -199,12 +210,13 @@
             [numVisible]="1"
             [numScroll]="1">
             <ng-template let-product #item>
-              <div class="rounded">
+              <div class="flex rounded justify-content-end">
                 <div class="relative mx-auto">
                   <p-image
                     [src]="ref + product.refGuid"
                     
-                    [alt]="product.name" styleClass="carousel-image" width="300" height="320" class="rounded-border"/>
+                    [alt]="product.name" styleClass="carousel-image" width="300" height="320" 
+                    class="rounded-border flex"/>
                   
                 </div>
               </div>
