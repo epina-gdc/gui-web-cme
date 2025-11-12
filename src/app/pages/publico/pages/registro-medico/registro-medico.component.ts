@@ -229,7 +229,6 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
   private isPasaporte() {
-    this.usuarioValidado = true;
     this.getCatalogoPais();
     this.clearCampos();
     this.form.controls['modalidad'].setValidators([Validators.required]);
@@ -464,6 +463,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
     this.asignarDatos();
 
+
     if (this.form.valid) {
 
 
@@ -674,7 +674,6 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
 
   public btnValidarMatricula() {
-
     this.medico.cveMatricula = this.form.controls['matricula'].value;
     if (this.medico.cveMatricula.length >= 6) {
       return this.validarMatricula();
@@ -706,8 +705,8 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
   }
 
-private validarMatricula() {
-    debugger
+  private validarMatricula() {
+
     let datos = {
       matricula: this.medico.cveMatricula,
       idPerfil: this.medico.perfil.idPerfil

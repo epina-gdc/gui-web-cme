@@ -1,89 +1,112 @@
-<div class="flex">
-  <div class="doc-especialidades w-6">
-    @for (item of docsEspecialidad; track item.cveEspecialidad) {
-      <div class="flex flex-column acordeon my-3">
-        <p-accordion [activeIndex]="-1">
-          <p-accordion-panel value="0">
-            <p-accordion-header>
-              <div class="flex gap-2">
-                <i class="cme-file" style="font-size: 2rem"></i>
-                <p class="header-accordeon ms-3">{{ item.desEspecialidad }}</p>
-              </div>
-            </p-accordion-header>
-            <p-accordion-content>
-              @for (doc of item.documentosEspecialidad; track doc.idDocumentoEspecialidad) {
-                <div class="flex align-items-center cursor-pointer archivo-especialidad mt-2"
-                     [ngClass]="{'select': tabActive() === doc.idDocumentoEspecialidad }"
-                     (click)="docSeleccionado(doc.idDocumentoEspecialidad, doc.documento.refGuid)">
-                  <div class="col-md-1"></div>
-                  <div class="flex col-md-6 justify-content-start">
-                    <span class="nombreDoc">{{ doc.tipoDocumentoEspecialidad.desTipoDocumentoEspecialidad }}</span>
-                  </div>
-                  <div class="col-md-5 flex gap-2 justify-content-center align-items-center">
-                    @for (option of credentialOptions; track option.value) {
-                      <label [for]="option.value + doc.idDocumentoEspecialidad"
-                             class="mt-2 ml-2 select-option-doc">{{ option.label }}</label>
-                      <p-radioButton [inputId]="option.value + doc.idDocumentoEspecialidad"
-                                     [(ngModel)]="opciones" class="flex align-items-center mr-3"
-                                     [name]="doc.documento.refNombre" [value]="option.value"/>
-                    }
-                  </div>
+<div class="flex flex-wrap" [formGroup]="formularioValidacion">
+
+  <div class="doc-especialidades lg:col-6 col-12">
+
+    <div formArrayName="especialidadesDocumentos">
+      @for (item of docsEspecialidad; track item.cveEspecialidad; let i = $index) {
+
+        <div [formGroupName]="i" class="flex flex-column acordeon my-3">
+
+          <p-accordion>
+            <p-accordion-panel value="0">
+              <p-accordion-header>
+                <div class="flex gap-2 tab-especialidad">
+                  <i class="cme-file" style="font-size: 2rem"></i>
+                  <p class="header-accordeon ms-3">{{ item.desEspecialidad }}</p>
+                </div>
+              </p-accordion-header>
+
+              <p-accordion-content>
+
+                <div [formArrayName]="'documentosEspecialidad'">
+
+                  @for (doc of item.documentosEspecialidad; track doc.idDocumentoEspecialidad; let j = $index) {
+
+                    <div [formGroupName]="j" class="flex flex-wrap align-items-center cursor-pointer archivo-especialidad mt-2"
+                         [ngClass]="{'select': tabActive() === doc.idDocumentoEspecialidad }"
+                         (click)="docSeleccionado(doc.idDocumentoEspecialidad, doc.documento.refGuid)">
+
+                      <div class="col-md-1"></div>
+                      <div class="flex col-md-6 justify-content-start">
+                        <span class="nombreDoc">{{ doc.tipoDocumentoEspecialidad.desTipoDocumentoEspecialidad }}</span>
+                      </div>
+
+                      <div class="col-md-5 flex gap-2 justify-content-center align-items-center">
+                        @for (option of credentialOptions; track option.value) {
+                          <label [for]="option.value + doc.idDocumentoEspecialidad"
+                                 class="mt-2 ml-2 select-option-doc">{{ option.label }}</label>
+                          <p-radioButton [inputId]="option.value + doc.idDocumentoEspecialidad"
+                                         class="flex align-items-center mr-3"
+                                         [value]="option.value === '1'"
+                                         [formControl]="getFormControl(getDocumentosArray(i).at(j), 'indCubre')"
+                                         [name]="'cubre_' + doc.idDocumentoEspecialidad"/>
+                        }
+                      </div>
+                    </div>
+                  }
+                </div>
+              </p-accordion-content>
+            </p-accordion-panel>
+          </p-accordion>
+
+
+          <div formGroupName="evaluacionEspecialidad">
+            <div formGroupName="estatusVerificacion"
+                 class="flex flex-wrap justify-content-start align-items-center p-3 border-round-xl border mt-2">
+              @for (option of estatusDocumentos; track option.value) {
+                <div class="flex align-items-center gap-1 tab-cve-especialidad">
+                  <label [for]="option.value + item.cveEspecialidad"
+                         class="select-option-doc ms-4 me-2 mb-0">{{ option.label }}</label>
+                  <p-radioButton [inputId]="option.value + item.cveEspecialidad"
+                                 class="flex align-items-center mr-3"
+                                 [value]="option.value"
+                                 [formControl]="getFormControl(getEstatusGroup(i), 'idEstatusVerificacion')"
+                                 [name]="'estatus_' + item.cveEspecialidad"/>
                 </div>
               }
-            </p-accordion-content>
-          </p-accordion-panel>
-        </p-accordion>
-
-
-        <div class="flex justify-content-start align-items-center p-3 border-round-xl border mt-2">
-          @for (option of estatusDocumentos; track option.value) {
-            <div class="flex align-items-center gap-1 justify-content-center">
-              <label [for]="option.value + item.cveEspecialidad"
-                     class="select-option-doc ms-4 me-2 mb-0">{{ option.label }}</label>
-              <p-radioButton [inputId]="option.value + item.cveEspecialidad" [name]="item.desEspecialidad"
-                             class="flex align-items-center mr-3"
-                             [value]="option.value" [(ngModel)]="opciones"/>
             </div>
-          }
-
+          </div>
         </div>
-      </div>
-    }
+      }
+
+    </div>
 
     <p-card>
-      <form [formGroup]="formObservaciones">
-        <div class="flex justify-content-between">
-          <label class="field-label" for="observaciones">Observaciones</label>
-          <p class="label-obligatorio">Obligatorio</p>
-        </div>
-        <textarea rows="1" cols="30" class="w-full" [autoResize]="true" pTextarea formControlName="observaciones"
-                  maxlength="500"></textarea>
-        <label class="label-obligatorio" for="observaciones">{{ f['observaciones'].value.length }}/500</label>
-      </form>
+      <div class="flex justify-content-between">
+        <label class="field-label" for="refObservaciones">Observaciones</label>
+        <p class="label-obligatorio">Obligatorio</p>
+      </div>
+      <textarea rows="1" cols="30" class="w-full" [autoResize]="true" pTextarea formControlName="refObservaciones"
+                maxlength="500"></textarea>
+      <label class="label-obligatorio"
+             for="refObservaciones">{{ formularioValidacion.get('refObservaciones')?.value?.length || 0 }}/500</label>
     </p-card>
-
-
   </div>
-  <div class="flex p-4 w-6 flex-column">
+
+  <div class="flex p-4 lg:col-6 cl-12 flex-column">
     <h6>Previsualización</h6>
 
-    @if (tabActive() == 0) {
+    @if (tabActive() === 0) {
       <p>Seleccione la especialidad que desea obtener la previsualización</p>
     } @else {
       @if (pdfUrl) {
         <div style="height: 80vh;" class="my-4">
-          <iframe [src]="pdfUrl" width="100%" height="100%">
+          <iframe [src]="pdfUrl" width="100%" height="100%" title="Previsualizacion documentacion">
             Tu navegador no soporta iframes.
           </iframe>
         </div>
       } @else {
         <span class="loader">Cargando documento</span>
       }
-      <div class="flex justify-content-end">
-        <p-button type="button" variant="outlined" class="me-2" label="Cancelar"/>
-        <p-button type="button" disabled label="Finalizar verificación"/>
-      </div>
     }
-
   </div>
+</div>
+
+<div class="flex justify-content-end">
+  <p-button type="button" variant="outlined" class="me-2" label="Cancelar"
+            [routerLink]="'privado/verificacion-documentos'"/>
+  @if (estatusId !== 3) {
+    <p-button type="submit" [disabled]="formularioValidacion.invalid" label="Finalizar verificación"
+              (click)="finalizarVerificacion()"/>
+  }
 </div>

@@ -67,7 +67,8 @@
   font-size: 20px;
   font-style: normal;
   font-weight: 600;
-  line-height: 150%; /* 30px */
+  max-width: calc(100% - 40px);
+  text-align: start;
 }
 
 .usuario-menu {
@@ -80,7 +81,7 @@
   line-height: 120%; /* 16.8px */
   white-space: nowrap;
   overflow: hidden;
-  max-width: 150px;
+  max-width: 130px;
 }
 
 .letras-menu-imss {
@@ -359,7 +360,7 @@
 }
 
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 769px) {
   .login-titulo {
     font-size: 56px;
     line-height: 70px; /* 125% */

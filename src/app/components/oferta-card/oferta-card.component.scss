@@ -4,6 +4,7 @@
   font-style: normal;
   font-weight: 700;
   line-height: 100%; /* 24px */
+  text-align: start;
 }
 
 .especificacion-oferta-card {
@@ -20,6 +21,7 @@
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+  text-align: start;
 }
 
 .texto-label-oferta-card {
@@ -71,4 +73,53 @@ hr {
 
 .vertical-border {
   color: #41ABCA;
+}
+
+.flex-oferta-card {
+  flex-wrap: initial;
+}
+
+@media screen and (max-width: 900px) {
+  .vertical-border {
+    display: none;
+  }
+
+  .flex-oferta-card {
+    flex-wrap: wrap;
+  }
+
+  .header-oferta-flex {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .texto-ajustable {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0;
+    padding-bottom: 5px;
+  }
+
+  .rating-container {
+    flex-shrink: 0;
+    flex-grow: 0;
+  }
+
+}
+
+@media screen and (max-width: 330px) {
+
+  .nombre-unidad-oferta-card {
+    font-size: 16px;
+  }
+
+  .texto-label-oferta-card {
+    font-size: 11px;
+  }
+
+  .texto-sueldo {
+    font-size: 20px;
+  }
 }

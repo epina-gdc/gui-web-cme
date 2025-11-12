@@ -30,31 +30,31 @@
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">Horario:</p>
-              <p class="texto-detalle-oferta-laboral">7:30 a 14:00 y 1.5HRS prep ACT. DOC. E INVES.</p>
+              <p class="texto-detalle-oferta-laboral">{{ ofertaSeleccionada.horario }}</p>
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">Régimen:</p>
-              <p class="texto-detalle-oferta-laboral">Ordinario</p>
+              <p class="texto-detalle-oferta-laboral">{{ ofertaSeleccionada.regimen }}</p>
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">No de plaza:</p>
-              <p class="texto-detalle-oferta-laboral">1436</p>
+              <p class="texto-detalle-oferta-laboral">{{ ofertaSeleccionada.numPlaza }}</p>
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">Categoría:</p>
-              <p class="texto-detalle-oferta-laboral">Médico no familiar</p>
+              <p class="texto-detalle-oferta-laboral">{{ ofertaSeleccionada.categoria }}</p>
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">Clasificación:</p>
-              <p class="texto-detalle-oferta-laboral">Segundo nivel</p>
+              <p class="texto-detalle-oferta-laboral">{{ ofertaSeleccionada.clasificacion }}</p>
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">Tipo de plaza:</p>
-              <p class="texto-detalle-oferta-laboral">Operativa base</p>
+              <p class="texto-detalle-oferta-laboral">{{ ofertaSeleccionada.tipoPlaza }}</p>
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">Marca de ocupación:</p>
-              <p class="texto-detalle-oferta-laboral">Definitiva</p>
+              <p class="texto-detalle-oferta-laboral">{{ ofertaSeleccionada.marcaOcupacion }}</p>
             </div>
           </div>
 
@@ -65,20 +65,20 @@
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">OOAD:</p>
-              <p class="texto-detalle-oferta-laboral">Estado de México</p>
+              <p class="texto-detalle-oferta-laboral">{{ ofertaSeleccionada.ooad }}</p>
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">UMF:</p>
-              <p class="texto-detalle-oferta-laboral">Hospital de Gineco Obstreticia No. 60</p>
+              <p class="texto-detalle-oferta-laboral">{{ ofertaSeleccionada.umf }}</p>
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">Zona:</p>
-              <p class="texto-detalle-oferta-laboral">Ecatepec de Morelos</p>
+              <p class="texto-detalle-oferta-laboral">{{ ofertaSeleccionada.zona }}</p>
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">Ubicación:</p>
               <p class="texto-detalle-oferta-laboral align-last-right"
-                 [appSplitByWidth]="'Av. Morelos 47, San Javier, 54000 Baja California'"></p>
+                 [appSplitByWidth]="ofertaSeleccionada.ubicacion!"></p>
             </div>
           </div>
         </div>
@@ -86,7 +86,7 @@
           <p-card class="empty-border bg-secondary-blue-oferta-laboral">
             <div class="flex justify-content-between">
               <p class="card-compensacion-titulo">Compensación</p>
-              <p-rating [(ngModel)]="value" [stars]="1"/>
+              <p-rating [(ngModel)]="value" [stars]="1" disabled/>
             </div>
             <div class="flex">
               <div class="flex col-12 flex-column p-0 mt-3">
@@ -94,14 +94,17 @@
                 <div class="flex justify-content-start gap-4 my-2">
                   <div class="flex flex-column">
                     <p class="card-compensacion-seccion">Estimado bruto</p>
-                    <p class="card-compensacion-titulo">$45,520</p>
+
+                    <p
+                      class="card-compensacion-titulo">{{ ofertaSeleccionada.sueldoMensualBruto |  currency:'USD':'symbol':'1.2-2' }}</p>
                   </div>
                   <div class="flex align-items-end">
                     <p class="card-compensacion-titulo">-</p>
                   </div>
                   <div class="flex flex-column">
                     <p class="card-compensacion-seccion">Estimado neto</p>
-                    <p class="card-compensacion-titulo">$41,140</p>
+                    <p
+                      class="card-compensacion-titulo">{{ ofertaSeleccionada.sueldoMensualNeto |  currency:'USD':'symbol':'1.2-2' }}</p>
                   </div>
                 </div>
                 <div class="flex justify-content-between p-0 mt-1">
@@ -109,7 +112,8 @@
                     <p class="card-compensacion-seccion">Créditos:</p>
                   </div>
                   <div class="col-6 flex justify-content-start p-0">
-                    <p class="card-compensacion-seccion">2 disponibles</p>
+                    <p
+                      class="card-compensacion-seccion">{{ ofertaSeleccionada.creditos }} {{ ofertaSeleccionada.creditos! > 1 ? "Disponibles" : "Disponible" }}</p>
                   </div>
                 </div>
                 <div class="flex justify-content-between p-0 mt-1">
@@ -117,7 +121,9 @@
                     <p class="card-compensacion-seccion">Bono dificil:</p>
                   </div>
                   <div class="col-6 flex justify-content-start p-0">
-                    <p class="card-compensacion-seccion">No</p>
+                    <p
+                      class="card-compensacion-seccion">{{ ofertaSeleccionada.bonoDificilCobertura ? ofertaSeleccionada.bonoDificilCobertura : "No" }}</p>
+
                   </div>
                 </div>
                 <div class="flex justify-content-between p-0 mt-1">
@@ -125,7 +131,7 @@
                     <p class="card-compensacion-seccion">Acceso a crédito:</p>
                   </div>
                   <div class="col-6 flex justify-content-start p-0">
-                    <p class="card-compensacion-seccion">Si</p>
+                    <p class="card-compensacion-seccion">{{ ofertaSeleccionada.accesoCredito ? 'Si' : 'No' }}</p>
                   </div>
                 </div>
                 <div class="flex justify-content-between p-0 mt-1">
@@ -133,7 +139,12 @@
                     <p class="card-compensacion-seccion">Crédito automotriz:</p>
                   </div>
                   <div class="col-6 flex justify-content-start p-0">
-                    <p class="card-compensacion-seccion">Monto máx</p>
+                    <p class="card-compensacion-seccion">Monto máx {{ ofertaSeleccionada.creditoAutomotriz }}
+                      @if (ofertaSeleccionada.creditoAutomotriz) {
+                        <i class="pi pi-question-circle ms-2" style=" font-size: 1rem;" tooltipPosition="top"
+                           [pTooltip]="infoTexto(ofertaSeleccionada.descuentoQuincenalCreditoAutomotriz)"></i>
+                      }
+                    </p>
                   </div>
                 </div>
                 <div class="flex justify-content-between p-0 mt-1">
@@ -141,7 +152,12 @@
                     <p class="card-compensacion-seccion">Crédito hipotecario:</p>
                   </div>
                   <div class="col-6 flex justify-content-start p-0">
-                    <p class="card-compensacion-seccion">Monto máx</p>
+                    <p class="card-compensacion-seccion">Monto máx  {{ ofertaSeleccionada.creditoHipotecario }}
+                      @if (ofertaSeleccionada.creditoHipotecario) {
+                        <i class="pi pi-question-circle ms-2" style=" font-size: 1rem;" tooltipPosition="top"
+                           [pTooltip]="infoTexto(ofertaSeleccionada.descuentoQuincenalCreditoHipotecario)"></i>
+                      }
+                    </p>
                   </div>
                 </div>
               </div>
@@ -149,47 +165,62 @@
           </p-card>
         </div>
         <div class="col-12 flex justify-content-end mt-2">
-          <p-button variant="outlined" label="Agregar a favoritos"/>
+          @if (value === 0) {
+            <p-button variant="outlined" (onClick)=agregarFavorito() label="Agregar a favoritos"/>
+          }
+          @if (value === 1) {
+            <p-button variant="outlined" (onClick)=eliminarFavorito() label="Eliminar de favoritos"/>
+          }
         </div>
       </div>
     </p-tabpanel>
     <p-tabpanel value="1">
       <div class="flex flex-wrap flex-row">
         <div class="col-6 pr-4 justify-content-center flex">
-          <p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg" alt="Image" width="300"
+          <p-image [src]="ref + mapaRef" alt="Image" width="300"
                    height="320"/>
         </div>
         <div class="col-6 pl-4">
           <p-carousel
             styleClass="h-full"
-            [value]="products"
+            [value]="imgCarrusel"
             [numVisible]="1"
             [numScroll]="1">
             <ng-template let-product #item>
               <div class="rounded">
                 <div class="relative mx-auto">
                   <p-image
-                    src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}"
-                    [alt]="product.name" styleClass="carousel-image" width="300" height="320"/>
-                  class="rounded-border"/>
+                    [src]="ref + product.refGuid"
+                    
+                    [alt]="product.name" styleClass="carousel-image" width="300" height="320" class="rounded-border"/>
+                  
                 </div>
               </div>
             </ng-template>
           </p-carousel>
         </div>
         <div class="col-12 flex justify-content-end mt-2">
-          <p-button variant="outlined" label="Descargar PDF"/>
+          <p-button  (click)="btnDescargar(1)" variant="outlined" label="Descargar PDF"/>
         </div>
       </div>
     </p-tabpanel>
     <p-tabpanel value="2">
       <div class="flex flex-wrap flex-row">
         <div class="col-12 justify-content-center flex">
-          <p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg" alt="Image" width="700"
-                   height="300"/>
+
+
+
+          <!--<p-image [src]="ref+sedes" alt="Image" width="700"
+                   height="300"/>-->
+
+
+                   <iframe width="100%" class="h-screen" [src]="pdfSrcSede" frameborder="0">
+                    <p>{{ _Mensajes.MSJ_NOT_SUPPORT_IFRAMES }}</p>
+                  </iframe>
         </div>
         <div class="col-12 flex justify-content-end mt-2">
-          <p-button variant="outlined" label="Descargar PDF"/>
+          
+          <p-button  (click)="btnDescargar(2)" variant="outlined"  label="Descargar PDF"/>
         </div>
       </div>
     </p-tabpanel>

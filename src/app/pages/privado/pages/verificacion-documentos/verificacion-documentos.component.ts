@@ -77,7 +77,6 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
 
   ngOnInit(): void {
     this.paginar();
-
   }
 
   obtenerCatalogos(){
@@ -132,8 +131,8 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
 
   filtros(): VerificacionDocsInterface{
     return {
-      page: 0,
-      size: 10,
+      page: this.paginaActual,
+      size: this.rows,
       idEstatus: (this.filtroForm.get('estatus')?.value)?.value,
       cveEspecialidad: (this.filtroForm.get('especialidad')?.value)?.value,
       matriculaFolio: this.filtroForm.get('matricula')?.value,
@@ -160,15 +159,16 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
     this.op.hide();
   }
 
-  irDetalleDocumentacion(){
-    this._router.navigate(['privado/',this._nav.documentacionAspirante])
+  irDetalleDocumentacion( usuario :TablaVerificacionDocsInterface){
+    let ruta = this._nav.documentacionAspirante.replace(':id', usuario.idUsuario.toString());
+    this._router.navigate([this._nav.privado+ ruta])
   }
 
   limpiar(){
     this.filtroForm.reset();
-    this.paginar();
     this.paginaActual = 0;
     this.first = 0;
+    this.paginar();
   }
 
 

@@ -50,6 +50,17 @@ export class VerificacionDocsService {
     )
   }
 
+  verificarRegistro(solicitud: any):Observable<any> {
+    const ruta = `${this.serverVerificacionDocs}/verificacion/aspirante/verificacion-documentos`
+    const options = { headers: this.header };
+    return this.http.post<any>(ruta, solicitud, options).pipe(
+      catchError(this.handleError),
+      map((response: any) => {
+        return response
+      }),
+    )
+  }
+
   private handleError(error: HttpErrorResponse) {
 
     console.log("Error " + error.status + '. Contácte al administrador');

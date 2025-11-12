@@ -43,4 +43,8 @@ export class Mensajes {
   public MSJ_LONG_CURP: string = 'Longitud de CURP es de 18';
   public MSJ_LONG_RFC: string = 'Longitud de RFC es de 13';
   public MSJ_FORMATO_NO_VALIDO: string = 'Formato no válido';
+  public MSJ_CARGANDO_DOCUMENTO: string = 'Cargando documento';
+  public MSJ_ERROR_CARGANDO_DOCUMENTO: string = 'Error al obtener documento';
+  public MSJ_SELECCIONAR_DOCUMENTO:string ='Seleccione el documento del que desea obtener la previsualización';
+  public MSJ_NOT_SUPPORT_IFRAMES: string ='Tu navegador no soporta iframes.';
 }
