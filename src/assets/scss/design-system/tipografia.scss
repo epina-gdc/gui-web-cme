@@ -348,6 +348,7 @@
   font-style: normal;
   font-weight: 600;
   line-height: 12px; /* 100% */
+  text-align: start;
 }
 
 .subtitle-previsualizacion {
@@ -384,6 +385,10 @@
 
   .titulo-seccion {
     margin-top: 20px;
+  }
+
+  .select-option-doc {
+    font-size: 10px;
   }
 }
 

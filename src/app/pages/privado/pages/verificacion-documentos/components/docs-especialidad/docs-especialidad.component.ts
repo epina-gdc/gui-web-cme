@@ -1,5 +1,15 @@
 import {CommonModule} from '@angular/common';
-import {Component, EventEmitter, inject, Input, OnInit, Output, signal, WritableSignal} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  inject,
+  Input,
+  OnInit,
+  Output,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import {
   AbstractControl, FormArray,
   FormBuilder, FormControl,
@@ -46,6 +56,10 @@ export class DocsEspecialidadComponent implements OnInit {
 
   @Output() actualizarRegistro: EventEmitter<boolean> = new EventEmitter();
 
+  private readonly MOBILE_BREAKPOINT = 984;
+
+  isMobileView: boolean = false;
+
   formularioValidacion!: FormGroup;
 
   verificacionDocsService: VerificacionDocsService = inject(VerificacionDocsService)
@@ -72,9 +86,20 @@ export class DocsEspecialidadComponent implements OnInit {
   mensajes: Mensajes = new Mensajes();
 
   constructor(
-    private fb: FormBuilder,
-    private sanitizer: DomSanitizer
+    private readonly fb: FormBuilder,
+    private readonly sanitizer: DomSanitizer
   ) {
+    this.checkScreenSize();
+  }
+
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize(): void {
+    this.isMobileView = window.innerWidth < this.MOBILE_BREAKPOINT;
   }
 
   ngOnInit(): void {
