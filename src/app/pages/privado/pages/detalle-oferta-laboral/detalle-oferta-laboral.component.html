@@ -19,7 +19,7 @@
       </div>
     </p-tab>
   </p-tablist>
-  <p-tabpanels>
+  <p-tabpanels >
     <p-tabpanel value="0">
       <div class="flex flex-wrap flex-row">
         <div class="col-6 pr-4">
@@ -181,39 +181,39 @@
         </div> -->
       </div>
     </p-tabpanel>
-    <p-tabpanel value="1">
-      <div class="flex flex-wrap flex-row">
-        <div class="col-6 pr-4 justify-content-center flex">
-          <p-image [src]="ref + mapaRef" alt="Image" width="300"
-                   height="320"/>
+    <p-tabpanel value="1" >
+      <div class="flex flex-wrap">
+        <div class="col-6 col-lg-12  col-md-12 col-sm-12  pr-4 justify-content-center flex" >
+          <p-image [src]="ref + mapaRef" alt="Image" width="380"
+                   height="460"/>
         </div>
-        <div class="col-6 pl-4">
+        <div class="col-6 col-md-12  col-sm-12  pl-4 justify-content-center " >
           <p-carousel
-            styleClass="h-full"
+            styleClass="carousel slide"
             [value]="imgCarrusel"
             [numVisible]="1"
             [numScroll]="1">
-            <ng-template let-product #item>
+            <ng-template let-product #item style="background-color: pink; height: 800px;">
               <div class="rounded">
                 <div class="relative mx-auto">
-                  <p-image
+                  <p-image width="390px" height="460"
                     [src]="ref + product.refGuid"
                     
-                    [alt]="product.name" styleClass="carousel-image" width="300" height="320" class="rounded-border"/>
+                    [alt]="product.name" styleClass="carousel-image" class="rounded-border"/>
                   
                 </div>
               </div>
             </ng-template>
           </p-carousel>
         </div>
-        <div class="col-12 flex justify-content-end mt-2">
+        <div class="col-12 flex justify-content-end mt-2" style="margin-bottom: 30px;">
           <p-button  (click)="btnDescargar(1)" variant="outlined" label="Descargar PDF"/>
         </div>
       </div>
     </p-tabpanel>
     <p-tabpanel value="2">
       <div class="flex flex-wrap flex-row">
-        <div class="col-12 justify-content-center flex">
+        <div class="col-12 justify-content-center flex" style="overflow: hide; ">
 
 
 
@@ -221,7 +221,7 @@
                    height="300"/>-->
 
 
-                   <iframe width="100%" class="h-screen" [src]="pdfSrcSede" frameborder="0">
+                   <iframe width="100%" height="475px"  [src]="pdfSrcSede" frameborder="0">
                     <p>{{ _Mensajes.MSJ_NOT_SUPPORT_IFRAMES }}</p>
                   </iframe>
         </div>

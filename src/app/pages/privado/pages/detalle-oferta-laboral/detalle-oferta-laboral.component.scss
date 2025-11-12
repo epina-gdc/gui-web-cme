@@ -54,3 +54,9 @@
   text-align: left;
   text-align-last: right;
 }
+
+:ng-deep.p-carousel-viewport {
+
+height: 400px;
+width: 350px;
+}
