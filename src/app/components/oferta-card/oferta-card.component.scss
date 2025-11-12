@@ -73,3 +73,17 @@ hr {
 .vertical-border {
   color: #41ABCA;
 }
+
+.flex-oferta-card {
+  flex-wrap: initial;
+}
+
+@media screen and (max-width: 765px) {
+  .vertical-border {
+    display: none;
+  }
+
+  .flex-oferta-card {
+    flex-wrap: wrap;
+  }
+}

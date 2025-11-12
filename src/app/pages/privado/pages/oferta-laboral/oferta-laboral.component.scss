@@ -100,4 +100,14 @@
     font-weight: 500;
     line-height: normal;
   }
+
+  .btn-paginacion {
+    justify-content: start;
+  }
+
+  @media screen and (max-width: 765px) {
+    .btn-paginacion {
+      justify-content: end;
+    }
+  }
 }

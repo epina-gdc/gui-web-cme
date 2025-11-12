@@ -8,6 +8,7 @@ import {EstadoOfertaService} from '@services/estado-oferta.service';
 import {ConvocatoriaService} from '@services/convocatoria.service';
 import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
+import {TitleCasePipe} from '@angular/common';
 
 @Component({
   selector: 'oferta-card',
@@ -15,7 +16,8 @@ import {SesionUser} from '@models/sesion-user.interface';
     Card,
     Rating,
     FormsModule,
-    Badge
+    Badge,
+    TitleCasePipe
   ],
   templateUrl: './oferta-card.component.html',
   styleUrl: './oferta-card.component.scss'
