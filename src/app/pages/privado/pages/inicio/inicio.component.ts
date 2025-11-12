@@ -698,6 +698,7 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerFotografia(): void {
     if (!this.datosFoto) return;
+    this.saveSession('datosFoto',this.datosFoto.documento);
     this.documentoService.getFotografia(this.datosFoto.documento.refGuid).pipe(
     ).subscribe({
       next: (response: any) => {
