@@ -221,6 +221,16 @@ export class CatalogosGeneralesService {
     );
   }
 
+
+  getDocumentos(ooad: string): Observable<any> {
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos1 + '/documentos-ooad/'+ ooad, {headers: this.header}).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<any>) => {
+        return response;
+      })
+    );
+  }
+
   private handleError(error: HttpErrorResponse) {
 
     if (error.status) {
