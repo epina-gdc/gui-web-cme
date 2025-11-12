@@ -339,7 +339,7 @@ export class InicioComponent extends GeneralComponent {
     return this.fb.group({
       otroEmpleo: [{value: '0', disabled: false}],
       sustituto: [{value: '0', disabled: false}],
-      tipoInstitucion: [[]],
+      tipoInstitucion: [null],
       nombreInstitucion: [{value: null, disabled: true}, [Validators.maxLength(200)]],
       horarioInicio: [{value: null, disabled: true}],
       horarioFin: [{value: null, disabled: true}],
@@ -1321,6 +1321,7 @@ export class InicioComponent extends GeneralComponent {
     }
 
     this.limpiarDocumentoEspecialidad();
+    debugger
     const solicitud: SolicitudGuardarDocumentacion = this.generarSolicitudGuardarDocumentacion();
     if (finalizarRegistro) {
       this.finalizarRegistro(solicitud);
