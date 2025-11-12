@@ -106,8 +106,17 @@
   }
 
   @media screen and (max-width: 765px) {
-    .btn-paginacion {
-      justify-content: end;
+    :host ::ng-deep .p-paginator{
+      .p-paginator-prev-icon{
+        span{
+          margin: 0 2px!important;
+        }
+      }
+      .p-paginator-next-icon{
+        span{
+          margin: 0 2px!important;
+        }
+      }
     }
   }
 
