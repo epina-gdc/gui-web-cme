@@ -200,7 +200,7 @@
           </p-carousel>
         </div>
         <div class="col-12 flex justify-content-end mt-2">
-          <p-button variant="outlined" label="Descargar PDF"/>
+          <p-button  (click)="btnDescargar(1)" variant="outlined" label="Descargar PDF"/>
         </div>
       </div>
     </p-tabpanel>
@@ -219,7 +219,8 @@
                   </iframe>
         </div>
         <div class="col-12 flex justify-content-end mt-2">
-          <p-button variant="outlined" label="Descargar PDF"/>
+          
+          <p-button  (click)="btnDescargar(2)" variant="outlined"  label="Descargar PDF"/>
         </div>
       </div>
     </p-tabpanel>

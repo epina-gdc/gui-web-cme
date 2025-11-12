@@ -56,7 +56,8 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
   sedes: string = "";
 
   pdfSrcSede: SafeResourceUrl | undefined;
-  
+  urlPDF1!:any;
+urlPDF2!:any;
 
   private estadoSubscription: Subscription = new Subscription();
 
@@ -119,8 +120,9 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
 
       this.mapaRef = this.config.data.ref[0].respuesta.mapaSvg.refGuid;
       this.imgCarrusel = this.config.data.ref[0].respuesta.imagenesPdf;
-
-      this.pdfSrcSede = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.config.data.ref[1]));
+      this.urlPDF1=this.config.data.ref[0].respuesta.docPdf;
+      this.urlPDF2=this.config.data.ref[0].respuesta.sedesPdf;
+      this.pdfSrcSede = this.sanitizer.bypassSecurityTrustResourceUrl( URL.createObjectURL(this.config.data.ref[1]));
       //this.sedes = this.config.data.ref.respuesta.sedesPdf.refGuid;
 
     }
@@ -259,5 +261,37 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
       cveZona: null,
       idUsuario: this.userData?.idUsuario as number
     }
+  }
+
+  public btnDescargar(tipoDocumento:number){
+    let refGuid ;
+    let nombre='';
+    if(tipoDocumento == 1){
+      refGuid = this.urlPDF1.refGuid;
+
+      nombre = ''+this. ofertaSeleccionada.ooad;
+    }else{
+      refGuid = this.urlPDF2.refGuid;
+      nombre= 'sedes.pdf';
+    }
+    
+    
+
+    this.documentoService.obtenerDocumento(refGuid).subscribe({
+      next: (response: any) => {
+        const blob = new Blob([response], {type: 'application/pdf'});
+      
+        const a = document.createElement('a');
+        const objectUrl = URL.createObjectURL(blob);
+        a.href = objectUrl;
+        a.download = nombre+'.pdf';
+        a.click();
+        URL.revokeObjectURL(objectUrl);
+      },
+      error: (err: any) => {
+        console.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO, err);
+        this._alertServices.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO);
+      }
+    });
   }
 }
