@@ -1,4 +1,4 @@
-import {Component, EventEmitter, inject, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, HostListener, inject, Input, OnInit, Output} from '@angular/core';
 import {Card} from 'primeng/card';
 import {Rating} from 'primeng/rating';
 import {FormsModule} from '@angular/forms';
@@ -23,6 +23,10 @@ import {TitleCasePipe} from '@angular/common';
   styleUrl: './oferta-card.component.scss'
 })
 export class OfertaCardComponent implements OnInit {
+  private readonly MOBILE_BREAKPOINT = 768;
+
+  isMobileView: boolean = false;
+
   value: number = 0;
 
   estadoOfertaService: EstadoOfertaService = inject(EstadoOfertaService);
@@ -67,6 +71,19 @@ export class OfertaCardComponent implements OnInit {
       creditoHipotecario: null,
       descuentoQuincenalCreditoHipotecario: null,
     };
+
+  constructor() {
+    this.checkScreenSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize(): void {
+    this.isMobileView = window.innerWidth < this.MOBILE_BREAKPOINT;
+  }
 
   ngOnInit() {
     this.userService.userData$.subscribe(user => this.userData = user);

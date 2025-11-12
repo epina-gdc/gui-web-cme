@@ -7,6 +7,14 @@
           <p class="titulo-oferta-card mb-2">{{ detalleOportunidad.especialidad | titlecase }}</p>
           <p class="especificacion-oferta-card">{{ detalleOportunidad.categoria | titlecase }}</p>
         </div>
+        @if (isMobileView) {
+          <div class="flex flex-column col-12 lg:col-4 p-0 mt-1">
+            <p class="nombre-unidad-oferta-card">{{ detalleOportunidad.umf | titlecase }}</p>
+            @if (detalleOportunidad.nuevoHospital == 1) {
+              <p-badge [value]="'• ' + 'Nuevo hospital'" severity="warn"/>
+            }
+          </div>
+        }
         <div class="flex flex-column col-4 lg:col-2 p-0 mt-1">
           <p class="titulo-label-oferta-card">Regimen</p>
           <p class="texto-label-oferta-card">{{ detalleOportunidad.regimen | titlecase }}</p>
@@ -25,12 +33,14 @@
         </div>
       </div>
       <hr class="my-4">
-      <div class="flex flex-row justify-content-start align-items-center gap-2 mb-4">
-        <p class="nombre-unidad-oferta-card">{{ detalleOportunidad.umf | titlecase }}</p>
-        @if (detalleOportunidad.nuevoHospital == 1) {
-          <p-badge [value]="'• ' + 'Nuevo hospital'" severity="warn"/>
-        }
-      </div>
+      @if (!isMobileView) {
+        <div class="flex flex-row justify-content-start align-items-center gap-2 mb-4">
+          <p class="nombre-unidad-oferta-card">{{ detalleOportunidad.umf | titlecase }}</p>
+          @if (detalleOportunidad.nuevoHospital == 1) {
+            <p-badge [value]="'• ' + 'Nuevo hospital'" severity="warn"/>
+          }
+        </div>
+      }
       <div class="flex flex-row">
         <div class="flex justify-content-between w-100 flex-oferta-card flex-row">
           <div class="flex flex-column col-6 lg:col-4 p-0 mt-1">
