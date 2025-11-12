@@ -86,7 +86,14 @@
           <p-card class="empty-border bg-secondary-blue-oferta-laboral">
             <div class="flex justify-content-between">
               <p class="card-compensacion-titulo">Compensación</p>
-              <p-rating [(ngModel)]="value" [stars]="1" disabled/>
+             
+              
+              @if (value === 1) {
+              <p-rating [(ngModel)]="value" [stars]="1" (click)=eliminarFavorito() />
+               
+              }@else{
+                <p-rating [(ngModel)]="value" [stars]="1" (click)=agregarFavorito()  label="Agregar a favoritos" />
+              }
             </div>
             <div class="flex">
               <div class="flex col-12 flex-column p-0 mt-3">
@@ -164,14 +171,14 @@
             </div>
           </p-card>
         </div>
-        <div class="col-12 flex justify-content-end mt-2">
+<!--         <div class="col-12 flex justify-content-end mt-2">
           @if (value === 0) {
             <p-button variant="outlined" (onClick)=agregarFavorito() label="Agregar a favoritos"/>
           }
           @if (value === 1) {
             <p-button variant="outlined" (onClick)=eliminarFavorito() label="Eliminar de favoritos"/>
           }
-        </div>
+        </div> -->
       </div>
     </p-tabpanel>
     <p-tabpanel value="1">
