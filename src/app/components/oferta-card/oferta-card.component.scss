@@ -88,6 +88,25 @@ hr {
     flex-wrap: wrap;
   }
 
+  .header-oferta-flex {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .texto-ajustable {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0;
+    padding-bottom: 5px;
+  }
+
+  .rating-container {
+    flex-shrink: 0;
+    flex-grow: 0;
+  }
+
 }
 
 @media screen and (max-width: 330px) {
