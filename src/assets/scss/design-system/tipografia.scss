@@ -387,8 +387,18 @@
     margin-top: 20px;
   }
 
+
+}
+
+@media screen and (max-width: 380px) {
+
   .select-option-doc {
     font-size: 10px;
   }
 }
 
+
+.label-doc {
+  max-width: 54px;
+  white-space: nowrap;
+}
