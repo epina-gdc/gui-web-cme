@@ -198,7 +198,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       this.numPaginaActual = Math.floor((event.first ?? 0) / (event.rows ?? 1));
     }
     if (this.activeTab() === 0) {
-      this.consultarPlazas();
+      this.consultarPlazas("btn");
     } else {
       this.consultarFavoritos();
     }
@@ -244,7 +244,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     });
   }
 
-  consultarPlazas(referencia: string = "btn") {
+  consultarPlazas(referencia: string = "paginado") {
     if (referencia == "btn") {
       this.numPaginaActual = 0;
       this.first = 0;

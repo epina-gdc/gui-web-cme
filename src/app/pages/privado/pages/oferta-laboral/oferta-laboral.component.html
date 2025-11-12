@@ -120,20 +120,22 @@
       </p-card>
 
       @if (totalElementos > 1) {
-
-        <div class="card flex justify-content-end">
-          <p-paginator class="paginator-oferta" (onPageChange)="cambiarPagina($event)" [first]="first" [rows]="rows"
-                       [totalRecords]="totalElementos">
-            <ng-template pTemplate="previouspagelinkicon">
-              <p-button type="button" icon="pi pi-angle-left" label="Anterior"
-                        styleClass="p-button-text text-black"></p-button>
-            </ng-template>
-            <ng-template pTemplate="nextpagelinkicon">
-              <p-button type="button" icon="pi pi-angle-right" label="Siguiente" [iconPos]="'right'"
-                        styleClass="p-button-text text-black"></p-button>
-            </ng-template>
-          </p-paginator>
-        </div>
+        <p-paginator class="paginator-oferta" (onPageChange)="cambiarPagina($event)" [first]="first" [rows]="rows"
+        styleClass="justify-content-end"
+                      [totalRecords]="totalElementos">
+          <ng-template pTemplate="previouspagelinkicon">
+            <div class="flex align-items-center">
+              <span class="pi pi-chevron-left text-xl font-normal mr-2"></span>
+              <span class="font-semibold mr-5">Anterior</span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="nextpagelinkicon">
+            <div class="flex align-items-center">
+              <span class="font-semibold ml-5">Siguiente</span>
+              <span class="pi pi-chevron-right text-xl font-normal ml-2"></span>
+            </div>
+          </ng-template>
+        </p-paginator>
       }
     }
     @if (activeTab() === 2) {

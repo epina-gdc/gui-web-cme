@@ -100,4 +100,8 @@
     font-weight: 500;
     line-height: normal;
   }
+
+  :host ::ng-deep .p-paginator-page-selected{
+    background: #59d0a9;
+  }
 }
