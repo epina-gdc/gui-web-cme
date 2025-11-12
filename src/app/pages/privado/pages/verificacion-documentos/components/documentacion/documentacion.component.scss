@@ -3,6 +3,8 @@
 
   :host ::ng-deep .p-tablist-tab-list {
     justify-content: space-between !important;
+    overflow: scroll;
+    overflow-y: hidden;
   }
 
   :host ::ng-deep .p-tab {
@@ -11,15 +13,16 @@
     justify-content: center;
   }
 
-  @media (max-width: 768px) {
 
-    :host ::ng-deep .p-tablist-tab-list {
-      flex-direction: column;
-      width: 100%;
-    }
+  :host ::ng-deep .p-tablist-content {
+    max-width: 100%;
+  }
+
+  @media (max-width: 768px) {
 
     :host ::ng-deep .p-tab {
       min-width: fit-content;
+      margin-bottom: 10px;
     }
 
     :host ::ng-deep .p-tablist-active-bar {
@@ -31,4 +34,11 @@
       display: none !important;
     }
   }
+
+  @media screen and (min-width: 1100px)  {
+    :host ::ng-deep .p-tablist-tab-list {
+      overflow: hidden;
+    }
+  }
+
 }

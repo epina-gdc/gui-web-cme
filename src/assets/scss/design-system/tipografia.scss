@@ -2,20 +2,20 @@
   color: var(--gob-mx-base-blanco);
   text-align: center;
   font-feature-settings: 'liga' off, 'clig' off;
-  font-size: 36px;
+  font-size: 25px;
   font-style: normal;
   font-weight: 700;
-  line-height: 50px;
+  line-height: 30px;
 }
 
 .login-subtitulo {
   color: var(--gob-mx-base-blanco);
   text-align: center;
   font-feature-settings: 'liga' off, 'clig' off;
-  font-size: 22px;
+  font-size: 18px;
   font-style: normal;
   font-weight: 500;
-  line-height: 40px; /* 125% */
+  line-height: 20px; /* 125% */
 }
 
 .login-card-titulo {
@@ -34,6 +34,7 @@
   font-style: normal;
   font-weight: 600;
   line-height: 100%; /* 12px */
+  text-align: start;
 }
 
 .login-hipervinculo {
@@ -367,9 +368,22 @@
 
   .login-subtitulo {
     font-size: 32px;
+    line-height: 40px;
   }
 
   .usuario-menu {
     max-width: fit-content;
   }
 }
+
+@media screen and (max-width: 350px) {
+  .titulo-tab {
+    font-size: 12px;
+    width: 140px;
+  }
+
+  .titulo-seccion {
+    margin-top: 20px;
+  }
+}
+

@@ -1,20 +1,20 @@
-import {Component, OnDestroy, OnInit, inject} from '@angular/core';
-import {Card} from "primeng/card";
-import {Rating} from 'primeng/rating';
-import {FormsModule} from '@angular/forms';
-import {Button} from 'primeng/button';
-import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs';
-import {SplitByWidthDirective} from '@directives/split-by-width.directive';
-import {Image} from 'primeng/image';
-import {Carousel} from 'primeng/carousel';
-import {EstadoOfertaService, OfertaEstado} from '@services/estado-oferta.service';
-import {DynamicDialogConfig} from 'primeng/dynamicdialog';
-import {OportunidadLaboral} from '@models/oportunidad-laboral.interface';
-import {CommonModule, CurrencyPipe} from '@angular/common';
-import {TooltipModule} from 'primeng/tooltip';
-import {GeneralComponent} from '@components/general.component';
-import {UserService} from '@services/user.service';
-import {SesionUser} from '@models/sesion-user.interface';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Card } from "primeng/card";
+import { Rating } from 'primeng/rating';
+import { FormsModule } from '@angular/forms';
+import { Button } from 'primeng/button';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
+import { SplitByWidthDirective } from '@directives/split-by-width.directive';
+import { Image } from 'primeng/image';
+import { Carousel } from 'primeng/carousel';
+import { EstadoOfertaService, OfertaEstado } from '@services/estado-oferta.service';
+import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { OportunidadLaboral } from '@models/oportunidad-laboral.interface';
+import { CommonModule, CurrencyPipe } from '@angular/common';
+import { TooltipModule } from 'primeng/tooltip';
+import { GeneralComponent } from '@components/general.component';
+import { UserService } from '@services/user.service';
+import { SesionUser } from '@models/sesion-user.interface';
 import { Subscription } from 'rxjs';
 import { environment } from '@env/environment.development';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -42,7 +42,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   providers: [CurrencyPipe]
 })
 export class DetalleOfertaLaboralComponent extends GeneralComponent implements OnInit, OnDestroy {
-  
+
   private readonly serverEndPointURLDocumento = environment.api.apiDocumentos;
   ref = `${this.serverEndPointURLDocumento}/v1/ooad-documentos/`;
 
@@ -56,11 +56,11 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
   sedes: string = "";
 
   pdfSrcSede: SafeResourceUrl | undefined;
-  urlPDF1!:any;
-  urlPDF2!:any;
+  urlPDF1!: any;
+  urlPDF2!: any;
 
   private estadoSubscription: Subscription = new Subscription();
-
+  
   ofertaSeleccionada: OportunidadLaboral =
     {
       esFavorita: false,
@@ -103,26 +103,29 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
   }
 
   constructor(private readonly estadoOfertaService: EstadoOfertaService,
-              private readonly config: DynamicDialogConfig,
-              private readonly currencyPipe: CurrencyPipe,
-              private sanitizer: DomSanitizer
+    private readonly config: DynamicDialogConfig,
+    private readonly currencyPipe: CurrencyPipe,
+    private sanitizer: DomSanitizer
   ) {
     super();
   }
+
   ngOnDestroy(): void {
     this.estadoSubscription.unsubscribe();
-  }	
+  }
 
   ngOnInit() {
+
+
     this.userService.userData$.subscribe(user => this.userData = user);
     if (this.config?.data) {
       this.ofertaSeleccionada = this.config.data;
 
       this.mapaRef = this.config.data.ref[0].respuesta.mapaSvg?.refGuid;
       this.imgCarrusel = this.config.data.ref[0].respuesta.imagenesPdf;
-      this.urlPDF1=this.config.data.ref[0].respuesta.docPdf;
-      this.urlPDF2=this.config.data.ref[0].respuesta.sedesPdf;
-      if(this.config.data.ref[1])this.pdfSrcSede = this.sanitizer.bypassSecurityTrustResourceUrl( URL.createObjectURL(this.config.data.ref[1]));
+      this.urlPDF1 = this.config.data.ref[0].respuesta.docPdf;
+      this.urlPDF2 = this.config.data.ref[0].respuesta.sedesPdf;
+      if(this.config.data.ref[1])this.pdfSrcSede = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.config.data.ref[1]));
 
     }
     const nuevoEstado = {
@@ -148,52 +151,52 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
     inventoryStatus: 'INSTOCK',
     rating: 5
   },
-    {
-      id: '1001',
-      code: 'nvklal433',
-      name: 'Black Watch',
-      description: 'Product Description',
-      image: 'black-watch.jpg',
-      price: 72,
-      category: 'Accessories',
-      quantity: 61,
-      inventoryStatus: 'OUTOFSTOCK',
-      rating: 4
-    },
-    {
-      id: '1002',
-      code: 'zz21cz3c1',
-      name: 'Blue Band',
-      description: 'Product Description',
-      image: 'blue-band.jpg',
-      price: 79,
-      category: 'Fitness',
-      quantity: 2,
-      inventoryStatus: 'LOWSTOCK',
-      rating: 3
-    }];
+  {
+    id: '1001',
+    code: 'nvklal433',
+    name: 'Black Watch',
+    description: 'Product Description',
+    image: 'black-watch.jpg',
+    price: 72,
+    category: 'Accessories',
+    quantity: 61,
+    inventoryStatus: 'OUTOFSTOCK',
+    rating: 4
+  },
+  {
+    id: '1002',
+    code: 'zz21cz3c1',
+    name: 'Blue Band',
+    description: 'Product Description',
+    image: 'blue-band.jpg',
+    price: 79,
+    category: 'Fitness',
+    quantity: 2,
+    inventoryStatus: 'LOWSTOCK',
+    rating: 3
+  }];
 
-    cambioDatosHeader(step: number): void {
+  cambioDatosHeader(step: number): void {
 
-      let cambioEstado: {titulo: string,subTitulo: string,badgeValue: boolean} = {
-        titulo: "",
-        subTitulo: "",
-        badgeValue: false,
-      }
-  
-      const titulos: string[] = [this.ofertaSeleccionada.especialidad!, this.ofertaSeleccionada.ooad!, "Sedes" ]
-      this.estadoSubscription = this.estadoOfertaService.estadoActual$.subscribe(
-        (estado: OfertaEstado) => {
-          cambioEstado = {
-            titulo: titulos[step],
-            subTitulo: estado.subTitulo!,
-            badgeValue: step == 0 ? estado.badgeValue || false : false  
-          }
-        }
-      );
-  
-      this.estadoOfertaService.actualizarEstado(cambioEstado);
+    let cambioEstado: { titulo: string, subTitulo: string, badgeValue: boolean } = {
+      titulo: "",
+      subTitulo: "",
+      badgeValue: false,
     }
+
+    const titulos: string[] = [this.ofertaSeleccionada.especialidad!, this.ofertaSeleccionada.ooad!, "Sedes"]
+    this.estadoSubscription = this.estadoOfertaService.estadoActual$.subscribe(
+      (estado: OfertaEstado) => {
+        cambioEstado = {
+          titulo: titulos[step],
+          subTitulo: estado.subTitulo!,
+          badgeValue: step == 0 ? estado.badgeValue || false : false
+        }
+      }
+    );
+
+    this.estadoOfertaService.actualizarEstado(cambioEstado);
+  }
 
   agregarFavorito() {
     this._ConvocatoriaService.agregarFavorito(
@@ -243,7 +246,7 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
 
   obtenerTotalFavoritos(): void {
     const solicitud = this.generarSolicitudFiltrosFavoritosTotales();
-    this._ConvocatoriaService.consultarTotalesFavoritos({...solicitud}).subscribe({
+    this._ConvocatoriaService.consultarTotalesFavoritos({ ...solicitud }).subscribe({
       next: (respuesta: any) => {
         this.estadoOfertaService.actualizarFavoritos(respuesta.respuesta.totalFavoritas);
       }
@@ -262,28 +265,28 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
     }
   }
 
-  public btnDescargar(tipoDocumento:number){
-    let refGuid ;
-    let nombre='';
-    if(tipoDocumento == 1){
+  public btnDescargar(tipoDocumento: number) {
+    let refGuid = null;
+    let nombre = '';
+    if (tipoDocumento == 1) {
       refGuid = this.urlPDF1.refGuid;
 
-      nombre = ''+this. ofertaSeleccionada.ooad;
-    }else{
+      nombre = '' + this.ofertaSeleccionada.ooad;
+    } else {
       refGuid = this.urlPDF2.refGuid;
-      nombre= 'sedes.pdf';
+      nombre = 'sedes.pdf';
     }
-    
-    
 
-    this.documentoService.obtenerDocumento(refGuid).subscribe({
+    if(refGuid != null){
+
+  return  this.documentoService.obtenerDocumento(refGuid).subscribe({
       next: (response: any) => {
-        const blob = new Blob([response], {type: 'application/pdf'});
-      
+        const blob = new Blob([response], { type: 'application/pdf' });
+
         const a = document.createElement('a');
         const objectUrl = URL.createObjectURL(blob);
         a.href = objectUrl;
-        a.download = nombre+'.pdf';
+        a.download = nombre + '.pdf';
         a.click();
         URL.revokeObjectURL(objectUrl);
       },
@@ -293,4 +296,8 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
       }
     });
   }
+  return this._alertServices.alerta("No se cuenta con datos para obtener la información");
+  }
+
+ 
 }

@@ -101,6 +101,16 @@
     line-height: normal;
   }
 
+  .btn-paginacion {
+    justify-content: start;
+  }
+
+  @media screen and (max-width: 765px) {
+    .btn-paginacion {
+      justify-content: end;
+    }
+  }
+
   :host ::ng-deep .p-paginator-page-selected{
     background: #59d0a9;
   }

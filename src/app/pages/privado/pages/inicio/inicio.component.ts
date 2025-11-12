@@ -220,7 +220,7 @@ export class InicioComponent extends GeneralComponent {
     return this.fb.group({
       rfc: [{value: ''}, [Validators.required, Validators.minLength(13), Validators.maxLength(13), Validators.pattern(PATRON_RFC)]],
       nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
-      fechaNacimiento: [{value: ''}, [Validators.required]],
+      fechaNacimiento: [null, [Validators.required]],
       sexo: [{value: ''}, [Validators.required]],
       estadoCivil: [{value: '', disabled: false}, [Validators.required]],
       indPadres: [false],
@@ -323,7 +323,7 @@ export class InicioComponent extends GeneralComponent {
     return this.fb.group({
         otroEmpleo: [{value: '0', disabled: false}],
         sustituto: [{value: '0', disabled: false}],
-        tipoInstitucion: [[]],
+        tipoInstitucion: [null],
         nombreInstitucion: [{value: null, disabled: true}, [Validators.maxLength(200)]],
         horarioInicio: [{value: null, disabled: true}],
         horarioFin: [{value: null, disabled: true}],
@@ -404,6 +404,8 @@ export class InicioComponent extends GeneralComponent {
     );
   }
 
+  obtenerLocalidadPorPais(pais: number): void {
+  }
 
   validarCP() {
     this._CatalogoGenService.getLstCodigosPostales(this.formRegistro.get('codigoPostal')?.value).subscribe({
@@ -696,6 +698,7 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerFotografia(): void {
     if (!this.datosFoto) return;
+    this.saveSession('datosFoto',this.datosFoto.documento);
     this.documentoService.getFotografia(this.datosFoto.documento.refGuid).pipe(
     ).subscribe({
       next: (response: any) => {
@@ -1531,11 +1534,11 @@ export class InicioComponent extends GeneralComponent {
       return true;
     }
 
-    /*     const hasTipoInstitucion = this.formDatosEmpleo.get('tipoInstitucion')?.value;
-        if(!hasTipoInstitucion){
+/*     const hasTipoInstitucion = this.formDatosEmpleo.get('tipoInstitucion')?.value;
+    if(!hasTipoInstitucion){
 
-          return true;
-        } */
+      return true;
+    } */
     if (this.formDatosEmpleo.invalid && externo) {
       return true;
     }
@@ -1677,6 +1680,8 @@ export class InicioComponent extends GeneralComponent {
       next: (response: any) => {
         if (!response.exito) return;
         const respuesta: RespuestaConsultaDocumentos = response.respuesta;
+        if (respuesta.participacion?.resultadoVerificacion) {
+          this.estatusPendienteDocumentacion = respuesta.participacion.resultadoVerificacion.estatusVerificacion.desEstatus === 'Pendiente';
         if (respuesta.participacion.resultadoVerificacion) {
           const estatusVerificacion: number = respuesta.participacion.resultadoVerificacion.estatusVerificacion.idEstatusVerificacion;
           this.estatusPendienteDocumentacion = [1, 2, 3].includes(estatusVerificacion);
@@ -1698,7 +1703,7 @@ export class InicioComponent extends GeneralComponent {
           this.cargarDatosEmpleoAlFormulario(respuesta.datosEmpleo);
         }
       }
-    });
+    }});
   }
 
   desactivarForms(): void {
