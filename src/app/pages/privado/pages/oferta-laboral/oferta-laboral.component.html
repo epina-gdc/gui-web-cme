@@ -149,7 +149,7 @@
             </p-card>
           </div>
           @for (pregunta of preguntas_frecuentes(); let idx = $index; track $index) {
-            <div class="col-6">
+            <div class="col-12 lg:col-6">
               <p-card class="empty-border" styleClass="min-h-full shadow-4">
                 <div class="flex flex-column gap-3 m-2">
                   <p class="ayuda-pregunta">{{ pregunta.desPregunta }}</p>
