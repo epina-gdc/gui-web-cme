@@ -151,39 +151,39 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
 
   show(oportunidad: OportunidadLaboral) {
     this._CatalogoGenService.getDocumentos(oportunidad.cveOoad!)
-    .pipe(
-      switchMap(referencias =>  {
-        if (!referencias.respuesta.sedesPdf || !referencias.respuesta.docPdf) {
-          // Si la primera llamada falla o no devuelve GUID, lanzamos un error para detener el flujo.
-          this._alertServices.alerta("No existen referencias para la OOAD seleccionada.");
-          return throwError(() => new Error(referencias?.mensaje || 'Error al obtener GUID'));
+      .pipe(
+        switchMap(referencias => {
+            if (!referencias.respuesta.sedesPdf || !referencias.respuesta.docPdf) {
+              // Si la primera llamada falla o no devuelve GUID, lanzamos un error para detener el flujo.
+              this._alertServices.alerta("No existen referencias para la OOAD seleccionada.");
+              return throwError(() => new Error(referencias?.mensaje || 'Error al obtener GUID'));
+            }
+            const pdfSede = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.sedesPdf.refGuid);
+            const pdfUbicacion = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.docPdf.refGuid);
+            return forkJoin([of(referencias), pdfSede, pdfUbicacion])
+          }
+        ),
+      )
+      .subscribe({
+        next: (ref) => {
+          this.ref = this.dialogService.open(DetalleOfertaLaboralComponent, {
+            data: {...oportunidad, ref},
+            modal: true,
+            width: '60vw',
+            height: '100vh',
+            focusOnShow: false,
+            breakpoints: {
+              '960px': '75vw',
+              '640px': '90vw'
+            },
+            templates: {
+              footer: FooterMedicoComponent,
+              header: HeaderMedicoDetalleOfertaComponent
+            },
+            styleClass: 'oferta-detail'
+          });
         }
-        const pdfSede = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.sedesPdf.refGuid);
-        const pdfUbicacion = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.docPdf.refGuid);
-        return forkJoin([of(referencias),pdfSede,pdfUbicacion])
-        }
-      ),
-    )
-    .subscribe({
-      next:(ref) => {
-        this.ref = this.dialogService.open(DetalleOfertaLaboralComponent, {
-          data: {...oportunidad,ref},
-          modal: true,
-          width: '60vw',
-          height: '100vh',
-          focusOnShow: false,
-          breakpoints: {
-            '960px': '75vw',
-            '640px': '90vw'
-          },
-          templates: {
-            footer: FooterMedicoComponent,
-            header: HeaderMedicoDetalleOfertaComponent
-          },
-          styleClass: 'oferta-detail'
-        });
-      }
-    });
+      });
   }
 
 
@@ -413,6 +413,11 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       (numeroFavoritos: number) => {
         const favoritos = this.data[1];
         favoritos.price = numeroFavoritos;
+        if (this.activeTab() === 0) {
+          this.consultarPlazas();
+        } else {
+          this.consultarFavoritos();
+        }
       }
     );
 
