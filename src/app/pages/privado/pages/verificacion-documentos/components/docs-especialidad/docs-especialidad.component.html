@@ -42,7 +42,12 @@
                                          [name]="'cubre_' + doc.idDocumentoEspecialidad"/>
                         }
                       </div>
+
                     </div>
+
+                    @if (isMobileView && tabActive() === doc.idDocumentoEspecialidad) {
+                      <ng-container [ngTemplateOutlet]="pdf_doc"></ng-container>
+                    }
                   }
                 </div>
               </p-accordion-content>
