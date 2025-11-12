@@ -54,3 +54,14 @@
   text-align: left;
   text-align-last: right;
 }
+
+
+
+@media screen and (max-width: 765px) {
+  .header-tab-oferta{
+    i{
+      display: none;
+    }
+  }
+}
+
