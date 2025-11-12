@@ -15,9 +15,9 @@ import {TooltipModule} from 'primeng/tooltip';
 import {GeneralComponent} from '@components/general.component';
 import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
-import { Subscription } from 'rxjs';
-import { environment } from '@env/environment.development';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import {Subscription} from 'rxjs';
+import {environment} from '@env/environment.development';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-detalle-oferta-laboral',
@@ -42,7 +42,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
   providers: [CurrencyPipe]
 })
 export class DetalleOfertaLaboralComponent extends GeneralComponent implements OnInit, OnDestroy {
-  
+
   private readonly serverEndPointURLDocumento = environment.api.apiDocumentos;
   ref = `${this.serverEndPointURLDocumento}/v1/ooad-documentos/`;
 
@@ -56,8 +56,8 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
   sedes: string = "";
 
   pdfSrcSede: SafeResourceUrl | undefined;
-  urlPDF1!:any;
-urlPDF2!:any;
+  urlPDF1!: any;
+  urlPDF2!: any;
 
   private estadoSubscription: Subscription = new Subscription();
 
@@ -109,9 +109,10 @@ urlPDF2!:any;
   ) {
     super();
   }
+
   ngOnDestroy(): void {
     this.estadoSubscription.unsubscribe();
-  }	
+  }
 
   ngOnInit() {
     this.userService.userData$.subscribe(user => this.userData = user);
@@ -120,9 +121,9 @@ urlPDF2!:any;
 
       this.mapaRef = this.config.data.ref[0].respuesta.mapaSvg.refGuid;
       this.imgCarrusel = this.config.data.ref[0].respuesta.imagenesPdf;
-      this.urlPDF1=this.config.data.ref[0].respuesta.docPdf;
-      this.urlPDF2=this.config.data.ref[0].respuesta.sedesPdf;
-      this.pdfSrcSede = this.sanitizer.bypassSecurityTrustResourceUrl( URL.createObjectURL(this.config.data.ref[1]));
+      this.urlPDF1 = this.config.data.ref[0].respuesta.docPdf;
+      this.urlPDF2 = this.config.data.ref[0].respuesta.sedesPdf;
+      this.pdfSrcSede = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.config.data.ref[1]));
       //this.sedes = this.config.data.ref.respuesta.sedesPdf.refGuid;
 
     }
@@ -174,27 +175,27 @@ urlPDF2!:any;
       rating: 3
     }];
 
-    cambioDatosHeader(step: number): void {
+  cambioDatosHeader(step: number): void {
 
-      let cambioEstado: {titulo: string,subTitulo: string,badgeValue: boolean} = {
-        titulo: "",
-        subTitulo: "",
-        badgeValue: false,
-      }
-  
-      const titulos: string[] = [this.ofertaSeleccionada.especialidad!, this.ofertaSeleccionada.ooad!, "Sedes" ]
-      this.estadoSubscription = this.estadoOfertaService.estadoActual$.subscribe(
-        (estado: OfertaEstado) => {
-          cambioEstado = {
-            titulo: titulos[step],
-            subTitulo: estado.subTitulo!,
-            badgeValue: step == 0 ? estado.badgeValue || false : false  
-          }
-        }
-      );
-  
-      this.estadoOfertaService.actualizarEstado(cambioEstado);
+    let cambioEstado: { titulo: string, subTitulo: string, badgeValue: boolean } = {
+      titulo: "",
+      subTitulo: "",
+      badgeValue: false,
     }
+
+    const titulos: string[] = [this.ofertaSeleccionada.especialidad!, this.ofertaSeleccionada.ooad!, "Sedes"]
+    this.estadoSubscription = this.estadoOfertaService.estadoActual$.subscribe(
+      (estado: OfertaEstado) => {
+        cambioEstado = {
+          titulo: titulos[step],
+          subTitulo: estado.subTitulo!,
+          badgeValue: step == 0 ? estado.badgeValue || false : false
+        }
+      }
+    );
+
+    this.estadoOfertaService.actualizarEstado(cambioEstado);
+  }
 
   agregarFavorito() {
     this._ConvocatoriaService.agregarFavorito(
@@ -263,28 +264,27 @@ urlPDF2!:any;
     }
   }
 
-  public btnDescargar(tipoDocumento:number){
-    let refGuid ;
-    let nombre='';
-    if(tipoDocumento == 1){
+  public btnDescargar(tipoDocumento: number) {
+    let refGuid;
+    let nombre = '';
+    if (tipoDocumento == 1) {
       refGuid = this.urlPDF1.refGuid;
 
-      nombre = ''+this. ofertaSeleccionada.ooad;
-    }else{
+      nombre = '' + this.ofertaSeleccionada.ooad;
+    } else {
       refGuid = this.urlPDF2.refGuid;
-      nombre= 'sedes.pdf';
+      nombre = 'sedes.pdf';
     }
-    
-    
+
 
     this.documentoService.obtenerDocumento(refGuid).subscribe({
       next: (response: any) => {
         const blob = new Blob([response], {type: 'application/pdf'});
-      
+
         const a = document.createElement('a');
         const objectUrl = URL.createObjectURL(blob);
         a.href = objectUrl;
-        a.download = nombre+'.pdf';
+        a.download = nombre + '.pdf';
         a.click();
         URL.revokeObjectURL(objectUrl);
       },
