@@ -177,22 +177,23 @@
     <p-tabpanel value="1">
       <div class="flex flex-wrap flex-row">
         <div class="col-6 pr-4 justify-content-center flex">
-          <p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg" alt="Image" width="300"
+          <p-image [src]="ref + mapaRef" alt="Image" width="300"
                    height="320"/>
         </div>
         <div class="col-6 pl-4">
           <p-carousel
             styleClass="h-full"
-            [value]="products"
+            [value]="imgCarrusel"
             [numVisible]="1"
             [numScroll]="1">
             <ng-template let-product #item>
               <div class="rounded">
                 <div class="relative mx-auto">
                   <p-image
-                    src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}"
-                    [alt]="product.name" styleClass="carousel-image" width="300" height="320"/>
-                  class="rounded-border"/>
+                    [src]="ref + product.refGuid"
+                    
+                    [alt]="product.name" styleClass="carousel-image" width="300" height="320" class="rounded-border"/>
+                  
                 </div>
               </div>
             </ng-template>
@@ -206,8 +207,16 @@
     <p-tabpanel value="2">
       <div class="flex flex-wrap flex-row">
         <div class="col-12 justify-content-center flex">
-          <p-image src="https://primefaces.org/cdn/primeng/images/galleria/galleria10.jpg" alt="Image" width="700"
-                   height="300"/>
+
+
+
+          <!--<p-image [src]="ref+sedes" alt="Image" width="700"
+                   height="300"/>-->
+
+
+                   <iframe width="100%" class="h-screen" [src]="pdfSrcSede" frameborder="0">
+                    <p>{{ _Mensajes.MSJ_NOT_SUPPORT_IFRAMES }}</p>
+                  </iframe>
         </div>
         <div class="col-12 flex justify-content-end mt-2">
           <p-button variant="outlined" label="Descargar PDF"/>

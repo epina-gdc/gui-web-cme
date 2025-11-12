@@ -16,6 +16,8 @@ import {GeneralComponent} from '@components/general.component';
 import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
 import { Subscription } from 'rxjs';
+import { environment } from '@env/environment.development';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-detalle-oferta-laboral',
@@ -40,10 +42,21 @@ import { Subscription } from 'rxjs';
   providers: [CurrencyPipe]
 })
 export class DetalleOfertaLaboralComponent extends GeneralComponent implements OnInit, OnDestroy {
+  
+  private readonly serverEndPointURLDocumento = environment.api.apiDocumentos;
+  ref = `${this.serverEndPointURLDocumento}/v1/ooad-documentos/`;
+
   valorFavoritos: number = 0;
 
   userService = inject(UserService);
   userData: SesionUser | null = null;
+
+  mapaRef: string = "";
+  imgCarrusel: string[] = [];
+  sedes: string = "";
+
+  pdfSrcSede: SafeResourceUrl | undefined;
+  
 
   private estadoSubscription: Subscription = new Subscription();
 
@@ -90,7 +103,8 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
 
   constructor(private readonly estadoOfertaService: EstadoOfertaService,
               private readonly config: DynamicDialogConfig,
-              private readonly currencyPipe: CurrencyPipe
+              private readonly currencyPipe: CurrencyPipe,
+              private sanitizer: DomSanitizer
   ) {
     super();
   }
@@ -101,7 +115,14 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
   ngOnInit() {
     this.userService.userData$.subscribe(user => this.userData = user);
     if (this.config?.data) {
-      this.ofertaSeleccionada = this.config.data.oportunidad;
+      this.ofertaSeleccionada = this.config.data;
+
+      this.mapaRef = this.config.data.ref[0].respuesta.mapaSvg.refGuid;
+      this.imgCarrusel = this.config.data.ref[0].respuesta.imagenesPdf;
+
+      this.pdfSrcSede = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.config.data.ref[1]));
+      //this.sedes = this.config.data.ref.respuesta.sedesPdf.refGuid;
+
     }
     const nuevoEstado = {
       titulo: this.ofertaSeleccionada.especialidad,

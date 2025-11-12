@@ -18,7 +18,7 @@ import {PrimeTemplate} from 'primeng/api';
 import {GeneralComponent} from '@components/general.component';
 import {mapearArregloTipoDropdown} from '@utils/funciones';
 import {ActivatedRoute} from '@angular/router';
-import {Subscription, concatMap, tap} from 'rxjs';
+import {Subscription, concatMap, forkJoin, map, of, switchMap, tap, throwError} from 'rxjs';
 import {EstadoOfertaService} from '@services/estado-oferta.service';
 
 import {OportunidadLaboral} from '@models/oportunidad-laboral.interface';
@@ -157,22 +157,35 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   }
 
   show(oportunidad: OportunidadLaboral) {
-    this.ref = this.dialogService.open(DetalleOfertaLaboralComponent, {
-      data: {oportunidad},
-      modal: true,
-      width: '60vw',
-      height: '100vh',
-      focusOnShow: false,
-      breakpoints: {
-        '960px': '75vw',
-        '640px': '90vw'
-      },
-      templates: {
-        footer: FooterMedicoComponent,
-        header: HeaderMedicoDetalleOfertaComponent
-      },
-      styleClass: 'oferta-detail'
-    });
+    this._CatalogoGenService.getDocumentos(oportunidad.cveOoad!)
+    .pipe(
+      switchMap(referencias =>  {
+        const pdfSede = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.sedesPdf.refGuid);
+        const pdfUbicacion = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.docPdf.refGuid);
+        return forkJoin([of(referencias),pdfSede,pdfUbicacion])
+        }
+      ),
+    )
+    .subscribe({
+      next:(ref) => {
+        this.ref = this.dialogService.open(DetalleOfertaLaboralComponent, {
+          data: {...oportunidad,ref},
+          modal: true,
+          width: '60vw',
+          height: '100vh',
+          focusOnShow: false,
+          breakpoints: {
+            '960px': '75vw',
+            '640px': '90vw'
+          },
+          templates: {
+            footer: FooterMedicoComponent,
+            header: HeaderMedicoDetalleOfertaComponent
+          },
+          styleClass: 'oferta-detail'
+        });
+      }
+    }); 
   }
 
 
@@ -297,7 +310,6 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     this._ConvocatoriaService.consultarFavoritos(filtros, parametros).pipe(
       tap(ofertas => {
         //settear paginado y oferta-card
-        console.log(ofertas)
         this.totalElementos = ofertas.page.totalElements;
         this.registros.set(ofertas.content)
       }),
