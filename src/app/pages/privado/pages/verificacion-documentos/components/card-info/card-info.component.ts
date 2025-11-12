@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, HostListener, Input, OnInit} from '@angular/core';
 import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.component';
 import {PillComponent} from '@components/pill/pill.component';
 import {Card} from 'primeng/card';
@@ -16,6 +16,10 @@ import {GeneralComponent} from '@components/general.component';
   styleUrl: './card-info.component.scss'
 })
 export class CardInfoComponent extends GeneralComponent implements OnInit {
+  private readonly MOBILE_BREAKPOINT = 768;
+
+  isMobileView: boolean = false;
+
   @Input() datosPersonales!: DetalleDocumentacionDatosPersonales;
   @Input() evaluacion!: DetalleDocumentacionResultadoVerificacion;
 
@@ -24,13 +28,23 @@ export class CardInfoComponent extends GeneralComponent implements OnInit {
   nombreFoto!: string;
   defaultFile!: SafeResourceUrl | undefined;
 
-  constructor(private sanitizer: DomSanitizer) {
-    super()
+  constructor(private readonly sanitizer: DomSanitizer) {
+    super();
+    this.checkScreenSize();
     this.ruta = this._nav.privado + this._nav.verificacionDocumentos;
   }
 
   ngOnInit() {
     this.obtenerDatosFoto(this.datosPersonales.idUsuario);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize(): void {
+    this.isMobileView = window.innerWidth < this.MOBILE_BREAKPOINT;
   }
 
   obtenerDatosFoto(idusuario: number | undefined): void {
