@@ -356,7 +356,7 @@
             </div>
 
             <div class=" mt-4 flex justify-content-end">
-              <p-button label="Crear cuenta" type="submit" [disabled]="form.invalid"/>
+              <p-button label="Crear cuenta" type="submit" [disabled]="form.invalid || !usuarioValidado"/>
             </div>
           </form>
         </article>

@@ -129,6 +129,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   }
 
   perfilSeleccionado() {
+
     this.registroMedico.perfil1 = this.form.controls['perfil'].value;
     let perfil = this.lstPerfil.find((x: { idPerfil: number; }) => x.idPerfil == this.registroMedico.perfil1);
     if (perfil) {

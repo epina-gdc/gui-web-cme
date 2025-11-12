@@ -323,7 +323,6 @@
                   <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.5rem'}"
                             (click)="(eliminarZonaInteres(rowIndex))"/>
                 }
-
               </td>
             </tr>
           </ng-template>
@@ -336,6 +335,17 @@
                 </div>
               </td>
             </tr>
+          </ng-template>
+          <ng-template #footer>
+            <td colspan="3" class="lg:hidden">
+              <div class="flex justify-content-center align-items-center">
+                <img src="/assets/images/touch_icon.png" height="40"
+                     width="40"
+                     alt="Imagen centrada para móvil"
+                     class="imagen-tabla"
+                />
+              </div>
+            </td>
           </ng-template>
         </p-table>
       </p-card>
@@ -446,7 +456,7 @@
                               class="header-tab"/>
                 </ng-template>
                 <div class="lg:flex lg:flex-grow-1">
-                  <p-table [value]="registro.documentos" [tableStyle]="{ 'min-width': '50rem' }" class="flex-grow-1">
+                  <p-table [value]="registro.documentos" class="flex-grow-1">
                     <ng-template pTemplate="header">
                       <tr>
                         <th class="label-th" scope="col">Tipo documento</th>
