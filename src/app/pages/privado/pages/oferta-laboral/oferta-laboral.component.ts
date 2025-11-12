@@ -160,6 +160,11 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     this._CatalogoGenService.getDocumentos(oportunidad.cveOoad!)
     .pipe(
       switchMap(referencias =>  {
+        if (!referencias.respuesta.sedesPdf || !referencias.respuesta.docPdf) {
+          // Si la primera llamada falla o no devuelve GUID, lanzamos un error para detener el flujo.
+          this._alertServices.alerta("No existen referencias para la OOAD seleccionada.");
+          return throwError(() => new Error(referencias?.mensaje || 'Error al obtener GUID'));
+        }
         const pdfSede = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.sedesPdf.refGuid);
         const pdfUbicacion = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.docPdf.refGuid);
         return forkJoin([of(referencias),pdfSede,pdfUbicacion])
