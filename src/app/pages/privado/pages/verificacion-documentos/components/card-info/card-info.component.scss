@@ -43,11 +43,6 @@
   .imagen-seccion {
     justify-content: start;
   }
-
-
-  .titulo-nombre-aspirante {
-    text-align: start;
-  }
 }
 
 
@@ -62,5 +57,21 @@
   .seccion-titulo {
     flex-direction: row !important;
     gap: 0;
+  }
+}
+
+
+hr {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-color: #0dcaf0;
+  border-width: 1px;
+}
+
+
+@media screen and (max-width: 768px) {
+
+  .titulo-nombre-aspirante {
+    text-align: start;
   }
 }

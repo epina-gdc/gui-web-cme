@@ -16,6 +16,7 @@
             <span class="titulo-nombre-aspirante">{{ datosPersonales.nombre | titlecase }}</span>
             <span
               class="apellidos-aspirante">{{ datosPersonales.apellidoPaterno | titlecase }} {{ datosPersonales.apellidoMaterno }}</span>
+            <hr>
           </div>
           @if (!evaluacion || evaluacion.estatusVerificacion.idEstatusVerificacion === 4) {
             <app-pill [texto]="'No cumple con requisitos'" [pillType]="0"/>
