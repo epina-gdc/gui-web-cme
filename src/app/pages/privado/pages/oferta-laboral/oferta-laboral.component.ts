@@ -27,13 +27,6 @@ import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
 import {TableLazyLoadEvent} from 'primeng/table';
 
-interface PageEvent {
-  first: number;
-  rows: number;
-  page: number;
-  pageCount: number;
-}
-
 @Component({
   selector: 'app-oferta-laboral',
   imports: [
@@ -190,7 +183,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
           styleClass: 'oferta-detail'
         });
       }
-    }); 
+    });
   }
 
 
