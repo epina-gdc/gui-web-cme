@@ -33,10 +33,7 @@ export class FooterMedicoComponent extends GeneralComponent implements OnInit {
       this.documentoService.getFotografia(datosFoto.refGuid).pipe(
       ).subscribe({
         next: (response: any) => {
-  
-          const nombreArchivo =datosFoto.refNombre +'.'+ datosFoto.refExtension;
-          const tipoArchivo = response.type;
-          const blob = new Blob([response],  { type: 'blob' });
+            const blob = new Blob([response],  { type: 'blob' });
           this.imgPerfil = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
         }
       });
