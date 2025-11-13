@@ -18,6 +18,7 @@ import {SesionUser} from '@models/sesion-user.interface';
 import {Subscription} from 'rxjs';
 import {environment} from '@env/environment.development';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {SvgAnimationService} from '@services/svg-animation.service';
 
 @Component({
   selector: 'app-detalle-oferta-laboral',
@@ -57,6 +58,8 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
   pdfSrcSede: SafeResourceUrl | undefined;
   urlPDF1!: any;
   urlPDF2!: any;
+
+  loaderService: SvgAnimationService = inject(SvgAnimationService);
 
   private estadoSubscription: Subscription = new Subscription();
 
@@ -165,10 +168,10 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
       }
     ).subscribe({
       next: (respuesta) => {
-        this._alertServices.alerta("Exito");
         this.ofertaSeleccionada.esFavorita = true;
         this.value = 1;
-        this.obtenerTotalFavoritos()
+        this.loaderService.show();
+        this.obtenerTotalFavoritos();
       }
     });
   }
@@ -182,7 +185,7 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
       }
     ).subscribe({
       next: (respuesta) => {
-        this._alertServices.alerta("Exito");
+        this._alertServices.alerta("Se quito de favoritos");
         this.value = 0;
         this.ofertaSeleccionada.esFavorita = false;
         this.obtenerTotalFavoritos();
