@@ -31,6 +31,7 @@ import {VerificacionDocsService} from '@services/verificacion-docs.service';
 import {RouterLink} from '@angular/router';
 import {AlertService} from '@services/alert.service';
 import {Mensajes} from '@utils/mensajes';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-docs-especialidad',
@@ -42,7 +43,9 @@ import {Mensajes} from '@utils/mensajes';
     ReactiveFormsModule,
     TextareaModule,
     CardModule,
-    ButtonModule, RouterLink
+    ButtonModule, 
+    RouterLink,
+    DialogModule
   ],
   templateUrl: './docs-especialidad.component.html',
   styleUrl: './docs-especialidad.component.scss'
@@ -62,11 +65,16 @@ export class DocsEspecialidadComponent implements OnInit {
 
   formularioValidacion!: FormGroup;
 
+  formSeleccionado!: FormGroup;
+
   verificacionDocsService: VerificacionDocsService = inject(VerificacionDocsService)
 
   pdfUrl: SafeResourceUrl | undefined;
 
   documentoService = inject(DocumentoService)
+
+  confCambioEstatus: boolean = false;
+  estatusPrevio: string = "";
 
   credentialOptions = [
     {label: 'Cubre', value: '1'},
@@ -142,6 +150,19 @@ export class DocsEspecialidadComponent implements OnInit {
         })
       })
     });
+  }
+
+  estatusRequisitoCambio(form: FormGroup, prev: any){
+    if(form.get('idEstatusVerificacion')?.value == '3'){
+      this.estatusPrevio = prev.evaluacionEspecialidad.estatusVerificacion.idEstatusVerificacion.toString();
+      this.confCambioEstatus = true
+      this.formSeleccionado = form;
+    }
+  }
+
+  cambiarEstatus(cambio: boolean){
+    this.confCambioEstatus = false;
+    if(!cambio)this.formSeleccionado.get('idEstatusVerificacion')?.setValue(this.estatusPrevio);
   }
 
   docSeleccionado(id: number, guid: string) {
