@@ -114,6 +114,7 @@ export class DocsEspecialidadComponent implements OnInit {
         )
       )
     });
+    this.formularioValidacion.updateValueAndValidity();
   }
 
   crearGrupoEspecialidad(especialidad: DetalleDocumentacionEspecialidadDocumento): FormGroup {
@@ -128,20 +129,116 @@ export class DocsEspecialidadComponent implements OnInit {
       ? (especialidad.evaluacionEspecialidad as any)?.estatusVerificacion?.idEstatusVerificacion || null
       : null;
 
-    return this.fb.group({
+    const especialidadGroup = this.fb.group({
       idEspecialidadDocumento: [especialidad.idEspecialidadDocumento],
       cveEspecialidad: [especialidad.cveEspecialidad],
       desEspecialidad: [especialidad.desEspecialidad],
       documentosEspecialidad: this.fb.array(documentosArray),
       evaluacionEspecialidad: this.fb.group({
-        // Se incluye idEspecialidadEvaluacion aunque sea null.
         idEspecialidadEvaluacion: [especialidad.evaluacionEspecialidad?.idEspecialidadEvaluacion ?? null],
         estatusVerificacion: this.fb.group({
-          // Este es el control de selección a nivel de especialidad (Cumple/No Cumple)
-          idEstatusVerificacion: [idEstatusVerificacionInicial, Validators.required]
+          idEstatusVerificacion: [idEstatusVerificacionInicial]
         })
       })
+    }, {validators: [this.estatusEspecialidadValidator.bind(this)]});
+
+    this.setupEstatusValidation(especialidadGroup);
+
+    return especialidadGroup;
+  }
+
+  setupEstatusValidation(especialidadGroup: FormGroup): void {
+    const documentosArray = especialidadGroup.get('documentosEspecialidad') as FormArray;
+    const estatusControl = especialidadGroup.get('evaluacionEspecialidad')?.get('estatusVerificacion')?.get('idEstatusVerificacion') as FormControl;
+
+    if (!documentosArray || !estatusControl) {
+      return;
+    }
+
+    this.updateEstatusControlState(especialidadGroup);
+
+    // Se Suscribe a los cambios en el FormArray de documentos
+    documentosArray.valueChanges.subscribe(() => {
+      this.updateEstatusControlState(especialidadGroup);
     });
+  }
+
+  updateEstatusControlState(especialidadGroup: FormGroup): void {
+    const documentosArray = especialidadGroup.get('documentosEspecialidad') as FormArray;
+    const estatusControl = especialidadGroup.get('evaluacionEspecialidad')?.get('estatusVerificacion')?.get('idEstatusVerificacion') as FormControl;
+
+    if (!documentosArray || !estatusControl) {
+      return;
+    }
+
+    const valoresDocumentos = documentosArray.controls
+      .map(control => control.get('indCubre')?.value)
+      .filter(val => val !== null); // Solo los que tienen valor ('1' o '0')
+
+    const ningunDocumentoMarcado = valoresDocumentos.length === 0;
+
+    if (ningunDocumentoMarcado) {
+      // Condición: Si no se marca ningún documento, las opciones deben estar deshabilitadas.
+      estatusControl.disable({emitEvent: false}); // Deshabilita el control
+      estatusControl.clearValidators();           // Elimina el validador de requerido
+      estatusControl.setValue(null, {emitEvent: false}); // Limpia el valor
+    } else {
+      // Condición: Si se marca al menos uno, el control se habilita y se hace requerido.
+      estatusControl.enable({emitEvent: false});
+      estatusControl.setValidators(Validators.required);
+
+      const opcionesPermitidas = this.getEstatusVerificacionOptions(especialidadGroup);
+      if (estatusControl.value !== null && !opcionesPermitidas.some(o => o.value === estatusControl.value)) {
+        estatusControl.setValue(null, {emitEvent: false});
+      }
+    }
+
+    // Revalida el control y el formulario principal para actualizar el `[disabled]` del botón.
+    estatusControl.updateValueAndValidity({emitEvent: false});
+    if (this.formularioValidacion) {
+      this.formularioValidacion.updateValueAndValidity();
+    }
+  }
+
+  getEstatusVerificacionOptions(especialidadGroup: FormGroup): any[] {
+    const documentosArray = especialidadGroup.get('documentosEspecialidad') as FormArray;
+
+    if (!documentosArray) {
+      return [];
+    }
+
+    // Obtener y filtrar solo los documentos que ya fueron marcados ('1' o '0')
+    const valoresDocumentos = documentosArray.controls
+      .map(control => control.get('indCubre')?.value)
+      .filter(val => val !== null);
+
+    const alMenosUnCubre = valoresDocumentos.some(val => val === true); // '1' = Cubre
+    const todosSonNoCubre = valoresDocumentos.length > 0 && valoresDocumentos.every(val => val === false); // '0' = No cubre
+    const ningunDocumentoMarcado = valoresDocumentos.length === 0;
+
+    // Condición 3: Si no se marca ningun documento
+    if (ningunDocumentoMarcado) {
+      return [];
+    }
+
+    // Condición 1: Si al menos un documento es "Cubre"
+    if (alMenosUnCubre) {
+      // Estatus permitidos: Cumple con Requisitos (3), No Cumple con Requisitos (4), Revisión Documental (2)
+      return this.estatusDocumentos.filter(estatus =>
+        ['3', '4', '2'].includes(estatus.value)
+      );
+    }
+
+    // Condición 2: Si todos los documentos marcados son "No cubre"
+    if (todosSonNoCubre) {
+      // Estatus permitidos: No Cumple con Requisitos (4), Revisión Documental (2)
+      return this.estatusDocumentos.filter(estatus =>
+        ['4', '2'].includes(estatus.value)
+      );
+    }
+
+    // Fallback (nunca debería alcanzarse si las condiciones son mutuamente excluyentes y correctas)
+    return [];
   }
 
   docSeleccionado(id: number, guid: string) {
@@ -160,6 +257,47 @@ export class DocsEspecialidadComponent implements OnInit {
         console.error('Error al obtener el documento', err);
       }
     });
+  }
+
+  private estatusEspecialidadValidator(control: AbstractControl): { [key: string]: any } | null {
+    // control es el FormGroup de la especialidad
+    const estatusControl = control.get('evaluacionEspecialidad')?.get('estatusVerificacion')?.get('idEstatusVerificacion') as FormControl;
+    const documentosArray = control.get('documentosEspecialidad') as FormArray;
+
+    // Si no hay estatus seleccionado, salimos y dejamos que Validators.required actúe.
+    if (!estatusControl || !documentosArray || estatusControl.value === null) {
+      return null;
+    }
+
+    // Lógica para determinar los valores permitidos (extraída de getEstatusVerificacionOptions)
+    const valoresDocumentos = documentosArray.controls
+      .map(docControl => docControl.get('indCubre')?.value)
+      .filter(val => val !== null); // [true, false, ...]
+
+    const alMenosUnCubre = valoresDocumentos.some(val => val === true);
+    const ningunDocumentoMarcado = valoresDocumentos.length === 0;
+
+    let allowedValues: string[] = [];
+
+    if (ningunDocumentoMarcado) {
+      allowedValues = []; // Nunca debería ser válido si está habilitado
+    } else if (alMenosUnCubre) {
+      // Regla 1: Cubre -> Permite 3, 4, 2
+      allowedValues = ['3', '4', '2'];
+    } else {
+      // Regla 2: Solo No Cubre -> Permite 4, 2
+      allowedValues = ['4', '2'];
+    }
+
+    const selectedValue = estatusControl.value;
+
+    // 2. Verificar si el valor seleccionado está en la lista de permitidos
+    if (allowedValues.includes(selectedValue)) {
+      return null; // Válido
+    } else {
+      // Inválido: Marca el FormGroup de la especialidad como inválido.
+      return {estatusNoPermitido: true, allowed: allowedValues};
+    }
   }
 
   // Getter para acceder al FormArray principal (ya deberías tenerlo)
