@@ -1,4 +1,5 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject} from '@angular/core';
+import {SvgAnimationService} from '@services/svg-animation.service';
 
 @Component({
   selector: 'svg-animation',
@@ -8,5 +9,6 @@ import {ChangeDetectionStrategy, Component} from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SvgAnimationComponent {
+  public loader: SvgAnimationService = inject(SvgAnimationService);
 
 }

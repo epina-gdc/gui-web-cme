@@ -4,17 +4,15 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.7); /* Opacidad para opacar la pantalla */
+  background-color: rgba(0, 0, 0, 0.7);
 
-  /* ¡La clave de la animación de 5s! Controla la aparición y el desvanecimiento. */
-  transition: opacity 5s ease-in-out;
+  transition: opacity 1s ease-in-out;
 
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Contenedor estilizado del SVG */
 .loader-container {
   display: flex;
   flex-direction: column;
@@ -26,7 +24,6 @@
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
-/* Tamaño del SVG */
 .pulse-svg {
   width: 100px;
   height: 100px;

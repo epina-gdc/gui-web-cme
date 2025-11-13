@@ -12,14 +12,14 @@ export class SvgAnimationService {
     if (this._isLoading()) return;
     this._isLoading.set(true);
     this._isInteractable.set(true);
+    this.hide();
   }
 
   hide(): void {
-    this._isLoading.set(false);
-
     setTimeout(() => {
+      this._isLoading.set(false);
       this._isInteractable.set(false);
-    }, 3000);
+    }, 5000);
   }
 
 }
