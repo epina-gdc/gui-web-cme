@@ -19,6 +19,7 @@ import {ConvocatoriaService} from '@services/convocatoria.service';
 import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
 import {TitleCasePipe} from '@angular/common';
+import {SvgAnimationService} from '@services/svg-animation.service';
 
 @Component({
   selector: 'oferta-card',
@@ -34,6 +35,8 @@ import {TitleCasePipe} from '@angular/common';
 })
 export class OfertaCardComponent implements OnInit, OnChanges {
   private readonly MOBILE_BREAKPOINT = 768;
+
+  loaderService = inject(SvgAnimationService)
 
   isMobileView: boolean = false;
 
@@ -122,7 +125,8 @@ export class OfertaCardComponent implements OnInit, OnChanges {
     };
     this.convocatoriaService.agregarFavorito(solicitud).subscribe({
       next: () => {
-        this.actualizarTotales.emit(true)
+        this.loaderService.show();
+        this.actualizarTotales.emit(true);
       }
     });
   }

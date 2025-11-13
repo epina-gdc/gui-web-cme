@@ -124,7 +124,7 @@
                   </div>
                   <div class="flex justify-content-between p-0 mt-1">
                     <div class="col-6 flex justify-content-start p-0">
-                      <p class="card-compensacion-seccion">Bono dificil:</p>
+                      <p class="card-compensacion-seccion">Bono difícil:</p>
                     </div>
                     <div class="col-6 flex justify-content-start p-0">
                       <p
@@ -137,16 +137,18 @@
                       <p class="card-compensacion-seccion">Acceso a crédito:</p>
                     </div>
                     <div class="col-6 flex justify-content-start p-0">
-                      <p class="card-compensacion-seccion">{{ ofertaSeleccionada.accesoCredito ? 'Si' : 'No' }}</p>
+                      <p class="card-compensacion-seccion">{{ ofertaSeleccionada.accesoCredito ? 'Sí' : 'No' }}</p>
                     </div>
                   </div>
+                  @if (ofertaSeleccionada.accesoCredito) {
+                    @if ( ofertaSeleccionada.creditoAutomotriz ) {
                   <div class="flex justify-content-between p-0 mt-1">
                     <div class="col-6 flex justify-content-start p-0">
                       <p class="card-compensacion-seccion">Crédito automotriz:</p>
                     </div>
                     <div class="col-6 flex justify-content-start p-0">
                       <p class="card-compensacion-seccion">Monto máx {{ ofertaSeleccionada.creditoAutomotriz }}
-                        @if (ofertaSeleccionada.creditoAutomotriz) {
+                      
                           <i class="pi pi-question-circle ms-2" style=" font-size: 1rem;" tooltipPosition="top" [pTooltip]="tooltipContent"></i>
                           <ng-template #tooltipContent>
                             <div class="flex items-center info-monto">
@@ -155,10 +157,12 @@
                           </ng-template>
 
 
-                        }
+                        
                       </p>
                     </div>
                   </div>
+                }
+                @if ( ofertaSeleccionada.creditoHipotecario ) {
                   <div class="flex justify-content-between p-0 mt-1">
                     <div class="col-6 flex justify-content-start p-0">
                       <p class="card-compensacion-seccion">Crédito hipotecario:</p>
@@ -177,6 +181,8 @@
                       </p>
                     </div>
                   </div>
+                }
+                }
                 </div>
               </div>
             </p-card>
@@ -197,7 +203,7 @@
             <p-image [src]="ref + mapaRef" alt="Image" width="380"
                     height="460"/>
           </div>
-          <div class="col-12 md:col-6   pl-4 justify-content-center " >
+          <div class="col-12 md:col-6   pl-4 justify-content-center ">
             <p-carousel 
               styleClass="carousel slide"
               [value]="imgCarrusel"

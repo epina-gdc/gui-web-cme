@@ -260,7 +260,7 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe((value) => {
         this.formRegistro.get('estadoNacimiento')?.disable()
         this.formRegistro.get('estadoNacimiento')?.reset();
-        if (value.value == 103) {
+        if (value?.value == 103) {
           this.formRegistro.get('estadoNacimiento')?.enable()
         }
       }
