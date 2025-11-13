@@ -9,7 +9,7 @@
       </div>
     </p-card>
   </div>
-  <div class="col-fixed min-h-full" style="width:260px">
+  <div class="col-fixed min-h-full oferta-laboral-tarjetas" style="width:260px">
     <p-card class="empty-border" styleClass="min-h-full">
       <div class="flex flex-column">
         <p class="seccion-menu-titulo mb-2">Oferta laboral</p>
@@ -168,9 +168,10 @@
 
 
 
-<p-drawer [(visible)]="visible" header="Drawer">
+<p-drawer appendTo="body" blockScroll="true" [(visible)]="visible" closable="false">
+  
   <div class="flex flex-column">
-    <p class="seccion-menu-titulo mb-2">Oferta laboral</p>
+    <p class="seccion-menu-titulo m-2 mb-4">Oferta laboral</p>
     <div class="flex flex-column flex-wrap">
       <ul class="m-0 p-0 list-none p-1 flex flex-column gap-2 w-full">
         @for (item of data; track item.id) {
@@ -200,3 +201,9 @@
     </div>
   </div>
 </p-drawer>
+@if (visible) {
+  <span 
+    class="custom-close" 
+    (click)="visible = false">
+  </span>
+}

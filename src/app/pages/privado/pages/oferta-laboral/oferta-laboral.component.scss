@@ -118,9 +118,44 @@
         }
       }
     }
+
+    .oferta-laboral-tarjetas{
+      display: none;
+    }
   }
 
   :host ::ng-deep .p-paginator-page-selected{
     background: #59d0a9;
   }
+  .custom-close {
+    position: fixed;       
+    top: 100px;
+    left: 90%;           
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    z-index: 2000;         
+  }
+  
+  .custom-close::before,
+  .custom-close::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 55%;
+    width: 2px;
+    height: 24px;
+    background-color: #ffffff;
+    transform-origin: center;
+  }
+  
+  .custom-close::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  
+  .custom-close::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+  
+  
 }
