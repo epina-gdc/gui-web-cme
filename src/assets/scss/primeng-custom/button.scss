@@ -10,7 +10,8 @@
     --p-rating-icon-active-color: #cbaf59;
     --p-rating-icon-color: #cbaf59;
     --p-badge-warn-background: #ffccac;
-    --p-badge-warn-color: #8e3c08;
+    --p-button-outlined-warn-color: #e9080c;
+    --p-button-outlined-warn-border-color: #e9080c;
   }
 
 
@@ -83,4 +84,20 @@
     border-radius: 50%;
   }
 
+  .p-button-outlined.p-button-warn {
+    border-color: var(--p-button-outlined-warn-border-color);
+    color: var(--p-button-outlined-warn-color);
+  }
+
+  .p-button-text.p-button-warn {
+    background: transparent;
+    border-color: transparent;
+    color: var(--p-button-text-warn-color);
+  }
+
+  .p-button-outlined.p-button-warn:not(:disabled):hover {
+    background: var(--p-button-outlined-warn-color);
+    border-color: var(--p-button-outlined-warn-border-color);
+    color: var(--gob-mx-base-blanco);
+  }
 }
