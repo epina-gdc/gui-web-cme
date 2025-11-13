@@ -141,6 +141,7 @@ export class InicioComponent extends GeneralComponent {
   institucionSeleccionada = true;
 
   steps = [
+
     { label: 'Información Personal', active: false },
     { label: 'Documentos de escolaridad', active: false },
     { label: 'Oferta laboral', active: false },
@@ -278,7 +279,11 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.get('pais')?.valueChanges.subscribe(value => this.obtenerEstadoPorPais(value));
     this.formRegistro.get('estado')?.valueChanges.subscribe(value => this.obtenerMunicipioPorEstado(value));
     //this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerAlcaldiaPorMunicipio(value));
-    this.formZonaInteres.get('ooad')?.valueChanges.subscribe(value => this.obtenerZonasPorMunicipio(value))
+    this.formZonaInteres.get('ooad')?.valueChanges.subscribe(value => {
+        this.zonas = [];
+        this.obtenerZonasPorMunicipio(value);
+      }
+    )
     this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe((value) => {
       this.formRegistro.get('estadoNacimiento')?.disable()
       this.formRegistro.get('estadoNacimiento')?.reset();
@@ -483,6 +488,10 @@ export class InicioComponent extends GeneralComponent {
     this.catalogoService.getLstZonas(municipio).subscribe({
       next: (valor) => {
         this.zonas = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'cveZona');
+      },
+      error: ()=> {
+        this.zonas = [];
+        console.log('Ocurrio un error con la búsqueda de zonas');
       }
     });
   }
@@ -1008,6 +1017,7 @@ export class InicioComponent extends GeneralComponent {
         };
 
         // Se Guarda la referencia de la foto en la Convocatoria
+
         return this._ConvocatoriaService.guardarFoto(datosF);
       }),
 
@@ -1022,6 +1032,7 @@ export class InicioComponent extends GeneralComponent {
       // Se ejecuta solo si el pipe se completó sin lanzar un error fatal
       next: (data: ResponseGeneral | null) => {
         // Verificamos si el flujo se detuvo por catchError (que devuelve null)
+
         if (data?.exito) {
           this.blnFotoGuardada = true;
           this._alertServices.exito(data.mensaje);
@@ -1029,8 +1040,11 @@ export class InicioComponent extends GeneralComponent {
         } else if (data && !data.exito) {
           this.blnFotoGuardada = false;
           this._alertServices.error(data.mensaje);
+        } else {
+          this.blnFotoGuardada = false;
+          this.defaultFile = undefined;
+          this.selectFile = undefined;
         }
-        // Si data es null, el error ya fue manejado en catchError
       }
     });
   }
@@ -1067,8 +1081,6 @@ export class InicioComponent extends GeneralComponent {
 
 
   onFileSelected($event: any): void {
-    
-    
     if ($event.length == 0) {
       this._alertServices.alerta('El peso del archivo excede al permitido.');
       return;
@@ -1364,7 +1376,7 @@ this.blnOcultar = true;
     }
 
     this.limpiarDocumentoEspecialidad();
-    debugger
+
     const solicitud: SolicitudGuardarDocumentacion = this.generarSolicitudGuardarDocumentacion();
     if (finalizarRegistro) {
       this.finalizarRegistro(solicitud);
