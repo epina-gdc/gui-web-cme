@@ -272,7 +272,11 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.get('pais')?.valueChanges.subscribe(value => this.obtenerEstadoPorPais(value));
     this.formRegistro.get('estado')?.valueChanges.subscribe(value => this.obtenerMunicipioPorEstado(value));
     //this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerAlcaldiaPorMunicipio(value));
-    this.formZonaInteres.get('ooad')?.valueChanges.subscribe(value => this.obtenerZonasPorMunicipio(value))
+    this.formZonaInteres.get('ooad')?.valueChanges.subscribe(value => {
+        this.zonas = [];
+        this.obtenerZonasPorMunicipio(value);
+      }
+    )
     this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe((value) => {
         this.formRegistro.get('estadoNacimiento')?.disable()
         this.formRegistro.get('estadoNacimiento')?.reset();
@@ -477,6 +481,10 @@ export class InicioComponent extends GeneralComponent {
     this.catalogoService.getLstZonas(municipio).subscribe({
       next: (valor) => {
         this.zonas = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'cveZona');
+      },
+      error: ()=> {
+        this.zonas = [];
+        console.log('Ocurrio un error con la búsqueda de zonas');
       }
     });
   }
