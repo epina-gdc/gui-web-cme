@@ -118,12 +118,11 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
     if (this.config?.data) {
       this.ofertaSeleccionada = this.config.data;
 
-      this.mapaRef = this.config.data.ref[0].respuesta.mapaSvg.refGuid;
+      this.mapaRef = this.config.data.ref[0].respuesta.mapaSvg?.refGuid;
       this.imgCarrusel = this.config.data.ref[0].respuesta.imagenesPdf;
       this.urlPDF1 = this.config.data.ref[0].respuesta.docPdf;
       this.urlPDF2 = this.config.data.ref[0].respuesta.sedesPdf;
-      this.pdfSrcSede = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.config.data.ref[1]));
-      //this.sedes = this.config.data.ref.respuesta.sedesPdf.refGuid;
+      if(this.config.data.ref[1])this.pdfSrcSede = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.config.data.ref[1]));
 
     }
     const nuevoEstado = {

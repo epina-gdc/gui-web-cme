@@ -60,3 +60,14 @@
     height: 460px !important;
 
 }
+
+
+
+@media screen and (max-width: 765px) {
+  .header-tab-oferta{
+    i{
+      display: none;
+    }
+  }
+}
+
