@@ -225,7 +225,7 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
   }
 
   public btnDescargar(tipoDocumento: number) {
-    let refGuid;
+    let refGuid = null;
     let nombre = '';
     if (tipoDocumento == 1) {
       refGuid = this.urlPDF1.refGuid;
@@ -236,22 +236,25 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
       nombre = 'sedes.pdf';
     }
 
+    if (refGuid != null) {
 
-    this.documentoService.obtenerDocumento(refGuid).subscribe({
-      next: (response: any) => {
-        const blob = new Blob([response], {type: 'application/pdf'});
+      return this.documentoService.obtenerDocumento(refGuid).subscribe({
+        next: (response: any) => {
+          const blob = new Blob([response], {type: 'application/pdf'});
 
-        const a = document.createElement('a');
-        const objectUrl = URL.createObjectURL(blob);
-        a.href = objectUrl;
-        a.download = nombre + '.pdf';
-        a.click();
-        URL.revokeObjectURL(objectUrl);
-      },
-      error: (err: any) => {
-        console.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO, err);
-        this._alertServices.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO);
-      }
-    });
+          const a = document.createElement('a');
+          const objectUrl = URL.createObjectURL(blob);
+          a.href = objectUrl;
+          a.download = nombre + '.pdf';
+          a.click();
+          URL.revokeObjectURL(objectUrl);
+        },
+        error: (err: any) => {
+          console.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO, err);
+          this._alertServices.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO);
+        }
+      });
+    }
+    return this._alertServices.alerta("No se cuenta con datos para obtener la información");
   }
 }
