@@ -229,6 +229,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
   private isPasaporte() {
+    this.usuarioValidado = true;
     this.getCatalogoPais();
     this.clearCampos();
     this.form.controls['modalidad'].setValidators([Validators.required]);
