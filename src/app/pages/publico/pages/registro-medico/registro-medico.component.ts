@@ -707,7 +707,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
 private validarMatricula() {
-    debugger
+
     let datos = {
       matricula: this.medico.cveMatricula,
       idPerfil: this.medico.perfil.idPerfil

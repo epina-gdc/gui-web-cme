@@ -1011,6 +1011,7 @@ export class InicioComponent extends GeneralComponent {
         };
 
         // Se Guarda la referencia de la foto en la Convocatoria
+
         return this._ConvocatoriaService.guardarFoto(datosF);
       }),
 
@@ -1025,6 +1026,7 @@ export class InicioComponent extends GeneralComponent {
       // Se ejecuta solo si el pipe se completó sin lanzar un error fatal
       next: (data: ResponseGeneral | null) => {
         // Verificamos si el flujo se detuvo por catchError (que devuelve null)
+
         if (data?.exito) {
           this.blnFotoGuardada = true;
           this._alertServices.exito(data.mensaje);
@@ -1032,8 +1034,11 @@ export class InicioComponent extends GeneralComponent {
         } else if (data && !data.exito) {
           this.blnFotoGuardada = false;
           this._alertServices.error(data.mensaje);
+        } else {
+          this.blnFotoGuardada = false;
+          this.defaultFile = undefined;
+          this.selectFile = undefined;
         }
-        // Si data es null, el error ya fue manejado en catchError
       }
     });
   }
@@ -1069,6 +1074,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   onFileSelected($event: any): void {
+
     if ($event.length == 0) {
       this._alertServices.alerta('El peso del archivo excede al permitido.');
       return;
@@ -1329,7 +1335,7 @@ export class InicioComponent extends GeneralComponent {
     }
 
     this.limpiarDocumentoEspecialidad();
-    debugger
+
     const solicitud: SolicitudGuardarDocumentacion = this.generarSolicitudGuardarDocumentacion();
     if (finalizarRegistro) {
       this.finalizarRegistro(solicitud);
