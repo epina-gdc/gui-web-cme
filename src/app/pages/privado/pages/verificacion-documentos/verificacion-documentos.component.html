@@ -129,12 +129,12 @@
 
 <p-popover #op (onHide)="documentoSeleccionado == null">
   <ng-template #content>
-    <div class="flex align-items-center boton-descargar cursor-pointer"
+    <div class="flex align-items-center boton-descargar cursor-pointer "
          (click)="irDetalleDocumentacion(documentoSeleccionado)">
       <i class="icon pi pi-eye" [style]="{ 'font-size': '1.2rem', color: '#a9c9f8'}"></i>
       <span class="ms-2 acciones-tabla">Consultar documentos</span>
     </div>
-    <div class="flex align-items-center boton-descargar cursor-pointer"
+    <div class="flex align-items-center boton-descargar cursor-pointer margin-top-8"
          (click)="imprimirDocumento(documentoSeleccionado)" *ngIf="documentoSeleccionado && (documentoSeleccionado.idEstatusValidacion === 3 || documentoSeleccionado.idEstatusValidacion === 4)">
       <i class="icon pi pi-print" [style]="{ 'font-size': '1.2rem', color: '#a9c9f8'}"></i>
       <span class="ms-2 acciones-tabla">Imprimir documentos</span>
