@@ -23,6 +23,7 @@ import { VerificacionDocsExcelInterface } from '@models/verificacion-docs-excel.
 import { saveAs } from 'file-saver';
 import { DictamenRespuesta } from '@models/dictamen-respuesta.interface';
 import { AdjuntoOpinion, OpinionTecnicaRespuesta } from '@models/opnion-tecnia-respuesta.interface';
+import { AlertService } from '@services/alert.service';
 
 
 @Component({
@@ -50,6 +51,7 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
   dummiesTabla = DUMMIE_TABLA_VERIFICACION_DOCUMENTOS;
 
   verificacionDocsService = inject(VerificacionDocsService);
+  alertaService: AlertService = inject(AlertService);
 
 
   filtroForm!: FormGroup;
@@ -137,21 +139,20 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
   descargarExcelHistoricoDocs(){
     this.verificacionDocsService.descargaExcelHistoricoDocs(this.filtrosExcel()).subscribe({
       
-      // La respuesta (excelBlob) es ahora el archivo binario (Blob)
+      
       next: (excelBlob: Blob) => {
         
         const nombreArchivo = 'DATOS_VERIFICACION_DOCUMENTOS.xlsx'; 
         
-        // 1. Usar el Blob directamente para la descarga (¡Adiós Base64 y atob!)
+        
         saveAs(excelBlob, nombreArchivo); 
 
-        // Las siguientes líneas ya no son relevantes ya que el servicio solo descarga el Excel.
-        // this.usuarioDocumentos.set(...); 
-        // this.totalElementos = ...;
+        
       },
       error: (error) => {
         console.error('Error al descargar el Excel:', error);
-        // ...
+        this.alertaService.error('Error al descargar el Excel');
+        
       }
     });
 }
@@ -208,10 +209,10 @@ descargaOpinion(idUsuario: number) {
     this.verificacionDocsService.descargarOpinion(idUsuario).subscribe({
         next: (respuesta: OpinionTecnicaRespuesta) => {
             
-            // 1. Validar la respuesta exitosa y que el arreglo no esté vacío
+         
             if (respuesta.exito && respuesta.respuesta && respuesta.respuesta.length > 0) {
                 
-                // 2. Iterar sobre cada adjunto en el arreglo 'respuesta'
+                
                 respuesta.respuesta.forEach((adjunto: AdjuntoOpinion) => {
                     
                     if (adjunto.adjuntoBase64) {
@@ -236,12 +237,14 @@ descargaOpinion(idUsuario: number) {
             } else {
                 // Manejar el caso donde 'exito' es false o no hay adjuntos
                 const mensaje = respuesta.mensaje || 'No se encontraron opiniones técnicas para descargar.';
+                this.alertaService.error('Error al imprimir los documentos');
                 console.error('Error o falta de datos:', mensaje);
                 // Mostrar notificación al usuario.
             }
         },
         error: (error) => {
             // Manejar errores de conexión o HTTP
+            this.alertaService.error('Error al imprimir los documentos');
             console.error('Error de conexión o HTTP al obtener las opiniones:', error);
         }
     });
@@ -280,12 +283,14 @@ descargaOpinion(idUsuario: number) {
 
             } else {
                 // El backend indicó que la operación falló (exito: false)
+                this.alertaService.error('Error al imprimir los documentos');
                 console.error('Error del servicio:', respuesta.mensaje);
                 // Mostrar notificación al usuario con el mensaje del backend
             }
         },
         error: (error) => {
             // Manejar errores de conexión o HTTP
+            this.alertaService.error('Error al imprimir los documentos');
             console.error('Error de conexión o HTTP al obtener el dictamen:', error);
             // Mostrar notificación de error genérico.
         }
@@ -294,10 +299,10 @@ descargaOpinion(idUsuario: number) {
 
 private b64toBlob(b64Data: string, contentType: string = '', sliceSize: number = 512): Blob {
     
-    // 1. Limpieza y manejo del prefijo
+   
     let base64 = b64Data.split(',')[1] ? b64Data.split(',')[1] : b64Data;
     
-    // 2. LIMPIEZA AGRESIVA: 
+    
     // Eliminar CUALQUIER carácter que NO sea una letra/número válido para Base64, 
     // incluyendo espacios, saltos de línea, y caracteres de control.
     // Base64 válido solo incluye A-Z, a-z, 0-9, +, / y = (relleno).
