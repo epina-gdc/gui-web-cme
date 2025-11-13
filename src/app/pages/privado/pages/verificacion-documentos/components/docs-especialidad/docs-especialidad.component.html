@@ -63,6 +63,7 @@
                   <label [for]="option.value + item.cveEspecialidad"
                          class="select-option-doc lg:ml-4 mb-0">{{ option.label }}</label>
                   <p-radioButton [inputId]="option.value + item.cveEspecialidad"
+                                 (change)="estatusRequisitoCambio(getEstatusGroup(i), item)"
                                  class="flex align-items-center"
                                  [value]="option.value"
                                  [formControl]="getFormControl(getEstatusGroup(i), 'idEstatusVerificacion')"
@@ -123,3 +124,24 @@
     <span class="loader">Cargando documento</span>
   }
 </ng-template>
+
+
+<p-dialog
+  [(visible)]="confCambioEstatus"
+  [modal]="true"
+  [closable]="true"
+  [style]="{ width: '50%', padding: '0 30px' }"
+  [draggable]="false"
+  [resizable]="false"
+  [showHeader]="true">
+
+  <div class="flex justify-content-center mb-5">
+    <p>¿Está seguro de cambiar el estatus del médico a <strong>'Cumple con Requisitos?'</strong></p>
+  </div>
+
+    <div class="flex justify-content-end">
+      <p-button variant="outlined" label="Cancelar cambio"severity="success"  (onClick)="cambiarEstatus(false)" class="me-3"/>
+      <p-button variant="outlined" label="Sí, cambiar estatus" (onClick)="cambiarEstatus(true)"/>
+      
+    </div>
+</p-dialog>
