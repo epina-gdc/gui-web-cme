@@ -20,6 +20,9 @@
             <p class="field-label">Fotografía</p>
             <upload-photo [disableUpload]="estatusPendienteDocumentacion" (fileSelected)="onFileSelected($event)"
                           [existingFile]="defaultFile" class="mt-6"/>
+                          @if(blnOcultar){
+                          <img *ngIf="imageUrl" [src]="imageUrl" #myImage (load)="onImageLoad(myImage)" width="1" height="1"/>
+                          }
             <p class="label-obligatorio">Obligatorio</p>
           </article>
           <article class="lg:col-9 col-12 flex flex-row flex-wrap">
