@@ -26,6 +26,8 @@ import {PreguntasFrecuentes} from '@models/preguntas-frecuentes.interface';
 import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
 import {TableLazyLoadEvent} from 'primeng/table';
+import { DrawerModule } from 'primeng/drawer';
+import { ClickService } from '@services/click.service';
 
 interface PageEvent {
   first: number;
@@ -46,7 +48,8 @@ interface PageEvent {
     NgClass,
     Paginator,
     PrimeTemplate,
-    CommonModule
+    CommonModule,
+    DrawerModule
   ],
   templateUrl: './oferta-laboral.component.html',
   styleUrl: './oferta-laboral.component.scss',
@@ -54,8 +57,11 @@ interface PageEvent {
 })
 export class OfertaLaboralComponent extends GeneralComponent implements OnInit, OnDestroy {
 
+  clickService = inject(ClickService);
   userService = inject(UserService);
   userData: SesionUser | null = null;
+
+  subscription!: Subscription;
 
   first: number = 0;
   rows: number = 10;
@@ -85,6 +91,8 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
 
   private favoritosSubscription: Subscription = new Subscription();
   private ofertasSubscription: Subscription = new Subscription();
+
+  visible: boolean = false;
 
 
   constructor(
@@ -164,8 +172,6 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
         let pdfUbicacion;
         referencias.respuesta.sedesPdf ? pdfSede = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.sedesPdf.refGuid) : pdfSede = of(null);
         referencias.respuesta.docPdf ? pdfUbicacion = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.docPdf.refGuid) : pdfUbicacion = of(null);
-        //pdfSede = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.sedesPdf.refGuid);
-        //pdfUbicacion = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.docPdf.refGuid);
         return forkJoin([of(referencias),pdfSede,pdfUbicacion])
         }
       ),
@@ -414,6 +420,10 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
 
   ngOnInit() {
     this.userService.userData$.subscribe(user => this.userData = user);
+    this.subscription = this.clickService.clic$.subscribe(() => {
+      this.visible = true;
+    });
+
     this.obtenerTotalFavoritos();
     this.favoritosSubscription = this.estadoOfertaService.favoritosActuales$.subscribe(
       (numeroFavoritos: number) => {
@@ -432,6 +442,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   ngOnDestroy() {
     this.favoritosSubscription.unsubscribe();
     this.ofertasSubscription.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
 
