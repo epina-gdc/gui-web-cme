@@ -17,6 +17,7 @@ import {AlertService} from '@services/alert.service';
 export class CatalogosGeneralesService {
   private readonly VERSION_API: string = '/v1/';
   private readonly serverEndPointURLCatalogos = `${environment.api.apiCatalogos + this.VERSION_API + 'catalogos'}`;
+  private readonly serverEndPointURLCatalogos1 = `${environment.api.apiConvocatoria  + '/catalogos'}`;
   private readonly serverEndPointURLVerificacionDocs = `${environment.api.apiConvocatoria + '/verificacion/catalogos'}`;
   protected _alertService: AlertService;
   protected http: HttpClient;
@@ -185,6 +186,44 @@ export class CatalogosGeneralesService {
 
   getLstDiasSemana(): Observable<HttpRespuesta<any>> {
     return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/diasSemana', {headers: this.header}).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<any>) => {
+        return response;
+      })
+    );
+  }
+
+
+  getLstRegimen(): Observable<HttpRespuesta<any>> {
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos1 + '/regimen', {headers: this.header}).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<any>) => {
+        return response;
+      })
+    );
+  }
+
+  getLstBono(): Observable<HttpRespuesta<any>> {
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos1 + '/bono-dificil-cobertura', {headers: this.header}).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<any>) => {
+        return response;
+      })
+    );
+  }
+
+  getLstPreguntas(): Observable<HttpRespuesta<any>> {
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos1 + '/preguntas-frecuentes', {headers: this.header}).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<any>) => {
+        return response;
+      })
+    );
+  }
+
+
+  getDocumentos(ooad: string): Observable<any> {
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos1 + '/documentos-ooad/'+ ooad, {headers: this.header}).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;

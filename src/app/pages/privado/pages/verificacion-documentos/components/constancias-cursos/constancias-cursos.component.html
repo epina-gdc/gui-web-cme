@@ -1,21 +1,53 @@
-<div class="flex ">
-  <div class="archivos col-6 pt-3">
-    @for (doc of documentacion; track doc.idDocumento) {
-      <div class="flex align-items-center px-2 mb-4" [ngClass]="{'select': tabActive() === doc.idDocumento }"
-       (click)="docSeleccionado(doc.idDocumento)">
-        <i class="cme-file" style="font-size: 2rem"></i>
-        <p class="ms-3 texto-campo">{{ doc.nombreDocumento }}</p>
+<div class="flex flex-wrap">
+
+  @if (docsConstancias.length === 0) {
+    <div class="flex p-4 col-12 justify-content-center align-items-center">
+      <span class="subtitle-previsualizacion">No se han cargado constancias</span>
+    </div>
+
+  } @else {
+    <div class="archivos  col-12 lg:col-6 pt-3">
+      @for (doc of docsConstancias; track doc.idDocumentoConstancia) {
+        <div class="flex align-items-center px-2 mb-4"
+             [ngClass]="{'select': tabActive() === doc.idDocumentoConstancia }"
+             (click)="docSeleccionado(doc.idDocumentoConstancia,doc.documento.refGuid, doc.documento.refExtension)">
+          <i class="cme-file" style="font-size: 2rem"></i>
+          <p class="ms-3 texto-campo">{{ doc.refConstancia + ': ' + doc.documento.refNombre }}</p>
+        </div>
+
+        @if (isMobileView && tabActive() === doc.idDocumentoConstancia) {
+          <ng-container [ngTemplateOutlet]="pdf_doc"></ng-container>
+        }
+      }
+    </div>
+
+    @if (!isMobileView) {
+      <div class="flex  col-12 lg:col-6 p-4 flex-column archivos-previsualizacion">
+        @if (docsConstancias.length !== 0) {
+          <span class="subtitle-previsualizacion">Previsualización</span>
+        }
+
+        @if (tabActive() === 0) {
+          <p>{{ _Mensajes.MSJ_SELECCIONAR_DOCUMENTO }}</p>
+        } @else {
+          <ng-container [ngTemplateOutlet]="pdf_doc"></ng-container>
+        }
       </div>
     }
-  </div>
 
-  <div class="flex flex-column archivos-previsualizacion p-4">
-    <span class="subtitle-previsualizacion">Previsualización</span>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
-                    ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
-                    nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit
-                    anim id est laborum.
-  </div>
+  }
 
 </div>
+
+
+<ng-template #pdf_doc>
+  @if (pdfSrc) {
+    <div style="height: 80vh;" class="my-4">
+      <iframe width="100%" height="100%" [src]="pdfSrc" frameborder="0">
+        <p>{{ _Mensajes.MSJ_NOT_SUPPORT_IFRAMES }}</p>
+      </iframe>
+    </div>
+  } @else {
+    <span class="loader">{{ _Mensajes.MSJ_CARGANDO_DOCUMENTO }}</span>
+  }
+</ng-template>

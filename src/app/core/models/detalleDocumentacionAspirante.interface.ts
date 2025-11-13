@@ -24,7 +24,12 @@ export interface DetalleDocumentacionEstatusVerificacion {
 }
 
 export interface DetalleDocumentacionEvaluacionEspecialidad {
-  // Estructura a definir si se llega a poblar
+  idEspecialidadEvaluacion: number,
+  estatusVerificacion: {
+    idEstatusVerificacion: number,
+    desEstatus: string
+  },
+  indActivo: 1
 }
 
 export interface DetalleDocumentacionTipoDocumentoObligatorio {
@@ -43,6 +48,9 @@ export interface DetalleDocumentacionDatosPersonales {
   especialidad: string;
   refEmail: string;
   nombreCompleto: string;
+  nombre: string,
+  apellidoPaterno: string,
+  apellidoMaterno: string,
   refFolio: string | null;
   perfil: DetalleDocumentacionPerfil;
 }
@@ -72,7 +80,7 @@ export interface DetalleDocumentacionDocumentoEspecialidad {
   idDocumentoEspecialidad: number;
   tipoDocumentoEspecialidad: DetalleDocumentacionTipoDocumentoEspecialidad;
   documento: DetalleDocumentacionDocumento;
-  indCubre: string | null;
+  indCubre: boolean | null;
 }
 
 export interface DetalleDocumentacionEspecialidadDocumento {
