@@ -66,6 +66,13 @@ export class VerificacionDocsService {
 
     let parametros = new HttpParams();
     // ... (construcción de parámetros) ...
+    Object.entries(filtros).forEach(
+      ([key, valor]) => {
+        if (valor !== null && valor !== undefined && valor !== '') {
+          parametros = parametros.set(key, valor.toString());
+        }
+      });
+
 
     const ruta = `${this.serverVerificacionDocs}/verificacion/consultaVerificacionDocumentosHistorico`;
     
