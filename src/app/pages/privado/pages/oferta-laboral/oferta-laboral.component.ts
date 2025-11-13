@@ -161,9 +161,10 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     this._CatalogoGenService.getDocumentos(oportunidad.cveOoad!)
     .pipe(
       switchMap(referencias =>  {
+        debugger
         let pdfSede;
         let pdfUbicacion;
-        referencias.respuesta.sedesPdf ? pdfSede = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.sedesPdf.refGuid) : pdfSede = of(null);
+        referencias.respuesta.sedesPdf ? pdfSede = this.documentoService.obtenerDocSede(referencias.respuesta.sedesPdf.refGuid) : pdfSede = of(null);
         referencias.respuesta.docPdf ? pdfUbicacion = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.docPdf.refGuid) : pdfUbicacion = of(null);
         return forkJoin([of(referencias),pdfSede,pdfUbicacion])
         }
@@ -188,7 +189,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
           styleClass: 'oferta-detail'
         });
       }
-    }); 
+    });
   }
 
 
