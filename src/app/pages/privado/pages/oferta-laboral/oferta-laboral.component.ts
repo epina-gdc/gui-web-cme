@@ -29,13 +29,6 @@ import {TableLazyLoadEvent} from 'primeng/table';
 import { DrawerModule } from 'primeng/drawer';
 import { ClickService } from '@services/click.service';
 
-interface PageEvent {
-  first: number;
-  rows: number;
-  page: number;
-  pageCount: number;
-}
-
 @Component({
   selector: 'app-oferta-laboral',
   imports: [
@@ -429,6 +422,11 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       (numeroFavoritos: number) => {
         const favoritos = this.data[1];
         favoritos.price = numeroFavoritos;
+        if (this.activeTab() === 0) {
+          this.consultarPlazas();
+        } else {
+          this.consultarFavoritos();
+        }
       }
     );
 

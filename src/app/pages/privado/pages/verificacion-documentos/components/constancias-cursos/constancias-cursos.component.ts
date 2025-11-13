@@ -1,12 +1,12 @@
-import {NgClass} from '@angular/common';
-import {Component, Input, signal, WritableSignal} from '@angular/core';
+import {NgClass, NgTemplateOutlet} from '@angular/common';
+import {Component, HostListener, Input, signal, WritableSignal} from '@angular/core';
 import {GeneralComponent} from '@components/general.component';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {DetalleDocumentacionDocumentoConstancia} from '@models/detalleDocumentacionAspirante.interface';
 
 @Component({
   selector: 'app-constancias-cursos',
-  imports: [NgClass],
+  imports: [NgClass, NgTemplateOutlet],
   templateUrl: './constancias-cursos.component.html',
   styleUrl: './constancias-cursos.component.scss'
 })
@@ -17,12 +17,26 @@ export class ConstanciasCursosComponent extends GeneralComponent {
   pdfSrc: SafeResourceUrl | undefined;
   blnShowImg!: boolean;
 
+  private readonly MOBILE_BREAKPOINT = 984;
+
+  isMobileView: boolean = false;
+
   constructor(
     private sanitizer: DomSanitizer
   ) {
     super();
     this.blnShowImg = false;
+    this.checkScreenSize();
+  }
 
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize(): void {
+    this.isMobileView = window.innerWidth < this.MOBILE_BREAKPOINT;
   }
 
   docSeleccionado(id: number, guid: string, extension: string) {

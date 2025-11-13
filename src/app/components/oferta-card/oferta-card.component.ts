@@ -1,4 +1,14 @@
-import {Component, EventEmitter, HostListener, inject, Input, OnInit, Output} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostListener,
+  inject,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import {Card} from 'primeng/card';
 import {Rating} from 'primeng/rating';
 import {FormsModule} from '@angular/forms';
@@ -22,7 +32,7 @@ import {TitleCasePipe} from '@angular/common';
   templateUrl: './oferta-card.component.html',
   styleUrl: './oferta-card.component.scss'
 })
-export class OfertaCardComponent implements OnInit {
+export class OfertaCardComponent implements OnInit, OnChanges {
   private readonly MOBILE_BREAKPOINT = 768;
 
   isMobileView: boolean = false;
@@ -88,6 +98,16 @@ export class OfertaCardComponent implements OnInit {
   ngOnInit() {
     this.userService.userData$.subscribe(user => this.userData = user);
     this.value = this.detalleOportunidad.esFavorita ? 1 : 0;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['detalleOportunidad']) {
+      const currentOportunidad = changes['detalleOportunidad'].currentValue;
+
+      if (currentOportunidad?.esFavorita !== 'undefined') {
+        this.value = currentOportunidad.esFavorita ? 1 : 0;
+      }
+    }
   }
 
   verMas(): void {
