@@ -7,8 +7,8 @@
     <p class="menu-nombre-sistema ms-3">Convocatoria para médicos especialistas</p>
   </div>
 
-  <div class="flex align-items-center">
-    <span class="usuario-menu pr-4 mr-6 text-overflow-ellipsis">
+  <div class="flex align-items-center margin-right-10">
+    <span class="usuario-menu pr-4 mr-6 text-overflow-ellipsis alinear-izquierda">
       {{ userData?.nomNombre }} {{ userData?.nomApellidoPaterno }} {{ userData?.nomApellidoMaterno }}
     </span>
     <p-speeddial [model]="items" direction="down" [transitionDelay]="80" class="absolute ajuste-avatar"
@@ -24,7 +24,7 @@
               <div class="flex align-items-center">
                 <i class="pi pi-user" style="font-size: 1.5rem; margin-right: 0.5rem;"></i>
                 <div class="ml-1">
-                  <p class="font-bold text-lg mb-0">
+                  <p class="font-bold text-lg mb-0 alinear-izquierda">
                     {{ userData?.nomNombre }} {{ userData?.nomApellidoPaterno }} {{ userData?.nomApellidoMaterno }}
                   </p>
                   @if (userData?.cveMatricula) {

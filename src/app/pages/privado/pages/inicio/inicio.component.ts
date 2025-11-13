@@ -141,7 +141,7 @@ export class InicioComponent extends GeneralComponent {
   institucionSeleccionada = true;
 
   steps = [
-    {label: 'Información Personal', active: false},
+    {label: 'Información personal', active: false},
     {label: 'Documentos de escolaridad', active: false},
     {label: 'Oferta laboral', active: false},
   ];
