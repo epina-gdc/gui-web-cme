@@ -55,6 +55,12 @@
   text-align-last: right;
 }
 
+:ng-deep.p-carousel-viewport {
+
+    height: 460px !important;
+
+}
+
 
 
 @media screen and (max-width: 765px) {

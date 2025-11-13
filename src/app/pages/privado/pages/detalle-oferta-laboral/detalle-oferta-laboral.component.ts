@@ -207,7 +207,7 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
       }
     ).subscribe({
       next: (respuesta) => {
-        this._alertServices.alerta("Exito");
+        this._alertServices.exito("Se agregó a favoritos");
         this.ofertaSeleccionada.esFavorita = true;
         this.value = 1;
         this.obtenerTotalFavoritos()
@@ -224,7 +224,7 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
       }
     ).subscribe({
       next: (respuesta) => {
-        this._alertServices.alerta("Exito");
+        this._alertServices.exito("Se eliminó de favoritos");
         this.value = 0;
         this.ofertaSeleccionada.esFavorita = false;
         this.obtenerTotalFavoritos();
