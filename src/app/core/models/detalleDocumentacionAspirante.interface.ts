@@ -48,6 +48,9 @@ export interface DetalleDocumentacionDatosPersonales {
   especialidad: string;
   refEmail: string;
   nombreCompleto: string;
+  nombre: string,
+  apellidoPaterno: string,
+  apellidoMaterno: string,
   refFolio: string | null;
   perfil: DetalleDocumentacionPerfil;
 }

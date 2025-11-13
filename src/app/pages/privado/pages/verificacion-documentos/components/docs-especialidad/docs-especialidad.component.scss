@@ -53,6 +53,7 @@
     font-style: normal;
     font-weight: 300;
     line-height: 120%; /* 16.8px */
+    margin-left: 1px;
   }
 }
 
@@ -67,7 +68,7 @@
     font-style: normal;
     font-weight: 400;
     line-height: 120%; /* 16.8px */
-
+    text-align: start;
   }
 }
 
@@ -98,4 +99,28 @@
     justify-content: start;
     margin-bottom: 0;
   }
+}
+
+.nombreDoc {
+  color: #40434E;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%; /* 16.8px */
+  text-align: start;
+}
+
+
+@media screen and (max-width: 350px) {
+
+  .nombreDoc {
+    font-size: 11px !important;
+  }
+
+}
+
+:host ::ng-deep .p-accordioncontent-content {
+  padding-left: 0;
+  padding-right: 0;
 }
