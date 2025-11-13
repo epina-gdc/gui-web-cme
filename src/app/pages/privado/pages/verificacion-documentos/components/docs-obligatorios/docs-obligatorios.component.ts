@@ -1,12 +1,12 @@
-import {NgClass} from '@angular/common';
-import {Component, Input, signal, WritableSignal} from '@angular/core';
+import {NgClass, NgTemplateOutlet} from '@angular/common';
+import {Component, HostListener, Input, signal, WritableSignal} from '@angular/core';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {GeneralComponent} from '@components/general.component';
 import {DetalleDocumentacionDocumentoObligatorio} from '@models/detalleDocumentacionAspirante.interface';
 
 @Component({
   selector: 'app-docs-obligatorios',
-  imports: [NgClass],
+  imports: [NgClass, NgTemplateOutlet],
   templateUrl: './docs-obligatorios.component.html',
   styleUrl: './docs-obligatorios.component.scss'
 })
@@ -17,10 +17,24 @@ export class DocsObligatoriosComponent extends GeneralComponent {
 
   tabActive: WritableSignal<number> = signal(0);
 
+  private readonly MOBILE_BREAKPOINT = 984;
+
+  isMobileView: boolean = false;
+
   constructor(
-    private sanitizer: DomSanitizer
+    private readonly sanitizer: DomSanitizer
   ) {
     super();
+    this.checkScreenSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.checkScreenSize();
+  }
+
+  private checkScreenSize(): void {
+    this.isMobileView = window.innerWidth < this.MOBILE_BREAKPOINT;
   }
 
   docSeleccionado(id: number, guid: string) {

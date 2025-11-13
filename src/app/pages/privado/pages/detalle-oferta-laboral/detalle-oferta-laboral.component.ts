@@ -46,8 +46,7 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
   private readonly serverEndPointURLDocumento = environment.api.apiDocumentos;
   ref = `${this.serverEndPointURLDocumento}/v1/ooad-documentos/`;
 
-  valorFavoritos: number = 0;
-
+  value: number = 0;
   userService = inject(UserService);
   userData: SesionUser | null = null;
 
@@ -105,7 +104,7 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
   constructor(private readonly estadoOfertaService: EstadoOfertaService,
               private readonly config: DynamicDialogConfig,
               private readonly currencyPipe: CurrencyPipe,
-              private sanitizer: DomSanitizer
+              private readonly sanitizer: DomSanitizer
   ) {
     super();
   }
@@ -119,12 +118,11 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
     if (this.config?.data) {
       this.ofertaSeleccionada = this.config.data;
 
-      this.mapaRef = this.config.data.ref[0].respuesta.mapaSvg.refGuid;
+      this.mapaRef = this.config.data.ref[0].respuesta.mapaSvg?.refGuid;
       this.imgCarrusel = this.config.data.ref[0].respuesta.imagenesPdf;
       this.urlPDF1 = this.config.data.ref[0].respuesta.docPdf;
       this.urlPDF2 = this.config.data.ref[0].respuesta.sedesPdf;
-      this.pdfSrcSede = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.config.data.ref[1]));
-      //this.sedes = this.config.data.ref.respuesta.sedesPdf.refGuid;
+      if(this.config.data.ref[1])this.pdfSrcSede = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(this.config.data.ref[1]));
 
     }
     const nuevoEstado = {
@@ -135,45 +133,6 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
     this.estadoOfertaService.actualizarEstado(nuevoEstado);
     this.value = this.ofertaSeleccionada.esFavorita ? 1 : 0;
   }
-
-
-  value: any;
-  products: any[] = [{
-    id: '1000',
-    code: 'f230fh0g3',
-    name: 'Bamboo Watch',
-    description: 'Product Description',
-    image: 'bamboo-watch.jpg',
-    price: 65,
-    category: 'Accessories',
-    quantity: 24,
-    inventoryStatus: 'INSTOCK',
-    rating: 5
-  },
-    {
-      id: '1001',
-      code: 'nvklal433',
-      name: 'Black Watch',
-      description: 'Product Description',
-      image: 'black-watch.jpg',
-      price: 72,
-      category: 'Accessories',
-      quantity: 61,
-      inventoryStatus: 'OUTOFSTOCK',
-      rating: 4
-    },
-    {
-      id: '1002',
-      code: 'zz21cz3c1',
-      name: 'Blue Band',
-      description: 'Product Description',
-      image: 'blue-band.jpg',
-      price: 79,
-      category: 'Fitness',
-      quantity: 2,
-      inventoryStatus: 'LOWSTOCK',
-      rating: 3
-    }];
 
   cambioDatosHeader(step: number): void {
 
@@ -214,7 +173,7 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
     });
   }
 
-  eliminarFavorito() {
+  quitarFavorito() {
     this._ConvocatoriaService.agregarFavorito(
       {
         idUsuario: this.userData!.idUsuario,
@@ -265,7 +224,7 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
   }
 
   public btnDescargar(tipoDocumento: number) {
-    let refGuid;
+    let refGuid = null;
     let nombre = '';
     if (tipoDocumento == 1) {
       refGuid = this.urlPDF1.refGuid;
@@ -276,22 +235,25 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
       nombre = 'sedes.pdf';
     }
 
+    if (refGuid != null) {
 
-    this.documentoService.obtenerDocumento(refGuid).subscribe({
-      next: (response: any) => {
-        const blob = new Blob([response], {type: 'application/pdf'});
+      return this.documentoService.obtenerDocumento(refGuid).subscribe({
+        next: (response: any) => {
+          const blob = new Blob([response], {type: 'application/pdf'});
 
-        const a = document.createElement('a');
-        const objectUrl = URL.createObjectURL(blob);
-        a.href = objectUrl;
-        a.download = nombre + '.pdf';
-        a.click();
-        URL.revokeObjectURL(objectUrl);
-      },
-      error: (err: any) => {
-        console.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO, err);
-        this._alertServices.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO);
-      }
-    });
+          const a = document.createElement('a');
+          const objectUrl = URL.createObjectURL(blob);
+          a.href = objectUrl;
+          a.download = nombre + '.pdf';
+          a.click();
+          URL.revokeObjectURL(objectUrl);
+        },
+        error: (err: any) => {
+          console.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO, err);
+          this._alertServices.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO);
+        }
+      });
+    }
+    return this._alertServices.alerta("No se cuenta con datos para obtener la información");
   }
 }

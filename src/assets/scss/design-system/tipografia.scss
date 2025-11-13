@@ -96,12 +96,12 @@
 
 .menu-nombre-sistema {
   color: #374957;
-  text-align: right;
   font-feature-settings: 'liga' off, 'clig' off;
   font-size: 18px;
   font-style: normal;
   font-weight: 600;
   line-height: 120%; /* 21.6px */
+  text-align: start;
 }
 
 .label-medico {
@@ -348,6 +348,7 @@
   font-style: normal;
   font-weight: 600;
   line-height: 12px; /* 100% */
+  text-align: start;
 }
 
 .subtitle-previsualizacion {
@@ -356,6 +357,15 @@
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
+  line-height: 120%; /* 21.6px */
+}
+
+.info-monto{
+  color: #fff;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
   line-height: 120%; /* 21.6px */
 }
 
@@ -385,5 +395,19 @@
   .titulo-seccion {
     margin-top: 20px;
   }
+
+
 }
 
+@media screen and (max-width: 380px) {
+
+  .select-option-doc {
+    font-size: 10px;
+  }
+}
+
+
+.label-doc {
+  max-width: 54px;
+  white-space: nowrap;
+}

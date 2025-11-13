@@ -26,13 +26,8 @@ import {PreguntasFrecuentes} from '@models/preguntas-frecuentes.interface';
 import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
 import {TableLazyLoadEvent} from 'primeng/table';
-
-interface PageEvent {
-  first: number;
-  rows: number;
-  page: number;
-  pageCount: number;
-}
+import { DrawerModule } from 'primeng/drawer';
+import { ClickService } from '@services/click.service';
 
 @Component({
   selector: 'app-oferta-laboral',
@@ -46,7 +41,8 @@ interface PageEvent {
     NgClass,
     Paginator,
     PrimeTemplate,
-    CommonModule
+    CommonModule,
+    DrawerModule
   ],
   templateUrl: './oferta-laboral.component.html',
   styleUrl: './oferta-laboral.component.scss',
@@ -54,8 +50,11 @@ interface PageEvent {
 })
 export class OfertaLaboralComponent extends GeneralComponent implements OnInit, OnDestroy {
 
+  clickService = inject(ClickService);
   userService = inject(UserService);
   userData: SesionUser | null = null;
+
+  subscription!: Subscription;
 
   first: number = 0;
   rows: number = 10;
@@ -85,6 +84,8 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
 
   private favoritosSubscription: Subscription = new Subscription();
   private ofertasSubscription: Subscription = new Subscription();
+
+  visible: boolean = false;
 
 
   constructor(
@@ -160,13 +161,10 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     this._CatalogoGenService.getDocumentos(oportunidad.cveOoad!)
     .pipe(
       switchMap(referencias =>  {
-        if (!referencias.respuesta.sedesPdf || !referencias.respuesta.docPdf) {
-          // Si la primera llamada falla o no devuelve GUID, lanzamos un error para detener el flujo.
-          this._alertServices.alerta("No existen referencias para la OOAD seleccionada.");
-          return throwError(() => new Error(referencias?.mensaje || 'Error al obtener GUID'));
-        }
-        const pdfSede = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.sedesPdf.refGuid);
-        const pdfUbicacion = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.docPdf.refGuid);
+        let pdfSede;
+        let pdfUbicacion;
+        referencias.respuesta.sedesPdf ? pdfSede = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.sedesPdf.refGuid) : pdfSede = of(null);
+        referencias.respuesta.docPdf ? pdfUbicacion = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.docPdf.refGuid) : pdfUbicacion = of(null);
         return forkJoin([of(referencias),pdfSede,pdfUbicacion])
         }
       ),
@@ -199,7 +197,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       this.numPaginaActual = Math.floor((event.first ?? 0) / (event.rows ?? 1));
     }
     if (this.activeTab() === 0) {
-      this.consultarPlazas();
+      this.consultarPlazas("btn");
     } else {
       this.consultarFavoritos();
     }
@@ -245,7 +243,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     });
   }
 
-  consultarPlazas(referencia: string = "btn") {
+  consultarPlazas(referencia: string = "paginado") {
     if (referencia == "btn") {
       this.numPaginaActual = 0;
       this.first = 0;
@@ -415,11 +413,20 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
 
   ngOnInit() {
     this.userService.userData$.subscribe(user => this.userData = user);
+    this.subscription = this.clickService.clic$.subscribe(() => {
+      this.visible = true;
+    });
+
     this.obtenerTotalFavoritos();
     this.favoritosSubscription = this.estadoOfertaService.favoritosActuales$.subscribe(
       (numeroFavoritos: number) => {
         const favoritos = this.data[1];
         favoritos.price = numeroFavoritos;
+        if (this.activeTab() === 0) {
+          this.consultarPlazas();
+        } else {
+          this.consultarFavoritos();
+        }
       }
     );
 
@@ -433,6 +440,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   ngOnDestroy() {
     this.favoritosSubscription.unsubscribe();
     this.ofertasSubscription.unsubscribe();
+    this.subscription.unsubscribe();
   }
 
 
