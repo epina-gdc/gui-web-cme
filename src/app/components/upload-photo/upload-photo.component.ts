@@ -153,6 +153,7 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+
     const fileChange = changes['existingFile'];
 
     // Se actualiza si el valor de existingFile realmente ha cambiado
@@ -165,6 +166,7 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
    * Actualiza el valor interno del componente p-fileUpload y la lista local 'files'.
    */
   private updateFileUpload(file: File | undefined | null): void {
+
     if (!this.fileUpload) {
       // Debería estar disponible gracias a ngOnInit con setTimeou.
       console.warn('p-fileUpload no está listo para la actualización.');
