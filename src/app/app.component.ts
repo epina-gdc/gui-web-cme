@@ -5,10 +5,11 @@ import {AlertComponent} from '@components/alert/alert.component';
 import {NgxSpinnerModule} from 'ngx-spinner';
 import {ConfirmationService} from 'primeng/api';
 import {CommonModule} from '@angular/common';
+import {SvgAnimationComponent} from '@components/svg-animation/svg-animation.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, FooterComponent, AlertComponent, NgxSpinnerModule, CommonModule],
+  imports: [RouterOutlet, FooterComponent, AlertComponent, NgxSpinnerModule, CommonModule, SvgAnimationComponent],
   providers: [
     /* SE COMENTA TIMER */
     //SessionTimerService,

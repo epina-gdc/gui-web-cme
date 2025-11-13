@@ -1,0 +1,47 @@
+<div
+  class="overlay-backdrop"
+  [class.opacity-100]="loader.isLoading()"
+  [class.opacity-0]="!loader.isLoading()"
+  [style.z-index]="loader.isInteractable() ? '9999' : '-1'"
+  [style.pointer-events]="loader.isInteractable() ? 'auto' : 'none'"
+>
+  <!-- Contenedor centrado del SVG con PrimeFlex -->
+  <div class="flex flex-col align-items-center justify-content-center h-full w-full">
+    <div class="loader-container">
+      <!-- SVG Animado: Un círculo pulsante -->
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="pulse-svg">
+        <circle
+          cx="50"
+          cy="50"
+          r="40"
+          fill="none"
+          stroke="#6366f1"
+          stroke-width="5"
+          stroke-linecap="round"
+        >
+          <!-- Animación de rotación -->
+          <animateTransform
+            attributeName="transform"
+            attributeType="XML"
+            type="rotate"
+            from="0 50 50"
+            to="360 50 50"
+            dur="1.5s"
+            repeatCount="indefinite"
+          />
+          <!-- Animación de pulsación (radio) -->
+          <animate
+            attributeName="r"
+            values="40; 45; 40"
+            dur="1.5s"
+            repeatCount="indefinite"
+          />
+        </circle>
+
+        <!-- Núcleo central -->
+        <circle cx="50" cy="50" r="10" fill="#6366f1" />
+      </svg>
+      <span class="text-white text-lg mt-3 font-semibold">Cargando...</span>
+    </div>
+  </div>
+</div>
