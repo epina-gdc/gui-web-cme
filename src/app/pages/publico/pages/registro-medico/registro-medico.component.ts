@@ -463,7 +463,6 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
     this.asignarDatos();
 
-
     if (this.form.valid) {
 
 
@@ -705,7 +704,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
   }
 
-  private validarMatricula() {
+private validarMatricula() {
 
     let datos = {
       matricula: this.medico.cveMatricula,
