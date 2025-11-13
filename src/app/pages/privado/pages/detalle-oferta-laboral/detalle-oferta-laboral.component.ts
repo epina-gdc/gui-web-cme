@@ -240,7 +240,42 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
 
     if (refGuid != null) {
 
-      return this.documentoService.obtenerDocumento(refGuid).subscribe({
+      return this.documentoService.obtenerDocsPorOoad(refGuid).subscribe({
+        next: (response: any) => {
+          const blob = new Blob([response], {type: 'application/pdf'});
+
+          const a = document.createElement('a');
+          const objectUrl = URL.createObjectURL(blob);
+          a.href = objectUrl;
+          a.download = nombre + '.pdf';
+          a.click();
+          URL.revokeObjectURL(objectUrl);
+        },
+        error: (err: any) => {
+          console.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO, err);
+          this._alertServices.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO);
+        }
+      });
+    }
+    return this._alertServices.alerta("No se cuenta con datos para obtener la información");
+  }
+
+
+  public btnDescargarSede(tipoDocumento: number) {
+    let refGuid = null;
+    let nombre = '';
+    if (tipoDocumento == 1) {
+      refGuid = this.urlPDF1.refGuid;
+
+      nombre = '' + this.ofertaSeleccionada.ooad;
+    } else {
+      refGuid = this.urlPDF2.refGuid;
+      nombre = 'sedes.pdf';
+    }
+
+    if (refGuid != null) {
+
+      return this.documentoService.obtenerDocSede(refGuid).subscribe({
         next: (response: any) => {
           const blob = new Blob([response], {type: 'application/pdf'});
 
