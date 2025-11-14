@@ -14,14 +14,14 @@
       <div class="grid p-nogutter">
 
         <div class="col-12 md:col-6">
-          <p class="text-sm font-medium text-blue-500 mb-0">Nombre del médico aspirante</p>
+          <p class="text-sm font-medium text-blue mb-0">Nombre del médico aspirante</p>
           <p class="text-xl font-semibold mt-1 mb-0">
             {{ sesion?.nomNombre }} {{ sesion?.nomApellidoPaterno }}  {{ sesion?.nomApellidoMaterno }}
           </p>
         </div>
 
         <div class="col-12 md:col-6">
-          <p class="text-sm font-medium text-blue-500 mb-0">{{ sesion?.cveMatricula?'Matrícula':'Folio' }}</p>
+          <p class="text-sm font-medium text-blue mb-0">{{ sesion?.cveMatricula?'Matrícula':'Folio' }}</p>
           <p class="text-xl font-semibold mt-1 mb-0"> {{ sesion?.cveMatricula?sesion?.cveMatricula:sesion?.refFolio }}</p>
         </div>
 
