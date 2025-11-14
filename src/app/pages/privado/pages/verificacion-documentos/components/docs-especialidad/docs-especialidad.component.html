@@ -71,6 +71,11 @@
                 </div>
               }
             </div>
+            @if (getFormControl(getEstatusGroup(i), 'idEstatusVerificacion').value === '3') {
+              <div class="p-2 mt-2 text-sm text-red-600 border border-red-300 bg-red-50 border-round-md">
+                El estatus cumple con los documentos no es permitido cuando los documentos no cubren las validaciones.
+              </div>
+            }
           </div>
         </div>
 
@@ -142,6 +147,6 @@
     <div class="flex justify-content-end">
       <p-button variant="outlined" label="Cancelar cambio" severity="warn"  (onClick)="cambiarEstatus(false)" class="me-3"/>
       <p-button variant="outlined" label="Sí, cambiar estatus" (onClick)="cambiarEstatus(true)"/>
-      
+
     </div>
 </p-dialog>
