@@ -87,11 +87,11 @@
       </div>
       <div class="flex justify-content-evenly">
         <div class="flex flex-column align-items-center gap-2">
-          <p class="texto-sueldo"> {{ sueldoMensualBruto }} </p>
+          <p class="texto-sueldo"> {{ detalleOportunidad.sueldoMensualBruto |  currency:'USD':'symbol':'1.2-2' }} </p>
           <p class="leyenda-sueldo"> Estimado bruto </p>
         </div>
         <div class="flex flex-column align-items-center gap-2">
-          <p class="texto-sueldo"> {{sueldoMensualNeto }} </p>
+          <p class="texto-sueldo"> {{ detalleOportunidad.sueldoMensualNeto |  currency:'USD':'symbol':'1.2-2' }} </p>
           <p class="leyenda-sueldo"> Estimado neto </p>
         </div>
       </div>

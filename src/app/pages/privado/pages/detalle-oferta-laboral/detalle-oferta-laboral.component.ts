@@ -46,7 +46,7 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
 
   private readonly serverEndPointURLDocumento = environment.api.apiDocumentos;
   ref = `${this.serverEndPointURLDocumento}/v1/ooad-documentos/`;
-
+  responsiveOptions!:any;
   value: number = 0;
   userService = inject(UserService);
   userData: SesionUser | null = null;
@@ -110,6 +110,23 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
               private readonly sanitizer: DomSanitizer
   ) {
     super();
+    this.responsiveOptions = [
+      {
+          breakpoint: '1024px',
+          numVisible: 1,
+          numScroll: 1
+      },
+      {
+          breakpoint: '768px',
+          numVisible: 1,
+          numScroll: 1
+      },
+      {
+          breakpoint: '560px',
+          numVisible: 1,
+          numScroll: 1
+      }
+  ];
   }
 
   ngOnDestroy(): void {

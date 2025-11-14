@@ -9,7 +9,7 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import {  CurrencyPipe } from "@angular/common";
+import {CurrencyPipe,CommonModule, } from "@angular/common";
 import {Card} from 'primeng/card';
 import {Rating} from 'primeng/rating';
 import {FormsModule} from '@angular/forms';
@@ -29,6 +29,7 @@ import {SvgAnimationService} from '@services/svg-animation.service';
     Card,
     Rating,
     FormsModule,
+    CommonModule,
     Badge,
     TitleCasePipe
   ],
@@ -101,13 +102,11 @@ export class OfertaCardComponent  implements OnInit, OnChanges {
   private checkScreenSize(): void {
     this.isMobileView = window.innerWidth < this.MOBILE_BREAKPOINT;
   }
-  sueldoMensualBruto!:string;
-  sueldoMensualNeto!: string;
+
   ngOnInit() {
     this.userService.userData$.subscribe(user => this.userData = user);
     this.value = this.detalleOportunidad.esFavorita ? 1 : 0;
-this.sueldoMensualBruto= this.formatoMoneda(parseFloat(this.detalleOportunidad.sueldoMensualBruto+''));
-this.sueldoMensualNeto= this.formatoMoneda(parseFloat(this.detalleOportunidad.sueldoMensualNeto+''));
+
 
    
   }
@@ -153,16 +152,5 @@ this.sueldoMensualNeto= this.formatoMoneda(parseFloat(this.detalleOportunidad.su
     });
   }
 
-  public formatoMoneda(monto: number): string {
-    let pesos = '';
-    if (monto) {
-      pesos = this.currencyPipe.transform(monto,
-        'USD',
-        'symbol',
-        '1.2-2',
-        'en-US'
-      ) ?? '';
-    }
-    return pesos;
-  }
+ 
 }
