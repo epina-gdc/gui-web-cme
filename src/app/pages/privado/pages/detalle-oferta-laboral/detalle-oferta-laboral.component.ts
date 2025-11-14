@@ -220,7 +220,7 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
       cveEspecialidad: null,
       cveOoad: null,
       cveBono: null,
-      cveRegimen: null,
+      regimen: null,
       cveZona: null,
       idUsuario: this.userData?.idUsuario as number
     }

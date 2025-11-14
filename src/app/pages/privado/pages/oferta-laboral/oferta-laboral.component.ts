@@ -260,8 +260,8 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     const filtros = {
       "cveEspecialidad": especialidad?.value,
       "cveOoad": ooad?.value ?? null,
-      "cveBono": bonoParse,
-      "cveRegimen": regimen?.label ?? null,
+      "cveBono": bono?.value ?? null,
+      "regimen": regimen?.label ?? null,
       "cveZona": zona?.value ?? null,
       "idUsuario": this.userData?.idUsuario
     }
@@ -284,7 +284,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
           cveEspecialidad: filtros.cveEspecialidad,
           cveOoad: filtros.cveOoad,
           cveBono: filtros.cveBono,
-          cveRegimen: filtros.cveRegimen,
+          regimen: filtros.regimen,
           cveZona: filtros.cveZona
         }
       ))
@@ -308,6 +308,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   }
 
   consultarFavoritos(): void {
+    debugger
     const filtros = this.generarSolicitudFiltros();
     const parametros = this.generarSolicitudParametros();
 
@@ -322,7 +323,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
           cveEspecialidad: filtros.cveEspecialidad,
           cveOoad: filtros.cveOoad,
           cveBono: filtros.cveBono,
-          cveRegimen: filtros.cveRegimen,
+          regimen: filtros.regimen,
           cveZona: filtros.cveZona,
           idUsuario: this.userData?.idUsuario as number
         }
@@ -349,6 +350,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   }
 
   generarSolicitudFiltros() {
+
     const ooad = this.formTablero.get('ooad_tablero')?.value;
     const zona = this.formTablero.get('zona_tablero')?.value;
     const especialidad = this.formTablero.get('especialidad_tablero')?.value;
@@ -358,8 +360,8 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     return {
       cveEspecialidad: especialidad?.value,
       cveOoad: ooad?.value ?? null,
-      cveBono: bono?.label ?? null,
-      cveRegimen: regimen?.value ?? null,
+      cveBono: bono?.value ?? null,
+      regimen: regimen?.label ?? null,
       cveZona: zona?.value ?? null,
       idUsuario: this.userData?.idUsuario
     }
@@ -370,7 +372,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       cveEspecialidad: null,
       cveOoad: null,
       cveBono: null,
-      cveRegimen: null,
+      regimen: null,
       cveZona: null
     }
   }
@@ -380,7 +382,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       cveEspecialidad: null,
       cveOoad: null,
       cveBono: null,
-      cveRegimen: null,
+      regimen: null,
       cveZona: null,
       idUsuario: this.userData?.idUsuario as number
     }
