@@ -208,11 +208,11 @@
               styleClass="carousel slide"
               [value]="imgCarrusel"
               [numVisible]="1"
-              [numScroll]="1">
-              <ng-template let-product #item >
-                <div class="flex rounded justify-content-end">
-                  <div class="relative mx-auto">
-                    <p-image width="390px" height="460"
+              [numScroll]="1"  [responsiveOptions]="responsiveOptions">
+              <ng-template let-product #item  >
+                <div class="flex rounded justify-content-center " style="width: 300px; background-color: blue;" >
+                  <div class="relative mx-auto justify-content-center">
+                    <p-image width="320px" height="460"
                       [src]="ref + product.refGuid"
 
                       [alt]="product.name" styleClass="carousel-image"
