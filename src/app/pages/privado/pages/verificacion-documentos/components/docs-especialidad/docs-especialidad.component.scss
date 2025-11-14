@@ -99,6 +99,10 @@
     justify-content: start;
     margin-bottom: 0;
   }
+
+  .dialog {
+    width: 100%;
+  }
 }
 
 .nombreDoc {
@@ -125,6 +129,11 @@
   padding-right: 0;
 }
 
-:host ::ng-deep   .p-dialog {  
-  border-top: 14px solid #0f9b9b!important;
+:host ::ng-deep .p-dialog {
+  border-top: 14px solid #0f9b9b !important;
+}
+
+.dialog {
+  width: 50%;
+  padding: 0 30px;
 }
