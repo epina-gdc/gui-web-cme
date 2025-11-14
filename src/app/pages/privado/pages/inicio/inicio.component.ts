@@ -137,7 +137,7 @@ export class InicioComponent extends GeneralComponent {
   blnFotoGuardada!: boolean;
 
   steps = [
-    {label: 'Información Personal', active: false},
+    {label: 'Información personal', active: false},
     {label: 'Documentos de escolaridad', active: false},
     {label: 'Oferta laboral', active: false},
   ];
@@ -256,7 +256,11 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.get('pais')?.valueChanges.subscribe(value => this.obtenerEstadoPorPais(value));
     this.formRegistro.get('estado')?.valueChanges.subscribe(value => this.obtenerMunicipioPorEstado(value));
     //this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerAlcaldiaPorMunicipio(value));
-    this.formZonaInteres.get('ooad')?.valueChanges.subscribe(value => this.obtenerZonasPorMunicipio(value))
+    this.formZonaInteres.get('ooad')?.valueChanges.subscribe(value => {
+        this.zonas = [];
+        this.obtenerZonasPorMunicipio(value);
+      }
+    )
     this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe((value) => {
         this.formRegistro.get('estadoNacimiento')?.disable()
         this.formRegistro.get('estadoNacimiento')?.reset();
@@ -443,6 +447,10 @@ export class InicioComponent extends GeneralComponent {
     this._CatalogoGenService.getLstZonas(municipio).subscribe({
       next: (valor) => {
         this.zonas = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'cveZona');
+      },
+      error: ()=> {
+        this.zonas = [];
+        console.log('Ocurrio un error con la búsqueda de zonas');
       }
     });
   }
@@ -983,8 +991,11 @@ export class InicioComponent extends GeneralComponent {
         } else if (data && !data.exito) {
           this.blnFotoGuardada = false;
           this._alertServices.error(data.mensaje);
+        } else {
+          this.blnFotoGuardada = false;
+          this.defaultFile = undefined;
+          this.selectFile = undefined;
         }
-        // Si data es null, el error ya fue manejado en catchError
       }
     });
   }
@@ -1280,6 +1291,7 @@ export class InicioComponent extends GeneralComponent {
     }
 
     this.limpiarDocumentoEspecialidad();
+
     const solicitud: SolicitudGuardarDocumentacion = this.generarSolicitudGuardarDocumentacion();
     if (finalizarRegistro) {
       this.finalizarRegistro(solicitud);
@@ -1683,9 +1695,12 @@ export class InicioComponent extends GeneralComponent {
         if (respuesta.participacion?.resultadoVerificacion) {
           this.estatusPendienteDocumentacion = respuesta.participacion.resultadoVerificacion.estatusVerificacion.desEstatus === 'Pendiente';
           const estatusVerificacion: number = respuesta.participacion.resultadoVerificacion.estatusVerificacion.idEstatusVerificacion;
-          this.estatusPendienteDocumentacion = [1, 2, 3].includes(estatusVerificacion);
-          this.estatusValidacionCompletada = [3].includes(estatusVerificacion);
-          this.desactivarForms();
+          this.estatusPendienteDocumentacion = [1, 3, 4].includes(estatusVerificacion);
+          if(this.estatusPendienteDocumentacion){
+            this.desactivarForms();
+          }
+          this.estatusValidacionCompletada = [1,3].includes(estatusVerificacion);
+          //this.desactivarForms();
         }
         if (respuesta.documentosObligatorios) {
           this.procesarDatosObligatoriosObtenidos(respuesta.documentosObligatorios);

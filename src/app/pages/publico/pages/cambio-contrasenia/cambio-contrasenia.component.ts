@@ -68,6 +68,7 @@ export class CambioContraseniaComponent {
           } else {
             this.alertaService.error(response.mensaje)
           }
+
         },
         error: (error) => {
           console.log(error);

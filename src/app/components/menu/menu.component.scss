@@ -57,4 +57,10 @@
     right: 4%;
   }
 }
+.alinear-izquierda {
+    text-align: left !important; /* Usar !important solo si hay un conflicto de estilos */
+}
+.margin-right-10 {
+    margin-right: 10px !important; /* Usar !important solo si hay un conflicto de estilos */
+}
 
