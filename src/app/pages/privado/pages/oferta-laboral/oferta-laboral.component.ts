@@ -161,7 +161,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     this._CatalogoGenService.getDocumentos(oportunidad.cveOoad!)
     .pipe(
       switchMap(referencias =>  {
-        debugger
+
         let pdfSede;
         let pdfUbicacion;
         referencias.respuesta.sedesPdf ? pdfSede = this.documentoService.obtenerDocSede(referencias.respuesta.sedesPdf.refGuid) : pdfSede = of(null);
@@ -308,7 +308,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   }
 
   consultarFavoritos(): void {
-    debugger
+
     const filtros = this.generarSolicitudFiltros();
     const parametros = this.generarSolicitudParametros();
 
