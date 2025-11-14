@@ -251,7 +251,7 @@ export class DocsEspecialidadComponent implements OnInit {
 
   estatusRequisitoCambio(form: FormGroup, prev: any){
     if(form.get('idEstatusVerificacion')?.value == '3'){
-      this.estatusPrevio = prev.evaluacionEspecialidad.estatusVerificacion.idEstatusVerificacion.toString();
+      this.estatusPrevio = prev.evaluacionEspecialidad.estatusVerificacion?.idEstatusVerificacion.toString();
       this.confCambioEstatus = true
       this.formSeleccionado = form;
     }
