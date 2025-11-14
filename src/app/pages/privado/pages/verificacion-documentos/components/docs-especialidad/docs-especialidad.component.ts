@@ -134,7 +134,7 @@ export class DocsEspecialidadComponent implements OnInit {
       }));
 
     const idEstatusVerificacionInicial = especialidad.evaluacionEspecialidad
-      ? (especialidad.evaluacionEspecialidad as any)?.estatusVerificacion?.idEstatusVerificacion || null
+      ? (especialidad.evaluacionEspecialidad as any)?.estatusVerificacion?.idEstatusVerificacion.toString() || null
       : null;
 
     const especialidadGroup = this.fb.group({

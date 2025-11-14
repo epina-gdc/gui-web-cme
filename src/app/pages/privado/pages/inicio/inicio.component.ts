@@ -706,7 +706,7 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerFotografia(): void {
     if (!this.datosFoto) return;
-    this.saveSession('datosFoto',this.datosFoto.documento);
+    this.saveSession('datosFoto', this.datosFoto.documento);
     this.documentoService.getFotografia(this.datosFoto.documento.refGuid).pipe(
     ).subscribe({
       next: (response: any) => {
@@ -1546,11 +1546,11 @@ export class InicioComponent extends GeneralComponent {
       return true;
     }
 
-/*     const hasTipoInstitucion = this.formDatosEmpleo.get('tipoInstitucion')?.value;
-    if(!hasTipoInstitucion){
+    /*     const hasTipoInstitucion = this.formDatosEmpleo.get('tipoInstitucion')?.value;
+        if(!hasTipoInstitucion){
 
-      return true;
-    } */
+          return true;
+        } */
     if (this.formDatosEmpleo.invalid && externo) {
       return true;
     }
@@ -1694,7 +1694,6 @@ export class InicioComponent extends GeneralComponent {
         const respuesta: RespuestaConsultaDocumentos = response.respuesta;
         if (respuesta.participacion?.resultadoVerificacion) {
           this.estatusPendienteDocumentacion = respuesta.participacion.resultadoVerificacion.estatusVerificacion.desEstatus === 'Pendiente';
-        if (respuesta.participacion.resultadoVerificacion) {
           const estatusVerificacion: number = respuesta.participacion.resultadoVerificacion.estatusVerificacion.idEstatusVerificacion;
           this.estatusPendienteDocumentacion = [1, 3, 4].includes(estatusVerificacion);
           if(this.estatusPendienteDocumentacion){
@@ -1718,7 +1717,7 @@ export class InicioComponent extends GeneralComponent {
           this.cargarDatosEmpleoAlFormulario(respuesta.datosEmpleo);
         }
       }
-    }});
+    });
   }
 
   desactivarForms(): void {
