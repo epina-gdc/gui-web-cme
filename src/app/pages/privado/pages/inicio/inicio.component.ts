@@ -1696,9 +1696,12 @@ export class InicioComponent extends GeneralComponent {
           this.estatusPendienteDocumentacion = respuesta.participacion.resultadoVerificacion.estatusVerificacion.desEstatus === 'Pendiente';
         if (respuesta.participacion.resultadoVerificacion) {
           const estatusVerificacion: number = respuesta.participacion.resultadoVerificacion.estatusVerificacion.idEstatusVerificacion;
-          this.estatusPendienteDocumentacion = [1, 2, 3].includes(estatusVerificacion);
-          this.estatusValidacionCompletada = [3].includes(estatusVerificacion);
-          this.desactivarForms();
+          this.estatusPendienteDocumentacion = [1, 3, 4].includes(estatusVerificacion);
+          if(this.estatusPendienteDocumentacion){
+            this.desactivarForms();
+          }
+          this.estatusValidacionCompletada = [1,3].includes(estatusVerificacion);
+          //this.desactivarForms();
         }
         if (respuesta.documentosObligatorios) {
           this.procesarDatosObligatoriosObtenidos(respuesta.documentosObligatorios);
