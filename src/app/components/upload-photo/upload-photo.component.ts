@@ -52,11 +52,14 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
 
   alertaService: AlertService = inject(AlertService)
 
+  @Input() clearOnFailedSave: boolean | undefined = undefined;
   @Input() disableUpload = false;
   @Input() maxFileSize: number = 5120000;
   @Input() existingFile: File | undefined = undefined;
   @Output() fileSelected = new EventEmitter<any>();
   @Output() fileRemoved = new EventEmitter<any>();
+  @Output() cleanupDone = new EventEmitter<void>();
+
   files: any[] = [];
   totalSize: number = 0;
   totalSizePercent: number = 0;
@@ -67,6 +70,7 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
   errorCamara: string = '';
 
   constructor(private readonly config: PrimeNG) {
+
     this.items = [
       {
         label: 'Cargar Fotografía',
@@ -155,10 +159,17 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
 
     const fileChange = changes['existingFile'];
+    const clearChange = changes['clearOnFailedSave'];
 
     // Se actualiza si el valor de existingFile realmente ha cambiado
     if (fileChange && fileChange.currentValue !== fileChange.previousValue) {
       this.updateFileUpload(fileChange.currentValue);
+    }
+
+      // Lógica de limpieza forzada: SOLO cuando cambia a TRUE
+    if (clearChange && clearChange.currentValue === true && clearChange.currentValue !== clearChange.previousValue) {
+      this.clear(); // Limpiar el p-fileUpload
+      this.cleanupDone.emit(); //Emite para que el padre pueda resetear el Input
     }
   }
 

@@ -18,8 +18,8 @@
         <section class="flex flex-wrap">
           <article class="lg:col-3 col-12 flex flex-row mb-4 lg:mb-0 justify-content-center">
             <p class="field-label">Fotografía</p>
-            <upload-photo [disableUpload]="estatusPendienteDocumentacion" (fileSelected)="onFileSelected($event)"
-                          [existingFile]="defaultFile" class="mt-6"/>
+            <upload-photo [disableUpload]="estatusPendienteDocumentacion" (fileSelected)="onFileSelected($event)" [clearOnFailedSave]="needsCleanup"
+                          [existingFile]="defaultFile" (cleanupDone)="onCleanupDone()" class="mt-6"/>
             <p class="label-obligatorio">Obligatorio</p>
           </article>
           <article class="lg:col-9 col-12 flex flex-row flex-wrap">
