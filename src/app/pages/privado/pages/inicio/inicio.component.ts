@@ -190,6 +190,8 @@ export class InicioComponent extends GeneralComponent {
   constanciasPorEliminar: number[] = [];
 
   especialidadesPorEliminar: number[] = [];
+  needsCleanup: boolean = false;
+
 
   constructor(private readonly activatedRoute: ActivatedRoute) {
     super()
@@ -992,9 +994,7 @@ export class InicioComponent extends GeneralComponent {
           this.blnFotoGuardada = false;
           this._alertServices.error(data.mensaje);
         } else {
-          this.blnFotoGuardada = false;
-          this.defaultFile = undefined;
-          this.selectFile = undefined;
+          this.needsCleanup = true;
         }
       }
     });
@@ -1056,6 +1056,11 @@ export class InicioComponent extends GeneralComponent {
       this.saveDatosGenerales();
 
     }
+  }
+
+  onCleanupDone(): void {
+    // lo que disparará ngOnChanges de nuevo.
+    this.needsCleanup = false;
   }
 
   validacionesNegocio() {
