@@ -1,6 +1,6 @@
 <div class="flex justify-content-start align-items-center gap-3">
   <h3 class="titulo-seccion">Registro
-    de {{ this.tipoMedico() | titlecase }}</h3>
+    de {{ this.tipoMedico() }}</h3>
 </div>
 <p-card class="mx-2 my-4 no-padding-empty-border">
   <header-medico-interno></header-medico-interno>
@@ -275,7 +275,7 @@
         <div class="flex align-items-center gap-4 px-2 py-4">
           <i class="pi pi-exclamation-circle" style="color: #dfd210; font-size: 2rem; transform: rotate(180deg);"></i>
           <em class="info-em-texto">Queremos conocer tu interés, elige tres opciones
-            para estar en posibilidad de brindarte una mejor oferta laboral</em>
+            para estar en posibilidad de brindarte una mejor oferta laboral.</em>
         </div>
         <form [formGroup]="formZonaInteres" class="mb-4">
           <article class="flex flex-row flex-wrap">
@@ -364,7 +364,7 @@
     </form>
   }
   @case (1) {
-    <p-card class="mx-2 empty-border" [header]="'Documentos obligatorios'">
+    <p-card class="mx-2 empty-border" [header]="'Documentos Obligatorios'">
       <article class="flex flex-row flex-wrap">
         <div class="lg:col-3 col-12">
           <div class="flex justify-content-between mb-1">
@@ -378,7 +378,7 @@
         </div>
         <div class="lg:col-3 col-12">
           <div class="flex justify-content-between mb-1">
-            <p class="field-label">Titulo de Medicina General</p>
+            <p class="field-label">Título de Medicina General</p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
           <upload-document (fileSelected)="procesarArchivoObligatorio($event, 2)" [existingFile]="archivoTitulo"
@@ -388,7 +388,7 @@
         </div>
         <div class="lg:col-3 col-12">
           <div class="flex justify-content-between mb-1">
-            <p class="field-label">Cédula profesional de Medicina General
+            <p class="field-label">Cédula Profesional de Medicina General
             </p>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
@@ -400,10 +400,10 @@
       </article>
     </p-card>
 
-    <p-card class="mx-2 empty-border" [header]="'Documentos de especialidad'">
+    <p-card class="mx-2 empty-border" [header]="'Documentos de Especialidad'">
       <div class="flex align-items-center gap-4 px-2 py-4">
         <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
-        <em class="info-em-texto">Indica y carga el documento de cada una de tus especialidades.</em>
+        <em class="info-em-texto">Indica y carga el documento de cada una de tus Especialidades.</em>
       </div>
       <form [formGroup]="formDocumentosEspecialidad">
         <article class="flex flex-row flex-wrap">
@@ -459,8 +459,8 @@
                   <p-table [value]="registro.documentos" class="flex-grow-1">
                     <ng-template pTemplate="header">
                       <tr>
-                        <th class="label-th" scope="col">Tipo documento</th>
-                        <th class="label-th" scope="col">Especialidad médica</th>
+                        <th class="label-th" scope="col">Tipo Documento</th>
+                        <th class="label-th" scope="col">Especialidad Médica</th>
                         <th class="label-th" scope="col">Acciones</th>
                       </tr>
                     </ng-template>
@@ -671,7 +671,7 @@
               </div>
               <input pInputText class="w-full" type="text" id="institucion" formControlName="nombreInstitucion"
                      placeholder="Especifique institución" [maxlength]="200"/>
-              <p class="leyenda-documento">Especifique el nombre de la institución, si eres sustituto especifica el
+              <p class="leyenda-documento">Especifique el nombre de la Institución, si eres sustituto especifica el
                 OOAD de adscripción.</p>
             </div>
           </article>
@@ -682,7 +682,7 @@
     <p-card class="mx-2 empty-border">
       <div class="flex align-items-center gap-4 px-2 py-4">
         <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
-        <em class="info-em-texto">Recuerda que al Finalizar tu registro, ya no podrás realizar modificaciones en los
+        <em class="info-em-texto">Recuerda que al finalizar tu registro, ya no podrás realizar modificaciones en los
           datos capturados.</em>
       </div>
     </p-card>

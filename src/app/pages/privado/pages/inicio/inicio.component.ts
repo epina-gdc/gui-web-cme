@@ -506,7 +506,7 @@ export class InicioComponent extends GeneralComponent {
 
   agregarZonaInteres(): void {
     if (this.zonasInteres().length > 2) {
-      this._alertServices.alerta("Recuerda que solo puedes seleccionar hasta tres zonas de interés.");
+      this._alertServices.alerta("Recuerda que sólo puedes seleccionar hasta tres zonas de interés.");
       this.formZonaInteres.reset();
       return;
     }
@@ -968,7 +968,7 @@ export class InicioComponent extends GeneralComponent {
           //this.indice.update((value: number) => value + 1);
           //return this._alertServices.exito(data.mensaje)
 
-          this._alertServices.exito(data.mensaje);
+          this._alertServices.exito(this._Mensajes.MSG024);
           setTimeout(() => {
             this.indice.update((value: number) => value + 1);
           }, 500);
@@ -1330,7 +1330,7 @@ export class InicioComponent extends GeneralComponent {
       node.documentos.some(documento => documento.idDocumento === 1));
     if (!cadaEspecialidadTieneDiploma && !externo) {
       this._alertServices.error(this._Mensajes.MSG037);
-      this._alertServices.error('Para cada especialidad es necesario el documento Diploma Institucional de Especialidad');
+      this._alertServices.error('Para cada especialidad es necesario el documento Diploma Institucional de Especialidad.');
       return;
     }
     if (this.formDatosEmpleo.invalid && externo) {
