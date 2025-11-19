@@ -40,14 +40,31 @@ export class ModalValidacionMedicoComponent implements OnInit {
   convocatoriaService: ConvocatoriaService = inject(ConvocatoriaService);
   documentoService: DocumentoService = inject(DocumentoService);
 
+  guid_obligatorio_1: string = '';
+  guid_obligatorio_2: string = '';
+  guid_obligatorio_3: string = '';
+
   constructor(private readonly config: DynamicDialogConfig,
               private readonly sanitizer: DomSanitizer) {
     if (this.config.data) {
       this.datosGenerales = this.config.data.datosGenerales;
       this.datosEmpleo = this.config.data.datosEmpleo;
       this.especialidades = this.config.data.especialidadesDocumentos;
-      this.documentosConstancias = this.config.data.documentosConstancias
-      console.log(this.config.data.documentosConstancias);
+      this.documentosConstancias = this.config.data.documentosConstancias;
+      const documentosObligatorios = this.config.data.documentosObligatorios;
+      if (!documentosObligatorios) return;
+      const documento_ob1 = documentosObligatorios.find((d: any) => d.tipoDocumentoObligatorio.idDocumentoObligatorio === 1);
+      const documento_ob2 = documentosObligatorios.find((d: any) => d.tipoDocumentoObligatorio.idDocumentoObligatorio === 2);
+      const documento_ob3 = documentosObligatorios.find((d: any) => d.tipoDocumentoObligatorio.idDocumentoObligatorio === 3);
+      if (documento_ob1) {
+        this.guid_obligatorio_1 = documento_ob1.documento.refGuid;
+      }
+      if (documento_ob2) {
+        this.guid_obligatorio_2 = documento_ob2.documento.refGuid;
+      }
+      if (documento_ob3) {
+        this.guid_obligatorio_3 = documento_ob3.documento.refGuid;
+      }
     }
   }
 

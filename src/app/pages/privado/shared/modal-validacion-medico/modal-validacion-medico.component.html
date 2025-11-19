@@ -187,15 +187,31 @@
     <div class="flex flex-row flex-wrap">
       <div class="col-12 lg:col-4">
         <div class="modal-prev-label">Identificación oficial</div>
-        <div class="modal-prev-value cursor-pointer"><span class="badge badge-pdf">ejemplo.pdf</span></div>
+        @if (guid_obligatorio_1) {
+          <div class="modal-prev-value cursor-pointer"
+               (click)="mostrarDocumento(guid_obligatorio_1)"><span class="badge badge-pdf">identificacion.pdf</span>
+          </div>
+        } @else {
+          <div class="modal-prev-value">Sin Documento</div>
+        }
       </div>
       <div class="col-12 lg:col-4">
         <div class="modal-prev-label">Título de Medicina General</div>
-        <div class="modal-prev-value cursor-pointer"><span class="badge badge-pdf">ejemplo.pdf</span></div>
+        @if (guid_obligatorio_2) {
+          <div class="modal-prev-value cursor-pointer"
+               (click)="mostrarDocumento(guid_obligatorio_2)"><span class="badge badge-pdf">titulo.pdf</span></div>
+        } @else {
+          <div class="modal-prev-value">Sin Documento</div>
+        }
       </div>
       <div class="col-12 lg:col-4">
         <div class="modal-prev-label">Cédula profesional</div>
-        <div class="modal-prev-value cursor-pointer"><span class="badge badge-pdf">ejemplo.pdf</span></div>
+        @if (guid_obligatorio_3) {
+          <div class="modal-prev-value cursor-pointer"
+               (click)="mostrarDocumento(guid_obligatorio_3)"><span class="badge badge-pdf">cedula.pdf</span></div>
+        } @else {
+          <div class="modal-prev-value">Sin Documento</div>
+        }
       </div>
     </div>
   </article>
