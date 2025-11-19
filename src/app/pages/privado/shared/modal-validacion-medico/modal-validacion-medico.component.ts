@@ -6,7 +6,7 @@ import {TableModule} from 'primeng/table';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {ConvocatoriaService} from '@services/convocatoria.service';
 import {DocumentoService} from '@services/documentos.service';
-import {DatosEmpleo} from '@models/solicitud-guardar-documentacion.interface';
+import {DatosEmpleo, DocumentoConstancia} from '@models/solicitud-guardar-documentacion.interface';
 import {DiaSemanaPipe} from '@pipes/dia-semana.pipe';
 
 interface Especialidad {
@@ -29,6 +29,7 @@ export class ModalValidacionMedicoComponent implements OnInit {
 
   datosGenerales!: DatosGeneralesResponse;
   datosEmpleo!: DatosEmpleo;
+  documentosConstancias: DocumentoConstancia[] = [];
   especialidades: Especialidad[] = [];
 
   nombreFoto!: string;
@@ -44,7 +45,8 @@ export class ModalValidacionMedicoComponent implements OnInit {
       this.datosGenerales = this.config.data.datosGenerales;
       this.datosEmpleo = this.config.data.datosEmpleo;
       this.especialidades = this.config.data.especialidadesDocumentos;
-      console.log(this.config.data.especialidadesDocumentos);
+      this.documentosConstancias = this.config.data.documentosConstancias
+      console.log(this.config.data.documentosConstancias);
     }
   }
 

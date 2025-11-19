@@ -236,19 +236,31 @@
         <div class="modal-prev-label">Documento 1</div>
         <div class="modal-prev-value"><span class="badge badge-pdf">ejemplo.pdf</span></div>
         <div class="modal-prev-label mt-2">Nombre</div>
-        <div class="modal-prev-value">dsdsxcc</div>
+        @if (documentosConstancias.length >= 1) {
+          <div class="modal-prev-value">{{ documentosConstancias[0].refConstancia }}</div>
+        } @else {
+          <div class="modal-prev-value">Sin Registro</div>
+        }
       </div>
       <div class="col-12 lg:col-4">
         <div class="modal-prev-label">Documento 2</div>
         <div class="modal-prev-value"><span class="badge badge-pdf">ejemplo.pdf</span></div>
         <div class="modal-prev-label mt-2">Nombre</div>
-        <div class="modal-prev-value">dsdsxcc</div>
+        @if (documentosConstancias.length >= 2) {
+          <div class="modal-prev-value">{{ documentosConstancias[1].refConstancia }}</div>
+        } @else {
+          <div class="modal-prev-value">Sin Registro</div>
+        }
       </div>
       <div class="col-12 lg:col-4">
         <div class="modal-prev-label">Documento 3</div>
         <div class="modal-prev-value"><span class="badge badge-pdf">ejemplo.pdf</span></div>
         <div class="modal-prev-label mt-2">Nombre</div>
-        <div class="modal-prev-value">dsdsxcc</div>
+        @if (documentosConstancias.length === 3) {
+          <div class="modal-prev-value">{{ documentosConstancias[2].refConstancia }}</div>
+        } @else {
+          <div class="modal-prev-value">Sin Registro</div>
+        }
       </div>
     </div>
   </article>
