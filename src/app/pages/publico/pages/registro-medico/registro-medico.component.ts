@@ -380,7 +380,6 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
   public btnValidarCurp() {
-    debugger
     this.medico.refCurp = this.form.controls['curp'].value;
     // this.form.markAllAsTouched();
     this.validarCURP();
@@ -700,7 +699,6 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
 
   public limpiarCurpChange() {
-    debugger
     let tmpModalidad = this.form.controls['modalidad'].value;
     let tmp = this.form.controls['curp'].value;
     this.form.reset();
