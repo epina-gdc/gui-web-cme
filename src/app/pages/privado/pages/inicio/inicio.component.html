@@ -18,7 +18,8 @@
         <section class="flex flex-wrap">
           <article class="lg:col-3 col-12 flex flex-row mb-4 lg:mb-0 justify-content-center">
             <p class="field-label">Fotografía</p>
-            <upload-photo [disableUpload]="estatusPendienteDocumentacion" (fileSelected)="onFileSelected($event)" [clearOnFailedSave]="needsCleanup"
+            <upload-photo [disableUpload]="estatusPendienteDocumentacion" (fileSelected)="onFileSelected($event)"
+                          [clearOnFailedSave]="needsCleanup"
                           [existingFile]="defaultFile" (cleanupDone)="onCleanupDone()" class="mt-6"/>
                           @if(blnOcultar){
                             <img *ngIf="imageUrl" [src]="imageUrl" #myImage (load)="onImageLoad(myImage)" width="1" height="1"/>
@@ -586,10 +587,11 @@
     }
 
     @if (userData?.idPerfil === 3) {
-      <p-card class="mx-2 empty-border" [header]="'Datos de empleo'">
+      <p-card class="mx-2 empty-border"
+              [header]="[3,6].includes(userData?.idPerfil ?? 0) ? 'Otros Datos' : 'Datos de empleo'">
         <form [formGroup]="formDatosEmpleo">
           <article class="grid-datos-empleo">
-            <div>
+            <div class="px-2">
               <p class="field-label">¿Tienes otro empleo?</p>
               <div class="flex flex-wrap gap-2">
                 @for (opcion of opciones_boolean; track opcion.key) {
@@ -602,7 +604,7 @@
                 }
               </div>
             </div>
-            <div>
+            <div class="px-2">
               <p class="field-label">¿Eres sustituto 08 IMSS?</p>
               <div class="flex flex-wrap gap-2">
                 @for (opcion of opciones_boolean; track opcion.key) {
@@ -616,7 +618,7 @@
               </div>
             </div>
             @if (formDatosEmpleo.get('sustituto')?.value === '1') {
-              <div class="px-4">
+              <div class="px-2">
                 <div class="flex justify-content-between">
                   <p class="field-label mb-1">OOAD:</p>
                 </div>
