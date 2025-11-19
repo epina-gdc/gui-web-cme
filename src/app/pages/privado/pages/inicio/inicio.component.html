@@ -21,6 +21,9 @@
             <upload-photo [disableUpload]="estatusPendienteDocumentacion" (fileSelected)="onFileSelected($event)"
                           [clearOnFailedSave]="needsCleanup"
                           [existingFile]="defaultFile" (cleanupDone)="onCleanupDone()" class="mt-6"/>
+                          @if(blnOcultar){
+                            <img *ngIf="imageUrl" [src]="imageUrl" #myImage (load)="onImageLoad(myImage)" width="1" height="1"/>
+                            }
             <p class="label-obligatorio">Obligatorio</p>
           </article>
           <article class="lg:col-9 col-12 flex flex-row flex-wrap">
@@ -154,6 +157,25 @@
               <input pInputText class="w-full" type="text" id="otros" placeholder="Especifica"
                      formControlName="otros"/>
             </div>
+            <div class="lg:col-4 col-12">
+
+              <div>
+                <label class="field-label" for="info">¿Recibiste información en la Asamblea realizada en tu Jurisdicción?</label>
+                <div class="flex flex-wrap gap-2">
+                  @for (opcion of opciones_booleanAsamblea; track opcion.key) {
+                    <div class="flex align-items-center gap-1">
+                      <p-radiobutton class="radio-button-square" [inputId]="opcion.key" [value]="opcion.key"
+                                     formControlName="info">
+                      </p-radiobutton>
+                      <label [for]="opcion.key" class="field-label mt-4">{{ opcion.name }}</label>
+                    </div>
+                  }
+                </div>
+              </div>
+
+             
+                     
+            </div>
           </article>
         </section>
       </p-card>
@@ -178,18 +200,18 @@
           </div>
           <div class="lg:col-3 col-12">
             <div class="flex justify-content-between">
-              <label class="field-label" for="telefonoCasa">Teléfono de casa</label>
+              <label class="field-label" for="telefonoCasa">Teléfono celular</label>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <input pInputText class="w-full" type="text" id="telefonoCasa" placeholder="Ingresa teléfono de casa"
+            <input pInputText class="w-full" type="text" id="telefonoCasa" placeholder="Ingresa teléfono celular"
                    formControlName="telefonoCasa" appOnlyNumbers maxlength="10"/>
           </div>
           <div class="lg:col-3 col-12">
             <div class="flex justify-content-between">
-              <label class="field-label" for="telefonoCelular">Teléfono celular</label>
+              <label class="field-label" for="telefonoCelular">Otro teléfono de contacto</label>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <input pInputText class="w-full" type="text" id="telefonoCelular" placeholder="Ingresa teléfono celular"
+            <input pInputText class="w-full" type="text" id="telefonoCelular" placeholder="Ingresa otro teléfono de contacto"
                    formControlName="telefonoCelular" appOnlyNumbers maxlength="10"/>
           </div>
           <div class="lg:col-3 col-12">
@@ -275,14 +297,13 @@
       <p-card class="mx-2 empty-border" [header]="'Zona de Interés Laboral'">
         <div class="flex align-items-center gap-4 px-2 py-4">
           <i class="pi pi-exclamation-circle" style="color: #dfd210; font-size: 2rem; transform: rotate(180deg);"></i>
-          <em class="info-em-texto">Queremos conocer tu interés, elige tres opciones
-            para estar en posibilidad de brindarte una mejor oferta laboral.</em>
+          <em class="info-em-texto">Elige hasta tres opciones para estar en posibilidad de brindarte una mejor oferta laboral.</em>
         </div>
         <form [formGroup]="formZonaInteres" class="mb-4">
           <article class="flex flex-row flex-wrap">
             <div class="lg:col-3 col-12">
               <div class="flex justify-content-between">
-                <label class="field-label" for="ooad">OOAD</label>
+                <label class="field-label" for="ooad">OOAD/Jurisdicción IMSS</label>
                 <p class="label-obligatorio">Obligatorio</p>
               </div>
               <p-select [options]="ooad" formControlName="ooad" optionLabel="label"
@@ -310,7 +331,7 @@
         <p-table [value]="zonasInteres()" [tableStyle]="{ 'min-width': '50rem' }">
           <ng-template #header>
             <tr>
-              <th scope="col">OOAD</th>
+              <th scope="col">OOAD/Jurisdicción IMSS</th>
               <th scope="col">Zona de interés</th>
               <th scope="col">Acciones</th>
             </tr>

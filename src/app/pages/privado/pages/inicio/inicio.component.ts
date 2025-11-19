@@ -124,6 +124,7 @@ export class InicioComponent extends GeneralComponent {
   readonly dependientes = DEPENDIENTES;
   readonly instituciones = INSTITUCIONES;
   readonly opciones_boolean = BOOLEAN_OPCIONES;
+  readonly opciones_booleanAsamblea = BOOLEAN_OPCIONES;
 
   userService = inject(UserService);
   fb: FormBuilder = inject(FormBuilder);
@@ -205,6 +206,13 @@ export class InicioComponent extends GeneralComponent {
   especialidadesPorEliminar: number[] = [];
   needsCleanup: boolean = false;
 
+  blnOcultar!: boolean;
+  imageUrl: string | null = null;
+  archi!:File ;
+  naturalHeight!: number;
+  naturalWidth!: number;
+
+
   constructor(private readonly activatedRoute: ActivatedRoute) {
     super()
     this.documentosLocalStorageService.limpiar();
@@ -244,6 +252,7 @@ export class InicioComponent extends GeneralComponent {
       indOtros: [false],
       hijos: [{value: '', disabled: true}, [Validators.required, Validators.min(1)]],
       otros: [{value: '', disabled: true}, [Validators.required]],
+      info: [{value: '', disabled: false}, [Validators.required]],
       correo: [{value: '', disabled: true}],
       correoAdicional: [],
       telefonoCasa: [{
@@ -781,7 +790,8 @@ export class InicioComponent extends GeneralComponent {
         lugarNacimiento,
         perfil,
         sexo,
-        fecNacimiento
+        fecNacimiento,
+        indInfoAsamblea
       } = datosPersonales;
 
       if (perfil.idPerfil == 2) {
@@ -791,6 +801,10 @@ export class InicioComponent extends GeneralComponent {
 
       this.formRegistro.controls['rfc'].setValue(refRfc || null);
       this.formRegistro.controls['nss'].setValue(refNss || null);
+
+      if(indInfoAsamblea != null){
+        this.formRegistro.get('info')?.patchValue(indInfoAsamblea);
+      }
 
       if (estadoCivil) {
         this.formRegistro.get('estadoCivil')?.patchValue(estadoCivil.idEstadoCivil);
@@ -1055,7 +1069,14 @@ export class InicioComponent extends GeneralComponent {
 
     const estadoCivilSeleccionado: string = this.formRegistro.get('estadoCivil')?.value;
     let fotografia: FotografiaRequest = new FotografiaRequest();
+    
+    
+  
+    const infoAsambleadaSeleccionado: string = this.formRegistro.get('info')?.value;
+    
+    
     fotografia.datosPersonales = this.datosGenerales.datosPersonales;
+    fotografia.datosPersonales.indInfoAsamblea = Number.parseInt(infoAsambleadaSeleccionado);
     fotografia.datosPersonales.estadoCivil = new EstadoCivil();
     fotografia.datosPersonales.estadoCivil.idEstadoCivil = Number.parseInt(estadoCivilSeleccionado);
     let fechaEntrada = this.formRegistro.controls['fechaNacimiento'].value;
@@ -1068,6 +1089,7 @@ export class InicioComponent extends GeneralComponent {
     fotografia.datosPersonales.sexo = {
       idSexo: sexo.value,
     };
+    
     return fotografia.datosPersonales;
   }
 
@@ -1083,9 +1105,39 @@ export class InicioComponent extends GeneralComponent {
       return;
     }
 
+    this.archi = archivo;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.imageUrl = e.target?.result as string;
+    };
+    reader.readAsDataURL(archivo);
+this.blnOcultar = true;
+    
+
+  }
+
+  onImageLoad(imgElement: HTMLImageElement): void {
+
+    
+    // Obtener el alto y ancho natural de la imagen (en píxeles)
+    
+    this.naturalHeight = imgElement.naturalHeight;
+    this.naturalWidth  = imgElement.naturalWidth;
+
+
     const formData = new FormData();
-    formData.append('file', archivo, archivo.name);
-    this.saveFotoFile(formData, archivo);
+   
+
+    if (this.naturalHeight >= 1300 || this.naturalWidth >= 1300 ) {
+      this._alertServices.alerta("La imagen es demasiado grande, el tamaño mínimo es de 100 pixeles y máximo de 1300");
+      this.blnFotoGuardada = false;
+      this.selectFile = undefined;
+    } else {
+      formData.append('file', this.archi, this.archi.name);
+      this.saveFotoFile(formData, this.archi);
+    }
+    
   }
 
   onCleanupDone(): void {

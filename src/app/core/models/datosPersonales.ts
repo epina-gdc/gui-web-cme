@@ -22,6 +22,7 @@ export class DatosPersonales{
     refPasaporte!: string;
     perfil!: CatPerfil;
     subperfil!: CatSubperfil;
+    indInfoAsamblea!:number;
 
 
 }
