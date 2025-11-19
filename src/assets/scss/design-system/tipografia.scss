@@ -58,7 +58,7 @@
   margin-top: 0;
   margin-bottom: 0;
   display: flex;
-  width: 284px;
+  width: calc(100% - 10px);
   height: 28px;
   flex-direction: column;
   justify-content: flex-end;
@@ -68,6 +68,8 @@
   font-style: normal;
   font-weight: 600;
   line-height: 150%; /* 30px */
+  box-sizing: border-box;
+
 }
 
 .usuario-menu {
@@ -373,6 +375,7 @@
   .usuario-menu {
     max-width: fit-content;
   }
+
 }
 
 @media screen and (max-width: 350px) {
@@ -382,3 +385,8 @@
   }
 }
 
+@media screen and (max-width: 480px) {
+  .titulo-seccion {
+    padding-top: 50px;
+  }
+}
