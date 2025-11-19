@@ -120,12 +120,16 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
 
 
   public cambiaPerfil(): void {
+    this.clearCampos();
+
     this.perfilSeleccionado();
     if (this.registroMedico.blnInterno) {
       this.camposResidente();
     } else {
       this.camposExterno();
     }
+    console.log(this.form);
+    console.log(this.form.valid);
   }
 
   perfilSeleccionado() {
@@ -144,12 +148,19 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   }
 
   private camposExterno() {
-    this.getCatalogoModalidad();
-    this.getCatalogoDocumento();
+    
     this.blnResidente = false;
-    this.form.controls['modalidad'].setValidators([Validators.required]);
+    if( this.registroMedico.perfil1 == 6){// mostrar modalidad
+      this.getCatalogoModalidad();
+      this.form.controls['modalidad'].setValidators([Validators.required]);
+      this.form.controls['modalidad'].updateValueAndValidity();
+    }
+   
+    this.getCatalogoDocumento();
+ 
+  
     this.form.controls['documento'].setValidators([Validators.required]);
-    this.form.controls['modalidad'].updateValueAndValidity();
+  
     this.form.controls['documento'].updateValueAndValidity();
   }
 
