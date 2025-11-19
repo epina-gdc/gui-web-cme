@@ -205,6 +205,13 @@ export class InicioComponent extends GeneralComponent {
   especialidadesPorEliminar: number[] = [];
   needsCleanup: boolean = false;
 
+  blnOcultar!: boolean;
+  imageUrl: string | null = null;
+  archi!:File ;
+  naturalHeight!: number;
+  naturalWidth!: number;
+
+
   constructor(private readonly activatedRoute: ActivatedRoute) {
     super()
     this.documentosLocalStorageService.limpiar();
@@ -1084,9 +1091,39 @@ export class InicioComponent extends GeneralComponent {
       return;
     }
 
+    this.archi = archivo;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      this.imageUrl = e.target?.result as string;
+    };
+    reader.readAsDataURL(archivo);
+this.blnOcultar = true;
+    
+
+  }
+
+  onImageLoad(imgElement: HTMLImageElement): void {
+
+    
+    // Obtener el alto y ancho natural de la imagen (en píxeles)
+    
+    this.naturalHeight = imgElement.naturalHeight;
+    this.naturalWidth  = imgElement.naturalWidth;
+
+
     const formData = new FormData();
-    formData.append('file', archivo, archivo.name);
-    this.saveFotoFile(formData, archivo);
+   
+
+    if (this.naturalHeight >= 1300 || this.naturalWidth >= 1300 ) {
+      this._alertServices.alerta("La imagen es demasiado grande, el tamaño mínimo es de 100 pixeles y máximo de 1300");
+      this.blnFotoGuardada = false;
+      this.selectFile = undefined;
+    } else {
+      formData.append('file', this.archi, this.archi.name);
+      this.saveFotoFile(formData, this.archi);
+    }
+    
   }
 
   onCleanupDone(): void {
