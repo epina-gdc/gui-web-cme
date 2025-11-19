@@ -240,7 +240,7 @@ export class InicioComponent extends GeneralComponent {
 
   asignarFormularioRegistro(): FormGroup {
     return this.fb.group({
-      rfc: [{value: ''} , [Validators.required, Validators.minLength(13), Validators.maxLength(13), Validators.pattern(PATRON_RFC)]],
+      rfc: [{value: ''}, [Validators.required, Validators.minLength(13), Validators.maxLength(13), Validators.pattern(PATRON_RFC)]],
       nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
       fechaNacimiento: [null, [Validators.required]],
       sexo: [{value: ''}, [Validators.required]],
@@ -250,6 +250,7 @@ export class InicioComponent extends GeneralComponent {
       indConyuge: [false],
       indHijos: [false],
       indOtros: [false],
+      indNinguno:[false],
       hijos: [{value: '', disabled: true}, [Validators.required, Validators.min(1)]],
       otros: [{value: '', disabled: true}, [Validators.required]],
       info: [{value: '', disabled: false}, [Validators.required]],
@@ -298,6 +299,7 @@ export class InicioComponent extends GeneralComponent {
 
     this.formRegistro.get('indHijos')?.valueChanges.subscribe(value => {
       if (value) {
+        this.formRegistro.get('indNinguno')?.reset();
         this.formRegistro.get("hijos")?.enable();
       } else {
         this.formRegistro.get("hijos")?.setValue('');
@@ -307,11 +309,34 @@ export class InicioComponent extends GeneralComponent {
 
     this.formRegistro.get('indOtros')?.valueChanges.subscribe(value => {
       if (value) {
+        this.formRegistro.get('indNinguno')?.reset();
         this.formRegistro.get("otros")?.enable();
       } else {
         this.formRegistro.get("otros")?.setValue('');
         this.formRegistro.get("otros")?.disable();
       }
+    });
+
+    this.formRegistro.get('indNinguno')?.valueChanges.subscribe(value => {
+      if(value){
+        this.formRegistro.get("indPadres")?.reset();
+        this.formRegistro.get("indHijos")?.reset();
+        this.formRegistro.get("indConyuge")?.reset();
+        this.formRegistro.get("indOtros")?.reset();
+        this.formRegistro.get("hijos")?.reset();
+        this.formRegistro.get("otros")?.reset();
+        this.formRegistro.get("hijos")?.disable();
+        this.formRegistro.get("otros")?.disable();
+      }      
+    });
+
+    this.formRegistro.get('indPadres')?.valueChanges.subscribe(value => {
+      if(value)this.formRegistro.get('indNinguno')?.reset();
+      
+    });
+    this.formRegistro.get('indConyuge')?.valueChanges.subscribe(value => {
+      if(value)this.formRegistro.get('indNinguno')?.reset();
+      
     });
   }
 
@@ -351,18 +376,18 @@ export class InicioComponent extends GeneralComponent {
 
   asignarFormularioDatosEmpleo(): FormGroup {
     return this.fb.group({
-      otroEmpleo: [{value: '0', disabled: false}],
-      sustituto: [{value: '0', disabled: false}],
-      tipoInstitucion: [null],
-      nombreInstitucion: [{value: null, disabled: true}, [Validators.maxLength(200)]],
-      horarioInicio: [{value: null, disabled: true}],
-      horarioFin: [{value: null, disabled: true}],
-      diaInicio: [{value: null, disabled: true}],
-      diaFin: [{value: null, disabled: true}],
-      ooad: [{value: null, disabled: true}],
-    }
-  //  , {validators: [jornadaLaboralValidator, horarioLaboralValidator]}
-  )
+        otroEmpleo: [{value: '0', disabled: false}],
+        sustituto: [{value: '0', disabled: false}],
+        tipoInstitucion: [null],
+        nombreInstitucion: [{value: null, disabled: true}, [Validators.maxLength(200)]],
+        horarioInicio: [{value: null, disabled: true}],
+        horarioFin: [{value: null, disabled: true}],
+        diaInicio: [{value: null, disabled: true}],
+        diaFin: [{value: null, disabled: true}],
+        ooad: [{value: null, disabled: true}],
+      }
+      //  , {validators: [jornadaLaboralValidator, horarioLaboralValidator]}
+    )
   }
 
   obtenerFechaNacimientoDeCURP(curp: string): Date {
@@ -492,7 +517,7 @@ export class InicioComponent extends GeneralComponent {
       next: (valor) => {
         this.zonas = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'cveZona');
       },
-      error: ()=> {
+      error: () => {
         this.zonas = [];
         console.log('Ocurrio un error con la búsqueda de zonas');
       }
@@ -822,25 +847,25 @@ export class InicioComponent extends GeneralComponent {
       }
 
       /* CUANDO NO EXISTE CURP DEJA DE FUNCIONAR LA OBTENCION POR CURP */
-      if(perfil.idPerfil == 3){
-        if(sexo){
-        this.formRegistro.get('sexo')?.patchValue(
-          {
-            label: sexo.desSexo,
-            value: sexo.idSexo
-          }
-        )
-      } else {
-        this.formRegistro.get('sexo')?.enable();
-      }
+      if (perfil.idPerfil == 3) {
+        if (sexo) {
+          this.formRegistro.get('sexo')?.patchValue(
+            {
+              label: sexo.desSexo,
+              value: sexo.idSexo
+            }
+          )
+        } else {
+          this.formRegistro.get('sexo')?.enable();
+        }
 
-      if (fecNacimiento) {
-        var fecha = this.obtenerFechaDesdeCadena(fecNacimiento);
-        this.formRegistro.get('fechaNacimiento')?.setValue(fecha || null);
-      } else {
-        this.formRegistro.get('fechaNacimiento')?.enable();
+        if (fecNacimiento) {
+          var fecha = this.obtenerFechaDesdeCadena(fecNacimiento);
+          this.formRegistro.get('fechaNacimiento')?.setValue(fecha || null);
+        } else {
+          this.formRegistro.get('fechaNacimiento')?.enable();
+        }
       }
-    }
     }
 
     if (datosResidenciaActual) {
@@ -862,7 +887,7 @@ export class InicioComponent extends GeneralComponent {
 
     if (dependientes) {
 
-      const {indPadres, refCantidadHijos, indConyuge, refOtro} = dependientes;
+      const {indPadres, refCantidadHijos, indConyuge, refOtro, indNinguno} = dependientes;
       if (indPadres == 1) {
         this.formRegistro.get("indPadres")?.setValue(true);
       }
@@ -879,6 +904,10 @@ export class InicioComponent extends GeneralComponent {
       if (refOtro != null) {
         this.formRegistro.get("otros")?.setValue(refOtro);
         this.formRegistro.get("indOtros")?.setValue(true);
+      }
+
+      if(indNinguno == 1){
+        this.formRegistro.get("indNinguno")?.setValue(true);
       }
 
       this.subscribirseACambioComponentes();
@@ -952,6 +981,7 @@ export class InicioComponent extends GeneralComponent {
     dependientes.indConyuge = this.formRegistro.get("indConyuge")?.value ? 1 : 0;
     dependientes.refCantidadHijos = this.formRegistro.get("indHijos")?.value ? this.formRegistro.get("hijos")?.value : null;
     dependientes.refOtro = this.formRegistro.get("indOtros")?.value ? this.formRegistro.get("otros")?.value : null;
+    dependientes.indNinguno = this.formRegistro.get("indNinguno")?.value ? 1 : 0;
     return dependientes;
 
   }
@@ -986,9 +1016,8 @@ export class InicioComponent extends GeneralComponent {
           setTimeout(() => {
             this.indice.update((value: number) => value + 1);
           }, 500);
-        } else
-        {
-            return this._alertServices.error(data.mensaje)
+        } else {
+          return this._alertServices.error(data.mensaje)
         }
 
       },
@@ -1354,7 +1383,7 @@ this.blnOcultar = true;
     const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
     const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
     const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
-    const externo = this.userData?.idPerfil === 3;
+    const externo: boolean = [3, 6].includes(this.userData?.idPerfil as number);
 
     if (this.estatusPendienteDocumentacion) {
       this.indice.update((value: number) => value + 1);
@@ -1443,7 +1472,7 @@ this.blnOcultar = true;
   }
 
   generarSolicitudGuardarDocumentacion(): SolicitudGuardarDocumentacion {
-    const externo = this.userData?.idPerfil === 3;
+    const externo: boolean = [3, 6].includes(this.userData?.idPerfil as number);
     const constancias = this.documentosLocalStorageService.obtenerRefConstanciaCompleta();
 
     if (!externo) {
@@ -1646,16 +1675,14 @@ this.blnOcultar = true;
       return true;
     }
 
-/*     const hasTipoInstitucion = this.formDatosEmpleo.get('tipoInstitucion')?.value;
-    if(!hasTipoInstitucion){
+    /*     const hasTipoInstitucion = this.formDatosEmpleo.get('tipoInstitucion')?.value;
+        if(!hasTipoInstitucion){
 
-      return true;
-    } */
+          return true;
+        } */
     if (this.formDatosEmpleo.invalid && externo) {
       return true;
     }
-
-
 
 
     return especialidades.length === 0;
@@ -1900,8 +1927,8 @@ this.blnOcultar = true;
       nombreInstitucion: datos.nomEspecificacionInstitucion || null,
 
       // Horario/Jornada
-      horarioInicio: datos.refJornadaInicio ? dayjs(datos.refJornadaInicio, 'HH:mm:ss').toDate(): null,
-      horarioFin: datos.refJornadaInicio ? dayjs(datos.refJornadaFin, 'HH:mm:ss').toDate(): null,
+      horarioInicio: datos.refJornadaInicio ? dayjs(datos.refJornadaInicio, 'HH:mm:ss').toDate() : null,
+      horarioFin: datos.refJornadaInicio ? dayjs(datos.refJornadaFin, 'HH:mm:ss').toDate() : null,
 
       // Días
       diaInicio: datos.diaSemanaInicio?.idDiaSemana ?? null,
@@ -2051,6 +2078,19 @@ this.blnOcultar = true;
       const guid = this.documentosLocalStorageService.obtenerRefConstancia(id).refGuid;
       this.mostrarDocumento(guid);
     }
+  }
+
+  validarIndicadores(): boolean {
+    let checkInd = false;
+    if(
+      this.formRegistro.get("indPadres")?.value ||
+      this.formRegistro.get("indHijos")?.value ||
+      this.formRegistro.get("indConyuge")?.value ||
+      this.formRegistro.get("indOtros")?.value ||
+      this.formRegistro.get("indNinguno")?.value
+    ){checkInd = true}
+
+    return !checkInd;
   }
 
 }

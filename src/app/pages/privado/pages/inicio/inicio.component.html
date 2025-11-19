@@ -18,7 +18,8 @@
         <section class="flex flex-wrap">
           <article class="lg:col-3 col-12 flex flex-row mb-4 lg:mb-0 justify-content-center">
             <p class="field-label">Fotografía</p>
-            <upload-photo [disableUpload]="estatusPendienteDocumentacion" (fileSelected)="onFileSelected($event)" [clearOnFailedSave]="needsCleanup"
+            <upload-photo [disableUpload]="estatusPendienteDocumentacion" (fileSelected)="onFileSelected($event)"
+                          [clearOnFailedSave]="needsCleanup"
                           [existingFile]="defaultFile" (cleanupDone)="onCleanupDone()" class="mt-6"/>
                           @if(blnOcultar){
                             <img *ngIf="imageUrl" [src]="imageUrl" #myImage (load)="onImageLoad(myImage)" width="1" height="1"/>
@@ -75,6 +76,7 @@
             <div class="lg:col-4 col-12">
               <div class="flex justify-content-between">
                 <label class="field-label" for="rfc">Dependientes</label>
+                <p class="label-obligatorio">Obligatorio</p>
               </div>
               <!--               <div class="flex justify-content-between flex-wrap gap-2">
                               @for (dependiente of dependientes; track dependiente.key) {
@@ -136,6 +138,18 @@
                   </p-checkbox>
 
                   <label [for]="dependientes[3].key" class="field-label mt-4">{{ dependientes[3].name }}</label>
+                </div>
+                <div class="flex align-items-center gap-1">
+
+                  <p-checkbox
+                    class="checkbox-square"
+                    [inputId]="dependientes[4].key"
+                    formControlName="indNinguno"
+                    [binary]="true"
+                  >
+                  </p-checkbox>
+
+                  <label [for]="dependientes[4].key" class="field-label mt-4">{{ dependientes[4].name }}</label>
                 </div>
 
               </div>
@@ -375,7 +389,7 @@
         @if (!estatusPendienteDocumentacion) {
           <p-button type="button" variant="outlined" (click)="limpiarPrimeraSeccion()" label="Limpiar formulario"
                     [disabled]="estatusPendienteDocumentacion"/>
-          <p-button type="button" [disabled]="formRegistro.invalid || estatusPendienteDocumentacion" label="Guardar"
+          <p-button type="button" [disabled]="formRegistro.invalid || estatusPendienteDocumentacion || validarIndicadores()" label="Guardar"
                     (click)="siguientePasoStepper()"/>
           <!--<p-button type="button"  label="Guardar" (click)="saveDatosGenerales()"/>-->
             <!-- <p-button type="button" [disabled]="true" label="Finalizar registro"/> -->
@@ -421,10 +435,10 @@
       </article>
     </p-card>
 
-    <p-card class="mx-2 empty-border" [header]="'Documentos de Especialidad'">
+    <p-card class="mx-2 empty-border" [header]="'Documentos de especialidad y/o subespecialidad'">
       <div class="flex align-items-center gap-4 px-2 py-4">
         <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
-        <em class="info-em-texto">Indica y carga el documento de cada una de tus Especialidades.</em>
+        <em class="info-em-texto">Indica hasta 3 especialidades o subespecialidades y carga el documento de cada una de éstas.</em>
       </div>
       <form [formGroup]="formDocumentosEspecialidad">
         <article class="flex flex-row flex-wrap">
@@ -586,10 +600,11 @@
     }
 
     @if (userData?.idPerfil === 3) {
-      <p-card class="mx-2 empty-border" [header]="'Datos de empleo'">
+      <p-card class="mx-2 empty-border"
+              [header]="[3,6].includes(userData?.idPerfil ?? 0) ? 'Otros Datos' : 'Datos de empleo'">
         <form [formGroup]="formDatosEmpleo">
           <article class="grid-datos-empleo">
-            <div>
+            <div class="px-2">
               <p class="field-label">¿Tienes otro empleo?</p>
               <div class="flex flex-wrap gap-2">
                 @for (opcion of opciones_boolean; track opcion.key) {
@@ -602,7 +617,7 @@
                 }
               </div>
             </div>
-            <div>
+            <div class="px-2">
               <p class="field-label">¿Eres sustituto 08 IMSS?</p>
               <div class="flex flex-wrap gap-2">
                 @for (opcion of opciones_boolean; track opcion.key) {
@@ -616,7 +631,7 @@
               </div>
             </div>
             @if (formDatosEmpleo.get('sustituto')?.value === '1') {
-              <div class="px-4">
+              <div class="px-2">
                 <div class="flex justify-content-between">
                   <p class="field-label mb-1">OOAD:</p>
                 </div>
