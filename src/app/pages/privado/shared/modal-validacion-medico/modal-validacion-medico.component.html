@@ -218,7 +218,9 @@
           <td>{{ especialidad.especialidad }}</td>
           <td>{{ especialidad.tipoDocumento }}</td>
           <td>{{ especialidad.especialidadMedica }}</td>
-          <td></td>
+          <td>
+            <div class="modal-prev-value"><span class="badge badge-pdf">ejemplo.pdf</span></div>
+          </td>
         </tr>
       </ng-template>
     </p-table>
@@ -243,9 +245,9 @@
         <div class="modal-prev-value">dsdsxcc</div>
       </div>
       <div class="col-12 lg:col-4">
-        <div class="field-label">Documento 3</div>
+        <div class="modal-prev-label">Documento 3</div>
         <div class="modal-prev-value"><span class="badge badge-pdf">ejemplo.pdf</span></div>
-        <div class="field-label mt-2">Nombre</div>
+        <div class="modal-prev-label mt-2">Nombre</div>
         <div class="modal-prev-value">dsdsxcc</div>
       </div>
     </div>
@@ -299,5 +301,6 @@
         <span class="modal-prev-value">No registrado</span>
       </div>
     </div>
+    <span class="modal-prev-sub-titulo mb-3">Una vez finalizado el registro ya no se pueden modificar datos.</span>
   </article>
 </section>
