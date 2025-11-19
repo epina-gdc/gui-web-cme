@@ -1,5 +1,5 @@
 import {Component, inject, OnInit} from '@angular/core';
-import {DynamicDialogConfig} from 'primeng/dynamicdialog';
+import {DynamicDialogConfig, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {DatosGeneralesResponse} from '@models/datosGenerales';
 import {TitleCasePipe} from '@angular/common';
 import {TableModule} from 'primeng/table';
@@ -47,7 +47,8 @@ export class ModalValidacionMedicoComponent implements OnInit {
   guid_obligatorio_3: string = '';
 
   constructor(private readonly config: DynamicDialogConfig,
-              private readonly sanitizer: DomSanitizer) {
+              private readonly sanitizer: DomSanitizer,
+              public ref: DynamicDialogRef,) {
     if (this.config.data) {
       this.datosGenerales = this.config.data.datosGenerales;
       this.datosEmpleo = this.config.data.datosEmpleo;
@@ -113,6 +114,10 @@ export class ModalValidacionMedicoComponent implements OnInit {
         window.open(fileURL, '_blank');
       }
     });
+  }
+
+  cancelar(): void {
+    this.ref.close();
   }
 
 
