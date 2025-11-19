@@ -8,6 +8,7 @@ import {ConvocatoriaService} from '@services/convocatoria.service';
 import {DocumentoService} from '@services/documentos.service';
 import {DatosEmpleo, DocumentoConstancia} from '@models/solicitud-guardar-documentacion.interface';
 import {DiaSemanaPipe} from '@pipes/dia-semana.pipe';
+import {Button} from 'primeng/button';
 
 interface Especialidad {
   especialidad: string,
@@ -21,7 +22,8 @@ interface Especialidad {
   imports: [
     TitleCasePipe,
     TableModule,
-    DiaSemanaPipe
+    DiaSemanaPipe,
+    Button
   ],
   templateUrl: './modal-validacion-medico.component.html',
   styleUrl: './modal-validacion-medico.component.scss'
