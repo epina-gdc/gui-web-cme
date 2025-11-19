@@ -1,18 +1,20 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {DynamicDialogConfig} from 'primeng/dynamicdialog';
 import {DatosGeneralesResponse} from '@models/datosGenerales';
-import {TitleCasePipe} from '@angular/common';
+import {getLocaleFirstDayOfWeek, TitleCasePipe} from '@angular/common';
 import {TableModule} from 'primeng/table';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {ConvocatoriaService} from '@services/convocatoria.service';
 import {DocumentoService} from '@services/documentos.service';
-import {DatosEmpleo} from '@models/solicitud-guardar-documentacion.interface';
+import {DatosEmpleo, DocumentoEspecialidad} from '@models/solicitud-guardar-documentacion.interface';
+import {DiaSemanaPipe} from '@pipes/dia-semana.pipe';
 
 @Component({
   selector: 'app-modal-validacion-medico',
   imports: [
     TitleCasePipe,
-    TableModule
+    TableModule,
+    DiaSemanaPipe
   ],
   templateUrl: './modal-validacion-medico.component.html',
   styleUrl: './modal-validacion-medico.component.scss'
@@ -21,6 +23,7 @@ export class ModalValidacionMedicoComponent implements OnInit {
 
   datosGenerales!: DatosGeneralesResponse;
   datosEmpleo!: DatosEmpleo;
+  especialidades: DocumentoEspecialidad[] = [];
 
   nombreFoto!: string;
   datosFoto!: any;
@@ -34,7 +37,9 @@ export class ModalValidacionMedicoComponent implements OnInit {
     if (this.config.data) {
       this.datosGenerales = this.config.data.datosGenerales;
       this.datosEmpleo = this.config.data.datosEmpleo;
-      console.log(this.config.data.datosEmpleo);
+      this.especialidades = this.config.data.especialidadesDocumentos;
+      console.log(this.config.data.especialidadesDocumentos);
+      console.log(this.datosEmpleo)
     }
   }
 
@@ -71,4 +76,5 @@ export class ModalValidacionMedicoComponent implements OnInit {
   }
 
 
+  protected readonly getLocaleFirstDayOfWeek = getLocaleFirstDayOfWeek;
 }

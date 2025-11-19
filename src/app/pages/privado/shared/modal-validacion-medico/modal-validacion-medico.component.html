@@ -261,12 +261,17 @@
       </div>
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">Jornada laboral</span>
-        <span class="modal-prev-value">Lunes a Viernes</span>
+        @if (datosEmpleo.diaSemanaInicio.idDiaSemana && datosEmpleo.diaSemanaFin.idDiaSemana) {
+          <span class="modal-prev-value">{{ +datosEmpleo.diaSemanaInicio.idDiaSemana | diaSemana }}
+            a {{ +datosEmpleo.diaSemanaFin.idDiaSemana | diaSemana }}</span>
+        } @else {
+          <span class="modal-prev-value">No registrado</span>
+        }
       </div>
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">Institución</span>
         @if (datosEmpleo.nomEspecificacionInstitucion) {
-          <span class="model-prev-value">{{ datosEmpleo.nomEspecificacionInstitucion }}</span>
+          <span class="modal-prev-value">{{ datosEmpleo.nomEspecificacionInstitucion }}</span>
         } @else {
           <span class="modal-prev-value">No registrado</span>
         }
