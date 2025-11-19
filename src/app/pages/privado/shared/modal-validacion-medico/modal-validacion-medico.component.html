@@ -241,15 +241,23 @@
     <div class="flex flex-row flex-wrap">
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">¿Tienes otro empleo?</span>
-        <span class="modal-prev-value">No</span>
+        @if (datosEmpleo.indOtroEmpleo === 1) {
+          <span class="modal-prev-value">Si</span>
+        } @else {
+          <span class="modal-prev-value">No</span>
+        }
       </div>
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">¿Eres sustituto 08 IMSS?</span>
-        <span class="modal-prev-value">No</span>
+        @if (datosEmpleo.indMedicoSustituto === 1) {
+          <span class="modal-prev-value">Si</span>
+        } @else {
+          <span class="modal-prev-value">No</span>
+        }
       </div>
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">Horario laboral</span>
-        <span class="modal-prev-value">16:55 - 17:56</span>
+        <span class="modal-prev-value">{{ datosEmpleo.refJornadaInicio }} - {{ datosEmpleo.refJornadaFin }}</span>
       </div>
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">Jornada laboral</span>
@@ -257,7 +265,11 @@
       </div>
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">Institución</span>
-        <span class="modal-prev-value">No registrado</span>
+        @if (datosEmpleo.nomEspecificacionInstitucion) {
+          <span class="model-prev-value">{{ datosEmpleo.nomEspecificacionInstitucion }}</span>
+        } @else {
+          <span class="modal-prev-value">No registrado</span>
+        }
       </div>
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">Especialidad</span>

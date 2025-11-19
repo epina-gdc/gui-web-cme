@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {DynamicDialogConfig} from 'primeng/dynamicdialog';
 import {DatosGeneralesResponse} from '@models/datosGenerales';
 import {TitleCasePipe} from '@angular/common';
@@ -6,6 +6,7 @@ import {TableModule} from 'primeng/table';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {ConvocatoriaService} from '@services/convocatoria.service';
 import {DocumentoService} from '@services/documentos.service';
+import {DatosEmpleo} from '@models/solicitud-guardar-documentacion.interface';
 
 @Component({
   selector: 'app-modal-validacion-medico',
@@ -16,9 +17,10 @@ import {DocumentoService} from '@services/documentos.service';
   templateUrl: './modal-validacion-medico.component.html',
   styleUrl: './modal-validacion-medico.component.scss'
 })
-export class ModalValidacionMedicoComponent {
+export class ModalValidacionMedicoComponent implements OnInit {
 
   datosGenerales!: DatosGeneralesResponse;
+  datosEmpleo!: DatosEmpleo;
 
   nombreFoto!: string;
   datosFoto!: any;
@@ -31,7 +33,8 @@ export class ModalValidacionMedicoComponent {
               private readonly sanitizer: DomSanitizer) {
     if (this.config.data) {
       this.datosGenerales = this.config.data.datosGenerales;
-      console.log(this.config.data.datosGenerales);
+      this.datosEmpleo = this.config.data.datosEmpleo;
+      console.log(this.config.data.datosEmpleo);
     }
   }
 
