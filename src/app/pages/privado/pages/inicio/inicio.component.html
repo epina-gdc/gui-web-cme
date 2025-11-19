@@ -20,6 +20,9 @@
             <p class="field-label">Fotografía</p>
             <upload-photo [disableUpload]="estatusPendienteDocumentacion" (fileSelected)="onFileSelected($event)" [clearOnFailedSave]="needsCleanup"
                           [existingFile]="defaultFile" (cleanupDone)="onCleanupDone()" class="mt-6"/>
+                          @if(blnOcultar){
+                            <img *ngIf="imageUrl" [src]="imageUrl" #myImage (load)="onImageLoad(myImage)" width="1" height="1"/>
+                            }
             <p class="label-obligatorio">Obligatorio</p>
           </article>
           <article class="lg:col-9 col-12 flex flex-row flex-wrap">
@@ -177,18 +180,18 @@
           </div>
           <div class="lg:col-3 col-12">
             <div class="flex justify-content-between">
-              <label class="field-label" for="telefonoCasa">Teléfono de casa</label>
+              <label class="field-label" for="telefonoCasa">Teléfono celular</label>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <input pInputText class="w-full" type="text" id="telefonoCasa" placeholder="Ingresa teléfono de casa"
+            <input pInputText class="w-full" type="text" id="telefonoCasa" placeholder="Ingresa teléfono celular"
                    formControlName="telefonoCasa" appOnlyNumbers maxlength="10"/>
           </div>
           <div class="lg:col-3 col-12">
             <div class="flex justify-content-between">
-              <label class="field-label" for="telefonoCelular">Teléfono celular</label>
+              <label class="field-label" for="telefonoCelular">Otro teléfono de contacto</label>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
-            <input pInputText class="w-full" type="text" id="telefonoCelular" placeholder="Ingresa teléfono celular"
+            <input pInputText class="w-full" type="text" id="telefonoCelular" placeholder="Ingresa otro teléfono de contacto"
                    formControlName="telefonoCelular" appOnlyNumbers maxlength="10"/>
           </div>
           <div class="lg:col-3 col-12">
