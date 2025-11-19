@@ -327,16 +327,16 @@ export class InicioComponent extends GeneralComponent {
         this.formRegistro.get("otros")?.reset();
         this.formRegistro.get("hijos")?.disable();
         this.formRegistro.get("otros")?.disable();
-      }      
+      }
     });
 
     this.formRegistro.get('indPadres')?.valueChanges.subscribe(value => {
       if(value)this.formRegistro.get('indNinguno')?.reset();
-      
+
     });
     this.formRegistro.get('indConyuge')?.valueChanges.subscribe(value => {
       if(value)this.formRegistro.get('indNinguno')?.reset();
-      
+
     });
   }
 
@@ -1099,12 +1099,12 @@ export class InicioComponent extends GeneralComponent {
 
     const estadoCivilSeleccionado: string = this.formRegistro.get('estadoCivil')?.value;
     let fotografia: FotografiaRequest = new FotografiaRequest();
-    
-    
-  
+
+
+
     const infoAsambleadaSeleccionado: string = this.formRegistro.get('info')?.value;
-    
-    
+
+
     fotografia.datosPersonales = this.datosGenerales.datosPersonales;
     fotografia.datosPersonales.indInfoAsamblea = Number.parseInt(infoAsambleadaSeleccionado);
     fotografia.datosPersonales.estadoCivil = new EstadoCivil();
@@ -1119,7 +1119,7 @@ export class InicioComponent extends GeneralComponent {
     fotografia.datosPersonales.sexo = {
       idSexo: sexo.value,
     };
-    
+
     return fotografia.datosPersonales;
   }
 
@@ -1143,21 +1143,21 @@ export class InicioComponent extends GeneralComponent {
     };
     reader.readAsDataURL(archivo);
 this.blnOcultar = true;
-    
+
 
   }
 
   onImageLoad(imgElement: HTMLImageElement): void {
 
-    
+
     // Obtener el alto y ancho natural de la imagen (en píxeles)
-    
+
     this.naturalHeight = imgElement.naturalHeight;
     this.naturalWidth  = imgElement.naturalWidth;
 
 
     const formData = new FormData();
-   
+
 
     if (this.naturalHeight >= 1300 || this.naturalWidth >= 1300 ) {
       this._alertServices.alerta("La imagen es demasiado grande, el tamaño mínimo es de 100 pixeles y máximo de 1300");
@@ -1167,7 +1167,7 @@ this.blnOcultar = true;
       formData.append('file', this.archi, this.archi.name);
       this.saveFotoFile(formData, this.archi);
     }
-    
+
   }
 
   onCleanupDone(): void {
@@ -1647,7 +1647,7 @@ this.blnOcultar = true;
     const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
     const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
     const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
-    const externo = this.userData?.idPerfil === 3;
+    const externo = this.userData?.idPerfil === 3 || this.userData?.idPerfil === 6;
     const refConstancia1 = this.documentosLocalStorageService.obtenerRefConstancia(1);
     const refConstancia2 = this.documentosLocalStorageService.obtenerRefConstancia(2);
     const refConstancia3 = this.documentosLocalStorageService.obtenerRefConstancia(3);
