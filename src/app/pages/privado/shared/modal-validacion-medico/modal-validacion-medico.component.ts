@@ -82,4 +82,18 @@ export class ModalValidacionMedicoComponent implements OnInit {
     });
   }
 
+  mostrarDocumento(guid: string) {
+    this.documentoService.obtenerDocumento(guid).subscribe({
+      next: (response: any) => {
+
+        const tipoArchivo = response.type;
+        const fileBlob = new Blob([response], {type: tipoArchivo});
+        const fileURL = URL.createObjectURL(fileBlob);
+
+        window.open(fileURL, '_blank');
+      }
+    });
+  }
+
+
 }

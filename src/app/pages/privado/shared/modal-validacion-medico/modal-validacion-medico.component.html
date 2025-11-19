@@ -187,15 +187,15 @@
     <div class="flex flex-row flex-wrap">
       <div class="col-12 lg:col-4">
         <div class="modal-prev-label">Documento 1</div>
-        <div class="modal-prev-value"><span class="badge badge-pdf">ejemplo.pdf</span></div>
+        <div class="modal-prev-value cursor-pointer"><span class="badge badge-pdf">ejemplo.pdf</span></div>
       </div>
       <div class="col-12 lg:col-4">
         <div class="modal-prev-label">Documento 2</div>
-        <div class="modal-prev-value"><span class="badge badge-pdf">ejemplo.pdf</span></div>
+        <div class="modal-prev-value cursor-pointer"><span class="badge badge-pdf">ejemplo.pdf</span></div>
       </div>
       <div class="col-12 lg:col-4">
         <div class="modal-prev-label">Documento 3</div>
-        <div class="modal-prev-value"><span class="badge badge-pdf">ejemplo.pdf</span></div>
+        <div class="modal-prev-value cursor-pointer"><span class="badge badge-pdf">ejemplo.pdf</span></div>
       </div>
     </div>
   </article>
@@ -219,7 +219,7 @@
           <td>{{ especialidad.tipoDocumento }}</td>
           <td>{{ especialidad.especialidadMedica }}</td>
           <td>
-            <div class="modal-prev-value"><span class="badge badge-pdf">ejemplo.pdf</span></div>
+            <div class="modal-prev-value cursor-pointer"><span class="badge badge-pdf">ejemplo.pdf</span></div>
           </td>
         </tr>
       </ng-template>
@@ -234,7 +234,13 @@
     <div class="flex flex-row flex-wrap">
       <div class="col-12 lg:col-4">
         <div class="modal-prev-label">Documento 1</div>
-        <div class="modal-prev-value"><span class="badge badge-pdf">ejemplo.pdf</span></div>
+        @if (documentosConstancias.length >= 1) {
+          <div class="modal-prev-value cursor-pointer"
+               (click)="mostrarDocumento(documentosConstancias[0].documento.refGuid)">
+            <span class="badge badge-pdf">constancia_1.pdf</span></div>
+        } @else {
+          <div class="modal-prev-value">Sin Documento</div>
+        }
         <div class="modal-prev-label mt-2">Nombre</div>
         @if (documentosConstancias.length >= 1) {
           <div class="modal-prev-value">{{ documentosConstancias[0].refConstancia }}</div>
@@ -244,7 +250,13 @@
       </div>
       <div class="col-12 lg:col-4">
         <div class="modal-prev-label">Documento 2</div>
-        <div class="modal-prev-value"><span class="badge badge-pdf">ejemplo.pdf</span></div>
+        @if (documentosConstancias.length >= 2) {
+          <div class="modal-prev-value cursor-pointer"
+               (click)="mostrarDocumento(documentosConstancias[1].documento.refGuid)">
+            <span class="badge badge-pdf">constancia_2.pdf</span></div>
+        } @else {
+          <div class="modal-prev-value">Sin Documento</div>
+        }
         <div class="modal-prev-label mt-2">Nombre</div>
         @if (documentosConstancias.length >= 2) {
           <div class="modal-prev-value">{{ documentosConstancias[1].refConstancia }}</div>
@@ -254,7 +266,13 @@
       </div>
       <div class="col-12 lg:col-4">
         <div class="modal-prev-label">Documento 3</div>
-        <div class="modal-prev-value"><span class="badge badge-pdf">ejemplo.pdf</span></div>
+        @if (documentosConstancias.length === 3) {
+          <div class="modal-prev-value cursor-pointer"
+               (click)="mostrarDocumento(documentosConstancias[2].documento.refGuid)"
+          ><span class="badge badge-pdf">constancia_3.pdf</span></div>
+        } @else {
+          <div class="modal-prev-value">Sin Documento</div>
+        }
         <div class="modal-prev-label mt-2">Nombre</div>
         @if (documentosConstancias.length === 3) {
           <div class="modal-prev-value">{{ documentosConstancias[2].refConstancia }}</div>
