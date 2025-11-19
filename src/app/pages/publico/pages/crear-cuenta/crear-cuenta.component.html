@@ -27,7 +27,7 @@
 
             <label class="field-label" for="perfil">Tipo de perfil</label>
           </div>
-          <div class="flex flex-row">
+          <div class="flex flex-row" style="margin-bottom: 20px;">
             <p-select id="perfil" formControlName="perfil" [options]="lstPerfil" optionLabel="nomPerfil"
                       optionValue="idPerfil" placeholder="Selecciona un perfil" class="w-full"
                       (ngModelChange)="cambiaPerfil()" [appendTo]="'body'">
@@ -35,7 +35,8 @@
           </div>
 
           @if (!blnResidente) {
-            <div class="flex flex-column" style="margin-top: 25px; margin-bottom: 15px;">
+            @if ( registroMedico.perfil1 == 6) {
+            <div class="flex flex-column" style=" margin-bottom: 20px;">
               <div class="flex flex-row">
                 <label class="field-label" for="modalidad">Modalidad del médico</label>
               </div>
@@ -51,6 +52,7 @@
                 </p-select>
               </div>
             </div>
+          }
             <div class="flex flex-column">
               <div class="flex flex-row">
                 <label class="field-label" for="documento">Selecciona un documento de verificación</label>
