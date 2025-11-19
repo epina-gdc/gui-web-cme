@@ -360,6 +360,31 @@
   line-height: 120%; /* 21.6px */
 }
 
+.modal-prev-label {
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  color: #6c757d;
+  margin-bottom: .15rem;
+}
+
+.modal-prev-medico {
+  font-size: 20px;
+  font-weight: 500;
+  color: #212529;
+  word-break: break-word;
+}
+
+.modal-prev-value {
+  font-weight: 500;
+  color: #212529;
+  word-break: break-word;
+}
+
+.modal-prev-titulo {
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.2;
+}
 
 @media screen and (min-width: 768px) {
   .login-titulo {
@@ -390,3 +415,4 @@
     padding-top: 50px;
   }
 }
+
