@@ -528,7 +528,7 @@
       }
     </p-card>
 
-    @if (userData?.idPerfil === 3) {
+    @if (userData?.idPerfil === 3 || userData?.idPerfil === 6) {
       <p-card class="mx-2 empty-border" [header]="'Constancias de cursos de educación permanente en salud'">
         <div class="flex align-items-center gap-4 px-2 py-4">
           <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
@@ -599,7 +599,7 @@
       </p-card>
     }
 
-    @if (userData?.idPerfil === 3) {
+    @if (userData?.idPerfil === 3 || userData?.idPerfil === 6) {
       <p-card class="mx-2 empty-border"
               [header]="[3,6].includes(userData?.idPerfil ?? 0) ? 'Otros Datos' : 'Datos de empleo'">
         <form [formGroup]="formDatosEmpleo">

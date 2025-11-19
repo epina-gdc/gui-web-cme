@@ -847,7 +847,7 @@ export class InicioComponent extends GeneralComponent {
       }
 
       /* CUANDO NO EXISTE CURP DEJA DE FUNCIONAR LA OBTENCION POR CURP */
-      if (perfil.idPerfil == 3) {
+      if ([3,6].includes(perfil.idPerfil)) {
         if (sexo) {
           this.formRegistro.get('sexo')?.patchValue(
             {
@@ -1189,7 +1189,7 @@ this.blnOcultar = true;
 
   validacionesNegocio() {
 
-    if (this.userData?.idPerfil == 3) {
+    if (this.userData?.idPerfil == 3 || this.userData?.idPerfil == 6) {
       this.formRegistro.get('nss')?.clearValidators;
       this.formRegistro.get('nss')?.updateValueAndValidity;
     }
