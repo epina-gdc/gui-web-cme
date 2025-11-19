@@ -124,6 +124,7 @@ export class InicioComponent extends GeneralComponent {
   readonly dependientes = DEPENDIENTES;
   readonly instituciones = INSTITUCIONES;
   readonly opciones_boolean = BOOLEAN_OPCIONES;
+  readonly opciones_booleanAsamblea = BOOLEAN_OPCIONES;
 
   userService = inject(UserService);
   fb: FormBuilder = inject(FormBuilder);
@@ -251,6 +252,7 @@ export class InicioComponent extends GeneralComponent {
       indOtros: [false],
       hijos: [{value: '', disabled: true}, [Validators.required, Validators.min(1)]],
       otros: [{value: '', disabled: true}, [Validators.required]],
+      info: [{value: '', disabled: false}, [Validators.required]],
       correo: [{value: '', disabled: true}],
       correoAdicional: [],
       telefonoCasa: [{
@@ -788,7 +790,8 @@ export class InicioComponent extends GeneralComponent {
         lugarNacimiento,
         perfil,
         sexo,
-        fecNacimiento
+        fecNacimiento,
+        indInfoAsamblea
       } = datosPersonales;
 
       if (perfil.idPerfil == 2) {
@@ -798,6 +801,10 @@ export class InicioComponent extends GeneralComponent {
 
       this.formRegistro.controls['rfc'].setValue(refRfc || null);
       this.formRegistro.controls['nss'].setValue(refNss || null);
+
+      if(indInfoAsamblea != null){
+        this.formRegistro.get('info')?.patchValue(indInfoAsamblea);
+      }
 
       if (estadoCivil) {
         this.formRegistro.get('estadoCivil')?.patchValue(estadoCivil.idEstadoCivil);
@@ -1063,7 +1070,14 @@ export class InicioComponent extends GeneralComponent {
 
     const estadoCivilSeleccionado: string = this.formRegistro.get('estadoCivil')?.value;
     let fotografia: FotografiaRequest = new FotografiaRequest();
+    
+    
+  
+    const infoAsambleadaSeleccionado: string = this.formRegistro.get('info')?.value;
+    
+    
     fotografia.datosPersonales = this.datosGenerales.datosPersonales;
+    fotografia.datosPersonales.indInfoAsamblea = Number.parseInt(infoAsambleadaSeleccionado);
     fotografia.datosPersonales.estadoCivil = new EstadoCivil();
     fotografia.datosPersonales.estadoCivil.idEstadoCivil = Number.parseInt(estadoCivilSeleccionado);
     let fechaEntrada = this.formRegistro.controls['fechaNacimiento'].value;
@@ -1076,6 +1090,7 @@ export class InicioComponent extends GeneralComponent {
     fotografia.datosPersonales.sexo = {
       idSexo: sexo.value,
     };
+    
     return fotografia.datosPersonales;
   }
 
