@@ -12,7 +12,8 @@ import {DiaSemanaPipe} from '@pipes/dia-semana.pipe';
 interface Especialidad {
   especialidad: string,
   especialidadMedica: string,
-  tipoDocumento: string
+  tipoDocumento: string,
+  guid: string
 }
 
 @Component({
