@@ -11,10 +11,17 @@
   </article>
 
   <article class="flex flex-row flex-wrap gap-3">
-    <div class="col-12 lg:col-4 card border-round flex flex-column p-3">
-      <span class="modal-prev-label">FOLIO</span>
-      <span class="modal-prev-value">25D0100067</span>
-    </div>
+    @if (datosGenerales.datosPersonales.cveMatricula) {
+      <div class="col-12 lg:col-4 card border-round flex flex-column p-3">
+        <span class="modal-prev-label">MATRICULA</span>
+        <span class="modal-prev-value">{{ datosGenerales.datosPersonales.cveMatricula }}</span>
+      </div>
+    } @else {
+      <div class="col-12 lg:col-4 card border-round flex flex-column p-3">
+        <span class="modal-prev-label">FOLIO</span>
+        <span class="modal-prev-value">25D0100067</span>
+      </div>
+    }
     <div class="col-12 lg:col-4 card border-round flex flex-column p-3">
       <span class="modal-prev-label">FECHA DE REGISTRO</span>
       <span class="modal-prev-value">11/11/2025</span>
@@ -26,8 +33,14 @@
       <h5 class="modal-prev-titulo">Datos personales</h5>
     </div>
     <div class="flex flex-row flex-wrap">
-      <div class="col-12 lg:col-3">
-
+      <div class="col-12 lg:col-3 flex flex-column align-items-center justify-content-center">
+        <div class="flex align-items-center justify-content-center gap-1
+              flex-column border-1 half-border border-circle border-imagen-sm">
+          <img class="foto" role="presentation" [alt]="nombreFoto" [title]="nombreFoto" [src]="defaultFile"
+               style="object-fit: cover; height: 100%; width: 100%"/>
+        </div>
+        <span class="modal-prev-label">Fotografía</span>
+        <span class="modal-prev-value">Obligatorio</span>
       </div>
       <div class="col-12 lg:col-9 flex flex-row flex-wrap">
         <div class="col-12 lg:col-4 flex flex-column mt-2">

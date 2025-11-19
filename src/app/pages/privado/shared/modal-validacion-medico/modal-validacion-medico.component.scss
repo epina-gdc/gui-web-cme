@@ -1,0 +1,11 @@
+.border-imagen-sm {
+  min-width: 140px;
+  max-width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
