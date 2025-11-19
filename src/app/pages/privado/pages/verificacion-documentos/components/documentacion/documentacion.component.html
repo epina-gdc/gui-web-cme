@@ -14,7 +14,7 @@
           <p>Documentos por especialidad</p>
         </div>
       </p-tab>
-      @if (detalleAspirante.datosPersonales.perfil.idPerfil === 3) {
+      @if ([3, 6].includes(detalleAspirante.datosPersonales.perfil.idPerfil)) {
         <p-tab [value]="2" (click)="tab = 2">
           <div class="header-tab-documentacion">
             <i class="cme-deals me-3" style="color: #000000; font-size: 1.4rem"></i>
