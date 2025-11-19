@@ -73,6 +73,10 @@ import {Checkbox} from 'primeng/checkbox';
 import {CommonModule} from '@angular/common';
 import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
 import {PATRON_RFC} from '@utils/regex';
+import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
+import {
+  ModalValidacionMedicoComponent
+} from '@pages/privado/shared/modal-validacion-medico/modal-validacion-medico.component';
 
 interface DocumentoFuente {
   refGuid: string;
@@ -115,6 +119,7 @@ dayjs.extend(customParseFormat);
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
+  providers: [DialogService]
 })
 
 export class InicioComponent extends GeneralComponent {
@@ -212,8 +217,10 @@ export class InicioComponent extends GeneralComponent {
   naturalHeight!: number;
   naturalWidth!: number;
 
+  dialogValidacionRef: DynamicDialogRef | undefined;
 
-  constructor(private readonly activatedRoute: ActivatedRoute) {
+  constructor(private readonly activatedRoute: ActivatedRoute,
+              public dialogService: DialogService,) {
     super()
     this.documentosLocalStorageService.limpiar();
     this.userService.userData$.subscribe(user => this.userData = user);
@@ -1069,12 +1076,12 @@ export class InicioComponent extends GeneralComponent {
 
     const estadoCivilSeleccionado: string = this.formRegistro.get('estadoCivil')?.value;
     let fotografia: FotografiaRequest = new FotografiaRequest();
-    
-    
-  
+
+
+
     const infoAsambleadaSeleccionado: string = this.formRegistro.get('info')?.value;
-    
-    
+
+
     fotografia.datosPersonales = this.datosGenerales.datosPersonales;
     fotografia.datosPersonales.indInfoAsamblea = Number.parseInt(infoAsambleadaSeleccionado);
     fotografia.datosPersonales.estadoCivil = new EstadoCivil();
@@ -1089,7 +1096,7 @@ export class InicioComponent extends GeneralComponent {
     fotografia.datosPersonales.sexo = {
       idSexo: sexo.value,
     };
-    
+
     return fotografia.datosPersonales;
   }
 
@@ -1113,21 +1120,21 @@ export class InicioComponent extends GeneralComponent {
     };
     reader.readAsDataURL(archivo);
 this.blnOcultar = true;
-    
+
 
   }
 
   onImageLoad(imgElement: HTMLImageElement): void {
 
-    
+
     // Obtener el alto y ancho natural de la imagen (en píxeles)
-    
+
     this.naturalHeight = imgElement.naturalHeight;
     this.naturalWidth  = imgElement.naturalWidth;
 
 
     const formData = new FormData();
-   
+
 
     if (this.naturalHeight >= 1300 || this.naturalWidth >= 1300 ) {
       this._alertServices.alerta("La imagen es demasiado grande, el tamaño mínimo es de 100 pixeles y máximo de 1300");
@@ -1137,7 +1144,7 @@ this.blnOcultar = true;
       formData.append('file', this.archi, this.archi.name);
       this.saveFotoFile(formData, this.archi);
     }
-    
+
   }
 
   onCleanupDone(): void {
@@ -1356,6 +1363,7 @@ this.blnOcultar = true;
     const externo: boolean = [3, 6].includes(this.userData?.idPerfil as number);
 
     if (this.estatusPendienteDocumentacion) {
+      this.mostrarModalValidacion();
       this.indice.update((value: number) => value + 1);
       return;
     }
@@ -1377,13 +1385,16 @@ this.blnOcultar = true;
       this._alertServices.error('Al menos debe estar cargada una especialidad');
       return;
     }
+
     const cadaEspecialidadTieneDiploma: boolean = especialidades.every(node =>
       node.documentos.some(documento => documento.idDocumento === 1));
+
     if (!cadaEspecialidadTieneDiploma && !externo) {
       this._alertServices.error(this._Mensajes.MSG037);
       this._alertServices.error('Para cada especialidad es necesario el documento Diploma Institucional de Especialidad.');
       return;
     }
+
     if (this.formDatosEmpleo.invalid && externo) {
       this._alertServices.error(this._Mensajes.MSG025);
       return;
@@ -1392,12 +1403,17 @@ this.blnOcultar = true;
     this.limpiarDocumentoEspecialidad();
 
     const solicitud: SolicitudGuardarDocumentacion = this.generarSolicitudGuardarDocumentacion();
+
     if (finalizarRegistro) {
       this.finalizarRegistro(solicitud);
     } else {
       this.guardarSegundaSeccion(solicitud);
     }
+  }
 
+  mostrarModalValidacion(): void {
+    const data = { datosGenerales: this.datosGenerales };
+    this.dialogValidacionRef = this.dialogService.open(ModalValidacionMedicoComponent, { data, focusOnShow: false });
   }
 
   finalizarRegistro(solicitud: SolicitudGuardarDocumentacion): void {
