@@ -2,7 +2,8 @@ export const DEPENDIENTES = [
   { name: 'Padres', key: 'A' },
   { name: 'Hijos', key: 'M' },
   { name: 'Cónyuge', key: 'P' },
-  { name: 'Otros', key: 'R' }
+  { name: 'Otros', key: 'R' },
+  { name: 'Ninguno', key: 'N' }
 ]
 
 export const BOOLEAN_OPCIONES = [
