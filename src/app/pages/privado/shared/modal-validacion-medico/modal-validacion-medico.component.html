@@ -1,4 +1,4 @@
-<section class="p-4">
+<section>
   <article class="flex flex-row">
     <div class="col-12 flex flex-column p-3">
       <span class="modal-prev-label">NOMBRE DEL MÉDICO</span>
@@ -174,7 +174,7 @@
       <h5 class="modal-prev-titulo">Zona de interés laboral</h5>
     </div>
     <span class="modal-prev-sub-titulo mb-3">Selecciona 3 zonas en la versión editable.</span>
-    <p-table [value]="datosGenerales.zonasInteresLaboral">
+    <p-table [value]="datosGenerales.zonasInteresLaboral" [scrollable]="true">
       <ng-template #header>
         <tr>
           <th>OOAD</th>
@@ -230,7 +230,7 @@
     <div class="flex flex-row">
       <h5 class="modal-prev-titulo">Documentos de especilidad</h5>
     </div>
-    <p-table [value]="especialidades">
+    <p-table [value]="especialidades" [scrollable]="true">
       <ng-template #header>
         <tr>
           <th>Especialidad</th>
