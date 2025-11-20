@@ -120,5 +120,8 @@ export class ModalValidacionMedicoComponent implements OnInit {
     this.ref.close();
   }
 
+  finalizar(): void {
+    this.ref.close({finalizar: true});
+  }
 
 }
