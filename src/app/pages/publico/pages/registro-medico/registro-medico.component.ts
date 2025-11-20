@@ -232,11 +232,14 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.usuarioValidado = true;
     this.getCatalogoPais();
     this.clearCampos();
-    this.form.controls['modalidad'].setValidators([Validators.required]);
+
     this.form.controls['pasaporte'].setValidators([Validators.required, Validators.minLength(6),
     Validators.maxLength(9), Validators.pattern(PATRON_PASAPORTE)]);
     this.form.controls['pais'].setValidators([Validators.required]);
-    this.form.controls['modalidad'].updateValueAndValidity();
+    if(this.medico.perfil.idPerfil === 6){
+      this.form.controls['modalidad'].setValidators([Validators.required]);
+      this.form.controls['modalidad'].updateValueAndValidity();
+    }
     this.form.controls['pasaporte'].updateValueAndValidity();
     this.form.controls['pais'].updateValueAndValidity();
     this.dinamicoCurp();
@@ -284,7 +287,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.strTitulo = 'Médico externo';
     this.clearCampos();
     if (this.medico.perfil.idPerfil == 6) {
-      
+
       this.form.controls['modalidad'].setValidators([Validators.required]);
       this.form.controls['modalidad'].updateValueAndValidity();
       this.form.get('modalidad')?.disable();
