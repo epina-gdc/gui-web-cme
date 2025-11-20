@@ -6,6 +6,9 @@ import {NAV} from '@utils/url-global';
 import {RegistroMedicoComponent} from './pages/registro-medico/registro-medico.component';
 import {RecuperarCuentaComponent} from '@publico/recuperar-cuenta/recuperar-cuenta.component';
 import {CambioContraseniaComponent} from '@publico/cambio-contrasenia/cambio-contrasenia.component';
+import {
+  ModalValidacionMedicoComponent
+} from '@pages/privado/shared/modal-validacion-medico/modal-validacion-medico.component';
 
 const routes: Routes = [
   {
@@ -32,6 +35,10 @@ const routes: Routes = [
   {
     path: NAV.nuevaContrasenia,
     component: CambioContraseniaComponent
+  },
+  {
+    path: 'algo',
+    component: ModalValidacionMedicoComponent
   }
 ];
 

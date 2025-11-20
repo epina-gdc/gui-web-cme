@@ -2,18 +2,29 @@
   <article class="flex flex-row">
     <div class="col-12 flex flex-column p-3">
       <span class="modal-prev-label">NOMBRE DEL MÉDICO</span>
-      <span class="modal-prev-medico">JUAN MANUEL MARTÍNEZ ARELIO</span>
+      <span class="modal-prev-medico">
+        {{ datosGenerales.datosPersonales.nomNombre | titlecase }}
+        {{ datosGenerales.datosPersonales.nomApellidoPaterno | titlecase }}
+        {{ datosGenerales.datosPersonales.nomApellidoMaterno | titlecase }}
+      </span>
     </div>
   </article>
 
   <article class="flex flex-row flex-wrap gap-3">
-    <div class="col-12 lg:col-4 card border-round flex flex-column p-3">
-      <span class="modal-prev-label">FOLIO</span>
-      <span class="modal-prev-value">25D0100067</span>
-    </div>
+    @if (datosGenerales.datosPersonales.cveMatricula) {
+      <div class="col-12 lg:col-4 card border-round flex flex-column p-3">
+        <span class="modal-prev-label">MATRICULA</span>
+        <span class="modal-prev-value">{{ datosGenerales.datosPersonales.cveMatricula }}</span>
+      </div>
+    } @else {
+      <div class="col-12 lg:col-4 card border-round flex flex-column p-3">
+        <span class="modal-prev-label">FOLIO</span>
+        <span class="modal-prev-value">{{ userData?.refFolio }}</span>
+      </div>
+    }
     <div class="col-12 lg:col-4 card border-round flex flex-column p-3">
       <span class="modal-prev-label">FECHA DE REGISTRO</span>
-      <span class="modal-prev-value">11/11/2025</span>
+      <span class="modal-prev-value">{{ userData?.fechaRegistro }}</span>
     </div>
   </article>
 
@@ -22,41 +33,59 @@
       <h5 class="modal-prev-titulo">Datos personales</h5>
     </div>
     <div class="flex flex-row flex-wrap">
-      <div class="col-12 lg:col-3">
-
+      <div class="col-12 lg:col-3 flex flex-column align-items-center justify-content-center">
+        <div class="flex align-items-center justify-content-center gap-1
+              flex-column border-1 half-border border-circle border-imagen-sm">
+          <img class="foto" role="presentation" [alt]="nombreFoto" [title]="nombreFoto" [src]="defaultFile"
+               style="object-fit: cover; height: 100%; width: 100%"/>
+        </div>
+        <span class="modal-prev-label">Fotografía</span>
+        <span class="modal-prev-value">Obligatorio</span>
       </div>
       <div class="col-12 lg:col-9 flex flex-row flex-wrap">
         <div class="col-12 lg:col-4 flex flex-column mt-2">
           <span class="modal-prev-label">RFC</span>
-          <span class="modal-prev-value">OOAZ900824MTS</span>
+          <span class="modal-prev-value">{{ datosGenerales.datosPersonales.refRfc }}</span>
         </div>
         <div class="col-12 lg:col-4 flex flex-column mt-2">
           <span class="modal-prev-label">NSS</span>
-          <span class="modal-prev-value">66666666666</span>
+          <span class="modal-prev-value">{{ datosGenerales.datosPersonales.refNss }}</span>
         </div>
         <div class="col-12 lg:col-4 flex flex-column mt-2">
           <span class="modal-prev-label">FECHA DE NACIMIENTO</span>
-          <span class="modal-prev-value">18/11/1985</span>
+          <span class="modal-prev-value">{{ datosGenerales.datosPersonales.fecNacimiento }}</span>
         </div>
         <div class="col-12 lg:col-4 flex flex-column mt-2">
           <span class="modal-prev-label">SEXO</span>
-          <span class="modal-prev-value">Hombre</span>
+          <span class="modal-prev-value">{{ datosGenerales.datosPersonales.sexo.desSexo }}</span>
         </div>
         <div class="col-12 lg:col-4 flex flex-column mt-2">
           <span class="modal-prev-label">ESTADO CIVIL</span>
-          <span class="modal-prev-value">Soltero(a)</span>
+          <span class="modal-prev-value">{{ datosGenerales.datosPersonales.estadoCivil.desEstadoCivil }}</span>
         </div>
         <div class="col-12 lg:col-4 flex flex-column mt-2">
           <span class="modal-prev-label">DEPENDIENTES</span>
-          <span class="modal-prev-value">Padres, Cónyuge</span>
+          @if (datosGenerales.dependientes.indPadres === 1) {
+            <span class="modal-prev-value">Padres</span>
+          }
+          @if (datosGenerales.dependientes.indConyuge === 1) {
+            <span class="modal-prev-value">Cónyuge</span>
+          }
+          @if (datosGenerales.dependientes.indConyuge === 0 && datosGenerales.dependientes.indPadres === 0) {
+            <span class="modal-prev-value">Otro</span>
+          }
         </div>
         <div class="col-12 lg:col-4 flex flex-column mt-2">
           <span class="modal-prev-label">¿CUÁNTOS HIJOS?</span>
-          <span class="modal-prev-value">0</span>
+          @if (datosGenerales.dependientes.refCantidadHijos) {
+            <span class="modal-prev-value">{{ datosGenerales.dependientes.refCantidadHijos }}</span>
+          } @else {
+            <span class="modal-prev-value">0</span>
+          }
         </div>
         <div class="col-12 lg:col-4 flex flex-column mt-2">
           <span class="modal-prev-label">OTROS</span>
-          <span class="modal-prev-value">Ninguno</span>
+          <span class="modal-prev-value">{{ datosGenerales.dependientes.refOtro ?? '-' }}</span>
         </div>
       </div>
     </div>
@@ -69,27 +98,27 @@
     <div class="flex flex-row flex-wrap">
       <div class="col-12 lg:col-6 flex flex-column mt-2">
         <span class="modal-prev-label">CORREO ELECTRÓNICO</span>
-        <span class="modal-prev-value">amon&#64;gmail.com</span>
+        <span class="modal-prev-value">{{ datosGenerales.datosContacto.refEmail }}</span>
       </div>
       <div class="col-12 lg:col-6 flex flex-column mt-2">
         <span class="modal-prev-label">CORREO ADICIONAL</span>
-        <span class="modal-prev-value">xobel13330&#64;hh7f.com</span>
+        <span class="modal-prev-value">{{ datosGenerales.datosContacto.refCorreoAdicional }}</span>
       </div>
       <div class="col-12 lg:col-6 flex flex-column mt-2">
         <span class="modal-prev-label">TELÉFONO DE CASA</span>
-        <span class="modal-prev-value">5545888902</span>
+        <span class="modal-prev-value">{{ datosGenerales.datosContacto.refTelefonoCasa }}</span>
       </div>
       <div class="col-12 lg:col-6 flex flex-column mt-2">
         <span class="modal-prev-label">TELÉFONO CELULAR</span>
-        <span class="modal-prev-value">5545888902</span>
+        <span class="modal-prev-value">{{ datosGenerales.datosContacto.refTelefonoCelular }}</span>
       </div>
       <div class="col-12 lg:col-6 flex flex-column mt-2">
         <span class="modal-prev-label">PAÍS DE NACIMIENTO</span>
-        <span class="modal-prev-value">Albania</span>
+        <span class="modal-prev-value">{{ datosGenerales.datosContacto.paisNacimiento.desPais }}</span>
       </div>
       <div class="col-12 lg:col-6 flex flex-column mt-2">
         <span class="modal-prev-label">ESTADO DE ORIGEN</span>
-        <span class="modal-prev-value">—</span>
+        <span class="modal-prev-value">{{ datosGenerales.datosContacto.lugarNacimiento.desLugarNacimiento }}</span>
       </div>
     </div>
   </article>
@@ -101,31 +130,31 @@
     <div class="flex flex-row flex-wrap">
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">CÓDIGO POSTAL</span>
-        <span class="modal-prev-value">06720</span>
+        <span class="modal-prev-value">{{ datosGenerales.datosResidenciaActual.colonia.refCodigoPostal }}</span>
       </div>
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">PAÍS</span>
-        <span class="modal-prev-value">México</span>
+        <span class="modal-prev-value">{{ datosGenerales.datosResidenciaActual.pais.desPais }}</span>
       </div>
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">ESTADO</span>
-        <span class="modal-prev-value">DISTRITO FEDERAL</span>
+        <span class="modal-prev-value">{{ datosGenerales.datosResidenciaActual.estado.desEstado }}</span>
       </div>
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">ALCALDÍA</span>
-        <span class="modal-prev-value">CUAUHTÉMOC</span>
+        <span class="modal-prev-value">{{ datosGenerales.datosResidenciaActual.delegacion.desMunicipio }}</span>
       </div>
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">COLONIA</span>
-        <span class="modal-prev-value">Doctores</span>
+        <span class="modal-prev-value">{{ datosGenerales.datosResidenciaActual.colonia.nomColonia }}</span>
       </div>
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">CALLE</span>
-        <span class="modal-prev-value">Doctor Velasco</span>
+        <span class="modal-prev-value">{{ datosGenerales.datosResidenciaActual.nomCalle }}</span>
       </div>
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">NÚMERO EXTERIOR</span>
-        <span class="modal-prev-value">171</span>
+        <span class="modal-prev-value">{{ datosGenerales.datosResidenciaActual.refNumero }}</span>
       </div>
     </div>
   </article>
@@ -134,12 +163,56 @@
     <div class="flex flex-row">
       <h5 class="modal-prev-titulo">Zona de interés laboral</h5>
     </div>
-    <p>Selecciona 3 zonas en la versión editable.</p>
+    <span class="modal-prev-sub-titulo mb-3">Selecciona 3 zonas en la versión editable.</span>
+    <p-table [value]="datosGenerales.zonasInteresLaboral">
+      <ng-template #header>
+        <tr>
+          <th>OOAD</th>
+          <th>Zona de interés</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-zona>
+        <tr>
+          <td>{{ zona.desOoad }}</td>
+          <td>{{ zona.desZona }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
   </article>
 
   <article class="flex flex-column card border-round mt-4 p-3">
     <div class="flex flex-row">
       <h5 class="modal-prev-titulo">Documentos obligatorios</h5>
+    </div>
+    <div class="flex flex-row flex-wrap">
+      <div class="col-12 lg:col-4">
+        <div class="modal-prev-label">Identificación oficial</div>
+        @if (guid_obligatorio_1) {
+          <div class="modal-prev-value cursor-pointer"
+               (click)="mostrarDocumento(guid_obligatorio_1)"><span class="badge badge-pdf">identificacion.pdf</span>
+          </div>
+        } @else {
+          <div class="modal-prev-value">Sin Documento</div>
+        }
+      </div>
+      <div class="col-12 lg:col-4">
+        <div class="modal-prev-label">Título de Medicina General</div>
+        @if (guid_obligatorio_2) {
+          <div class="modal-prev-value cursor-pointer"
+               (click)="mostrarDocumento(guid_obligatorio_2)"><span class="badge badge-pdf">titulo.pdf</span></div>
+        } @else {
+          <div class="modal-prev-value">Sin Documento</div>
+        }
+      </div>
+      <div class="col-12 lg:col-4">
+        <div class="modal-prev-label">Cédula profesional</div>
+        @if (guid_obligatorio_3) {
+          <div class="modal-prev-value cursor-pointer"
+               (click)="mostrarDocumento(guid_obligatorio_3)"><span class="badge badge-pdf">cedula.pdf</span></div>
+        } @else {
+          <div class="modal-prev-value">Sin Documento</div>
+        }
+      </div>
     </div>
   </article>
 
@@ -147,11 +220,84 @@
     <div class="flex flex-row">
       <h5 class="modal-prev-titulo">Documentos de especilidad</h5>
     </div>
+    <p-table [value]="especialidades">
+      <ng-template #header>
+        <tr>
+          <th>Especialidad</th>
+          <th>Tipo de documento</th>
+          <th>Especialidad médica</th>
+          <th>Documento</th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-especialidad>
+        <tr>
+          <td>{{ especialidad.especialidad }}</td>
+          <td>{{ especialidad.tipoDocumento }}</td>
+          <td>{{ especialidad.especialidadMedica }}</td>
+          <td>
+            <div class="modal-prev-value cursor-pointer"
+                 (click)="mostrarDocumento(especialidad.guid)">
+              <span class="badge badge-pdf">documento.pdf</span></div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
   </article>
 
   <article class="flex flex-column card border-round mt-4 p-3">
     <div class="flex flex-row">
       <h5 class="modal-prev-titulo">Constancias de cursos</h5>
+    </div>
+    <span class="modal-prev-sub-titulo">Máximo 3 documentos en versión editable.</span>
+    <div class="flex flex-row flex-wrap">
+      <div class="col-12 lg:col-4">
+        <div class="modal-prev-label">Documento 1</div>
+        @if (documentosConstancias.length >= 1) {
+          <div class="modal-prev-value cursor-pointer"
+               (click)="mostrarDocumento(documentosConstancias[0].documento.refGuid)">
+            <span class="badge badge-pdf">constancia_1.pdf</span></div>
+        } @else {
+          <div class="modal-prev-value">Sin Documento</div>
+        }
+        <div class="modal-prev-label mt-2">Nombre</div>
+        @if (documentosConstancias.length >= 1) {
+          <div class="modal-prev-value">{{ documentosConstancias[0].refConstancia }}</div>
+        } @else {
+          <div class="modal-prev-value">Sin Registro</div>
+        }
+      </div>
+      <div class="col-12 lg:col-4">
+        <div class="modal-prev-label">Documento 2</div>
+        @if (documentosConstancias.length >= 2) {
+          <div class="modal-prev-value cursor-pointer"
+               (click)="mostrarDocumento(documentosConstancias[1].documento.refGuid)">
+            <span class="badge badge-pdf">constancia_2.pdf</span></div>
+        } @else {
+          <div class="modal-prev-value">Sin Documento</div>
+        }
+        <div class="modal-prev-label mt-2">Nombre</div>
+        @if (documentosConstancias.length >= 2) {
+          <div class="modal-prev-value">{{ documentosConstancias[1].refConstancia }}</div>
+        } @else {
+          <div class="modal-prev-value">Sin Registro</div>
+        }
+      </div>
+      <div class="col-12 lg:col-4">
+        <div class="modal-prev-label">Documento 3</div>
+        @if (documentosConstancias.length === 3) {
+          <div class="modal-prev-value cursor-pointer"
+               (click)="mostrarDocumento(documentosConstancias[2].documento.refGuid)"
+          ><span class="badge badge-pdf">constancia_3.pdf</span></div>
+        } @else {
+          <div class="modal-prev-value">Sin Documento</div>
+        }
+        <div class="modal-prev-label mt-2">Nombre</div>
+        @if (documentosConstancias.length === 3) {
+          <div class="modal-prev-value">{{ documentosConstancias[2].refConstancia }}</div>
+        } @else {
+          <div class="modal-prev-value">Sin Registro</div>
+        }
+      </div>
     </div>
   </article>
 
@@ -163,28 +309,52 @@
     <div class="flex flex-row flex-wrap">
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">¿Tienes otro empleo?</span>
-        <span class="modal-prev-value">No</span>
+        @if (datosEmpleo.indOtroEmpleo === 1) {
+          <span class="modal-prev-value">Si</span>
+        } @else {
+          <span class="modal-prev-value">No</span>
+        }
       </div>
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">¿Eres sustituto 08 IMSS?</span>
-        <span class="modal-prev-value">No</span>
+        @if (datosEmpleo.indMedicoSustituto === 1) {
+          <span class="modal-prev-value">Si</span>
+        } @else {
+          <span class="modal-prev-value">No</span>
+        }
       </div>
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">Horario laboral</span>
-        <span class="modal-prev-value">16:55 - 17:56</span>
+        <span class="modal-prev-value">{{ datosEmpleo.refJornadaInicio }} - {{ datosEmpleo.refJornadaFin }}</span>
       </div>
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">Jornada laboral</span>
-        <span class="modal-prev-value">Lunes a Viernes</span>
+        @if (datosEmpleo.diaSemanaInicio.idDiaSemana && datosEmpleo.diaSemanaFin.idDiaSemana) {
+          <span class="modal-prev-value">{{ +datosEmpleo.diaSemanaInicio.idDiaSemana | diaSemana }}
+            a {{ +datosEmpleo.diaSemanaFin.idDiaSemana | diaSemana }}</span>
+        } @else {
+          <span class="modal-prev-value">No registrado</span>
+        }
       </div>
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">Institución</span>
-        <span class="modal-prev-value">No registrado</span>
+        @if (datosEmpleo.nomEspecificacionInstitucion) {
+          <span class="modal-prev-value">{{ datosEmpleo.nomEspecificacionInstitucion }}</span>
+        } @else {
+          <span class="modal-prev-value">No registrado</span>
+        }
       </div>
       <div class="col-12 lg:col-4 flex flex-column mt-2">
         <span class="modal-prev-label">Especialidad</span>
         <span class="modal-prev-value">No registrado</span>
       </div>
     </div>
+    <span class="modal-prev-sub-titulo mb-3">Una vez finalizado el registro ya no se pueden modificar datos.</span>
   </article>
 </section>
+
+
+<div class="flex flex-row justify-content-end gap-3 px-4">
+  <p-button type="button" variant="outlined" label="Cancelar" (click)="cancelar()"/>
+  <p-button type="button" label="Finalizar" styleClass="h-full" (click)="finalizar()"/>
+</div>
