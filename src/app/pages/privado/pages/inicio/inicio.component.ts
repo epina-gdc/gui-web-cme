@@ -1446,7 +1446,13 @@ export class InicioComponent extends GeneralComponent {
       documentosConstancias,
       especialidadesDocumentos
     };
-    this.dialogValidacionRef = this.dialogService.open(ModalValidacionMedicoComponent, {data, focusOnShow: false});
+    this.dialogValidacionRef = this.dialogService.open(ModalValidacionMedicoComponent, {
+      data, focusOnShow: false, resizable: true,
+      breakpoints: {
+        '960px': '75vw',
+        '640px': '90vw'
+      },
+    });
 
     this.dialogValidacionRef.onClose.subscribe((validacion) => {
         if (validacion?.finalizar) {
