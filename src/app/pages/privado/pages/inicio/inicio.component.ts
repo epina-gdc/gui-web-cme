@@ -1122,7 +1122,6 @@ export class InicioComponent extends GeneralComponent {
 
     return fotografia.datosPersonales;
   }
-
   onFileSelected($event: any): void {
 
     if ($event.length == 0) {
@@ -1135,16 +1134,9 @@ export class InicioComponent extends GeneralComponent {
       return;
     }
 
-    this.archi = archivo;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      this.imageUrl = e.target?.result as string;
-    };
-    reader.readAsDataURL(archivo);
-    this.blnOcultar = true;
-
-
+    const formData = new FormData();
+    formData.append('file', archivo, archivo.name);
+    this.saveFotoFile(formData, archivo);
   }
 
   onImageLoad(imgElement: HTMLImageElement): void {
