@@ -6,7 +6,7 @@ export class Mensajes {
   public MSG002: string = "El correo contiene caracteres no permitidos.";
   public MSG003: string = "Correo electrónico no válido, por favor verifícalo.";
   public MSG004: string = "El correo electrónico no está registrado. Verifica tu información o regístrate.";
-  public MSG006: string = 'Correo electrónico no valido, por favor Verifícalo';
+  public MSG006: string = 'Correo electrónico no valido, por favor Verifícalo.';
   public MSG007: string = "Las contraseñas no coinciden, por favor verifica tu información.";
   public MSG0077: string = "Los correos no coinciden, por favor verifica tu información.";
   public MSG008: string = 'Usted es titular de una plaza, por lo que no es posible realizar su registro.';
@@ -24,7 +24,7 @@ export class Mensajes {
   public MSG026: string = 'Datos guardados correctamente.';
   public MSG037: string = 'La información está incompleta, favor de verificar.';
   public MSG039: string = '¡Registro exitoso!. Te hemos enviado un correo con los detalles. No olvides revisarlo.';
-  public MSG062: string = 'Tu contraseña ha sido actualizada correctamente, te emos enviado un correo con los detalles del cambio de contraseña. Por seguridad, no compartas tu contraseña con nadie.';
+  public MSG062: string = 'Tu contraseña ha sido actualizada correctamente, te hemos enviado un correo con los detalles del cambio de contraseña. Por seguridad, no compartas tu contraseña con nadie.';
   public MSG063: string = 'El enlace ha expirado o no es válido. Por favor, solicita un nuevo cambio de contraseña';
 
   public MSJ_PASS_MIN_CARACTER: string = "La contraseña debe tener al menos 8 caracteres"

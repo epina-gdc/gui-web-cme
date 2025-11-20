@@ -3,4 +3,5 @@ export class Dependientes{
     indConyuge!: number;
     refCantidadHijos!: number;
     refOtro!: string;
+    indNinguno!: number;
 }

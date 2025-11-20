@@ -67,7 +67,7 @@
             }
 
 
-            @if (!medico.blnInterno) {
+            @if (medico.perfil.idPerfil == 6) {
               <div class=" mt-1 row flex">
                 <div class="field col-12">
                   <label class="field-label" for="modalidad">Modalidad del médico</label>

@@ -23,7 +23,7 @@ const checkMedicalProfile = (): Observable<boolean | UrlTree> => {
         return of(router.createUrlTree(['/login']));
       }
 
-      if ([1, 2, 3].includes(idPerfil)) {
+      if ([1, 2, 3, 6].includes(idPerfil)) {
         return of(true);
       } else {
         return of(router.createUrlTree(['/privado/verificacion-documentos']));

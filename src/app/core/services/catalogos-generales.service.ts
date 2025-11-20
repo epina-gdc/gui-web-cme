@@ -45,7 +45,7 @@ export class CatalogosGeneralesService {
   }
 
   getLstSubPerfil(): Observable<CatSubperfilResponse> {
-    return this.http.get<CatSubperfilResponse>(this.serverEndPointURLCatalogos + '/subperfiles-medicos/perfil/3', {headers: this.header}).pipe(
+    return this.http.get<CatSubperfilResponse>(this.serverEndPointURLCatalogos + '/subperfiles-medicos/perfil/6', {headers: this.header}).pipe(
       catchError(this.handleError),
       map((response: CatSubperfilResponse) => {
         return response;
