@@ -9,6 +9,8 @@ import {DocumentoService} from '@services/documentos.service';
 import {DatosEmpleo, DocumentoConstancia} from '@models/solicitud-guardar-documentacion.interface';
 import {DiaSemanaPipe} from '@pipes/dia-semana.pipe';
 import {Button} from 'primeng/button';
+import {UserService} from '@services/user.service';
+import {SesionUser} from '@models/sesion-user.interface';
 
 interface Especialidad {
   especialidad: string,
@@ -41,14 +43,18 @@ export class ModalValidacionMedicoComponent implements OnInit {
 
   convocatoriaService: ConvocatoriaService = inject(ConvocatoriaService);
   documentoService: DocumentoService = inject(DocumentoService);
+  userService: UserService = inject(UserService);
 
   guid_obligatorio_1: string = '';
   guid_obligatorio_2: string = '';
   guid_obligatorio_3: string = '';
 
+  userData: SesionUser | null = null;
+
   constructor(private readonly config: DynamicDialogConfig,
               private readonly sanitizer: DomSanitizer,
               public ref: DynamicDialogRef,) {
+    this.userService.userData$.subscribe(user => this.userData = user);
     if (this.config.data) {
       this.datosGenerales = this.config.data.datosGenerales;
       this.datosEmpleo = this.config.data.datosEmpleo;

@@ -19,12 +19,12 @@
     } @else {
       <div class="col-12 lg:col-4 card border-round flex flex-column p-3">
         <span class="modal-prev-label">FOLIO</span>
-        <span class="modal-prev-value">25D0100067</span>
+        <span class="modal-prev-value">{{ userData?.refFolio }}</span>
       </div>
     }
     <div class="col-12 lg:col-4 card border-round flex flex-column p-3">
       <span class="modal-prev-label">FECHA DE REGISTRO</span>
-      <span class="modal-prev-value">11/11/2025</span>
+      <span class="modal-prev-value">{{ userData?.fechaRegistro }}</span>
     </div>
   </article>
 
