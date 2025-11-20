@@ -32,7 +32,7 @@
 
   <article class="flex flex-column card border-round mt-4 p-3">
     <div class="flex flex-row">
-      <h5 class="modal-prev-titulo">Datos personales</h5>
+      <h5 class="modal-prev-titulo">Datos Personales</h5>
     </div>
     <div class="flex flex-row flex-wrap">
       <div class="col-12 lg:col-3 flex flex-column align-items-center justify-content-center">
@@ -99,7 +99,7 @@
 
   <article class="flex flex-column card border-round mt-4 p-3">
     <div class="flex flex-row">
-      <h5 class="modal-prev-titulo">Datos de contacto</h5>
+      <h5 class="modal-prev-titulo">Datos de Contacto</h5>
     </div>
     <div class="flex flex-row flex-wrap">
       <div class="col-12 lg:col-6 flex flex-column mt-2">
@@ -135,7 +135,7 @@
 
   <article class="flex flex-column card border-round mt-4 p-3">
     <div class="flex flex-row">
-      <h5 class="modal-prev-titulo">Datos del domicilio</h5>
+      <h5 class="modal-prev-titulo">Datos del Domicilio</h5>
     </div>
     <div class="flex flex-row flex-wrap">
       <div class="col-12 lg:col-4 flex flex-column mt-2">
@@ -171,7 +171,7 @@
 
   <article class="flex flex-column card border-round mt-4 p-3">
     <div class="flex flex-row">
-      <h5 class="modal-prev-titulo">Zona de interés laboral</h5>
+      <h5 class="modal-prev-titulo">Zona de Interés Laboral</h5>
     </div>
     <span class="modal-prev-sub-titulo mb-3">Selecciona 3 zonas en la versión editable.</span>
     <p-table [value]="datosGenerales.zonasInteresLaboral" [scrollable]="true">
@@ -192,11 +192,11 @@
 
   <article class="flex flex-column card border-round mt-4 p-3">
     <div class="flex flex-row">
-      <h5 class="modal-prev-titulo">Documentos obligatorios</h5>
+      <h5 class="modal-prev-titulo">Documentos Obligatorios</h5>
     </div>
     <div class="flex flex-row flex-wrap">
       <div class="col-12 lg:col-4">
-        <div class="modal-prev-label">Identificación oficial</div>
+        <div class="modal-prev-label">Identificación oficial (INE o Pasaporte)</div>
         @if (guid_obligatorio_1) {
           <div class="modal-prev-value cursor-pointer"
                (click)="mostrarDocumento(guid_obligatorio_1)"><span class="badge badge-pdf">identificacion.pdf</span>
@@ -215,7 +215,7 @@
         }
       </div>
       <div class="col-12 lg:col-4">
-        <div class="modal-prev-label">Cédula profesional</div>
+        <div class="modal-prev-label">Cédula Profesional de Medicina General</div>
         @if (guid_obligatorio_3) {
           <div class="modal-prev-value cursor-pointer"
                (click)="mostrarDocumento(guid_obligatorio_3)"><span class="badge badge-pdf">cedula.pdf</span></div>
@@ -228,7 +228,7 @@
 
   <article class="flex flex-column card border-round mt-4 p-3">
     <div class="flex flex-row">
-      <h5 class="modal-prev-titulo">Documentos de especilidad</h5>
+      <h5 class="modal-prev-titulo">Documentos de Especialidad y/o Subespecialidad</h5>
     </div>
     <p-table [value]="especialidades" [scrollable]="true">
       <ng-template #header>
@@ -257,7 +257,7 @@
   @if ([3, 6].includes(userData?.idPerfil ?? 0)) {
     <article class="flex flex-column card border-round mt-4 p-3">
       <div class="flex flex-row">
-        <h5 class="modal-prev-titulo">Constancias de cursos</h5>
+        <h5 class="modal-prev-titulo">Constancias de cursos de educación permanente en salud</h5>
       </div>
       <span class="modal-prev-sub-titulo">Máximo 3 documentos en versión editable.</span>
       <div class="flex flex-row flex-wrap">
@@ -316,7 +316,7 @@
   @if ([3, 6].includes(userData?.idPerfil ?? 0)) {
     <article class="flex flex-column card border-round mt-4 p-3">
       <div class="flex flex-row">
-        <h5 class="modal-prev-titulo">Datos de empleo</h5>
+        <h5 class="modal-prev-titulo">Otros Datos</h5>
       </div>
       <div class="flex flex-row flex-wrap">
         <div class="col-12 lg:col-4 flex flex-column mt-2">
