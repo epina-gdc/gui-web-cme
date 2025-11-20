@@ -3,13 +3,7 @@ import {Card} from 'primeng/card';
 import {StepsComponent} from '@components/steps/steps.component';
 import {UploadPhotoComponent} from '@components/upload-photo/upload-photo.component';
 import {InputText} from 'primeng/inputtext';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Select} from 'primeng/select';
 import {DatePickerModule} from 'primeng/datepicker';
 import {Button} from 'primeng/button';
@@ -213,7 +207,7 @@ export class InicioComponent extends GeneralComponent {
 
   blnOcultar!: boolean;
   imageUrl: string | null = null;
-  archi!:File ;
+  archi!: File;
   naturalHeight!: number;
   naturalWidth!: number;
 
@@ -257,7 +251,7 @@ export class InicioComponent extends GeneralComponent {
       indConyuge: [false],
       indHijos: [false],
       indOtros: [false],
-      indNinguno:[false],
+      indNinguno: [false],
       hijos: [{value: '', disabled: true}, [Validators.required, Validators.min(1)]],
       otros: [{value: '', disabled: true}, [Validators.required]],
       info: [{value: '', disabled: false}, [Validators.required]],
@@ -325,7 +319,7 @@ export class InicioComponent extends GeneralComponent {
     });
 
     this.formRegistro.get('indNinguno')?.valueChanges.subscribe(value => {
-      if(value){
+      if (value) {
         this.formRegistro.get("indPadres")?.reset();
         this.formRegistro.get("indHijos")?.reset();
         this.formRegistro.get("indConyuge")?.reset();
@@ -338,11 +332,11 @@ export class InicioComponent extends GeneralComponent {
     });
 
     this.formRegistro.get('indPadres')?.valueChanges.subscribe(value => {
-      if(value)this.formRegistro.get('indNinguno')?.reset();
+      if (value) this.formRegistro.get('indNinguno')?.reset();
 
     });
     this.formRegistro.get('indConyuge')?.valueChanges.subscribe(value => {
-      if(value)this.formRegistro.get('indNinguno')?.reset();
+      if (value) this.formRegistro.get('indNinguno')?.reset();
 
     });
   }
@@ -834,7 +828,7 @@ export class InicioComponent extends GeneralComponent {
       this.formRegistro.controls['rfc'].setValue(refRfc || null);
       this.formRegistro.controls['nss'].setValue(refNss || null);
 
-      if(indInfoAsamblea != null){
+      if (indInfoAsamblea != null) {
         this.formRegistro.get('info')?.patchValue(indInfoAsamblea);
       }
 
@@ -854,7 +848,7 @@ export class InicioComponent extends GeneralComponent {
       }
 
       /* CUANDO NO EXISTE CURP DEJA DE FUNCIONAR LA OBTENCION POR CURP */
-      if ([3,6].includes(perfil.idPerfil)) {
+      if ([3, 6].includes(perfil.idPerfil)) {
         if (sexo) {
           this.formRegistro.get('sexo')?.patchValue(
             {
@@ -913,7 +907,7 @@ export class InicioComponent extends GeneralComponent {
         this.formRegistro.get("indOtros")?.setValue(true);
       }
 
-      if(indNinguno == 1){
+      if (indNinguno == 1) {
         this.formRegistro.get("indNinguno")?.setValue(true);
       }
 
@@ -1108,7 +1102,6 @@ export class InicioComponent extends GeneralComponent {
     let fotografia: FotografiaRequest = new FotografiaRequest();
 
 
-
     const infoAsambleadaSeleccionado: string = this.formRegistro.get('info')?.value;
 
 
@@ -1149,7 +1142,7 @@ export class InicioComponent extends GeneralComponent {
       this.imageUrl = e.target?.result as string;
     };
     reader.readAsDataURL(archivo);
-this.blnOcultar = true;
+    this.blnOcultar = true;
 
 
   }
@@ -1160,13 +1153,13 @@ this.blnOcultar = true;
     // Obtener el alto y ancho natural de la imagen (en píxeles)
 
     this.naturalHeight = imgElement.naturalHeight;
-    this.naturalWidth  = imgElement.naturalWidth;
+    this.naturalWidth = imgElement.naturalWidth;
 
 
     const formData = new FormData();
 
 
-    if (this.naturalHeight >= 1300 || this.naturalWidth >= 1300 ) {
+    if (this.naturalHeight >= 1300 || this.naturalWidth >= 1300) {
       this._alertServices.alerta("La imagen es demasiado grande, el tamaño mínimo es de 100 pixeles y máximo de 1300");
       this.blnFotoGuardada = false;
       this.selectFile = undefined;
@@ -1393,7 +1386,6 @@ this.blnOcultar = true;
     const externo: boolean = [3, 6].includes(this.userData?.idPerfil as number);
 
     if (this.estatusPendienteDocumentacion) {
-      this.mostrarModalValidacion();
       this.indice.update((value: number) => value + 1);
       return;
     }
@@ -1432,18 +1424,54 @@ this.blnOcultar = true;
 
     this.limpiarDocumentoEspecialidad();
 
-    const solicitud: SolicitudGuardarDocumentacion = this.generarSolicitudGuardarDocumentacion();
 
     if (finalizarRegistro) {
-      this.finalizarRegistro(solicitud);
+      this.mostrarModalValidacion();
     } else {
+      const solicitud: SolicitudGuardarDocumentacion = this.generarSolicitudGuardarDocumentacion();
       this.guardarSegundaSeccion(solicitud);
     }
   }
 
   mostrarModalValidacion(): void {
-    const data = { datosGenerales: this.datosGenerales };
-    this.dialogValidacionRef = this.dialogService.open(ModalValidacionMedicoComponent, { data, focusOnShow: false });
+    const documentosObligatorios: SolicitudDocumentoObligatorio[] = this.generarDocumentosObligatorios();
+    const datosEmpleo: DatosEmpleo = this.transformarFormularioADatosEmpleo();
+    const constancias = this.documentosLocalStorageService.obtenerRefConstanciaCompleta();
+    const documentosConstancias = this.transformarDocumentosConstancia(constancias);
+    const especialidadesDocumentos = this.convertirTabNodes();
+    const data = {
+      datosGenerales: this.datosGenerales,
+      documentosObligatorios,
+      datosEmpleo,
+      documentosConstancias,
+      especialidadesDocumentos
+    };
+    this.dialogValidacionRef = this.dialogService.open(ModalValidacionMedicoComponent, {data, focusOnShow: false});
+
+    this.dialogValidacionRef.onClose.subscribe((validacion) => {
+        if (validacion?.finalizado) {
+          const solicitud: SolicitudGuardarDocumentacion = this.generarSolicitudGuardarDocumentacion();
+          this.finalizarRegistro(solicitud);
+        } else {
+          console.log('Accion cancelada')
+        }
+      }
+    )
+  }
+
+  convertirTabNodes(): { especialidad: string, especialidadMedica: string, tipoDocumento: string, guid: string }[] {
+
+    // Usamos flatMap para mapear y aplanar en una sola operación
+    return this.registrosDocumentosEspecialidad().flatMap(node => {
+      const especialidadPrincipal = node.especialidad;
+
+      return node.documentos.map(documento => ({
+        especialidad: especialidadPrincipal,
+        especialidadMedica: documento.especialidadMedica,
+        tipoDocumento: documento.tipoDocumento,
+        guid: documento.guid
+      }));
+    });
   }
 
   finalizarRegistro(solicitud: SolicitudGuardarDocumentacion): void {
@@ -2098,13 +2126,15 @@ this.blnOcultar = true;
 
   validarIndicadores(): boolean {
     let checkInd = false;
-    if(
+    if (
       this.formRegistro.get("indPadres")?.value ||
       this.formRegistro.get("indHijos")?.value ||
       this.formRegistro.get("indConyuge")?.value ||
       this.formRegistro.get("indOtros")?.value ||
       this.formRegistro.get("indNinguno")?.value
-    ){checkInd = true}
+    ) {
+      checkInd = true
+    }
 
     return !checkInd;
   }

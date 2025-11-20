@@ -124,7 +124,7 @@
       </div>
       <div class="col-12 lg:col-6 flex flex-column mt-2">
         <span class="modal-prev-label">ESTADO DE ORIGEN</span>
-        @if (datosGenerales.datosContacto.lugarNacimiento.desLugarNacimiento) {
+        @if (datosGenerales.datosContacto.lugarNacimiento) {
           <span class="modal-prev-value">{{ datosGenerales.datosContacto.lugarNacimiento.desLugarNacimiento }}</span>
         } @else {
           <span class="modal-prev-value">-</span>
@@ -254,7 +254,7 @@
     </p-table>
   </article>
 
-  @if ([3, 6].includes(userData?.idPerfil)) {
+  @if ([3, 6].includes(userData?.idPerfil ?? 0)) {
     <article class="flex flex-column card border-round mt-4 p-3">
       <div class="flex flex-row">
         <h5 class="modal-prev-titulo">Constancias de cursos</h5>
@@ -313,7 +313,7 @@
     </article>
   }
 
-  @if ([3, 6].includes(userData?.idPerfil)) {
+  @if ([3, 6].includes(userData?.idPerfil ?? 0)) {
     <article class="flex flex-column card border-round mt-4 p-3">
       <div class="flex flex-row">
         <h5 class="modal-prev-titulo">Datos de empleo</h5>
