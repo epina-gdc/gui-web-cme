@@ -1,19 +1,18 @@
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {Component, inject, OnInit, signal, ViewChild, WritableSignal} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {CommonModule} from '@angular/common';
-import {Card} from 'primeng/card';
-import {SelectModule} from 'primeng/select';
-import {InputText} from 'primeng/inputtext';
-import {PaginatorModule} from 'primeng/paginator';
-import {ConfirmPopupModule} from 'primeng/confirmpopup';
-import {TableModule} from 'primeng/table';
-import {Popover, PopoverModule} from 'primeng/popover';
-import {GeneralComponent} from '../../../../components/general.component';
-import {BtnRegresarComponent} from '../../../../components/btn-regresar/btn-regresar.component';
-import {TipoDropdown} from '@models/tipo-dropdown.interface';
-import {ButtonModule} from 'primeng/button';
-import {DUMMIE_TABLA_VERIFICACION_DOCUMENTOS} from '@utils/dummies';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { Card } from 'primeng/card';
+import { SelectModule } from 'primeng/select';
+import { InputText } from 'primeng/inputtext';
+import { PaginatorModule } from 'primeng/paginator';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { TableModule } from 'primeng/table';
+import { Popover, PopoverModule } from 'primeng/popover';
+import { GeneralComponent } from '../../../../components/general.component';
+import { TipoDropdown } from '@models/tipo-dropdown.interface';
+import { ButtonModule } from 'primeng/button';
+import { DUMMIE_TABLA_VERIFICACION_DOCUMENTOS } from '@utils/dummies';
 import { mapearArregloTipoDropdown } from '@utils/funciones';
 import { VerificacionDocsService } from '@services/verificacion-docs.service';
 import { VerificacionDocsInterface } from '@models/verificacion-docs.interface';
@@ -37,14 +36,13 @@ import { AlertService } from '@services/alert.service';
     TableModule,
     ButtonModule,
     ConfirmPopupModule,
-    BtnRegresarComponent,
     PaginatorModule,
     PopoverModule
   ],
   templateUrl: './verificacion-documentos.component.html',
   styleUrl: './verificacion-documentos.component.scss',
 })
-export class VerificacionDocumentosComponent extends GeneralComponent implements OnInit{
+export class VerificacionDocumentosComponent extends GeneralComponent implements OnInit {
   @ViewChild('op') op!: Popover;
 
   dummies = [{ label: 'Dummie 1', value: 'Dummie 1' }, { label: 'Dummie 2', value: 'Dummie 2' }];
@@ -66,31 +64,30 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
   especialidad: TipoDropdown[] = [];
   estatus: TipoDropdown[] = [];
 
-  clases: Map<number,string> = new Map([
-    [1 , 'pendiente'],
-    [2 , 'revision'],
-    [3 , 'cumple'],
-    [4 , 'noCumple']
+  clases: Map<number, string> = new Map([
+    [1, 'pendiente'],
+    [2, 'revision'],
+    [3, 'cumple'],
+    [4, 'noCumple']
   ]);
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
-    private readonly fb: FormBuilder)
-    {
-      super();
-      this.filtroForm = this.inicializarForm();
-      this.obtenerCatalogos();
+    private readonly fb: FormBuilder) {
+    super();
+    this.filtroForm = this.inicializarForm();
+    this.obtenerCatalogos();
   }
 
   ngOnInit(): void {
     this.paginar();
   }
 
-  obtenerCatalogos(){
-    this.activatedRoute.data.subscribe(({respuesta}) => {
-      const [especialidades,estatusVerificacion] = respuesta;
-      this.especialidad = mapearArregloTipoDropdown(especialidades,'desEspecialidad', 'cveEspecialidad');
-      this.estatus = mapearArregloTipoDropdown(estatusVerificacion.respuesta, 'desEstatus','idEstatusVerificacion');
+  obtenerCatalogos() {
+    this.activatedRoute.data.subscribe(({ respuesta }) => {
+      const [especialidades, estatusVerificacion] = respuesta;
+      this.especialidad = mapearArregloTipoDropdown(especialidades, 'desEspecialidad', 'cveEspecialidad');
+      this.estatus = mapearArregloTipoDropdown(estatusVerificacion.respuesta, 'desEstatus', 'idEstatusVerificacion');
     });
   }
 
@@ -103,7 +100,7 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
   }
 
   textoEstatus(estatus: number): string {
-    const tipoEstatus:string[] =[
+    const tipoEstatus: string[] = [
       "No cumple con requisitos",
       "Cumple con requisitos",
       "Revisión documental",
@@ -125,7 +122,7 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
     this.paginar();
   }
 
-  paginar(){
+  paginar() {
     this.verificacionDocsService.consultarDocs(this.filtros()).subscribe({
       next: (respuesta: HttpRespuesta<any>) => {
         this.usuarioDocumentos.set(respuesta.respuesta['content']);
@@ -136,29 +133,29 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
     })
   }
 
-  descargarExcelHistoricoDocs(){
+  descargarExcelHistoricoDocs() {
     this.verificacionDocsService.descargaExcelHistoricoDocs(this.filtrosExcel()).subscribe({
-      
-      
-      next: (excelBlob: Blob) => {
-        
-        const nombreArchivo = 'DATOS_VERIFICACION_DOCUMENTOS.xlsx'; 
-        
-        
-        saveAs(excelBlob, nombreArchivo); 
 
-        
+
+      next: (excelBlob: Blob) => {
+
+        const nombreArchivo = 'DATOS_VERIFICACION_DOCUMENTOS.xlsx';
+
+
+        saveAs(excelBlob, nombreArchivo);
+
+
       },
       error: (error) => {
         console.error('Error al descargar el Excel:', error);
         this.alertaService.error('Error al descargar el Excel');
-        
+
       }
     });
-}
+  }
 
 
-  filtros(): VerificacionDocsInterface{
+  filtros(): VerificacionDocsInterface {
     return {
       page: this.paginaActual,
       size: this.rows,
@@ -169,7 +166,7 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
     }
   }
 
-  filtrosExcel(): VerificacionDocsExcelInterface{
+  filtrosExcel(): VerificacionDocsExcelInterface {
     return {
       idEstatus: (this.filtroForm.get('estatus')?.value)?.value,
       cveEspecialidad: (this.filtroForm.get('especialidad')?.value)?.value,
@@ -179,170 +176,170 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
   }
 
 
-  consultaDocumento(event: any, documento: any){
+  consultaDocumento(event: any, documento: any) {
     if (this.documentoSeleccionado?.matricula === documento.matricula) {
       this.op.hide();
       this.documentoSeleccionado = null;
-  } else {
+    } else {
       this.documentoSeleccionado = documento;
       this.op.show(event);
 
       if (this.op.container) {
-          this.op.align();
+        this.op.align();
       }
-  }
-  }
-
-  imprimirDocumento(usuario :TablaVerificacionDocsInterface){
-
-    if(usuario.idTipoConvocatoria==1){
-     this.descargaDictamen(usuario.idUsuario);
     }
-    else{
+  }
+
+  imprimirDocumento(usuario: TablaVerificacionDocsInterface) {
+
+    if (usuario.idTipoConvocatoria == 1) {
+      this.descargaDictamen(usuario.idUsuario);
+    }
+    else {
       this.descargaOpinion(usuario.idUsuario);
     }
   }
 
 
 
-descargaOpinion(idUsuario: number) {
+  descargaOpinion(idUsuario: number) {
     this.verificacionDocsService.descargarOpinion(idUsuario).subscribe({
-        next: (respuesta: OpinionTecnicaRespuesta) => {
-            
-         
-            if (respuesta.exito && respuesta.respuesta && respuesta.respuesta.length > 0) {
-                
-                
-                respuesta.respuesta.forEach((adjunto: AdjuntoOpinion) => {
-                    
-                    if (adjunto.adjuntoBase64) {
-                        
-                        const base64Data = adjunto.adjuntoBase64;
-                        const contentType = 'application/pdf'; 
+      next: (respuesta: OpinionTecnicaRespuesta) => {
 
-                        
-                        const pdfBlob = this.b64toBlob(base64Data, contentType);
 
-                        
-                        const pdfUrl = URL.createObjectURL(pdfBlob);
+        if (respuesta.exito && respuesta.respuesta && respuesta.respuesta.length > 0) {
 
-                        // 5. Abrir la URL en una nueva ventana/pestaña
-                        // Nota: El navegador puede bloquear la apertura de múltiples ventanas si no es en respuesta directa a una acción del usuario.
-                        window.open(pdfUrl, '_blank');
-                        
-                        
-                    }
-                });
 
-            } else {
-                // Manejar el caso donde 'exito' es false o no hay adjuntos
-                const mensaje = respuesta.mensaje || 'No se encontraron opiniones técnicas para descargar.';
-                this.alertaService.error('Error al imprimir los documentos');
-                console.error('Error o falta de datos:', mensaje);
-                // Mostrar notificación al usuario.
+          respuesta.respuesta.forEach((adjunto: AdjuntoOpinion) => {
+
+            if (adjunto.adjuntoBase64) {
+
+              const base64Data = adjunto.adjuntoBase64;
+              const contentType = 'application/pdf';
+
+
+              const pdfBlob = this.b64toBlob(base64Data, contentType);
+
+
+              const pdfUrl = URL.createObjectURL(pdfBlob);
+
+              // 5. Abrir la URL en una nueva ventana/pestaña
+              // Nota: El navegador puede bloquear la apertura de múltiples ventanas si no es en respuesta directa a una acción del usuario.
+              window.open(pdfUrl, '_blank');
+
+
             }
-        },
-        error: (error) => {
-            // Manejar errores de conexión o HTTP
-            this.alertaService.error('Error al imprimir los documentos');
-            console.error('Error de conexión o HTTP al obtener las opiniones:', error);
-        }
-    });
-}
+          });
 
-   descargaDictamen(idUsuario: number) {
+        } else {
+          // Manejar el caso donde 'exito' es false o no hay adjuntos
+          const mensaje = respuesta.mensaje || 'No se encontraron opiniones técnicas para descargar.';
+          this.alertaService.error('Error al imprimir los documentos');
+          console.error('Error o falta de datos:', mensaje);
+          // Mostrar notificación al usuario.
+        }
+      },
+      error: (error) => {
+        // Manejar errores de conexión o HTTP
+        this.alertaService.error('Error al imprimir los documentos');
+        console.error('Error de conexión o HTTP al obtener las opiniones:', error);
+      }
+    });
+  }
+
+  descargaDictamen(idUsuario: number) {
     this.verificacionDocsService.descargarDictamen(idUsuario).subscribe({
-        next: (respuesta: DictamenRespuesta) => {
-            
-            
-            if (respuesta.exito) {
-                
-                const adjunto = respuesta.respuesta;
-                
-                if (adjunto && adjunto.adjuntoBase64) {
-                    
-                    const base64Data = adjunto.adjuntoBase64;
-                    const nombreArchivo = adjunto.nombreAdjunto || 'dictamen.pdf';
-                    const contentType = 'application/pdf'; 
+      next: (respuesta: DictamenRespuesta) => {
 
-                    
-                    const pdfBlob = this.b64toBlob(base64Data, contentType);
 
-                    
-                    const pdfUrl = URL.createObjectURL(pdfBlob);
+        if (respuesta.exito) {
 
-                    
-                    window.open(pdfUrl, '_blank');
-                    
-                    
+          const adjunto = respuesta.respuesta;
 
-                } else {
-                    console.error('Error: El JSON es exitoso pero falta el Base64 del PDF.');
-                    
-                }
+          if (adjunto && adjunto.adjuntoBase64) {
 
-            } else {
-                // El backend indicó que la operación falló (exito: false)
-                this.alertaService.error('Error al imprimir los documentos');
-                console.error('Error del servicio:', respuesta.mensaje);
-                // Mostrar notificación al usuario con el mensaje del backend
-            }
-        },
-        error: (error) => {
-            // Manejar errores de conexión o HTTP
-            this.alertaService.error('Error al imprimir los documentos');
-            console.error('Error de conexión o HTTP al obtener el dictamen:', error);
-            // Mostrar notificación de error genérico.
+            const base64Data = adjunto.adjuntoBase64;
+            const nombreArchivo = adjunto.nombreAdjunto || 'dictamen.pdf';
+            const contentType = 'application/pdf';
+
+
+            const pdfBlob = this.b64toBlob(base64Data, contentType);
+
+
+            const pdfUrl = URL.createObjectURL(pdfBlob);
+
+
+            window.open(pdfUrl, '_blank');
+
+
+
+          } else {
+            console.error('Error: El JSON es exitoso pero falta el Base64 del PDF.');
+
+          }
+
+        } else {
+          // El backend indicó que la operación falló (exito: false)
+          this.alertaService.error('Error al imprimir los documentos');
+          console.error('Error del servicio:', respuesta.mensaje);
+          // Mostrar notificación al usuario con el mensaje del backend
         }
+      },
+      error: (error) => {
+        // Manejar errores de conexión o HTTP
+        this.alertaService.error('Error al imprimir los documentos');
+        console.error('Error de conexión o HTTP al obtener el dictamen:', error);
+        // Mostrar notificación de error genérico.
+      }
     });
-}
+  }
 
-private b64toBlob(b64Data: string, contentType: string = '', sliceSize: number = 512): Blob {
-    
-   
+  private b64toBlob(b64Data: string, contentType: string = '', sliceSize: number = 512): Blob {
+
+
     let base64 = b64Data.split(',')[1] ? b64Data.split(',')[1] : b64Data;
-    
-    
+
+
     // Eliminar CUALQUIER carácter que NO sea una letra/número válido para Base64, 
     // incluyendo espacios, saltos de línea, y caracteres de control.
     // Base64 válido solo incluye A-Z, a-z, 0-9, +, / y = (relleno).
-    base64 = base64.replace(/[^A-Za-z0-9+/=]/g, ''); 
-    
+    base64 = base64.replace(/[^A-Za-z0-9+/=]/g, '');
+
     // 3. Decodificar el Base64
     try {
-        const byteCharacters = atob(base64);
-        
-        const byteArrays: Uint8Array[] = []; 
-        for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-            const slice = byteCharacters.slice(offset, offset + sliceSize);
-            const byteNumbers = new Array(slice.length);
-            for (let i = 0; i < slice.length; i++) {
-                byteNumbers[i] = slice.charCodeAt(i);
-            }
-            const byteArray = new Uint8Array(byteNumbers);
-            byteArrays.push(byteArray);
+      const byteCharacters = atob(base64);
+
+      const byteArrays: Uint8Array[] = [];
+      for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        const slice = byteCharacters.slice(offset, offset + sliceSize);
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+          byteNumbers[i] = slice.charCodeAt(i);
         }
-        
-        return new Blob(byteArrays as BlobPart[], { type: contentType }); 
+        const byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+      }
+
+      return new Blob(byteArrays as BlobPart[], { type: contentType });
 
     } catch (e) {
-        // Si incluso después de la limpieza falla, la respuesta NO es Base64.
-        console.error("Error crítico: La respuesta HTTP no es un Base64 válido.", e);
-        // Lanza un error genérico o notifica al usuario.
-        throw new Error("El string Base64 no es válido o contiene caracteres ilegales.");
+      // Si incluso después de la limpieza falla, la respuesta NO es Base64.
+      console.error("Error crítico: La respuesta HTTP no es un Base64 válido.", e);
+      // Lanza un error genérico o notifica al usuario.
+      throw new Error("El string Base64 no es válido o contiene caracteres ilegales.");
     }
-}
+  }
 
   hidePopover() {
     this.op.hide();
   }
 
-  irDetalleDocumentacion( usuario :TablaVerificacionDocsInterface){
+  irDetalleDocumentacion(usuario: TablaVerificacionDocsInterface) {
     let ruta = this._nav.documentacionAspirante.replace(':id', usuario.idUsuario.toString());
-    this._router.navigate([this._nav.privado+ ruta])
+    this._router.navigate([this._nav.privado + ruta])
   }
 
-  limpiar(){
+  limpiar() {
     this.filtroForm.reset();
     this.paginaActual = 0;
     this.first = 0;
