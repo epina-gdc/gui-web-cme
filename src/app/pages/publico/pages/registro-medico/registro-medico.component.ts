@@ -416,7 +416,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
         this.form.controls['apellidoM'].setValue(response.respuesta.renapoData.segundoApellido ? response.respuesta.renapoData.segundoApellido : response.respuesta.siapData.segundoApellido);
         this.form.controls['curp'].setValue(response.respuesta.renapoData.curp ?? '');
         this.form.controls['rfc'].setValue(response.respuesta.siapData?.rfc ?? '');
-        this.form.controls['modalidad'].setValue(this.idModalidad);
+        //this.form.controls['modalidad'].setValue(this.idModalidad);
         this.form.get('nombre')?.disable();
         this.form.get('apellidoP')?.disable();
         this.form.get('apellidoM')?.disable();
@@ -698,10 +698,11 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
 
   public limpiarCurpChange() {
-
+    let tmpModalidad = this.form.controls['modalidad'].value;
     let tmp = this.form.controls['curp'].value;
     this.form.reset();
     this.form.controls['curp'].setValue(tmp);
+    this.form.controls['modalidad'].setValue(tmpModalidad);
 
   }
 
