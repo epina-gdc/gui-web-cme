@@ -11,12 +11,14 @@
   </article>
 
   <article class="flex flex-row flex-wrap gap-3">
-    @if (datosGenerales.datosPersonales.cveMatricula) {
+    @if (userData?.cveMatricula) {
       <div class="col-12 lg:col-4 card border-round flex flex-column p-3">
         <span class="modal-prev-label">MATRICULA</span>
-        <span class="modal-prev-value">{{ datosGenerales.datosPersonales.cveMatricula }}</span>
+        <span class="modal-prev-value">{{ userData?.cveMatricula }}</span>
       </div>
-    } @else {
+    }
+
+    @if (userData?.refFolio) {
       <div class="col-12 lg:col-4 card border-round flex flex-column p-3">
         <span class="modal-prev-label">FOLIO</span>
         <span class="modal-prev-value">{{ userData?.refFolio }}</span>
@@ -85,7 +87,11 @@
         </div>
         <div class="col-12 lg:col-4 flex flex-column mt-2">
           <span class="modal-prev-label">OTROS</span>
-          <span class="modal-prev-value">{{ datosGenerales.dependientes.refOtro ?? '-' }}</span>
+          @if (datosGenerales.dependientes.refOtro) {
+            <span class="modal-prev-value">{{ datosGenerales.dependientes.refOtro }}</span>
+          } @else {
+            <span class="modal-prev-value">-</span>
+          }
         </div>
       </div>
     </div>
@@ -118,7 +124,11 @@
       </div>
       <div class="col-12 lg:col-6 flex flex-column mt-2">
         <span class="modal-prev-label">ESTADO DE ORIGEN</span>
-        <span class="modal-prev-value">{{ datosGenerales.datosContacto.lugarNacimiento.desLugarNacimiento }}</span>
+        @if (datosGenerales.datosContacto.lugarNacimiento.desLugarNacimiento) {
+          <span class="modal-prev-value">{{ datosGenerales.datosContacto.lugarNacimiento.desLugarNacimiento }}</span>
+        } @else {
+          <span class="modal-prev-value">-</span>
+        }
       </div>
     </div>
   </article>
@@ -244,113 +254,116 @@
     </p-table>
   </article>
 
-  <article class="flex flex-column card border-round mt-4 p-3">
-    <div class="flex flex-row">
-      <h5 class="modal-prev-titulo">Constancias de cursos</h5>
-    </div>
-    <span class="modal-prev-sub-titulo">Máximo 3 documentos en versión editable.</span>
-    <div class="flex flex-row flex-wrap">
-      <div class="col-12 lg:col-4">
-        <div class="modal-prev-label">Documento 1</div>
-        @if (documentosConstancias.length >= 1) {
-          <div class="modal-prev-value cursor-pointer"
-               (click)="mostrarDocumento(documentosConstancias[0].documento.refGuid)">
-            <span class="badge badge-pdf">constancia_1.pdf</span></div>
-        } @else {
-          <div class="modal-prev-value">Sin Documento</div>
-        }
-        <div class="modal-prev-label mt-2">Nombre</div>
-        @if (documentosConstancias.length >= 1) {
-          <div class="modal-prev-value">{{ documentosConstancias[0].refConstancia }}</div>
-        } @else {
-          <div class="modal-prev-value">Sin Registro</div>
-        }
+  @if ([3, 6].includes(userData?.idPerfil)) {
+    <article class="flex flex-column card border-round mt-4 p-3">
+      <div class="flex flex-row">
+        <h5 class="modal-prev-titulo">Constancias de cursos</h5>
       </div>
-      <div class="col-12 lg:col-4">
-        <div class="modal-prev-label">Documento 2</div>
-        @if (documentosConstancias.length >= 2) {
-          <div class="modal-prev-value cursor-pointer"
-               (click)="mostrarDocumento(documentosConstancias[1].documento.refGuid)">
-            <span class="badge badge-pdf">constancia_2.pdf</span></div>
-        } @else {
-          <div class="modal-prev-value">Sin Documento</div>
-        }
-        <div class="modal-prev-label mt-2">Nombre</div>
-        @if (documentosConstancias.length >= 2) {
-          <div class="modal-prev-value">{{ documentosConstancias[1].refConstancia }}</div>
-        } @else {
-          <div class="modal-prev-value">Sin Registro</div>
-        }
+      <span class="modal-prev-sub-titulo">Máximo 3 documentos en versión editable.</span>
+      <div class="flex flex-row flex-wrap">
+        <div class="col-12 lg:col-4">
+          <div class="modal-prev-label">Documento 1</div>
+          @if (documentosConstancias.length >= 1) {
+            <div class="modal-prev-value cursor-pointer"
+                 (click)="mostrarDocumento(documentosConstancias[0].documento.refGuid)">
+              <span class="badge badge-pdf">constancia_1.pdf</span></div>
+          } @else {
+            <div class="modal-prev-value">Sin Documento</div>
+          }
+          <div class="modal-prev-label mt-2">Nombre</div>
+          @if (documentosConstancias.length >= 1) {
+            <div class="modal-prev-value">{{ documentosConstancias[0].refConstancia }}</div>
+          } @else {
+            <div class="modal-prev-value">Sin Registro</div>
+          }
+        </div>
+        <div class="col-12 lg:col-4">
+          <div class="modal-prev-label">Documento 2</div>
+          @if (documentosConstancias.length >= 2) {
+            <div class="modal-prev-value cursor-pointer"
+                 (click)="mostrarDocumento(documentosConstancias[1].documento.refGuid)">
+              <span class="badge badge-pdf">constancia_2.pdf</span></div>
+          } @else {
+            <div class="modal-prev-value">Sin Documento</div>
+          }
+          <div class="modal-prev-label mt-2">Nombre</div>
+          @if (documentosConstancias.length >= 2) {
+            <div class="modal-prev-value">{{ documentosConstancias[1].refConstancia }}</div>
+          } @else {
+            <div class="modal-prev-value">Sin Registro</div>
+          }
+        </div>
+        <div class="col-12 lg:col-4">
+          <div class="modal-prev-label">Documento 3</div>
+          @if (documentosConstancias.length === 3) {
+            <div class="modal-prev-value cursor-pointer"
+                 (click)="mostrarDocumento(documentosConstancias[2].documento.refGuid)"
+            ><span class="badge badge-pdf">constancia_3.pdf</span></div>
+          } @else {
+            <div class="modal-prev-value">Sin Documento</div>
+          }
+          <div class="modal-prev-label mt-2">Nombre</div>
+          @if (documentosConstancias.length === 3) {
+            <div class="modal-prev-value">{{ documentosConstancias[2].refConstancia }}</div>
+          } @else {
+            <div class="modal-prev-value">Sin Registro</div>
+          }
+        </div>
       </div>
-      <div class="col-12 lg:col-4">
-        <div class="modal-prev-label">Documento 3</div>
-        @if (documentosConstancias.length === 3) {
-          <div class="modal-prev-value cursor-pointer"
-               (click)="mostrarDocumento(documentosConstancias[2].documento.refGuid)"
-          ><span class="badge badge-pdf">constancia_3.pdf</span></div>
-        } @else {
-          <div class="modal-prev-value">Sin Documento</div>
-        }
-        <div class="modal-prev-label mt-2">Nombre</div>
-        @if (documentosConstancias.length === 3) {
-          <div class="modal-prev-value">{{ documentosConstancias[2].refConstancia }}</div>
-        } @else {
-          <div class="modal-prev-value">Sin Registro</div>
-        }
-      </div>
-    </div>
-  </article>
+    </article>
+  }
 
-
-  <article class="flex flex-column card border-round mt-4 p-3">
-    <div class="flex flex-row">
-      <h5 class="modal-prev-titulo">Datos de empleo</h5>
-    </div>
-    <div class="flex flex-row flex-wrap">
-      <div class="col-12 lg:col-4 flex flex-column mt-2">
-        <span class="modal-prev-label">¿Tienes otro empleo?</span>
-        @if (datosEmpleo.indOtroEmpleo === 1) {
-          <span class="modal-prev-value">Si</span>
-        } @else {
-          <span class="modal-prev-value">No</span>
-        }
+  @if ([3, 6].includes(userData?.idPerfil)) {
+    <article class="flex flex-column card border-round mt-4 p-3">
+      <div class="flex flex-row">
+        <h5 class="modal-prev-titulo">Datos de empleo</h5>
       </div>
-      <div class="col-12 lg:col-4 flex flex-column mt-2">
-        <span class="modal-prev-label">¿Eres sustituto 08 IMSS?</span>
-        @if (datosEmpleo.indMedicoSustituto === 1) {
-          <span class="modal-prev-value">Si</span>
-        } @else {
-          <span class="modal-prev-value">No</span>
-        }
-      </div>
-      <div class="col-12 lg:col-4 flex flex-column mt-2">
-        <span class="modal-prev-label">Horario laboral</span>
-        <span class="modal-prev-value">{{ datosEmpleo.refJornadaInicio }} - {{ datosEmpleo.refJornadaFin }}</span>
-      </div>
-      <div class="col-12 lg:col-4 flex flex-column mt-2">
-        <span class="modal-prev-label">Jornada laboral</span>
-        @if (datosEmpleo.diaSemanaInicio.idDiaSemana && datosEmpleo.diaSemanaFin.idDiaSemana) {
-          <span class="modal-prev-value">{{ +datosEmpleo.diaSemanaInicio.idDiaSemana | diaSemana }}
-            a {{ +datosEmpleo.diaSemanaFin.idDiaSemana | diaSemana }}</span>
-        } @else {
+      <div class="flex flex-row flex-wrap">
+        <div class="col-12 lg:col-4 flex flex-column mt-2">
+          <span class="modal-prev-label">¿Tienes otro empleo?</span>
+          @if (datosEmpleo.indOtroEmpleo === 1) {
+            <span class="modal-prev-value">Si</span>
+          } @else {
+            <span class="modal-prev-value">No</span>
+          }
+        </div>
+        <div class="col-12 lg:col-4 flex flex-column mt-2">
+          <span class="modal-prev-label">¿Eres sustituto 08 IMSS?</span>
+          @if (datosEmpleo.indMedicoSustituto === 1) {
+            <span class="modal-prev-value">Si</span>
+          } @else {
+            <span class="modal-prev-value">No</span>
+          }
+        </div>
+        <div class="col-12 lg:col-4 flex flex-column mt-2">
+          <span class="modal-prev-label">Horario laboral</span>
+          <span class="modal-prev-value">{{ datosEmpleo.refJornadaInicio }} - {{ datosEmpleo.refJornadaFin }}</span>
+        </div>
+        <div class="col-12 lg:col-4 flex flex-column mt-2">
+          <span class="modal-prev-label">Jornada laboral</span>
+          @if (datosEmpleo.diaSemanaInicio.idDiaSemana && datosEmpleo.diaSemanaFin.idDiaSemana) {
+            <span class="modal-prev-value">{{ +datosEmpleo.diaSemanaInicio.idDiaSemana | diaSemana }}
+              a {{ +datosEmpleo.diaSemanaFin.idDiaSemana | diaSemana }}</span>
+          } @else {
+            <span class="modal-prev-value">No registrado</span>
+          }
+        </div>
+        <div class="col-12 lg:col-4 flex flex-column mt-2">
+          <span class="modal-prev-label">Institución</span>
+          @if (datosEmpleo.nomEspecificacionInstitucion) {
+            <span class="modal-prev-value">{{ datosEmpleo.nomEspecificacionInstitucion }}</span>
+          } @else {
+            <span class="modal-prev-value">No registrado</span>
+          }
+        </div>
+        <div class="col-12 lg:col-4 flex flex-column mt-2">
+          <span class="modal-prev-label">Especialidad</span>
           <span class="modal-prev-value">No registrado</span>
-        }
+        </div>
       </div>
-      <div class="col-12 lg:col-4 flex flex-column mt-2">
-        <span class="modal-prev-label">Institución</span>
-        @if (datosEmpleo.nomEspecificacionInstitucion) {
-          <span class="modal-prev-value">{{ datosEmpleo.nomEspecificacionInstitucion }}</span>
-        } @else {
-          <span class="modal-prev-value">No registrado</span>
-        }
-      </div>
-      <div class="col-12 lg:col-4 flex flex-column mt-2">
-        <span class="modal-prev-label">Especialidad</span>
-        <span class="modal-prev-value">No registrado</span>
-      </div>
-    </div>
-    <span class="modal-prev-sub-titulo mb-3">Una vez finalizado el registro ya no se pueden modificar datos.</span>
-  </article>
+      <span class="modal-prev-sub-titulo mb-3">Una vez finalizado el registro ya no se pueden modificar datos.</span>
+    </article>
+  }
 </section>
 
 
