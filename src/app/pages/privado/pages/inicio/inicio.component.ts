@@ -1449,7 +1449,7 @@ export class InicioComponent extends GeneralComponent {
     this.dialogValidacionRef = this.dialogService.open(ModalValidacionMedicoComponent, {data, focusOnShow: false});
 
     this.dialogValidacionRef.onClose.subscribe((validacion) => {
-        if (validacion?.finalizado) {
+        if (validacion?.finalizar) {
           const solicitud: SolicitudGuardarDocumentacion = this.generarSolicitudGuardarDocumentacion();
           this.finalizarRegistro(solicitud);
         } else {
