@@ -1450,7 +1450,8 @@ export class InicioComponent extends GeneralComponent {
       templates: {
         header: HeaderGenericoComponent,
         footer: FooterMedicoComponent
-      }
+      },
+      styleClass: 'oferta-detail'
     });
 
     this.dialogValidacionRef.onClose.subscribe((validacion) => {
