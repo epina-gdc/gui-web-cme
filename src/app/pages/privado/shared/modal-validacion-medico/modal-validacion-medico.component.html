@@ -228,7 +228,7 @@
             </div>
             @if (documentosConstancias.length >= 1) {
               <div class="flex justify-content-between">
-                <div class="modal-prev-value">{{ documentosConstancias[0].refConstancia }}</div>
+                <div class="seccion-detalle-oferta-laboral">{{ documentosConstancias[0].refConstancia }}</div>
                 <div class="modal-prev-value cursor-pointer"
                      (click)="mostrarDocumento(documentosConstancias[0].documento.refGuid)">
                   <span class="link">Archivo.pdf</span></div>
@@ -236,7 +236,7 @@
             }
             @if (documentosConstancias.length >= 2) {
               <div class="flex justify-content-between">
-                <div class="modal-prev-value">{{ documentosConstancias[1].refConstancia }}</div>
+                <div class="seccion-detalle-oferta-laboral">{{ documentosConstancias[1].refConstancia }}</div>
                 <div class="modal-prev-value cursor-pointer"
                      (click)="mostrarDocumento(documentosConstancias[1].documento.refGuid)">
                   <span class="link">Archivo.pdf</span></div>
@@ -244,7 +244,7 @@
             }
             @if (documentosConstancias.length >= 3) {
               <div class="flex justify-content-between">
-                <div class="modal-prev-value">{{ documentosConstancias[2].refConstancia }}</div>
+                <div class="seccion-detalle-oferta-laboral">{{ documentosConstancias[2].refConstancia }}</div>
                 <div class="modal-prev-value cursor-pointer"
                      (click)="mostrarDocumento(documentosConstancias[2].documento.refGuid)">
                   <span class="link">Archivo.pdf</span></div>
