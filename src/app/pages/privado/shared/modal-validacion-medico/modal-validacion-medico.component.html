@@ -262,47 +262,47 @@
               <p class="seccion-detalle-oferta-laboral">Especialidad medica:</p>
               <p class="modal-prev-value">Tipo de documento:</p>
             </div>
+            @for (especialidad of especialidades; track especialidad.guid) {
+              <div class="flex justify-content-between">
+                <p class="seccion-detalle-oferta-laboral">{{ especialidad.especialidadMedica | titlecase }}:</p>
+                <div class="modal-prev-value cursor-pointer"
+                     (click)="mostrarDocumento(especialidad.guid)">
+                  <span class="link">{{ especialidad.tipoDocumento }}.pdf</span>
+                </div>
+              </div>
+            }
           </div>
-          @for (especialidad of especialidades; track especialidad.guid) {
-            <div class="flex justify-content-between">
-              <p class="seccion-detalle-oferta-laboral">{{ especialidad.especialidadMedica | titlecase }}:</p>
-              <div class="modal-prev-value cursor-pointer"
-                   (click)="mostrarDocumento(especialidad.guid)">
-                <span class="link">{{ especialidad.tipoDocumento }}.pdf</span>
+
+          @if ([3, 6].includes(userData?.idPerfil ?? 0)) {
+            <div class="flex flex-column">
+              <div class="flex align-items-center gap-4">
+                <i class="pi pi-exclamation-circle" style="color: #41ABD9; font-size: 1.8rem"></i>
+                <h4 class="modal-titulo-tarjeta">Datos de empleo</h4>
               </div>
             </div>
-          }
-        </div>
-      </div>
 
-      @if ([3, 6].includes(userData?.idPerfil ?? 0)) {
-        <article class="flex flex-column card border-round mt-4 p-3">
-          <div class="flex flex-row">
-            <h5 class="modal-prev-titulo">Datos de empleo</h5>
-          </div>
-          <div class="flex flex-row flex-wrap">
-            <div class="col-12 lg:col-4 flex flex-column mt-2">
-              <span class="modal-prev-label">¿Tienes otro empleo?</span>
+            <div class="flex justify-content-between">
+              <p class="seccion-detalle-oferta-laboral">¿Tienes otro empleo?</p>
               @if (datosEmpleo.indOtroEmpleo === 1) {
                 <span class="modal-prev-value">Si</span>
               } @else {
                 <span class="modal-prev-value">No</span>
               }
             </div>
-            <div class="col-12 lg:col-4 flex flex-column mt-2">
-              <span class="modal-prev-label">¿Eres sustituto 08 IMSS?</span>
+            <div class="flex justify-content-between">
+              <p class="seccion-detalle-oferta-laboral">¿Eres sustituto 08 IMSS?</p>
               @if (datosEmpleo.indMedicoSustituto === 1) {
                 <span class="modal-prev-value">Si</span>
               } @else {
                 <span class="modal-prev-value">No</span>
               }
             </div>
-            <div class="col-12 lg:col-4 flex flex-column mt-2">
-              <span class="modal-prev-label">Horario laboral</span>
+            <div class="flex justify-content-between">
+              <p class="seccion-detalle-oferta-laboral">Horario laboral</p>
               <span class="modal-prev-value">{{ datosEmpleo.refJornadaInicio }} - {{ datosEmpleo.refJornadaFin }}</span>
             </div>
-            <div class="col-12 lg:col-4 flex flex-column mt-2">
-              <span class="modal-prev-label">Jornada laboral</span>
+            <div class="flex justify-content-between">
+              <p class="seccion-detalle-oferta-laboral">Jornada laboral</p>
               @if (datosEmpleo.diaSemanaInicio.idDiaSemana && datosEmpleo.diaSemanaFin.idDiaSemana) {
                 <span class="modal-prev-value">{{ +datosEmpleo.diaSemanaInicio.idDiaSemana | diaSemana }}
                   a {{ +datosEmpleo.diaSemanaFin.idDiaSemana | diaSemana }}</span>
@@ -310,27 +310,23 @@
                 <span class="modal-prev-value">No registrado</span>
               }
             </div>
-            <div class="col-12 lg:col-4 flex flex-column mt-2">
-              <span class="modal-prev-label">Institución</span>
+            <div class="flex justify-content-between">
+              <p class="seccion-detalle-oferta-laboral">Institución</p>
               @if (datosEmpleo.nomEspecificacionInstitucion) {
                 <span class="modal-prev-value">{{ datosEmpleo.nomEspecificacionInstitucion }}</span>
               } @else {
                 <span class="modal-prev-value">No registrado</span>
               }
             </div>
-            <div class="col-12 lg:col-4 flex flex-column mt-2">
-              <span class="modal-prev-label">Especialidad</span>
-              <span class="modal-prev-value">No registrado</span>
-            </div>
-          </div>
-          <span
-            class="modal-prev-sub-titulo mb-3">Una vez finalizado el registro ya no se pueden modificar datos.</span>
-        </article>
-      }
+          }
+        </div>
+      </div>
+
 
     </p-tabpanel>
   </p-tabpanels>
 </p-tabs>
+<span class="modal-prev-sub-titulo mb-3">Una vez finalizado el registro ya no se pueden modificar datos.</span>
 
 <div class="flex flex-row justify-content-end gap-3 mt-3 px-4">
   <p-button type="button" variant="outlined" label="Cancelar" (click)="cancelar()"/>
