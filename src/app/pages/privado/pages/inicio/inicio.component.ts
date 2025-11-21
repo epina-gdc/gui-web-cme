@@ -1446,7 +1446,7 @@ export class InicioComponent extends GeneralComponent {
         '960px': '75vw',
         '640px': '90vw'
       },
-      width: '80%'
+      width: '80%',
       templates: {
         header: HeaderGenericoComponent,
         footer: FooterMedicoComponent
