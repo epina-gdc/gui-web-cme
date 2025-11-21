@@ -71,6 +71,8 @@ import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {
   ModalValidacionMedicoComponent
 } from '@pages/privado/shared/modal-validacion-medico/modal-validacion-medico.component';
+import { HeaderGenericoComponent } from '@pages/privado/shared/header-generico/header-generico.component';
+import { FooterMedicoComponent } from '@pages/privado/shared/footer-medico/footer-medico.component';
 
 interface DocumentoFuente {
   refGuid: string;
@@ -1444,6 +1446,10 @@ export class InicioComponent extends GeneralComponent {
         '960px': '75vw',
         '640px': '90vw'
       },
+      templates: {
+        header: HeaderGenericoComponent,
+        footer: FooterMedicoComponent
+      }
     });
 
     this.dialogValidacionRef.onClose.subscribe((validacion) => {
