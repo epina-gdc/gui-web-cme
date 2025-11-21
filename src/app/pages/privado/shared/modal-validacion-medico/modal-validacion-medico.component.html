@@ -20,7 +20,7 @@
           <div class="flex flex-column">
             <div class="flex align-items-center gap-4">
               <i class="pi pi-exclamation-circle" style="color: #41ABD9; font-size: 1.8rem"></i>
-              <h4 class="modal-prev-value"> Información personal</h4>
+              <h4 class="modal-titulo-tarjeta"> Información personal</h4>
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">RFC:</p>
@@ -66,7 +66,7 @@
           <div class="flex flex-column">
             <div class="flex align-items-center gap-4">
               <i class="cme-hospital" style="color: #41ABD9; font-size: 2rem"></i>
-              <h4 class="modal-prev-value">Datos de contacto</h4>
+              <h4 class="modal-titulo-tarjeta">Datos de contacto</h4>
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">Correo electrónico:</p>
@@ -99,7 +99,7 @@
           <div class="flex flex-column">
             <div class="flex align-items-center gap-4">
               <i class="cme-hospital" style="color: #41ABD9; font-size: 2rem"></i>
-              <h4 class="modal-prev-value">Datos del domicilio</h4>
+              <h4 class="modal-titulo-tarjeta">Datos del domicilio</h4>
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">Calle:</p>
@@ -134,7 +134,7 @@
           <div class="flex flex-column">
             <div class="flex align-items-center gap-4">
               <i class="cme-hospital" style="color: #41ABD9; font-size: 2rem"></i>
-              <h4 class="modal-prev-value">Zona de interés laboral</h4>
+              <h4 class="modal-titulo-tarjeta">Zona de interés laboral</h4>
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">OOAD:</p>
@@ -185,14 +185,14 @@
           <div class="flex flex-column">
             <div class="flex align-items-center gap-4">
               <i class="pi pi-exclamation-circle" style="color: #41ABD9; font-size: 1.8rem"></i>
-              <h4 class="modal-prev-value">Documentos Obligatorios</h4>
+              <h4 class="modal-titulo-tarjeta">Documentos Obligatorios</h4>
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">Identificación Oficial(INE):</p>
               @if (guid_obligatorio_1) {
                 <div class="modal-prev-value cursor-pointer"
                      (click)="mostrarDocumento(guid_obligatorio_1)"><span
-                  class="link">identificacion.pdf</span>
+                  class="link">Archivo.pdf</span>
                 </div>
               } @else {
                 <div class="modal-prev-value">Sin Documento</div>
@@ -202,7 +202,7 @@
               <p class="seccion-detalle-oferta-laboral">Título Medicina General:</p>
               @if (guid_obligatorio_2) {
                 <div class="modal-prev-value cursor-pointer"
-                     (click)="mostrarDocumento(guid_obligatorio_2)"><span class="link">titulo.pdf</span>
+                     (click)="mostrarDocumento(guid_obligatorio_2)"><span class="link">Archivo.pdf</span>
                 </div>
               } @else {
                 <div class="modal-prev-value">Sin Documento</div>
@@ -212,7 +212,7 @@
               <p class="seccion-detalle-oferta-laboral">Cedula profesional medica:</p>
               @if (guid_obligatorio_3) {
                 <div class="modal-prev-value cursor-pointer"
-                     (click)="mostrarDocumento(guid_obligatorio_3)"><span class="link">cedula.pdf</span>
+                     (click)="mostrarDocumento(guid_obligatorio_3)"><span class="link">Archivo.pdf</span>
                 </div>
               } @else {
                 <div class="modal-prev-value">Sin Documento</div>
@@ -223,7 +223,7 @@
             <div class="flex flex-column">
               <div class="flex align-items-center gap-4">
                 <i class="pi pi-exclamation-circle" style="color: #41ABD9; font-size: 1.8rem"></i>
-                <h4 class="modal-prev-value">Constancias de cursos de educación permanente en salud</h4>
+                <h4 class="modal-titulo-tarjeta">Constancias de cursos de educación permanente en salud</h4>
               </div>
             </div>
             @if (documentosConstancias.length >= 1) {
@@ -256,7 +256,7 @@
           <div class="flex flex-column">
             <div class="flex align-items-center gap-4">
               <i class="pi pi-exclamation-circle" style="color: #41ABD9; font-size: 1.8rem"></i>
-              <h4 class="modal-prev-value">Documentos de Especialidad y/o Subespecialidad</h4>
+              <h4 class="modal-titulo-tarjeta">Documentos de Especialidad y/o Subespecialidad</h4>
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">Especialidad medica:</p>
