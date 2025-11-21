@@ -16,8 +16,8 @@
   <p-tabpanels>
     <p-tabpanel value="0">
       <div class="flex flex-wrap flex-row">
-        <div class="sm:col-12 md:col-6  pr-4">
-          <div class="flex flex-column">
+        <div class="sm:col-12 md:col-6 pr-4">
+          <div class="flex flex-column mt-2">
             <div class="flex align-items-center gap-4">
               <i class="pi pi-exclamation-circle" style="color: #41ABD9; font-size: 1.8rem"></i>
               <h4 class="modal-titulo-tarjeta"> Información personal</h4>
@@ -63,7 +63,7 @@
               }
             </div>
           </div>
-          <div class="flex flex-column">
+          <div class="flex flex-column mt-2">
             <div class="flex align-items-center gap-4">
               <i class="cme-hospital" style="color: #41ABD9; font-size: 2rem"></i>
               <h4 class="modal-titulo-tarjeta">Datos de contacto</h4>
@@ -95,8 +95,8 @@
             </div>
           </div>
         </div>
-        <div class="sm:col-12 md:col-6  pr-4">
-          <div class="flex flex-column">
+        <div class="sm:col-12 md:col-6 pr-4">
+          <div class="flex flex-column mt-2">
             <div class="flex align-items-center gap-4">
               <i class="cme-hospital" style="color: #41ABD9; font-size: 2rem"></i>
               <h4 class="modal-titulo-tarjeta">Datos del domicilio</h4>
@@ -131,58 +131,38 @@
               <p class="modal-prev-value">{{ datosGenerales.datosResidenciaActual.estado.desEstado | titlecase }}</p>
             </div>
           </div>
-          <div class="flex flex-column">
-            <div class="flex align-items-center gap-4">
-              <i class="cme-hospital" style="color: #41ABD9; font-size: 2rem"></i>
-              <h4 class="modal-titulo-tarjeta">Zona de interés laboral</h4>
+          @for (zona of datosGenerales.zonasInteresLaboral; track zona.idOoad) {
+            <div class="flex flex-column mt-2">
+              <div class="flex align-items-center gap-4">
+                <i class="cme-hospital" style="color: #41ABD9; font-size: 2rem"></i>
+                <h4 class="modal-titulo-tarjeta">Zona de interés laboral</h4>
+              </div>
+              <div class="flex justify-content-between">
+                <p class="seccion-detalle-oferta-laboral">OOAD:</p>
+                <p class="modal-prev-value">{{ zona.desOoad }}</p>
+              </div>
+              <div class="flex justify-content-between">
+                <p class="seccion-detalle-oferta-laboral">UFM:</p>
+                <p class="modal-prev-value"></p>
+              </div>
+              <div class="flex justify-content-between">
+                <p class="seccion-detalle-oferta-laboral">Zona:</p>
+                <p class="modal-prev-value">{{ zona.desZona }}</p>
+              </div>
+              <div class="flex justify-content-between">
+                <p class="seccion-detalle-oferta-laboral">Ubicación:</p>
+                <p class="modal-prev-value"></p>
+              </div>
             </div>
-            <div class="flex justify-content-between">
-              <p class="seccion-detalle-oferta-laboral">OOAD:</p>
-              <p class="modal-prev-value"></p>
-            </div>
-            <div class="flex justify-content-between">
-              <p class="seccion-detalle-oferta-laboral">UFM:</p>
-              <p class="modal-prev-value"></p>
-            </div>
-            <div class="flex justify-content-between">
-              <p class="seccion-detalle-oferta-laboral">Zona:</p>
-              <p class="modal-prev-value"></p>
-            </div>
-            <div class="flex justify-content-between">
-              <p class="seccion-detalle-oferta-laboral">Ubicación:</p>
-              <p class="modal-prev-value"></p>
-            </div>
-          </div>
-
+          }
         </div>
       </div>
-
-      <article class="flex flex-column card border-round mt-4 p-3">
-        <div class="flex flex-row">
-          <h5 class="modal-prev-titulo">Zona de interés laboral</h5>
-        </div>
-        <span class="modal-prev-sub-titulo mb-3">Selecciona 3 zonas en la versión editable.</span>
-        <p-table [value]="datosGenerales.zonasInteresLaboral" [scrollable]="true">
-          <ng-template #header>
-            <tr>
-              <th>OOAD</th>
-              <th>Zona de interés</th>
-            </tr>
-          </ng-template>
-          <ng-template #body let-zona>
-            <tr>
-              <td>{{ zona.desOoad }}</td>
-              <td>{{ zona.desZona }}</td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </article>
 
     </p-tabpanel>
     <p-tabpanel value="1">
       <div class="flex flex-wrap flex-row">
         <div class="sm:col-12 md:col-6  pr-4">
-          <div class="flex flex-column">
+          <div class="flex flex-column mt-3">
             <div class="flex align-items-center gap-4">
               <i class="pi pi-exclamation-circle" style="color: #41ABD9; font-size: 1.8rem"></i>
               <h4 class="modal-titulo-tarjeta">Documentos Obligatorios</h4>
@@ -220,7 +200,7 @@
             </div>
           </div>
           @if ([3, 6].includes(userData?.idPerfil ?? 0)) {
-            <div class="flex flex-column">
+            <div class="flex flex-columnmt-3 mt-3">
               <div class="flex align-items-center gap-4">
                 <i class="pi pi-exclamation-circle" style="color: #41ABD9; font-size: 1.8rem"></i>
                 <h4 class="modal-titulo-tarjeta">Constancias de cursos de educación permanente en salud</h4>
@@ -253,7 +233,7 @@
           }
         </div>
         <div class="sm:col-12 md:col-6  pr-4">
-          <div class="flex flex-column">
+          <div class="flex flex-column mt-3">
             <div class="flex align-items-center gap-4">
               <i class="pi pi-exclamation-circle" style="color: #41ABD9; font-size: 1.8rem"></i>
               <h4 class="modal-titulo-tarjeta">Documentos de Especialidad y/o Subespecialidad</h4>
@@ -274,7 +254,7 @@
           </div>
 
           @if ([3, 6].includes(userData?.idPerfil ?? 0)) {
-            <div class="flex flex-column">
+            <div class="flex flex-column mt-3">
               <div class="flex align-items-center gap-4">
                 <i class="pi pi-exclamation-circle" style="color: #41ABD9; font-size: 1.8rem"></i>
                 <h4 class="modal-titulo-tarjeta">Datos de empleo</h4>
@@ -299,7 +279,12 @@
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">Horario laboral</p>
-              <span class="modal-prev-value">{{ datosEmpleo.refJornadaInicio }} - {{ datosEmpleo.refJornadaFin }}</span>
+              @if (datosEmpleo.refJornadaInicio && datosEmpleo.refJornadaFin) {
+                <span class="modal-prev-value">{{ datosEmpleo.refJornadaInicio }}
+                  - {{ datosEmpleo.refJornadaFin }}</span>
+              } @else {
+                <span class="modal-prev-value">No registrado</span>
+              }
             </div>
             <div class="flex justify-content-between">
               <p class="seccion-detalle-oferta-laboral">Jornada laboral</p>
