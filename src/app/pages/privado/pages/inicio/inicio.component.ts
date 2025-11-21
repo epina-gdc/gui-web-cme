@@ -1441,11 +1441,12 @@ export class InicioComponent extends GeneralComponent {
       especialidadesDocumentos
     };
     this.dialogValidacionRef = this.dialogService.open(ModalValidacionMedicoComponent, {
-      data, focusOnShow: false, resizable: true,
+      data, focusOnShow: false,
       breakpoints: {
         '960px': '75vw',
         '640px': '90vw'
       },
+      width: '80%',
       templates: {
         header: HeaderGenericoComponent,
         footer: FooterMedicoComponent

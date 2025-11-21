@@ -11,6 +11,7 @@ import {DiaSemanaPipe} from '@pipes/dia-semana.pipe';
 import {Button} from 'primeng/button';
 import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
+import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs';
 
 interface Especialidad {
   especialidad: string,
@@ -25,7 +26,12 @@ interface Especialidad {
     TitleCasePipe,
     TableModule,
     DiaSemanaPipe,
-    Button
+    Button,
+    Tabs,
+    TabList,
+    Tab,
+    TabPanels,
+    TabPanel
   ],
   templateUrl: './modal-validacion-medico.component.html',
   styleUrl: './modal-validacion-medico.component.scss'
