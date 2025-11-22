@@ -18,3 +18,9 @@
   line-height: normal;
   text-decoration: underline;
 }
+
+@media screen and (max-width: 800px) {
+  .valores-modal {
+    flex-direction: column;
+  }
+}
