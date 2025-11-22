@@ -22,32 +22,32 @@
               <i class="pi pi-exclamation-circle" style="color: #41ABD9; font-size: 1.8rem"></i>
               <h4 class="modal-titulo-tarjeta"> Información personal</h4>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">RFC:</p>
               <p class="modal-prev-value">{{ datosGenerales.datosPersonales.refRfc }}</p>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">CURP:</p>
               <p class="modal-prev-value">{{ datosGenerales.datosPersonales.refCurp }}</p>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">NSS:</p>
               <p class="modal-prev-value">{{ datosGenerales.datosPersonales.refNss }}</p>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Fecha de nacimiento:</p>
               <p class="modal-prev-value">{{ datosGenerales.datosPersonales.fecNacimiento }}</p>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Sexo:</p>
               <p class="modal-prev-value">{{ datosGenerales.datosPersonales.sexo.desSexo }}</p>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Estado civil:</p>
               <p
                 class="modal-prev-value">{{ datosGenerales.datosPersonales.estadoCivil.desEstadoCivil }}</p>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Dependientes:</p>
               @if (datosGenerales.dependientes.indPadres === 1) {
                 <span class="modal-prev-value">Padres</span>
@@ -68,23 +68,23 @@
               <i class="cme-hospital" style="color: #41ABD9; font-size: 2rem"></i>
               <h4 class="modal-titulo-tarjeta">Datos de contacto</h4>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Correo electrónico:</p>
               <p class="modal-prev-value">{{ datosGenerales.datosContacto.refEmail }}</p>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Teléfono celular:</p>
               <p class="modal-prev-value">{{ datosGenerales.datosContacto.refTelefonoCasa }}</p>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Teléfono adicional:</p>
               <p class="modal-prev-value">{{ datosGenerales.datosContacto.refTelefonoCelular }}</p>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">País:</p>
               <p class="modal-prev-value">{{ datosGenerales.datosContacto.paisNacimiento.desPais }}</p>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Estado de origen:</p>
               @if (datosGenerales.datosContacto.lugarNacimiento) {
                 <span
@@ -101,32 +101,32 @@
               <i class="cme-hospital" style="color: #41ABD9; font-size: 2rem"></i>
               <h4 class="modal-titulo-tarjeta">Datos del domicilio</h4>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Calle:</p>
               <p class="modal-prev-value">{{ datosGenerales.datosResidenciaActual.nomCalle }}</p>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Número exterior:</p>
               <p class="modal-prev-value">{{ datosGenerales.datosResidenciaActual.refNumero }}</p>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Colonia:</p>
               <p class="modal-prev-value">{{ datosGenerales.datosResidenciaActual.colonia.nomColonia }}</p>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Alcaldía o municipio:</p>
               <p class="modal-prev-value">
                 {{ datosGenerales.datosResidenciaActual.delegacion.desMunicipio | titlecase }}</p>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Código postal:</p>
               <p class="modal-prev-value">{{ datosGenerales.datosResidenciaActual.colonia.refCodigoPostal }}</p>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">País:</p>
               <p class="modal-prev-value">{{ datosGenerales.datosResidenciaActual.pais.desPais }}</p>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Estado:</p>
               <p class="modal-prev-value">{{ datosGenerales.datosResidenciaActual.estado.desEstado | titlecase }}</p>
             </div>
@@ -137,19 +137,19 @@
                 <i class="cme-hospital" style="color: #41ABD9; font-size: 2rem"></i>
                 <h4 class="modal-titulo-tarjeta">Zona de interés laboral</h4>
               </div>
-              <div class="flex justify-content-between">
+              <div class="flex justify-content-between flex-column md:flex-row">
                 <p class="seccion-detalle-oferta-laboral">OOAD:</p>
                 <p class="modal-prev-value">{{ zona.desOoad }}</p>
               </div>
-              <div class="flex justify-content-between">
+              <div class="flex justify-content-between flex-column md:flex-row">
                 <p class="seccion-detalle-oferta-laboral">UFM:</p>
                 <p class="modal-prev-value"></p>
               </div>
-              <div class="flex justify-content-between">
+              <div class="flex justify-content-between flex-column md:flex-row">
                 <p class="seccion-detalle-oferta-laboral">Zona:</p>
                 <p class="modal-prev-value">{{ zona.desZona }}</p>
               </div>
-              <div class="flex justify-content-between">
+              <div class="flex justify-content-between flex-column md:flex-row">
                 <p class="seccion-detalle-oferta-laboral">Ubicación:</p>
                 <p class="modal-prev-value"></p>
               </div>
@@ -167,7 +167,7 @@
               <i class="pi pi-exclamation-circle" style="color: #41ABD9; font-size: 1.8rem"></i>
               <h4 class="modal-titulo-tarjeta">Documentos Obligatorios</h4>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Identificación Oficial(INE):</p>
               @if (guid_obligatorio_1) {
                 <div class="modal-prev-value cursor-pointer"
@@ -178,7 +178,7 @@
                 <div class="modal-prev-value">Sin Documento</div>
               }
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Título Medicina General:</p>
               @if (guid_obligatorio_2) {
                 <div class="modal-prev-value cursor-pointer"
@@ -188,7 +188,7 @@
                 <div class="modal-prev-value">Sin Documento</div>
               }
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Cedula profesional medica:</p>
               @if (guid_obligatorio_3) {
                 <div class="modal-prev-value cursor-pointer"
@@ -207,7 +207,7 @@
               </div>
             </div>
             @if (documentosConstancias.length >= 1) {
-              <div class="flex justify-content-between">
+              <div class="flex justify-content-between flex-column md:flex-row">
                 <div class="seccion-detalle-oferta-laboral">{{ documentosConstancias[0].refConstancia }}</div>
                 <div class="modal-prev-value cursor-pointer"
                      (click)="mostrarDocumento(documentosConstancias[0].documento.refGuid)">
@@ -215,7 +215,7 @@
               </div>
             }
             @if (documentosConstancias.length >= 2) {
-              <div class="flex justify-content-between">
+              <div class="flex justify-content-between flex-column md:flex-row">
                 <div class="seccion-detalle-oferta-laboral">{{ documentosConstancias[1].refConstancia }}</div>
                 <div class="modal-prev-value cursor-pointer"
                      (click)="mostrarDocumento(documentosConstancias[1].documento.refGuid)">
@@ -223,7 +223,7 @@
               </div>
             }
             @if (documentosConstancias.length >= 3) {
-              <div class="flex justify-content-between">
+              <div class="flex justify-content-between flex-column md:flex-row">
                 <div class="seccion-detalle-oferta-laboral">{{ documentosConstancias[2].refConstancia }}</div>
                 <div class="modal-prev-value cursor-pointer"
                      (click)="mostrarDocumento(documentosConstancias[2].documento.refGuid)">
@@ -238,12 +238,12 @@
               <i class="pi pi-exclamation-circle" style="color: #41ABD9; font-size: 1.8rem"></i>
               <h4 class="modal-titulo-tarjeta">Documentos de Especialidad y/o Subespecialidad</h4>
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Especialidad medica:</p>
               <p class="modal-prev-value">Tipo de documento:</p>
             </div>
             @for (especialidad of especialidades; track especialidad.guid) {
-              <div class="flex justify-content-between">
+              <div class="flex justify-content-between flex-column md:flex-row">
                 <p class="seccion-detalle-oferta-laboral">{{ especialidad.especialidadMedica | titlecase }}:</p>
                 <div class="modal-prev-value cursor-pointer"
                      (click)="mostrarDocumento(especialidad.guid)">
@@ -261,7 +261,7 @@
               </div>
             </div>
 
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">¿Tienes otro empleo?</p>
               @if (datosEmpleo.indOtroEmpleo === 1) {
                 <span class="modal-prev-value">Si</span>
@@ -269,7 +269,7 @@
                 <span class="modal-prev-value">No</span>
               }
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">¿Eres sustituto 08 IMSS?</p>
               @if (datosEmpleo.indMedicoSustituto === 1) {
                 <span class="modal-prev-value">Si</span>
@@ -277,7 +277,7 @@
                 <span class="modal-prev-value">No</span>
               }
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Horario laboral</p>
               @if (datosEmpleo.refJornadaInicio && datosEmpleo.refJornadaFin) {
                 <span class="modal-prev-value">{{ datosEmpleo.refJornadaInicio }}
@@ -286,7 +286,7 @@
                 <span class="modal-prev-value">No registrado</span>
               }
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Jornada laboral</p>
               @if (datosEmpleo.diaSemanaInicio.idDiaSemana && datosEmpleo.diaSemanaFin.idDiaSemana) {
                 <span class="modal-prev-value">{{ +datosEmpleo.diaSemanaInicio.idDiaSemana | diaSemana }}
@@ -295,7 +295,7 @@
                 <span class="modal-prev-value">No registrado</span>
               }
             </div>
-            <div class="flex justify-content-between">
+            <div class="flex justify-content-between flex-column md:flex-row">
               <p class="seccion-detalle-oferta-laboral">Institución</p>
               @if (datosEmpleo.nomEspecificacionInstitucion) {
                 <span class="modal-prev-value">{{ datosEmpleo.nomEspecificacionInstitucion }}</span>
