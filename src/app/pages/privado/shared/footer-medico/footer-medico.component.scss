@@ -2,9 +2,22 @@
   bottom: -10px;
 }
 
+.bg-bottom {
+  height: 20px;
+  background-color: #4fa9d5;
+}
+
 
 @media (max-width: 767px) {
   .contenedor-footer {
     margin-top: 80px;
+  }
+
+  .text-xl {
+    font-size: 14px !important;
+  }
+
+  .bg-bottom {
+    height: 0;
   }
 }
