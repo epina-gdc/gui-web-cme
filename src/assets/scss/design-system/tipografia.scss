@@ -378,6 +378,7 @@
   font-weight: 500;
   color: #212529;
   word-break: break-word;
+  text-align: end;
 }
 
 .modal-prev-titulo {
@@ -396,6 +397,16 @@
   background-color: #ffe8e8;
   color: #dc3545;
 }
+
+.modal-titulo-tarjeta {
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%; /* 21.6px */
+  text-align: start;
+}
+
 
 @media screen and (min-width: 768px) {
   .login-titulo {

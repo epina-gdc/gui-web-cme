@@ -71,6 +71,8 @@ import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {
   ModalValidacionMedicoComponent
 } from '@pages/privado/shared/modal-validacion-medico/modal-validacion-medico.component';
+import { HeaderGenericoComponent } from '@pages/privado/shared/header-generico/header-generico.component';
+import { FooterMedicoComponent } from '@pages/privado/shared/footer-medico/footer-medico.component';
 
 interface DocumentoFuente {
   refGuid: string;
@@ -1451,11 +1453,17 @@ export class InicioComponent extends GeneralComponent {
       especialidadesDocumentos
     };
     this.dialogValidacionRef = this.dialogService.open(ModalValidacionMedicoComponent, {
-      data, focusOnShow: false, resizable: true,
+      data, focusOnShow: false,
       breakpoints: {
         '960px': '75vw',
         '640px': '90vw'
       },
+      width: '80%',
+      templates: {
+        header: HeaderGenericoComponent,
+        footer: FooterMedicoComponent
+      },
+      styleClass: 'oferta-detail'
     });
 
     this.dialogValidacionRef.onClose.subscribe((validacion) => {

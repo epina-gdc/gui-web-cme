@@ -1,16 +1,15 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {DynamicDialogConfig, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {DatosGeneralesResponse} from '@models/datosGenerales';
 import {TitleCasePipe} from '@angular/common';
 import {TableModule} from 'primeng/table';
-import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
-import {ConvocatoriaService} from '@services/convocatoria.service';
 import {DocumentoService} from '@services/documentos.service';
 import {DatosEmpleo, DocumentoConstancia} from '@models/solicitud-guardar-documentacion.interface';
 import {DiaSemanaPipe} from '@pipes/dia-semana.pipe';
 import {Button} from 'primeng/button';
 import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
+import {Tab, TabList, TabPanel, TabPanels, Tabs} from 'primeng/tabs';
 
 interface Especialidad {
   especialidad: string,
@@ -25,23 +24,22 @@ interface Especialidad {
     TitleCasePipe,
     TableModule,
     DiaSemanaPipe,
-    Button
+    Button,
+    Tabs,
+    TabList,
+    Tab,
+    TabPanels,
+    TabPanel
   ],
   templateUrl: './modal-validacion-medico.component.html',
   styleUrl: './modal-validacion-medico.component.scss'
 })
-export class ModalValidacionMedicoComponent implements OnInit {
+export class ModalValidacionMedicoComponent {
 
   datosGenerales!: DatosGeneralesResponse;
   datosEmpleo!: DatosEmpleo;
   documentosConstancias: DocumentoConstancia[] = [];
   especialidades: Especialidad[] = [];
-
-  nombreFoto!: string;
-  datosFoto!: any;
-  defaultFile!: SafeResourceUrl | undefined;
-
-  convocatoriaService: ConvocatoriaService = inject(ConvocatoriaService);
   documentoService: DocumentoService = inject(DocumentoService);
   userService: UserService = inject(UserService);
 
@@ -52,7 +50,6 @@ export class ModalValidacionMedicoComponent implements OnInit {
   userData: SesionUser | null = null;
 
   constructor(private readonly config: DynamicDialogConfig,
-              private readonly sanitizer: DomSanitizer,
               public ref: DynamicDialogRef,) {
     this.userService.userData$.subscribe(user => this.userData = user);
     if (this.config.data) {
@@ -77,37 +74,6 @@ export class ModalValidacionMedicoComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
-    this.obtenerDatosFoto(this.datosGenerales.datosPersonales.idUsuario);
-  }
-
-  obtenerDatosFoto(idusuario: number | undefined): void {
-    if (!idusuario) return;
-    this.convocatoriaService.getDatosFotografia(idusuario).subscribe({
-      next: (response: any) => {
-        if (!response.exito) return;
-        this.datosFoto = response.respuesta.fotografia;
-        this.obtenerFotografia()
-      }
-    });
-  }
-
-  obtenerFotografia(): void {
-    if (!this.datosFoto) return;
-    this.documentoService.getFotografia(this.datosFoto.documento.refGuid).pipe(
-    ).subscribe({
-      next: (response: any) => {
-        let extension = ['png', 'jpeg', 'jpg'];
-        if (extension.includes(this.datosFoto.documento.refExtension.toLowerCase())) {
-          this.nombreFoto = this.datosFoto.documento.refNombre;
-          const blob = new Blob([response], {type: 'blob'});
-          this.defaultFile = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
-        } else {
-          this.nombreFoto = 'Sin foto'
-        }
-      }
-    });
-  }
 
   mostrarDocumento(guid: string) {
     this.documentoService.obtenerDocumento(guid).subscribe({
