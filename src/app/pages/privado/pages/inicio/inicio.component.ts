@@ -340,6 +340,15 @@ export class InicioComponent extends GeneralComponent {
       if (value) this.formRegistro.get('indNinguno')?.reset();
 
     });
+
+    this.formDocumentosEspecialidad.get('especialidad')?.valueChanges.subscribe( value => {
+      this.lstTiposDocumentos = this.lstTiposDocumentosCopy;
+      const especialidades = this.registrosDocumentosEspecialidad();
+      const especialidadSeleccionada = especialidades.find(e => e.documentos[0].cveEspecialidad == value);
+      especialidadSeleccionada?.documentos.forEach(documento => {
+        this.lstTiposDocumentos = this.lstTiposDocumentos.filter(x => x.value != documento.idDocumento)
+      });
+    });
   }
 
   settearDatosUsuario(): void {
@@ -626,7 +635,7 @@ export class InicioComponent extends GeneralComponent {
 
     if (this.yaExistenEspecilidadesPermitidas(especialidadDoc)) {
 
-      this._alertServices.alerta(`El limite de especialidades ha sido alcanzado`);
+      this._alertServices.alerta(`El límite de especialidades ha sido alcanzado`);
       this.limpiarDocumentoEspecialidad()
       return;
     }
@@ -729,9 +738,6 @@ export class InicioComponent extends GeneralComponent {
     const especialidadParaModificar = {...especialidades[indiceEspecialidad]};
 
     const idDocumentoEspecialidad = especialidadParaModificar.documentos.find(d => d.tipoDocumento === tipoDocumento)?.idDocumentoEspecialidad;
-
-    //Agregamos el tipo de documento de nuevo
-    this.lstTiposDocumentos.push(this.lstTiposDocumentosCopy.find(x  =>  x.label.toLowerCase() == tipoDocumento.toLowerCase())!)
 
     if (idDocumentoEspecialidad) {
       this.especialidadesPorEliminar.push(idDocumentoEspecialidad);
@@ -1879,6 +1885,9 @@ export class InicioComponent extends GeneralComponent {
           const especialidades = this.procesarDocumentosEspecialidades(respuesta.especialidadesDocumentos);
           this.documentosLocalStorageService.guardarRefGuidEspecialidad(especialidades);
           this.registrosDocumentosEspecialidad.update(() => especialidades);
+
+
+          //TODO
           this.registrosDocumentosEspecialidad().forEach(registro => {
             registro.documentos.forEach(doc => {
               this.lstTiposDocumentos = this.lstTiposDocumentos.filter(tipoDoc =>  tipoDoc.value != doc.idDocumento)
