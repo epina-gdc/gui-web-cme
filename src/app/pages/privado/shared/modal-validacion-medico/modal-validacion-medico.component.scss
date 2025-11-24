@@ -20,7 +20,47 @@
 }
 
 @media screen and (max-width: 800px) {
-  .valores-modal {
-    flex-direction: column;
+  .modal-prev-value, .seccion-detalle-oferta-laboral {
+    font-size: 11px;
+  }
+
+  .modal-titulo-tarjeta {
+    font-size: 12px;
+  }
+}
+
+
+@layer app-components {
+  :host ::ng-deep .p-tablist-tab-list {
+    justify-content: space-between !important;
+    overflow: scroll;
+    overflow-y: hidden;
+  }
+
+  :host ::ng-deep .p-tab {
+    min-width: 400px;
+    display: flex;
+    justify-content: center;
+  }
+
+  :host ::ng-deep .p-tablist-content {
+    max-width: 100%;
+  }
+
+  @media (max-width: 768px) {
+
+    :host ::ng-deep .p-tab {
+      min-width: fit-content;
+      margin-bottom: 10px;
+    }
+
+    :host ::ng-deep .p-tablist-active-bar {
+      background: #fff;
+      width: fit-content !important;
+    }
+
+    :host ::ng-deep .p-tablist-nav-button {
+      display: none !important;
+    }
   }
 }

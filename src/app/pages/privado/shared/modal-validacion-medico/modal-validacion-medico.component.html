@@ -16,7 +16,7 @@
   <p-tabpanels>
     <p-tabpanel value="0">
       <div class="flex flex-wrap flex-row">
-        <div class="sm:col-12 md:col-6 pr-4">
+        <div class="col-12 md:col-6 pr-4">
           <div class="flex flex-column mt-2">
             <div class="flex align-items-center gap-4">
               <i class="pi pi-exclamation-circle" style="color: #41ABD9; font-size: 1.8rem"></i>
@@ -50,16 +50,16 @@
             <div class="flex justify-content-between valores-modal">
               <p class="seccion-detalle-oferta-laboral">Dependientes:</p>
               @if (datosGenerales.dependientes.indPadres === 1) {
-                <span class="modal-prev-value">Padres</span>
+                <p class="modal-prev-value">Padres</p>
               }
               @if (datosGenerales.dependientes.indConyuge === 1) {
-                <span class="modal-prev-value">Cónyuge</span>
+                <p class="modal-prev-value">Cónyuge</p>
               }
               @if (datosGenerales.dependientes.refCantidadHijos) {
-                <span class="modal-prev-value">Hijos ({{ datosGenerales.dependientes.refCantidadHijos }})</span>
+                <p class="modal-prev-value">Hijos ({{ datosGenerales.dependientes.refCantidadHijos }})</p>
               }
               @if (datosGenerales.dependientes.indConyuge === 0 && datosGenerales.dependientes.indPadres === 0 && !datosGenerales.dependientes.refCantidadHijos) {
-                <span class="modal-prev-value">{{ datosGenerales.dependientes.refOtro }}</span>
+                <p class="modal-prev-value">{{ datosGenerales.dependientes.refOtro }}</p>
               }
             </div>
           </div>
@@ -87,15 +87,15 @@
             <div class="flex justify-content-between valores-modal">
               <p class="seccion-detalle-oferta-laboral">Estado de origen:</p>
               @if (datosGenerales.datosContacto.lugarNacimiento) {
-                <span
-                  class="modal-prev-value">{{ datosGenerales.datosContacto.lugarNacimiento.desLugarNacimiento }}</span>
+                <p
+                  class="modal-prev-value">{{ datosGenerales.datosContacto.lugarNacimiento.desLugarNacimiento }}</p>
               } @else {
-                <span class="modal-prev-value">-</span>
+                <p class="modal-prev-value">-</p>
               }
             </div>
           </div>
         </div>
-        <div class="sm:col-12 md:col-6 pr-4">
+        <div class="col-12 md:col-6 pr-4">
           <div class="flex flex-column mt-2">
             <div class="flex align-items-center gap-4">
               <i class="cme-hospital" style="color: #41ABD9; font-size: 2rem"></i>
@@ -161,7 +161,7 @@
     </p-tabpanel>
     <p-tabpanel value="1">
       <div class="flex flex-wrap flex-row">
-        <div class="sm:col-12 md:col-6  pr-4">
+        <div class="col-12 md:col-6  pr-4">
           <div class="flex flex-column mt-3">
             <div class="flex align-items-center gap-4">
               <i class="pi pi-exclamation-circle" style="color: #41ABD9; font-size: 1.8rem"></i>
@@ -232,7 +232,7 @@
             }
           }
         </div>
-        <div class="sm:col-12 md:col-6  pr-4">
+        <div class="col-12 md:col-6  pr-4">
           <div class="flex flex-column mt-3">
             <div class="flex align-items-center gap-4">
               <i class="pi pi-exclamation-circle" style="color: #41ABD9; font-size: 1.8rem"></i>
@@ -306,7 +306,6 @@
           }
         </div>
       </div>
-
 
     </p-tabpanel>
   </p-tabpanels>
