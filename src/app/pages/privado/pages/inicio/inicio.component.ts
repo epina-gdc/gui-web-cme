@@ -1885,14 +1885,6 @@ export class InicioComponent extends GeneralComponent {
           const especialidades = this.procesarDocumentosEspecialidades(respuesta.especialidadesDocumentos);
           this.documentosLocalStorageService.guardarRefGuidEspecialidad(especialidades);
           this.registrosDocumentosEspecialidad.update(() => especialidades);
-
-
-          //TODO
-          this.registrosDocumentosEspecialidad().forEach(registro => {
-            registro.documentos.forEach(doc => {
-              this.lstTiposDocumentos = this.lstTiposDocumentos.filter(tipoDoc =>  tipoDoc.value != doc.idDocumento)
-            });
-          });
         }
         if (respuesta.documentosConstancias) {
           this.procesarDocumentosContancias(respuesta.documentosConstancias);
