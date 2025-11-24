@@ -161,6 +161,7 @@ export class InicioComponent extends GeneralComponent {
   estadosCiviles: TipoDropdown[] = [];
   paises: TipoDropdown[] = [];
   lstTiposDocumentos: TipoDropdown[] = [];
+  lstTiposDocumentosCopy: TipoDropdown[] = [];
   lugaresNacimiento: TipoDropdown[] = [];
   estados: TipoDropdown[] = [];
   municipios: TipoDropdown[] = [];
@@ -582,6 +583,7 @@ export class InicioComponent extends GeneralComponent {
       this.paises = mapearArregloTipoDropdown(paises.respuesta, 'desPais', 'idPais');
       this.lugaresNacimiento = mapearArregloTipoDropdown(lugaresNacimiento.respuesta, 'desLugarNacimiento', 'idLugarNacimiento');
       this.lstTiposDocumentos = mapearArregloTipoDropdown(tiposDocumentos.respuesta, 'desTipoDocumentoEspecialidad', 'idTipoDocumentoEspecialidad');
+      this.lstTiposDocumentosCopy = mapearArregloTipoDropdown(tiposDocumentos.respuesta, 'desTipoDocumentoEspecialidad', 'idTipoDocumentoEspecialidad');
       this.ooad = mapearArregloTipoDropdown(ooad.respuesta, 'desOoad', 'cveOoad');
       this.especialidades = mapearArregloTipoDropdown(especialidades, 'desEspecialidad', 'cveEspecialidad');
       this.dias_semana = mapearArregloTipoDropdown(dias.respuesta, 'descDiaSemana', 'idDiaSemana')
@@ -670,6 +672,7 @@ export class InicioComponent extends GeneralComponent {
     if (!nuevoDocumento) return;
     const especialidades = this.registrosDocumentosEspecialidad();
     const indiceEspecialidad = especialidades.findIndex(e => e.especialidad === nuevoDocumento.especialidadMedica);
+    this.lstTiposDocumentos = this.lstTiposDocumentos.filter(x => x.value != nuevoDocumento.idDocumento);
 
     // Si la especialidad no existe, la creamos
     if (indiceEspecialidad === -1) {
@@ -726,6 +729,9 @@ export class InicioComponent extends GeneralComponent {
     const especialidadParaModificar = {...especialidades[indiceEspecialidad]};
 
     const idDocumentoEspecialidad = especialidadParaModificar.documentos.find(d => d.tipoDocumento === tipoDocumento)?.idDocumentoEspecialidad;
+
+    //Agregamos el tipo de documento de nuevo
+    this.lstTiposDocumentos.push(this.lstTiposDocumentosCopy.find(x  =>  x.label.toLowerCase() == tipoDocumento.toLowerCase())!)
 
     if (idDocumentoEspecialidad) {
       this.especialidadesPorEliminar.push(idDocumentoEspecialidad);
