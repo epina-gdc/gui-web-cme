@@ -1862,7 +1862,6 @@ export class InicioComponent extends GeneralComponent {
   }
 
   obtenerDatosDocumentosEscolaridad(): void {
-
     const idusuario = this.userData?.idUsuario;
     if (!idusuario) return;
     this._ConvocatoriaService.getDatosDocumentosEscolares(idusuario).subscribe({
@@ -1880,6 +1879,11 @@ export class InicioComponent extends GeneralComponent {
           const especialidades = this.procesarDocumentosEspecialidades(respuesta.especialidadesDocumentos);
           this.documentosLocalStorageService.guardarRefGuidEspecialidad(especialidades);
           this.registrosDocumentosEspecialidad.update(() => especialidades);
+          this.registrosDocumentosEspecialidad().forEach(registro => {
+            registro.documentos.forEach(doc => {
+              this.lstTiposDocumentos = this.lstTiposDocumentos.filter(tipoDoc =>  tipoDoc.value != doc.idDocumento)
+            });
+          });
         }
         if (respuesta.documentosConstancias) {
           this.procesarDocumentosContancias(respuesta.documentosConstancias);
