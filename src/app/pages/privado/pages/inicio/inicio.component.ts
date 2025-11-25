@@ -737,14 +737,15 @@ export class InicioComponent extends GeneralComponent {
       return;
     }
 
-    if(this.formDocumentosEspecialidad.get('especialidad')?.value){
-      const docAdd = this.lstTiposDocumentosCopy.find(x => x.label.toLowerCase() === tipoDocumento.toLowerCase());
-      this.lstTiposDocumentos.push(docAdd!);
-    }
-
     const especialidadParaModificar = {...especialidades[indiceEspecialidad]};
-
     const idDocumentoEspecialidad = especialidadParaModificar.documentos.find(d => d.tipoDocumento === tipoDocumento)?.idDocumentoEspecialidad;
+    
+    if(this.formDocumentosEspecialidad.get('especialidad')?.value){
+      if(this.formDocumentosEspecialidad.get('especialidad')?.value == especialidadParaModificar.documentos[0].cveEspecialidad){
+        const docAdd = this.lstTiposDocumentosCopy.find(x => x.label.toLowerCase() === tipoDocumento.toLowerCase());
+        this.lstTiposDocumentos.push(docAdd!);
+      }
+    }
 
     if (idDocumentoEspecialidad) {
       this.especialidadesPorEliminar.push(idDocumentoEspecialidad);
