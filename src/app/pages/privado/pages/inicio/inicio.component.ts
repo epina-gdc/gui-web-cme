@@ -564,7 +564,7 @@ export class InicioComponent extends GeneralComponent {
     const esDuplicado = this.zonasInteres().some((zE: any) => zE.ooad === nuevaZona.ooad && zE.zonaInteres === nuevaZona.zonaInteres);
 
     if (esDuplicado) {
-      this._alertServices.alerta("Ya seleccionaste esta opción anteriormente");
+      this._alertServices.alerta("Ya seleccionaste esta opción anteriormente.");
     } else {
       this.zonasInteres.update(value => [...value, nuevaZona]);
       this.zonas = [];
@@ -729,6 +729,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   eliminarDocumento(especialidadMedica: string, tipoDocumento: string): void {
+    debugger
     const especialidades = this.registrosDocumentosEspecialidad();
     const indiceEspecialidad = especialidades.findIndex(e => e.especialidad === especialidadMedica);
 
@@ -1458,7 +1459,7 @@ export class InicioComponent extends GeneralComponent {
         '960px': '75vw',
         '640px': '90vw'
       },
-      width: '80%',
+      width: '65%',
       templates: {
         header: HeaderGenericoComponent,
         footer: FooterMedicoComponent

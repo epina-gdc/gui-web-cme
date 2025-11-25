@@ -11,12 +11,28 @@
 }
 
 .link {
-  color: #41ABD9;
+/*   color: #41ABD9;
   font-size: 11.997px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
-  text-decoration: underline;
+  text-decoration: underline; */
+
+  font-family: Noto Sans;
+font-weight: 300;
+font-style: Light;
+font-size: 14px;
+leading-trim: NONE;
+line-height: 120%;
+letter-spacing: 0%;
+text-decoration: underline;
+text-decoration-style: solid;
+text-decoration-offset: 0%;
+text-decoration-thickness: 0%;
+text-decoration-skip-ink: auto;
+color: #428EFF;
+
+
 }
 
 @media screen and (max-width: 800px) {
@@ -69,3 +85,42 @@
   }
 
 }
+
+
+.seccion-detalle-oferta-laboral{
+
+  font-family: Noto Sans;
+  font-weight: 600;
+  font-style: SemiBold;
+  font-size: 12px;
+  line-height: 100%;
+
+  color: #597190;
+
+
+}
+
+.modal-prev-value{
+  font-family: Montserrat;
+font-weight: 600;
+font-style: SemiBold;
+font-size: 12px;
+leading-trim: NONE;
+line-height: 100%;
+
+color: #222222;
+
+}
+
+
+.modal-titulo-tarjeta{
+  font-family: Noto Sans;
+font-weight: 500;
+font-style: Medium;
+font-size: 14px;
+leading-trim: NONE;
+line-height: 100%;
+letter-spacing: 0%;
+}
+
+

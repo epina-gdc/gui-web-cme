@@ -10,7 +10,10 @@
     --p-rating-icon-active-color: #cbaf59;
     --p-rating-icon-color: #cbaf59;
     --p-badge-warn-background: #ffccac;
-    --p-badge-warn-color: #8e3c08;
+    --p-badge-warn-color:#E9080C;
+    --p-button-outlined-danger-hover-background: #E9080C;
+
+
   }
 
 
@@ -74,13 +77,14 @@
   .p-button-outlined.p-button-danger:not(:disabled):hover {
     background: var(--p-button-outlined-danger-hover-background);
     border-color: var(--p-button-outlined-danger-border-color);
-    color: var(--p-button-outlined-danger-color);
+    //color: var(--p-button-outlined-danger-color);
+    color: var(--p-button-primary-hover-color);
   }
 
   .p-button-outlined.p-button-danger {
     border-color: var(--p-button-outlined-danger-border-color);
     color: var(--p-button-outlined-danger-color);
-    border-radius: 50%;
+    border: 1px solid
   }
 
 }
