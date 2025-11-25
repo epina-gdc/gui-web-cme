@@ -729,13 +729,17 @@ export class InicioComponent extends GeneralComponent {
   }
 
   eliminarDocumento(especialidadMedica: string, tipoDocumento: string): void {
-    debugger
     const especialidades = this.registrosDocumentosEspecialidad();
     const indiceEspecialidad = especialidades.findIndex(e => e.especialidad === especialidadMedica);
 
     if (indiceEspecialidad === -1) {
       console.error('La especialidad no se encontró, no se puede eliminar el documento.');
       return;
+    }
+
+    if(this.formDocumentosEspecialidad.get('especialidad')?.value){
+      const docAdd = this.lstTiposDocumentosCopy.find(x => x.label.toLowerCase() === tipoDocumento.toLowerCase());
+      this.lstTiposDocumentos.push(docAdd!);
     }
 
     const especialidadParaModificar = {...especialidades[indiceEspecialidad]};
