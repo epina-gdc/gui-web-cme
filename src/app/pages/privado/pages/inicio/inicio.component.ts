@@ -729,7 +729,6 @@ export class InicioComponent extends GeneralComponent {
   }
 
   eliminarDocumento(especialidadMedica: string, tipoDocumento: string): void {
-    debugger
     const especialidades = this.registrosDocumentosEspecialidad();
     const indiceEspecialidad = especialidades.findIndex(e => e.especialidad === especialidadMedica);
 
@@ -739,8 +738,14 @@ export class InicioComponent extends GeneralComponent {
     }
 
     const especialidadParaModificar = {...especialidades[indiceEspecialidad]};
-
     const idDocumentoEspecialidad = especialidadParaModificar.documentos.find(d => d.tipoDocumento === tipoDocumento)?.idDocumentoEspecialidad;
+    
+    if(this.formDocumentosEspecialidad.get('especialidad')?.value){
+      if(this.formDocumentosEspecialidad.get('especialidad')?.value == especialidadParaModificar.documentos[0].cveEspecialidad){
+        const docAdd = this.lstTiposDocumentosCopy.find(x => x.label.toLowerCase() === tipoDocumento.toLowerCase());
+        this.lstTiposDocumentos.push(docAdd!);
+      }
+    }
 
     if (idDocumentoEspecialidad) {
       this.especialidadesPorEliminar.push(idDocumentoEspecialidad);
