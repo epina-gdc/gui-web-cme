@@ -1425,9 +1425,9 @@ export class InicioComponent extends GeneralComponent {
       data, focusOnShow: false,
       breakpoints: {
         '960px': '75vw',
-        '640px': '90vw'
+        '640px': '98vw'
       },
-      width: '65%',
+      width: '70%',
       templates: {
         header: HeaderGenericoComponent,
         footer: FooterMedicoComponent
