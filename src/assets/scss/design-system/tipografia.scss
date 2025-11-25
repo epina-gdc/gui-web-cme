@@ -69,7 +69,8 @@
   font-weight: 600;
   line-height: 150%; /* 30px */
   box-sizing: border-box;
-
+  max-width: calc(100% - 40px);
+  text-align: start;
 }
 
 .usuario-menu {
@@ -82,7 +83,7 @@
   line-height: 120%; /* 16.8px */
   white-space: nowrap;
   overflow: hidden;
-  max-width: 150px;
+  max-width: 130px;
 }
 
 .letras-menu-imss {
@@ -97,12 +98,12 @@
 
 .menu-nombre-sistema {
   color: #374957;
-  text-align: right;
   font-feature-settings: 'liga' off, 'clig' off;
   font-size: 18px;
   font-style: normal;
   font-weight: 600;
   line-height: 120%; /* 21.6px */
+  text-align: start;
 }
 
 .label-medico {
@@ -284,13 +285,11 @@
   font-size: 14px;
   font-family: Noto Sans;
   font-weight: 400;
-
 }
-
 
 .acciones-tabla {
   color: #869fd4;
-  font-size: 12px;
+  font-size: 15px;
 }
 
 .titulo-nombre-aspirante {
@@ -353,6 +352,7 @@
   font-style: normal;
   font-weight: 600;
   line-height: 12px; /* 100% */
+  text-align: start;
 }
 
 .subtitle-previsualizacion {
@@ -411,8 +411,17 @@
   text-align: start;
 }
 
+.info-monto{
+  color: #fff;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%; /* 21.6px */
+}
 
-@media screen and (min-width: 768px) {
+
+@media screen and (min-width: 769px) {
   .login-titulo {
     font-size: 56px;
     line-height: 70px; /* 125% */
@@ -426,13 +435,20 @@
   .usuario-menu {
     max-width: fit-content;
   }
-
 }
 
 @media screen and (max-width: 350px) {
   .titulo-tab {
     font-size: 12px;
     width: 140px;
+  }
+
+}
+
+@media screen and (max-width: 380px) {
+
+  .select-option-doc {
+    font-size: 10px;
   }
 }
 
@@ -442,3 +458,8 @@
   }
 }
 
+
+.label-doc {
+  max-width: 54px;
+  white-space: nowrap;
+}

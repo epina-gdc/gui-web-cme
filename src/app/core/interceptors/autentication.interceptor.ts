@@ -38,7 +38,7 @@ export class JwtInterceptorService implements HttpInterceptor {
       });
 
       // Paso 3: Continuar y mantener el manejo del 401 como respaldo de seguridad
-      return next.handle(request).pipe(
+/*       return next.handle(request).pipe(
         catchError((err: HttpErrorResponse) => {
           if (err.status === 401) {
             this.authService.cerrarSesion(); // Limpia y redirige si el servidor dice 401
@@ -46,9 +46,12 @@ export class JwtInterceptorService implements HttpInterceptor {
           }
           return throwError(() => err);
         })
-      );
+      ); */
+      return next.handle(request); // CON token
     }
 
     return next.handle(req); // Sin token, continúa
+
+
   }
 }

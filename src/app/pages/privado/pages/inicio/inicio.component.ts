@@ -21,14 +21,11 @@ import {TabDocumento, TabNode} from '@models/tab-node.interface';
 import {ActivatedRoute} from '@angular/router';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
 import {mapearArregloTipoDropdown} from '@utils/funciones';
-import {CatalogosGeneralesService} from '@services/catalogos-generales.service';
-import {ConvocatoriaService} from '@services/convocatoria.service';
 import {DatosContacto} from '@models/datosContacto';
-import {DatosDocumentoResponse} from '@models/datosDocumento';
 import {GeneralComponent} from '@components/general.component';
 import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
-import {DatosDomicilio, Estado, Pais, Residencia} from '@models/datosDomicilio';
+import {Estado, Pais, Residencia} from '@models/datosDomicilio';
 import {ResponseGeneral} from '@models/responseGeneral';
 import {Colonia} from '@models/colonia';
 import {DataFotografia, Fotografia, FotografiaRequest} from '@models/fotografia';
@@ -176,9 +173,6 @@ export class InicioComponent extends GeneralComponent {
   indice: WritableSignal<number> = signal<number>(0);
   tipoMedico: WritableSignal<string> = signal<string>("");
 
-  catalogoService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
-  _ConvocatoriaService: ConvocatoriaService = inject(ConvocatoriaService);
-
   archivoINE!: File | null;
   archivoTitulo!: File | null;
   archivoCedula!: File | null;
@@ -202,6 +196,7 @@ export class InicioComponent extends GeneralComponent {
   idDocumentoConstancia3: number | undefined;
 
   estatusPendienteDocumentacion: boolean = false;
+  estatusValidacionCompletada: boolean = false;
 
   constanciasPorEliminar: number[] = [];
 
@@ -249,12 +244,11 @@ export class InicioComponent extends GeneralComponent {
       fechaNacimiento: [null, [Validators.required]],
       sexo: [{value: ''}, [Validators.required]],
       estadoCivil: [{value: '', disabled: false}, [Validators.required]],
-      //dependientes: [],
       indPadres: [false],
       indConyuge: [false],
       indHijos: [false],
       indOtros: [false],
-      indNinguno: [false],
+      indNinguno:[false],
       hijos: [{value: '', disabled: true}, [Validators.required, Validators.min(1)]],
       otros: [{value: '', disabled: true}, [Validators.required]],
       info: [{value: '', disabled: false}, [Validators.required]],
@@ -282,8 +276,6 @@ export class InicioComponent extends GeneralComponent {
 
 
   suscribirObservables(): void {
-    this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe(value => this.obtenerLocalidadPorPais(value));
-
     this.formRegistro.get('pais')?.valueChanges.subscribe(value => this.obtenerEstadoPorPais(value));
     this.formRegistro.get('estado')?.valueChanges.subscribe(value => this.obtenerMunicipioPorEstado(value));
     //this.formRegistro.get('municipio')?.valueChanges.subscribe(value => this.obtenerAlcaldiaPorMunicipio(value));
@@ -295,7 +287,7 @@ export class InicioComponent extends GeneralComponent {
     this.formRegistro.get('paisNacimiento')?.valueChanges.subscribe((value) => {
         this.formRegistro.get('estadoNacimiento')?.disable()
         this.formRegistro.get('estadoNacimiento')?.reset();
-        if (value.value == 103) {
+        if (value?.value == 103) {
           this.formRegistro.get('estadoNacimiento')?.enable()
         }
       }
@@ -383,7 +375,7 @@ export class InicioComponent extends GeneralComponent {
         if (!element) return;
         this.tipoMedico.set(element.perfil)
       }
-    })
+    });
 
   }
 
@@ -399,7 +391,6 @@ export class InicioComponent extends GeneralComponent {
         diaFin: [{value: null, disabled: true}],
         ooad: [{value: null, disabled: true}],
       }
-      //  , {validators: [jornadaLaboralValidator, horarioLaboralValidator]}
     )
   }
 
@@ -477,7 +468,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   validarCP() {
-    this.catalogoService.getLstCodigosPostales(this.formRegistro.get('codigoPostal')?.value).subscribe({
+    this._CatalogoGenService.getLstCodigosPostales(this.formRegistro.get('codigoPostal')?.value).subscribe({
       next: (elemento) => {
         this.formRegistro.get('pais')?.setValue(103)
         this.formRegistro.get('estado')?.setValue(elemento.respuesta.estado.idEstado);
@@ -491,7 +482,7 @@ export class InicioComponent extends GeneralComponent {
     if (!pais) return;
     this.municipios = [];
     this.colonias = [];
-    this.catalogoService.getLstEstadosByPais(pais).subscribe({
+    this._CatalogoGenService.getLstEstadosByPais(pais).subscribe({
       next: (valor) => {
         this.estados = mapearArregloTipoDropdown(valor.respuesta, 'desEstado', 'idEstado');
       }
@@ -500,33 +491,16 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerMunicipioPorEstado(estado: number): void {
     if (!estado) return;
-    this.catalogoService.getLstDelegacionesMunicipiosByEstado(estado).subscribe({
+    this._CatalogoGenService.getLstDelegacionesMunicipiosByEstado(estado).subscribe({
       next: (valor) => {
         this.municipios = mapearArregloTipoDropdown(valor.respuesta, 'desMunicipio', 'idMunicipio');
       }
     });
   }
 
-  obtenerAlcaldiaPorMunicipio(municipio: number): void {
-    if (!municipio) return;
-    this.catalogoService.getLstColoniasByDelegacion(municipio).subscribe({
-      next: (valor) => {
-        this.colonias = mapearArregloTipoDropdown(valor.respuesta, 'nomColonia', 'idColonia');
-      }
-    });
-  }
-
-  obtenerOOADPorMunicipio(): void {
-    this.catalogoService.getLstOOADS().subscribe({
-      next: (valor) => {
-        this.ooad = mapearArregloTipoDropdown(valor.respuesta, 'desOoad', 'cveOoad');
-      }
-    });
-  }
-
   obtenerZonasPorMunicipio(municipio: number): void {
     if (!municipio) return;
-    this.catalogoService.getLstZonas(municipio).subscribe({
+    this._CatalogoGenService.getLstZonas(municipio).subscribe({
       next: (valor) => {
         this.zonas = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'cveZona');
       },
@@ -739,7 +713,7 @@ export class InicioComponent extends GeneralComponent {
 
     const especialidadParaModificar = {...especialidades[indiceEspecialidad]};
     const idDocumentoEspecialidad = especialidadParaModificar.documentos.find(d => d.tipoDocumento === tipoDocumento)?.idDocumentoEspecialidad;
-    
+
     if(this.formDocumentosEspecialidad.get('especialidad')?.value){
       if(this.formDocumentosEspecialidad.get('especialidad')?.value == especialidadParaModificar.documentos[0].cveEspecialidad){
         const docAdd = this.lstTiposDocumentosCopy.find(x => x.label.toLowerCase() === tipoDocumento.toLowerCase());
@@ -796,6 +770,7 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerFotografia(): void {
     if (!this.datosFoto) return;
+    this.saveSession('datosFoto', this.datosFoto.documento);
     this.documentoService.getFotografia(this.datosFoto.documento.refGuid).pipe(
     ).subscribe({
       next: (response: any) => {
@@ -1030,17 +1005,10 @@ export class InicioComponent extends GeneralComponent {
     this._ConvocatoriaService.guardarDatosGenerales(datos).subscribe({
       next: (data: ResponseGeneral) => {
         if (data.exito) {
-          //this.indice.update((value: number) => value + 1);
-          //return this._alertServices.exito(data.mensaje)
-
-          this._alertServices.exito(this._Mensajes.MSG024);
-          setTimeout(() => {
-            this.indice.update((value: number) => value + 1);
-          }, 500);
-        } else {
-          return this._alertServices.error(data.mensaje)
+          this.indice.update((value: number) => value + 1);
+          return this._alertServices.exito(data.mensaje)
         }
-
+        return this._alertServices.error(data.mensaje)
       },
       error: (err: ResponseGeneral) => {
         this._alertServices.error(err.mensaje);
@@ -1076,7 +1044,6 @@ export class InicioComponent extends GeneralComponent {
         };
 
         // Se Guarda la referencia de la foto en la Convocatoria
-
         return this._ConvocatoriaService.guardarFoto(datosF);
       }),
 
@@ -1091,7 +1058,6 @@ export class InicioComponent extends GeneralComponent {
       // Se ejecuta solo si el pipe se completó sin lanzar un error fatal
       next: (data: ResponseGeneral | null) => {
         // Verificamos si el flujo se detuvo por catchError (que devuelve null)
-
         if (data?.exito) {
           this.blnFotoGuardada = true;
           this._alertServices.exito(data.mensaje);
@@ -1143,7 +1109,6 @@ export class InicioComponent extends GeneralComponent {
     return fotografia.datosPersonales;
   }
   onFileSelected($event: any): void {
-
     if ($event.length == 0) {
       this._alertServices.alerta('El peso del archivo excede al permitido.');
       return;
@@ -1419,16 +1384,13 @@ export class InicioComponent extends GeneralComponent {
       this._alertServices.error('Al menos debe estar cargada una especialidad');
       return;
     }
-
     const cadaEspecialidadTieneDiploma: boolean = especialidades.every(node =>
       node.documentos.some(documento => documento.idDocumento === 1));
-
     if (!cadaEspecialidadTieneDiploma && !externo) {
       this._alertServices.error(this._Mensajes.MSG037);
       this._alertServices.error('Para cada especialidad es necesario el documento Diploma Institucional de Especialidad.');
       return;
     }
-
     if (this.formDatosEmpleo.invalid && externo) {
       this._alertServices.error(this._Mensajes.MSG025);
       return;
@@ -1715,7 +1677,7 @@ export class InicioComponent extends GeneralComponent {
     const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
     const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
     const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
-    const externo = this.userData?.idPerfil === 3 || this.userData?.idPerfil === 6;
+    const externo = this.userData?.idPerfil === 3;
     const refConstancia1 = this.documentosLocalStorageService.obtenerRefConstancia(1);
     const refConstancia2 = this.documentosLocalStorageService.obtenerRefConstancia(2);
     const refConstancia3 = this.documentosLocalStorageService.obtenerRefConstancia(3);
@@ -1751,6 +1713,8 @@ export class InicioComponent extends GeneralComponent {
     if (this.formDatosEmpleo.invalid && externo) {
       return true;
     }
+
+
 
 
     return especialidades.length === 0;
@@ -1882,6 +1846,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   obtenerDatosDocumentosEscolaridad(): void {
+
     const idusuario = this.userData?.idUsuario;
     if (!idusuario) return;
     this._ConvocatoriaService.getDatosDocumentosEscolares(idusuario).subscribe({
@@ -1890,7 +1855,13 @@ export class InicioComponent extends GeneralComponent {
         const respuesta: RespuestaConsultaDocumentos = response.respuesta;
         if (respuesta.participacion?.resultadoVerificacion) {
           this.estatusPendienteDocumentacion = respuesta.participacion.resultadoVerificacion.estatusVerificacion.desEstatus === 'Pendiente';
-          this.desactivarForms();
+          const estatusVerificacion: number = respuesta.participacion.resultadoVerificacion.estatusVerificacion.idEstatusVerificacion;
+          this.estatusPendienteDocumentacion = [1, 3, 4].includes(estatusVerificacion);
+          if(this.estatusPendienteDocumentacion){
+            this.desactivarForms();
+          }
+          this.estatusValidacionCompletada = [1,3].includes(estatusVerificacion);
+          //this.desactivarForms();
         }
         if (respuesta.documentosObligatorios) {
           this.procesarDatosObligatoriosObtenidos(respuesta.documentosObligatorios);
@@ -2001,10 +1972,6 @@ export class InicioComponent extends GeneralComponent {
       diaInicio: datos.diaSemanaInicio?.idDiaSemana ?? null,
       diaFin: datos.diaSemanaFin?.idDiaSemana ?? null,
     });
-    /*     if(this.estatusPendienteDocumentacion){
-
-          this.formDatosEmpleo.disable();
-        } */
   }
 
   mostrarDocumento(guid: string) {
@@ -2117,9 +2084,10 @@ export class InicioComponent extends GeneralComponent {
   }
 
   cambioDeSeccion($event: any) {
-    if (![0, 1].includes($event)) return;
-
-    if ($event == 1) {
+    if ($event === 2 && !this.estatusValidacionCompletada) {
+      return;
+    }
+    if ($event === 1) {
       /* validar que el primer formulario este completo */
       if (this.formRegistro.invalid) {
         this._alertServices.alerta("Recuerde completar los datos del formulario y guardar antes de pasar a la siguiente sección.");

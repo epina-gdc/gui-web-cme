@@ -3,9 +3,9 @@ import {BehaviorSubject} from 'rxjs';
 
 // Definición de la interfaz para el estado compartido (opcional, pero recomendado)
 export interface OfertaEstado {
-  titulo: string;
-  subTitulo: string;
-  badgeValue: boolean;
+  titulo: string | null;
+  subTitulo: string | null;
+  badgeValue: boolean | null;
 }
 
 @Injectable({
@@ -19,12 +19,18 @@ export class EstadoOfertaService {
     badgeValue: true,
   });
 
-  private readonly favoritos =  new BehaviorSubject<number>(4)
+  private readonly favoritos =  new BehaviorSubject<number>(0)
+  private readonly ofertas =  new BehaviorSubject<number>(0);
 
   // Observable público para que los componentes puedan suscribirse
   estadoActual$ = this.estadoFuente.asObservable();
 
   favoritosActuales$ = this.favoritos.asObservable();
+  ofertasActuales$ = this.ofertas.asObservable();
+
+  get totalFavoritos() {
+    return this.favoritos.value;
+  }
 
   constructor() {
   }
@@ -40,5 +46,9 @@ export class EstadoOfertaService {
 
   actualizarFavoritos(nuevosFavoritos: number): void {
     this.favoritos.next(nuevosFavoritos)
+  }
+
+  actualizarOfertas(nuevaOferta: number): void {
+    this.ofertas.next(nuevaOferta);
   }
 }

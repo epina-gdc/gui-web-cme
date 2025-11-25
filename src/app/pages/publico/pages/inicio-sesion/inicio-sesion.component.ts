@@ -28,11 +28,11 @@ import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.di
   templateUrl: './inicio-sesion.component.html',
   styleUrl: './inicio-sesion.component.scss',
   standalone: true,
-  providers: [AuthService]
+  
 })
 export class InicioSesionComponent extends GeneralComponent implements OnInit {
 
-  loginService = inject(AuthService);
+  
   fb = inject(FormBuilder)
   destroyRef = inject(DestroyRef);
 
@@ -65,7 +65,7 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit {
       this._alertServices.alerta('Por favor, completa todos los campos obligatorios.');
       return;
     }
-    this.loginService.login(this.formLogin.value)
+    this.authService.login(this.formLogin.value)
       .subscribe({
         next: (respuesta: HttpRespuesta<any>) => {
           if (!respuesta.exito) {

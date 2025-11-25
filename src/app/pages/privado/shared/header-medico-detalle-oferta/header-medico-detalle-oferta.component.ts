@@ -24,7 +24,7 @@ export class HeaderMedicoDetalleOfertaComponent implements OnInit, OnDestroy {
   }
 
   closeDialog(): void {
-    this.ref.close('Data to return to opener');
+    this.ref.close();
   }
 
   ngOnInit(): void {

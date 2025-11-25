@@ -72,6 +72,20 @@ export class DocumentoService {
     }).pipe(catchError(this.handleError));
   }
 
+  obtenerDocsPorOoad(refGuid: string): Observable<Blob> {
+    return this.http.get(`${this.serverEndPointURLDocumento}/v1/ooad-documentos/${refGuid}`, {
+      headers: this.header,
+      responseType: 'blob'
+    }).pipe(catchError(this.handleError));
+  }
+
+  obtenerDocSede(refGuid: string): Observable<Blob> {
+    return this.http.get(`${this.serverEndPointURLDocumento}/v1/sedes-documento/${refGuid}`, {
+      headers: this.header,
+      responseType: 'blob'
+    }).pipe(catchError(this.handleError));
+  }
+
 
   private handleError(error: ResponseGeneral) {
 

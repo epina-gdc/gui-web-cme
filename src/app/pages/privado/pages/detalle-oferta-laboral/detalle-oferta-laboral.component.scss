@@ -12,6 +12,7 @@
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+  text-align: start;
 }
 
 .texto-detalle-oferta-laboral {
@@ -20,6 +21,7 @@
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+  text-align: end;
 }
 
 
@@ -52,3 +54,23 @@
   text-align: left;
   text-align-last: right;
 }
+
+
+
+::ng-deep.p-button-text.p-button-secondary {
+  background-color: #e3eaf2;
+  margin-left: 0px;
+}
+
+
+
+@media screen and (max-width: 765px) {
+  .header-tab-oferta{
+    i{
+      display: none;
+    }
+  }
+
+
+}
+

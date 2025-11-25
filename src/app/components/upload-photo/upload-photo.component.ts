@@ -52,7 +52,6 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
 
   alertaService: AlertService = inject(AlertService)
 
-  @Input() clearOnFailedSave: boolean | undefined = undefined;
   @Input() disableUpload = false;
   @Input() maxFileSize: number = 5120000;
   @Input() existingFile: File | undefined = undefined;
@@ -70,7 +69,6 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
   errorCamara: string = '';
 
   constructor(private readonly config: PrimeNG) {
-
     this.items = [
       {
         label: 'Cargar Fotografía',

@@ -80,7 +80,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
     if (x) {
       this.medico = x;
-    //  console.log("****meduico: ", this.medico);
+      //console.log("meduico: ",this.medico);
       this.medico.documentoVerif = x.documentoVerif;
       this.medico.refCurp = '';
       this.idModalidad = this.medico.modalidad;
