@@ -25,7 +25,7 @@ import {DatosContacto} from '@models/datosContacto';
 import {GeneralComponent} from '@components/general.component';
 import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
-import {Estado, Pais, Residencia} from '@models/datosDomicilio';
+import {DatosDomicilio, Estado, Pais, Residencia} from '@models/datosDomicilio';
 import {ResponseGeneral} from '@models/responseGeneral';
 import {Colonia} from '@models/colonia';
 import {DataFotografia, Fotografia, FotografiaRequest} from '@models/fotografia';
@@ -70,6 +70,7 @@ import {
 } from '@pages/privado/shared/modal-validacion-medico/modal-validacion-medico.component';
 import { HeaderGenericoComponent } from '@pages/privado/shared/header-generico/header-generico.component';
 import { FooterMedicoComponent } from '@pages/privado/shared/footer-medico/footer-medico.component';
+import {DatosDocumentoResponse} from '@models/datosDocumento';
 
 interface DocumentoFuente {
   refGuid: string;
