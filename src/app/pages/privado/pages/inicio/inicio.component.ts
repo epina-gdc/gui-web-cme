@@ -1678,7 +1678,7 @@ export class InicioComponent extends GeneralComponent {
     const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
     const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
     const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
-    const externo = this.userData?.idPerfil === 3;
+    const externo = this.userData?.idPerfil === 3 || this.userData?.idPerfil === 6;
     const refConstancia1 = this.documentosLocalStorageService.obtenerRefConstancia(1);
     const refConstancia2 = this.documentosLocalStorageService.obtenerRefConstancia(2);
     const refConstancia3 = this.documentosLocalStorageService.obtenerRefConstancia(3);
