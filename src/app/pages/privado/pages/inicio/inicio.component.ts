@@ -936,6 +936,7 @@ export class InicioComponent extends GeneralComponent {
     contacto.refTelefonoCasa = this.formRegistro.controls['telefonoCasa'].value;
     contacto.refTelefonoCelular = this.formRegistro.controls['telefonoCelular'].value;
 
+    if(paisNacimientoSeleccionado != null && paisNacimientoSeleccionado != undefined){
     const pais: Pais = {
       nomPaisNacimiento: paisNacimientoSeleccionado.label,
       idPais: paisNacimientoSeleccionado.value as number,
@@ -943,14 +944,22 @@ export class InicioComponent extends GeneralComponent {
       desPais: ''
     }
     contacto.paisNacimiento = pais;
+    }
+
+
 
     const estadoNacimientoSeleccionado: number = this.formRegistro.get('estadoNacimiento')?.value;
-    const estado: Estado = {
+
+    if(estadoNacimientoSeleccionado != null && estadoNacimientoSeleccionado != undefined){
+      const estado: Estado = {
       idLugarNacimiento: estadoNacimientoSeleccionado,
       idEstado: 0,
       desEstado: ''
     }
     contacto.lugarNacimiento = estado;
+    }
+
+
     return contacto;
   }
 
@@ -1010,6 +1019,13 @@ export class InicioComponent extends GeneralComponent {
           return this._alertServices.exito(data.mensaje)
         }
         return this._alertServices.error(data.mensaje)
+
+        this.obtenerDatosGenerales(this.userData?.idUsuario);
+        this.obtenerDatosFoto(this.userData?.idUsuario);
+
+        setTimeout(() => {
+          this.indice.update((value: number) => value + 1);
+        }, 500);
       },
       error: (err: ResponseGeneral) => {
         this._alertServices.error(err.mensaje);
@@ -1385,13 +1401,16 @@ export class InicioComponent extends GeneralComponent {
       this._alertServices.error('Al menos debe estar cargada una especialidad');
       return;
     }
+
     const cadaEspecialidadTieneDiploma: boolean = especialidades.every(node =>
       node.documentos.some(documento => documento.idDocumento === 1));
+
     if (!cadaEspecialidadTieneDiploma && !externo) {
       this._alertServices.error(this._Mensajes.MSG037);
       this._alertServices.error('Para cada especialidad es necesario el documento Diploma Institucional de Especialidad.');
       return;
     }
+
     if (this.formDatosEmpleo.invalid && externo) {
       this._alertServices.error(this._Mensajes.MSG025);
       return;
@@ -1716,8 +1735,6 @@ export class InicioComponent extends GeneralComponent {
     }
 
 
-
-
     return especialidades.length === 0;
   }
 
@@ -1847,7 +1864,6 @@ export class InicioComponent extends GeneralComponent {
   }
 
   obtenerDatosDocumentosEscolaridad(): void {
-
     const idusuario = this.userData?.idUsuario;
     if (!idusuario) return;
     this._ConvocatoriaService.getDatosDocumentosEscolares(idusuario).subscribe({

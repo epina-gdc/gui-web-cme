@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
-import { Button } from 'primeng/button';
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import {Component} from '@angular/core';
+import {DynamicDialogRef} from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-header-generico',
-  imports: [Button],
+  imports: [],
   templateUrl: './header-generico.component.html',
   styleUrl: './header-generico.component.scss'
 })
@@ -12,7 +11,8 @@ export class HeaderGenericoComponent {
 
   constructor(
     public ref: DynamicDialogRef
-  ) { }
+  ) {
+  }
 
 
   closeDialog(): void {

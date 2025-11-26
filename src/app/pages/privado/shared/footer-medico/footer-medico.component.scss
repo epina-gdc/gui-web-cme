@@ -1,13 +1,22 @@
 .footer-medico {
   bottom: -10px;
+  box-shadow: 0 -6px 14px 0 rgba(0, 0, 0, 0.08);
 }
 
 .bg-bottom {
   height: 20px;
-  background-color: #4fa9d5;
+  background-color: #41abd9;
 }
 
+.contenedor-footer {
+  margin-top: 60px;
+}
 
+@media (min-width: 767px) {
+  .footer-medico {
+    height: 90px;
+  }
+}
 @media (max-width: 767px) {
   .contenedor-footer {
     margin-top: 80px;
@@ -20,4 +29,29 @@
   .bg-bottom {
     height: 0;
   }
+  .footer-medico {
+    background-color: #fff;
+    //border-radius: 0 0 20px 20px;
+    border-radius: 0 0 0 0;
+    box-shadow: 0 -6px 14px 0 rgba(0, 0, 0, 0.08);
+    z-index: 10;
+  }
+}
+
+.titulo_footer {
+  color: #41abd9;
+  font-family: "Noto Sans";
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 15px; /* 150% */
+}
+
+.dato_footer {
+  color: #222;
+  font-family: "Noto Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px; /* 125% */
 }

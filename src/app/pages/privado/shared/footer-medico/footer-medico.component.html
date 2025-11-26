@@ -10,22 +10,22 @@
     <div class="flex-grow-1">
       <div class="grid p-nogutter">
         <div class="col-12 md:col-6">
-          <p class="text-sm font-medium text-blue-500 mb-0">Nombre del médico aspirante</p>
-          <p class="text-xl font-semibold mt-1 mb-0">
+          <p class="titulo_footer mb-0">Nombre del médico aspirante</p>
+          <p class="dato_footer mt-1 mb-0">
             {{ sesion?.nomNombre }} {{ sesion?.nomApellidoPaterno }}  {{ sesion?.nomApellidoMaterno }}
           </p>
         </div>
 
         @if (sesion?.cveMatricula) {
           <div class="col-12 mb-3 flex flex-column justify-content-start md:col-6">
-            <p class="text-sm font-medium text-blue-500 mb-0 me-3">Matrícula</p>
-            <p class="text-xl font-semibold mt-1 mb-0"> {{ sesion?.cveMatricula }}</p>
+            <p class="titulo_footer mb-0 me-3">Matrícula</p>
+            <p class="dato_footer mt-1 mb-0"> {{ sesion?.cveMatricula }}</p>
           </div>
         }
         @if (sesion?.refFolio) {
           <div class="col-12 mb-3 flex flex-column justify-content-start md:col-6">
-            <p class="text-sm font-medium text-blue-500 mb-0 me-3">Folio</p>
-            <p class="text-xl font-semibold mt-1 mb-0"> {{ sesion?.refFolio }}</p>
+            <p class="titulo_footer mb-0 me-3">Folio</p>
+            <p class="dato_footer mt-1 mb-0"> {{ sesion?.refFolio }}</p>
           </div>
         }
       </div>

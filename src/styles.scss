@@ -182,6 +182,7 @@
     padding: 0 !important;
   }
 
+
   .icon-white .p-button-icon {
     color: #fff;
   }
@@ -303,6 +304,12 @@
     .w-tab {
       width: 250px;
     }
+  }
+
+  .p-dialog {
+    border: none;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
   }
 
 
