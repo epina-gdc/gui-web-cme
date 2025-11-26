@@ -95,7 +95,9 @@
       <h6>Previsualización</h6>
 
       @if (tabActive() === 0) {
-        <p>Seleccione la especialidad que desea obtener la previsualización</p>
+        <div class="flex justify-content-center align-items-center h-full">
+          <p>Seleccione la especialidad que desea obtener la previsualización</p>
+        </div>
       } @else {
         <ng-container [ngTemplateOutlet]="pdf_doc"></ng-container>
       }
