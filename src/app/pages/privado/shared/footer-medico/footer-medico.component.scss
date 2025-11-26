@@ -12,7 +12,11 @@
   margin-top: 50px;
 }
 
-
+@media (min-width: 767px) {
+  .footer-medico {
+    height: 80px;
+  }
+}
 @media (max-width: 767px) {
   .contenedor-footer {
     margin-top: 80px;
