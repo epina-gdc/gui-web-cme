@@ -3,7 +3,7 @@ import {Card} from 'primeng/card';
 import {StepsComponent} from '@components/steps/steps.component';
 import {UploadPhotoComponent} from '@components/upload-photo/upload-photo.component';
 import {InputText} from 'primeng/inputtext';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidatorFn, Validators} from '@angular/forms';
 import {Select} from 'primeng/select';
 import {DatePickerModule} from 'primeng/datepicker';
 import {Button} from 'primeng/button';
@@ -241,9 +241,27 @@ export class InicioComponent extends GeneralComponent {
   }
 
   asignarFormularioRegistro(): FormGroup {
+
+let validatorsNSS: ValidatorFn[] = []; // Tipado para eliminar el warning de TS
+
+    if (this.userData?.idPerfil == 2) {
+        // Usa un patrón que exige exactamente 11 dígitos numéricos.
+        // ^[0-9]{11}$: Empieza (^), contiene exactamente 11 dígitos (0-9){11}, y termina ($).
+        validatorsNSS = [
+            Validators.required,
+            Validators.pattern('^[0-9]{11}$'), // <-- NUEVO VALIDADOR
+            Validators.minLength(11),
+            Validators.maxLength(11)
+        ];
+    } else if (this.userData?.idPerfil == 3 || this.userData?.idPerfil == 6) {
+        validatorsNSS = []
+    }
+
+
+
     return this.fb.group({
       rfc: [{value: ''}, [Validators.required, Validators.minLength(13), Validators.maxLength(13), Validators.pattern(PATRON_RFC)]],
-      nss: [{value: '', disabled: false}, [Validators.required, Validators.minLength(11), Validators.maxLength(11)]],
+      nss: [{value: '', disabled: false}, validatorsNSS],
       fechaNacimiento: [null, [Validators.required]],
       sexo: [{value: ''}, [Validators.required]],
       estadoCivil: [{value: '', disabled: false}, [Validators.required]],
@@ -819,7 +837,18 @@ export class InicioComponent extends GeneralComponent {
       } = datosPersonales;
 
       if (perfil.idPerfil == 2) {
-        this.formRegistro.controls['nss'].setValidators([Validators.required]);
+        let validatorsNSS: ValidatorFn[] = [];
+        validatorsNSS = [
+            Validators.required,
+            Validators.pattern('^[0-9]{11}$'), // <-- NUEVO VALIDADOR
+            Validators.minLength(11),
+            Validators.maxLength(11)
+        ]
+
+        this.formRegistro.controls['nss'].setValidators(validatorsNSS);
+        this.formRegistro.controls['nss'].updateValueAndValidity();
+      } else if ([3, 6].includes(perfil.idPerfil)) {
+        this.formRegistro.controls['nss'].clearValidators();
         this.formRegistro.controls['nss'].updateValueAndValidity();
       }
 

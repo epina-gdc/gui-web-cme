@@ -37,10 +37,9 @@
             <div class="lg:col-4 col-12">
               <div class="flex justify-content-between">
                 <label class="field-label" for="nss">NSS</label>
-                <p class="label-obligatorio">Obligatorio</p>
-                <!-- @if (this.userData?.idPerfil == 2) {
+                @if (this.userData?.idPerfil == 2) {
                   <p class="label-obligatorio">Obligatorio</p>
-                } -->
+                }
               </div>
               <input pInputText class="w-full" type="text" id="nss" placeholder="Ingresa NSS"
                      formControlName="nss" appOnlyNumbers maxlength="11"/>
@@ -447,7 +446,7 @@
         <article class="flex flex-row flex-wrap">
           <div class="lg:col-3 col-12">
             <div class="flex justify-content-between mb-1">
-              <p class="field-label">Especialidad</p>
+              <p class="field-label">Especialidad o Subespecialidad</p>
               <p class="label-obligatorio">Obligatorio</p>
             </div>
             <p-select [options]="especialidades" optionLabel="label" optionValue="value" [filter]="true"
