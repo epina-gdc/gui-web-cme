@@ -74,9 +74,15 @@
               <p class="modal-prev-value">
                 @if (datosGenerales.dependientes?.indPadres === 1) {
                   Padres
+                  @if (datosGenerales.dependientes?.indConyuge === 1 || datosGenerales.dependientes?.refCantidadHijos) {
+                    ,
+                  }
                 }
                 @if (datosGenerales.dependientes?.indConyuge === 1) {
                   Cónyuge
+                  @if (datosGenerales.dependientes?.refCantidadHijos) {
+                    ,
+                  }
                 }
                 @if (datosGenerales.dependientes?.refCantidadHijos) {
                   Hijos ({{ datosGenerales.dependientes?.refCantidadHijos }})
