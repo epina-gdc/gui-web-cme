@@ -36,63 +36,91 @@
             <div class="flex justify-content-between valores-modal">
               <p class="seccion-detalle-oferta-laboral">RFC:</p>
               <p class="modal-prev-value">
-                {{ datosGenerales.datosPersonales.refRfc }}
+                @if (datosGenerales.datosPersonales && datosGenerales.datosPersonales.refRfc) {
+                  {{ datosGenerales.datosPersonales.refRfc }}
+                } @else {
+                  -
+                }
               </p>
             </div>
             <div class="flex justify-content-between valores-modal">
               <p class="seccion-detalle-oferta-laboral">Curp:</p>
               <p class="modal-prev-value">
-                {{ datosGenerales.datosPersonales.refCurp }}
+                @if (datosGenerales.datosPersonales && datosGenerales.datosPersonales.refCurp) {
+                  {{ datosGenerales.datosPersonales.refCurp }}
+                } @else {
+                  -
+                }
               </p>
             </div>
             <div class="flex justify-content-between valores-modal">
               <p class="seccion-detalle-oferta-laboral">NSS:</p>
               <p class="modal-prev-value">
-                {{ datosGenerales.datosPersonales.refNss }}
+                @if (datosGenerales.datosPersonales && datosGenerales.datosPersonales.refNss) {
+                  {{ datosGenerales.datosPersonales.refNss }}
+                } @else {
+                  -
+                }
               </p>
             </div>
             <div class="flex justify-content-between valores-modal">
               <p class="seccion-detalle-oferta-laboral">Fecha de nacimiento:</p>
               <p class="modal-prev-value">
-                {{ datosGenerales.datosPersonales.fecNacimiento }}
+                @if (datosGenerales.datosPersonales && datosGenerales.datosPersonales.fecNacimiento) {
+                  {{ datosGenerales.datosPersonales.fecNacimiento }}
+                } @else {
+
+                }
               </p>
             </div>
             <div class="flex justify-content-between valores-modal">
               <p class="seccion-detalle-oferta-laboral">Sexo:</p>
               <p class="modal-prev-value">
-                {{ datosGenerales.datosPersonales.sexo.desSexo }}
+                @if (datosGenerales.datosPersonales && datosGenerales.datosPersonales.sexo) {
+                  {{ datosGenerales.datosPersonales.sexo.desSexo }}
+                } @else {
+                  -
+                }
               </p>
             </div>
             <div class="flex justify-content-between valores-modal">
               <p class="seccion-detalle-oferta-laboral">Estado civil:</p>
               <p class="modal-prev-value">
-                {{ datosGenerales.datosPersonales.estadoCivil.desEstadoCivil }}
+                @if (datosGenerales.datosPersonales && datosGenerales.datosPersonales.estadoCivil) {
+                  {{ datosGenerales.datosPersonales.estadoCivil.desEstadoCivil }}
+                } @else {
+                  -
+                }
               </p>
             </div>
             <div class="flex justify-content-between valores-modal">
               <p class="seccion-detalle-oferta-laboral">Dependientes:</p>
               <p class="modal-prev-value">
-                @if (datosGenerales.dependientes?.indPadres === 1) {
-                  Padres
-                  @if (datosGenerales.dependientes?.indConyuge === 1 || datosGenerales.dependientes?.refCantidadHijos) {
-                    ,
+                @if (datosGenerales.dependientes) {
+                  @if (datosGenerales.dependientes.indPadres === 1) {
+                    Padres
+                    @if (datosGenerales.dependientes.indConyuge === 1 || datosGenerales.dependientes.refCantidadHijos) {
+                      ,
+                    }
                   }
-                }
-                @if (datosGenerales.dependientes?.indConyuge === 1) {
-                  Cónyuge
-                  @if (datosGenerales.dependientes?.refCantidadHijos) {
-                    ,
+                  @if (datosGenerales.dependientes.indConyuge === 1) {
+                    Cónyuge
+                    @if (datosGenerales.dependientes.refCantidadHijos) {
+                      ,
+                    }
                   }
-                }
-                @if (datosGenerales.dependientes?.refCantidadHijos) {
-                  Hijos ({{ datosGenerales.dependientes?.refCantidadHijos }})
-                }
-                @if (datosGenerales.dependientes?.indConyuge === 0 &&
-                datosGenerales.dependientes?.indPadres === 0 &&
-                !datosGenerales.dependientes?.refCantidadHijos) {
-                  {{ datosGenerales.dependientes?.refOtro }}
-                }
-                @if (datosGenerales.dependientes?.indNinguno === 1) {
+                  @if (datosGenerales.dependientes.refCantidadHijos) {
+                    Hijos ({{ datosGenerales.dependientes.refCantidadHijos }})
+                  }
+                  @if (datosGenerales.dependientes.indConyuge === 0 &&
+                  datosGenerales.dependientes.indPadres === 0 &&
+                  !datosGenerales.dependientes.refCantidadHijos) {
+                    {{ datosGenerales.dependientes.refOtro }}
+                  }
+                  @if (datosGenerales.dependientes.indNinguno === 1) {
+                    Ninguno
+                  }
+                } @else {
                   Ninguno
                 }
               </p>
@@ -117,39 +145,54 @@
             <div class="flex justify-content-between valores-modal">
               <p class="seccion-detalle-oferta-laboral">Correo electrónico:</p>
               <p class="modal-prev-value">
-                {{ datosGenerales.datosContacto.refEmail }}
+                @if (datosGenerales.datosContacto && datosGenerales.datosContacto.refEmail) {
+                  {{ datosGenerales.datosContacto.refEmail }}
+                } @else {
+                  -
+                }
               </p>
             </div>
             <div class="flex justify-content-between valores-modal">
               <p class="seccion-detalle-oferta-laboral">Teléfono celular:</p>
               <p class="modal-prev-value">
-                {{ datosGenerales.datosContacto.refTelefonoCasa }}
+                @if (datosGenerales.datosContacto && datosGenerales.datosContacto.refTelefonoCasa) {
+                  {{ datosGenerales.datosContacto.refTelefonoCasa }}
+                } @else {
+                  -
+                }
               </p>
             </div>
             <div class="flex justify-content-between valores-modal">
               <p class="seccion-detalle-oferta-laboral">Teléfono adicional:</p>
               <p class="modal-prev-value">
-                {{ datosGenerales.datosContacto.refTelefonoCelular }}
+                @if (datosGenerales.datosContacto && datosGenerales.datosContacto.refTelefonoCelular) {
+                  {{ datosGenerales.datosContacto.refTelefonoCelular }}
+                } @else {
+                  -
+                }
               </p>
             </div>
             <div class="flex justify-content-between valores-modal">
               <p class="seccion-detalle-oferta-laboral">País:</p>
               <p class="modal-prev-value">
-                {{ datosGenerales.datosContacto.paisNacimiento.desPais }}
+                @if (datosGenerales.datosContacto && datosGenerales.datosContacto.paisNacimiento) {
+                  {{ datosGenerales.datosContacto.paisNacimiento.desPais }}
+                } @else {
+                  -
+                }
               </p>
             </div>
             <div class="flex justify-content-between valores-modal">
               <p class="seccion-detalle-oferta-laboral">Estado de origen:</p>
-              @if (datosGenerales.datosContacto.lugarNacimiento) {
-                <p class="modal-prev-value">
+              <p class="modal-prev-value">
+                @if (datosGenerales.datosContacto.lugarNacimiento) {
                   {{
-                    datosGenerales.datosContacto.lugarNacimiento
-                      .desLugarNacimiento
+                    datosGenerales.datosContacto.lugarNacimiento.desLugarNacimiento
                   }}
-                </p>
-              } @else {
-                <p class="modal-prev-value">-</p>
-              }
+                } @else {
+                  -
+                }
+              </p>
             </div>
           </div>
         </div>
@@ -226,8 +269,7 @@
           @for (zona of datosGenerales.zonasInteresLaboral; track zona.idOoad) {
             <div
               class="flex flex-column margen_seccion"
-              style="gap: 7px; padding: 0 16px"
-            >
+              style="gap: 7px; padding: 0 16px">
               <div class="flex align-items-center gap-4 margen_titulo_seccion">
                 <i
                   class="cme-hospital"
@@ -381,6 +423,11 @@
                   Constancias de cursos de educación permanente en salud
                 </h4>
               </div>
+              @if (documentosConstancias.length === 0) {
+                <span class="seccion-detalle-oferta-laboral">
+                  Esta sección no tiene documentos asignados
+                </span>
+              }
               @if (documentosConstancias.length >= 1) {
                 <div class="flex justify-content-between valores-modal">
                   <div class="seccion-detalle-oferta-laboral">
