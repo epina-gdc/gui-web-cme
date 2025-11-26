@@ -960,6 +960,7 @@ export class InicioComponent extends GeneralComponent {
     contacto.refTelefonoCasa = this.formRegistro.controls['telefonoCasa'].value;
     contacto.refTelefonoCelular = this.formRegistro.controls['telefonoCelular'].value;
 
+    if(paisNacimientoSeleccionado != null && paisNacimientoSeleccionado != undefined){
     const pais: Pais = {
       nomPaisNacimiento: paisNacimientoSeleccionado.label,
       idPais: paisNacimientoSeleccionado.value as number,
@@ -967,14 +968,22 @@ export class InicioComponent extends GeneralComponent {
       desPais: ''
     }
     contacto.paisNacimiento = pais;
+    }
+
+
 
     const estadoNacimientoSeleccionado: number = this.formRegistro.get('estadoNacimiento')?.value;
-    const estado: Estado = {
+
+    if(estadoNacimientoSeleccionado != null && estadoNacimientoSeleccionado != undefined){
+      const estado: Estado = {
       idLugarNacimiento: estadoNacimientoSeleccionado,
       idEstado: 0,
       desEstado: ''
     }
     contacto.lugarNacimiento = estado;
+    }
+
+
     return contacto;
   }
 
