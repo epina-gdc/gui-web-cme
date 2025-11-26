@@ -201,8 +201,8 @@
         <div class="flex flex-wrap h-full">
           <div class="col-12 md:col-6  pr-4 justify-content-center flex" >
             @if(mapaRef){
-              <p-image [src]="ref + mapaRef" alt="Image" width="380"
-                      height="460"/>
+              <p-image [src]="ref + mapaRef" alt="Image" width="380" class="res-imagen"
+                      height="460" styleClass="res-imagen"/>
             }@else {
               <div class="bg-img-no-disponible"></div>
             }
@@ -218,9 +218,8 @@
                   <div class="relative mx-auto justify-content-center">
                     <p-image width="320px" height="460"
                              [src]="ref + product.refGuid"
-
                              [alt]="product.name" styleClass="carousel-image"
-                             class="rounded-border flex"/>
+                             class="rounded-border flex "/>
 
                   </div>
                 </div>
