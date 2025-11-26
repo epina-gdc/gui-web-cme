@@ -21,9 +21,12 @@ export class EstadoOfertaService {
 
   private readonly favoritos =  new BehaviorSubject<number>(0)
   private readonly ofertas =  new BehaviorSubject<number>(0);
+  private readonly tab =  new BehaviorSubject<number>(0);
 
   // Observable público para que los componentes puedan suscribirse
   estadoActual$ = this.estadoFuente.asObservable();
+
+  tabActual$ = this.tab.asObservable();
 
   favoritosActuales$ = this.favoritos.asObservable();
   ofertasActuales$ = this.ofertas.asObservable();
@@ -50,5 +53,9 @@ export class EstadoOfertaService {
 
   actualizarOfertas(nuevaOferta: number): void {
     this.ofertas.next(nuevaOferta);
+  }
+
+  actualizarTab(nuevoTab: number): void {
+    this.tab.next(nuevoTab);
   }
 }

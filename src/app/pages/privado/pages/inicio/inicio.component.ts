@@ -68,9 +68,10 @@ import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {
   ModalValidacionMedicoComponent
 } from '@pages/privado/shared/modal-validacion-medico/modal-validacion-medico.component';
-import { HeaderGenericoComponent } from '@pages/privado/shared/header-generico/header-generico.component';
-import { FooterMedicoComponent } from '@pages/privado/shared/footer-medico/footer-medico.component';
+import {HeaderGenericoComponent} from '@pages/privado/shared/header-generico/header-generico.component';
+import {FooterMedicoComponent} from '@pages/privado/shared/footer-medico/footer-medico.component';
 import {DatosDocumentoResponse} from '@models/datosDocumento';
+import {EstadoOfertaService} from '@services/estado-oferta.service';
 
 interface DocumentoFuente {
   refGuid: string;
@@ -127,6 +128,7 @@ export class InicioComponent extends GeneralComponent {
 
   userService = inject(UserService);
   fb: FormBuilder = inject(FormBuilder);
+  estadoOfertaService = inject(EstadoOfertaService);
   documentosLocalStorageService = inject(DocumentosLocalstorageService)
   formRegistro!: FormGroup;
   formZonaInteres!: FormGroup;
@@ -249,7 +251,7 @@ export class InicioComponent extends GeneralComponent {
       indConyuge: [false],
       indHijos: [false],
       indOtros: [false],
-      indNinguno:[false],
+      indNinguno: [false],
       hijos: [{value: '', disabled: true}, [Validators.required, Validators.min(1)]],
       otros: [{value: '', disabled: true}, [Validators.required]],
       info: [{value: '', disabled: false}, [Validators.required]],
@@ -336,7 +338,7 @@ export class InicioComponent extends GeneralComponent {
 
     });
 
-    this.formDocumentosEspecialidad.get('especialidad')?.valueChanges.subscribe( value => {
+    this.formDocumentosEspecialidad.get('especialidad')?.valueChanges.subscribe(value => {
       this.lstTiposDocumentos = this.lstTiposDocumentosCopy;
       const especialidades = this.registrosDocumentosEspecialidad();
       const especialidadSeleccionada = especialidades.find(e => e.documentos[0].cveEspecialidad == value);
@@ -715,8 +717,8 @@ export class InicioComponent extends GeneralComponent {
     const especialidadParaModificar = {...especialidades[indiceEspecialidad]};
     const idDocumentoEspecialidad = especialidadParaModificar.documentos.find(d => d.tipoDocumento === tipoDocumento)?.idDocumentoEspecialidad;
 
-    if(this.formDocumentosEspecialidad.get('especialidad')?.value){
-      if(this.formDocumentosEspecialidad.get('especialidad')?.value == especialidadParaModificar.documentos[0].cveEspecialidad){
+    if (this.formDocumentosEspecialidad.get('especialidad')?.value) {
+      if (this.formDocumentosEspecialidad.get('especialidad')?.value == especialidadParaModificar.documentos[0].cveEspecialidad) {
         const docAdd = this.lstTiposDocumentosCopy.find(x => x.label.toLowerCase() === tipoDocumento.toLowerCase());
         this.lstTiposDocumentos.push(docAdd!);
       }
@@ -936,27 +938,26 @@ export class InicioComponent extends GeneralComponent {
     contacto.refTelefonoCasa = this.formRegistro.controls['telefonoCasa'].value;
     contacto.refTelefonoCelular = this.formRegistro.controls['telefonoCelular'].value;
 
-    if(paisNacimientoSeleccionado != null && paisNacimientoSeleccionado != undefined){
-    const pais: Pais = {
-      nomPaisNacimiento: paisNacimientoSeleccionado.label,
-      idPais: paisNacimientoSeleccionado.value as number,
-      cvePais: '',
-      desPais: ''
+    if (paisNacimientoSeleccionado != null && paisNacimientoSeleccionado != undefined) {
+      const pais: Pais = {
+        nomPaisNacimiento: paisNacimientoSeleccionado.label,
+        idPais: paisNacimientoSeleccionado.value as number,
+        cvePais: '',
+        desPais: ''
+      }
+      contacto.paisNacimiento = pais;
     }
-    contacto.paisNacimiento = pais;
-    }
-
 
 
     const estadoNacimientoSeleccionado: number = this.formRegistro.get('estadoNacimiento')?.value;
 
-    if(estadoNacimientoSeleccionado != null && estadoNacimientoSeleccionado != undefined){
+    if (estadoNacimientoSeleccionado != null && estadoNacimientoSeleccionado != undefined) {
       const estado: Estado = {
-      idLugarNacimiento: estadoNacimientoSeleccionado,
-      idEstado: 0,
-      desEstado: ''
-    }
-    contacto.lugarNacimiento = estado;
+        idLugarNacimiento: estadoNacimientoSeleccionado,
+        idEstado: 0,
+        desEstado: ''
+      }
+      contacto.lugarNacimiento = estado;
     }
 
 
@@ -1015,17 +1016,19 @@ export class InicioComponent extends GeneralComponent {
     this._ConvocatoriaService.guardarDatosGenerales(datos).subscribe({
       next: (data: ResponseGeneral) => {
         if (data.exito) {
-          this.indice.update((value: number) => value + 1);
-          return this._alertServices.exito(data.mensaje)
+          this._alertServices.exito(data.mensaje);
+          this.obtenerDatosGenerales(this.userData?.idUsuario);
+          this.obtenerDatosFoto(this.userData?.idUsuario);
+
+          setTimeout(() => {
+            this.indice.update((value: number) => value + 1);
+            this.estadoOfertaService.actualizarTab(this.indice());
+          }, 500);
+          return;
+
         }
         return this._alertServices.error(data.mensaje)
 
-        this.obtenerDatosGenerales(this.userData?.idUsuario);
-        this.obtenerDatosFoto(this.userData?.idUsuario);
-
-        setTimeout(() => {
-          this.indice.update((value: number) => value + 1);
-        }, 500);
       },
       error: (err: ResponseGeneral) => {
         this._alertServices.error(err.mensaje);
@@ -1125,6 +1128,7 @@ export class InicioComponent extends GeneralComponent {
 
     return fotografia.datosPersonales;
   }
+
   onFileSelected($event: any): void {
     if ($event.length == 0) {
       this._alertServices.alerta('El peso del archivo excede al permitido.');
@@ -1381,6 +1385,7 @@ export class InicioComponent extends GeneralComponent {
 
     if (this.estatusPendienteDocumentacion) {
       this.indice.update((value: number) => value + 1);
+      this.estadoOfertaService.actualizarTab(this.indice());
       return;
     }
 
@@ -1874,10 +1879,10 @@ export class InicioComponent extends GeneralComponent {
           this.estatusPendienteDocumentacion = respuesta.participacion.resultadoVerificacion.estatusVerificacion.desEstatus === 'Pendiente';
           const estatusVerificacion: number = respuesta.participacion.resultadoVerificacion.estatusVerificacion.idEstatusVerificacion;
           this.estatusPendienteDocumentacion = [1, 3, 4].includes(estatusVerificacion);
-          if(this.estatusPendienteDocumentacion){
+          if (this.estatusPendienteDocumentacion) {
             this.desactivarForms();
           }
-          this.estatusValidacionCompletada = [1,3].includes(estatusVerificacion);
+          this.estatusValidacionCompletada = [1, 3].includes(estatusVerificacion);
           //this.desactivarForms();
         }
         if (respuesta.documentosObligatorios) {
@@ -2118,6 +2123,7 @@ export class InicioComponent extends GeneralComponent {
     }
 
     this.indice.update(() => $event);
+    this.estadoOfertaService.actualizarTab(this.indice());
   }
 
   obtenerGuidDocumento($event: boolean, tipo: 'obligatorio' | 'constancia', id: number): void {
