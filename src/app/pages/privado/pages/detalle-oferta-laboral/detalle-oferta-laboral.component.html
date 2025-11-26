@@ -7,14 +7,14 @@
           Información general
         </div>
       </p-tab>
-      @if(mapaRef){
+      
         <p-tab value="1" (click)="cambioDatosHeader(1)">
           <div class="header-tab-oferta">
             <i class="cme-pin" style="color: #41ABD9; font-size: 1.4rem"></i>
             Ubicación y servicios
           </div>
         </p-tab>
-      }
+      
       @if(pdfSrcSede){
         <p-tab value="2" (click)="cambioDatosHeader(2)">
           <div class="header-tab-oferta">
@@ -200,8 +200,12 @@
       <p-tabpanel value="1" >
         <div class="flex flex-wrap h-full">
           <div class="col-12 md:col-6  pr-4 justify-content-center flex" >
-            <p-image [src]="ref + mapaRef" alt="Image" width="380"
-                    height="460"/>
+            @if(mapaRef){
+              <p-image [src]="ref + mapaRef" alt="Image" width="380"
+                      height="460"/>
+            }@else {
+              <div class="bg-img-no-disponible"></div>  
+            }
           </div>
           <div class="col-12 md:col-6   pl-4 justify-content-center ">
             <p-carousel
