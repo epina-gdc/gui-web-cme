@@ -289,6 +289,12 @@
     background-size: 100% 80px;
   }
 
+  .bg-img-no-disponible {
+    background: url("assets/backgrounds/Mapa@2x.png") no-repeat top center / cover;
+    width: 100%;
+    height: 343px;
+  }
+
   .imagen-tabla {
     object-fit: contain;
   }
