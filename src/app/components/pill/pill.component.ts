@@ -7,7 +7,7 @@ import {EstatusDocumentacion} from '@models/verificacion-documentos.interface';
   selector: 'app-pill',
   imports: [CommonModule],
   templateUrl: './pill.component.html',
-  styleUrl: './pill.component.scss'
+  styleUrl: './pill.component.scss' 
 })
 
 export class PillComponent {
@@ -15,7 +15,14 @@ export class PillComponent {
   @Input() texto: string = "No cumple con requisitos";
   @Input() pillType: number = 0;
 
-  setClass(): string{
-    return EstatusDocumentacion[this.pillType];
+  clases: Map<number, string> = new Map([
+    [1, 'pendiente'],
+    [2, 'revision'],
+    [3, 'cumple'],
+    [0, 'noCumple']
+  ]);
+
+  settearClase(): string {
+    return this.clases.get(this.pillType) ?? '';
   }
 }
