@@ -163,7 +163,7 @@
               </p>
             </div>
             <div class="flex justify-content-between valores-modal">
-              <p class="seccion-detalle-oferta-laboral">Teléfono adicional:</p>
+              <p class="seccion-detalle-oferta-laboral">Otro teléfono de contacto:</p>
               <p class="modal-prev-value">
                 @if (datosGenerales.datosContacto && datosGenerales.datosContacto.refTelefonoCelular) {
                   {{ datosGenerales.datosContacto.refTelefonoCelular }}
@@ -173,7 +173,7 @@
               </p>
             </div>
             <div class="flex justify-content-between valores-modal">
-              <p class="seccion-detalle-oferta-laboral">País:</p>
+              <p class="seccion-detalle-oferta-laboral">País de nacimiento:</p>
               <p class="modal-prev-value">
                 @if (datosGenerales.datosContacto && datosGenerales.datosContacto.paisNacimiento) {
                   {{ datosGenerales.datosContacto.paisNacimiento.desPais }}
@@ -183,7 +183,7 @@
               </p>
             </div>
             <div class="flex justify-content-between valores-modal">
-              <p class="seccion-detalle-oferta-laboral">Estado de origen:</p>
+              <p class="seccion-detalle-oferta-laboral">Estado de origen (nacimiento):</p>
               <p class="modal-prev-value">
                 @if (datosGenerales.datosContacto.lugarNacimiento) {
                   {{
@@ -490,7 +490,7 @@
                   font-size: 1.8rem;
                 "
                 ></i>
-                <h4 class="modal-titulo-tarjeta">Datos de empleo</h4>
+                <h4 class="modal-titulo-tarjeta">Otros datos</h4>
               </div>
               <div class="flex justify-content-between valores-modal">
                 <p class="seccion-detalle-oferta-laboral">¿Tienes otro empleo?</p>
@@ -508,6 +508,16 @@
                   <span class="modal-prev-value">Si</span>
                 } @else {
                   <span class="modal-prev-value">No</span>
+                }
+              </div>
+              <div class="flex justify-content-between valores-modal">
+                <p class="seccion-detalle-oferta-laboral">
+                  OOAD
+                </p>
+                @if (datosEmpleo.desOoad) {
+                  <span class="modal-prev-value">{{datosEmpleo.desOoad}}</span>
+                } @else {
+                  <span class="modal-prev-value">-</span>
                 }
               </div>
               <div class="flex justify-content-between valores-modal">
