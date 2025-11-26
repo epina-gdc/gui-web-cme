@@ -125,6 +125,11 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
           breakpoint: '560px',
           numVisible: 1,
           numScroll: 1
+      },
+      {
+        breakpoint: '320px',
+        numVisible: 1,
+        numScroll: 1
       }
   ];
   }

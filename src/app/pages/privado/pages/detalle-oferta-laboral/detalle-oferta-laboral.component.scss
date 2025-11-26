@@ -56,21 +56,30 @@
 }
 
 
-
 ::ng-deep.p-button-text.p-button-secondary {
   background-color: #e3eaf2;
-  margin-left: 0px;
+  margin-left: 0;
 }
 
 
-
 @media screen and (max-width: 765px) {
-  .header-tab-oferta{
-    i{
+  .header-tab-oferta {
+    i {
       display: none;
     }
   }
 
+
+}
+
+@media screen and (max-width: 380px) {
+  .res-imagen {
+    width: 280px !important;
+  }
+
+  img {
+    object-fit: cover;
+  }
 
 }
 

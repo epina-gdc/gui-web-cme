@@ -1,6 +1,6 @@
 <div class="flex justify-content-start align-items-center gap-3 mt-5 lg:mt-0">
   <btn-regresar [ruta]="ruta"/>
-  <h3 class="titulo-seccion">Documentación del aspirante</h3>
+  <h3 class="titulo-seccion">Módulo de verificación de documentos</h3>
 </div>
 <p-card class="mx-2 empty-border" [header]="'Información del médico aspirante'">
   <div class="flex align-items-center p-4 flex-wrap imagen-seccion">
@@ -31,15 +31,19 @@
     <div class="flex-column lg:ml-5 lg:w-9">
       @if (!isMobileView) {
         <div class="flex justify-content-between align-items-center mb-3 seccion-nombre">
-          <span
-            class="titulo-nombre-aspirante">{{ datosPersonales.nombre | titlecase }} {{ datosPersonales.apellidoPaterno | titlecase }}
-            {{ datosPersonales.apellidoMaterno | titlecase }}</span>
-          @if (!evaluacion || evaluacion.estatusVerificacion.idEstatusVerificacion === 4) {
-            <app-pill [texto]="'No cumple con requisitos'" [pillType]="0"/>
-          } @else {
-            <app-pill [texto]="evaluacion.estatusVerificacion.desEstatus"
-                      [pillType]="evaluacion.estatusVerificacion.idEstatusVerificacion"/>
-          }
+          <div class="lg:col-6 col-12">
+            <span
+              class="titulo-nombre-aspirante">{{ datosPersonales.nombre | titlecase }} {{ datosPersonales.apellidoPaterno | titlecase }}
+              {{ datosPersonales.apellidoMaterno | titlecase }}</span>
+          </div>
+          <div class="lg:col-6 col-12 flex align-content-start justify-items-end">
+            @if (!evaluacion || evaluacion.estatusVerificacion.idEstatusVerificacion === 4) {
+              <app-pill [texto]="'No cumple con requisitos'" [pillType]="0"/>
+            } @else {
+              <app-pill [texto]="evaluacion.estatusVerificacion.desEstatus"
+                        [pillType]="evaluacion.estatusVerificacion.idEstatusVerificacion"/>
+            }
+          </div>
         </div>
       }
       <div class="flex lg:justify-content-between lg:align-items-start mt-3 flex-wrap">
@@ -53,11 +57,11 @@
             <p>{{ datosPersonales.refFolio }}</p>
           }
         </div>
-        <div class="detalle-aspirante lg:col-6 col-12">
+        <div class="detalle-aspirante lg:col-4 col-12">
           <span class="acciones-tabla">Especialidad</span>
           <p class="especialidad">{{ datosPersonales.especialidad | titlecase }}</p>
         </div>
-        <div class="detalle-aspirante lg:col-4 col-12">
+        <div class="detalle-aspirante lg:col-6 col-12">
           <span class="acciones-tabla">Correo electónico</span>
           <p>{{ datosPersonales.refEmail }}</p>
         </div>
