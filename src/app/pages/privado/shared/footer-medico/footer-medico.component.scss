@@ -8,6 +8,10 @@
   background-color: #4fa9d5;
 }
 
+.contenedor-footer {
+  margin-top: 50px;
+}
+
 
 @media (max-width: 767px) {
   .contenedor-footer {
@@ -21,9 +25,6 @@
   .bg-bottom {
     height: 0;
   }
-}
-
-@media (max-width: 767px) {
   .footer-medico {
     background-color: #fff;
     border-radius: 0 0 20px 20px;
