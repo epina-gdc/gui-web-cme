@@ -106,27 +106,29 @@
   }
 
   @media screen and (max-width: 765px) {
-    :host ::ng-deep .p-paginator{
-      .p-paginator-prev-icon{
-        span{
-          margin: 0 2px!important;
+    :host ::ng-deep .p-paginator {
+      .p-paginator-prev-icon {
+        span {
+          margin: 0 2px !important;
         }
       }
-      .p-paginator-next-icon{
-        span{
-          margin: 0 2px!important;
+
+      .p-paginator-next-icon {
+        span {
+          margin: 0 2px !important;
         }
       }
     }
 
-    .oferta-laboral-tarjetas{
+    .oferta-laboral-tarjetas {
       display: none;
     }
   }
 
-  :host ::ng-deep .p-paginator-page-selected{
+  :host ::ng-deep .p-paginator-page-selected {
     background: #59d0a9;
   }
+
   .custom-close {
     position: fixed;
     top: 100px;
@@ -160,7 +162,6 @@
 
   :host ::ng-deep .p-dialog-content {
     padding: 16px !important;
-    padding-bottom: 33px !important;
   }
 
 }
