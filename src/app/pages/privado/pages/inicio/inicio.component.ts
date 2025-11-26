@@ -1034,6 +1034,11 @@ export class InicioComponent extends GeneralComponent {
           //return this._alertServices.exito(data.mensaje)
 
           this._alertServices.exito(this._Mensajes.MSG024);
+
+          //SE AGREGA LA CONSULTA PARA SETEAR LOS DATOS NUEVAMENTE QUE SE OCUPAN EN EL MODAL DE VISUALIZACION EN LA PRIMERA VEZ QUE SE REGISTRA, CARGA Y FINALIZA
+          this.obtenerDatosGenerales(this.userData?.idUsuario);
+          this.obtenerDatosFoto(this.userData?.idUsuario);
+
           setTimeout(() => {
             this.indice.update((value: number) => value + 1);
           }, 500);
