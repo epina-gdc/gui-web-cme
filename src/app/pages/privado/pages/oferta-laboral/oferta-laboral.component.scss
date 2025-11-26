@@ -128,15 +128,15 @@
     background: #59d0a9;
   }
   .custom-close {
-    position: fixed;       
+    position: fixed;
     top: 100px;
-    left: 90%;           
+    left: 90%;
     width: 24px;
     height: 24px;
     cursor: pointer;
-    z-index: 2000;         
+    z-index: 2000;
   }
-  
+
   .custom-close::before,
   .custom-close::after {
     content: '';
@@ -148,14 +148,19 @@
     background-color: #ffffff;
     transform-origin: center;
   }
-  
+
   .custom-close::before {
     transform: translate(-50%, -50%) rotate(45deg);
   }
-  
+
   .custom-close::after {
     transform: translate(-50%, -50%) rotate(-45deg);
   }
-  
-  
+
+
+  :host ::ng-deep .p-dialog-content {
+    padding: 16px !important;
+    padding-bottom: 33px !important;
+  }
+
 }

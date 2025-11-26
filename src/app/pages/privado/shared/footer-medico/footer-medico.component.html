@@ -12,7 +12,7 @@
         <div class="col-12 md:col-6">
           <p class="titulo_footer mb-0">Nombre del médico aspirante</p>
           <p class="dato_footer mt-1 mb-0">
-            {{ sesion?.nomNombre }} {{ sesion?.nomApellidoPaterno }}  {{ sesion?.nomApellidoMaterno }}
+            {{ sesion?.nomNombre | titlecase }} {{ sesion?.nomApellidoPaterno | titlecase }}  {{ sesion?.nomApellidoMaterno | titlecase }}
           </p>
         </div>
 

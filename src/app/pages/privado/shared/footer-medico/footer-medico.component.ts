@@ -4,10 +4,13 @@ import {ConvocatoriaService} from '@services/convocatoria.service';
 import {DocumentoService} from '@services/documentos.service';
 import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
+import {TitleCasePipe} from '@angular/common';
 
 @Component({
   selector: 'app-footer-medico',
-  imports: [],
+  imports: [
+    TitleCasePipe
+  ],
   templateUrl: './footer-medico.component.html',
   styleUrl: './footer-medico.component.scss'
 })

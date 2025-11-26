@@ -26,8 +26,8 @@ import {PreguntasFrecuentes} from '@models/preguntas-frecuentes.interface';
 import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
 import {TableLazyLoadEvent} from 'primeng/table';
-import { DrawerModule } from 'primeng/drawer';
-import { ClickService } from '@services/click.service';
+import {DrawerModule} from 'primeng/drawer';
+import {ClickService} from '@services/click.service';
 
 @Component({
   selector: 'app-oferta-laboral',
@@ -159,37 +159,37 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
 
   show(oportunidad: OportunidadLaboral) {
     this._CatalogoGenService.getDocumentos(oportunidad.cveOoad!)
-    .pipe(
-      switchMap(referencias =>  {
+      .pipe(
+        switchMap(referencias => {
 
-        let pdfSede;
-        let pdfUbicacion;
-        referencias.respuesta.sedesPdf ? pdfSede = this.documentoService.obtenerDocSede(referencias.respuesta.sedesPdf.refGuid) : pdfSede = of(null);
-        referencias.respuesta.docPdf ? pdfUbicacion = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.docPdf.refGuid) : pdfUbicacion = of(null);
-        return forkJoin([of(referencias),pdfSede,pdfUbicacion])
+            let pdfSede;
+            let pdfUbicacion;
+            referencias.respuesta.sedesPdf ? pdfSede = this.documentoService.obtenerDocSede(referencias.respuesta.sedesPdf.refGuid) : pdfSede = of(null);
+            referencias.respuesta.docPdf ? pdfUbicacion = this.documentoService.obtenerDocsPorOoad(referencias.respuesta.docPdf.refGuid) : pdfUbicacion = of(null);
+            return forkJoin([of(referencias), pdfSede, pdfUbicacion])
+          }
+        ),
+      )
+      .subscribe({
+        next: (ref) => {
+          this.ref = this.dialogService.open(DetalleOfertaLaboralComponent, {
+            data: {...oportunidad, ref},
+            modal: true,
+            width: '848px',
+            height: '100vh',
+            focusOnShow: false,
+            breakpoints: {
+              '960px': '75vw',
+              '640px': '90vw'
+            },
+            templates: {
+              footer: FooterMedicoComponent,
+              header: HeaderMedicoDetalleOfertaComponent
+            },
+            styleClass: 'oferta-detail'
+          });
         }
-      ),
-    )
-    .subscribe({
-      next:(ref) => {
-        this.ref = this.dialogService.open(DetalleOfertaLaboralComponent, {
-          data: {...oportunidad,ref},
-          modal: true,
-          width: '60vw',
-          height: '100vh',
-          focusOnShow: false,
-          breakpoints: {
-            '960px': '75vw',
-            '640px': '90vw'
-          },
-          templates: {
-            footer: FooterMedicoComponent,
-            header: HeaderMedicoDetalleOfertaComponent
-          },
-          styleClass: 'oferta-detail'
-        });
-      }
-    });
+      });
   }
 
 

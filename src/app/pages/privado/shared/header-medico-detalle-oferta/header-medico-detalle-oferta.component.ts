@@ -4,12 +4,14 @@ import {Button} from 'primeng/button';
 import {Badge} from 'primeng/badge';
 import {Subscription} from 'rxjs';
 import {EstadoOfertaService, OfertaEstado} from '@services/estado-oferta.service';
+import {TitleCasePipe} from '@angular/common';
 
 @Component({
   selector: 'app-header-medico-detalle-oferta',
   imports: [
     Button,
-    Badge
+    Badge,
+    TitleCasePipe
   ],
   templateUrl: './header-medico-detalle-oferta.component.html',
   styleUrl: './header-medico-detalle-oferta.component.scss'
