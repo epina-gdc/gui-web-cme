@@ -69,6 +69,10 @@
     }
   }
 
+  .padding-compensacion{
+    padding: 0!important;
+    //padding-left: 0!important;
+  }
 
 }
 
@@ -90,4 +94,9 @@
   stroke-width: 3.5px;
   color: #FFF !important;
   filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+
+.padding-compensacion {
+  padding-left: 2rem;
 }

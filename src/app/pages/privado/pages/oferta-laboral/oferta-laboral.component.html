@@ -84,8 +84,8 @@
               <p-select [options]="bono_tablero" formControlName="bono_tablero" optionLabel="label"
                         placeholder="Selecciona un bono" class="w-full"/>
             </div>
-            <div class="col-12 lg:col-4 flex btn-paginacion align-items-end">
-              <p-button type="button" label="Consultar" (click)="seleccionarPaginacion()"/>
+            <div class="col-12 lg:col-4 flex align-items-end">
+                <p-button class="ml-auto lg:ml-0" type="button" label="Consultar" (click)="seleccionarPaginacion()"/>
             </div>
           </div>
         </form>
@@ -169,7 +169,7 @@
 
 
 <p-drawer appendTo="body" blockScroll="true" [(visible)]="visible" closable="false">
-  
+
   <div class="flex flex-column">
     <p class="seccion-menu-titulo m-2 mb-4">Oferta laboral</p>
     <div class="flex flex-column flex-wrap">
@@ -202,7 +202,7 @@
   </div>
 </p-drawer>
 @if (visible) {
-  <span 
+  <span
     class="custom-close"
     (click)="visible = false">
   </span>
