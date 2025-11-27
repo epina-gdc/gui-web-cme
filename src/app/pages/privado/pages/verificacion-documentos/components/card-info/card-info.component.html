@@ -3,40 +3,42 @@
   <h3 class="titulo-seccion">Módulo de verificación de documentos</h3>
 </div>
 <p-card class="mx-2 empty-border" [header]="'Información del médico aspirante'">
-  <div class="flex align-items-center p-4 flex-wrap imagen-seccion">
-    <div class="flex align-items-center gap-4">
+  <div class="flex align-items-center p-3 flex-wrap imagen-seccion">
+    <div class="flex align-items-center w-full md:w-auto gap-4">
       <div class="flex align-items-center justify-content-center
               flex-column border-1 half-border border-circle border-imagen-sm">
         <img class="foto" role="presentation" [alt]="nombreFoto" [title]="nombreFoto" [src]="defaultFile"
              style="object-fit: cover; height: 100%; width: 100%"/>
       </div>
       @if (isMobileView) {
-        <div class="flex justify-content-start mb-3 seccion-nombre">
+        <div class="flex justify-content-start mb-3 seccion-nombre w-full">
           <div class="flex flex-column align-content-start">
             <span class="titulo-nombre-aspirante">{{ datosPersonales.nombre | titlecase }}</span>
             <span
               class="apellidos-aspirante">{{ datosPersonales.apellidoPaterno | titlecase }} {{ datosPersonales.apellidoMaterno }}</span>
-            <hr>
           </div>
-          @if (!evaluacion || evaluacion.estatusVerificacion.idEstatusVerificacion === 4) {
-            <app-pill [texto]="'No cumple con requisitos'" [pillType]="0"/>
-          } @else {
-            <app-pill [texto]="evaluacion.estatusVerificacion.desEstatus"
-                      [pillType]="evaluacion.estatusVerificacion.idEstatusVerificacion"/>
-          }
+          <hr>
+          <div class="flex justify-content-start">
+            @if (!evaluacion || evaluacion.estatusVerificacion.idEstatusVerificacion === 4) {
+              <app-pill [texto]="'No cumple con requisitos'" [pillType]="0"/>
+            } @else {
+              <app-pill [texto]="evaluacion.estatusVerificacion.desEstatus"
+                        [pillType]="evaluacion.estatusVerificacion.idEstatusVerificacion"/>
+            }
+          </div>
         </div>
       }
     </div>
 
-    <div class="flex-column lg:ml-5 w-12 lg:w-9">
+    <div class="flex-column md:ml-5 w-12 md:w-9">
       @if (!isMobileView) {
         <div class="flex  justify-content-between align-items-center mb-3 seccion-nombre">
-          <div class="lg:col-6 md:col-6 col-12">
+          <div class="lg:col-6 md:col-8 col-12">
             <span
               class="titulo-nombre-aspirante">{{ datosPersonales.nombre | titlecase }} {{ datosPersonales.apellidoPaterno | titlecase }}
               {{ datosPersonales.apellidoMaterno | titlecase }}</span>
           </div>
-          <div class="lg:col-6 md:col-6 col-12 flex align-content-start justify-items-end">
+          <div class="lg:col-6 md:col-4 col-12 flex align-content-start justify-items-end">
             @if (!evaluacion || evaluacion.estatusVerificacion.idEstatusVerificacion === 4) {
               <app-pill [texto]="'No cumple con requisitos'" [pillType]="0"/>
             } @else {
