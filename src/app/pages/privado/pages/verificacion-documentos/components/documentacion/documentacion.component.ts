@@ -9,12 +9,13 @@ import {CardInfoComponent} from '@pages/privado/pages/verificacion-documentos/co
 import {DetalleDocumentacion} from '@models/detalleDocumentacionAspirante.interface';
 import {ActivatedRoute, Router} from '@angular/router';
 import {VerificacionDocsService} from '@services/verificacion-docs.service';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-documentacion',
   imports: [CardModule, TabsModule,
     DocsObligatoriosComponent, DocsEspecialidadComponent, ConstanciasCursosComponent,
-    CardInfoComponent],
+    CardInfoComponent, NgClass],
   templateUrl: './documentacion.component.html',
   styleUrl: './documentacion.component.scss'
 })

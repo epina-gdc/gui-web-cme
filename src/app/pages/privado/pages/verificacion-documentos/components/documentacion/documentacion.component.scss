@@ -35,14 +35,14 @@
     }
   }
 
-  @media screen and (min-width: 1100px)  {
+  @media screen and (min-width: 1100px) {
     :host ::ng-deep .p-tablist-tab-list {
       overflow: hidden;
     }
   }
 
-  @media screen and (max-width: 767px){
-    .cme-deals{
+  @media screen and (max-width: 767px) {
+    .cme-deals {
       display: none;
     }
 
@@ -52,12 +52,28 @@
       border-color: transparent;
     }
 
-    :host ::ng-deep .p-tab{
+    :host ::ng-deep .p-tab {
       background-color: #ffffff;
       margin-right: 16px;
       border-radius: 10px 10px 0 0;
     }
 
+
+  }
+
+  @media screen and (max-width: 764px) and (min-width: 560px) {
+    :host ::ng-deep .residente > .p-tablist-content {
+      display: flex;
+      width: 100%;
+    }
+
+    :host ::ng-deep .residente > .p-tablist-content > .p-tablist-tab-list {;
+      width: 100%;
+    }
+
+    :host ::ng-deep .residente > .p-tablist-content > .p-tablist-tab-list > .p-tab {
+      min-width: 50% !important;
+    }
 
   }
 }

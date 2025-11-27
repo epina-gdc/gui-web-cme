@@ -1,8 +1,9 @@
 <app-card-info [datosPersonales]="detalleAspirante.datosPersonales"
                [evaluacion]="detalleAspirante.participacion.resultadoVerificacion"></app-card-info>
-<div class="py-1 px-4 md:bg-white border-round-xl" style="background:'#dddddd !important'">
-  <p-tabs [value]="tab" class="tab-documentacion" >
-    <p-tablist class="flex flex-row">
+<div class="py-1 px-4 md:bg-white border-round-xl">
+  <p-tabs [value]="tab" class="tab-documentacion">
+    <p-tablist class="flex flex-row"
+               [ngClass]="{'residente': ![3, 6].includes(detalleAspirante.datosPersonales.perfil.idPerfil)}">
       <p-tab [value]="0" (click)="tab = 0" class="w-auto">
         <div class="header-tab-documentacion">
           <i class="cme-deals me-3" style="color: #000000; font-size: 1.4rem"></i>
@@ -45,9 +46,9 @@
         <app-constancias-cursos [docsConstancias]="detalleAspirante.documentosConstancias"/>
       }
     }
-  
+
   </p-card>
-}@else {
+} @else {
   @switch (tab) {
     @case (0) {
       <app-docs-obligatorios [docsObligatorios]="detalleAspirante.documentosObligatorios"/>
