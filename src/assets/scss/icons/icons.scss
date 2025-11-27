@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src: url('../../../../public/assets/fonts/icomoon.eot?omyr6t');
-  src: url('../../../../public/assets/fonts/icomoon.eot?omyr6t#iefix') format('embedded-opentype'),
-  url('../../../../public/assets/fonts/icomoon.ttf?omyr6t') format('truetype'),
-  url('../../../../public/assets/fonts/icomoon.woff?omyr6t') format('woff'),
-  url('../../../../public/assets/fonts/icomoon.svg?omyr6t#icomoon') format('svg');
+  src: url('../../../../public/assets/fonts/icomoon.eot?fie454');
+  src: url('../../../../public/assets/fonts/icomoon.eot?fie454#iefix') format('embedded-opentype'),
+  url('../../../../public/assets/fonts/icomoon.ttf?fie454') format('truetype'),
+  url('../../../../public/assets/fonts/icomoon.woff?fie454') format('woff'),
+  url('../../../../public/assets/fonts/icomoon.svg?fie454#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -25,75 +25,106 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.cme-arrow:before {
+  content: "\e918";
+}
+
+.cme-revert-arrow:before {
+  content: "\e919";
+}
+
 .cme-marker-pin:before {
   content: "\e917";
 }
+
 .cme-ellipsis:before {
   content: "\e916";
 }
+
 .cme-download:before {
   content: "\e915";
 }
+
 .cme-sedes:before {
   content: "\e914";
 }
+
 .cme-quest:before {
   content: "\e911";
 }
+
 .cme-hospital:before {
   content: "\e912";
 }
+
 .cme-pin:before {
   content: "\e913";
 }
+
 .cme-deals:before {
   content: "\e90c";
 }
+
 .cme-search:before {
   content: "\e90e";
 }
+
 .cme-fav:before {
   content: "\e90f";
 }
+
 .cme-money:before {
   content: "\e910";
 }
+
 .cme-file:before {
   content: "\e900";
 }
+
 .cme-image:before {
   content: "\e901";
 }
+
 .cme-calendar:before {
   content: "\e904";
 }
+
 .cme-camara:before {
   content: "\e905";
 }
+
 .cme-loading:before {
   content: "\e906";
 }
+
 .cme-plus:before {
   content: "\e907";
 }
+
 .cme-time:before {
   content: "\e908";
 }
+
 .cme-upload:before {
   content: "\e90a";
 }
+
 .cme-trash:before {
   content: "\e90b";
 }
+
 .cme-document:before {
   content: "\e902";
 }
+
 .cme-user:before {
   content: "\e903";
 }
+
 .cme-dark_image:before {
   content: "\e909";
 }
+
 .cme-pdf:before {
   content: "\e90d";
 }
