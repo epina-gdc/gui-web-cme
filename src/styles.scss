@@ -212,13 +212,13 @@
   .p-carousel-prev-button {
     position: absolute;
     z-index: 10;
-    left: 10%;
+    left: 5%;
     color: #fff;
   }
 
   .p-carousel-next-button {
     position: absolute;
-    right: 20%;
+    right: 22%;
     z-index: 10;
     color: #fff;
   }
@@ -229,9 +229,9 @@
 
   .p-carousel-viewport {
     height: 460px !important;
-    width:400px;
-    
-    padding:0px;
+    width: 400px;
+
+    padding: 0;
   }
 
   .carousel-image {
@@ -306,9 +306,60 @@
     z-index: 1000;
   }
 
+  @media screen and (min-width: 351px) and (max-width: 375px) {
+
+    .carousel-image > img {
+      width: 300px;
+    }
+
+    .p-carousel-prev-button {
+      left: 5%;
+    }
+  }
+
+  @media screen and (min-width: 376px) and (max-width: 425px) {
+
+    .carousel-image > img {
+      width: 350px;
+    }
+
+
+    .p-carousel-prev-button {
+      left: 5%;
+    }
+  }
+
   @media screen and (max-width: 350px) {
     .w-tab {
       width: 250px;
+    }
+
+    .carousel-image {
+      width: 100%;
+    }
+
+    .carousel-image > img {
+      width: 82%;
+    }
+
+
+    .p-carousel-prev-button {
+      left: 5%;
+    }
+  }
+
+  @media screen and (min-width: 768px) and (max-width: 791px) {
+    .carousel-image {
+      width: 100%;
+    }
+
+    .carousel-image > img {
+      width: 85%;
+    }
+
+
+    .p-carousel-prev-button {
+      left: 5%;
     }
   }
 
