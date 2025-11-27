@@ -26,8 +26,28 @@
     </p-tablist>
   </p-tabs>
 </div>
-<p-card class="mx-2 empty-border" [header]="'Documentos de especialización'">
 
+@if (!isMobileView) {
+  <p-card class="mx-2 empty-border" [header]="'Documentos de especialización'">
+
+    @switch (tab) {
+      @case (0) {
+        <app-docs-obligatorios [docsObligatorios]="detalleAspirante.documentosObligatorios"/>
+      }
+      @case (1) {
+        <app-docs-especialidad [docsEspecialidad]="detalleAspirante.especialidadesDocumentos"
+                               [idUsuario]="detalleAspirante.datosPersonales.idUsuario"
+                               [observaciones]="detalleAspirante.refObservaciones"
+                               [estatusId]="estatus"
+                               (actualizarRegistro)="actualizarInformacionDocumentos()"/>
+      }
+      @case (2) {
+        <app-constancias-cursos [docsConstancias]="detalleAspirante.documentosConstancias"/>
+      }
+    }
+  
+  </p-card>
+}@else {
   @switch (tab) {
     @case (0) {
       <app-docs-obligatorios [docsObligatorios]="detalleAspirante.documentosObligatorios"/>
@@ -43,5 +63,8 @@
       <app-constancias-cursos [docsConstancias]="detalleAspirante.documentosConstancias"/>
     }
   }
+}
 
-</p-card>
+
+
+

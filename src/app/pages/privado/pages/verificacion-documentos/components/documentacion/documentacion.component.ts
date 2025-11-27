@@ -1,5 +1,5 @@
 import {ConstanciasCursosComponent} from './../constancias-cursos/constancias-cursos.component';
-import {Component, inject} from '@angular/core';
+import {Component, HostListener, ViewEncapsulation, inject} from '@angular/core';
 import {CardModule} from 'primeng/card';
 import {TabsModule} from 'primeng/tabs';
 
@@ -19,6 +19,7 @@ import {VerificacionDocsService} from '@services/verificacion-docs.service';
   styleUrl: './documentacion.component.scss'
 })
 export class DocumentacionComponent {
+  private readonly MOBILE_BREAKPOINT = 768;
   tab: number = 0;
   idUsuario!: number;
 
@@ -26,9 +27,17 @@ export class DocumentacionComponent {
 
   verificacionDocsService: VerificacionDocsService = inject(VerificacionDocsService);
 
+  isMobileView: boolean = false;
+
   constructor(private readonly activatedRoute: ActivatedRoute) {
     this.obtenerInformacionDocumentos();
     this.idUsuario = this.activatedRoute.snapshot.paramMap.get('id') as unknown as number;
+    this.checkScreenSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event): void {
+    this.checkScreenSize();
   }
 
   obtenerInformacionDocumentos(): void {
@@ -44,6 +53,10 @@ export class DocumentacionComponent {
       },
       error: (error) => {}
     })
+  }
+
+  private checkScreenSize(): void {
+    this.isMobileView = window.innerWidth < this.MOBILE_BREAKPOINT;
   }
 
   get estatus(): number {

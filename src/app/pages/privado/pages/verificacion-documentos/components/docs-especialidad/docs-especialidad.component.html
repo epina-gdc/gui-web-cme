@@ -23,7 +23,7 @@
                   @for (doc of item.documentosEspecialidad; track doc.idDocumentoEspecialidad; let j = $index) {
 
                     <div [formGroupName]="j"
-                         class="flex flex-nowrap align-items-center cursor-pointer archivo-especialidad mt-2"
+                         class="flex flex-nowrap align-items-center cursor-pointer archivo-especialidad md:mt-2"
                          [ngClass]="{'select': tabActive() === doc.idDocumentoEspecialidad}"
                          (click)="docSeleccionado(doc.idDocumentoEspecialidad, doc.documento.refGuid)">
 
@@ -57,7 +57,7 @@
 
           <div formGroupName="evaluacionEspecialidad">
             <div formGroupName="estatusVerificacion"
-                 class="flex justify-content-between align-items-center p-3 gap-3 border-round-xl border mt-2">
+                 class="flex justify-content-between align-items-center p-3 gap-3 border-round-xl border mt-2 surface-0">
               @for (option of estatusDocumentos; track option.value) {
                 <div class="flex align-items-center gap-2 tab-cve-especialidad">
                   <label [for]="option.value + item.cveEspecialidad"
@@ -78,16 +78,32 @@
 
     </div>
 
-    <p-card>
-      <div class="flex justify-content-between">
-        <label class="field-label" for="refObservaciones">Observaciones</label>
-        <p class="label-obligatorio">Obligatorio</p>
+
+    @if (!isMobileView) {
+      <p-card>
+        <div class="flex justify-content-between">
+          <label class="field-label" for="refObservaciones">Observaciones</label>
+          <p class="label-obligatorio">Obligatorio</p>
+        </div>
+        <textarea rows="1" cols="30" class="w-full" [autoResize]="true" pTextarea formControlName="refObservaciones"
+                  maxlength="500" id="refObservaciones"></textarea>
+        <label class="label-obligatorio"
+               for="refObservaciones">{{ formularioValidacion.get('refObservaciones')?.value?.length || 0 }}/500</label>
+      </p-card>
+    }@else {
+      <div class="surface-0 p-4 border-round-lg">
+        <div class="flex justify-content-between">
+          <label class="field-label" for="refObservacionesMovil">Observaciones</label>
+          <p class="label-obligatorio">Obligatorio</p>
+        </div>
+        <textarea rows="1" cols="30" class="w-full" [autoResize]="true" pTextarea formControlName="refObservaciones"
+                  maxlength="500" id="refObservacionesMovil"></textarea>
+        <label class="label-obligatorio"
+               for="refObservacionesMovil">{{ formularioValidacion.get('refObservaciones')?.value?.length || 0 }}/500</label>
       </div>
-      <textarea rows="1" cols="30" class="w-full" [autoResize]="true" pTextarea formControlName="refObservaciones"
-                maxlength="500"></textarea>
-      <label class="label-obligatorio"
-             for="refObservaciones">{{ formularioValidacion.get('refObservaciones')?.value?.length || 0 }}/500</label>
-    </p-card>
+    }
+
+
   </div>
 
   @if (!isMobileView) {

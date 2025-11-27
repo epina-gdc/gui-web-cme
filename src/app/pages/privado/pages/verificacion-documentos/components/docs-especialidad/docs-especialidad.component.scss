@@ -138,3 +138,19 @@
     text-align: start;
   }
 }
+
+
+@media (max-width: 768px) {
+
+  :host ::ng-deep .p-accordioncontent-content  {
+   padding: 0;
+   background-color: transparent; 
+  }
+
+  .archivo-especialidad{
+    background-color: #fff;
+  }
+
+  
+
+}
