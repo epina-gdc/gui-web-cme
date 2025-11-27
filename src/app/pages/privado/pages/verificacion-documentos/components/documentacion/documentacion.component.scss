@@ -41,4 +41,23 @@
     }
   }
 
+  @media screen and (max-width: 768px){
+    .cme-deals{
+      display: none;
+    }
+
+
+    :host ::ng-deep .p-tablist-tab-list {
+      background: #dddddd;
+      border-color: transparent;
+    }
+
+    :host ::ng-deep .p-tab{
+      background-color: #ffffff;
+      margin-right: 16px;
+      border-radius: 10px 10px 0 0;
+    }
+
+
+  }
 }
