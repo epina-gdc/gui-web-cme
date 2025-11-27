@@ -69,6 +69,10 @@
     }
   }
 
+  .padding-compensacion{
+    padding: 0!important;
+    //padding-left: 0!important;
+  }
 
 }
 
@@ -81,4 +85,9 @@
   .res-imagen {
     width: 80%;
   }
+}
+
+
+.padding-compensacion {
+  padding-left: 2rem;
 }

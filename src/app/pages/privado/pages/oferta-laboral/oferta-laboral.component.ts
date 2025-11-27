@@ -176,7 +176,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
             data: {...oportunidad, ref},
             modal: true,
             width: '848px',
-            height: '100vh',
+            height: '85vh',
             focusOnShow: false,
             breakpoints: {
               '960px': '75vw',
