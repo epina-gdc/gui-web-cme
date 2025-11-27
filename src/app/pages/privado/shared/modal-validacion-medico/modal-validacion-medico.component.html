@@ -100,22 +100,29 @@
                   @if (datosGenerales.dependientes.indPadres === 1) {
                     Padres
                     @if (datosGenerales.dependientes.indConyuge === 1 || datosGenerales.dependientes.refCantidadHijos) {
-                      ,
+                    ,
                     }
                   }
                   @if (datosGenerales.dependientes.indConyuge === 1) {
                     Cónyuge
                     @if (datosGenerales.dependientes.refCantidadHijos) {
-                      ,
+                    ,
                     }
                   }
                   @if (datosGenerales.dependientes.refCantidadHijos) {
-                    Hijos ({{ datosGenerales.dependientes.refCantidadHijos }})
+                    Hijos({{ datosGenerales.dependientes.refCantidadHijos }})
                   }
-                  @if (datosGenerales.dependientes.indConyuge === 0 &&
+                  <!-- @if (datosGenerales.dependientes.indConyuge === 0 &&
                   datosGenerales.dependientes.indPadres === 0 &&
                   !datosGenerales.dependientes.refCantidadHijos) {
                     {{ datosGenerales.dependientes.refOtro }}
+                  } -->
+
+                  @if(datosGenerales.dependientes.refOtro != null && datosGenerales.dependientes.refOtro != undefined){
+                    @if(datosGenerales.dependientes.indPadres === 1 || datosGenerales.dependientes.indConyuge === 1 || datosGenerales.dependientes.refCantidadHijos) {
+                    ,
+                    }
+                  Otros({{ datosGenerales.dependientes.refOtro }})
                   }
                   @if (datosGenerales.dependientes.indNinguno === 1) {
                     Ninguno
