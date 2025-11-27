@@ -1,7 +1,7 @@
-<!-- <div class="flex justify-content-start align-items-center gap-3 mt-5 lg:mt-0">
-  <btn-regresar/>
+<div class="flex justify-content-start align-items-center gap-1 mt-2 lg:mt-0">
+  <!-- <btn-regresar/> -->
   <h3 class="titulo-seccion">Módulo de verificación de documentos</h3>
-</div> -->
+</div>
 
 <p-card class="mx-2 empty-border" [header]="'Verificación de Documentos'">
   <form [formGroup]="filtroForm">
@@ -29,7 +29,10 @@
                formControlName="matricula"
         />
       </div>
-      <div class="flex lg:col-3  col-12 justify-content-end align-items-center mt-3 gap-4">
+
+    </article>
+    <article class="flex flex-row flew-wrap">
+      <div class="flex   col-12 justify-content-end align-items-center mt-3 gap-4">
         <p-button type="button" (onClick)="limpiar()" variant="outlined" label="Limpiar"/>
         <p-button type="button" (onClick)="paginar()" label="Buscar"/>
       </div>

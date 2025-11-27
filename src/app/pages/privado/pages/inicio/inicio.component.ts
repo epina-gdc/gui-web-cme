@@ -1526,6 +1526,7 @@ let validatorsNSS: ValidatorFn[] = []; // Tipado para eliminar el warning de TS
           this.documentosLocalStorageService.limpiar();
           this.desactivarForms();
           this.recargarInfo();
+          this.indice.update((value: number) => value + 1);
           return;
         }
         this._alertServices.error(data.mensaje)
