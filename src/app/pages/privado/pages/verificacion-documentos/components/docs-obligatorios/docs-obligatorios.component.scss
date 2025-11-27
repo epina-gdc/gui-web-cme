@@ -1,5 +1,6 @@
 .archivos{
   div{
+    background-color: #fff;
     border: solid 1px #eeeeee;
     border-radius: 10px 6px 6px 10px;
     border-right: solid 6px #d6ddea;
@@ -10,6 +11,9 @@
       border-radius: 3px;
       background: #d6ddea;
     }
+    p{
+      color: #9fa0a6;
+    }
   }
   div.select{
     border-right: solid 6px #5fd350;
@@ -17,6 +21,9 @@
       color: #74dd66;
       border-radius: 3px;
       background: #d7f4d3;
+    }
+    p{
+      color: #161A1D;
     }
   }
 }
