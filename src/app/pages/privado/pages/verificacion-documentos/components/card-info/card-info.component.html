@@ -28,15 +28,15 @@
       }
     </div>
 
-    <div class="flex-column lg:ml-5 lg:w-9">
+    <div class="flex-column lg:ml-5 w-12 lg:w-9">
       @if (!isMobileView) {
-        <div class="flex justify-content-between align-items-center mb-3 seccion-nombre">
-          <div class="lg:col-6 col-12">
+        <div class="flex  justify-content-between align-items-center mb-3 seccion-nombre">
+          <div class="lg:col-6 md:col-6 col-12">
             <span
               class="titulo-nombre-aspirante">{{ datosPersonales.nombre | titlecase }} {{ datosPersonales.apellidoPaterno | titlecase }}
               {{ datosPersonales.apellidoMaterno | titlecase }}</span>
           </div>
-          <div class="lg:col-6 col-12 flex align-content-start justify-items-end">
+          <div class="lg:col-6 md:col-6 col-12 flex align-content-start justify-items-end">
             @if (!evaluacion || evaluacion.estatusVerificacion.idEstatusVerificacion === 4) {
               <app-pill [texto]="'No cumple con requisitos'" [pillType]="0"/>
             } @else {
@@ -46,8 +46,8 @@
           </div>
         </div>
       }
-      <div class="flex lg:justify-content-between lg:align-items-start mt-3 flex-wrap">
-        <div class="detalle-aspirante lg:col-2 col-12">
+      <div class="flex lg:justify-content-between lg:align-items-start mt-3">
+        <div class="detalle-aspirante lg:col-2 col-4">
           @if (datosPersonales.cveMatricula) {
             <span class="acciones-tabla">Matrícula</span>
             <p>{{ datosPersonales.cveMatricula }}</p>
@@ -57,11 +57,11 @@
             <p>{{ datosPersonales.refFolio }}</p>
           }
         </div>
-        <div class="detalle-aspirante lg:col-4 col-12">
+        <div class="detalle-aspirante lg:col-4 col-4">
           <span class="acciones-tabla">Especialidad</span>
           <p class="especialidad">{{ datosPersonales.especialidad | titlecase }}</p>
         </div>
-        <div class="detalle-aspirante lg:col-6 col-12">
+        <div class="detalle-aspirante lg:col-6 col-4">
           <span class="acciones-tabla">Correo electónico</span>
           <p>{{ datosPersonales.refEmail }}</p>
         </div>
