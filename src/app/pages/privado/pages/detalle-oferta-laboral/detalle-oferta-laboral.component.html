@@ -201,8 +201,7 @@
         <div class="flex flex-wrap h-full">
           <div class="col-12 md:col-6  pr-4 justify-content-center flex" >
             @if(mapaRef){
-              <p-image [src]="ref + mapaRef" alt="Image" width="380" class="res-imagen"
-                      height="460" styleClass="res-imagen"/>
+              <img [src]="ref + mapaRef" alt="Image" class="res-imagen">
             }@else {
               <div class="bg-img-no-disponible"></div>
             }

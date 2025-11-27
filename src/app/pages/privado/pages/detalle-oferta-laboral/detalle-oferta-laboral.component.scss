@@ -72,14 +72,13 @@
 
 }
 
-@media screen and (max-width: 380px) {
-  .res-imagen {
-    width: 280px !important;
-  }
-
-  img {
-    object-fit: cover;
-  }
-
+.res-imagen {
+  width: 380px;
+  height: 460px;
 }
 
+@media (max-width: 768px) {
+  .res-imagen {
+    width: 80%;
+  }
+}
