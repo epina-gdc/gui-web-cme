@@ -1,5 +1,5 @@
 import {NgClass, NgTemplateOutlet} from '@angular/common';
-import {Component, HostListener, Input, signal, WritableSignal} from '@angular/core';
+import {Component, HostListener, Input, OnDestroy, signal, WritableSignal} from '@angular/core';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {GeneralComponent} from '@components/general.component';
 import {DetalleDocumentacionDocumentoObligatorio} from '@models/detalleDocumentacionAspirante.interface';
@@ -10,10 +10,11 @@ import {DetalleDocumentacionDocumentoObligatorio} from '@models/detalleDocumenta
   templateUrl: './docs-obligatorios.component.html',
   styleUrl: './docs-obligatorios.component.scss'
 })
-export class DocsObligatoriosComponent extends GeneralComponent {
+export class DocsObligatoriosComponent extends GeneralComponent implements OnDestroy {
   @Input() docsObligatorios: DetalleDocumentacionDocumentoObligatorio[] = [];
 
   pdfSrc: SafeResourceUrl | undefined;
+  private currentPdfUrl: string | undefined;
 
   tabActive: WritableSignal<number> = signal(0);
 
@@ -28,9 +29,20 @@ export class DocsObligatoriosComponent extends GeneralComponent {
     this.checkScreenSize();
   }
 
+  ngOnDestroy() {
+    this.revokeCurrentUrl();
+  }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: Event): void {
     this.checkScreenSize();
+  }
+
+  private revokeCurrentUrl(): void {
+    if (this.currentPdfUrl) {
+      URL.revokeObjectURL(this.currentPdfUrl);
+      this.currentPdfUrl = undefined;
+    }
   }
 
   private checkScreenSize(): void {
@@ -43,12 +55,18 @@ export class DocsObligatoriosComponent extends GeneralComponent {
   }
 
   obtenerPrevisualizacionDocumento(guid: string) {
+    this.revokeCurrentUrl();
+
+    this.pdfSrc = undefined;
+
     this.documentoService.obtenerDocumento(guid).subscribe({
       next: (response: any) => {
         const blob = new Blob([response], {type: 'application/pdf'});
-        this.pdfSrc = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
+        this.currentPdfUrl = URL.createObjectURL(blob);
+        this.pdfSrc = this.sanitizer.bypassSecurityTrustResourceUrl(this.currentPdfUrl);
       },
       error: (err: any) => {
+        this.revokeCurrentUrl();
         console.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO, err);
         this._alertServices.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO);
       }
