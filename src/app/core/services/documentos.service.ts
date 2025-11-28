@@ -72,6 +72,13 @@ export class DocumentoService {
     }).pipe(catchError(this.handleError));
   }
 
+  obtenerDocumentoArrayBuffer(refGuid: string): Observable<ArrayBuffer> {
+    return this.http.get(`${this.serverEndPointURLDocumento}/v1/documentos/repositorio/${refGuid}`, {
+      headers: this.header,
+      responseType: 'arraybuffer'
+    }).pipe(catchError(this.handleError));
+  }
+
   obtenerDocsPorOoad(refGuid: string): Observable<Blob> {
     return this.http.get(`${this.serverEndPointURLDocumento}/v1/ooad-documentos/${refGuid}`, {
       headers: this.header,
