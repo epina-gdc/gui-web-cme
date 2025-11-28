@@ -45,9 +45,6 @@ export class DocsObligatoriosComponent extends GeneralComponent {
   }
 
   obtenerPrevisualizacionDocumento(guid: string) {
-
-    this.pdfSrc = undefined;
-
     this.documentoService.obtenerDocumentoArrayBuffer(guid).subscribe({
       next: (response: any) => {
         this.pdfSrc = new Uint8Array(response);
