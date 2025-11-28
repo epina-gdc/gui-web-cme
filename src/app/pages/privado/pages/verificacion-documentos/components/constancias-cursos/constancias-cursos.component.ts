@@ -3,10 +3,11 @@ import {Component, HostListener, Input, signal, WritableSignal} from '@angular/c
 import {GeneralComponent} from '@components/general.component';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {DetalleDocumentacionDocumentoConstancia} from '@models/detalleDocumentacionAspirante.interface';
+import {PdfViewerModule} from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-constancias-cursos',
-  imports: [NgClass, NgTemplateOutlet],
+  imports: [NgClass, NgTemplateOutlet, PdfViewerModule],
   templateUrl: './constancias-cursos.component.html',
   styleUrl: './constancias-cursos.component.scss'
 })
@@ -14,7 +15,7 @@ export class ConstanciasCursosComponent extends GeneralComponent {
   @Input() docsConstancias: DetalleDocumentacionDocumentoConstancia[] = [];
 
   tabActive: WritableSignal<number> = signal(0);
-  pdfSrc: SafeResourceUrl | undefined;
+  pdfSrc: Uint8Array | undefined;
   blnShowImg!: boolean;
 
   private readonly MOBILE_BREAKPOINT = 984;
@@ -46,19 +47,13 @@ export class ConstanciasCursosComponent extends GeneralComponent {
 
 
   obtenerPrevisualizacionDocumento(guid: string, extension: string) {
-    this.documentoService.obtenerDocumento(guid).subscribe({
+    this.documentoService.obtenerDocumentoArrayBuffer(guid).subscribe({
       next: (response: any) => {
-        let tipo = 'application/pdf'
-        let img = ['jpg', 'jpeg', 'png'];
-        if (img.includes(extension.toLowerCase())) {
-          tipo = 'blob';
-          this.blnShowImg = true;
-        }
-        const blob = new Blob([response], {type: tipo});
-        this.pdfSrc = this.sanitizer.bypassSecurityTrustResourceUrl(URL.createObjectURL(blob));
+        this.pdfSrc = new Uint8Array(response);
       },
       error: (err: any) => {
         console.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO, err);
+        this.pdfSrc = undefined;
         this._alertServices.error(this._Mensajes.MSJ_ERROR_CARGANDO_DOCUMENTO);
       }
     });
