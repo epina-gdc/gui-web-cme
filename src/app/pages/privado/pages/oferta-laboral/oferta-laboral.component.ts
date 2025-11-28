@@ -228,7 +228,11 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   }
 
   suscribirObservables(): void {
-    this.formTablero.get('ooad_tablero')?.valueChanges.subscribe(value => this.obtenerZonasPorOoad(value))
+    this.formTablero.get('ooad_tablero')?.valueChanges.subscribe(value => {
+      this.zona_tablero = [];
+      this.formTablero.get('zona_tablero')?.setValue([]);
+      this.obtenerZonasPorOoad(value)
+  })
   }
 
   obtenerZonasPorOoad(ooad: any): void {
@@ -240,6 +244,11 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
           return;
         }
         this._alertServices.alerta(valor.mensaje);
+      },
+       error: () => {
+        this.zona_tablero = [];
+        this.formTablero.get('zona_tablero')?.setValue([]);
+        console.log('Ocurrio un error con la búsqueda de zonas');
       }
     });
   }
