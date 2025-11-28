@@ -31,7 +31,8 @@ import {VerificacionDocsService} from '@services/verificacion-docs.service';
 import {Router, RouterLink} from '@angular/router';
 import {AlertService} from '@services/alert.service';
 import {Mensajes} from '@utils/mensajes';
-import { DialogModule } from 'primeng/dialog';
+import {DialogModule} from 'primeng/dialog';
+import {PdfViewerModule} from 'ng2-pdf-viewer';
 
 @Component({
   selector: 'app-docs-especialidad',
@@ -45,7 +46,7 @@ import { DialogModule } from 'primeng/dialog';
     CardModule,
     ButtonModule,
     RouterLink,
-    DialogModule
+    DialogModule, PdfViewerModule
   ],
   templateUrl: './docs-especialidad.component.html',
   styleUrl: './docs-especialidad.component.scss'
@@ -70,9 +71,9 @@ export class DocsEspecialidadComponent implements OnInit {
 
   verificacionDocsService: VerificacionDocsService = inject(VerificacionDocsService)
 
-  router:Router = inject(Router);
+  router: Router = inject(Router);
 
-  pdfUrl: SafeResourceUrl | undefined;
+  pdfSrc: Uint8Array | undefined;
 
   documentoService = inject(DocumentoService)
 
@@ -252,17 +253,17 @@ export class DocsEspecialidadComponent implements OnInit {
     return [];
   }
 
-  estatusRequisitoCambio(form: FormGroup, prev: any){
-    if(form.get('idEstatusVerificacion')?.value == '3'){
+  estatusRequisitoCambio(form: FormGroup, prev: any) {
+    if (form.get('idEstatusVerificacion')?.value == '3') {
       this.estatusPrevio = prev.evaluacionEspecialidad.estatusVerificacion?.idEstatusVerificacion.toString();
       this.confCambioEstatus = true
       this.formSeleccionado = form;
     }
   }
 
-  cambiarEstatus(cambio: boolean){
+  cambiarEstatus(cambio: boolean) {
     this.confCambioEstatus = false;
-    if(!cambio)this.formSeleccionado.get('idEstatusVerificacion')?.setValue(this.estatusPrevio);
+    if (!cambio) this.formSeleccionado.get('idEstatusVerificacion')?.setValue(this.estatusPrevio);
   }
 
   docSeleccionado(id: number, guid: string) {
@@ -271,13 +272,12 @@ export class DocsEspecialidadComponent implements OnInit {
   }
 
   obtenerPrevisualizacionDocumento(guid: string) {
-    this.documentoService.obtenerDocumento(guid).subscribe({
+    this.documentoService.obtenerDocumentoArrayBuffer(guid).subscribe({
       next: (response) => {
-        const blob = new Blob([response], {type: 'application/pdf'});
-        const url = URL.createObjectURL(blob);
-        this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+        this.pdfSrc = new Uint8Array(response);
       },
       error: (err) => {
+        this.pdfSrc = undefined;
         console.error('Error al obtener el documento', err);
       }
     });
@@ -373,7 +373,7 @@ export class DocsEspecialidadComponent implements OnInit {
         if (!respuesta.exito) return;
         this.actualizarRegistro.emit(true);
         this.router.navigate(['privado/verificacion-documentos']).then(
-          ()=> this.alertaService.exito(this.MSJ_FINALIZACION)
+          () => this.alertaService.exito(this.MSJ_FINALIZACION)
         );
       },
       error: (error) => {

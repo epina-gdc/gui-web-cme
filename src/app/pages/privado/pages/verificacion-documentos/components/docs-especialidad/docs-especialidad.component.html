@@ -90,7 +90,7 @@
         <label class="label-obligatorio"
                for="refObservaciones">{{ formularioValidacion.get('refObservaciones')?.value?.length || 0 }}/500</label>
       </p-card>
-    }@else {
+    } @else {
       <div class="surface-0 p-4 border-round-lg">
         <div class="flex justify-content-between">
           <label class="field-label" for="refObservacionesMovil">Observaciones</label>
@@ -99,7 +99,8 @@
         <textarea rows="1" cols="30" class="w-full" [autoResize]="true" pTextarea formControlName="refObservaciones"
                   maxlength="500" id="refObservacionesMovil"></textarea>
         <label class="label-obligatorio"
-               for="refObservacionesMovil">{{ formularioValidacion.get('refObservaciones')?.value?.length || 0 }}/500</label>
+               for="refObservacionesMovil">{{ formularioValidacion.get('refObservaciones')?.value?.length || 0 }}
+          /500</label>
       </div>
     }
 
@@ -132,11 +133,14 @@
 
 
 <ng-template #pdf_doc>
-  @if (pdfUrl) {
+  @if (pdfSrc) {
     <div style="height: 80vh;" class="my-4">
-      <iframe [src]="pdfUrl" width="100%" height="100%" title="Previsualizacion documentacion">
-        Tu navegador no soporta iframes.
-      </iframe>
+      <pdf-viewer
+        [src]="pdfSrc"
+        [render-text]="true"
+        [original-size]="false"
+        style="width: 100%; height: 100%;"
+      ></pdf-viewer>
     </div>
   } @else {
     <span class="loader">Cargando documento</span>
