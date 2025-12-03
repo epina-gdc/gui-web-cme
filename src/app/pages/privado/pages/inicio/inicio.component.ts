@@ -794,6 +794,7 @@ let validatorsNSS: ValidatorFn[] = []; // Tipado para eliminar el warning de TS
     if (!idusuario) return;
     this._ConvocatoriaService.getDatosGenerales(idusuario).subscribe({
       next: (response: dataGenerales) => {
+        debugger
         if (!response.exito) return;
         this.datosGenerales = response.respuesta;
         this.setDatosGenerales();
@@ -2166,6 +2167,17 @@ let validatorsNSS: ValidatorFn[] = []; // Tipado para eliminar el warning de TS
       /* validar que el primer formulario este completo */
       if (this.formRegistro.invalid) {
         this._alertServices.alerta("Recuerde completar los datos del formulario y guardar antes de pasar a la siguiente sección.");
+        return;
+      }
+
+        const {
+          datosContacto,
+          datosResidenciaActual
+        } = this.datosGenerales;
+
+
+      if(!datosContacto.idDatoContacto || !datosResidenciaActual){
+      this._alertServices.alerta("Recuerde completar los datos del formulario y guardar antes de pasar a la siguiente sección.");
         return;
       }
 

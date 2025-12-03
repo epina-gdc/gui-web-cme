@@ -24,6 +24,7 @@ export class Residencia {
   delegacion!: Municipio;
   calle!: string;
   numeroExterior!: string;
+  idDireccion!: number;
 }
 
 export class ResidenciaRequest {
