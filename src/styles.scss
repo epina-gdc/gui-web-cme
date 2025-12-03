@@ -63,10 +63,11 @@
     background-color: var(--gob-mx-gris-tono4);
   }
 
-  .login-background {
-    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), /* Black overlay */
-    url("assets/backgrounds/login-background.jpg") no-repeat center center / cover;
+    .login-background {
+    background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url("assets/backgrounds/Fondo_CME.png") no-repeat center top / cover;
     min-height: 100vh;
+
   }
 
   .footer-cme {
