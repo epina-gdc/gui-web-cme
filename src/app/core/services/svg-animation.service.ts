@@ -19,7 +19,12 @@ export class SvgAnimationService {
     setTimeout(() => {
       this._isLoading.set(false);
       this._isInteractable.set(false);
-    }, 5000);
+    }, 3000);
+  }
+
+  destroy(): void {
+    this._isLoading.set(false);
+    this._isInteractable.set(false);
   }
 
 }
