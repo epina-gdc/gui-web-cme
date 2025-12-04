@@ -141,6 +141,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   ];
 
   actualizarTab(id: number) {
+    this.visible = false; 
     if (id === 3) {
       const url = this.data[3].ruta;
       window.open(url, '_blank');
