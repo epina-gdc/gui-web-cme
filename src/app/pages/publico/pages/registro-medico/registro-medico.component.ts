@@ -132,7 +132,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
       pais: ['', ''],
       nombre: ['', [Validators.required, Validators.pattern(PATRON_NOMBRE)]],
       apellidoP: ['', [Validators.required, Validators.pattern(PATRON_NOMBRE)]],
-      apellidoM: ['', [Validators.required, Validators.pattern(PATRON_NOMBRE)]],
+      apellidoM: ['', [Validators.pattern(PATRON_NOMBRE)]],
       curp: ['', Validators.compose([
         Validators.required,
         Validators.minLength(18),
