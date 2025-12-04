@@ -101,7 +101,6 @@ export class UploadDocumentComponent implements OnInit, OnChanges {
       let mensajeError = `El archivo que intenta cargar no es válido.`;
       if (!this.esArchivoValido(archivo)) {
 
-
         // ¡Importante! Evitar que se procese o se emita algún archivo
         this.files = [];
         this.alertaService.error(mensajeError);
@@ -115,7 +114,7 @@ export class UploadDocumentComponent implements OnInit, OnChanges {
       const nombreSinExtension = archivo.name.substring(0, archivo.name.lastIndexOf('.'));
       if (nombreSinExtension.length > 100) {
         mensajeError = `El nombre del documento (${nombreSinExtension.length} caracteres) excede el máximo permitido de 100.`;
-
+        this.alertaService.error(mensajeError);
         if (this.fileUpload) {
           this.fileUpload.clear();
         }
