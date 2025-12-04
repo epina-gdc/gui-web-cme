@@ -1918,6 +1918,7 @@ let validatorsNSS: ValidatorFn[] = []; // Tipado para eliminar el warning de TS
           this.estatusValidacionCompletada = [1, 3].includes(estatusVerificacion);
           if (this.estatusValidacionCompletada) {
             this.indice.update(() => 2);
+            this.estadoOfertaService.actualizarTab(this.indice());
           }
         }
         if (respuesta.documentosObligatorios) {
