@@ -1916,7 +1916,9 @@ let validatorsNSS: ValidatorFn[] = []; // Tipado para eliminar el warning de TS
             this.desactivarForms();
           }
           this.estatusValidacionCompletada = [1, 3].includes(estatusVerificacion);
-          //this.desactivarForms();
+          if (this.estatusValidacionCompletada) {
+            this.indice.update(() => 2);
+          }
         }
         if (respuesta.documentosObligatorios) {
           this.procesarDatosObligatoriosObtenidos(respuesta.documentosObligatorios);
