@@ -72,6 +72,7 @@ import {HeaderGenericoComponent} from '@pages/privado/shared/header-generico/hea
 import {FooterMedicoComponent} from '@pages/privado/shared/footer-medico/footer-medico.component';
 import {DatosDocumentoResponse} from '@models/datosDocumento';
 import {EstadoOfertaService} from '@services/estado-oferta.service';
+import {OnCloseOnNavigationDirective} from '@directives/close-on-navigation.directive';
 
 interface DocumentoFuente {
   refGuid: string;
@@ -111,6 +112,7 @@ dayjs.extend(customParseFormat);
     EmailAllowCaractersDirective,
     OfertaLaboralComponent,
     AlphanumericDirective,
+    OnCloseOnNavigationDirective,
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
