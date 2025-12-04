@@ -72,6 +72,7 @@ import {HeaderGenericoComponent} from '@pages/privado/shared/header-generico/hea
 import {FooterMedicoComponent} from '@pages/privado/shared/footer-medico/footer-medico.component';
 import {DatosDocumentoResponse} from '@models/datosDocumento';
 import {EstadoOfertaService} from '@services/estado-oferta.service';
+import {OnCloseOnNavigationDirective} from '@directives/close-on-navigation.directive';
 
 interface DocumentoFuente {
   refGuid: string;
@@ -111,6 +112,7 @@ dayjs.extend(customParseFormat);
     EmailAllowCaractersDirective,
     OfertaLaboralComponent,
     AlphanumericDirective,
+    OnCloseOnNavigationDirective,
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',
@@ -771,6 +773,7 @@ let validatorsNSS: ValidatorFn[] = []; // Tipado para eliminar el warning de TS
     if (!idusuario) return;
     this._ConvocatoriaService.getDatosGenerales(idusuario).subscribe({
       next: (response: dataGenerales) => {
+
         if (!response.exito) return;
         this.datosGenerales = response.respuesta;
         this.setDatosGenerales();
@@ -1913,7 +1916,9 @@ let validatorsNSS: ValidatorFn[] = []; // Tipado para eliminar el warning de TS
             this.desactivarForms();
           }
           this.estatusValidacionCompletada = [1, 3].includes(estatusVerificacion);
-          //this.desactivarForms();
+          if (this.estatusValidacionCompletada) {
+            this.indice.update(() => 2);
+          }
         }
         if (respuesta.documentosObligatorios) {
           this.procesarDatosObligatoriosObtenidos(respuesta.documentosObligatorios);
@@ -2143,6 +2148,17 @@ let validatorsNSS: ValidatorFn[] = []; // Tipado para eliminar el warning de TS
       /* validar que el primer formulario este completo */
       if (this.formRegistro.invalid) {
         this._alertServices.alerta("Recuerde completar los datos del formulario y guardar antes de pasar a la siguiente sección.");
+        return;
+      }
+
+        const {
+          datosContacto,
+          datosResidenciaActual
+        } = this.datosGenerales;
+
+        //SE AGREGA VALIDACION PARA DETERMINAR SI YA SE GUARDO EN BASE LA PRIMERA SECCION DE DATOS GENERALES
+      if(!datosContacto.idDatoContacto || !datosResidenciaActual){
+      this._alertServices.alerta("Recuerde completar los datos del formulario y guardar antes de pasar a la siguiente sección.");
         return;
       }
 

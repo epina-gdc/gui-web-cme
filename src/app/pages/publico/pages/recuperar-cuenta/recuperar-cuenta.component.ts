@@ -76,10 +76,10 @@ export class RecuperarCuentaComponent {
     const solicitud: SolicitudCambioContrasenia = this.generarSolicitudRecuperacionContrasenia();
     this.authService.solicitarCambioPass(solicitud).subscribe({
       next: (respuesta) => {
-        this.alertaService.exito(this.mensajes.MSG017);
-        setTimeout(() => {
-          void this.router.navigate(['/iniciar-sesion']);
-        }, 2000)
+        void this.router.navigate(['/iniciar-sesion']);
+         setTimeout(() => {
+            this.alertaService.exito(this.mensajes.MSG017);
+        }, 700)
       },
       error: (error) => {
         if (error.error.mensaje === 'Usuario no encontrado.') {

@@ -23,3 +23,10 @@ p {
   background: #FFF3CD;
   border: 3px solid #FFFAE8;
 }
+
+@media (max-width: 399px) {
+  :host ::ng-deep .dialogo-inactividad {
+    max-width: 260px !important;
+    width: auto !important;
+  }
+}

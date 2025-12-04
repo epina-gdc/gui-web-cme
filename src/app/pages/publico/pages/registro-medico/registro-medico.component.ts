@@ -132,7 +132,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
       pais: ['', ''],
       nombre: ['', [Validators.required, Validators.pattern(PATRON_NOMBRE)]],
       apellidoP: ['', [Validators.required, Validators.pattern(PATRON_NOMBRE)]],
-      apellidoM: ['', [Validators.required, Validators.pattern(PATRON_NOMBRE)]],
+      apellidoM: ['', [Validators.pattern(PATRON_NOMBRE)]],
       curp: ['', Validators.compose([
         Validators.required,
         Validators.minLength(18),
@@ -765,7 +765,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
         } else if (statusCode >= 400 && statusCode < 600) {
           // Es un error HTTP estándar (4xx, 5xx), pero con cuerpo de respuesta.
           // Intenta extraer un mensaje del cuerpo, si lo hay.
-          messageToDisplay = err.error?.message || `Error del servidor (Código ${statusCode}).`;
+          messageToDisplay = err.error?.mensaje || (err.error?.message || `Error del servidor (Código ${statusCode}).`);
         } else {
           // Cualquier otro caso.
           messageToDisplay = 'Ocurrió un error desconocido.';
