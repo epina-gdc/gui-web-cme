@@ -732,7 +732,7 @@
         <p-button type="button" label="Guardar" (click)="guardarDocumentacion()"
                   [disabled]="banderaCargarDocumentacion" styleClass="h-full"/>
         <p-button type="button" label="Finalizar" (click)="guardarDocumentacion(true)"
-                  [disabled]="banderaCargarDocumentacion" styleClass="h-full"/>
+                  [disabled]="banderaCargarDocumentacion" styleClass="h-full" onCloseOnNavigation />
       }
     </div>
 
