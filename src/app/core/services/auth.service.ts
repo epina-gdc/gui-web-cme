@@ -12,6 +12,7 @@ import {CME_TOKEN} from '@utils/constants';
 import {UserIdleService} from 'angular-user-idle';
 import {TIEMPO_MAXIMO_SESION} from '@utils/tokens';
 import {TiempoSesion} from '@models/tiempo-sesion.interface';
+import {SvgAnimationService} from '@services/svg-animation.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +30,7 @@ export class AuthService {
   http = inject(HttpClient);
   router = inject(Router);
   usuarioService = inject(UserService);
+  svgAnimationService = inject(SvgAnimationService);
 
   get usuarioSesion() {
     return this.usuarioSesionSubject.value;
@@ -103,6 +105,7 @@ export class AuthService {
   cerrarSesion() {
     localStorage.clear();
     this.usuarioService.clearUser();
+    this.svgAnimationService.destroy();
     this.usuarioSesionSubject.next(null);
     this.detenerTemporizadorSesion();
     void this.router.navigate(['/']);

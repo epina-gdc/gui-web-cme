@@ -22,4 +22,9 @@ export class SvgAnimationService {
     }, 3000);
   }
 
+  destroy(): void {
+    this._isLoading.set(false);
+    this._isInteractable.set(false);
+  }
+
 }
