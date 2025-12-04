@@ -73,6 +73,7 @@ import {
 } from '@pages/privado/shared/modal-validacion-medico/modal-validacion-medico.component';
 import { HeaderGenericoComponent } from '@pages/privado/shared/header-generico/header-generico.component';
 import { FooterMedicoComponent } from '@pages/privado/shared/footer-medico/footer-medico.component';
+import {OnCloseOnNavigationDirective} from '@directives/close-on-navigation.directive';
 
 interface DocumentoFuente {
   refGuid: string;
@@ -112,6 +113,7 @@ dayjs.extend(customParseFormat);
     EmailAllowCaractersDirective,
     OfertaLaboralComponent,
     AlphanumericDirective,
+    OnCloseOnNavigationDirective,
   ],
   templateUrl: './inicio.component.html',
   styleUrl: './inicio.component.scss',

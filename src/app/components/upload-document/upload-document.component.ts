@@ -98,15 +98,33 @@ export class UploadDocumentComponent implements OnInit, OnChanges {
     // Los archivos inválidos por tamaño, tipo, etc., se encuentran en event.invalidFiles.
 
     for (const archivo of event.files) {
+      let mensajeError = `El archivo que intenta cargar no es válido.`;
       if (!this.esArchivoValido(archivo)) {
+
 
         // ¡Importante! Evitar que se procese o se emita algún archivo
         this.files = [];
-        this.alertaService.error(`El archivo que intenta cargar no es válido.`);
+        this.alertaService.error(mensajeError);
         if (this.fileUpload) {
           this.fileUpload.clear();
         }
         this.fileRemoved.emit([]); // Notificar la limpieza
+        return;
+      }
+
+      const nombreSinExtension = archivo.name.substring(0, archivo.name.lastIndexOf('.'));
+      if (nombreSinExtension.length > 100) {
+        mensajeError = `El nombre del documento (${nombreSinExtension.length} caracteres) excede el máximo permitido de 100.`;
+
+        if (this.fileUpload) {
+          this.fileUpload.clear();
+        }
+        if (this.existingFile) {
+          this.fileUpload.files = [this.existingFile];
+        } else {
+          this.fileUpload.files = [];
+        }
+        this.files = this.fileUpload.files;
         return;
       }
     }

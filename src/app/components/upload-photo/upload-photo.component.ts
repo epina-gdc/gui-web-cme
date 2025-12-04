@@ -166,7 +166,7 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
       this.updateFileUpload(fileChange.currentValue);
     }
 
-      // Lógica de limpieza forzada: SOLO cuando cambia a TRUE
+    // Lógica de limpieza forzada: SOLO cuando cambia a TRUE
     if (clearChange && clearChange.currentValue === true && clearChange.currentValue !== clearChange.previousValue) {
       this.clear(); // Limpiar el p-fileUpload
       this.cleanupDone.emit(); //Emite para que el padre pueda resetear el Input
@@ -206,11 +206,13 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
     // Verificar si PrimeNG reportó algún archivo no válido
     // Los archivos inválidos por tamaño, tipo, etc., se encuentran en event.invalidFiles.
     for (const archivo of event.files) {
+      let mensajeError: string = `El archivo que intenta cargar no es válido.`;
+
       if (!this.esImagenValida(archivo)) {
 
         // ¡Importante! Evitar que se procese o se emita algún archivo
         this.files = [];
-        this.alertaService.error(`El archivo que intenta cargar no es válido.`);
+        this.alertaService.error(mensajeError);
         if (this.fileUpload) {
           this.fileUpload.clear();
         }
@@ -222,6 +224,24 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
         this.files = this.fileUpload.files;
         return;
       }
+
+      const nombreSinExtension = archivo.name.substring(0, archivo.name.lastIndexOf('.'));
+      if (nombreSinExtension.length > 100) {
+        mensajeError = `El nombre del archivo (${nombreSinExtension.length} caracteres) excede el máximo permitido de 100.`;
+        this.alertaService.error(mensajeError);
+
+        if (this.fileUpload) {
+          this.fileUpload.clear();
+        }
+        if (this.existingFile) {
+          this.fileUpload.files = [this.existingFile];
+        } else {
+          this.fileUpload.files = [];
+        }
+        this.files = this.fileUpload.files;
+        return;
+      }
+
     }
     if (event.currentFiles.length === 0) {
       this.alertaService.error(`El archivo  excede el tamaño máximo permitido.`);
@@ -340,18 +360,18 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
         resizedCanvas.toBlob((blob) => {
           if (blob) {
             const fileName = `foto-capturada-${new Date().getTime()}.jpeg`;
-            const file = new File([blob], fileName, { type: 'image/jpeg' });
+            const file = new File([blob], fileName, {type: 'image/jpeg'});
 
             if (file.size > this.maxFileSize) {
-                this.errorCamara = `MSG033: La foto es demasiado grande (${this.formatSize(file.size)}). Intenta de nuevo.`;
-                this.apagarCamara(false);
-                return;
+              this.errorCamara = `MSG033: La foto es demasiado grande (${this.formatSize(file.size)}). Intenta de nuevo.`;
+              this.apagarCamara(false);
+              return;
             }
 
             this.manejarArchivoCapturado(file);
           } else {
-              this.errorCamara = 'MSG033: Error al comprimir la imagen.';
-              this.apagarCamara(false);
+            this.errorCamara = 'MSG033: Error al comprimir la imagen.';
+            this.apagarCamara(false);
           }
         }, 'image/jpeg', quality);
       }
