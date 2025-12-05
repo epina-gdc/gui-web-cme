@@ -330,7 +330,7 @@
                         placeholder="Seleccionar opción" class="w-full" optionValue="value"/>
             </div>
             <div class="lg:col-3 col-12 flex justify-content-start align-items-end">
-              @if (!estatusPendienteDocumentacion) {
+              @if (!estatusPendienteDocumentacion && !estatusRevisionDocumentacion) {
                 <p-button label="Agregar" icon="cme-plus" iconPos="right" [text]="true"
                           [disabled]="formZonaInteres.invalid"
                           (click)="agregarZonaInteres()"/>
@@ -353,7 +353,7 @@
               <td>{{ zona.desOoad }}</td>
               <td>{{ zona.desZona }}</td>
               <td>
-                @if (!estatusPendienteDocumentacion) {
+                @if (!estatusPendienteDocumentacion && !estatusRevisionDocumentacion) {
                   <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.5rem'}"
                             (click)="(eliminarZonaInteres(rowIndex))"/>
                 }
@@ -385,7 +385,7 @@
       </p-card>
 
       <div class="flex flex-row justify-content-end gap-3">
-        @if (!estatusPendienteDocumentacion) {
+        @if (!estatusPendienteDocumentacion && !estatusRevisionDocumentacion) {
           <p-button type="button" variant="outlined" (click)="limpiarPrimeraSeccion()" label="Limpiar formulario"
                     [disabled]="estatusPendienteDocumentacion"/>
           <p-button type="button"
@@ -732,7 +732,7 @@
         <p-button type="button" label="Guardar" (click)="guardarDocumentacion()"
                   [disabled]="banderaCargarDocumentacion" styleClass="h-full"/>
         <p-button type="button" label="Finalizar" (click)="guardarDocumentacion(true)"
-                  [disabled]="banderaCargarDocumentacion" styleClass="h-full" onCloseOnNavigation />
+                  [disabled]="banderaCargarDocumentacion" styleClass="h-full" onCloseOnNavigation/>
       }
     </div>
 
