@@ -25,7 +25,7 @@ import {DatosContacto} from '@models/datosContacto';
 import {GeneralComponent} from '@components/general.component';
 import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
-import {DatosDomicilio, Estado, Pais, Residencia} from '@models/datosDomicilio';
+import {DatosDomicilio, Pais, Residencia} from '@models/datosDomicilio';
 import {ResponseGeneral} from '@models/responseGeneral';
 import {Colonia} from '@models/colonia';
 import {DataFotografia, Fotografia, FotografiaRequest} from '@models/fotografia';
@@ -202,6 +202,7 @@ export class InicioComponent extends GeneralComponent {
 
   estatusPendienteDocumentacion: boolean = false;
   estatusValidacionCompletada: boolean = false;
+  estatusRevisionDocumentacion: boolean = false;
 
   constanciasPorEliminar: number[] = [];
 
@@ -217,7 +218,7 @@ export class InicioComponent extends GeneralComponent {
   dialogValidacionRef: DynamicDialogRef | undefined;
 
   constructor(private readonly activatedRoute: ActivatedRoute,
-              public dialogService: DialogService,) {
+              public dialogService: DialogService) {
     super()
     this.documentosLocalStorageService.limpiar();
     this.userService.userData$.subscribe(user => this.userData = user);
@@ -244,21 +245,20 @@ export class InicioComponent extends GeneralComponent {
 
   asignarFormularioRegistro(): FormGroup {
 
-let validatorsNSS: ValidatorFn[] = []; // Tipado para eliminar el warning de TS
+    let validatorsNSS: ValidatorFn[] = []; // Tipado para eliminar el warning de TS
 
     if (this.userData?.idPerfil == 2) {
-        // Usa un patrón que exige exactamente 11 dígitos numéricos.
-        // ^[0-9]{11}$: Empieza (^), contiene exactamente 11 dígitos (0-9){11}, y termina ($).
-        validatorsNSS = [
-            Validators.required,
-            Validators.pattern('^[0-9]{11}$'), // <-- NUEVO VALIDADOR
-            Validators.minLength(11),
-            Validators.maxLength(11)
-        ];
+      // Usa un patrón que exige exactamente 11 dígitos numéricos.
+      // ^[0-9]{11}$: Empieza (^), contiene exactamente 11 dígitos (0-9){11}, y termina ($).
+      validatorsNSS = [
+        Validators.required,
+        Validators.pattern('^[0-9]{11}$'), // <-- NUEVO VALIDADOR
+        Validators.minLength(11),
+        Validators.maxLength(11)
+      ];
     } else if (this.userData?.idPerfil == 3 || this.userData?.idPerfil == 6) {
-        validatorsNSS = []
+      validatorsNSS = []
     }
-
 
 
     return this.fb.group({
@@ -842,10 +842,10 @@ let validatorsNSS: ValidatorFn[] = []; // Tipado para eliminar el warning de TS
       if (perfil.idPerfil == 2) {
         let validatorsNSS: ValidatorFn[] = [];
         validatorsNSS = [
-            Validators.required,
-            Validators.pattern('^[0-9]{11}$'), // <-- NUEVO VALIDADOR
-            Validators.minLength(11),
-            Validators.maxLength(11)
+          Validators.required,
+          Validators.pattern('^[0-9]{11}$'), // <-- NUEVO VALIDADOR
+          Validators.minLength(11),
+          Validators.maxLength(11)
         ]
 
         this.formRegistro.controls['nss'].setValidators(validatorsNSS);
@@ -970,26 +970,24 @@ let validatorsNSS: ValidatorFn[] = []; // Tipado para eliminar el warning de TS
     contacto.refTelefonoCasa = this.formRegistro.controls['telefonoCasa'].value;
     contacto.refTelefonoCelular = this.formRegistro.controls['telefonoCelular'].value;
 
-    if (paisNacimientoSeleccionado != null && paisNacimientoSeleccionado != undefined) {
-      const pais: Pais = {
+    if (paisNacimientoSeleccionado != null) {
+      contacto.paisNacimiento = {
         nomPaisNacimiento: paisNacimientoSeleccionado.label,
         idPais: paisNacimientoSeleccionado.value as number,
         cvePais: '',
         desPais: ''
-      }
-      contacto.paisNacimiento = pais;
+      };
     }
 
 
     const estadoNacimientoSeleccionado: number = this.formRegistro.get('estadoNacimiento')?.value;
 
-    if (estadoNacimientoSeleccionado != null && estadoNacimientoSeleccionado != undefined) {
-      const estado: Estado = {
+    if (estadoNacimientoSeleccionado != null) {
+      contacto.lugarNacimiento = {
         idLugarNacimiento: estadoNacimientoSeleccionado,
         idEstado: 0,
         desEstado: ''
-      }
-      contacto.lugarNacimiento = estado;
+      };
     }
 
 
@@ -1920,6 +1918,10 @@ let validatorsNSS: ValidatorFn[] = []; // Tipado para eliminar el warning de TS
             this.indice.update(() => 2);
             this.estadoOfertaService.actualizarTab(this.indice());
           }
+          this.estatusRevisionDocumentacion = [2].includes(estatusVerificacion);
+          if (this.estatusRevisionDocumentacion) {
+            this.desactivarFormsPrimeraSeccion();
+          }
         }
         if (respuesta.documentosObligatorios) {
           this.procesarDatosObligatoriosObtenidos(respuesta.documentosObligatorios);
@@ -1937,6 +1939,11 @@ let validatorsNSS: ValidatorFn[] = []; // Tipado para eliminar el warning de TS
         }
       }
     });
+  }
+
+  desactivarFormsPrimeraSeccion(): void {
+    this.formRegistro.disable();
+    this.formZonaInteres.disable();
   }
 
   desactivarForms(): void {
@@ -2152,14 +2159,14 @@ let validatorsNSS: ValidatorFn[] = []; // Tipado para eliminar el warning de TS
         return;
       }
 
-        const {
-          datosContacto,
-          datosResidenciaActual
-        } = this.datosGenerales;
+      const {
+        datosContacto,
+        datosResidenciaActual
+      } = this.datosGenerales;
 
-        //SE AGREGA VALIDACION PARA DETERMINAR SI YA SE GUARDO EN BASE LA PRIMERA SECCION DE DATOS GENERALES
-      if(!datosContacto.idDatoContacto || !datosResidenciaActual){
-      this._alertServices.alerta("Recuerde completar los datos del formulario y guardar antes de pasar a la siguiente sección.");
+      //SE AGREGA VALIDACION PARA DETERMINAR SI YA SE GUARDO EN BASE LA PRIMERA SECCION DE DATOS GENERALES
+      if (!datosContacto.idDatoContacto || !datosResidenciaActual) {
+        this._alertServices.alerta("Recuerde completar los datos del formulario y guardar antes de pasar a la siguiente sección.");
         return;
       }
 
