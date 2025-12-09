@@ -63,6 +63,7 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
 
   especialidad: TipoDropdown[] = [];
   estatus: TipoDropdown[] = [];
+  default_catalogo: TipoDropdown = {value:0,label:'Seleccione una opción'};
 
   clases: Map<number, string> = new Map([
     [1, 'pendiente'],
@@ -88,6 +89,8 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
       const [especialidades, estatusVerificacion] = respuesta;
       this.especialidad = mapearArregloTipoDropdown(especialidades, 'desEspecialidad', 'cveEspecialidad');
       this.estatus = mapearArregloTipoDropdown(estatusVerificacion.respuesta, 'desEstatus', 'idEstatusVerificacion');
+      this.especialidad.unshift(this.default_catalogo);
+      this.estatus.unshift(this.default_catalogo);
     });
   }
 
@@ -159,8 +162,9 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
     return {
       page: this.paginaActual,
       size: this.rows,
-      idEstatus: (this.filtroForm.get('estatus')?.value)?.value,
-      cveEspecialidad: (this.filtroForm.get('especialidad')?.value)?.value,
+
+      idEstatus: (this.filtroForm.get('estatus')?.value)?.value != 0 ? (this.filtroForm.get('estatus')?.value)?.value : null,
+      cveEspecialidad: (this.filtroForm.get('especialidad')?.value)?.value != 0 ? (this.filtroForm.get('especialidad')?.value)?.value : null,
       matriculaFolio: this.filtroForm.get('matricula')?.value,
 
     }
