@@ -251,6 +251,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       next: (valor) => {
         if (valor.exito && Array.isArray(valor.respuesta) && valor.respuesta.length > 0) {
           this.zona_tablero = mapearArregloTipoDropdown(valor.respuesta, 'desZona', 'cveZona');
+          this.zona_tablero.unshift(this.default_catalogo);
           return;
         }
         this._alertServices.alerta(valor.mensaje);
@@ -277,12 +278,13 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     const bonoParse = bono?.label.replace(/[$,]/g, "") ?? null;
 
 
-    ooad?.value ? ooad.value = ooad?.value : ooad = null;
-    especialidad?.value ? especialidad.value = especialidad?.value : especialidad = null
+    ooad = (ooad?.value == 0) ? null : ooad;
+    zona = (zona?.value == 0) ? null : zona;
+    especialidad = (especialidad?.value == 0) ? null : especialidad;
+    bono = (bono?.value == 0) ? null : bono;
     if(regimen?.label){
       regimen = (regimen?.value == 0) ? null : regimen?.label;
     }
-    bono?.value ? bono.value = bono?.value : bono = null
     
     const filtros = {
       "cveEspecialidad": especialidad?.value,
@@ -384,12 +386,14 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     let regimen = this.formTablero.get('regimen_tablero')?.value;
     let bono = this.formTablero.get('bono_tablero')?.value;
 
-    ooad?.value ? ooad.value = ooad?.value : ooad = null;
-    especialidad?.value ? especialidad.value = especialidad?.value : especialidad = null
+
+    ooad = (ooad?.value == 0) ? null : ooad;
+    zona = (zona?.value == 0) ? null : zona;
+    especialidad = (especialidad?.value == 0) ? null : especialidad;
+    bono = (bono?.value == 0) ? null : bono;    
     if(regimen?.label){
       regimen = (regimen?.value == 0) ? null : regimen?.label;
     }
-    bono?.value ? bono.value = bono?.value : bono = null
 
     return {
       cveEspecialidad: especialidad?.value,
