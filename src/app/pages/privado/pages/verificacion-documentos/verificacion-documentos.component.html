@@ -43,12 +43,13 @@
 <p-table
   [value]="usuarioDocumentos()"
   [scrollable]="true"
-
+  [resizableColumns]="true" columnResizeMode="expand"
 >
   <ng-template #caption>
     <div class="flex justify-content-between seccion-titulo">
       <span class="titulo-tabla">Verificación de Documentos</span>
-      <div style="cursor: pointer" class="flex align-items-center boton-descargar" (click)="descargarExcelHistoricoDocs()">
+      <div style="cursor: pointer" class="flex align-items-center boton-descargar"
+           (click)="descargarExcelHistoricoDocs()">
         <i class="cme-download" [style]="{ 'font-size': '1.8rem', color: '#018699'}"></i>
         <span class="ms-2 font-medium">Exportar datos</span>
       </div>
@@ -56,15 +57,15 @@
   </ng-template>
   <ng-template #header>
     <tr>
-      <th scope="col">Nombre</th>
-      <th scope="col">Matrícula/Folio</th>
-      <th scope="col">Correo</th>
-      <th scope="col">Especialidad</th>
-      <th scope="col">Estatus</th>
-      <th scope="col">Observaciones</th>
-      <th scope="col">Modalidad</th>
-      <th scope="col">Tipo de modalidad</th>
-      <th scope="col">Fecha de verificación</th>
+      <th scope="col" pResizableColumn>Nombre</th>
+      <th scope="col" pResizableColumn>Matrícula/Folio</th>
+      <th scope="col" pResizableColumn>Correo</th>
+      <th scope="col" pResizableColumn>Especialidad</th>
+      <th scope="col" pResizableColumn>Estatus</th>
+      <th scope="col" pResizableColumn>Observaciones</th>
+      <th scope="col" pResizableColumn>Modalidad</th>
+      <th scope="col" pResizableColumn>Tipo de modalidad</th>
+      <th scope="col" pResizableColumn>Fecha de verificación</th>
       <th scope="col"
           style="min-width: 100px"
           alignFrozen="right"
@@ -91,9 +92,11 @@
       <td>{{ usuarioDocumentos.modalidad }}</td>
       <td>{{ usuarioDocumentos.tipoModalidad }}</td>
       <td>{{ usuarioDocumentos.fechaVerificacion }}</td>
-      <td alignFrozen="right" pFrozenColumn class="flex align-items-center justify-content-center">
-        <i (click)="consultaDocumento($event, usuarioDocumentos)" class="cme-ellipsis cursor-pointer border-round-3xl"
-           [style]="{ 'font-size': '2.2rem', color: '#a9c9f8', background: '#f6faff' }"></i>
+      <td alignFrozen="right" pFrozenColumn>
+        <div class="flex align-items-center justify-content-center">
+          <i (click)="consultaDocumento($event, usuarioDocumentos)" class="cme-ellipsis cursor-pointer border-round-3xl"
+             [style]="{ 'font-size': '2.2rem', color: '#a9c9f8', background: '#f6faff' }"></i>
+        </div>
       </td>
     </tr>
   </ng-template>
@@ -138,14 +141,15 @@
       <span class="ms-2 acciones-tabla">Consultar documentos</span>
     </div>
     <div class="flex align-items-center boton-descargar cursor-pointer margin-top-8"
-         (click)="imprimirDocumento(documentoSeleccionado)" *ngIf="documentoSeleccionado && (documentoSeleccionado.idEstatusValidacion === 3 || documentoSeleccionado.idEstatusValidacion === 4)">
+         (click)="imprimirDocumento(documentoSeleccionado)"
+         *ngIf="documentoSeleccionado && (documentoSeleccionado.idEstatusValidacion === 3 || documentoSeleccionado.idEstatusValidacion === 4)">
       <i class="icon pi pi-print" [style]="{ 'font-size': '1.2rem', color: '#a9c9f8'}"></i>
-      @if(documentoSeleccionado.idTipoConvocatoria==1){
-          <span class="ms-2 acciones-tabla">Imprimir dictamen</span>
+      @if (documentoSeleccionado.idTipoConvocatoria == 1) {
+        <span class="ms-2 acciones-tabla">Imprimir dictamen</span>
       }
 
-      @if(documentoSeleccionado.idTipoConvocatoria==2){
-          <span class="ms-2 acciones-tabla">Imprimir opinión técnica</span>
+      @if (documentoSeleccionado.idTipoConvocatoria == 2) {
+        <span class="ms-2 acciones-tabla">Imprimir opinión técnica</span>
       }
 
 

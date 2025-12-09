@@ -20,6 +20,7 @@
   color: var(--Alertas-03_alerta-oscuro1, #D3121F);
   background: var(--Alertas-03_alerta-tono02, #FCEBEC);
 }
+
 .margin-top-8 {
   margin-top: 8px;
 }
@@ -37,10 +38,6 @@
 .revision {
   background: #dbeeff;
   color: var(--complementarios-02-AzulClaro_oscuro02, #005FB2);
-}
-
-td {
-  white-space: nowrap;
 }
 
 .seccion-titulo {
