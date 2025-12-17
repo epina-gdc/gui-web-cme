@@ -18,7 +18,7 @@ import {PrimeTemplate} from 'primeng/api';
 import {GeneralComponent} from '@components/general.component';
 import {mapearArregloTipoDropdown} from '@utils/funciones';
 import {ActivatedRoute} from '@angular/router';
-import {Subscription, concatMap, forkJoin, map, of, switchMap, tap, throwError} from 'rxjs';
+import {Subscription, concatMap, forkJoin, map, of, switchMap, tap, throttleTime, throwError} from 'rxjs';
 import {EstadoOfertaService} from '@services/estado-oferta.service';
 
 import {OportunidadLaboral} from '@models/oportunidad-laboral.interface';
@@ -463,7 +463,11 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     });
 
     this.obtenerTotalFavoritos();
-    this.favoritosSubscription = this.estadoOfertaService.favoritosActuales$.subscribe(
+    this.favoritosSubscription = this.estadoOfertaService.favoritosActuales$
+    .pipe(
+      throttleTime(500) 
+    )
+    .subscribe(
       (numeroFavoritos: number) => {
         const favoritos = this.data[1];
         favoritos.price = numeroFavoritos;
