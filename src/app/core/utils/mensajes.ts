@@ -24,6 +24,7 @@ export class Mensajes {
   public MSG026: string = 'Datos guardados correctamente.';
   public MSG037: string = 'La información está incompleta, favor de verificar.';
   public MSG039: string = '¡Registro exitoso!. Te hemos enviado un correo con los detalles. No olvides revisarlo.';
+  public MSG041: string = 'Actualmente no hay plazas ofertadas vacantes disponibles. Por favor, consulta más adelante.'
   public MSG062: string = 'Tu contraseña ha sido actualizada correctamente, te hemos enviado un correo con los detalles del cambio de contraseña. Por seguridad, no compartas tu contraseña con nadie.';
   public MSG063: string = 'El enlace ha expirado o no es válido. Por favor, solicita un nuevo cambio de contraseña';
 
