@@ -21,6 +21,7 @@ import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
 import {TitleCasePipe} from '@angular/common';
 import {SvgAnimationService} from '@services/svg-animation.service';
+import {OnCloseOnNavigationDirective} from '@directives/close-on-navigation.directive';
 
 
 @Component({
@@ -31,7 +32,8 @@ import {SvgAnimationService} from '@services/svg-animation.service';
     FormsModule,
     CommonModule,
     Badge,
-    TitleCasePipe
+    TitleCasePipe,
+    OnCloseOnNavigationDirective
   ],
   templateUrl: './oferta-card.component.html',
   styleUrl: './oferta-card.component.scss',
@@ -90,7 +92,7 @@ export class OfertaCardComponent  implements OnInit, OnChanges {
     };
 
   constructor(private readonly currencyPipe: CurrencyPipe) {
-    
+
     this.checkScreenSize();
   }
 
@@ -108,7 +110,7 @@ export class OfertaCardComponent  implements OnInit, OnChanges {
     this.value = this.detalleOportunidad.esFavorita ? 1 : 0;
 
 
-   
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -152,5 +154,5 @@ export class OfertaCardComponent  implements OnInit, OnChanges {
     });
   }
 
- 
+
 }
