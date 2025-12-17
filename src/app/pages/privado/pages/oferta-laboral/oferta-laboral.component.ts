@@ -319,7 +319,9 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       ))
     ).subscribe({
       next: (respuesta: any) => {
-
+        if(respuesta.respuesta.totalResultados == 0){
+          this._alertServices.alerta(this._Mensajes.MSG041);
+        }
         const salarioFormateado = this.currencyPipe.transform(
           respuesta.respuesta.promedioSueldosBrutos,
           'USD',
@@ -359,7 +361,9 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       ))
     ).subscribe({
       next: (respuesta: any) => {
-
+        if(respuesta.respuesta.totalFavoritas == 0){
+          this._alertServices.alerta(this._Mensajes.MSG041);
+        }
         const salarioFormateado = this.currencyPipe.transform(
           respuesta.respuesta.promedioSueldosBrutos,
           'USD',
