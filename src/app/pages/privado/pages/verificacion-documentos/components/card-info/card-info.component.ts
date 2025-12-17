@@ -36,6 +36,10 @@ export class CardInfoComponent extends GeneralComponent implements OnInit {
 
   ngOnInit() {
     this.obtenerDatosFoto(this.datosPersonales.idUsuario);
+    this.datosPersonales.especialidad = this.datosPersonales.especialidad.split('/').length == 1 
+                                        ? this.datosPersonales.especialidad 
+                                        : this.datosPersonales.especialidad.split('/').join(' / ');
+    
   }
 
   @HostListener('window:resize', ['$event'])
