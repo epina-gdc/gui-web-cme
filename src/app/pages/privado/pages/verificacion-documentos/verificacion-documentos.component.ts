@@ -1,5 +1,5 @@
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { Component, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Card } from 'primeng/card';
@@ -23,6 +23,8 @@ import { saveAs } from 'file-saver';
 import { DictamenRespuesta } from '@models/dictamen-respuesta.interface';
 import { AdjuntoOpinion, OpinionTecnicaRespuesta } from '@models/opnion-tecnia-respuesta.interface';
 import { AlertService } from '@services/alert.service';
+import { UserService } from '@services/user.service';
+import { SesionUser } from '@models/sesion-user.interface';
 
 
 @Component({
@@ -72,6 +74,9 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
     [4, 'noCumple']
   ]);
 
+  userService = inject(UserService);
+  userData: SesionUser | null = null;
+
   constructor(
     private readonly activatedRoute: ActivatedRoute,
     private readonly fb: FormBuilder) {
@@ -81,6 +86,7 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
   }
 
   ngOnInit(): void {
+    this.userService.userData$.subscribe(user => this.userData = user);
     this.paginar();
   }
 
