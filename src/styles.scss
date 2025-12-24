@@ -63,9 +63,9 @@
     background-color: var(--gob-mx-gris-tono4);
   }
 
-    .login-background {
+  .login-background {
     background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
-    url("assets/backgrounds/Fondo_CME.png") no-repeat center top / cover;
+      url("assets/backgrounds/Fondo_CME.png") no-repeat center top / cover;
     min-height: 100vh;
 
   }
@@ -91,7 +91,10 @@
     background-color: var(--gob-mx-base-blanco);
   }
 
-  .p-fileupload-content .p-progressbar, .p-fileupload-header, .p-fileupload-file-list, p-progressbar {
+  .p-fileupload-content .p-progressbar,
+  .p-fileupload-header,
+  .p-fileupload-file-list,
+  p-progressbar {
     display: none;
   }
 
@@ -138,7 +141,8 @@
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
-    line-height: 150%; /* 21px */
+    line-height: 150%;
+    /* 21px */
 
   }
 
@@ -149,15 +153,12 @@
 
   }
 
-  .alert-info {
+  .alert-info {}
 
-  }
+  .alert-warning {}
 
-  .alert-warning {
-
-  }
-
-  .p-tabpanels, .p-password {
+  .p-tabpanels,
+  .p-password {
     width: 100% !important;
   }
 
@@ -202,7 +203,8 @@
     justify-content: end;
   }
 
-  .paginator-oferta .p-paginator-first, .paginator-oferta .p-paginator-last {
+  .paginator-oferta .p-paginator-first,
+  .paginator-oferta .p-paginator-last {
     display: none;
   }
 
@@ -266,9 +268,11 @@
     0% {
       box-shadow: 10px 0 rgba(255, 255, 255, 0), 20px 0 rgba(255, 255, 255, 0);
     }
+
     50% {
       box-shadow: 10px 0 white, 20px 0 rgba(255, 255, 255, 0);
     }
+
     100% {
       box-shadow: 10px 0 white, 20px 0 white;
     }
@@ -309,7 +313,7 @@
 
   @media screen and (min-width: 351px) and (max-width: 375px) {
 
-    .carousel-image > img {
+    .carousel-image>img {
       width: 300px;
     }
 
@@ -320,7 +324,7 @@
 
   @media screen and (min-width: 376px) and (max-width: 425px) {
 
-    .carousel-image > img {
+    .carousel-image>img {
       width: 350px;
     }
 
@@ -339,7 +343,7 @@
       width: 100%;
     }
 
-    .carousel-image > img {
+    .carousel-image>img {
       width: 82%;
     }
 
@@ -354,7 +358,7 @@
       width: 100%;
     }
 
-    .carousel-image > img {
+    .carousel-image>img {
       width: 85%;
     }
 
@@ -379,5 +383,9 @@
     filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
   }
 
+  .sinResultados{
+    font-weight: 800;
+    font-size:14px;
 
+  }
 }
