@@ -49,7 +49,7 @@ import {ClickService} from '@services/click.service';
   providers: [DialogService, CurrencyPipe]
 })
 export class OfertaLaboralComponent extends GeneralComponent implements OnInit, OnDestroy {
-
+  blnSinResultados = false;
   clickService = inject(ClickService);
   userService = inject(UserService);
   userData: SesionUser | null = null;
@@ -265,6 +265,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   }
 
   consultarPlazas(referencia: string = "paginado") {
+    this.blnSinResultados = false;
     if (referencia == "btn") {
       this.numPaginaActual = 0;
       this.first = 0;
@@ -321,6 +322,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       next: (respuesta: any) => {
         if(respuesta.respuesta.totalResultados == 0){
           this._alertServices.alerta(this._Mensajes.MSG041);
+          this.blnSinResultados = true;
         }
         const salarioFormateado = this.currencyPipe.transform(
           respuesta.respuesta.promedioSueldosBrutos,
@@ -457,6 +459,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   }
 
   ngOnInit() {
+    this.blnSinResultados =false;
     this.userService.userData$.subscribe(user => this.userData = user);
     this.subscription = this.clickService.clic$.subscribe(() => {
       this.visible = true;
