@@ -64,7 +64,7 @@
       <th scope="col" pResizableColumn>Estatus</th>
       <th scope="col" pResizableColumn>Observaciones</th>
       <th scope="col" pResizableColumn>Modalidad</th>
-      <th scope="col" pResizableColumn>Tipo de modalidad</th>
+      @if(userData?.idPerfil == 5){<th scope="col" pResizableColumn>Tipo de modalidad</th>}
       <th scope="col" pResizableColumn>Fecha de verificación</th>
       <th scope="col"
           style="min-width: 100px"
@@ -90,7 +90,7 @@
       </td>
       <td>{{ usuarioDocumentos.observaciones }}</td>
       <td>{{ usuarioDocumentos.modalidad }}</td>
-      <td>{{ usuarioDocumentos.tipoModalidad }}</td>
+      @if(userData?.idPerfil == 5){<td>{{ usuarioDocumentos.tipoModalidad }}</td>}
       <td>{{ usuarioDocumentos.fechaVerificacion }}</td>
       <td alignFrozen="right" pFrozenColumn>
         <div class="flex align-items-center justify-content-center">
