@@ -222,8 +222,8 @@ export class CatalogosGeneralesService {
   }
 
 
-  getDocumentos(ooad: string): Observable<any> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos1 + '/documentos-ooad/'+ ooad, {headers: this.header}).pipe(
+  getDocumentos(ooad: string, zona: number): Observable<any> {
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos1 + '/documentos-ooad/'+ ooad + `/${zona}`, {headers: this.header}).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;

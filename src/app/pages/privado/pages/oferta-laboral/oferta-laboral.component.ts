@@ -142,7 +142,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   ];
 
   actualizarTab(id: number) {
-    this.visible = false; 
+    this.visible = false;
     if (id === 3) {
       const url = this.data[3].ruta;
       window.open(url, '_blank');
@@ -160,7 +160,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   }
 
   show(oportunidad: OportunidadLaboral) {
-    this._CatalogoGenService.getDocumentos(oportunidad.cveOoad!)
+    this._CatalogoGenService.getDocumentos(oportunidad.cveOoad!, oportunidad.cveZona)
       .pipe(
         switchMap(referencias => {
 
@@ -229,7 +229,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       this.ooad_tablero.unshift(this.default_catalogo);
       this.especialidad_tablero.unshift(this.default_catalogo);
       this.regimen_tablero.unshift(this.default_catalogo);
-      this.bono_tablero.unshift(this.default_catalogo);      
+      this.bono_tablero.unshift(this.default_catalogo);
     });
   }
 
@@ -286,7 +286,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     if(regimen?.label){
       regimen = (regimen?.value == 0) ? null : regimen?.label;
     }
-    
+
     const filtros = {
       "cveEspecialidad": especialidad?.value,
       "cveOoad": ooad?.value ?? null,
@@ -396,7 +396,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     ooad = (ooad?.value == 0) ? null : ooad;
     zona = (zona?.value == 0) ? null : zona;
     especialidad = (especialidad?.value == 0) ? null : especialidad;
-    bono = (bono?.value == 0) ? null : bono;    
+    bono = (bono?.value == 0) ? null : bono;
     if(regimen?.label){
       regimen = (regimen?.value == 0) ? null : regimen?.label;
     }
@@ -468,7 +468,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     this.obtenerTotalFavoritos();
     this.favoritosSubscription = this.estadoOfertaService.favoritosActuales$
     .pipe(
-      throttleTime(500) 
+      throttleTime(500)
     )
     .subscribe(
       (numeroFavoritos: number) => {

@@ -89,6 +89,7 @@ export class OfertaCardComponent  implements OnInit, OnChanges {
       descuentoQuincenalCreditoAutomotriz: null,
       creditoHipotecario: null,
       descuentoQuincenalCreditoHipotecario: null,
+      cveZona: 0
     };
 
   constructor(private readonly currencyPipe: CurrencyPipe) {
