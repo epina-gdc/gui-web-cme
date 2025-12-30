@@ -29,4 +29,5 @@ export interface OportunidadLaboral {
   descuentoQuincenalCreditoAutomotriz: number | null,
   creditoHipotecario: number | null,
   descuentoQuincenalCreditoHipotecario: number | null,
+  cveZona: number
 }
