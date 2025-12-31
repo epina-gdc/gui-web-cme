@@ -45,7 +45,7 @@ import {SvgAnimationService} from '@services/svg-animation.service';
 export class DetalleOfertaLaboralComponent extends GeneralComponent implements OnInit, OnDestroy {
 
   private readonly serverEndPointURLDocumento = environment.api.apiDocumentos;
-  ref = `${this.serverEndPointURLDocumento}/v1/ooad-documentos/`;
+  ref = `${this.serverEndPointURLDocumento}/v1/ooad-documentos/descargar-mapa/`;
   responsiveOptions!:any;
   value: number = 0;
   userService = inject(UserService);
@@ -94,7 +94,8 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
       creditoAutomotriz: null,
       descuentoQuincenalCreditoAutomotriz: null,
       creditoHipotecario: null,
-      descuentoQuincenalCreditoHipotecario: null
+      descuentoQuincenalCreditoHipotecario: null,
+      cveZona: 0
     };
 
   tooltipOptions = {

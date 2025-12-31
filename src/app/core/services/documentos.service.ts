@@ -80,7 +80,7 @@ export class DocumentoService {
   }
 
   obtenerDocsPorOoad(refGuid: string): Observable<Blob> {
-    return this.http.get(`${this.serverEndPointURLDocumento}/v1/ooad-documentos/${refGuid}`, {
+    return this.http.get(`${this.serverEndPointURLDocumento}/v1/ooad-documentos/descargar-mapa/${refGuid}`, {
       headers: this.header,
       responseType: 'blob'
     }).pipe(catchError(this.handleError));
