@@ -131,23 +131,30 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       name: 'Preguntas frecuentes',
       icono: 'cme-quest',
       description: 'Respuestas a las preguntas del proceso',
-    },
-    {
-      id: 3,
-      name: 'Ubicación de las Unidades Médicas',
-      icono: 'cme-marker-pin',
-      description: 'Consulte ubicación de unidades médicas',
-      ruta: 'https://sites.google.com/view/draft-2025/inicio'
     }
+    /*,
+
+    SE SOLICITA OCULTAR ESTA SECCIÓN POR EL MOMENTO
+    08/01/26
+{
+      id: 3,
+      name: 'Ubicación de las Secciones de Evaluación del Comportamiento Laboral a nivel nacional',
+      icono: 'cme-marker-pin',
+      description: 'Consulte ubicación',
+      ruta: 'https://sites.google.com/view/draft-2025/inicio'
+    } */
   ];
 
   actualizarTab(id: number) {
     this.visible = false;
+/*
+ SE SOLICITA OCULTAR ESTA SECCIÓN POR EL MOMENTO
+    08/01/26
     if (id === 3) {
       const url = this.data[3].ruta;
       window.open(url, '_blank');
       return;
-    }
+    } */
     if (id === 1) {
       this.formTablero.reset({});
       this.consultarFavoritos();
@@ -321,7 +328,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     ).subscribe({
       next: (respuesta: any) => {
         if(respuesta.respuesta.totalResultados == 0){
-          this._alertServices.alerta(this._Mensajes.MSG041);
+          //this._alertServices.alerta(this._Mensajes.MSG041);
           this.blnSinResultados = true;
         }
         const salarioFormateado = this.currencyPipe.transform(
@@ -364,7 +371,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     ).subscribe({
       next: (respuesta: any) => {
         if(respuesta.respuesta.totalFavoritas == 0){
-          this._alertServices.alerta(this._Mensajes.MSG041);
+          //this._alertServices.alerta(this._Mensajes.MSG041);
         }
         const salarioFormateado = this.currencyPipe.transform(
           respuesta.respuesta.promedioSueldosBrutos,
@@ -400,6 +407,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     if(regimen?.label){
       regimen = (regimen?.value == 0) ? null : regimen?.label;
     }
+
 
     return {
       cveEspecialidad: especialidad?.value,
