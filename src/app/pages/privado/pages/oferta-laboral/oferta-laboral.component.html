@@ -68,13 +68,15 @@
             <p-select [options]="especialidad_tablero" formControlName="especialidad_tablero" optionLabel="label"
               placeholder="Selecciona una Especialidad o Subespecialidad" class="w-full" />
           </div>
+<!--
+           SE SOLICITA OCULTAR ESTA SECCIÓN POR EL MOMENTO 08/01/26
           <div class="col-12 lg:col-4">
             <div class="flex justify-content-between">
               <label class="field-label" for="regimen_tablero">Tipo de Unidad</label>
             </div>
             <p-select [options]="regimen_tablero" formControlName="regimen_tablero" optionLabel="label"
               placeholder="Selecciona un Tipo de Unidad" class="w-full" />
-          </div>
+          </div> -->
           <div class="col-12 lg:col-4">
             <div class="flex justify-content-between">
               <label class="field-label" for="bono_tablero">Bono difícil cobertura</label>
@@ -112,20 +114,16 @@
       <oferta-card [detalleOportunidad]="registro" (abrirDetalleEvent)="show($event)"
         (actualizarTotales)="obtenerTotalFavoritos()" />
       }
-    
-      @if (blnSinResultados) {
-       
-        <ng-template pTemplate="emptymessage">
-          
-          
+
+      @if (totalElementos == 0   && blnSinResultados) {
+        <div>
               <div class="flex justify-content-center align-items-center flex-column">
                 <img class="p-0" src="/assets/images/tabla_sin_resultados.svg" alt="Sin resultados">
-                
+
                 <p class="mt-2 sinResultados">Actualmente no hay plazas ofertadas vacantes disponibles. Por favor, consulta
                   más adelante. </p>
               </div>
-            
-        </ng-template>
+        </div>
       }
     </p-card>
 
@@ -147,11 +145,6 @@
     </p-paginator>
     }
 
-    
-
-   
-
-    
     }
     @if (activeTab() === 2) {
     <p-card class="empty-border">
