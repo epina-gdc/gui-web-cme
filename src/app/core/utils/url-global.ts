@@ -9,5 +9,6 @@ export const NAV = {
   documentacionAspirante: 'documentacion-aspirante/:id',
   verificacionDocumentos: 'verificacion-documentos',
   ofertaLaboral: 'oferta-laboral',
+  asignacion: 'asignacion',
   home: 'inicio',
 };

@@ -73,6 +73,16 @@
   text-align: start;
 }
 
+.titulo-seccion-asignacion {
+  color: var(--Gris-Header, #6776A8);
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-family: "Noto Sans";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%; /* 30px */
+}
+
 .usuario-menu {
   color: #374060;
   text-align: right;

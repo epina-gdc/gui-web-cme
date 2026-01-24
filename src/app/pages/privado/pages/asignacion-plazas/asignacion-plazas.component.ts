@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
+import {PlazaOrdinariaComponent} from '@privado/asignacion-plazas/components/plaza-ordinaria/plaza-ordinaria.component';
 
 @Component({
   selector: 'app-asignacion-plazas',
-  imports: [],
+  imports: [
+    PlazaOrdinariaComponent
+  ],
   templateUrl: './asignacion-plazas.component.html',
   styleUrl: './asignacion-plazas.component.scss'
 })

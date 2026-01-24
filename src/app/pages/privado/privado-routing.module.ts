@@ -12,6 +12,7 @@ import {validadorGuard} from '@guards/validador.guard';
 import {documentacionAspiranteResolver} from '../../core/resolvers/documentacion-aspirante.resolver';
 import { verficacionDocsResolver } from '../../core/resolvers/verificacion-docs.resolver';
 import { OfertaLaboralComponent } from './pages/oferta-laboral/oferta-laboral.component';
+import {AsignacionPlazasComponent} from '@privado/asignacion-plazas/asignacion-plazas.component';
 
 const routes: Routes = [{
   path: '',
@@ -53,6 +54,13 @@ const routes: Routes = [{
       resolve: {
         respuesta_oferta: ofertaLaboralResolver
       }
+
+    },
+
+    {
+      path: NAV.asignacion,
+      component: AsignacionPlazasComponent,
+
 
     },
 
