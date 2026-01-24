@@ -1,0 +1,166 @@
+<div class="flex flex-wrap flex-row">
+  <div class="sm:col-12 md:col-6  pr-4">
+    <div class="flex flex-column">
+      <div class="flex align-items-center gap-4">
+        <i class="pi pi-exclamation-circle" style="color: #41ABD9; font-size: 1.8rem"></i>
+        <h4 class="titulo-detalle-oferta-laboral"> Información del puesto</h4>
+      </div>
+      <div class="flex justify-content-between">
+        <p class="seccion-detalle-oferta-laboral">Horario:</p>
+        <p class="texto-detalle-oferta-laboral">{{ plazaSeleccionada.horario }}</p>
+      </div>
+      <div class="flex justify-content-between">
+        <p class="seccion-detalle-oferta-laboral">Régimen:</p>
+        <p class="texto-detalle-oferta-laboral">{{ plazaSeleccionada.tipoUnidad }}</p>
+      </div>
+      <div class="flex justify-content-between">
+        <p class="seccion-detalle-oferta-laboral">No de plaza:</p>
+        <p class="texto-detalle-oferta-laboral">{{ plazaSeleccionada.numeroPlaza }}</p>
+      </div>
+      <div class="flex justify-content-between">
+        <p class="seccion-detalle-oferta-laboral">Categoría:</p>
+        <p class="texto-detalle-oferta-laboral">{{ plazaSeleccionada.categoria }}</p>
+      </div>
+      <div class="flex justify-content-between">
+        <p class="seccion-detalle-oferta-laboral">Tipo de plaza:</p>
+        <p class="texto-detalle-oferta-laboral">{{ plazaSeleccionada.tipoPlaza }}</p>
+      </div>
+      <div class="flex justify-content-between">
+        <p class="seccion-detalle-oferta-laboral">Marca de ocupación:</p>
+        <p class="texto-detalle-oferta-laboral">{{ plazaSeleccionada.marcaOcupacion }}</p>
+      </div>
+    </div>
+    <div class="flex flex-column mt-4">
+      <div class="flex align-items-center gap-4">
+        <i class="cme-hospital" style="color: #41ABD9; font-size: 2rem"></i>
+        <h4 class="titulo-detalle-oferta-laboral">Información del hospital</h4>
+      </div>
+      <div class="flex justify-content-between">
+        <p class="seccion-detalle-oferta-laboral">OOAD:</p>
+        <p class="texto-detalle-oferta-laboral">{{ plazaSeleccionada.hospital.ooad }}</p>
+      </div>
+      <div class="flex justify-content-between">
+        <p class="seccion-detalle-oferta-laboral">Unidad Médica:</p>
+        <p class="texto-detalle-oferta-laboral">{{ plazaSeleccionada.hospital.nombre }}</p>
+      </div>
+      <div class="flex justify-content-between">
+        <p class="seccion-detalle-oferta-laboral">Zona:</p>
+        <p class="texto-detalle-oferta-laboral">{{ plazaSeleccionada.hospital.zona }}</p>
+      </div>
+      <div class="flex justify-content-between">
+        <p class="seccion-detalle-oferta-laboral">Ubicación:</p>
+        <p class="texto-detalle-oferta-laboral align-last-right"
+           [appSplitByWidth]="plazaSeleccionada.hospital.direccion!"></p>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+  <div class="my-4 md:col-6 w-screen md:w-6 padding-compensacion">
+    <p-card class="empty-border bg-secondary-blue-oferta-laboral">
+      <div class="flex justify-content-between">
+        <p class="card-compensacion-titulo">Compensación</p>
+      </div>
+      <div class="flex">
+        <div class="flex col-12 flex-column p-0 mt-4">
+          <p class="card-compensacion-sub-titulo">Sueldo mensual</p>
+          <div class="flex justify-content-start gap-4 my-2">
+            <div class="flex flex-column">
+              <p class="card-compensacion-seccion">Estimado bruto</p>
+
+              <p
+                class="card-compensacion-titulo">{{ plazaSeleccionada.sueldoMensual.estimadoBruto |  currency:'USD':'symbol':'1.2-2' }}</p>
+            </div>
+            <div class="flex align-items-end">
+              <p class="card-compensacion-titulo">-</p>
+            </div>
+            <div class="flex flex-column">
+              <p class="card-compensacion-seccion">Estimado neto</p>
+              <p
+                class="card-compensacion-titulo">{{ plazaSeleccionada.sueldoMensual.estimadoNeto |  currency:'USD':'symbol':'1.2-2' }}</p>
+            </div>
+          </div>
+          <div class="flex justify-content-between p-0 mt-1">
+            <div class="col-6 flex justify-content-start p-0">
+              <p class="card-compensacion-seccion">Créditos:</p>
+            </div>
+            <div class="col-6 flex justify-content-start p-0">
+              <p
+                class="card-compensacion-seccion">{{ plazaSeleccionada.creditos }} {{ plazaSeleccionada.creditos! > 1 ? "Disponibles" : "Disponible" }}</p>
+            </div>
+          </div>
+          <div class="flex justify-content-between p-0 mt-1">
+            <div class="col-6 flex justify-content-start p-0">
+              <p class="card-compensacion-seccion">Bono difícil:</p>
+            </div>
+            <div class="col-6 flex justify-content-start p-0">
+              <p
+                class="card-compensacion-seccion">{{ plazaSeleccionada.bonoDificilCobertura ? plazaSeleccionada.bonoDificilCobertura : "No" }}</p>
+
+            </div>
+          </div>
+          <div class="flex justify-content-between p-0 mt-1">
+            <div class="col-6 flex justify-content-start p-0">
+              <p class="card-compensacion-seccion">Acceso a crédito:</p>
+            </div>
+            <div class="col-6 flex justify-content-start p-0">
+              <p class="card-compensacion-seccion">{{ plazaSeleccionada.accesoCredito ? 'Sí' : 'No' }}</p>
+            </div>
+          </div>
+          @if (plazaSeleccionada.accesoCredito) {
+            @if (plazaSeleccionada.creditoAutomotriz) {
+              <div class="flex justify-content-between p-0 mt-1">
+                <div class="col-6 flex justify-content-start p-0">
+                  <p class="card-compensacion-seccion">Crédito automotriz:</p>
+                </div>
+                <div class="col-6 flex justify-content-start p-0">
+                  <p class="card-compensacion-seccion">Monto máx {{ plazaSeleccionada.creditoAutomotriz }}
+
+                    <i class="pi pi-question-circle ms-2" style=" font-size: 1rem;" tooltipPosition="top"
+                       [pTooltip]="tooltipContent"></i>
+                    <ng-template #tooltipContent>
+                      <div class="flex items-center info-monto">
+                        {{ infoTexto(plazaSeleccionada.descuentoQuincenalCreditoAutomotriz) }}
+                      </div>
+                    </ng-template>
+
+
+                  </p>
+                </div>
+              </div>
+            }
+            @if (plazaSeleccionada.creditoHipotecario) {
+              <div class="flex justify-content-between p-0 mt-1">
+                <div class="col-6 flex justify-content-start p-0">
+                  <p class="card-compensacion-seccion">Crédito hipotecario:</p>
+                </div>
+                <div class="col-6 flex justify-content-start p-0">
+                  <p class="card-compensacion-seccion">Monto máx  {{ plazaSeleccionada.creditoHipotecario }}
+                    @if (plazaSeleccionada.creditoHipotecario) {
+                      <i class="pi pi-question-circle ms-2" style=" font-size: 1rem;" tooltipPosition="top"
+                         [pTooltip]="tooltipCredHipo"></i>
+                      <ng-template #tooltipCredHipo>
+                        <div class="flex items-center info-monto">
+                          {{ infoTexto(plazaSeleccionada.descuentoQuincenalCreditoHipotecario) }}
+                        </div>
+                      </ng-template>
+                    }
+                  </p>
+                </div>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+
+
+
+
+</div>
