@@ -3,8 +3,9 @@ import {DynamicDialogConfig} from 'primeng/dynamicdialog';
 import {SplitByWidthDirective} from '@directives/split-by-width.directive';
 import {Card} from 'primeng/card';
 import {CurrencyPipe} from '@angular/common';
-import {Rating} from 'primeng/rating';
 import {TooltipModule} from 'primeng/tooltip';
+import {EstadoOfertaService} from '@services/estado-oferta.service';
+import {Button} from 'primeng/button';
 
 @Component({
   selector: 'app-detalle-plaza',
@@ -12,7 +13,8 @@ import {TooltipModule} from 'primeng/tooltip';
     SplitByWidthDirective,
     CurrencyPipe,
     Card,
-    TooltipModule
+    TooltipModule,
+    Button
   ],
   templateUrl: './detalle-plaza.component.html',
   styleUrl: './detalle-plaza.component.scss',
@@ -25,15 +27,22 @@ export class DetallePlazaComponent implements OnInit{
   constructor(
     private readonly config: DynamicDialogConfig,
     private readonly currencyPipe: CurrencyPipe,
+    private readonly estadoOfertaService: EstadoOfertaService,
   ){
 
   }
 
   ngOnInit(){
-    debugger
     if (this.config?.data) {
     this.plazaSeleccionada = this.config.data;
     }
+
+    const nuevoEstado = {
+      titulo: "Cardiología",
+      subTitulo: "Medicina familiar",
+      badgeValue: true,
+    };
+    this.estadoOfertaService.actualizarEstado(nuevoEstado);
   }
 
 
