@@ -1,0 +1,83 @@
+@layer app-components {
+
+
+  :host ::ng-deep .p-tablist-tab-list {
+    justify-content: space-between !important;
+    overflow: scroll;
+    overflow-y: hidden;
+  }
+
+  :host ::ng-deep .p-tab {
+    min-width: 400px;
+    display: flex;
+    justify-content: center;
+  }
+
+
+  :host ::ng-deep .p-tablist-content {
+    max-width: 100%;
+  }
+
+  .p-tab > div > p{
+    color: var(--placeholder, #ADB8CC);
+
+    /* body */
+    font-family: "Noto Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .p-tab.p-tab-active > div > p{
+    color: var(--Label, #404041);
+    font-family: "Noto Sans";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  @media (max-width: 768px) {
+
+    :host ::ng-deep .p-tab {
+      min-width: fit-content;
+      margin-bottom: 10px;
+    }
+
+    :host ::ng-deep .p-tablist-active-bar {
+      background: #fff;
+      width: fit-content !important;
+    }
+
+    :host ::ng-deep .p-tablist-nav-button {
+      display: none !important;
+    }
+  }
+
+  @media screen and (min-width: 1100px) {
+    :host ::ng-deep .p-tablist-tab-list {
+      overflow: hidden;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .cme-deals {
+      display: none;
+    }
+
+
+    :host ::ng-deep .p-tablist-tab-list {
+      background-color: #dddddd;
+      border-color: transparent;
+    }
+
+    :host ::ng-deep .p-tab {
+      background-color: #ffffff;
+      margin-right: 16px;
+      border-radius: 10px 10px 0 0;
+    }
+
+  }
+
+}
