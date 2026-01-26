@@ -1,8 +1,7 @@
 import {Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
 import {GeneralComponent} from '@components/general.component';
-import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {OportunidadLaboral} from '@models/oportunidad-laboral.interface';
+import {FormBuilder,  FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {AsignacionService} from '@services/asignacion.service';
 import {Select} from 'primeng/select';
 import {selectData} from '@privado/asignacion-plazas/dummies';
@@ -10,14 +9,11 @@ import {InputText} from 'primeng/inputtext';
 import {Button} from 'primeng/button';
 import {PlazaDisponibleCardComponent} from '@components/plaza-disponible-card/plaza-disponible-card.component';
 import {FiltroConsultaPlazaInterface} from '@models/filtroConsultaPlaza.interface';
-import {DetalleOfertaLaboralComponent} from '@privado/detalle-oferta-laboral/detalle-oferta-laboral.component';
-import {FooterMedicoComponent} from '@pages/privado/shared/footer-medico/footer-medico.component';
 import {
   HeaderMedicoDetalleOfertaComponent
 } from '@pages/privado/shared/header-medico-detalle-oferta/header-medico-detalle-oferta.component';
 import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {DetallePlazaComponent} from '@privado/asignacion-plazas/components/detalle-plaza/detalle-plaza.component';
-import {CurrencyPipe} from '@angular/common';
 
 
 @Component({
@@ -25,11 +21,9 @@ import {CurrencyPipe} from '@angular/common';
   imports: [
     ReactiveFormsModule,
     PlazaDisponibleCardComponent,
-    DetallePlazaComponent,
     Select,
     InputText,
     Button,
-
   ],
   templateUrl: './plaza-ordinaria.component.html',
   styleUrl: './plaza-ordinaria.component.scss',

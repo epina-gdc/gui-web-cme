@@ -3,7 +3,6 @@ import {DynamicDialogConfig} from 'primeng/dynamicdialog';
 import {SplitByWidthDirective} from '@directives/split-by-width.directive';
 import {Card} from 'primeng/card';
 import {CurrencyPipe} from '@angular/common';
-import {Rating} from 'primeng/rating';
 import {TooltipModule} from 'primeng/tooltip';
 import {EstadoOfertaService} from '@services/estado-oferta.service';
 import {Button} from 'primeng/button';
