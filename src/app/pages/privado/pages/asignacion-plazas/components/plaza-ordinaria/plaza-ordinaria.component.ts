@@ -85,15 +85,15 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
   }
 
   show(plaza: any){
-    debugger
-
-
-
     this.ref = this.dialogService.open(DetallePlazaComponent, {
+      style:{
+        'border-bottom': '17px solid #41ABD9',
+        'border-radius': '9px'
+      },
       data: {...plaza},
       modal: true,
       width: '848px',
-      height: '85vh',
+      height: '50vh',
       focusOnShow: false,
       breakpoints: {
         '960px': '75vw',
