@@ -25,7 +25,16 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.cme-asignacion-mesas:before {
+
+.cme-sustitucion:before {
+  content: "\e92e";
+}
+
+.cme-coplamar:before {
+  content: "\e92d";
+}
+
+.cme-asignacion-mesa:before {
   content: "\e91a";
 }
 
