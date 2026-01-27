@@ -430,6 +430,35 @@
   line-height: 120%; /* 21.6px */
 }
 
+.titulo-menu-asignacion {
+  color: #404041;
+  font-family: "Noto Sans";
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.titulo-opcion-menu-asignacion{
+  color: #58595C;
+  font-family: "Noto Sans";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.sub-opcion-menu-asignacion {
+  color: var(--Label, #404041);
+  font-family: "Noto Sans";
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  white-space: nowrap;
+}
+
 
 @media screen and (min-width: 769px) {
   .login-titulo {
