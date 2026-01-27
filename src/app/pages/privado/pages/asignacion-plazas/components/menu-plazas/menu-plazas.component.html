@@ -1,0 +1,55 @@
+<div class="border-round-2xl bg-white p-3">
+  <p clasS="titulo-menu-asignacion m-3">{{tituloMenu()}}</p>
+
+  <p-accordion  value="-1">
+
+    <p-accordion-panel value="0">
+      <p-accordion-header>
+        <div class="flex align-items-center gap-2">
+          <i class="cme-gestion-plazas " [style]="{ 'font-size': '1.8rem'}"></i>
+          <p class="titulo-opcion-menu-asignacion">Gestión de Plazas</p>
+        </div>
+      </p-accordion-header>
+      <p-accordion-content>
+<!--        TODO: Agregar las opciones cuando se habiliten en FIGMA-->
+      </p-accordion-content>
+    </p-accordion-panel>
+
+    <p-accordion-panel value="1">
+      <p-accordion-header>
+        <div class="flex align-items-center gap-2">
+          <i class="cme-asignacion-mesa" [style]="{ 'font-size': '1.8rem'}"></i>
+          <p class="titulo-opcion-menu-asignacion">Asignaciones</p>
+        </div>
+      </p-accordion-header>
+      <p-accordion-content>
+          @for (op of opMenuAsignaciones; track op.value) {
+            <div class="sub-opcion my-2 p-3 border-round-lg cursor-pointer" (click)="seleccionarOpcion(op.value)"
+                 [ngClass]="{'seleccion': opcionSeleccionada() === op.value}"
+            >
+              <p class="sub-opcion-menu-asignacion"> {{ op.desc }}</p>
+            </div>
+          }
+      </p-accordion-content>
+    </p-accordion-panel>
+
+    <p-accordion-panel value="2" class="no-icono">
+      <p-accordion-header>
+        <div class="flex align-items-center gap-2">
+          <i class="cme-total" [style]="{ 'font-size': '1.8rem'}"></i>
+          <p class="titulo-opcion-menu-asignacion">Carga de Plazas</p>
+        </div>
+      </p-accordion-header>
+    </p-accordion-panel>
+
+    <p-accordion-panel value="3">
+      <p-accordion-header class="no-icono">
+        <div class="flex align-items-center gap-2">
+          <i class="cme-carga-calificaciones" [style]="{ 'font-size': '1.8rem'}"></i>
+          <p class="titulo-opcion-menu-asignacion">Carga de Calificaciones</p>
+        </div>
+      </p-accordion-header>
+    </p-accordion-panel>
+
+  </p-accordion>
+</div>
