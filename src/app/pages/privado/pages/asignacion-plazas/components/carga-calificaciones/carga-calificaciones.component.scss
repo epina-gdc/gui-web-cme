@@ -14,8 +14,17 @@
   }
   .texto-lista{
       white-space: pre-line;
-
   }
+
+  ul{
+    color: var(--gris-header-tabla, #58595C);
+    font-family: Arial;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 142.857% */
+  }
+
   .card-info-calificaciones{
     border-radius: 20px;
     background: #FFF;
@@ -99,9 +108,6 @@
     animation: pulseSmall 2s infinite ;
     z-index: 1;
   }
-
-
-
   .progress {
     width: 100%;
     height: 10px;
@@ -114,6 +120,25 @@
     height: 100%;
     background: #2563eb;
     transition: width 0.3s ease;
+  }
+
+  .interrumpido{
+    background: #DA1E28;
+  }
+  .completado{
+    background: #198038;
+  }
+
+  .ico-estatus{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    position: relative;
+    i{
+      position: absolute;
+      right: 29%;
+      top: 34%;
+    }
   }
 
 
