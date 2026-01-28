@@ -1,0 +1,134 @@
+<div class="flex gap-4">
+  <app-menu-plazas [tituloMenu]="'Carga de calificaciones'"></app-menu-plazas>
+  <div class="flex flex-column w-100 border-round-xl">
+    <div class="carga-calificaciones-background flex align-items-center border-round-md">
+      <div class="col-12 flex flex-column justify-content-center p-6">
+        <h2 class="titulo-asignaciones">Carga de calificaciones</h2>
+      </div>
+    </div>
+
+    <div class="mt-3 p-4 bg-white border-round-xl">
+
+      <div class="flex loader ">
+        <div class="loader-container">
+          <div class="outer-circle"></div>
+          <div class="inner-circle"></div>
+          <div class="pulse-small"></div>
+          <div class="pulse-large"></div>
+        </div>
+
+        <div class="flex flex-column w-full">
+          <p class="porcentaje-fecha-carga text-start">{{porcentaje()}}%</p>
+          <div class="progress">
+            <div class="progress-bar" [style.width.%]="porcentaje()"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex">
+        <div class="col-6">
+          <div class="flex justify-content-between">
+            <div class="flex">
+             <div class="calendario me-2">
+               <i class="cme-calendario-primero z-1" style="font-size: 1.5rem; color: #fff"></i>
+             </div>
+              <p class="ultima-fecha-entrega">Última fecha de carga</p>
+            </div>
+            <div class="flex w-auto justify-content-start p-3 gap-2 bg-card-indicador border-round-lg">
+              <div class="flex flex-column">
+                <p class="titulo-indicador-fecha">Fecha inicio</p>
+                <p class="indicador-fecha">12/08/2026</p>
+              </div>
+              <div class="flex flex-column">
+                <p class="titulo-indicador-fecha">Hora</p>
+                <p class="indicador-fecha">13:25:43</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="flex justify-content-between">
+            <div class="flex w-auto justify-content-start p-3 gap-2 bg-card-indicador border-round-lg">
+              <div class="flex flex-column">
+                <p class="titulo-indicador-fecha">Fecha fin</p>
+                <p class="indicador-fecha">-</p>
+              </div>
+              <div class="flex flex-column">
+                <p class="titulo-indicador-fecha">Hora</p>
+                <p class="indicador-fecha">-</p>
+              </div>
+            </div>
+            <div class="flex align-items-center">
+              <p-button type="button"  (onClick)="confCargaCalificaciones = true"  label="Cargar calificaciones"/>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="flex gap-3 mt-2">
+        <div class="w-100 p-3 bg-card-indicador border-round-lg">
+          <p class="titulo-totales-calificacion">Total de Médicos con calificación</p>
+          <div class="mt-1 border-top-2 border-indigo-200" >
+            <p class="totales-calificacion mt-2">7,650</p>
+          </div>
+        </div>
+        <div class="w-100 p-3 bg-card-indicador border-round-lg">
+          <p class="titulo-totales-calificacion">Total de Médicos sin calificación</p>
+          <div class="mt-1 border-top-2 border-indigo-200">
+            <p class="totales-calificacion mt-2">1,800</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="mt-3 bg-white border-round-xl">
+      <div class="border-bottom-3 border-cyan-50 my-3">
+        <p class="proceso-carga-calificacion m-3">Proceso de Carga de calificaciones</p>
+      </div>
+      <div class="flex justify-content-between">
+      <div class="p-3 w-full">
+        <div class="card-info-calificaciones p-3 ">
+          <p class="proceso-carga-calificacion">Proceso Automático</p>
+          <ul>
+            @for (proceso of listaProcesoAutomatico; track proceso) {
+              <li class="my-1"> <p class="texto-lista header-tab-documentacion">{{proceso}}</p> </li>
+            }
+          </ul>
+        </div>
+      </div>
+      <div class="p-3 w-full">
+        <div class="card-info-calificaciones p-3 h-full">
+          <p class="proceso-carga-calificacion">Importante</p>
+          <div class="mt-6">
+            <p class="header-tab-documentacion ">El sistema valida que la información esté cargada antes de permitir la generación de mesas.</p>
+
+          </div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<p-dialog
+  [(visible)]="confCargaCalificaciones"
+  [modal]="true"
+  [closable]="true"
+  [styleClass]="'dialog'"
+  [draggable]="false"
+  [resizable]="false"
+  [showHeader]="true">
+
+  <div class="flex justify-content-center mb-5">
+    <p>¿Está seguro de iniciar la carga de calificaciones?</p>
+  </div>
+
+  <div class="flex justify-content-end">
+    <p-button variant="outlined" label="Cancelar" severity="warn"
+              class="me-3"/>
+    <p-button variant="outlined" label="Sí, confirmar" />
+
+  </div>
+</p-dialog>

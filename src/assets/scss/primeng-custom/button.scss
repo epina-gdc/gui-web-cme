@@ -15,7 +15,8 @@
     --p-badge-warn-color:#E9080C;
     --p-button-outlined-danger-hover-background: #E9080C;
     --p-button-outlined-warn-color: #e9080c;
-    --p-button-outlined-secondary-color: #41ABD9
+    --p-button-outlined-secondary-color: #41ABD9;
+    -p-button-outlined-warn-border-color: #E9080C;
   }
 
 
@@ -90,7 +91,7 @@
   }
 
   .p-button-outlined.p-button-warn {
-    border-color: var(--p-button-outlined-warn-border-color);
+    border-color: #E9080C;
     color: var(--p-button-outlined-warn-color);
   }
 
@@ -102,12 +103,12 @@
 
   .p-button-outlined.p-button-warn:not(:disabled):hover {
     background: var(--p-button-outlined-warn-color);
-    border-color: var(--p-button-outlined-warn-border-color);
+    border-color: #E9080C;
     color: var(--gob-mx-base-blanco);
   }
 
 
-  .p-button-outlined.p-button-secondary {
+  /*.p-button-outlined.p-button-secondary {
     border-color: var(--p-button-outlined-secondary-color);
     color: var(--p-button-outlined-secondary-color);
   }
@@ -122,6 +123,6 @@
     background: var(--p-button-secondary-active-background);
     border-color: var(--gob-mx-base-blanco);
     color: var(--p-button-primary-hover-color);
-  }
+  }*/
 
 }

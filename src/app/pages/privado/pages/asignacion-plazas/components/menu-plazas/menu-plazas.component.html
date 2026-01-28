@@ -1,8 +1,7 @@
-<div class="border-round-2xl bg-white p-3">
-  <p clasS="titulo-menu-asignacion m-3">{{tituloMenu()}}</p>
+<div class="border-round-2xl bg-white h-full p-2">
+  <p clasS="titulo-menu-asignacion m-3">{{tituloMenu}}</p>
 
   <p-accordion  value="-1">
-
     <p-accordion-panel value="0">
       <p-accordion-header>
         <div class="flex align-items-center gap-2">
@@ -43,7 +42,7 @@
     </p-accordion-panel>
 
     <p-accordion-panel value="3">
-      <p-accordion-header class="no-icono">
+      <p-accordion-header class="no-icono" [routerLink]="'privado/carga-calificaciones'">
         <div class="flex align-items-center gap-2">
           <i class="cme-carga-calificaciones" [style]="{ 'font-size': '1.8rem'}"></i>
           <p class="titulo-opcion-menu-asignacion">Carga de Calificaciones</p>

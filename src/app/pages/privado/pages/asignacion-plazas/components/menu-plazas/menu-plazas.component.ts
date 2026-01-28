@@ -1,6 +1,7 @@
-import {Component, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, Input, OnInit, signal, WritableSignal} from '@angular/core';
 import {AccordionModule} from 'primeng/accordion';
 import {CommonModule} from '@angular/common';
+import {RouterLink} from '@angular/router';
 
 
 @Component({
@@ -8,13 +9,14 @@ import {CommonModule} from '@angular/common';
   imports: [
     AccordionModule,
     CommonModule,
+    RouterLink,
   ],
   templateUrl: './menu-plazas.component.html',
   styleUrl: './menu-plazas.component.scss'
 })
 export class MenuPlazasComponent implements OnInit{
 
-  tituloMenu: WritableSignal<string> = signal("");
+  @Input()  tituloMenu: string = 'Menú';
   opcionSeleccionada: WritableSignal<number> = signal(0);
 
 
@@ -40,7 +42,6 @@ export class MenuPlazasComponent implements OnInit{
   ];
 
   ngOnInit() {
-    this.tituloMenu.set("Menú")
   }
 
 

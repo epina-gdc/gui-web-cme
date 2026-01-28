@@ -13,6 +13,9 @@ import {documentacionAspiranteResolver} from '../../core/resolvers/documentacion
 import { verficacionDocsResolver } from '../../core/resolvers/verificacion-docs.resolver';
 import { OfertaLaboralComponent } from './pages/oferta-laboral/oferta-laboral.component';
 import {AsignacionPlazasComponent} from '@privado/asignacion-plazas/asignacion-plazas.component';
+import {
+  CargaCalificacionesComponent
+} from '@privado/asignacion-plazas/components/carga-calificaciones/carga-calificaciones.component';
 
 const routes: Routes = [{
   path: '',
@@ -60,11 +63,11 @@ const routes: Routes = [{
     {
       path: NAV.asignacion,
       component: AsignacionPlazasComponent,
-
-
     },
-
-
+    {
+      path: NAV.cargaCalificaciones,
+      component: CargaCalificacionesComponent,
+    },
   ]
 }];
 
