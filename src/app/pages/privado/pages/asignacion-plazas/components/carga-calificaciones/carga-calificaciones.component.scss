@@ -1,0 +1,134 @@
+@layer app-components {
+
+  :host ::ng-deep .p-dialog {
+    border-top: 10px solid #0f9b9b !important;
+    border-radius: 10px;
+  }
+
+  :host ::ng-deep .p-dialog-header{
+    background: #FAFBFE;
+  }
+
+  .bg-card-indicador{
+    background: #EAF2FB;
+  }
+  .texto-lista{
+      white-space: pre-line;
+
+  }
+  .card-info-calificaciones{
+    border-radius: 20px;
+    background: #FFF;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  .calendario{
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #5688bf;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .calendario::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #65A0E0;
+    transform: translate(1%, -44%);
+    border-radius: 92px;
+    width: 100px;
+    height: 51px;
+  }
+
+
+  .loader-container {
+    position: relative;
+    width: 60px;
+    height: 80px;
+  }
+
+  .outer-circle {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border: 3px solid #2563eb; /* azul */
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+
+  .inner-circle {
+    position: absolute;
+    width: 9px;
+    height: 9px;
+    background-color: #2563eb;
+    border-radius: 50%;
+    top: 16px;
+    left: 15px;
+    z-index: 3;
+  }
+
+  .pulse-large {
+    position: absolute;
+    width: 21px;
+    height: 21px;
+    border: 3px solid rgba(37, 99, 235, 0.3);
+    border-radius: 50%;
+    top: 10px;
+    left: 9px;
+    opacity: 0;
+    animation: pulseLarge 2s infinite ;
+    z-index: 1;
+  }
+
+  .pulse-small {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border: 3px solid rgba(37, 99, 235, 0.2);
+    border-radius: 50%;
+    top: 13px;
+    left: 12px;
+    opacity: 0;
+    animation: pulseSmall 2s infinite ;
+    z-index: 1;
+  }
+
+
+
+  .progress {
+    width: 100%;
+    height: 10px;
+    background: #e5e7eb;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: #2563eb;
+    transition: width 0.3s ease;
+  }
+
+
+  @keyframes pulseSmall {
+    0%   { opacity: 0; }
+    20%  { opacity: 1; }
+    80%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  @keyframes pulseLarge {
+    0%   { opacity: 0; }
+    40%  { opacity: 0; }
+    60%  { opacity: 1; }
+    80%  { opacity: 1; }
+    100% { opacity: 0; }
+  }
+}

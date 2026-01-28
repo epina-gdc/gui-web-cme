@@ -459,6 +459,93 @@
   white-space: nowrap;
 }
 
+.titulo-asignaciones{
+  color: var(--baseBlanco, #FCFBFE);
+  text-align: center;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-family: "Noto Sans";
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%; /* 48px */
+}
+
+.ultima-fecha-entrega{
+  color: #294254;
+  font-family: "Noto Sans";
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.titulo-indicador-fecha{
+  color: #374854;
+  /* Body R 12 */
+  font-family: "Noto Sans";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.indicador-fecha{
+  color: #374854;
+
+  /* Body SB 16 */
+  font-family: "Noto Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.titulo-totales-calificacion{
+  color: #294254;
+  font-family: "Noto Sans";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.totales-calificacion{
+  color: #374854;
+  font-family: "Noto Sans";
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+.proceso-carga-calificacion{
+  color: #374957;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-family: "Noto Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%; /* 19.2px */
+}
+
+.porcentaje-fecha-carga {
+  color: var(--Neutral-Gray-90, #262626);
+  text-align: center;
+  font-family: "Noto Sans";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 28px; /* 140% */
+}
+
+.confirm-dialogo-menssaje{
+  color:  #44474C;
+  text-align: center;
+  font-family: "Noto Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
 
 @media screen and (min-width: 769px) {
   .login-titulo {

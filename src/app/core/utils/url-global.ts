@@ -10,5 +10,6 @@ export const NAV = {
   verificacionDocumentos: 'verificacion-documentos',
   ofertaLaboral: 'oferta-laboral',
   asignacion: 'asignacion',
+  cargaCalificaciones: 'carga-calificaciones',
   home: 'inicio',
 };
