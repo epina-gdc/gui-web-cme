@@ -10,17 +10,31 @@
     <div class="mt-3 p-4 bg-white border-round-xl">
 
       <div class="flex loader ">
-        <div class="loader-container">
-          <div class="outer-circle"></div>
-          <div class="inner-circle"></div>
-          <div class="pulse-small"></div>
-          <div class="pulse-large"></div>
-        </div>
+        @if(this.estatus() == 1){
+          <div class="loader-container">
+            <div class="outer-circle"></div>
+            <div class="inner-circle"></div>
+            <div class="pulse-small"></div>
+            <div class="pulse-large"></div>
+          </div>
+        }@else{
+          <div class="ico-estatus me-3"
+               [ngClass]="{'interrumpido': estatus() == 3, 'completado': this.estatus() == 2}">
+            <i
+              [ngClass]="{'cme-check': this.estatus() == 2, 'cme-cross': this.estatus() == 3}"
+              style="font-size: 1.2rem;"></i>
+          </div>
+        }
 
         <div class="flex flex-column w-full">
-          <p class="porcentaje-fecha-carga text-start">{{porcentaje()}}%</p>
+          <div class="flex align-items-center">
+            <p class="porcentaje-fecha-carga text-start me-3">{{porcentaje()}}%</p>
+            <p class="texto-procesando">{{textoEstatus()}}</p>
+          </div>
           <div class="progress">
-            <div class="progress-bar" [style.width.%]="porcentaje()"></div>
+            <div
+              [ngClass]="{'interrumpido': estatus() == 3, 'completado': this.estatus() == 2, 'progress-bar': this.estatus() == 1}"
+              [style.width.%]="porcentaje()"></div>
           </div>
         </div>
       </div>
@@ -77,7 +91,6 @@
             <p class="totales-calificacion mt-2">1,800</p>
           </div>
         </div>
-
       </div>
     </div>
     <div class="mt-3 bg-white border-round-xl">
@@ -100,11 +113,9 @@
           <p class="proceso-carga-calificacion">Importante</p>
           <div class="mt-6">
             <p class="header-tab-documentacion ">El sistema valida que la información esté cargada antes de permitir la generación de mesas.</p>
-
           </div>
         </div>
       </div>
-
       </div>
     </div>
 

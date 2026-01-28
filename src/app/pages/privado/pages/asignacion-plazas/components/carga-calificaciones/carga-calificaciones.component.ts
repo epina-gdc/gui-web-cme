@@ -1,7 +1,8 @@
-import {Component, signal, WritableSignal} from '@angular/core';
+import {Component, OnInit, signal, computed,  WritableSignal} from '@angular/core';
 import {MenuPlazasComponent} from '@privado/asignacion-plazas/components/menu-plazas/menu-plazas.component';
 import {Button} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
+import {CommonModule} from '@angular/common';
 
 
 
@@ -10,17 +11,48 @@ import {DialogModule} from 'primeng/dialog';
   imports: [
     MenuPlazasComponent,
     Button,
-    DialogModule
+    DialogModule,
+     CommonModule
   ],
   templateUrl: './carga-calificaciones.component.html',
   styleUrl: './carga-calificaciones.component.scss',
 })
-export class CargaCalificacionesComponent {
+export class CargaCalificacionesComponent implements OnInit{
 
   confCargaCalificaciones: boolean = false;
+  tipoEstatus: { estatus: number, descripcion: string }[] = [
+    { estatus: 1, descripcion: 'Procesando...' },
+    { estatus: 2, descripcion: 'Completado' },
+    { estatus: 3, descripcion: 'Proceso interrumpido' },
+  ];
+
+  porcentaje: WritableSignal<number> = signal(0);
+  estatus: WritableSignal<number> = signal(3);
+
+  textoEstatus = computed(() => {
+    return this.tipoEstatus
+      .find(x => x.estatus === this.estatus())
+      ?.descripcion ?? '';
+  });
+
 
   constructor() {
 
+  }
+
+
+  ngOnInit() {
+
+    this.estatus.set(1);
+
+    const intervalo = setInterval(()=>{
+      if (this.porcentaje() < 100) {
+        this.porcentaje.update((a)=> a + 1);
+      }else {
+        clearInterval(intervalo);
+        this.estatus.set(2);
+      }
+    },50);
   }
 
 
@@ -30,14 +62,6 @@ export class CargaCalificacionesComponent {
     "No se requiere intervención adicional del usuario",
     "Si existe una interrupción en el proceso de carga, intentar nuevamente.\n Si el error persiste comunícate con el administrador del sistema."
   ];
-
-  porcentaje: WritableSignal<number> = signal(666);
-
-
-  abrirModalConfirmarCargaCalificaciones(): void {
-
-
-  }
 
 
 }
