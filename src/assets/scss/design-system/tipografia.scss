@@ -557,6 +557,42 @@
   line-height: normal;
 }
 
+.titulo-seccion-asignacion{
+  color: #6776A8;
+  font-family: "Noto Sans";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.titulo-card-aspirante{
+  color: #000;
+  font-family: "Noto Sans";
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.subtitulo-card-aspirante{
+  color: #000;
+  font-family: "Noto Sans";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.texto-escanear-qr{
+  color: #101828;
+  text-align: center;
+  font-family: Arial;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 36px; /* 120% */
+}
+
 
 @media screen and (min-width: 769px) {
   .login-titulo {
