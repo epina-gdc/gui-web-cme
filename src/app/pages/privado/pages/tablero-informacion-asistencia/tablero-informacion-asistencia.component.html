@@ -1,0 +1,123 @@
+<div class="flex gap-4">
+  <app-menu-plazas [tituloMenu]="'Menú'"></app-menu-plazas>
+  <div class="flex flex-column w-full">
+    <div class="flex justify-content-between align-items-center">
+      <div>
+        <span class="titulo-seccion-asignacion">Tablero de información de asistencia</span>
+      </div>
+      <div class="flex">
+        <i class="cme-impresora me-2" style="font-size: 1.6rem; color: #018699;"></i>
+        <span class="etiqueta-icono ">Imprimir reporte</span>
+      </div>
+    </div>
+
+    <div class="p-2 border-round-xl bg-white">
+
+      <form [formGroup]="filtroForm">
+        <div class="flex p-2">
+          <div class="flex lg:col-10 col-12">
+            <div class="col">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="fecha">Fecha</label>
+              </div>
+              <p-datepicker formControlName="fecha" [style]="{ 'width': '100%' }"
+                            [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" />
+            </div>
+            <div class="col">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="turno">Turno</label>
+              </div>
+              <p-select formControlName="turno" [options]="dropDummie" optionLabel="label"
+                        placeholder="Selecciona un turno" class="w-full"/>
+            </div>
+            <div class="col">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="tipoAsistencia">Tipo de asistencia</label>
+              </div>
+              <p-select formControlName="tipoAsistencia" [options]="dropDummie" optionLabel="label"
+                        placeholder="Selecciona un tipo" class="w-full"/>
+            </div>
+          </div>
+          <div class="lg:col-2 col-12 flex align-items-center">
+            <div class="flex align-items-center justify-content-between">
+              <p-button type="button" class="w-full" variant="outlined" label="Limpiar" />
+              <p-button type="button" class="w-full" label="Buscar"   />
+            </div>
+
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="flex gap-3 justify-content-between my-4">
+
+
+      <div class="flex align-items-center p-3 bg-white border-round-xl w-full">
+        <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5" style="background-color: #B0E0ED;">
+          <i class="cme-citados p-3" style=" color: #597190;"></i>
+        </div>
+        <div class="flex flex-column">
+          <div class="flex">
+            <span class="login-card-titulo me-2">12,746 12312</span>
+            <span class="nombre-medico text-gray-600">Total citados</span>
+          </div>
+          <span class="detalle-card-asistencia">Internos: 8234</span>
+          <span class="detalle-card-asistencia">Externos: 4512</span>
+        </div>
+      </div>
+      <div class="flex align-items-center p-3 bg-white border-round-xl w-full">
+        <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5" style="background-color: #C0FBD2;">
+          <i class="cme-citados p-3" style=" color: #00B738;"></i>
+        </div>
+        <div class="flex flex-column">
+          <div class="flex">
+            <span class="login-card-titulo me-2">12,550</span>
+            <span class="nombre-medico text-gray-600">Asistieron</span>
+          </div>
+          <span class="detalle-card-asistencia">Internos: 9800</span>
+          <span class="detalle-card-asistencia">Externos: 2750</span>
+        </div>
+      </div>
+      <div class="flex align-items-center p-3 bg-white border-round-xl w-full">
+        <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5" style="background-color: #FFBEBE;">
+          <i class="cme-citados p-3" style=" color: #DE6767;;"></i>
+        </div>
+        <div class="flex flex-column">
+          <div class="flex">
+            <span class="login-card-titulo me-2">196</span>
+            <span class="nombre-medico text-gray-600">No asistieron</span>
+          </div>
+          <span class="detalle-card-asistencia">Internos: 120</span>
+          <span class="detalle-card-asistencia">Externos: 76</span>
+        </div>
+      </div>
+
+
+
+
+
+      <div class="flex align-items-center p-3 bg-white border-round-xl w-full">
+        <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5" style="background-color: #ADB8CC;">
+          <i class="cme-citados p-3" style=" color: #597190;"></i>
+        </div>
+        <div class="flex flex-column">
+          <div class="flex">
+            <span class="login-card-titulo me-2">98.46%</span>
+            <span class="nombre-medico text-gray-600">Asistieron</span>
+          </div>
+          <span class="detalle-card-asistencia">Internos: 98.00%</span>
+          <span class="detalle-card-asistencia">Externos: 97.25</span>
+        </div>
+      </div>
+
+
+
+
+
+
+    </div>
+
+
+
+  </div>
+</div>

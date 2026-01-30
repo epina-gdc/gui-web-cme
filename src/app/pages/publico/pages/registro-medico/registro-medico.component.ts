@@ -722,6 +722,8 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
     }
 
+    debugger
+
     this._RegistroMedicoService.getDatosByMatricula(datos).subscribe({
       next: (response: any) => {
         if (!response.exito) {
