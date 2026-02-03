@@ -16,6 +16,10 @@ import {AsignacionPlazasComponent} from '@privado/asignacion-plazas/asignacion-p
 import {
   CargaCalificacionesComponent
 } from '@privado/asignacion-plazas/components/carga-calificaciones/carga-calificaciones.component';
+import {VisualizacionAsistenciaComponent} from '@privado/visualizacion-asistencia/visualizacion-asistencia.component';
+import {
+  TableroInformacionAsistenciaComponent
+} from '@privado/tablero-informacion-asistencia/tablero-informacion-asistencia.component';
 
 const routes: Routes = [{
   path: '',
@@ -67,6 +71,14 @@ const routes: Routes = [{
     {
       path: NAV.cargaCalificaciones,
       component: CargaCalificacionesComponent,
+    },
+    {
+      path: NAV.visualizacionAsistencia,
+      component: VisualizacionAsistenciaComponent,
+    },
+    {
+      path: NAV.tableroInformacionAsistencia,
+      component: TableroInformacionAsistenciaComponent,
     },
   ]
 }];

@@ -1,10 +1,10 @@
 @font-face {
   font-family: 'icomoon';
-  src:  url('../../../../public/assets/fonts/icomoon.eot?9n748k');
-  src:  url('../../../../public/assets/fonts/icomoon.eot?9n748k#iefix') format('embedded-opentype'),
-  url('../../../../public/assets/fonts/icomoon.ttf?9n748k') format('truetype'),
-  url('../../../../public/assets/fonts/icomoon.woff?9n748k') format('woff'),
-  url('../../../../public/assets/fonts/icomoon.svg?9n748k#icomoon') format('svg');
+  src:  url('../../../../public/assets/fonts/icomoon.eot?eargqm');
+  src:  url('../../../../public/assets/fonts/icomoon.eot?eargqm#iefix') format('embedded-opentype'),
+  url('../../../../public/assets/fonts/icomoon.ttf?eargqm') format('truetype'),
+  url('../../../../public/assets/fonts/icomoon.woff?eargqm') format('woff'),
+  url('../../../../public/assets/fonts/icomoon.svg?eargqm#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -26,8 +26,16 @@
 }
 
 
+.cme-citados:before {
+  content: "\e932";
+}
+
 .cme-cross:before {
   content: "\e930";
+}
+
+.cme-numero-mesa:before {
+  content: "\e931";
 }
 
 .cme-sustitucion:before {
