@@ -63,7 +63,7 @@ export class AsistenciaExtraordinariaComponent {
                 curp: 'BBPA841316HDFLRR01',
                 rfc: 'BBPA841316HDF',
                 especialidades: ['Cardiología', 'Anestesiología pediátrica', 'Neumología'],
-                fotoUrl: 'https://upload.wikimedia.org/wikipedia/commons/3/33/Reuni%C3%A3o_com_o_ator_norte-americano_Keanu_Reeves_%2846806576944%29_%28cropped%29.jpg', // Placeholder
+                fotoUrl: 'https://www.femalefirst.co.uk/image-library/partners/bang/land/1000/r/robin-hood-actor-jack-patten-aW1hZ2VzMS8yMDI1LzExLzAzLzE3NjI.jpg', // Placeholder
                 fecha: '15 de Mayo, 2025',
                 hora: '07:00 Hrs.',
                 mesa: 'Mesa 5',
