@@ -12,5 +12,6 @@ export const NAV = {
   asignacion: 'asignacion',
   cargaCalificaciones: 'carga-calificaciones',
   visualizacionAsistencia: 'visualizacion-asistencia',
+  tableroInformacionAsistencia: 'tablero-informacion',
   home: 'inicio',
 };

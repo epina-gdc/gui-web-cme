@@ -593,6 +593,25 @@
   line-height: 36px; /* 120% */
 }
 
+.etiqueta-icono{
+  color: #018699;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-family: Montserrat;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.detalle-card-asistencia{
+  color: #404041;
+  font-family: "Noto Sans";
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%; /* 13.2px */
+}
+
 
 @media screen and (min-width: 769px) {
   .login-titulo {
