@@ -5,6 +5,16 @@
 @use "assets/scss/primeng-custom/index" as customprimeng;
 @use "assets/scss/icons/index" as icons;
 
+@layer tailwind-base {
+  @tailwind base;
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+@layer framework, tailwind-base, primeng-base, primeng, app-components,tailwind-utilities;
 /* src/styles.css */
 @layer framework {
   .navbar-expand-md .navbar-nav {
@@ -23,6 +33,9 @@
 @layer app-components {
 
   :root {
+
+    --p-text-muted-color: #ADB8CC;
+
     --cme-max-width: 1440px;
 
     @media screen and (min-width: 1440px) {

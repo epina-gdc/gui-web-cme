@@ -20,6 +20,7 @@ import {VisualizacionAsistenciaComponent} from '@privado/visualizacion-asistenci
 import {
   TableroInformacionAsistenciaComponent
 } from '@privado/tablero-informacion-asistencia/tablero-informacion-asistencia.component';
+import { AsignacionMesaComponent } from './pages/asignacion-mesa/asignacion-mesa/asignacion-mesa.component';
 
 const routes: Routes = [{
   path: '',
@@ -79,6 +80,10 @@ const routes: Routes = [{
     {
       path: NAV.tableroInformacionAsistencia,
       component: TableroInformacionAsistenciaComponent,
+    },
+    {
+      path: NAV.asignacionMesa,
+      component: AsignacionMesaComponent,
     },
   ]
 }];

@@ -1,1 +1,28 @@
-<p>asignacion-mesa works!</p>,
+<p class="titulo-seccion-asignacion">Control de Asistencia Médica</p>
+<div class="py-1 px-4 md:bg-white border-round-xl mb-4 mt-4">
+    <p-tabs [value]="tab" >
+        <p-tablist class="tab-list-asig-mesa text-[14px]" >
+            <p-tab [value]="0" (click)="tab = 0" class="col flex justify-content-center ">
+                <div class="flex align-items-center gap-2"  >
+                    <i class="pi pi-file-check"></i>
+                    <span >Asignación de mesas</span>
+                </div>
+            </p-tab>
+            <p-tab [value]="1" (click)="tab = 1" class="col flex justify-content-center">
+                <div class="flex align-items-center gap-2" >
+                    <i class="pi pi-calendar" ></i>
+                    <span > Citas</span>
+                </div>
+            </p-tab>
+        </p-tablist>
+    </p-tabs>
+</div>
+@switch (tab) {
+@case (0) {
+    <app-buscar-convocatoria/>
+}
+@case (1) {
+
+}
+
+}
