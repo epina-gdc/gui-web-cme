@@ -612,6 +612,19 @@
   line-height: 120%; /* 13.2px */
 }
 
+.sin-resultados{
+  color: var(--Grises-Gris-tono3, #A9A8A9);
+  text-align: center;
+  font-feature-settings: 'liga' off, 'clig' off;
+
+  /* NotoGob/H6 M Body Text */
+  font-family: "Noto Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%; /* 19.2px */
+}
+
 
 @media screen and (min-width: 769px) {
   .login-titulo {
