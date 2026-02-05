@@ -1,10 +1,17 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Component } from '@angular/core';
+import { ConfiguracionComponent } from "./components/configuracion/configuracion.component";
+import { DetalleMesasComponent } from "./components/detalle-mesas/detalle-mesas.component";
+
 
 @Component({
   selector: 'app-mesas',
-  imports: [],
+  imports: [
+    ConfiguracionComponent,
+    DetalleMesasComponent
+],
   templateUrl: './mesas.component.html',
   styleUrl: './mesas.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MesasComponent { }
+export class MesasComponent {
+  
+}

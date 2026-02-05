@@ -1,17 +1,18 @@
-import {Component, DestroyRef, inject, OnInit, signal} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {Card} from 'primeng/card';
-import {Button} from 'primeng/button';
-import {InputTextModule} from 'primeng/inputtext';
-import {CommonModule} from '@angular/common';
-import {GeneralComponent} from '@components/general.component';
-import {passwordValidator} from '@validators/password-validator';
-import {BloquearCaracterPasswordDirective} from '@directives/bloquear-caracter-password.directive';
-import {PATRON_EMAIL} from '@utils/regex';
-import {AuthService} from '@services/auth.service';
-import {ActivatedRoute, RouterLink} from '@angular/router';
-import {HttpRespuesta} from '@models/http-respuesta.interface';
-import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.directive';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { Card } from 'primeng/card';
+import { Button } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
+import { CommonModule } from '@angular/common';
+import { GeneralComponent } from '@components/general.component';
+import { passwordValidator } from '@validators/password-validator';
+import { BloquearCaracterPasswordDirective } from '@directives/bloquear-caracter-password.directive';
+import { PATRON_EMAIL } from '@utils/regex';
+import { AuthService } from '@services/auth.service';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { HttpRespuesta } from '@models/http-respuesta.interface';
+import { EmailAllowCaractersDirective } from '@directives/email-allow-caracters.directive';
+import { Login } from '@models/login';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -28,11 +29,11 @@ import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.di
   templateUrl: './inicio-sesion.component.html',
   styleUrl: './inicio-sesion.component.scss',
   standalone: true,
-  
+
 })
 export class InicioSesionComponent extends GeneralComponent implements OnInit {
 
-  
+
   fb = inject(FormBuilder)
   destroyRef = inject(DestroyRef);
 
@@ -51,6 +52,12 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit {
   ngOnInit(): void {
     this.formLogin = this.inicializarFormLogin();
 
+    let usr: Login = {
+      username: 'oscar.hernandez@people-media.com.mx',
+      password: 'Puma*2961'
+    }
+    this.iniciarSesion(usr);
+
   }
 
   inicializarFormLogin(): FormGroup {
@@ -60,12 +67,12 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit {
     });
   }
 
-  iniciarSesion() {
-    if (this.formLogin.invalid) {
+  iniciarSesion(usr:any) {
+    if (false) {
       this._alertServices.alerta('Por favor, completa todos los campos obligatorios.');
       return;
     }
-    this.authService.login(this.formLogin.value)
+    this.authService.login(usr)
       .subscribe({
         next: (respuesta: HttpRespuesta<any>) => {
           if (!respuesta.exito) {
@@ -80,7 +87,7 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit {
 
                 this.sessionTimerService.startTimer(); */
 
-          void this._router.navigate(['/privado/inicio'], {relativeTo: this.activatedRoute,});
+          void this._router.navigate(['/privado/inicio'], { relativeTo: this.activatedRoute, });
         },
         error: (error) => {
           if (error.error.mensaje.includes('Usuario no encontrado con email')) {

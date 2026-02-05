@@ -1,5 +1,96 @@
-<p-card >
-    <p class="m-0">
-        Lorem ipsum dolor sit amet...
-    </p>
+<p-card class=" empty-border">
+    <!-- Formulario -->
+    <p-card class="empty-border p-4">
+        <form [formGroup]="formulario">
+            <div class=" flex gap-4 flex-colum md:flex-row ">
+                <div class="flex-grow-1">
+                    <div class="formgrid grid gap-4">
+                        <div class="field col">
+                            <label class="field-label" for="convocatoriaId">No. de convocatoria</label>
+                            <p-select [options]="convocatorias" formControlName="convocatoriaId"
+                                placeholder="Selecciona una convocatoria" optionLabel="nombre" optionValue="id"
+                                class="w-full"></p-select>
+                        </div>
+
+                        <div class="field col ">
+                            <label class="field-label" for="mesas">No. de mesas disponibles</label>
+                            <p-select [options]="mesasDisponibles" formControlName="mesas"
+                                placeholder="Selecciona número de mesas" optionLabel="label" optionValue="value"
+                                class="w-full"></p-select>
+                        </div>
+
+                        <div class="field col ">
+                            <label class="field-label" for="medicos">No. de médicos por mesa</label>
+                            <p-select [options]="medicosPorMesa" formControlName="medicos"
+                                placeholder="Selecciona médicos por mesa" optionLabel="label" optionValue="value"
+                                class="w-full"></p-select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-none" style="width:213px">
+                    <button pButton label="Guardar configuración" icon="pi pi-save"
+                        class="bg-green-500 hover:bg-green-600 text-white" (click)="guardarConfiguracion()"
+                        [disabled]="formulario.invalid"></button>
+                </div>
+            </div>
+
+
+        </form>
+
+    </p-card>
+
+    <!-- Tabla -->
+    <p-card class="empty-border">
+        <h3 class="text-lg font-semibold mb-4">Tabla de convocatorias</h3>
+
+        <p-table [value]="convocatoriasTabla" [rows]="10" [rowsPerPageOptions]="[5, 10, 20]" [autoLayout]="true"
+            [responsive]="true" responsiveLayout="scroll">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>No. de convocatoria</th>
+                    <th>No. de mesas disponibles</th>
+                    <th>No. de médicos por mesa</th>
+                    <th>Estatus</th>
+                    <th>% de configuración</th>
+                    <th>Acciones</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-row>
+                <tr>
+                    <td><a href="#" class="text-blue-600 hover:underline">{{ row.nombre }}</a></td>
+                    <td>{{ row.mesas }}</td>
+                    <td>{{ row.medicosPorMesa }}</td>
+                    <td>
+                        <span class="p-tag p-tag-info" *ngIf="row.estatus === 'Pendiente'">{{ row.estatus }}</span>
+                        <span class="p-tag p-tag-success" *ngIf="row.estatus === 'Completada'">{{ row.estatus
+                            }}</span>
+                    </td>
+                    <td>{{ row.porcentaje }}%</td>
+                    <td>
+                        <p-menu #menu [model]="accionesMenu" [popup]="true"></p-menu>
+                        <button pButton icon="pi pi-ellipsis-v" (click)="menu.toggle($event)"
+                            class="p-button-text"></button>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+        <p-paginator class="paginator-oferta" (onPageChange)="cambiarPagina($event)" [first]="first" [rows]="rows"
+            [totalRecords]="totalElementos">
+            <ng-template pTemplate="previouspagelinkicon">
+                <div class="flex align-items-center">
+                    <span class="pi pi-chevron-left text-xl font-normal mr-2"></span>
+                    <span class="font-semibold mr-5">Anterior</span>
+                </div>
+            </ng-template>
+            <ng-template pTemplate="nextpagelinkicon">
+                <div class="flex align-items-center">
+                    <span class="font-semibold ml-5">Siguiente</span>
+                    <span class="pi pi-chevron-right text-xl font-normal ml-2"></span>
+                </div>
+            </ng-template>
+        </p-paginator>
+    </p-card>
 </p-card>
