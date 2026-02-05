@@ -9,7 +9,8 @@ import { InputTextModule } from 'primeng/inputtext';
   imports: [
     IconFieldModule,
     InputIconModule,
-    InputTextModule],
+    InputTextModule,
+],
   templateUrl: './conteo.component.html',
   styleUrl: './conteo.component.scss',
 })

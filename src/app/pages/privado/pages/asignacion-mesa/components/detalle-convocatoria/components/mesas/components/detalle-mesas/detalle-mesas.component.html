@@ -18,7 +18,7 @@
             @for (mesa of mesas; track mesa.id; let i = $index) {
             @let bgColorClass = i % 2 === 0 ? 'mesa-amarilla' : 'mesa-azul';
             <div class="col-12 sm:col-6 md:col-20 lg:col-20 xl:col-20 ">
-                <div class="card-mesa p-3 rounded-lg border-0 h-full position-relative" [class]="bgColorClass">
+                <div class="card-mesa p-3 border-round-xl border-0 h-full position-relative" [class]="bgColorClass">
                     <div class="mb-4">
                         <div class="">
                             <span class="font-semibold text-3xl">{{ mesa.nombre }}</span>
