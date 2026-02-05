@@ -557,6 +557,74 @@
   line-height: normal;
 }
 
+.titulo-seccion-asignacion{
+  color: #6776A8;
+  font-family: "Noto Sans";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.titulo-card-aspirante{
+  color: #000;
+  font-family: "Noto Sans";
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.subtitulo-card-aspirante{
+  color: #000;
+  font-family: "Noto Sans";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.texto-escanear-qr{
+  color: #101828;
+  text-align: center;
+  font-family: Arial;
+  font-size: 30px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 36px; /* 120% */
+}
+
+.etiqueta-icono{
+  color: #018699;
+  font-feature-settings: 'liga' off, 'clig' off;
+  font-family: Montserrat;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.detalle-card-asistencia{
+  color: #404041;
+  font-family: "Noto Sans";
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 120%; /* 13.2px */
+}
+
+.sin-resultados{
+  color: var(--Grises-Gris-tono3, #A9A8A9);
+  text-align: center;
+  font-feature-settings: 'liga' off, 'clig' off;
+
+  /* NotoGob/H6 M Body Text */
+  font-family: "Noto Sans";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 120%; /* 19.2px */
+}
+
 
 @media screen and (min-width: 769px) {
   .login-titulo {

@@ -1,0 +1,100 @@
+@layer app-components {
+
+
+  .dia-primer-turno {
+    background-color: #CCF4F040;
+  }
+
+  .dia-segundo-turno {
+    background: #5EC5F40F;
+  }
+
+  .dia-tercer-turno {
+    background: #F3E8FF33;
+  }
+
+  .dia-cuarto-turno {
+    background-color: #FFF6A733;
+  }
+
+  .dia-quinto-turno {
+    background-color: #FFA7A933;
+  }
+
+
+
+  //Encabezado HORA y TURNO
+  .primer-horario{
+    background-color: #CCF4F040;
+    span{
+      color: #47A299;
+      font-family: "Noto Sans";
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+  }
+  .segundo-horario{
+    background-color: #5EC5F41A;
+    span{
+      color: #15A5D1;
+
+      /* Body SB 12 */
+      font-family: "Noto Sans";
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+    }
+  }
+
+  .tercer-horario{
+    background-color: #F3E8FF40;
+    span{
+      color: #7F5697;
+
+      /* Body SB 12 */
+      font-family: "Noto Sans";
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+    }
+  }
+
+  .cuarto-horario{
+    background-color: #FFF6A733;
+    span{
+      color: #9B8F2C;
+
+      /* Body R 12 */
+      font-family: "Noto Sans";
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+  }
+
+  .quinto-horario{
+    background-color: #FFA7A933;
+    span{
+      color: #933537;
+
+      /* Body R 12 */
+      font-family: "Noto Sans";
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+    }
+  }
+
+
+
+
+
+}
+
+
