@@ -16,17 +16,14 @@ import { AsignacionPlazasComponent } from '@privado/asignacion-plazas/asignacion
 import {
   CargaCalificacionesComponent
 } from '@privado/asignacion-plazas/components/carga-calificaciones/carga-calificaciones.component';
-<<<<<<< HEAD
 import {
   AsistenciaExtraordinariaComponent
 } from './pages/asignacion-plazas/components/asistencia-extraordinaria/asistencia-extraordinaria.component';
-=======
-import {VisualizacionAsistenciaComponent} from '@privado/visualizacion-asistencia/visualizacion-asistencia.component';
+import { VisualizacionAsistenciaComponent } from '@privado/visualizacion-asistencia/visualizacion-asistencia.component';
 import {
   TableroInformacionAsistenciaComponent
 } from '@privado/tablero-informacion-asistencia/tablero-informacion-asistencia.component';
-import {PropuestaSindicalComponent} from '@privado/propuesta-sindical/propuesta-sindical.component';
->>>>>>> dev-modulo-5
+import { PropuestaSindicalComponent } from '@privado/propuesta-sindical/propuesta-sindical.component';
 
 const routes: Routes = [{
   path: '',
@@ -77,11 +74,10 @@ const routes: Routes = [{
       component: CargaCalificacionesComponent,
     },
     {
-<<<<<<< HEAD
       path: NAV.asistenciaExtraordinaria,
       component: AsistenciaExtraordinariaComponent,
-    }
-=======
+    },
+    {
       path: NAV.visualizacionAsistencia,
       component: VisualizacionAsistenciaComponent,
     },
@@ -93,7 +89,6 @@ const routes: Routes = [{
       path: NAV.propuestaSindical,
       component: PropuestaSindicalComponent,
     },
->>>>>>> dev-modulo-5
   ]
 }];
 
