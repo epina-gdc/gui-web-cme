@@ -21,6 +21,7 @@ import {
   TableroInformacionAsistenciaComponent
 } from '@privado/tablero-informacion-asistencia/tablero-informacion-asistencia.component';
 import { AsignacionMesaComponent } from './pages/asignacion-mesa/asignacion-mesa/asignacion-mesa.component';
+import {PropuestaSindicalComponent} from '@privado/propuesta-sindical/propuesta-sindical.component';
 
 const routes: Routes = [{
   path: '',
@@ -84,6 +85,10 @@ const routes: Routes = [{
     {
       path: NAV.asignacionMesa,
       component: AsignacionMesaComponent,
+    },
+    {
+      path: NAV.propuestaSindical,
+      component: PropuestaSindicalComponent,
     },
   ]
 }];
