@@ -10,6 +10,7 @@ import { ChipModule } from 'primeng/chip';
 import { DividerModule } from 'primeng/divider';
 import { MenuAsistenciasComponent } from "../menu-asistencias/menu-asistencias.component";
 
+import { AsistenciaCardComponent } from '@components/asistencia-card/asistencia-card.component';
 // Interfaz para los datos del médico
 interface Doctor {
     nombre: string;
@@ -39,7 +40,8 @@ interface Doctor {
         CardModule,
         ChipModule,
         DividerModule,
-        MenuAsistenciasComponent
+        MenuAsistenciasComponent,
+        AsistenciaCardComponent
     ],
     templateUrl: './asistencia-extraordinaria.component.html',
     styleUrls: ['./asistencia-extraordinaria.component.scss']

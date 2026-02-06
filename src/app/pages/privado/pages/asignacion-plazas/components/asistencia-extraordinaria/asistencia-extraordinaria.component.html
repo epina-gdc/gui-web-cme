@@ -1,4 +1,4 @@
-<div class="flex gap-4">
+<div class="flex flex-row align-content-start gap-4">
     <app-menu-asistencias></app-menu-asistencias>
     <!--
     <div class="surface-ground max-h-screen p-4 font-family"> 
@@ -6,13 +6,15 @@
 
     <div class="flex flex-column w-100 border-round-xl">
 
-        <h2 class="text-xl text-primary font-medium mb-3">Registro de asistencia extraordinaria</h2>
+        <h2 class="text-2xl text-blue-400 mt-0 font-medium">Registro de asistencia
+            extraordinaria</h2>
 
         <div class="search-header relative border-round-xl overflow-hidden mb-4 shadow-4">
             <div class="header-bg absolute top-0 left-0 w-full h-full"></div>
 
             <div class="relative z-2 flex flex-column align-items-center justify-content-center h-full text-white p-5">
-                <h1 class="text-3xl font-bold mb-4">Búsqueda por matrícula/folio</h1>
+                <h1 class="text-6xl text-justify w-full md:w-8 lg:w-6 mb-4">Búsqueda por
+                    matrícula/folio</h1>
 
                 <div class="flex flex-row md:flex-row gap-2 w-full md:w-8 lg:w-6">
                     <input pInputText type="text" [(ngModel)]="searchQuery" placeholder="Ingresa matrícula/folio"
@@ -32,40 +34,17 @@
 
             <div class="grid mb-4">
                 <div class="col-12 md:col-4">
-                    <div class="surface-card p-4 shadow-2 border-round-xl flex align-items-center gap-3">
-                        <div
-                            class="bg-blue-100 text-blue-500 border-circle w-3rem h-3rem flex align-items-center justify-content-center">
-                            <i class="pi pi-users text-xl"></i>
-                        </div>
-                        <div>
-                            <span class="font-bold block mb-1">Turno</span>
-                            <span class="text-xl font-bold text-900">-</span>
-                        </div>
-                    </div>
+                    <asistencia-card [bg_color]="'#abc8f0'" [icono]="'pi-users'" [encabezado]="'Turno'"
+                        [descripcion]="'-'" />
                 </div>
                 <div class="col-12 md:col-4">
-                    <div class="surface-card p-4 shadow-2 border-round-xl flex align-items-center gap-3">
-                        <div
-                            class="bg-blue-100 text-blue-500 border-circle w-3rem h-3rem flex align-items-center justify-content-center">
-                            <i class="pi pi-clock text-xl"></i>
-                        </div>
-                        <div>
-                            <span class="font-bold block mb-1">Hora de asistencia</span>
-                            <span class="text-xl font-bold text-900">-</span>
-                        </div>
-                    </div>
+                    <asistencia-card [bg_color]="'#abc8f0'" [icono]="'pi-clock'" [encabezado]="'Hora de asistencia'"
+                        [descripcion]="'-'" />
                 </div>
                 <div class="col-12 md:col-4">
-                    <div class="surface-card p-4 shadow-2 border-round-xl flex align-items-center gap-3">
-                        <div
-                            class="bg-yellow-100 text-yellow-600 border-circle w-3rem h-3rem flex align-items-center justify-content-center">
-                            <i class="pi pi-clipboard text-xl"></i>
-                        </div>
-                        <div>
-                            <span class="font-bold block mb-1">Día de asistencia</span>
-                            <span class="text-xl font-bold text-900">-</span>
-                        </div>
-                    </div>
+                    <!-- bg-yellow-200 text-white-alpha-90  -->
+                    <asistencia-card [bg_color]="'#ffdf7f'" [icono]="'cme-asignaciones'"
+                        [encabezado]="'Día de asistencia'" [descripcion]="'-'" />
                 </div>
             </div>
 
@@ -93,60 +72,59 @@
                             <h4 class="m-0 mb-2 text-700">Especialidades</h4>
                             <div class="flex flex-wrap gap-2">
                                 <span *ngFor="let esp of doctor.especialidades"
-                                    class="border-1 border-blue-200 text-blue-600 px-3 py-1 border-round-2xl text-sm bg-blue-50">
+                                    class="border-1 border-blue-200 text-blue-600 px-3 py-1 border-round-2xl text-sm">
                                     {{ esp }}
                                 </span>
                             </div>
                         </div>
 
                         <div class="grid text-sm">
-                            <div class="col-6 md:col-4 mb-2">
+                            <div class="col-6 md:col-3 mb-2">
                                 <div class="flex align-items-center gap-2 mb-1">
-                                    <i class="pi pi-calendar text-blue-400"></i> <span
+                                    <i class="pi cme-citas text-blue-400 text-xl"></i> <span
                                         class="font-semibold">Fecha</span>
                                 </div>
-                                <div class="text-700 ml-4">{{ doctor.fecha }}</div>
+                                <div class="text-700 ml-5">{{ doctor.fecha }}</div>
                             </div>
 
-                            <div class="col-6 md:col-4 mb-2">
+                            <div class="col-6 md:col-3 mb-2">
                                 <div class="flex align-items-center gap-2 mb-1">
-                                    <i class="pi pi-clock text-blue-400"></i> <span class="font-semibold">Hora</span>
+                                    <i class="pi cme-time text-blue-400"></i> <span class="font-semibold">Hora</span>
                                 </div>
                                 <div class="text-700 ml-4">{{ doctor.hora }}</div>
                             </div>
 
-                            <div class="col-6 md:col-4 mb-2">
+                            <div class="col-6 md:col-3 mb-2">
                                 <div class="flex align-items-center gap-2 mb-1">
-                                    <i class="pi pi-table text-blue-400"></i> <span class="font-semibold">Mesa</span>
+                                    <i class="pi pi-calendar-times text-blue-400"></i> <span
+                                        class="font-semibold">Mesa</span>
                                 </div>
                                 <div class="text-700 ml-4">{{ doctor.mesa }}</div>
                             </div>
-
-                            <div class="col-6 md:col-4 mb-2">
+                            <div class="col-6 md:col-3 mb-2">
                                 <div class="flex align-items-center gap-2 mb-1">
-                                    <i class="pi pi-id-card text-blue-400"></i> <span
-                                        class="font-semibold">Modalidad</span>
+                                    <i class="pi cme-time text-blue-400"></i> <span class="font-semibold">Turno</span>
                                 </div>
-                                <div class="text-700 ml-4">{{ doctor.modalidad }}</div>
+                                <div class="text-700 ml-4">{{ doctor.turno }}</div>
+                            </div>
+                            <div class="col-6 md:col-3 mb-2">
+                                <div class="flex align-items-center gap-2 mb-1">
+                                    <i class="pi cme-hospital text-blue-400 text-xl"></i>
+                                    <span class="font-semibold">Modalidad</span>
+                                </div>
+                                <div class="text-700 ml-5">{{ doctor.modalidad }}</div>
                             </div>
 
-                            <div class="col-6 md:col-4 mb-2">
+                            <div class="col-6 md:col-3 mb-2">
                                 <div class="flex align-items-center gap-2 mb-1">
                                     <i class="pi pi-check text-blue-400"></i> <span class="font-semibold">Estatus</span>
                                 </div>
                                 <div class="text-700 ml-4">{{ doctor.estatus }}</div>
                             </div>
 
-                            <div class="col-6 md:col-4 mb-2">
+                            <div class="col-6 md:col-3 mb-2">
                                 <div class="flex align-items-center gap-2 mb-1">
-                                    <i class="pi pi-star text-blue-400"></i> <span class="font-semibold">Turno</span>
-                                </div>
-                                <div class="text-700 ml-4">{{ doctor.turno }}</div>
-                            </div>
-
-                            <div class="col-12 mb-2">
-                                <div class="flex align-items-center gap-2 mb-1">
-                                    <i class="pi pi-file text-blue-400"></i> <span class="font-semibold">Verificación
+                                    <i class="pi pi-star text-blue-400"></i><span class="font-semibold">Verificación
                                         documental</span>
                                 </div>
                                 <div class="text-700 ml-4">{{ doctor.verificacion }}</div>

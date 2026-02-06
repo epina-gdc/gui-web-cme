@@ -21,9 +21,10 @@
 
     .header-bg {
         // Reemplaza esta URL con la imagen real de médicos
-        background-image: url('https://primefaces.org/cdn/primeng/images/galleria/galleria12.jpg');
+        background-image: url("../../../../../../../assets/backgrounds/fondo-busqueda.png");
         background-size: cover;
         background-position: center;
+        object-fit: cover;
 
         // Overlay oscuro con gradiente verdoso similar a la imagen
         &::after {
