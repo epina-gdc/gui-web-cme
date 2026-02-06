@@ -1,0 +1,17 @@
+@layer app-components {
+  :host ::ng-deep .p-tablist-tab-list {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+  }
+
+  :host ::ng-deep .p-tab {
+    min-width: 400px;
+    display: flex;
+    justify-content: center;
+  }
+
+  :host ::ng-deep .p-tablist-content {
+    max-width: 100%;
+  }
+}

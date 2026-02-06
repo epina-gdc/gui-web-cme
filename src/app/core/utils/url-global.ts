@@ -15,5 +15,6 @@ export const NAV = {
   tableroInformacionAsistencia: 'tablero-informacion',
   asignacionMesa: 'asignacion-mesa',
   propuestaSindical: 'propuesta-sindical',
+  gestionConvocatoria: 'gestion-convocatoria',
   home: 'inicio',
 };
