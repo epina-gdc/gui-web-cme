@@ -28,11 +28,11 @@ import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.di
   templateUrl: './inicio-sesion.component.html',
   styleUrl: './inicio-sesion.component.scss',
   standalone: true,
-  
+
 })
 export class InicioSesionComponent extends GeneralComponent implements OnInit {
 
-  
+
   fb = inject(FormBuilder)
   destroyRef = inject(DestroyRef);
 
@@ -79,7 +79,6 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit {
               localStorage.setItem('login_time', loginTime.toString());
 
                 this.sessionTimerService.startTimer(); */
-
           void this._router.navigate(['/privado/inicio'], {relativeTo: this.activatedRoute,});
         },
         error: (error) => {

@@ -10,6 +10,7 @@ export const validadorGuard: CanActivateFn = (route, state) => {
 const checkValidatorProfile = (): Observable<boolean | UrlTree> => {
   const router = inject(Router);
   const authService: AuthService = inject(AuthService);
+  const perfilesMedicos = new Set([1, 2, 3, 4, 5, 6]);
 
   return authService.checkAuthStatus().pipe(
     switchMap(isAuthenticated => {
@@ -21,6 +22,13 @@ const checkValidatorProfile = (): Observable<boolean | UrlTree> => {
 
       if (!authService.usuarioSesion) {
         return of(router.createUrlTree(['/login']));
+      }
+
+      const menu = authService.usuarioSesion?.menu;
+      const url = authService.usuarioSesion?.url;
+
+      if (menu === 1 && url !== '' && !perfilesMedicos.has(idPerfil)) {
+        return of(router.createUrlTree([`/privado/${url}`]));
       }
 
       if ([4,5].includes(idPerfil)) {

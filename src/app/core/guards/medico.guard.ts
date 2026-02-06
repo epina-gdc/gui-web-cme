@@ -10,6 +10,7 @@ export const medicoGuard: CanActivateFn = (route, state) => {
 const checkMedicalProfile = (): Observable<boolean | UrlTree> => {
   const router = inject(Router);
   const authService: AuthService = inject(AuthService);
+  const perfilesMedicos = new Set([1, 2, 3, 4, 5, 6]);
 
   return authService.checkAuthStatus().pipe(
     switchMap(isAuthenticated => {
@@ -19,8 +20,19 @@ const checkMedicalProfile = (): Observable<boolean | UrlTree> => {
 
       const idPerfil = authService.usuarioSesion?.idPerfil as number;
 
+      console.log(idPerfil);
+
       if (!authService.usuarioSesion) {
         return of(router.createUrlTree(['/login']));
+      }
+
+      const menu = authService.usuarioSesion?.menu;
+      const url = authService.usuarioSesion?.url;
+
+      console.log(menu, url, perfilesMedicos.has(idPerfil));
+
+      if (url !== '' && !perfilesMedicos.has(idPerfil)) {
+        return of(router.createUrlTree([`/privado/${url}`]));
       }
 
       if ([1, 2, 3, 6].includes(idPerfil)) {

@@ -95,7 +95,10 @@ export class AuthService {
         subperfil: payload.subperfil,
         fechaRegistro: payload.fechaRegistro,
         refPasaporte: payload.refPasaporte,
-        refFolio: payload?.refFolio
+        refFolio: payload?.refFolio,
+        menu: payload.menu,
+        modulos: payload.modulos,
+        url: payload.url
       };
     } else {
       throw new Error('Error al intentar obtener el usuario del payload en el token');
