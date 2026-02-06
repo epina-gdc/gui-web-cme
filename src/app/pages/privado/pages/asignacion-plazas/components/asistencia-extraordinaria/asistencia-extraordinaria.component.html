@@ -1,3 +1,5 @@
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" [closable]="true" styleClass="custom-confirm-dialog">
+</p-confirmDialog>
 <div class="flex flex-row align-content-start gap-4">
     <app-menu-asistencias></app-menu-asistencias>
     <!--
@@ -5,10 +7,8 @@
     -->
 
     <div class="flex flex-column w-100 border-round-xl">
-
-        <h2 class="text-2xl text-blue-400 mt-0 font-medium">Registro de asistencia
-            extraordinaria</h2>
-
+        <h3 class="titulo-seccion mb-3">Registro de asistencia
+            extraordinaria </h3>
         <div class="search-header relative border-round-xl overflow-hidden mb-4 shadow-4">
             <div class="header-bg absolute top-0 left-0 w-full h-full"></div>
 
@@ -34,7 +34,7 @@
 
             <div class="grid mb-4">
                 <div class="col-12 md:col-4">
-                    <asistencia-card [bg_color]="'#abc8f0'" [icono]="'pi-users'" [encabezado]="'Turno'"
+                    <asistencia-card [bg_color]="'#abc8f0'" [icono]="'cme-citados'" [encabezado]="'Turno'"
                         [descripcion]="'-'" />
                 </div>
                 <div class="col-12 md:col-4">
@@ -80,54 +80,31 @@
 
                         <div class="grid text-sm">
                             <div class="col-6 md:col-3 mb-2">
-                                <div class="flex align-items-center gap-2 mb-1">
-                                    <i class="pi cme-citas text-blue-400 text-xl"></i> <span
-                                        class="font-semibold">Fecha</span>
-                                </div>
-                                <div class="text-700 ml-5">{{ doctor.fecha }}</div>
-                            </div>
-
-                            <div class="col-6 md:col-3 mb-2">
-                                <div class="flex align-items-center gap-2 mb-1">
-                                    <i class="pi cme-time text-blue-400"></i> <span class="font-semibold">Hora</span>
-                                </div>
-                                <div class="text-700 ml-4">{{ doctor.hora }}</div>
-                            </div>
-
-                            <div class="col-6 md:col-3 mb-2">
-                                <div class="flex align-items-center gap-2 mb-1">
-                                    <i class="pi pi-calendar-times text-blue-400"></i> <span
-                                        class="font-semibold">Mesa</span>
-                                </div>
-                                <div class="text-700 ml-4">{{ doctor.mesa }}</div>
+                                <asistencia-note [titulo]="'Fecha'" [descripcion]="doctor.fecha" [icono]="'cme-citas'"
+                                    [ajuste]="'ml-5'" [tamanio]="'text-xl'" />
                             </div>
                             <div class="col-6 md:col-3 mb-2">
-                                <div class="flex align-items-center gap-2 mb-1">
-                                    <i class="pi cme-time text-blue-400"></i> <span class="font-semibold">Turno</span>
-                                </div>
-                                <div class="text-700 ml-4">{{ doctor.turno }}</div>
+                                <asistencia-note [titulo]="'Hora'" [descripcion]="doctor.hora" [icono]="'cme-time'" />
                             </div>
                             <div class="col-6 md:col-3 mb-2">
-                                <div class="flex align-items-center gap-2 mb-1">
-                                    <i class="pi cme-hospital text-blue-400 text-xl"></i>
-                                    <span class="font-semibold">Modalidad</span>
-                                </div>
-                                <div class="text-700 ml-5">{{ doctor.modalidad }}</div>
+                                <asistencia-note [titulo]="'Mesa'" [descripcion]="doctor.mesa"
+                                    [icono]="'cme-numero-mesa'" [ajuste]="'ml-5'" [tamanio]="'text-xl'" />
                             </div>
-
                             <div class="col-6 md:col-3 mb-2">
-                                <div class="flex align-items-center gap-2 mb-1">
-                                    <i class="pi pi-check text-blue-400"></i> <span class="font-semibold">Estatus</span>
-                                </div>
-                                <div class="text-700 ml-4">{{ doctor.estatus }}</div>
+                                <asistencia-note [titulo]="'Turno'" [descripcion]="doctor.turno" [icono]="'cme-time'" />
                             </div>
-
                             <div class="col-6 md:col-3 mb-2">
-                                <div class="flex align-items-center gap-2 mb-1">
-                                    <i class="pi pi-star text-blue-400"></i><span class="font-semibold">Verificación
-                                        documental</span>
-                                </div>
-                                <div class="text-700 ml-4">{{ doctor.verificacion }}</div>
+                                <asistencia-note [titulo]="'Modalidad'" [descripcion]="doctor.modalidad"
+                                    [icono]="'cme-modalidad'" [ajuste]="'ml-5'" [tamanio]="'text-xl'" />
+                            </div>
+                            <div class="col-6 md:col-3 mb-2">
+                                <asistencia-note [titulo]="'Estatus'" [descripcion]="doctor.estatus"
+                                    [icono]="'cme-check'" />
+                            </div>
+                            <div class="col-6 md:col-3 mb-2">
+                                <asistencia-note [titulo]="'Verificación documental'"
+                                    [descripcion]="doctor.verificacion" [icono]="'pi-star'" />
+                                <!--  -->
                             </div>
                         </div>
                     </div>

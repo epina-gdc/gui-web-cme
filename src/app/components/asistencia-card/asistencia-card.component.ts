@@ -3,7 +3,6 @@ import { Component, Input } from '@angular/core';
 @Component({
     selector: 'asistencia-card',
     standalone: true,
-
     templateUrl: './asistencia-card.component.html',
     styleUrl: './asistencia-card.component.scss'
 })
