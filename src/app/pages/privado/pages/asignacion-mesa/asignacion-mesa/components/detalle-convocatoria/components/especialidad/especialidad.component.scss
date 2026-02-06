@@ -2,7 +2,7 @@
   display: block;
 }
 
-.bg-azul-claro{
+.bg-azul-claro {
   background-color: #ABC8F059;
 }
 
@@ -14,12 +14,21 @@
   overflow: hidden;
 }
 
-.card-rama{
+.card-rama {
   display: flex;
-    flex-direction: column;
-    border-left: solid 14px #5BACB580;
+  flex-direction: column;
+  border-left: solid 14px #5BACB580;
 }
 
-.bg-gris{
+.bg-gris {
   background-color: #F5F5F5;
+}
+
+::ng-deep .p-complete-rama {
+  .p-autocomplete {
+    width: 100%;
+    input {
+      width: 100%;
+    }
+  }
 }
