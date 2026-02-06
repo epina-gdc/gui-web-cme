@@ -1,0 +1,77 @@
+:host {
+  display: block;
+}
+
+
+.card-med {
+  min-height: 113px;
+
+  .p-button-label-ir,
+  .pi::before {
+    font-size: 12px !important;
+    color: #62748E;
+  }
+
+
+  .card-label {
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .card-num {
+    font-size: 30px;
+    font-weight: 600;
+  }
+
+  &.becados {
+    background-color: #EFF6FF73;
+
+    .card-label {
+      color: #45556C73;
+    }
+
+    .card-num {
+      color: #155DFC73;
+    }
+
+  }
+
+  &.residentes {
+    background-color: #F3FFEE73;
+
+    .card-label {
+      color: #456C4A73;
+    }
+
+    .card-num {
+      color: #0AD50A73;
+    }
+
+  }
+
+  &.externos {
+    background-color: #FFEBEB73;
+
+    .card-label {
+      color: #45556C73;
+    }
+
+    .card-num {
+      color: #E1000073;
+    }
+
+  }
+
+  &.total {
+    background-color: #F5F7FF;
+
+    .card-label {
+      color: #45556C;
+    }
+
+    .card-num {
+      color: #314158;
+    }
+
+  }
+}

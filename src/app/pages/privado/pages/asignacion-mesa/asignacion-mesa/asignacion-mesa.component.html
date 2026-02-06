@@ -1,4 +1,4 @@
-<p class="titulo-seccion-asignacion">Control de Asistencia Médica</p>
+<p class="titulo-seccion-asignacion">Configuración y Asignación de mesas</p>
 <div class="py-1 px-4 md:bg-white border-round-xl mb-4 mt-4">
     <p-tabs [value]="tab">
         <p-tablist class="tab-list-asig-mesa ">
@@ -11,7 +11,7 @@
             <p-tab [value]="1" (click)="tab = 1" class="col flex justify-content-center">
                 <div class="flex align-items-center gap-2">
                    <i class="cme-citas" style="font-size: 2rem;"></i>
-                    <span class="text-xl font-normal"> Citas</span>
+                    <span class="text-xl font-normal"> Envío de Citas</span>
                 </div>
             </p-tab>
         </p-tablist>
@@ -23,7 +23,7 @@
 <app-detalle-convocatoria class="mt-4" />
 }
 @case (1) {
-
+<app-envio-citas></app-envio-citas>
 }
 
 }
