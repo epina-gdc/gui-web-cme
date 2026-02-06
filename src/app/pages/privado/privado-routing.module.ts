@@ -13,14 +13,14 @@ import {documentacionAspiranteResolver} from '../../core/resolvers/documentacion
 import { verficacionDocsResolver } from '../../core/resolvers/verificacion-docs.resolver';
 import { OfertaLaboralComponent } from './pages/oferta-laboral/oferta-laboral.component';
 import {AsignacionPlazasComponent} from '@privado/asignacion-plazas/asignacion-plazas.component';
-import {
-  CargaCalificacionesComponent
-} from '@privado/asignacion-plazas/components/carga-calificaciones/carga-calificaciones.component';
+
 import {VisualizacionAsistenciaComponent} from '@privado/visualizacion-asistencia/visualizacion-asistencia.component';
 import {
   TableroInformacionAsistenciaComponent
 } from '@privado/tablero-informacion-asistencia/tablero-informacion-asistencia.component';
 import {PropuestaSindicalComponent} from '@privado/propuesta-sindical/propuesta-sindical.component';
+import {CargaCalificacionesComponent} from '@privado/carga-calificaciones/carga-calificaciones.component';
+import {GestionConvocatoriasComponent} from '@privado/gestion-convocatorias/gestion-convocatorias.component';
 
 const routes: Routes = [{
   path: '',
@@ -84,6 +84,10 @@ const routes: Routes = [{
     {
       path: NAV.propuestaSindical,
       component: PropuestaSindicalComponent,
+    },
+    {
+      path: NAV.gestionConvocatoria,
+      component: GestionConvocatoriasComponent,
     },
   ]
 }];

@@ -1,0 +1,38 @@
+<div class="flex gap-3">
+  <app-menu-plazas [tituloMenu]="'Menú'" ></app-menu-plazas>
+  <div class="flex flex-column w-full ">
+    <span clasS="titulo-seccion-asignacion mb-3">Configuración de convocatorias</span>
+    <div class="py-1 px-4 md:bg-white border-round-xl mb-3">
+      <p-tabs [value]="tab">
+        <p-tablist class="flex flex-row">
+          <!--<p-tab [value]="0" (click)="tab = 0" >
+            <div class="header-tab-documentacion">
+              <i class="cme-document me-3" style="color: #000000; font-size: 1.4rem"></i>
+              <p>Configuración para el registro de convocatorias y médicos</p>
+            </div>
+          </p-tab>-->
+          <p-tab [value]="1" (click)="tab = 1" class="w-6">
+            <div class="header-tab-documentacion">
+              <i class="cme-sustitucion me-3" style="color: #000000; font-size: 1.4rem"></i>
+              <p>Configuración de asignación por sustitución</p>
+            </div>
+          </p-tab>
+        </p-tablist>
+      </p-tabs>
+    </div>
+
+    @switch (tab){
+      @case (0){
+        <app-configuracion-registro></app-configuracion-registro>
+      }
+      @case (1){
+        <app-asignacion-sustitucion></app-asignacion-sustitucion>
+      }
+    }
+
+
+
+
+
+  </div>
+</div>
