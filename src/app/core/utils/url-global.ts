@@ -14,6 +14,8 @@ export const NAV = {
   asistenciaExtraordinaria: 'asistencia-extraordinaria',
   visualizacionAsistencia: 'visualizacion-asistencia',
   tableroInformacionAsistencia: 'tablero-informacion',
+  asignacionMesa: 'asignacion-mesa',
   propuestaSindical: 'propuesta-sindical',
+  gestionConvocatoria: 'gestion-convocatoria',
   home: 'inicio',
 };

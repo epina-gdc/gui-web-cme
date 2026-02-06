@@ -13,9 +13,7 @@ import { documentacionAspiranteResolver } from '../../core/resolvers/documentaci
 import { verficacionDocsResolver } from '../../core/resolvers/verificacion-docs.resolver';
 import { OfertaLaboralComponent } from './pages/oferta-laboral/oferta-laboral.component';
 import { AsignacionPlazasComponent } from '@privado/asignacion-plazas/asignacion-plazas.component';
-import {
-  CargaCalificacionesComponent
-} from '@privado/asignacion-plazas/components/carga-calificaciones/carga-calificaciones.component';
+
 import {
   AsistenciaExtraordinariaComponent
 } from './pages/asignacion-plazas/components/asistencia-extraordinaria/asistencia-extraordinaria.component';
@@ -23,7 +21,10 @@ import { VisualizacionAsistenciaComponent } from '@privado/visualizacion-asisten
 import {
   TableroInformacionAsistenciaComponent
 } from '@privado/tablero-informacion-asistencia/tablero-informacion-asistencia.component';
+import { AsignacionMesaComponent } from './pages/asignacion-mesa/asignacion-mesa/asignacion-mesa.component';
 import { PropuestaSindicalComponent } from '@privado/propuesta-sindical/propuesta-sindical.component';
+import { CargaCalificacionesComponent } from '@privado/carga-calificaciones/carga-calificaciones.component';
+import { GestionConvocatoriasComponent } from '@privado/gestion-convocatorias/gestion-convocatorias.component';
 
 const routes: Routes = [{
   path: '',
@@ -86,8 +87,16 @@ const routes: Routes = [{
       component: TableroInformacionAsistenciaComponent,
     },
     {
+      path: NAV.asignacionMesa,
+      component: AsignacionMesaComponent,
+    },
+    {
       path: NAV.propuestaSindical,
       component: PropuestaSindicalComponent,
+    },
+    {
+      path: NAV.gestionConvocatoria,
+      component: GestionConvocatoriasComponent,
     },
   ]
 }];

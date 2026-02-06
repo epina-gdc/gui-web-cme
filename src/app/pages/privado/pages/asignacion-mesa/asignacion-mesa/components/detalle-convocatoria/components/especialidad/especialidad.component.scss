@@ -1,0 +1,34 @@
+:host {
+  display: block;
+}
+
+.bg-azul-claro {
+  background-color: #ABC8F059;
+}
+
+/* Limitar el texto a 2 líneas */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-rama {
+  display: flex;
+  flex-direction: column;
+  border-left: solid 14px #5BACB580;
+}
+
+.bg-gris {
+  background-color: #F5F5F5;
+}
+
+::ng-deep .p-complete-rama {
+  .p-autocomplete {
+    width: 100%;
+    input {
+      width: 100%;
+    }
+  }
+}
