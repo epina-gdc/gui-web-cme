@@ -22,6 +22,7 @@ import {
 } from '@privado/tablero-informacion-asistencia/tablero-informacion-asistencia.component';
 import {PropuestaSindicalComponent} from '@privado/propuesta-sindical/propuesta-sindical.component';
 import {NotFoundComponent} from '@privado/not-found/not-found.component';
+import {ErrorConfiguracionComponent} from '@privado/error-configuracion/error-configuracion.component';
 
 const routes: Routes = [{
   path: '',
@@ -85,6 +86,10 @@ const routes: Routes = [{
     {
       path: NAV.propuestaSindical,
       component: PropuestaSindicalComponent,
+    },
+    {
+      path: NAV.errorConfig,
+      component: ErrorConfiguracionComponent,
     },
     { path: '**', component: NotFoundComponent }
   ]

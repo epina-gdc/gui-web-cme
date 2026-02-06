@@ -2,6 +2,7 @@ import {CanActivateFn, Router, RouterStateSnapshot, UrlTree} from '@angular/rout
 import {Observable, of, switchMap} from 'rxjs';
 import {inject} from '@angular/core';
 import {AuthService} from '@services/auth.service';
+import {PERFILES_COMPLETOS, PERFILES_MODULO_1} from '@utils/constants';
 
 export const validadorGuard: CanActivateFn = (route, state) => {
   return checkValidatorProfile();
@@ -11,6 +12,7 @@ const checkValidatorProfile = (): Observable<boolean | UrlTree> => {
   const router = inject(Router);
   const authService: AuthService = inject(AuthService);
   const perfilesMedicos = new Set([1, 2, 3, 4, 5, 6]);
+  const perfiles = new Set([...perfilesMedicos, 7, 8, 9, 10, 11, 12]);
 
   return authService.checkAuthStatus().pipe(
     switchMap(isAuthenticated => {
@@ -24,14 +26,21 @@ const checkValidatorProfile = (): Observable<boolean | UrlTree> => {
         return of(router.createUrlTree(['/login']));
       }
 
-      const menu = authService.usuarioSesion?.menu;
       const url = authService.usuarioSesion?.url;
 
-      if (menu === 1 && url !== '' && !perfilesMedicos.has(idPerfil)) {
-        return of(router.createUrlTree([`/privado/${url}`]));
+      if (!PERFILES_COMPLETOS.includes(idPerfil)) {
+        return of(router.createUrlTree(['/privado/config-erronea']));
       }
 
-      if ([4,5].includes(idPerfil)) {
+      if (!PERFILES_MODULO_1.includes(idPerfil)) {
+        if (url !== '') {
+          return of(router.createUrlTree([`/privado/${url}`]));
+        } else {
+          return of(router.createUrlTree(['/privado/config-erronea']));
+        }
+      }
+
+      if ([4, 5].includes(idPerfil)) {
         return of(true);
       } else {
         return of(router.createUrlTree(['/privado/inicio']));
