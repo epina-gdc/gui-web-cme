@@ -2,8 +2,8 @@
     <!-- Formulario -->
     <p-card class="empty-border p-4">
         <form [formGroup]="formulario">
-            <div class=" flex gap-4 flex-colum md:flex-row ">
-                <div class="flex-grow-1">
+            <div class=" grid ">
+                <div class="col-12 lg:col">
                     <div class="formgrid grid gap-4">
                         <div class="field col">
                             <label class="field-label" for="convocatoriaId">No. de convocatoria</label>
@@ -19,7 +19,7 @@
                                 class="w-full"></p-select>
                         </div>
 
-                        <div class="field col ">
+                        <div class="field col">
                             <label class="field-label" for="medicos">No. de médicos por mesa</label>
                             <p-select [options]="medicosPorMesa" formControlName="medicos"
                                 placeholder="Selecciona médicos por mesa" optionLabel="label" optionValue="value"
@@ -28,10 +28,9 @@
                     </div>
                 </div>
 
-                <div class="flex-none" style="width:213px">
-                    <button pButton label="Guardar configuración" icon="pi pi-save"
-                        class="bg-green-500 hover:bg-green-600 text-white" (click)="guardarConfiguracion()"
-                        [disabled]="formulario.invalid"></button>
+                <div class="lg:col-fixed col-12 flex-column flex justify-content-end" style="width:213px">
+                    <p-button label="Guardar configuración" (onclick)="guardarConfiguracion()"
+                        [disabled]="formulario.invalid"></p-button>
                 </div>
             </div>
 
@@ -44,16 +43,16 @@
     <p-card class="empty-border">
         <h3 class="text-lg font-semibold mb-4">Tabla de convocatorias</h3>
 
-        <p-table [value]="convocatoriasTabla" [rows]="10" [rowsPerPageOptions]="[5, 10, 20]" [autoLayout]="true"
-            [responsive]="true" responsiveLayout="scroll">
+        <p-table [value]="convocatoriasTabla" [scrollable]="true" [resizableColumns]="true"
+            [tableStyle]="{'min-width': '50rem'}"> >
             <ng-template pTemplate="header">
                 <tr>
-                    <th>No. de convocatoria</th>
-                    <th>No. de mesas disponibles</th>
-                    <th>No. de médicos por mesa</th>
-                    <th>Estatus</th>
-                    <th>% de configuración</th>
-                    <th>Acciones</th>
+                    <th pResizableColumn>No. de convocatoria</th>
+                    <th pResizableColumn>No. de mesas disponibles</th>
+                    <th pResizableColumn>No. de médicos por mesa</th>
+                    <th pResizableColumn>Estatus</th>
+                    <th pResizableColumn>% de configuración</th>
+                    <th style="min-width: 100px" alignFrozen="right" pFrozenColumn>Acciones</th>
                 </tr>
             </ng-template>
 
@@ -63,15 +62,31 @@
                     <td>{{ row.mesas }}</td>
                     <td>{{ row.medicosPorMesa }}</td>
                     <td>
-                        <span class="p-tag p-tag-info" *ngIf="row.estatus === 'Pendiente'">{{ row.estatus }}</span>
-                        <span class="p-tag p-tag-success" *ngIf="row.estatus === 'Completada'">{{ row.estatus
-                            }}</span>
+                        <p-tag class="p-tag p-tag-info" *ngIf="row.idEstatus === 1">{{ row.estatus }}</p-tag>
+                        <p-tag class="p-tag p-tag-success" *ngIf="row.idEstatus === 2">{{ row.estatus}}</p-tag>
                     </td>
                     <td>{{ row.porcentaje }}%</td>
-                    <td>
-                        <p-menu #menu [model]="accionesMenu" [popup]="true"></p-menu>
-                        <button pButton icon="pi pi-ellipsis-v" (click)="menu.toggle($event)"
-                            class="p-button-text"></button>
+                    <td alignFrozen="right" pFrozenColumn>
+
+                        
+
+                        <div class="flex align-items-center justify-content-center">
+                            <i class="cme-ellipsis cursor-pointer border-round-3xl"
+                                [style]="{ 'font-size': '2.2rem', color: '#a9c9f8', background: '#f6faff' }"></i>
+                        </div>
+
+
+                        
+
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template #emptymessage>
+                <tr>
+                    <td colspan="10">
+                        <div class="flex justify-content-center align-items-center">
+                            <img class="p-0" src="/assets/images/tabla_sin_resultados.svg" alt="Sin resultados">
+                        </div>
                     </td>
                 </tr>
             </ng-template>

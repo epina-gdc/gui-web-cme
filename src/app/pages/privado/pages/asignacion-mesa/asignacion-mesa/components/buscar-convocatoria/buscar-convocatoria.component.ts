@@ -5,9 +5,12 @@ import { SelectModule } from 'primeng/select';
 import { MenuModule } from 'primeng/menu';
 import { TableModule } from 'primeng/table';
 import { MenuItem } from 'primeng/api';
-import { Card } from "primeng/card";
+import { CardModule } from "primeng/card";
 import { CommonModule } from '@angular/common';
 import { PaginatorModule, PaginatorState } from "primeng/paginator";
+import { TagModule } from 'primeng/tag';
+import { PopoverModule } from 'primeng/popover';
+
 @Component({
   selector: 'app-buscar-convocatoria',
   imports: [
@@ -16,8 +19,10 @@ import { PaginatorModule, PaginatorState } from "primeng/paginator";
     SelectModule,
     TableModule,
     MenuModule,
-    ButtonModule, Card,
-    PaginatorModule
+    ButtonModule, CardModule,
+    PaginatorModule,
+    TagModule,
+    PopoverModule
   ],
   templateUrl: './buscar-convocatoria.component.html',
   styleUrl: './buscar-convocatoria.component.scss',
@@ -30,6 +35,22 @@ export class BuscarConvocatoriaComponent {
 
   numPaginaActual: number = 0;
   totalElementos: number = 0;
+
+  items = [
+    {
+
+      items: [
+        {
+          label: 'Refresh',
+          icon: 'pi pi-refresh'
+        },
+        {
+          label: 'Export',
+          icon: 'pi pi-upload'
+        }
+      ]
+    }
+  ];
 
   activeTab: WritableSignal<number> = signal(0);
   // Datos para los dropdowns
@@ -57,6 +78,7 @@ export class BuscarConvocatoriaComponent {
       mesas: 8,
       medicosPorMesa: 45,
       estatus: 'Pendiente',
+      idEstatus: 1,
       porcentaje: 80
     },
     {
@@ -64,7 +86,8 @@ export class BuscarConvocatoriaComponent {
       nombre: 'Convocatoria 1',
       mesas: 12,
       medicosPorMesa: 30,
-      estatus: 'Completada',
+      idEstatus: 2,
+      estatus: 'Comcluido',
       porcentaje: 100
     }
   ];
@@ -113,6 +136,7 @@ export class BuscarConvocatoriaComponent {
           mesas,
           medicosPorMesa: medicos,
           estatus: 'Pendiente',
+          idEstatus: 1,
           porcentaje: 80
         });
       }
@@ -136,5 +160,5 @@ export class BuscarConvocatoriaComponent {
     this.totalElementos = 24;
   }
 
-  
+
 }

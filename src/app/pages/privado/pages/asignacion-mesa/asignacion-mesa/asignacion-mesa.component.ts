@@ -12,5 +12,5 @@ import { EnvioCitasComponent } from "../envio-citas/envio-citas.component";
   styleUrl: './asignacion-mesa.component.scss',
 })
 export class AsignacionMesaComponent {
-   tab: number = 1;
+   tab: number = 0;
  }
