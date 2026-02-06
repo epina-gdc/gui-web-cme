@@ -115,7 +115,6 @@ export class AsistenciaExtraordinariaComponent {
             accept: () => { /* ... */
                 // Lógica real de registro
                 this.alertService.exito('Asistencia registrada', 'Confirmado')
-                //this.messageService.add({ severity: 'success', summary: 'Confirmado', detail: 'Asistencia registrada' });
                 console.log('Asistencia registrada');
             }
         });
@@ -136,7 +135,7 @@ export class AsistenciaExtraordinariaComponent {
                 // Lógica real de eliminación
                 this.doctor = null; // Limpiamos el doctor
                 this.searchQuery = ''; // Limpiamos búsqueda
-                // this.messageService.add({ severity: 'info', summary: 'Eliminado', detail: 'Registro eliminado' });
+                this.alertService.informacion('Registro eliminado')
 
             }
         });

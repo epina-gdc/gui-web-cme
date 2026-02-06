@@ -17,7 +17,7 @@
 
 .search-header {
     height: 300px;
-    background-color: #1e3a4c; // Fallback color
+    background-color: #1e3a4c;
 
     .header-bg {
         // Reemplaza esta URL con la imagen real de médicos
@@ -26,7 +26,7 @@
         background-position: center;
         object-fit: cover;
 
-        // Overlay oscuro con gradiente verdoso similar a la imagen
+
         &::after {
             content: '';
             position: absolute;
@@ -39,7 +39,7 @@
     }
 }
 
-// Ajustes finos para que los inputs se vean como en la imagen (más cuadrados/limpios)
+
 :host ::ng-deep {
     .p-inputtext {
         border-radius: 4px;
