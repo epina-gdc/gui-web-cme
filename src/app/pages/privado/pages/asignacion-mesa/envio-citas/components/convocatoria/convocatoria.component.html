@@ -1,0 +1,82 @@
+<p-card class="empty-border">
+    <form [formGroup]="formulario">
+
+        <div class="grid">
+            <div class="col-12 sm:col-12 md:col-6 lg:col-4 ">
+                <div class="field">
+                    <label class="field-label" for="convocatoriaId">Convocatoria</label>
+                    <p-select [options]="convocatorias" formControlName="convocatoriaId"
+                        placeholder="Selecciona una convocatoria" optionLabel="nombre" optionValue="id"
+                        class="w-full"></p-select>
+                </div>
+            </div>
+            <div class="col-12">
+                <label class="field-label text-lg font-semibold" for="medicos">Médicos aspirantes </label>
+                <div id="medicos" class="grid mt-1 ">
+                    <div class="col-12 sm:col-6 lg:col-3">
+                        <div class="card-med becados border-round-2xl p-3 pointer"  [class.select]="tipoMedSelect() == 0">
+                            <div class="flex flex-column">
+                                <label class="card-label mb-0" for="numB">Total de Médicos becados </label>
+                                <div class="card-num" id="numB">89</div>
+                                <div class="flex justify-content-end">
+                                    <p-button styleClass="btn-ir p-0" [text]="true" [plain]="true" size="small" (onClick)="onCambioMedSelec(0)" >
+                                        <span class="p-button-label-ir">Ir</span>
+                                        <i class="pi pi-arrow-right"></i>
+                                    </p-button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-12 sm:col-6 lg:col-3">
+                        <div class="card-med residentes border-round-2xl p-3" [class.select]="tipoMedSelect() == 1">
+                            <div class="flex flex-column">
+                                <label class="card-label" for="numB">Total de Médicos becados </label>
+                                <div class="card-num" id="numB">89</div>
+                                <div class="flex justify-content-end">
+                                    <p-button styleClass="btn-ir p-0" [text]="true" [plain]="true" size="small" (onClick)="onCambioMedSelec(1)" >
+                                        <span class="p-button-label-ir">Ir</span>
+                                        <i class="pi pi-arrow-right"></i>
+                                    </p-button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="col-12 sm:col-6 lg:col-3">
+                        <div class="card-med externos border-round-2xl p-3" [class.select]="tipoMedSelect() == 2">
+                            <div class="flex flex-column">
+                                <label class="card-label" for="numB">Total de Médicos becados </label>
+                                <div class="card-num" id="numB">89</div>
+                                <div class="flex justify-content-end">
+                                    <p-button styleClass="btn-ir p-0" [text]="true" [plain]="true" size="small" (onClick)="onCambioMedSelec(2)" >
+                                        <span class="p-button-label-ir">Ir</span>
+                                        <i class="pi pi-arrow-right"></i>
+                                    </p-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 sm:col-6 lg:col-3">
+                        <div class="card-med total border-round-2xl p-3" >
+                            <div class="flex flex-column">
+                                <label class="card-label" for="numB">Total de Médicos becados </label>
+                                <div class="card-num" id="numB">89</div>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </form>
+</p-card>

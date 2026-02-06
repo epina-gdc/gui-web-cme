@@ -18,6 +18,7 @@ import {VisualizacionAsistenciaComponent} from '@privado/visualizacion-asistenci
 import {
   TableroInformacionAsistenciaComponent
 } from '@privado/tablero-informacion-asistencia/tablero-informacion-asistencia.component';
+import { AsignacionMesaComponent } from './pages/asignacion-mesa/asignacion-mesa/asignacion-mesa.component';
 import {PropuestaSindicalComponent} from '@privado/propuesta-sindical/propuesta-sindical.component';
 import {CargaCalificacionesComponent} from '@privado/carga-calificaciones/carga-calificaciones.component';
 import {GestionConvocatoriasComponent} from '@privado/gestion-convocatorias/gestion-convocatorias.component';
@@ -80,6 +81,10 @@ const routes: Routes = [{
     {
       path: NAV.tableroInformacionAsistencia,
       component: TableroInformacionAsistenciaComponent,
+    },
+    {
+      path: NAV.asignacionMesa,
+      component: AsignacionMesaComponent,
     },
     {
       path: NAV.propuestaSindical,

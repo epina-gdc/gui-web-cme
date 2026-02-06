@@ -1,0 +1,30 @@
+:host {
+  display: block;
+}
+
+.bg-azul-claro {
+  background-color: #ABC8F059;
+}
+
+.circle {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+
+  i{
+    font-size: 25px;
+    color: white;
+  }
+
+  &.amarillo {
+    background-color: #FFDF7F;
+  }
+
+  &.azul {
+    background-color: #ABC8F0;
+  }
+
+  &.aqua {
+    background-color: #7BC1E0;
+  }
+}

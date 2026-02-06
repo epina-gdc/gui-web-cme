@@ -1,0 +1,10 @@
+:host {
+  display: block;
+}
+
+::ng-deep .link-nom-conv {
+  .p-button-label {
+    font-weight: 300;
+    color: #007AFF !important;
+  }
+}
