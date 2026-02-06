@@ -58,7 +58,7 @@
 
             <ng-template pTemplate="body" let-row>
                 <tr>
-                    <td><a href="#" class="text-blue-600 hover:underline">{{ row.nombre }}</a></td>
+                    <td><p-button label="{{ row.nombre }}" [link]="true" class="link-nom-conv" (onClick)="onSeleccion(row)" /></td>
                     <td>{{ row.mesas }}</td>
                     <td>{{ row.medicosPorMesa }}</td>
                     <td>

@@ -1,10 +1,9 @@
-import { ChangeDetectionStrategy, Component, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, model, signal, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
 import { MenuModule } from 'primeng/menu';
 import { TableModule } from 'primeng/table';
-import { MenuItem } from 'primeng/api';
 import { CardModule } from "primeng/card";
 import { CommonModule } from '@angular/common';
 import { PaginatorModule, PaginatorState } from "primeng/paginator";
@@ -19,7 +18,8 @@ import { PopoverModule } from 'primeng/popover';
     SelectModule,
     TableModule,
     MenuModule,
-    ButtonModule, CardModule,
+    ButtonModule,
+    CardModule,
     PaginatorModule,
     TagModule,
     PopoverModule
@@ -36,24 +36,10 @@ export class BuscarConvocatoriaComponent {
   numPaginaActual: number = 0;
   totalElementos: number = 0;
 
-  items = [
-    {
-
-      items: [
-        {
-          label: 'Refresh',
-          icon: 'pi pi-refresh'
-        },
-        {
-          label: 'Export',
-          icon: 'pi pi-upload'
-        }
-      ]
-    }
-  ];
+  convocatoriaSeleccionada = model<any | null>(null);
 
   activeTab: WritableSignal<number> = signal(0);
-  // Datos para los dropdowns
+  // Datos para los select
   convocatorias = [
     { id: '1', nombre: 'Convocatoria 1' },
     { id: '2', nombre: 'Convocatoria 2' },
@@ -92,12 +78,6 @@ export class BuscarConvocatoriaComponent {
     }
   ];
 
-  accionesMenu: MenuItem[] = [
-    { label: 'Editar', icon: 'pi pi-pencil', command: () => console.log('Editar') },
-    { label: 'Eliminar', icon: 'pi pi-trash', command: () => console.log('Eliminar') },
-    { separator: true },
-    { label: 'Ver detalles', icon: 'pi pi-eye', command: () => console.log('Detalles') }
-  ];
 
   constructor(private fb: FormBuilder) { }
 
@@ -160,5 +140,12 @@ export class BuscarConvocatoriaComponent {
     this.totalElementos = 24;
   }
 
+  onSeleccion(convocatoria: any) {
+    if (convocatoria) {
+      this.convocatoriaSeleccionada.set(convocatoria || null);
+    } else {
+      this.convocatoriaSeleccionada.set(null);
+    }
+  }
 
 }

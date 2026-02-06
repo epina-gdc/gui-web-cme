@@ -1,18 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 
 import { CardModule } from 'primeng/card';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
-
+import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-especialidad',
-  imports: [CardModule, IconFieldModule, InputIconModule, InputTextModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    CardModule,
+    FormsModule,
+    IconFieldModule,
+    InputIconModule,
+    InputTextModule,
+    AutoCompleteModule],
   templateUrl: './especialidad.component.html',
   styleUrl: './especialidad.component.scss',
 })
 export class EspecialidadComponent {
-especialidades: any[] = [
+
+  ramas: any[] = [
+    { id: 1, nombre: 'Medicina interna' },
+    { id: 2, nombre: 'Medicina general' },
+    { id: 3, nombre: 'Medicina familiar' },
+    { id: 4, nombre: 'Pediatría' },
+    { id: 5, nombre: 'Medicina del trabajo' },
+    { id: 6, nombre: 'Medicina del deporte' },
+  ]
+
+  especialidades: any[] = [
     { id: 1, nombre: 'Cirugía pediátrica (6 años)', cantidad: 34 },
     { id: 2, nombre: 'Alergia a inmunología clínica pediátrica (6 años)', cantidad: 50 },
     { id: 3, nombre: 'Cardiología pediátrica (6 años)', cantidad: 50 },
@@ -29,8 +49,10 @@ especialidades: any[] = [
     { id: 14, nombre: 'Urgencias pediátricas (5 años)', cantidad: 34 },
     { id: 15, nombre: 'Hematología pediátrica (5 años)', cantidad: 34 }
   ];
-
   totalMedicos: number = 0;
+
+  filteredRamas: any[] = [];
+  ramaActual: any;
 
   ngOnInit(): void {
     this.calcularTotal();
@@ -38,5 +60,19 @@ especialidades: any[] = [
 
   private calcularTotal(): void {
     this.totalMedicos = this.especialidades.reduce((sum, e) => sum + e.cantidad, 0);
+  }
+
+  filterRama(event: AutoCompleteCompleteEvent) {
+    let filtered: any[] = [];
+    let query = event.query;
+
+    for (let i = 0; i < (this.ramas as any[]).length; i++) {
+      let ramaAux = (this.ramas as any[])[i];
+      if (ramaAux.nombre.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(ramaAux);
+      }
+    }
+
+    this.filteredRamas = filtered;
   }
 }

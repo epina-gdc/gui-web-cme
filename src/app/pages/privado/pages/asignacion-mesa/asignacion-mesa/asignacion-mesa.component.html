@@ -19,8 +19,10 @@
 </div>
 @switch (tab) {
 @case (0) {
-<app-buscar-convocatoria />
-<app-detalle-convocatoria class="mt-4" />
+<app-buscar-convocatoria [(convocatoriaSeleccionada)]="convocatoriaActual" />
+@if(convocatoriaActual()){
+    <app-detalle-convocatoria class="mt-4" />
+}
 }
 @case (1) {
 <app-envio-citas></app-envio-citas>

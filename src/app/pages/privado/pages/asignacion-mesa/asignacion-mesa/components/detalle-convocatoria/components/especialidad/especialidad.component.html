@@ -5,12 +5,10 @@
         <div class="col-12">
             <div class="md:col-6 col-12">
 
-                <div class="field">
-                    <label class="field-label" for="rama">Rama de la especialidad</label>
-                    <p-iconField iconPosition="right">
-                        <p-inputIcon id="rama" styleClass="pi pi-search" class="" />
-                        <input type="text" class=" w-full" pInputText placeholder="Search" id="search" />
-                    </p-iconField>
+                <div class="flex flex-column">
+                    <label class="field-label col-12" for="rama">Rama de la especialidad</label>
+                    <p-autoComplete class="col-12" [(ngModel)]="ramaActual" [forceSelection]="true" id="rama"
+                        [suggestions]="filteredRamas" (completeMethod)="filterRama($event)" optionLabel="nombre" />
                 </div>
             </div>
         </div>
@@ -18,6 +16,8 @@
 
 
         <div class="col-12">
+
+            @if(ramaActual){
             <div class="grid">
                 <!-- Barra lateral -->
                 <div class="col-fixed" style="width:350px">
@@ -56,10 +56,18 @@
                         </div>
                         }
 
-
                     </div>
                 </div>
             </div>
+
+            }@else{
+
+            <div class="flex flex-column justify-content-center align-items-center h-30rem">
+                <img class="p-0" src="/assets/images/tabla_sin_resultados.svg" alt="Sin resultados">
+                <span class="sin-resultados mt-2">No hay resultados de búsqueda</span>
+            </div>
+
+            }
         </div>
     </div>
 </div>
