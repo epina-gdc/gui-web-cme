@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable, of} from 'rxjs';
 import {plaza} from '@privado/asignacion-plazas/dummies';
 import {FiltroConsultaPlazaInterface} from '@models/filtroConsultaPlaza.interface';

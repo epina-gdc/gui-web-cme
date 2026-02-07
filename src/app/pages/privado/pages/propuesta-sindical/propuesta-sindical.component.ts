@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {CardModule} from 'primeng/card';
 import {TabsModule} from 'primeng/tabs';
 import {GeneralComponent} from '@components/general.component';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder} from '@angular/forms';
 import {DatosMedicoComponent} from '@privado/propuesta-sindical/components/datos-medico/datos-medico.component';
 
 @Component({

@@ -1,9 +1,9 @@
-import {Component, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MenuPlazasComponent} from '@privado/asignacion-plazas/components/menu-plazas/menu-plazas.component';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
 import {GeneralComponent} from '@components/general.component';
-import { DatePickerModule } from 'primeng/datepicker';
+import {DatePickerModule} from 'primeng/datepicker';
 import {Select} from 'primeng/select';
 import {Button} from 'primeng/button';
 import {CardModule} from 'primeng/card';

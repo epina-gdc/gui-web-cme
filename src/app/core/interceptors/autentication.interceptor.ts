@@ -1,10 +1,10 @@
-import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
-import {catchError, Observable, throwError} from "rxjs";
+import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from "@angular/common/http";
+import {Observable, throwError} from "rxjs";
 import {CME_TOKEN} from '@utils/constants';
-import { AuthService } from "@services/auth.service";
-import { Injectable } from "@angular/core";
-import { JwtHelperService } from "@auth0/angular-jwt";
-import { AlertService } from "@services/alert.service";
+import {AuthService} from "@services/auth.service";
+import {Injectable} from "@angular/core";
+import {JwtHelperService} from "@auth0/angular-jwt";
+import {AlertService} from "@services/alert.service";
 
 @Injectable({
   providedIn: 'root'
