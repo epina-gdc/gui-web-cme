@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {
   AsignacionSustitucionComponent
 } from '@privado/gestion-convocatorias/components/asignacion-sustitucion/asignacion-sustitucion.component';

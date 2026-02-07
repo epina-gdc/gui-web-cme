@@ -3,7 +3,8 @@ import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.compon
 import {PillComponent} from '@components/pill/pill.component';
 import {Card} from 'primeng/card';
 import {
-  DetalleDocumentacionDatosPersonales, DetalleDocumentacionResultadoVerificacion
+  DetalleDocumentacionDatosPersonales,
+  DetalleDocumentacionResultadoVerificacion
 } from '@models/detalleDocumentacionAspirante.interface';
 import {TitleCasePipe} from '@angular/common';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
@@ -36,10 +37,10 @@ export class CardInfoComponent extends GeneralComponent implements OnInit {
 
   ngOnInit() {
     this.obtenerDatosFoto(this.datosPersonales.idUsuario);
-    this.datosPersonales.especialidad = this.datosPersonales.especialidad.split('/').length == 1 
-                                        ? this.datosPersonales.especialidad 
+    this.datosPersonales.especialidad = this.datosPersonales.especialidad.split('/').length == 1
+                                        ? this.datosPersonales.especialidad
                                         : this.datosPersonales.especialidad.split('/').join(' / ');
-    
+
   }
 
   @HostListener('window:resize', ['$event'])

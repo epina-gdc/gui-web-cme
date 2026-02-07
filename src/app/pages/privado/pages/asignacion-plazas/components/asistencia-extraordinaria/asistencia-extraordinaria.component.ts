@@ -1,22 +1,22 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {Component, inject} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 
 // PrimeNG Imports
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { ChipModule } from 'primeng/chip';
-import { DividerModule } from 'primeng/divider';
-import { ConfirmDialogModule } from 'primeng/confirmdialog'; // <--- Importar Módulo
-import { ConfirmationService } from 'primeng/api'; // <--- Importar Servicio
-import { ToastModule } from 'primeng/toast'; // Opcional: Para mostrar mensaje de éxito
+import {InputTextModule} from 'primeng/inputtext';
+import {ButtonModule} from 'primeng/button';
+import {CardModule} from 'primeng/card';
+import {ChipModule} from 'primeng/chip';
+import {DividerModule} from 'primeng/divider';
+import {ConfirmDialogModule} from 'primeng/confirmdialog'; // <--- Importar Módulo
+import {ConfirmationService} from 'primeng/api'; // <--- Importar Servicio
+import {ToastModule} from 'primeng/toast'; // Opcional: Para mostrar mensaje de éxito
+import {MenuAsistenciasComponent} from "../menu-asistencias/menu-asistencias.component";
 
-import { MenuAsistenciasComponent } from "../menu-asistencias/menu-asistencias.component";
+import {AsistenciaCardComponent} from '@components/asistencia-card/asistencia-card.component';
+import {AsistenciaNoteComponent} from '@components/asistencia-note/asistencia-note.component';
+import {AlertService} from '@services/alert.service';
 
-import { AsistenciaCardComponent } from '@components/asistencia-card/asistencia-card.component';
-import { AsistenciaNoteComponent } from '@components/asistencia-note/asistencia-note.component';
-import { AlertService } from '@services/alert.service';
 // Interfaz para los datos del médico
 interface Doctor {
     nombre: string;

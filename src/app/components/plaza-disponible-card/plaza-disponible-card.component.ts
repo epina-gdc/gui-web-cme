@@ -5,7 +5,6 @@ import {CurrencyPipe, TitleCasePipe} from '@angular/common';
 import {OportunidadLaboral} from '@models/oportunidad-laboral.interface';
 
 
-
 @Component({
   selector: 'app-plaza-disponible-card',
   imports: [

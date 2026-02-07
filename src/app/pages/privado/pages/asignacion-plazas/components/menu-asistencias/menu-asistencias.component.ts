@@ -1,6 +1,7 @@
-import { Component, Input, OnInit, signal, WritableSignal } from '@angular/core';
-import { AccordionModule } from 'primeng/accordion';
-import { CommonModule } from '@angular/common';
+import {Component, Input, OnInit, signal, WritableSignal} from '@angular/core';
+import {AccordionModule} from 'primeng/accordion';
+import {CommonModule} from '@angular/common';
+
 //import { RouterLink } from '@angular/router';
 
 @Component({
