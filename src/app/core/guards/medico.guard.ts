@@ -25,24 +25,26 @@ const checkMedicalProfile = (): Observable<boolean | UrlTree> => {
       }
 
       const url = authService.usuarioSesion?.url;
+      const modulos = authService.usuarioSesion?.modulos;
 
       if (!PERFILES_COMPLETOS.includes(idPerfil)) {
         return of(router.createUrlTree(['/privado/config-erronea']));
       }
 
+      // perfiles que no pertenecen al modulo 1
       if (!PERFILES_MODULO_1.includes(idPerfil)) {
         if (url !== '') {
           return of(router.createUrlTree([`/privado/${url}`]));
-        } else {
-          return of(router.createUrlTree(['/privado/config-erronea']));
         }
+
+        const destino = modulos?.length === 0 ? 'config-erronea' : 'inicio-modulos';
+        return of(router.createUrlTree([`/privado/${destino}`]));
       }
 
       if ([1, 2, 3, 6].includes(idPerfil)) {
         return of(true);
-      } else {
-        return of(router.createUrlTree(['/privado/verificacion-documentos']));
       }
-    })
+
+      return of(router.createUrlTree(['/privado/verificacion-documentos']));    })
   );
 };

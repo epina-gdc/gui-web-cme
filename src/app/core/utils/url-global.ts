@@ -16,4 +16,5 @@ export const NAV = {
   propuestaSindical: 'propuesta-sindical',
   errorConfig: 'config-erronea',
   home: 'inicio',
+  homeModulos: 'inicio-modulos',
 };
