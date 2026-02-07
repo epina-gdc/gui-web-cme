@@ -76,6 +76,14 @@
     min-height: 309px;
   }
 
+  .buscador-background {
+    background: linear-gradient(to bottom,rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.1)),
+      url("assets/backgrounds/fondo-busqueda.png") no-repeat center top / cover;
+    min-height: 309px;
+
+  }
+
+
   .footer-cme {
     background-color: var(--gob-mx-pr-imss-tono1);
   }

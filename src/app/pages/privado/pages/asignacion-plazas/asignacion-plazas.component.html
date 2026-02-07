@@ -1,52 +1,186 @@
+<section>
+  <div class="flex justify-content-start align-items-center gap-1 mt-4 mb-4 lg:mt-0">
+    <!-- <btn-regresar/> -->
+    <h3 class="titulo-seccion">Asignación de plazas</h3>
+  </div>
 
-<!--**ESCENARIO TABS-->
-<div class="py-1 px-4 md:bg-white border-round-xl mb-4">
-  <p-tabs [value]="tab" class="tab-documentacion">
-    <p-tablist class="flex flex-row">
-      <p-tab [value]="0" (click)="tab = 0" class="w-auto">
-        <div class="header-tab-documentacion">
-          <i class="cme-coplamar me-3"
-            [ngStyle]="{
-              'color': tab == 0 ? '#404041' : '#ADB8CC'
-            }"
-         style="font-size: 1.4rem"></i>
-          <p>Plazas ordinarias</p>
-        </div>
-      </p-tab>
-      <p-tab [value]="1" (click)="tab = 1" class="w-auto">
-        <div class="header-tab-documentacion">
-          <i class="cme-coplamar me-3"
-             [ngStyle]="{
-              'color': tab == 1 ? '#404041' : '#ADB8CC'
-              }"
-             style="font-size: 1.4rem"></i>
-          <p>COPLAMAR</p>
-        </div>
-      </p-tab>
-
-        <p-tab [value]="2" (click)="tab = 2" class="w-auto">
-          <div class="header-tab-documentacion">
-            <i class="cme-sustitucion me-3"
-               [ngStyle]="{
-                'color': tab == 2 ? '#404041' : '#ADB8CC'
-                }"
-               style="font-size: 1.4rem"></i>
-            <p>Asignación de sustitución</p>
+  <header class="buscador-background flex justify-content-center align-items-center ">
+    <form [formGroup]="form" class="p-fluid" (ngSubmit)="onBuscar()">
+      <div>
+        <h2 class="titulo-asignaciones">Búsqueda por matrícula/folio</h2>
+        <div class="search_form">
+          <div class="md:col-4 col-12 flex align-content-center flex-1 gap-3 pt-4">
+            <input pInputText class="w-full" type="text" id="folio"
+                placeholder="Ingrese su matrícula/folio"
+                formControlName="folio"
+                />
+            <p-button type="button" variant="outlined" label="Limpiar"  (click)="onLimpiar()" />
+            <p-button type="submit" label="Buscar" (onClick)="onBuscar()"   />
           </div>
-        </p-tab>
+        </div>
+      </div>
+    </form>
+  </header>
+  <main>
+    <!-- Estado vacío -->
+    <div class="content" *ngIf="!exist">
+      <div class="empty">
+        <img class="empty__img" src="/assets/images/tabla_sin_resultados.svg" alt="Sin resultados" />
+        <p class="empty__text">No hay resultados de búsqueda</p>
+      </div>
+    </div>
+    
 
-    </p-tablist>
-  </p-tabs>
-</div>
-@switch (tab) {
-  @case (0) {
-    <app-plaza-ordinaria></app-plaza-ordinaria>
-  }
-  @case (1) {
-    <app-coplamar></app-coplamar>
-  }
-  @case (2) {
-    <app-asignacion-sustitucion></app-asignacion-sustitucion>
-  }
-}
-<!--**ESCENARIO TABS-->
+    <!-- Aquí tu tabla / cards cuando haya resultados -->
+    <div *ngIf="exist">
+      <!--<p-card class="mx-2 empty-border" [header]="'Información del médico aspirante'">
+        <div class="flex align-items-center p-4 flex-wrap imagen-seccion">
+          <div class="flex align-items-center justify-content-center
+                  flex-column half-border border-circle border-imagen-sm">
+            <img class="foto" role="presentation" [alt]="nombreFoto" [title]="nombreFoto" [src]="defaultFile"
+                style="object-fit: cover; height: 130%; width: 130%"/>
+          </div>
+        </div>
+      </p-card>-->
+      <p-card class="mx-2 empty-border info-card" [header]="'Información del médico aspirante'">
+        <div class="mx-4 info-body">
+          <!-- Avatar -->
+          <div class="info-avatar">
+            <p-avatar
+              [image]="medico.fotoUrl"
+              shape="circle"
+              size="xlarge">
+            </p-avatar>
+          </div>
+
+          <!-- Main content -->
+          <div class="info-main">
+            <div class="info-toprow">
+              <h2 class="info-name">{{ medico.nombreCompleto }}</h2>
+
+              <!-- Actions -->
+              <div class="info-actions gap-5">
+                <div class="flex align-items-center justify-content-center gap-2" style="cursor: pointer; color: #63c2ea;"
+                    (click)="rechazarOferta()">
+                  <i class="cme-rechazo-oferta" style="font-size: 1.4rem"></i>
+                  <p style="font-size: 12px; font-weight: 500;">Rechazo de oferta</p>
+                </div>
+                <div class="flex align-items-center justify-content-center gap-2" style="cursor: pointer; color: #63c2ea;"
+                    (click)="cambiarRama()">
+                  <i class="cme-cambio-rama" style="font-size: 1.4rem"></i>
+                  <p style="font-size: 12px; font-weight: 500;">Cambio de rama</p>
+                </div>
+
+                <div class="flex align-items-center justify-content-center gap-2" style="cursor: pointer; color: #63c2ea;"
+                    (click)="reimprimirVerificacion()">
+                  <i class="cme-file" style="font-size: 1.8rem"></i>
+                  <p style="font-size: 12px; font-weight: 500;">Reimpresión de verificación</p>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Info grid -->
+            <div class="info-grid">
+              <div class="info-item">
+                <div class="info-label">Matrícula</div>
+                <div class="info-value">{{ medico.matricula }}</div>
+              </div>
+
+              <div class="info-item asp-item-wide">
+                <div class="info-label">Especialidad(es)</div>
+
+                <div class="esp-inline">
+                  <ng-container *ngFor="let e of medico.especialidades; let last = last">
+                    <span class="esp-item-text">{{ e }}</span>
+                    <span *ngIf="!last" class="esp-sep">/</span>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <div class="info-label">Sexo</div>
+                <div class="info-value">{{ medico.sexo }}</div>
+              </div>
+
+              <div class="info-item">
+                <div class="info-label">CURP</div>
+                <div class="info-value">{{ medico.curp }}</div>
+              </div>
+
+              <div class="info-item">
+                <div class="info-label">RFC</div>
+                <div class="info-value">{{ medico.rfc }}</div>
+              </div>
+
+              <div class="info-item">
+                <div class="info-label">Correo electrónico</div>
+                <div class="info-value">{{ medico.email }}</div>
+              </div>
+
+              <div class="info-item">
+                <div class="info-label">Correo electrónico adicional</div>
+                <div class="info-value">{{ medico.emailAdicional }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-card>
+
+
+      <!--**ESCENARIO TABS-->
+      <div class="py-1 px-4 md:bg-white border-round-xl mb-4">
+        <p-tabs [value]="tab" class="tab-documentacion">
+          <p-tablist class="flex flex-row">
+            <p-tab [value]="0" (click)="tab = 0" class="w-auto">
+              <div class="header-tab-documentacion">
+                <i class="cme-coplamar me-3"
+                  [ngStyle]="{
+                    'color': tab == 0 ? '#404041' : '#ADB8CC'
+                  }"
+              style="font-size: 1.4rem"></i>
+                <p>Plazas ordinarias</p>
+              </div>
+            </p-tab>
+            <p-tab [value]="1" (click)="tab = 1" class="w-auto">
+              <div class="header-tab-documentacion">
+                <i class="cme-coplamar me-3"
+                  [ngStyle]="{
+                    'color': tab == 1 ? '#404041' : '#ADB8CC'
+                    }"
+                  style="font-size: 1.4rem"></i>
+                <p>COPLAMAR</p>
+              </div>
+            </p-tab>
+
+              <p-tab [value]="2" (click)="tab = 2" class="w-auto">
+                <div class="header-tab-documentacion">
+                  <i class="cme-sustitucion me-3"
+                    [ngStyle]="{
+                      'color': tab == 2 ? '#404041' : '#ADB8CC'
+                      }"
+                    style="font-size: 1.4rem"></i>
+                  <p>Asignación de sustitución</p>
+                </div>
+              </p-tab>
+
+          </p-tablist>
+        </p-tabs>
+      </div>
+      @switch (tab) {
+        @case (0) {
+          <app-plaza-ordinaria></app-plaza-ordinaria>
+        }
+        @case (1) {
+          <app-coplamar></app-coplamar>
+        }
+        @case (2) {
+          <app-asignacion-sustitucion></app-asignacion-sustitucion>
+        }
+      }
+      <!--**ESCENARIO TABS-->
+    </div>
+  </main>
+</section>
+
+
