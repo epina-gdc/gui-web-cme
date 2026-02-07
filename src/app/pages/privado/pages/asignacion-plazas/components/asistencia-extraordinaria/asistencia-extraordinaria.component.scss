@@ -1,0 +1,51 @@
+// Animación suave de entrada
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.search-header {
+    height: 300px;
+    background-color: #1e3a4c;
+
+    .header-bg {
+        // Reemplaza esta URL con la imagen real de médicos
+        background-image: url("../../../../../../../assets/backgrounds/fondo-busqueda.png");
+        background-size: cover;
+        background-position: center;
+        object-fit: cover;
+
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, rgba(22, 56, 68, 0.9) 0%, rgba(22, 56, 68, 0.7) 50%, rgba(56, 178, 172, 0.3) 100%);
+        }
+    }
+}
+
+
+:host ::ng-deep {
+    .p-inputtext {
+        border-radius: 4px;
+    }
+
+    .p-button {
+        border-radius: 4px;
+    }
+}

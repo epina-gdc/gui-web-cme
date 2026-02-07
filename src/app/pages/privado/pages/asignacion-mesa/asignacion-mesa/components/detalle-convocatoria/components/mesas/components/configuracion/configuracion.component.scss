@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+@layer app-components {
+
+  ::ng-deep p-calendar{
+    span.p-datepicker{
+      width: -webkit-fill-available!important;
+    }
+  }
+  .btn-form{
+    margin-top: 23px;
+  }
+}
