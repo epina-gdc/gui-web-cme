@@ -5,6 +5,7 @@
 @use "assets/scss/primeng-custom/index" as customprimeng;
 @use "assets/scss/icons/index" as icons;
 
+
 /* src/styles.css */
 @layer framework {
   .navbar-expand-md .navbar-nav {
@@ -70,9 +71,9 @@
 
   }
 
-  .carga-calificaciones-background{
-    background: linear-gradient(to bottom,rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1)),
-    url("assets/backgrounds/fondo-carga-calificaciones.png") no-repeat center top / cover;
+  .carga-calificaciones-background {
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.1)),
+      url("assets/backgrounds/fondo-carga-calificaciones.png") no-repeat center top / cover;
     min-height: 309px;
   }
 
@@ -397,9 +398,113 @@
     filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
   }
 
-  .sinResultados{
+  .sinResultados {
     font-weight: 800;
-    font-size:14px;
+    font-size: 14px;
 
+  }
+}
+
+/* ------------- MODAL ----------------------*/
+/* Estilos para el Modal de Confirmación */
+.custom-confirm-dialog.p-dialog {
+  // 1. Barra superior Teal (mantenemos tu estilo actual)
+  border-top: 8px solid #009688;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+
+
+  // 2. Header (Ajuste para mover la X a la derecha)
+  .p-dialog-header {
+    background: #ffffff;
+    border-bottom: none;
+    padding: 1rem 1rem 0.5rem 1rem;
+
+    // PROPIEDADES CLAVE PARA ALINEAR X A LA DERECHA:
+    display: flex;
+    justify-content: flex-end; // Empuja el contenido al final (derecha)
+    align-items: center;
+
+    // Ocultamos el título
+    .p-dialog-title {
+      display: none;
+    }
+
+    // Estilo del icono de cerrar
+    .p-dialog-header-icons {
+      margin: 0; // Reseteamos márgenes
+
+      .p-dialog-header-close {
+        color: #6b7280; // Gris suave
+
+        &:focus {
+          box-shadow: none;
+        }
+
+        &:hover {
+          background-color: #f3f4f6;
+          color: #374151;
+        }
+      }
+    }
+  }
+
+  // 3. Contenido (Ajuste para centrar texto y quitar fondo azul)
+  .p-dialog-content {
+    background: #ffffff; // Corregido (antes era blue)
+    color: #374151;
+
+    // PROPIEDADES CLAVE PARA CENTRAR EL MENSAJE:
+    text-align: center !important;
+    display: flex; // Asegura comportamiento de bloque flexible
+    justify-content: center; // Centra horizontalmente el bloque de texto
+    align-items: center; // Centra verticalmente si hubiera altura fija
+
+    font-size: 1.15rem;
+    width: 100%;
+    padding: 1.5rem 2.5rem 2.5rem 2.5rem;
+    white-space: pre-line; // Respeta los saltos de línea (\n)
+  }
+
+  // 4. Footer (Botones)
+  .p-dialog-footer {
+    background: #ffffff;
+    border-top: none;
+    padding: 0 2rem 2rem 2rem;
+    text-align: right;
+
+    button {
+      margin-left: 0.75rem;
+      font-weight: 600;
+      border-radius: 6px;
+      padding: 0.75rem 1.25rem;
+
+      // Botón CANCELAR (Rojo)
+      &.btn-modal-cancelar {
+        background: transparent !important;
+        border: 1px solid #ef4444 !important;
+        color: #ef4444 !important;
+
+        &:hover {
+          background: #fef2f2 !important;
+          color: #dc2626 !important;
+          border-color: #dc2626 !important;
+        }
+      }
+
+      // Botón CONFIRMAR (Verde/Teal)
+      &.btn-modal-confirmar {
+        background: transparent !important;
+        border: 1px solid #009688 !important; // Coincide con el borde superior
+        color: #009688 !important;
+
+        &:hover {
+          background: #e0f2f1 !important;
+          color: #00796b !important;
+          border-color: #00796b !important;
+        }
+      }
+    }
   }
 }

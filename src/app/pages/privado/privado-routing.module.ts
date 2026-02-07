@@ -10,16 +10,24 @@ import {NAV} from '@utils/url-global';
 import {medicoGuard} from '@guards/medico.guard';
 import {validadorGuard} from '@guards/validador.guard';
 import {documentacionAspiranteResolver} from '../../core/resolvers/documentacion-aspirante.resolver';
-import { verficacionDocsResolver } from '../../core/resolvers/verificacion-docs.resolver';
-import { OfertaLaboralComponent } from './pages/oferta-laboral/oferta-laboral.component';
+import {verficacionDocsResolver} from '../../core/resolvers/verificacion-docs.resolver';
+import {OfertaLaboralComponent} from './pages/oferta-laboral/oferta-laboral.component';
 import {AsignacionPlazasComponent} from '@privado/asignacion-plazas/asignacion-plazas.component';
+
 import {
-  CargaCalificacionesComponent
-} from '@privado/asignacion-plazas/components/carga-calificaciones/carga-calificaciones.component';
+  AsistenciaExtraordinariaComponent
+} from './pages/asignacion-plazas/components/asistencia-extraordinaria/asistencia-extraordinaria.component';
 import {VisualizacionAsistenciaComponent} from '@privado/visualizacion-asistencia/visualizacion-asistencia.component';
 import {
   TableroInformacionAsistenciaComponent
 } from '@privado/tablero-informacion-asistencia/tablero-informacion-asistencia.component';
+import {AsignacionMesaComponent} from './pages/asignacion-mesa/asignacion-mesa/asignacion-mesa.component';
+import {PropuestaSindicalComponent} from '@privado/propuesta-sindical/propuesta-sindical.component';
+import {CargaCalificacionesComponent} from '@privado/carga-calificaciones/carga-calificaciones.component';
+import {GestionConvocatoriasComponent} from '@privado/gestion-convocatorias/gestion-convocatorias.component';
+import {NotFoundComponent} from '@privado/not-found/not-found.component';
+import {ErrorConfiguracionComponent} from '@privado/error-configuracion/error-configuracion.component';
+import {InicioModulosComponent} from '@privado/inicio-modulos/inicio-modulos.component';
 
 const routes: Routes = [{
   path: '',
@@ -43,7 +51,7 @@ const routes: Routes = [{
       path: NAV.verificacionDocumentos,
       component: VerificacionDocumentosComponent,
       canActivate: [validadorGuard],
-      resolve:{
+      resolve: {
         respuesta: verficacionDocsResolver
       }
     },
@@ -54,16 +62,13 @@ const routes: Routes = [{
         respuesta: documentacionAspiranteResolver,
       }
     },
-
     {
       path: NAV.ofertaLaboral,
       component: OfertaLaboralComponent,
       resolve: {
         respuesta_oferta: ofertaLaboralResolver
       }
-
     },
-
     {
       path: NAV.asignacion,
       component: AsignacionPlazasComponent,
@@ -73,6 +78,10 @@ const routes: Routes = [{
       component: CargaCalificacionesComponent,
     },
     {
+      path: NAV.asistenciaExtraordinaria,
+      component: AsistenciaExtraordinariaComponent,
+    },
+    {
       path: NAV.visualizacionAsistencia,
       component: VisualizacionAsistenciaComponent,
     },
@@ -80,6 +89,27 @@ const routes: Routes = [{
       path: NAV.tableroInformacionAsistencia,
       component: TableroInformacionAsistenciaComponent,
     },
+    {
+      path: NAV.asignacionMesa,
+      component: AsignacionMesaComponent,
+    },
+    {
+      path: NAV.propuestaSindical,
+      component: PropuestaSindicalComponent,
+    },
+    {
+      path: NAV.gestionConvocatoria,
+      component: GestionConvocatoriasComponent,
+    },
+    {
+      path: NAV.errorConfig,
+      component: ErrorConfiguracionComponent,
+    },
+    {
+      path: NAV.homeModulos,
+      component: InicioModulosComponent,
+    },
+    { path: '**', component: NotFoundComponent }
   ]
 }];
 

@@ -1,0 +1,120 @@
+:host {
+  display: block;
+}
+
+/* Para que el texto no se desborde */
+li {
+  word-break: break-word;
+}
+
+.card-mesa {
+  min-height: 365px;
+}
+
+hr {
+  &.mesa-amarilla {
+    border-color: #E5B400;
+    border-width: 2px;
+  }
+
+  &.mesa-azul {
+    border-color: #457DA1;
+    border-width: 2px;
+  }
+}
+
+
+
+p-chip {
+  &.mesa-amarilla {
+    border-color: #E5B400;
+    color: #E5B400;
+    ;
+  }
+
+  &.mesa-azul {
+    border-color: #457DA1;
+    color: #457DA1;
+  }
+}
+
+ul {
+  &.mesa-amarilla {
+    border-color: #E5B400;
+    color: #E5B400;
+    ;
+  }
+
+  &.mesa-azul {
+    border-color: #457DA1;
+    color: #457DA1;
+  }
+}
+
+.mesa-amarilla {
+  background-color: #FFF4CC66;
+  border-color: #FFF4CC66;
+}
+
+.mesa-azul {
+  background-color: #F1F6F9;
+  border-color: #F1F6F9;
+}
+
+@media screen and (min-width: 768px) {
+  .md\:col-20 {
+    flex: 0 0 auto;
+    padding: 0.5rem;
+    width: 33.33%;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .lg\:col-20 {
+    flex: 0 0 auto;
+    padding: 0.5rem;
+    width: 33.33%;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .xl\:col-20 {
+    flex: 0 0 auto;
+    padding: 0.5rem;
+    width: 20%;
+  }
+}
+
+::ng-deep p-button.btn-del {
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+::ng-deep button.p-button.btn-del {
+  border-radius: 50% !important;
+  padding: 1px;
+  width: 10px;
+  height: 10px;
+
+  span {
+    font-size: 5px;
+  }
+}
+
+p-chip.is-becario {
+  background-color: #FFCCAC !important;
+  color: #873400 !important;
+  height: 10px;
+  height: 12px;
+  width: 12px;
+  padding: 0px;
+  display: inline-flex;
+  align-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 2.2px;
+  font-size: 9px;
+}

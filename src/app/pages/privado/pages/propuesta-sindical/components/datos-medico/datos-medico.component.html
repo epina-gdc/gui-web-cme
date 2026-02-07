@@ -1,0 +1,152 @@
+<div class="flex p-3 bg-white border-round-xl my-3">
+  <div class="md:col-5 col-12">
+    <form [formGroup]="form" >
+      <div class="flex justify-content-between">
+        <label class="field-label" for="matricula">Matrícula/Folio</label>
+      </div>
+      <input pInputText class="w-full" type="text" id=",matricula"
+             placeholder="Ingresa matrícula"
+             formControlName="matricula"/>
+    </form>
+  </div>
+  <div class="md:col-4 col-12 flex align-content-center flex-1 gap-3 mt-4">
+    <p-button type="button" variant="outlined" label="Limpiar" />
+    <p-button type="button" label="Buscar"   />
+  </div>
+</div>
+
+@if (data) {
+  <p-card class="empty-border" [header]="'Datos del médico aspirante'">
+    <div class="flex p-2">
+      <article class="lg:col-3 col-12 flex flex-row mb-4 lg:mb-0 justify-content-center">
+        <upload-photo [disableUpload]="false"
+                      (fileSelected)="archivoSeleccionado($event)"
+                      [clearOnFailedSave]="needsCleanup"
+                      [existingFile]="defaultFile" (cleanupDone)="onCleanupDone()" class="mt-5"/>
+      </article>
+      <div class="flex flex-column w-full">
+        <div class="flex justify-content-between mb-3">
+          <div class="flex align-items-center">
+            <span class="titulo-nombre-aspirante font-semibold me-4">Pablo Andrés García Bernal</span>
+            <p-badge [value]="'• ' + 'Plaza ordinaria'" severity="warn"/>
+          </div>
+          <div class="flex cursor-pointer align-items-center">
+            <i class="cme-impresora" style="font-size: 1.2rem; color:#08865C;"></i>
+            <span class="ms-2 header-tab-documentacion" style="color:#08865C;" >Imprimir propuesta sindical</span>
+          </div>
+        </div>
+        <span class="titulo-menu-asignacion font-normal text-color mb-3">Información del médico</span>
+        <div class="flex gap-5 mb-3">
+          <div class="flex flex-column detalle-aspirante">
+            <span>Sexo</span>
+            <p>Masculino</p>
+          </div>
+          <div class="flex flex-column  detalle-aspirante">
+            <span>Fecha de nacimiento</span>
+            <p>28/08/1990</p>
+          </div>
+          <div class="flex flex-column  detalle-aspirante">
+            <span>Nacionalidad</span>
+            <p>Masculina</p>
+          </div>
+          <div class="flex flex-column  detalle-aspirante">
+            <span>Edad</span>
+            <p>35 años</p>
+          </div>
+          <div class="flex flex-column  detalle-aspirante">
+            <span>CURP</span>
+            <p>GABP900818HDFLRR01</p>
+          </div>
+          <div class="flex flex-column  detalle-aspirante">
+            <span>RFC</span>
+            <p>GABP090818HD</p>
+          </div>
+        </div>
+        <span class="titulo-menu-asignacion font-normal text-color mb-3">Información de asignación</span>
+        <div class="flex gap-5 mb-3 pb-4 border-bottom-2 border-blue-50">
+          <div class="flex flex-column detalle-aspirante ">
+            <span>Plaza asignada</span>
+            <p>Plaza 12345-A</p>
+          </div>
+          <div class="flex flex-column  detalle-aspirante">
+            <span>OOAD asignada</span>
+            <p>OOAD Jalisco</p>
+          </div>
+          <div class="flex flex-column  detalle-aspirante">
+            <span>Zona</span>
+            <p>Zona 3 Jalisco</p>
+          </div>
+          <div class="flex flex-column  detalle-aspirante">
+            <span>Categoría</span>
+            <p>Médico General</p>
+          </div>
+          <div class="flex flex-column  detalle-aspirante">
+            <span>Especialidad</span>
+            <p>Cardiología</p>
+          </div>
+          <div class="flex flex-column  detalle-aspirante">
+            <span>Modalidad</span>
+            <p>Presencial</p>
+          </div>
+          <div class="flex flex-column  detalle-aspirante">
+            <span>Tipo de unidad</span>
+            <p>Ordinario</p>
+          </div>
+        </div>
+        <span class="titulo-menu-asignacion font-normal text-color mb-3">Dirección</span>
+        <div class="flex gap-5 mb-3 pb-4 border-bottom-2 border-blue-50">
+          <div class="flex flex-column detalle-aspirante">
+            <span>Entidad</span>
+            <p>Jalisco</p>
+          </div>
+          <div class="flex flex-column  detalle-aspirante">
+            <span>Municipio</span>
+            <p>Guadalajara</p>
+          </div>
+          <div class="flex flex-column  detalle-aspirante">
+            <span>Código postal</span>
+            <p>44100</p>
+          </div>
+          <div class="flex flex-column  detalle-aspirante">
+            <span>Colonia</span>
+            <p>Centro</p>
+          </div>
+          <div class="flex flex-column  detalle-aspirante">
+            <span>Calle</span>
+            <p>Av. Juárez</p>
+          </div>
+          <div class="flex flex-column  detalle-aspirante">
+            <span>Número exterior</span>
+            <p>123</p>
+          </div>
+        </div>
+        <span class="titulo-menu-asignacion font-normal text-color mb-3">Sección sindical</span>
+        <div class="flex gap-5 mb-3 pb-4 border-bottom-2 border-blue-50">
+          <div class="flex flex-column detalle-aspirante">
+            <p>Sección III</p>
+          </div>
+        </div>
+        <span class="titulo-menu-asignacion font-normal text-color mb-3">Información de contacto</span>
+        <div class="flex gap-5 mb-3">
+          <div class="flex flex-column detalle-aspirante">
+            <span>Teléfono celular</span>
+            <p>3312345678</p>
+          </div>
+          <div class="flex flex-column  detalle-aspirante">
+            <span>Otro teléfono de contacto</span>
+            <p>3398764532</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </p-card>
+  <div class="flex justify-content-end mt-3">
+    <p-button variant="outlined" label="Cancelar propuesta" severity="warn"/>
+  </div>
+}@else{
+  <div class="flex flex-column justify-content-center align-items-center h-30rem">
+    <img class="p-0"
+         src="/assets/images/tabla_sin_resultados.svg" alt="Sin resultados">
+    <span class="sin-resultados mt-2">No hay resultados de búsqueda</span>
+  </div>
+}

@@ -1,7 +1,7 @@
 import {Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
 import {GeneralComponent} from '@components/general.component';
-import {FormBuilder,  FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {AsignacionService} from '@services/asignacion.service';
 import {Select} from 'primeng/select';
 import {selectData} from '@privado/asignacion-plazas/dummies';

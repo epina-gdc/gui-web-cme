@@ -11,7 +11,13 @@ export const NAV = {
   ofertaLaboral: 'oferta-laboral',
   asignacion: 'asignacion',
   cargaCalificaciones: 'carga-calificaciones',
+  asistenciaExtraordinaria: 'asistencia-extraordinaria',
   visualizacionAsistencia: 'visualizacion-asistencia',
   tableroInformacionAsistencia: 'tablero-informacion',
+  asignacionMesa: 'asignacion-mesa',
+  propuestaSindical: 'propuesta-sindical',
+  gestionConvocatoria: 'gestion-convocatoria',
+  errorConfig: 'config-erronea',
   home: 'inicio',
+  homeModulos: 'inicio-modulos',
 };

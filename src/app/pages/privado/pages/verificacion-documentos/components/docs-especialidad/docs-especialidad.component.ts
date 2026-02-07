@@ -11,8 +11,10 @@ import {
   WritableSignal
 } from '@angular/core';
 import {
-  AbstractControl, FormArray,
-  FormBuilder, FormControl,
+  AbstractControl,
+  FormArray,
+  FormBuilder,
+  FormControl,
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
@@ -26,7 +28,7 @@ import {CardModule} from 'primeng/card';
 import {ButtonModule} from 'primeng/button';
 import {DetalleDocumentacionEspecialidadDocumento} from '@models/detalleDocumentacionAspirante.interface';
 import {DocumentoService} from '@services/documentos.service';
-import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {DomSanitizer} from '@angular/platform-browser';
 import {VerificacionDocsService} from '@services/verificacion-docs.service';
 import {Router, RouterLink} from '@angular/router';
 import {AlertService} from '@services/alert.service';

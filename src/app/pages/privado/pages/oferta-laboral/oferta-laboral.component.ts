@@ -1,4 +1,4 @@
-import {Component, OnInit, OnDestroy, inject, signal, WritableSignal} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {Card} from 'primeng/card';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
@@ -18,7 +18,7 @@ import {PrimeTemplate} from 'primeng/api';
 import {GeneralComponent} from '@components/general.component';
 import {mapearArregloTipoDropdown} from '@utils/funciones';
 import {ActivatedRoute} from '@angular/router';
-import {Subscription, concatMap, forkJoin, map, of, switchMap, tap, throttleTime, throwError} from 'rxjs';
+import {concatMap, forkJoin, of, Subscription, switchMap, tap, throttleTime} from 'rxjs';
 import {EstadoOfertaService} from '@services/estado-oferta.service';
 
 import {OportunidadLaboral} from '@models/oportunidad-laboral.interface';

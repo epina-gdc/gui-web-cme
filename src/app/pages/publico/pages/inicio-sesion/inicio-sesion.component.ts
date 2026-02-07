@@ -8,7 +8,6 @@ import {GeneralComponent} from '@components/general.component';
 import {passwordValidator} from '@validators/password-validator';
 import {BloquearCaracterPasswordDirective} from '@directives/bloquear-caracter-password.directive';
 import {PATRON_EMAIL} from '@utils/regex';
-import {AuthService} from '@services/auth.service';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {HttpRespuesta} from '@models/http-respuesta.interface';
 import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.directive';
@@ -28,11 +27,11 @@ import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.di
   templateUrl: './inicio-sesion.component.html',
   styleUrl: './inicio-sesion.component.scss',
   standalone: true,
-  
+
 })
 export class InicioSesionComponent extends GeneralComponent implements OnInit {
 
-  
+
   fb = inject(FormBuilder)
   destroyRef = inject(DestroyRef);
 
@@ -79,7 +78,6 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit {
               localStorage.setItem('login_time', loginTime.toString());
 
                 this.sessionTimerService.startTimer(); */
-
           void this._router.navigate(['/privado/inicio'], {relativeTo: this.activatedRoute,});
         },
         error: (error) => {
