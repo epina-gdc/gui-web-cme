@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {PlazaOrdinariaComponent} from '@privado/asignacion-plazas/components/plaza-ordinaria/plaza-ordinaria.component';
 import {CoplamarComponent} from '@privado/asignacion-plazas/components/coplamar/coplamar.component';
 import {

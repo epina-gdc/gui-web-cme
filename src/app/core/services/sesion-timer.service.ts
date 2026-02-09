@@ -1,11 +1,11 @@
 // session-timer.service.ts
 
-import { Injectable, OnDestroy } from '@angular/core';
-import { ConfirmationService, Confirmation } from 'primeng/api'; // <--- Importar
-import { Router } from '@angular/router';
-import { BehaviorSubject, interval, Subscription } from 'rxjs';
-import { take, tap } from 'rxjs/operators';
-import { AuthService } from './auth.service';
+import {Injectable, OnDestroy} from '@angular/core';
+import {ConfirmationService} from 'primeng/api'; // <--- Importar
+import {Router} from '@angular/router';
+import {BehaviorSubject, interval, Subscription} from 'rxjs';
+import {take, tap} from 'rxjs/operators';
+import {AuthService} from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class SessionTimerService implements OnDestroy {

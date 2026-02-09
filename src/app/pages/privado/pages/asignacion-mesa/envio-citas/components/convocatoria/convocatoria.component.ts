@@ -1,9 +1,9 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CardModule } from "primeng/card";
-import { SelectModule } from "primeng/select";
-import { ButtonModule } from "primeng/button";
+import {CommonModule} from '@angular/common';
+import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {CardModule} from "primeng/card";
+import {SelectModule} from "primeng/select";
+import {ButtonModule} from "primeng/button";
 
 @Component({
   selector: 'app-convocatoria',

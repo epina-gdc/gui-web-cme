@@ -9,7 +9,7 @@ import {
   Output,
   SimpleChanges
 } from '@angular/core';
-import {CurrencyPipe,CommonModule, } from "@angular/common";
+import {CommonModule, CurrencyPipe, TitleCasePipe,} from "@angular/common";
 import {Card} from 'primeng/card';
 import {Rating} from 'primeng/rating';
 import {FormsModule} from '@angular/forms';
@@ -19,7 +19,6 @@ import {EstadoOfertaService} from '@services/estado-oferta.service';
 import {ConvocatoriaService} from '@services/convocatoria.service';
 import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
-import {TitleCasePipe} from '@angular/common';
 import {SvgAnimationService} from '@services/svg-animation.service';
 import {OnCloseOnNavigationDirective} from '@directives/close-on-navigation.directive';
 

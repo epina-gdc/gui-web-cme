@@ -1,9 +1,10 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal } from '@angular/core';
-import { Avatar } from "primeng/avatar";
-import { CardModule } from 'primeng/card';
-import { ProgressBarModule } from 'primeng/progressbar';
-import { Button } from "primeng/button";
+import {CommonModule} from '@angular/common';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal} from '@angular/core';
+import {Avatar} from "primeng/avatar";
+import {CardModule} from 'primeng/card';
+import {ProgressBarModule} from 'primeng/progressbar';
+import {Button} from "primeng/button";
+
 @Component({
   selector: 'app-detalle-convocatoria',
   imports: [CommonModule, CardModule, Avatar, ProgressBarModule, Button],
@@ -14,7 +15,7 @@ import { Button } from "primeng/button";
 export class DetalleConvocatoriaComponent implements OnInit, OnDestroy {
   value = signal(97);
   private intervalId: number | null = null;
-  
+
 
 
 

@@ -1,14 +1,14 @@
-import { ChangeDetectionStrategy, Component, model, signal, WritableSignal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { SelectModule } from 'primeng/select';
-import { MenuModule } from 'primeng/menu';
-import { TableModule } from 'primeng/table';
-import { CardModule } from "primeng/card";
-import { CommonModule } from '@angular/common';
-import { PaginatorModule, PaginatorState } from "primeng/paginator";
-import { TagModule } from 'primeng/tag';
-import { PopoverModule } from 'primeng/popover';
+import {ChangeDetectionStrategy, Component, model, signal, WritableSignal} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ButtonModule} from 'primeng/button';
+import {SelectModule} from 'primeng/select';
+import {MenuModule} from 'primeng/menu';
+import {TableModule} from 'primeng/table';
+import {CardModule} from "primeng/card";
+import {CommonModule} from '@angular/common';
+import {PaginatorModule, PaginatorState} from "primeng/paginator";
+import {TagModule} from 'primeng/tag';
+import {PopoverModule} from 'primeng/popover';
 
 @Component({
   selector: 'app-buscar-convocatoria',

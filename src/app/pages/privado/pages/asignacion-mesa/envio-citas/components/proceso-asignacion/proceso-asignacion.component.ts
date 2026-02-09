@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CardModule } from "primeng/card";
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {CardModule} from "primeng/card";
 
 @Component({
   selector: 'app-proceso-asignacion',
@@ -8,6 +8,6 @@ import { CardModule } from "primeng/card";
   styleUrl: './proceso-asignacion.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProcesoAsignacionComponent { 
-  
+export class ProcesoAsignacionComponent {
+
 }
