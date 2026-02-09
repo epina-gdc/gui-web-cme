@@ -1,0 +1,84 @@
+<p-card class="mx-2 empty-border info-card" [header]="'Información del médico aspirante'">
+        <div class="mx-4 info-body">
+          <!-- Avatar -->
+          <div class="info-avatar">
+            <p-avatar
+              [image]="medico.fotoUrl"
+              shape="circle"
+              size="xlarge">
+            </p-avatar>
+          </div>
+
+          <!-- Main content -->
+          <div class="info-main">
+            <div class="info-toprow">
+              <h2 class="info-name">{{ medico.nombreCompleto }}</h2>
+
+              <!-- Actions -->
+              <div class="info-actions gap-5">
+                <div class="flex align-items-center justify-content-center gap-2" style="cursor: pointer; color: #63c2ea;"
+                    (click)="rechazarOferta()">
+                  <i class="cme-rechazo-oferta" style="font-size: 1.4rem"></i>
+                  <p style="font-size: 12px; font-weight: 500;">Rechazo de oferta</p>
+                </div>
+                <div class="flex align-items-center justify-content-center gap-2" style="cursor: pointer; color: #63c2ea;"
+                    (click)="cambiarRama()">
+                  <i class="cme-cambio-rama" style="font-size: 1.4rem"></i>
+                  <p style="font-size: 12px; font-weight: 500;">Cambio de rama</p>
+                </div>
+
+                <div class="flex align-items-center justify-content-center gap-2" style="cursor: pointer; color: #63c2ea;"
+                    (click)="reimprimirVerificacion()">
+                  <i class="cme-file" style="font-size: 1.8rem"></i>
+                  <p style="font-size: 12px; font-weight: 500;">Reimpresión de verificación</p>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Info grid -->
+            <div class="info-grid">
+              <div class="info-item">
+                <div class="info-label">Matrícula</div>
+                <div class="info-value">{{ medico.matricula }}</div>
+              </div>
+
+              <div class="info-item asp-item-wide">
+                <div class="info-label">Especialidad(es)</div>
+
+                <div class="esp-inline">
+                  <ng-container *ngFor="let e of medico.especialidades; let last = last">
+                    <span class="esp-item-text">{{ e }}</span>
+                    <span *ngIf="!last" class="esp-sep">/</span>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="info-item">
+                <div class="info-label">Sexo</div>
+                <div class="info-value">{{ medico.sexo }}</div>
+              </div>
+
+              <div class="info-item">
+                <div class="info-label">CURP</div>
+                <div class="info-value">{{ medico.curp }}</div>
+              </div>
+
+              <div class="info-item">
+                <div class="info-label">RFC</div>
+                <div class="info-value">{{ medico.rfc }}</div>
+              </div>
+
+              <div class="info-item">
+                <div class="info-label">Correo electrónico</div>
+                <div class="info-value">{{ medico.email }}</div>
+              </div>
+
+              <div class="info-item">
+                <div class="info-label">Correo electrónico adicional</div>
+                <div class="info-value">{{ medico.emailAdicional }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-card>
