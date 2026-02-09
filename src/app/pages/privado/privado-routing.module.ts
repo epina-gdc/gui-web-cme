@@ -28,6 +28,7 @@ import {GestionConvocatoriasComponent} from '@privado/gestion-convocatorias/gest
 import {NotFoundComponent} from '@privado/not-found/not-found.component';
 import {ErrorConfiguracionComponent} from '@privado/error-configuracion/error-configuracion.component';
 import {InicioModulosComponent} from '@privado/inicio-modulos/inicio-modulos.component';
+import {tableroInformacionResolver} from '../../core/resolvers/tablero-informacion.resolver';
 
 const routes: Routes = [{
   path: '',
@@ -88,6 +89,9 @@ const routes: Routes = [{
     {
       path: NAV.tableroInformacionAsistencia,
       component: TableroInformacionAsistenciaComponent,
+      resolve: {
+        catalogos: tableroInformacionResolver
+      }
     },
     {
       path: NAV.asignacionMesa,
