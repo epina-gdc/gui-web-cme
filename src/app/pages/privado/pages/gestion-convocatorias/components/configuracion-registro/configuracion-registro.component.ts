@@ -4,7 +4,6 @@ import {Card} from 'primeng/card';
 @Component({
   selector: 'app-configuracion-registro',
   imports: [
-    Card
   ],
   templateUrl: './configuracion-registro.component.html',
   styleUrl: './configuracion-registro.component.scss'
