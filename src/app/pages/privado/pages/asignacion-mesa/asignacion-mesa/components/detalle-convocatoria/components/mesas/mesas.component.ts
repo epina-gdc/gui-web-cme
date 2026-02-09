@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { ConfiguracionComponent } from "./components/configuracion/configuracion.component";
-import { DetalleMesasComponent } from "./components/detalle-mesas/detalle-mesas.component";
+import {Component} from '@angular/core';
+import {ConfiguracionComponent} from "./components/configuracion/configuracion.component";
+import {DetalleMesasComponent} from "./components/detalle-mesas/detalle-mesas.component";
 
 
 @Component({
@@ -13,5 +13,5 @@ import { DetalleMesasComponent } from "./components/detalle-mesas/detalle-mesas.
   styleUrl: './mesas.component.scss',
 })
 export class MesasComponent {
-  
+
 }

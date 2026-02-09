@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
-import { ConteoComponent } from "./components/conteo/conteo.component";
-import { EspecialidadComponent } from "./components/especialidad/especialidad.component";
-import { MesasComponent } from "./components/mesas/mesas.component";
-import { CardModule } from 'primeng/card';
+import {Component} from '@angular/core';
+import {ConteoComponent} from "./components/conteo/conteo.component";
+import {EspecialidadComponent} from "./components/especialidad/especialidad.component";
+import {MesasComponent} from "./components/mesas/mesas.component";
+import {CardModule} from 'primeng/card';
 
 @Component({
   selector: 'app-detalle-convocatoria',

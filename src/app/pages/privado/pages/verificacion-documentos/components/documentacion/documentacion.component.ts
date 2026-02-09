@@ -1,5 +1,5 @@
 import {ConstanciasCursosComponent} from './../constancias-cursos/constancias-cursos.component';
-import {Component, HostListener, ViewEncapsulation, inject} from '@angular/core';
+import {Component, HostListener, inject} from '@angular/core';
 import {CardModule} from 'primeng/card';
 import {TabsModule} from 'primeng/tabs';
 
@@ -7,7 +7,7 @@ import {DocsObligatoriosComponent} from '../docs-obligatorios/docs-obligatorios.
 import {DocsEspecialidadComponent} from '../docs-especialidad/docs-especialidad.component';
 import {CardInfoComponent} from '@pages/privado/pages/verificacion-documentos/components/card-info/card-info.component';
 import {DetalleDocumentacion} from '@models/detalleDocumentacionAspirante.interface';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {VerificacionDocsService} from '@services/verificacion-docs.service';
 import {NgClass} from '@angular/common';
 

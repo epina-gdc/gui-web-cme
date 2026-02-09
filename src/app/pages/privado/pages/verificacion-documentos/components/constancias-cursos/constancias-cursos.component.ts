@@ -1,7 +1,7 @@
 import {NgClass, NgTemplateOutlet} from '@angular/common';
 import {Component, HostListener, Input, signal, WritableSignal} from '@angular/core';
 import {GeneralComponent} from '@components/general.component';
-import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {DomSanitizer} from '@angular/platform-browser';
 import {DetalleDocumentacionDocumentoConstancia} from '@models/detalleDocumentacionAspirante.interface';
 import {PdfViewerModule} from 'ng2-pdf-viewer';
 

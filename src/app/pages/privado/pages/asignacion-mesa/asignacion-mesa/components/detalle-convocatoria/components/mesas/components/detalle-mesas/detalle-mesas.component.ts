@@ -1,9 +1,9 @@
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {CalendarModule} from 'primeng/calendar';
+import {CardModule} from 'primeng/card';
+import {ChipModule} from 'primeng/chip';
+import {ButtonModule} from 'primeng/button';
 
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CalendarModule } from 'primeng/calendar';
-import { CardModule } from 'primeng/card';
-import { ChipModule } from 'primeng/chip';
-import { ButtonModule } from 'primeng/button';
 interface Especialidad {
   id: number;
   descripcion: string; // ej. "Medicina familiar (5 años)"
@@ -77,7 +77,7 @@ export class DetalleMesasComponent {
             {id:18,descripcion:'Pediatría (4 años)',cantidad:12},
             {id:19,descripcion:'Medicina familiar (5 años)',cantidad:21},
             {id:20,descripcion:'Pediatría (4 años)',cantidad:12},
-            
+
           ]
         },
         {
@@ -105,7 +105,7 @@ export class DetalleMesasComponent {
             {id:18,descripcion:'Pediatría (4 años)',cantidad:12},
             {id:19,descripcion:'Medicina familiar (5 años)',cantidad:21},
             {id:20,descripcion:'Pediatría (4 años)',cantidad:12},
-            
+
           ]
         }
       ]

@@ -5,8 +5,8 @@ import {SesionUser} from '@models/sesion-user.interface';
 import {UserService} from '@services/user.service';
 import {SpeedDial} from 'primeng/speeddial';
 import {MenuItem, PrimeTemplate} from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { ClickService } from '@services/click.service';
+import {ButtonModule} from 'primeng/button';
+import {ClickService} from '@services/click.service';
 import {EstadoOfertaService} from '@services/estado-oferta.service';
 import {Subscription} from 'rxjs';
 
@@ -25,7 +25,7 @@ export class MenuComponent extends GeneralComponent implements OnInit, OnDestroy
 
   clickService = inject(ClickService);
   userService = inject(UserService);
-  estadoOfertaService =  inject(EstadoOfertaService);
+  estadoOfertaService = inject(EstadoOfertaService);
   userData: SesionUser | null = null;
 
   speedDialVisible: boolean = false;
@@ -53,7 +53,6 @@ export class MenuComponent extends GeneralComponent implements OnInit, OnDestroy
     ]
     this.userService.userData$.subscribe(user => this.userData = user);
     this.tabSubscription = this.estadoOfertaService.tabActual$.subscribe(indice => {
-      console.log(indice);
       this.indice = indice
     });
   }
@@ -78,7 +77,7 @@ export class MenuComponent extends GeneralComponent implements OnInit, OnDestroy
     this.authService.cerrarSesion();
   }
 
-  emitirClick(){
+  emitirClick() {
     this.clickService.emitirClick();
   }
 
