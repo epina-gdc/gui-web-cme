@@ -32,4 +32,16 @@
   .seleccion{
     border-left: 4px solid #41ABCA;
   }
+
+  :host ::ng-deep .no-icono {
+    .p-accordionheader-toggle-icon,
+    .p-iconwrapper,
+    .p-accordion-toggle-icon {
+      display: none !important;
+    }
+  }
+
+  .no-icono .p-accordionheader {
+    pointer-events: auto;
+  }
 }

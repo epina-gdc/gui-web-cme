@@ -3,7 +3,7 @@
 
   <p-accordion [value]="activePanelId ?? 0">
     @for (modulo of userData?.modulos; track modulo.idModuloMenu) {
-      <p-accordion-panel [value]="modulo.idModuloMenu">
+      <p-accordion-panel [value]="modulo.idModuloMenu" [class.no-icono]="modulo.submodulos.length === 0">
 
         <p-accordion-header>
           <div class="flex align-items-center gap-3">
