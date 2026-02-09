@@ -5,6 +5,15 @@
     --p-tabs-tab-border-color: transparent;
   }
 
+  .titulo-opcion-menu-asignacion {
+    margin: 0;
+    white-space: normal !important;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    line-height: 1.2;
+    flex: 1;
+  }
+
   :host ::ng-deep .no-icono .p-iconwrapper {
     display: none;
   }
@@ -17,6 +26,7 @@
 
   .p-accordionpanel-active {
     .p-accordionheader {
+      height: auto;
       background-color: #41ABCA;
       color:#fff;
       .titulo-opcion-menu-asignacion{
