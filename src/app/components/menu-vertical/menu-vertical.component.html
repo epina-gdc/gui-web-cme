@@ -19,6 +19,16 @@
         <p-accordion-content>
           @if (modulo.submodulos.length > 0) {
             <div class="flex flex-column gap-2">
+              @for (sub of modulo.submodulos; track sub.idModuloMenu) {
+                <div class="sub-opcion my-2 p-3 border-round-lg cursor-pointer"
+                     [routerLink]="['/privado' + sub.ruta]"
+                     routerLinkActive="seleccion"
+                     [routerLinkActiveOptions]="{ exact: true }">
+                  <p class="sub-opcion-menu-asignacion">
+                    {{ sub.nombre }}
+                  </p>
+                </div>
+              }
             </div>
           }
         </p-accordion-content>

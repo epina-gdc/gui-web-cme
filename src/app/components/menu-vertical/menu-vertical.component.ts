@@ -2,7 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion';
 import {SesionUser} from '@models/sesion-user.interface';
 import {UserService} from '@services/user.service';
-import {NavigationEnd, Router, RouterLink} from '@angular/router';
+import {NavigationEnd, Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {filter} from 'rxjs/operators';
 
 @Component({
@@ -12,7 +12,8 @@ import {filter} from 'rxjs/operators';
     AccordionContent,
     AccordionHeader,
     AccordionPanel,
-    RouterLink
+    RouterLink,
+    RouterLinkActive
   ],
   templateUrl: './menu-vertical.component.html',
   styleUrl: './menu-vertical.component.scss'
