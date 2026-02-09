@@ -20,10 +20,19 @@ export interface SesionUser {
 }
 
 
-export interface ModuloUser     {
+export interface ModuloUser {
   idModuloMenu: number,
   nombre: string,
   ruta: string,
   icono: null,
-  submodulos: []
+  submodulos: SubModuloUser[]
+}
+
+
+export interface SubModuloUser {
+  idModuloMenu: number,
+  nombre: string,
+  ruta: string,
+  icono: null | string,
+  submodulos: SubModuloUser[]
 }
