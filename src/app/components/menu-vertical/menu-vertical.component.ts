@@ -2,7 +2,7 @@ import {Component, inject, OnInit} from '@angular/core';
 import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion';
 import {SesionUser} from '@models/sesion-user.interface';
 import {UserService} from '@services/user.service';
-import {NavigationEnd, Router} from '@angular/router';
+import {NavigationEnd, Router, RouterLink} from '@angular/router';
 import {filter} from 'rxjs/operators';
 
 @Component({
@@ -11,7 +11,8 @@ import {filter} from 'rxjs/operators';
     Accordion,
     AccordionContent,
     AccordionHeader,
-    AccordionPanel
+    AccordionPanel,
+    RouterLink
   ],
   templateUrl: './menu-vertical.component.html',
   styleUrl: './menu-vertical.component.scss'
@@ -39,6 +40,22 @@ export class MenuVerticalComponent implements OnInit {
     const activeModule = this.userData?.modulos.find(m => currentUrl.includes(m.ruta));
     if (activeModule) {
       this.activePanelId = activeModule.idModuloMenu;
+    }
+  }
+
+  handleHeaderClick(event: MouseEvent, modulo: any) {
+    const estaActivo: boolean = this.activePanelId === modulo.idModuloMenu;
+
+    if (estaActivo) {
+      event.stopPropagation();
+      event.preventDefault();
+      return;
+    }
+
+    if (modulo.submodulos.length === 0) {
+      event.stopPropagation();
+      void this.router.navigate(['/privado' + modulo.ruta]);
+      this.activePanelId = modulo.idModuloMenu;
     }
   }
 }

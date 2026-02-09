@@ -1,11 +1,13 @@
 <div class="border-round-2xl bg-white h-full p-2">
-  <p clasS="titulo-menu-asignacion m-3">Menú</p>
+  <p class="titulo-menu-asignacion m-3">Menú</p>
 
   <p-accordion [value]="activePanelId ?? 0">
     @for (modulo of userData?.modulos; track modulo.idModuloMenu) {
-      <p-accordion-panel [value]="modulo.idModuloMenu" [class.no-icono]="modulo.submodulos.length === 0">
+      <p-accordion-panel
+        [value]="modulo.idModuloMenu"
+        [class.no-icono]="modulo.submodulos.length === 0">
 
-        <p-accordion-header>
+        <p-accordion-header (click)="handleHeaderClick($event, modulo)">
           <div class="flex align-items-center gap-3">
             <i [class]="modulo.icono ?? 'pi pi-tag'" [style]="{ 'font-size': '1.8rem'}"></i>
             <p class="titulo-opcion-menu-asignacion">
@@ -16,7 +18,8 @@
 
         <p-accordion-content>
           @if (modulo.submodulos.length > 0) {
-
+            <div class="flex flex-column gap-2">
+            </div>
           }
         </p-accordion-content>
 
