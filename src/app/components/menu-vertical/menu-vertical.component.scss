@@ -1,0 +1,57 @@
+@layer app-root {
+
+  :root {
+    --p-tabs-tablist-border-color: transparent;
+    --p-tabs-tab-border-color: transparent;
+  }
+
+  .titulo-opcion-menu-asignacion {
+    margin: 0;
+    white-space: normal !important;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    line-height: 1.2;
+    flex: 1;
+  }
+
+  :host ::ng-deep .no-icono .p-iconwrapper {
+    display: none;
+  }
+
+  .p-accordionheader {
+    border: none;
+    box-shadow: -1px 2px 2px 0 rgba(0, 0, 0, 0.10);
+    margin: 5px 0;
+  }
+
+  .p-accordionpanel-active {
+    .p-accordionheader {
+      height: auto;
+      background-color: #41ABCA;
+      color:#fff;
+      .titulo-opcion-menu-asignacion{
+        color: white!important;
+      }
+    }
+  }
+
+  .sub-opcion{
+    box-shadow: -1px 2px 2px 0 rgba(0, 0, 0, 0.10);
+  }
+
+  .seleccion{
+    border-left: 4px solid #41ABCA;
+  }
+
+  :host ::ng-deep .no-icono {
+    .p-accordionheader-toggle-icon,
+    .p-iconwrapper,
+    .p-accordion-toggle-icon {
+      display: none !important;
+    }
+  }
+
+  .no-icono .p-accordionheader {
+    pointer-events: auto;
+  }
+}
