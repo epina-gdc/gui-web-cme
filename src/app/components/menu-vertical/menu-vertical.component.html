@@ -1,0 +1,28 @@
+<div class="border-round-2xl bg-white h-full p-2">
+  <p clasS="titulo-menu-asignacion m-3">Menú</p>
+
+  <p-accordion [value]="activePanelId ?? 0">
+    @for (modulo of userData?.modulos; track modulo.idModuloMenu) {
+      <p-accordion-panel [value]="modulo.idModuloMenu">
+
+        <p-accordion-header>
+          <div class="flex align-items-center gap-3">
+            <i [class]="modulo.icono ?? 'pi pi-tag'" [style]="{ 'font-size': '1.8rem'}"></i>
+            <p class="titulo-opcion-menu-asignacion">
+              {{ modulo.nombre }}
+            </p>
+          </div>
+        </p-accordion-header>
+
+        <p-accordion-content>
+          @if (modulo.submodulos.length > 0) {
+
+          }
+        </p-accordion-content>
+
+      </p-accordion-panel>
+    } @empty {
+      <p>No hay opciones de menú para mostrar.</p>
+    }
+  </p-accordion>
+</div>

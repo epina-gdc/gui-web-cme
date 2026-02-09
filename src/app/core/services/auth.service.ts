@@ -79,6 +79,7 @@ export class AuthService {
 
   obtenerUsuarioDePayload(token: string): SesionUser | never {
     let payload: any | null = new JwtHelperService().decodeToken<Payload>(token);
+    console.log(payload);
     if (payload) {
       return {
         idPerfil: payload.idPerfil,
