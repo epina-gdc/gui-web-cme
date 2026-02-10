@@ -9,5 +9,5 @@ export const CargaCalificacionesResolver: ResolveFn<any> = (route, state) => {
   const $validaciones  =  cargaCalificacionesService.obtenerValidacionCalificaciones();
   const $registro = cargaCalificacionesService.consultaCargaCalificaciones();
 
-  return forkJoin([ $validaciones, $registro ])
+  return forkJoin([ $validaciones, $registro ]);
 }

@@ -3,6 +3,7 @@ import {MenuPlazasComponent} from '@privado/asignacion-plazas/components/menu-pl
 import {Button} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
 import {CommonModule} from '@angular/common';
+import {ActivatedRoute} from '@angular/router';
 
 
 @Component({
@@ -11,18 +12,18 @@ import {CommonModule} from '@angular/common';
     MenuPlazasComponent,
     Button,
     DialogModule,
-     CommonModule
+    CommonModule
   ],
   templateUrl: './carga-calificaciones.component.html',
   styleUrl: './carga-calificaciones.component.scss',
 })
-export class CargaCalificacionesComponent implements OnInit{
+export class CargaCalificacionesComponent implements OnInit {
 
   confCargaCalificaciones: boolean = false;
   tipoEstatus: { estatus: number, descripcion: string }[] = [
-    { estatus: 1, descripcion: 'Procesando...' },
-    { estatus: 2, descripcion: 'Completado' },
-    { estatus: 3, descripcion: 'Proceso interrumpido' },
+    {estatus: 1, descripcion: 'Procesando...'},
+    {estatus: 2, descripcion: 'Completado'},
+    {estatus: 3, descripcion: 'Proceso interrumpido'},
   ];
 
   porcentaje: WritableSignal<number> = signal(0);
@@ -35,8 +36,14 @@ export class CargaCalificacionesComponent implements OnInit{
   });
 
 
-  constructor() {
+  constructor(private readonly activatedRoute: ActivatedRoute) {
+    this.obtenerInformacion();
 
+  }
+
+  obtenerInformacion() {
+    this.activatedRoute.data.subscribe(({respuesta}) => {
+    });
   }
 
 
@@ -44,14 +51,14 @@ export class CargaCalificacionesComponent implements OnInit{
 
     this.estatus.set(1);
 
-    const intervalo = setInterval(()=>{
+    const intervalo = setInterval(() => {
       if (this.porcentaje() < 100) {
-        this.porcentaje.update((a)=> a + 1);
-      }else {
+        this.porcentaje.update((a) => a + 1);
+      } else {
         clearInterval(intervalo);
         this.estatus.set(2);
       }
-    },50);
+    }, 50);
   }
 
 
