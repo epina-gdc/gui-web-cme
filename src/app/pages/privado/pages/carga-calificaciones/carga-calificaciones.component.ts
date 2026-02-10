@@ -1,5 +1,4 @@
 import {Component, computed, OnInit, signal, WritableSignal} from '@angular/core';
-import {MenuPlazasComponent} from '@privado/asignacion-plazas/components/menu-plazas/menu-plazas.component';
 import {Button} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
 import {CommonModule} from '@angular/common';
@@ -9,7 +8,6 @@ import {ActivatedRoute} from '@angular/router';
 @Component({
   selector: 'app-carga-calificaciones',
   imports: [
-    MenuPlazasComponent,
     Button,
     DialogModule,
     CommonModule

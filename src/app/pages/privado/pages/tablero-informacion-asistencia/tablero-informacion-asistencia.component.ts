@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {MenuPlazasComponent} from '@privado/asignacion-plazas/components/menu-plazas/menu-plazas.component';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
 import {GeneralComponent} from '@components/general.component';
@@ -11,7 +10,6 @@ import {CardModule} from 'primeng/card';
 @Component({
   selector: 'app-tablero-informacion-asistencia',
   imports: [
-    MenuPlazasComponent,
     DatePickerModule,
     ReactiveFormsModule,
     Select,
