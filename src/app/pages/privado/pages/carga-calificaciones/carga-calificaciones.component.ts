@@ -1,4 +1,4 @@
-import {Component, computed, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, computed, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {Button} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
 import {CommonModule} from '@angular/common';
@@ -7,6 +7,8 @@ import {RespuestaCalificaciones} from '@models/respuesta-calificaciones.interfac
 import {CargaCalificacionesService} from '@services/carga-calificaciones.service';
 import {AlertService} from '@services/alert.service';
 import {Card} from 'primeng/card';
+import {Subject, switchMap, timer} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 
 
 @Component({
@@ -20,10 +22,13 @@ import {Card} from 'primeng/card';
   templateUrl: './carga-calificaciones.component.html',
   styleUrl: './carga-calificaciones.component.scss',
 })
-export class CargaCalificacionesComponent implements OnInit {
+export class CargaCalificacionesComponent implements OnInit, OnDestroy {
 
   confCargaCalificaciones: boolean = false;
   errorCalificaciones: boolean = false;
+
+  private destroy$ = new Subject<void>();
+  private readonly INTERVALO_REFRESCO = 30000;
 
   tipoEstatus: { estatus: number, descripcion: string }[] = [
     {estatus: 1, descripcion: 'Procesando...'},
@@ -54,7 +59,7 @@ export class CargaCalificacionesComponent implements OnInit {
               private readonly cargaCalificacionesService: CargaCalificacionesService,
               private readonly alertaService: AlertService) {
     this.obtenerInformacion();
-
+    this.iniciarRefrescoAutomatico();
   }
 
   obtenerInformacion() {
@@ -81,6 +86,22 @@ export class CargaCalificacionesComponent implements OnInit {
     })
   }
 
+  iniciarRefrescoAutomatico() {
+    timer(this.INTERVALO_REFRESCO, this.INTERVALO_REFRESCO)
+      .pipe(
+        takeUntil(this.destroy$),
+        switchMap(() => this.cargaCalificacionesService.consultaCargaCalificaciones())
+      )
+      .subscribe({
+        next: (res) => {
+          if (!res.error) {
+            this.procesarRespuesta(res.respuesta);
+          }
+        },
+        error: (err) => console.error('Error en refresco automático', err)
+      });
+  }
+
   ngOnInit() {
 
     this.estatus.set(1);
@@ -95,6 +116,20 @@ export class CargaCalificacionesComponent implements OnInit {
     }, 50);
   }
 
+  private procesarRespuesta(data: RespuestaCalificaciones) {
+    if (data) {
+      this.calificaciones = data;
+      this.porcentaje.set(data.porcentaje);
+      if (data.porcentaje === 100) {
+        this.estatus.set(2);
+      }
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   listaProcesoAutomatico: string[] = [
     "Se consulta el servicio API proporcionado por el área médica",
