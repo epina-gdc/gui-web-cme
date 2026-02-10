@@ -3,6 +3,7 @@ import {MenuPlazasComponent} from '@privado/asignacion-plazas/components/menu-pl
 import {Button} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
 import {CommonModule} from '@angular/common';
+import {Card} from 'primeng/card';
 
 
 @Component({
@@ -11,7 +12,8 @@ import {CommonModule} from '@angular/common';
     MenuPlazasComponent,
     Button,
     DialogModule,
-     CommonModule
+    CommonModule,
+    Card
   ],
   templateUrl: './carga-calificaciones.component.html',
   styleUrl: './carga-calificaciones.component.scss',
