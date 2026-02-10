@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormsModule, ReactiveFormsModule, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ButtonModule } from 'primeng/button';
-import { CalendarModule } from 'primeng/calendar';
-import { CardModule } from 'primeng/card';
-import { InputTextModule } from 'primeng/inputtext';
-import { SelectModule } from 'primeng/select';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {ButtonModule} from 'primeng/button';
+import {CalendarModule} from 'primeng/calendar';
+import {CardModule} from 'primeng/card';
+import {InputTextModule} from 'primeng/inputtext';
+import {SelectModule} from 'primeng/select';
 
 interface Opcion {
   id: number;
@@ -13,12 +13,12 @@ interface Opcion {
 
 @Component({
   selector: 'app-configuracion',
-  imports: [CardModule, 
-    ButtonModule, 
-    FormsModule, 
-    InputTextModule, 
-    ReactiveFormsModule, 
-    CalendarModule, 
+  imports: [CardModule,
+    ButtonModule,
+    FormsModule,
+    InputTextModule,
+    ReactiveFormsModule,
+    CalendarModule,
     SelectModule],
   templateUrl: './configuracion.component.html',
   styleUrl: './configuracion.component.scss',

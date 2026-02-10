@@ -1,15 +1,14 @@
-import { Especialidad } from './../../../../core/models/especialidad';
-import { ResponseGeneral } from '@models/responseGeneral';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { Card } from 'primeng/card';
-import { GeneralComponent } from '@components/general.component';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
-import { Select } from 'primeng/select';
-import { Button } from 'primeng/button';
-import { InputTextModule } from 'primeng/inputtext';
-import { HttpErrorResponse } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
-import { CatPais, CatPaisResponse, CatSubperfil, CatSubperfilResponse } from '@models/catalogoGeneral';
+import {ResponseGeneral} from '@models/responseGeneral';
+import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Card} from 'primeng/card';
+import {GeneralComponent} from '@components/general.component';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {Select} from 'primeng/select';
+import {Button} from 'primeng/button';
+import {InputTextModule} from 'primeng/inputtext';
+import {HttpErrorResponse} from '@angular/common/http';
+import {CommonModule} from '@angular/common';
+import {CatPais, CatPaisResponse, CatSubperfil, CatSubperfilResponse} from '@models/catalogoGeneral';
 import {
   AreaMedicaData,
   RegistroCurpRequest,
@@ -17,11 +16,11 @@ import {
   RegistroMedico,
   RegistroPasaporteRequest
 } from '@models/datosMedico';
-import { BtnRegresarComponent } from '@components/btn-regresar/btn-regresar.component';
-import { passwordValidator } from '@validators/password-validator';
-import { PATRON_CURP, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_PASAPORTE, PATRON_RFC } from '@utils/regex';
-import { AlphanumericDirective } from '@directives/only-alphanumeric.directive';
-import { PrimeTemplate } from 'primeng/api';
+import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.component';
+import {passwordValidator} from '@validators/password-validator';
+import {PATRON_CURP, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_PASAPORTE, PATRON_RFC} from '@utils/regex';
+import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
+import {PrimeTemplate} from 'primeng/api';
 
 @Component({
   selector: 'app-registro-medico',

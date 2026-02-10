@@ -25,7 +25,7 @@ import {DatosContacto} from '@models/datosContacto';
 import {GeneralComponent} from '@components/general.component';
 import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
-import {DatosDomicilio, Pais, Residencia} from '@models/datosDomicilio';
+import {DatosDomicilio, Residencia} from '@models/datosDomicilio';
 import {ResponseGeneral} from '@models/responseGeneral';
 import {Colonia} from '@models/colonia';
 import {DataFotografia, Fotografia, FotografiaRequest} from '@models/fotografia';

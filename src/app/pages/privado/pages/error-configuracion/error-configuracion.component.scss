@@ -1,0 +1,37 @@
+.config-error-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  text-align: center;
+  padding: 0 20px;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background: #fff;
+}
+
+.status-code {
+  font-size: 12rem;
+  font-weight: 900;
+  color: #e53e3e;
+  margin: 0;
+  line-height: 0.8;
+  opacity: 0.2;
+  position: absolute;
+  z-index: 1;
+}
+
+.main-title {
+  font-size: 4rem;
+  font-weight: 800;
+  color: #2d3748;
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+
+.description {
+  font-size: 1.5rem;
+  color: #4a5568;
+  max-width: 700px;
+  margin-bottom: 2.5rem;
+}

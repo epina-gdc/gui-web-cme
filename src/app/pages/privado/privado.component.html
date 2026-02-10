@@ -1,5 +1,16 @@
 <app-menu/>
 <div class="mx-3 my-3">
-  <router-outlet/>
+  @if (userData && userData.modulos.length === 0 && userData.menu === 1) {
+    <router-outlet/>
+  } @else {
+    <div class="flex">
+      <div class="col-2">
+      <menu-vertical/>
+      </div>
+      <div class="col-10">
+        <router-outlet/>
+      </div>
+    </div>
+  }
 </div>
 <app-inactividad-dialog/>

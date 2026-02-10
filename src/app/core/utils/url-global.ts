@@ -17,5 +17,7 @@ export const NAV = {
   asignacionMesa: 'asignacion-mesa',
   propuestaSindical: 'propuesta-sindical',
   gestionConvocatoria: 'gestion-convocatoria',
+  errorConfig: 'config-erronea',
   home: 'inicio',
+  homeModulos: 'inicio-modulos',
 };

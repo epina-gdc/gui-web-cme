@@ -79,6 +79,7 @@ export class AuthService {
 
   obtenerUsuarioDePayload(token: string): SesionUser | never {
     let payload: any | null = new JwtHelperService().decodeToken<Payload>(token);
+    console.log(payload);
     if (payload) {
       return {
         idPerfil: payload.idPerfil,
@@ -95,7 +96,10 @@ export class AuthService {
         subperfil: payload.subperfil,
         fechaRegistro: payload.fechaRegistro,
         refPasaporte: payload.refPasaporte,
-        refFolio: payload?.refFolio
+        refFolio: payload?.refFolio,
+        menu: payload.menu,
+        modulos: payload.modulos,
+        url: payload.url
       };
     } else {
       throw new Error('Error al intentar obtener el usuario del payload en el token');
