@@ -41,6 +41,7 @@ export class CargaCalificacionesComponent implements OnInit {
 
   obtenerInformacion() {
     this.activatedRoute.data.subscribe(({respuesta}) => {
+      console.log(respuesta);
     });
   }
 

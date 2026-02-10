@@ -1,13 +1,44 @@
 import {ResolveFn} from '@angular/router';
 import {inject} from '@angular/core';
 import {CargaCalificacionesService} from '@services/carga-calificaciones.service';
-import {forkJoin} from 'rxjs';
+import {forkJoin, Observable, of} from 'rxjs';
+import {AlertService} from '@services/alert.service';
+import {catchError, map} from 'rxjs/operators';
 
 export const CargaCalificacionesResolver: ResolveFn<any> = (route, state) => {
-  const cargaCalificacionesService =  inject(CargaCalificacionesService);
+  const cargaCalificacionesService: CargaCalificacionesService = inject(CargaCalificacionesService);
+  const alertaService: AlertService = inject(AlertService);
 
-  const $validaciones  =  cargaCalificacionesService.obtenerValidacionCalificaciones();
+  const $validaciones = cargaCalificacionesService.obtenerValidacionCalificaciones();
   const $registro = cargaCalificacionesService.consultaCargaCalificaciones();
 
-  return forkJoin([ $validaciones, $registro ]);
+  const handlePipeError = (obs$: Observable<any>) => obs$.pipe(
+    catchError((error) => {
+      const msg = error?.error?.mensaje || error?.message || 'Error desconocido';
+      return of({error: true, msg});
+    })
+  )
+
+  return forkJoin([
+    handlePipeError($validaciones),
+    handlePipeError($registro)
+  ]).pipe(
+    map(([validaciones, registro]) => {
+      const errores: string[] = [];
+
+      if (validaciones.error) errores.push(validaciones.msg);
+      if (registro.error) errores.push(registro.msg);
+
+      if (errores.length > 0) {
+        const mensajesUnicos = [...new Set(errores)];
+        mensajesUnicos.forEach(m => alertaService.error(m));
+      }
+
+      return {
+        validaciones,
+        registro,
+        huboError: validaciones.hasError || registro.hasError
+      };
+    })
+  );
 }
