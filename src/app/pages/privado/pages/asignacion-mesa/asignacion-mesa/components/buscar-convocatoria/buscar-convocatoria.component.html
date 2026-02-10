@@ -8,28 +8,28 @@
                         <div class="field col">
                             <label class="field-label" for="convocatoriaId">No. de convocatoria</label>
                             <p-select [options]="convocatorias" formControlName="convocatoriaId"
-                                placeholder="Selecciona una convocatoria" optionLabel="nombre" optionValue="id"
-                                class="w-full"></p-select>
+                                placeholder="Selecciona una convocatoria" optionLabel="desConvocatoria" optionValue="idConvocatoria"
+                                class="w-full" placeholder="No. de convocatoria" ></p-select>
                         </div>
 
                         <div class="field col ">
                             <label class="field-label" for="mesas">No. de mesas disponibles</label>
-                            <p-select [options]="mesasDisponibles" formControlName="mesas"
+                            <p-inputNumber formControlName="mesas"
                                 placeholder="Selecciona número de mesas" optionLabel="label" optionValue="value"
-                                class="w-full"></p-select>
+                                class="w-full" placeholder="Selecciona un número de mesas" [showButtons]="true"  [min]="1" />
                         </div>
 
                         <div class="field col">
                             <label class="field-label" for="medicos">No. de médicos por mesa</label>
-                            <p-select [options]="medicosPorMesa" formControlName="medicos"
+                            <p-inputNumber formControlName="medicos"
                                 placeholder="Selecciona médicos por mesa" optionLabel="label" optionValue="value"
-                                class="w-full"></p-select>
+                                class="w-full" placeholder="Selecciona el número de médicos" [showButtons]="true"  [min]="1"/>
                         </div>
                     </div>
                 </div>
 
                 <div class="lg:col-fixed col-12 flex-column flex justify-content-end" style="width:213px">
-                    <p-button label="Guardar configuración" (onclick)="guardarConfiguracion()"
+                    <p-button label="Guardar configuración" (onClick)="guardarConfiguracion()"
                         [disabled]="formulario.invalid"></p-button>
                 </div>
             </div>
@@ -58,7 +58,8 @@
 
             <ng-template pTemplate="body" let-row>
                 <tr>
-                    <td><p-button label="{{ row.nombre }}" [link]="true" class="link-nom-conv" (onClick)="onSeleccion(row)" /></td>
+                    <td><p-button label="{{ row.nombre }}" [link]="true" class="link-nom-conv"
+                            (onClick)="onSeleccion(row)" /></td>
                     <td>{{ row.mesas }}</td>
                     <td>{{ row.medicosPorMesa }}</td>
                     <td>
@@ -68,7 +69,7 @@
                     <td>{{ row.porcentaje }}%</td>
                     <td alignFrozen="right" pFrozenColumn>
 
-                        
+
 
                         <div class="flex align-items-center justify-content-center">
                             <i class="cme-ellipsis cursor-pointer border-round-3xl"
@@ -76,7 +77,7 @@
                         </div>
 
 
-                        
+
 
                     </td>
                 </tr>

@@ -54,7 +54,7 @@ export class AsignacionMesaService {
      * Obtener lista de convocatorias
      */
   getLstConvocatorias(): Observable<ResponseConvocatorias> {
-    return this.http.get<ResponseConvocatorias>(this.serverEndPointURLCatalogos, { headers: this.header }).pipe(
+    return this.http.get<ResponseConvocatorias>(this.serverEndPointURLCatalogos+ '/convocatorias', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: ResponseConvocatorias) => {
         return response;
