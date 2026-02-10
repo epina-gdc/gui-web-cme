@@ -22,7 +22,7 @@ export class PrivadoComponent implements OnInit {
 
   userService = inject(UserService);
 
-  menuVisible = false;
+  menuVisible = true;
 
   ngOnInit() {
     this.userService.userData$.subscribe(user => this.userData = user);
