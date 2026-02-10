@@ -1,14 +1,15 @@
-import {ChangeDetectionStrategy, Component, model, signal, WritableSignal} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {ButtonModule} from 'primeng/button';
-import {SelectModule} from 'primeng/select';
-import {MenuModule} from 'primeng/menu';
-import {TableModule} from 'primeng/table';
-import {CardModule} from "primeng/card";
-import {CommonModule} from '@angular/common';
-import {PaginatorModule, PaginatorState} from "primeng/paginator";
-import {TagModule} from 'primeng/tag';
-import {PopoverModule} from 'primeng/popover';
+import { ChangeDetectionStrategy, Component, inject, model, OnInit, signal, WritableSignal } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { SelectModule } from 'primeng/select';
+import { MenuModule } from 'primeng/menu';
+import { TableModule } from 'primeng/table';
+import { CardModule } from "primeng/card";
+import { CommonModule } from '@angular/common';
+import { PaginatorModule, PaginatorState } from "primeng/paginator";
+import { TagModule } from 'primeng/tag';
+import { PopoverModule } from 'primeng/popover';
+import { AsignacionMesaService, ResponseConvocatorias } from '../../services/asignacion-mesa.service';
 
 @Component({
   selector: 'app-buscar-convocatoria',
@@ -28,7 +29,10 @@ import {PopoverModule} from 'primeng/popover';
   styleUrl: './buscar-convocatoria.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BuscarConvocatoriaComponent {
+export class BuscarConvocatoriaComponent implements OnInit{
+
+  asignacionMesaService = inject(AsignacionMesaService);
+
   formulario!: FormGroup;
   first: number = 0;
   rows: number = 10;
@@ -40,10 +44,8 @@ export class BuscarConvocatoriaComponent {
 
   activeTab: WritableSignal<number> = signal(0);
   // Datos para los select
-  convocatorias = [
-    { id: '1', nombre: 'Convocatoria 1' },
-    { id: '2', nombre: 'Convocatoria 2' },
-    { id: '3', nombre: 'Convocatoria 3' }
+  convocatorias: any = [
+    
   ];
 
   mesasDisponibles = Array.from({ length: 50 }, (_, i) => ({
@@ -89,7 +91,25 @@ export class BuscarConvocatoriaComponent {
     });
 
     this.totalElementos = 24;
+
+
+    this.loadConvocatorias();
+
   }
+
+  loadConvocatorias(): void {
+    this.asignacionMesaService.getLstConvocatorias().subscribe({
+      next: (response: ResponseConvocatorias) => {
+        if (response.exito) {
+          this.convocatorias = response.respuesta;
+        } 
+      },
+      error: (err) => {
+       
+      }
+    });
+  }
+
 
   guardarConfiguracion(): void {
     if (this.formulario.valid) {
@@ -97,7 +117,7 @@ export class BuscarConvocatoriaComponent {
 
       // Buscar si ya existe en la tabla
       const idx = this.convocatoriasTabla.findIndex(c => c.id === convocatoriaId);
-      const convocatoria = this.convocatorias.find(c => c.id === convocatoriaId);
+      const convocatoria = this.convocatorias.find((c:any) => c.id === convocatoriaId);
 
       if (idx !== -1) {
         // Actualizar existente
