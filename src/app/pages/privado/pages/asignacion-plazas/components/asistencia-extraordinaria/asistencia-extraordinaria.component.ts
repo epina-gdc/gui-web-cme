@@ -1,40 +1,24 @@
-import {Component, inject} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 // PrimeNG Imports
-import {InputTextModule} from 'primeng/inputtext';
-import {ButtonModule} from 'primeng/button';
-import {CardModule} from 'primeng/card';
-import {ChipModule} from 'primeng/chip';
-import {DividerModule} from 'primeng/divider';
-import {ConfirmDialogModule} from 'primeng/confirmdialog'; // <--- Importar Módulo
-import {ConfirmationService} from 'primeng/api'; // <--- Importar Servicio
-import {ToastModule} from 'primeng/toast'; // Opcional: Para mostrar mensaje de éxito
-import {MenuAsistenciasComponent} from "../menu-asistencias/menu-asistencias.component";
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { ChipModule } from 'primeng/chip';
+import { DividerModule } from 'primeng/divider';
+import { ConfirmDialogModule } from 'primeng/confirmdialog'; // <--- Importar Módulo
+import { ConfirmationService } from 'primeng/api'; // <--- Importar Servicio
+import { ToastModule } from 'primeng/toast'; // Opcional: Para mostrar mensaje de éxito
+import { MenuAsistenciasComponent } from "../menu-asistencias/menu-asistencias.component";
 
-import {AsistenciaCardComponent} from '@components/asistencia-card/asistencia-card.component';
-import {AsistenciaNoteComponent} from '@components/asistencia-note/asistencia-note.component';
-import {AlertService} from '@services/alert.service';
-
+import { AsistenciaCardComponent } from '@components/asistencia-card/asistencia-card.component';
+import { AsistenciaNoteComponent } from '@components/asistencia-note/asistencia-note.component';
+import { AlertService } from '@services/alert.service';
+import { AsistenciaExtraordinariaService } from '@services/asistencia-extraordinaria.service';
+import { AsistenciaExtraordinariaResponse, AsistenciaAspirante, Medico } from '@models/asistencia-extraordinaria.interface';
 // Interfaz para los datos del médico
-interface Doctor {
-    nombre: string;
-    matricula: string;
-    curp: string;
-    rfc: string;
-    especialidades: string[];
-    fotoUrl: string;
-    // Datos de la cita/asistencia
-    fecha: string;
-    hora: string;
-    mesa: string;
-    turno: string;
-    modalidad: string;
-    estatus: string;
-    verificacion: string;
-}
-
 @Component({
     selector: 'app-asistencia-extraordinaria',
     standalone: true,
@@ -58,8 +42,10 @@ interface Doctor {
 })
 export class AsistenciaExtraordinariaComponent {
     alertService: AlertService = inject(AlertService);
+    asistenciaService: AsistenciaExtraordinariaService = inject(AsistenciaExtraordinariaService);
+
     searchQuery: string = '';
-    doctor: Doctor | null = null;
+    aspirante: AsistenciaAspirante | null = null;
     loading: boolean = false;
     constructor(
         private confirmationService: ConfirmationService,
@@ -76,30 +62,50 @@ export class AsistenciaExtraordinariaComponent {
 
         this.loading = true;
 
+        this.asistenciaService.busqueda(this.searchQuery).subscribe({
+            next: (response: AsistenciaExtraordinariaResponse) => {
+                if (response.exito && response.respuesta) {
+                    const data = response.respuesta;
+                    this.aspirante = response.respuesta;
+                    this.alertService.exito(response.mensaje);
+                } else {
+                    this.alertService.error(response.mensaje);
+                }
+                this.loading = false;
+            },
+            error: (err) => {
+                this.alertService.error('Error en la búsqueda');
+                this.loading = false;
+            }
+        });
+
+
         // Simulamos un delay de red y asignamos datos estáticos basados en la imagen 2
+        /*   
         setTimeout(() => {
-            this.doctor = {
-                nombre: 'Dr. Pablo Andrés García Bernal',
-                matricula: '98161651',
-                curp: 'BBPA841316HDFLRR01',
-                rfc: 'BBPA841316HDF',
-                especialidades: ['Cardiología', 'Anestesiología pediátrica', 'Neumología'],
-                fotoUrl: 'https://www.femalefirst.co.uk/image-library/partners/bang/land/1000/r/robin-hood-actor-jack-patten-aW1hZ2VzMS8yMDI1LzExLzAzLzE3NjI.jpg', // Placeholder
-                fecha: '15 de Mayo, 2025',
-                hora: '07:00 Hrs.',
-                mesa: 'Mesa 5',
-                turno: '11:00 a 13:00 hrs.',
-                modalidad: 'Externo',
-                estatus: 'Concluido',
-                verificacion: 'Sin verificación documental'
-            };
-            this.loading = false;
-        }, 500);
+              this.aspirante = {
+                  nombre: 'Dr. Pablo Andrés García Bernal',
+                  matricula: '98161651',
+                  curp: 'BBPA841316HDFLRR01',
+                  rfc: 'BBPA841316HDF',
+                  especialidades: ['Cardiología', 'Anestesiología pediátrica', 'Neumología'],
+                  fotoUrl: 'https://www.femalefirst.co.uk/image-library/partners/bang/land/1000/r/robin-hood-actor-jack-patten-aW1hZ2VzMS8yMDI1LzExLzAzLzE3NjI.jpg', // Placeholder
+                  fecha: '15 de Mayo, 2025',
+                  hora: '07:00 Hrs.',
+                  mesa: 'Mesa 5',
+                  turno: '11:00 a 13:00 hrs.',
+                  modalidad: 'Externo',
+                  estatus: 'Concluido',
+                  verificacion: 'Sin verificación documental'
+              };
+              this.loading = false;
+          }, 500); 
+          */
     }
 
     clear() {
         this.searchQuery = '';
-        this.doctor = null;
+        this.aspirante = null;
     }
 
     register() {
@@ -133,7 +139,7 @@ export class AsistenciaExtraordinariaComponent {
             rejectButtonStyleClass: 'btn-modal-cancelar',
             accept: () => { /* ... */
                 // Lógica real de eliminación
-                this.doctor = null; // Limpiamos el doctor
+                this.aspirante = null; // Limpiamos el doctor
                 this.searchQuery = ''; // Limpiamos búsqueda
                 this.alertService.informacion('Registro eliminado')
 
