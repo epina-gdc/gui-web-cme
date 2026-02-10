@@ -1,13 +1,20 @@
 <app-menu/>
+
+@if (userData && (userData.modulos.length !== 0 || userData.menu !== 1)) {
+  <button class="btn-menu-float" (click)="toggleMenu()" aria-label="Abrir menú">
+    <i class="pi pi-bars"></i> <span>Menú</span>
+  </button>
+}
+
 <div class="mx-3 my-3">
   @if (userData && userData.modulos.length === 0 && userData.menu === 1) {
     <router-outlet/>
   } @else {
-    <div class="flex">
-      <div class="col-2">
-      <menu-vertical/>
+    <div class="layout-container">
+      <div class="sidebar" [class.hidden]="!menuVisible">
+        <menu-vertical/>
       </div>
-      <div class="col-10">
+      <div class="main-content">
         <router-outlet/>
       </div>
     </div>

@@ -22,8 +22,13 @@ export class PrivadoComponent implements OnInit {
 
   userService = inject(UserService);
 
+  menuVisible = false;
+
   ngOnInit() {
     this.userService.userData$.subscribe(user => this.userData = user);
   }
 
+  toggleMenu() {
+    this.menuVisible = !this.menuVisible;
+  }
 }
