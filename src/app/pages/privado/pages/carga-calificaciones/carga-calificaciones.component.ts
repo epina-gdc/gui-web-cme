@@ -6,6 +6,7 @@ import {ActivatedRoute} from '@angular/router';
 import {RespuestaCalificaciones} from '@models/respuesta-calificaciones.interface';
 import {CargaCalificacionesService} from '@services/carga-calificaciones.service';
 import {AlertService} from '@services/alert.service';
+import {Card} from 'primeng/card';
 
 
 @Component({
@@ -13,7 +14,8 @@ import {AlertService} from '@services/alert.service';
   imports: [
     Button,
     DialogModule,
-    CommonModule
+    CommonModule,
+    Card
   ],
   templateUrl: './carga-calificaciones.component.html',
   styleUrl: './carga-calificaciones.component.scss',
