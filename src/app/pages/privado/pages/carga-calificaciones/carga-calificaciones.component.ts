@@ -4,6 +4,8 @@ import {DialogModule} from 'primeng/dialog';
 import {CommonModule} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {RespuestaCalificaciones} from '@models/respuesta-calificaciones.interface';
+import {CargaCalificacionesService} from '@services/carga-calificaciones.service';
+import {AlertService} from '@services/alert.service';
 
 
 @Component({
@@ -46,20 +48,36 @@ export class CargaCalificacionesComponent implements OnInit {
     porcentaje: 0
   };
 
-  constructor(private readonly activatedRoute: ActivatedRoute) {
+  constructor(private readonly activatedRoute: ActivatedRoute,
+              private readonly cargaCalificacionesService: CargaCalificacionesService,
+              private readonly alertaService: AlertService) {
     this.obtenerInformacion();
 
   }
 
   obtenerInformacion() {
     this.activatedRoute.data.subscribe(({respuesta: valores}) => {
-      console.log(valores);
       this.calificaciones = valores.registro.respuesta;
-      this.errorCalificaciones = valores.registro.huboError;
+      this.errorCalificaciones = valores.huboError;
       this.porcentaje.update(() => this.calificaciones.porcentaje);
     });
   }
 
+  guardarCalificaciones() {
+    this.cargaCalificacionesService.registrarCargaCalificaciones().subscribe({
+      next: (respuesta) => {
+        if (!respuesta.exito) {
+          this.alertaService.error(respuesta.mensaje);
+          return;
+        }
+        this.alertaService.exito('')
+      },
+      error: (error) => {
+        const msg = error?.error?.mensaje || error?.message || 'Error desconocido';
+        this.alertaService.error(msg);
+      }
+    })
+  }
 
   ngOnInit() {
 
@@ -82,6 +100,5 @@ export class CargaCalificacionesComponent implements OnInit {
     "No se requiere intervención adicional del usuario",
     "Si existe una interrupción en el proceso de carga, intentar nuevamente.\n Si el error persiste comunícate con el administrador del sistema."
   ];
-
 
 }
