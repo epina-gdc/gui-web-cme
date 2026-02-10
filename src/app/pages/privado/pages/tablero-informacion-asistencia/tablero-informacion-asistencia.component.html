@@ -1,4 +1,5 @@
 <div class="flex gap-4">
+  <app-menu-plazas [tituloMenu]="'Menú'"></app-menu-plazas>
   <div class="flex flex-column w-full">
     <div class="flex justify-content-between align-items-center mt-1 mb-3 px-2">
       <div>
@@ -19,8 +20,7 @@
                 <label class="field-label" for="fecha">Fecha</label>
               </div>
               <p-datepicker formControlName="fecha" [style]="{ 'width': '100%' }"
-                            [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
-                            [placeholder]="'Ingresa una fecha'"/>
+                            [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" [placeholder]="'Ingresa una fecha'" />
             </div>
             <div class="col">
               <div class="flex justify-content-between">
@@ -39,8 +39,8 @@
           </div>
           <div class="lg:col-2 col-12 flex align-items-center">
             <div class="flex align-items-center gap-4 justify-content-between mt-4">
-              <p-button type="button" class="w-full" variant="outlined" label="Limpiar"/>
-              <p-button type="button" class="w-full" label="Buscar"/>
+              <p-button type="button" class="w-full" variant="outlined" label="Limpiar" />
+              <p-button type="button" class="w-full" label="Buscar"   />
             </div>
 
           </div>
@@ -50,8 +50,7 @@
 
     <div class="flex gap-3 justify-content-between my-4">
       <div class="flex align-items-center p-3 bg-white border-round-xl w-full">
-        <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5"
-             style="background-color: #B0E0ED;">
+        <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5" style="background-color: #B0E0ED;">
           <i class="cme-citados p-3" style=" color: #597190;"></i>
         </div>
         <div class="flex flex-column">
@@ -64,8 +63,7 @@
         </div>
       </div>
       <div class="flex align-items-center p-3 bg-white border-round-xl w-full">
-        <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5"
-             style="background-color: #C0FBD2;">
+        <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5" style="background-color: #C0FBD2;">
           <i class="cme-citados p-3" style=" color: #00B738;"></i>
         </div>
         <div class="flex flex-column">
@@ -78,8 +76,7 @@
         </div>
       </div>
       <div class="flex align-items-center p-3 bg-white border-round-xl w-full">
-        <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5"
-             style="background-color: #FFBEBE;">
+        <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5" style="background-color: #FFBEBE;">
           <i class="cme-citados p-3" style=" color: #DE6767;;"></i>
         </div>
         <div class="flex flex-column">
@@ -92,8 +89,7 @@
         </div>
       </div>
       <div class="flex align-items-center p-3 bg-white border-round-xl w-full">
-        <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5"
-             style="background-color: #ADB8CC;">
+        <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5" style="background-color: #ADB8CC;">
           <i class="cme-citados p-3" style=" color: #597190;"></i>
         </div>
         <div class="flex flex-column">
@@ -142,13 +138,12 @@
         </div>
       </div>
       <div class="flex justify-content-end align-items-center mt-3">
-        <span
-          class="header-tab-documentacion">Total de asistencias del día 10/04/2026: <strong>&ensp;12746&ensp;</strong> médicos aspirantes.</span>
+        <span class="header-tab-documentacion">Total de asistencias del día 10/04/2026: <strong>&ensp;12746&ensp;</strong> médicos aspirantes.</span>
         <i class="cme-total-aspirantes ms-2" style="font-size:3rem; color: #55BBD1"></i>
       </div>
     </p-card>
 
-    <p-card class="my-3 empty-border empty-card">
+    <p-card class="my-3 empty-border empty-card" >
       <span class="titulo-totales-calificacion text-color">Médicos aspirantes por <strong> hora y turno</strong></span>
       <div class="flex gap-3">
 
@@ -290,7 +285,7 @@
       </div>
     </p-card>
 
-    <p-card class="my-3 empty-border empty-card">
+    <p-card class="my-3 empty-border empty-card" >
       <span class="titulo-totales-calificacion text-color">Médicos aspirantes por <strong>hora y turno</strong></span>
       <div class="flex gap-3">
 
