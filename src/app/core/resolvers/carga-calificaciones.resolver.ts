@@ -37,7 +37,7 @@ export const CargaCalificacionesResolver: ResolveFn<any> = (route, state) => {
       return {
         validaciones,
         registro,
-        huboError: validaciones.hasError || registro.hasError
+        huboError: validaciones.error || registro.error
       };
     })
   );

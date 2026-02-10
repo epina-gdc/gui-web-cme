@@ -50,11 +50,11 @@
             <div class="flex w-auto justify-content-start p-3 gap-2 bg-card-indicador border-round-lg">
               <div class="flex flex-column">
                 <p class="titulo-indicador-fecha">Fecha inicio</p>
-                <p class="indicador-fecha">12/08/2026</p>
+                <p class="indicador-fecha">{{ calificaciones.fechaInicioFormateada }}</p>
               </div>
               <div class="flex flex-column">
                 <p class="titulo-indicador-fecha">Hora</p>
-                <p class="indicador-fecha">13:25:43</p>
+                <p class="indicador-fecha">{{ calificaciones.horaInicioFormateada }}</p>
               </div>
             </div>
           </div>
@@ -64,15 +64,15 @@
             <div class="flex w-auto justify-content-start p-3 gap-2 bg-card-indicador border-round-lg">
               <div class="flex flex-column">
                 <p class="titulo-indicador-fecha">Fecha fin</p>
-                <p class="indicador-fecha">-</p>
+                <p class="indicador-fecha">{{ calificaciones.fechaFinFormateada }}</p>
               </div>
               <div class="flex flex-column">
                 <p class="titulo-indicador-fecha">Hora</p>
-                <p class="indicador-fecha">-</p>
+                <p class="indicador-fecha">{{ calificaciones.horaInicioFormateada }}</p>
               </div>
             </div>
             <div class="flex align-items-center">
-              <p-button type="button"  (onClick)="confCargaCalificaciones = true"  label="Cargar calificaciones"/>
+              <p-button type="button" [disabled]="errorCalificaciones"  (onClick)="confCargaCalificaciones = true"  label="Cargar calificaciones"/>
             </div>
           </div>
         </div>
@@ -81,13 +81,13 @@
         <div class="w-100 p-3 bg-card-indicador border-round-lg">
           <p class="titulo-totales-calificacion">Total de Médicos con calificación</p>
           <div class="mt-1 border-top-2 border-indigo-200" >
-            <p class="totales-calificacion mt-2">7,650</p>
+            <p class="totales-calificacion mt-2">{{ calificaciones.numConCalificacion }}</p>
           </div>
         </div>
         <div class="w-100 p-3 bg-card-indicador border-round-lg">
           <p class="titulo-totales-calificacion">Total de Médicos sin calificación</p>
           <div class="mt-1 border-top-2 border-indigo-200">
-            <p class="totales-calificacion mt-2">1,800</p>
+            <p class="totales-calificacion mt-2">{{ calificaciones.numSinCalificacion }}</p>
           </div>
         </div>
       </div>

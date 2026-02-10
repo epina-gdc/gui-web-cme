@@ -3,6 +3,7 @@ import {Button} from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
 import {CommonModule} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
+import {RespuestaCalificaciones} from '@models/respuesta-calificaciones.interface';
 
 
 @Component({
@@ -18,6 +19,8 @@ import {ActivatedRoute} from '@angular/router';
 export class CargaCalificacionesComponent implements OnInit {
 
   confCargaCalificaciones: boolean = false;
+  errorCalificaciones: boolean = false;
+
   tipoEstatus: { estatus: number, descripcion: string }[] = [
     {estatus: 1, descripcion: 'Procesando...'},
     {estatus: 2, descripcion: 'Completado'},
@@ -33,6 +36,15 @@ export class CargaCalificacionesComponent implements OnInit {
       ?.descripcion ?? '';
   });
 
+  calificaciones: RespuestaCalificaciones = {
+    fechaInicioFormateada: "--/--/----",
+    horaInicioFormateada: "--:--",
+    fechaFinFormateada: "--/--/----",
+    horaFinFormateada: "--:--",
+    numConCalificacion: 0,
+    numSinCalificacion: 0,
+    porcentaje: 0
+  };
 
   constructor(private readonly activatedRoute: ActivatedRoute) {
     this.obtenerInformacion();
@@ -40,8 +52,11 @@ export class CargaCalificacionesComponent implements OnInit {
   }
 
   obtenerInformacion() {
-    this.activatedRoute.data.subscribe(({respuesta}) => {
-      console.log(respuesta);
+    this.activatedRoute.data.subscribe(({respuesta: valores}) => {
+      console.log(valores);
+      this.calificaciones = valores.registro.respuesta;
+      this.errorCalificaciones = valores.registro.huboError;
+      this.porcentaje.update(() => this.calificaciones.porcentaje);
     });
   }
 
