@@ -9,6 +9,9 @@ import {AlertService} from '@services/alert.service';
 import {Card} from 'primeng/card';
 import {Subject, switchMap, timer} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Select} from 'primeng/select';
+import {TipoDropdown} from '@models/tipo-dropdown.interface';
 
 
 @Component({
@@ -17,12 +20,22 @@ import {takeUntil} from 'rxjs/operators';
     Button,
     DialogModule,
     CommonModule,
-    Card
+    Card,
+    ReactiveFormsModule,
+    Select
   ],
   templateUrl: './carga-calificaciones.component.html',
   styleUrl: './carga-calificaciones.component.scss',
 })
 export class CargaCalificacionesComponent implements OnInit, OnDestroy {
+
+
+  options: TipoDropdown[] = [
+    {value: 1, label: 'A'},
+    {value: 2, label: 'B'},
+    {value: 3, label: 'C'},
+    {value: 4, label: 'D'},
+  ];
 
   confCargaCalificaciones: boolean = false;
   errorCalificaciones: boolean = false;
@@ -55,11 +68,21 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
     porcentaje: 0
   };
 
+  form!: FormGroup;
+
   constructor(private readonly activatedRoute: ActivatedRoute,
               private readonly cargaCalificacionesService: CargaCalificacionesService,
-              private readonly alertaService: AlertService) {
+              private readonly alertaService: AlertService,
+              private readonly fb: FormBuilder) {
+    this.form = this.inicializarForm();
     this.obtenerInformacion();
     this.iniciarRefrescoAutomatico();
+  }
+
+  inicializarForm(): FormGroup{
+    return this.fb.group({
+      convocatoria: [null],
+    })
   }
 
   obtenerInformacion() {
