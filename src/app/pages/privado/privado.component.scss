@@ -18,7 +18,7 @@
     flex: 0 0 auto;
 
     @media (min-width: 1025px) {
-      min-width: 250px;
+      min-width: 200px;
       display: block !important;
     }
   }
@@ -30,7 +30,7 @@
     overflow-x: auto;
 
     @media (min-width: 1025px) {
-      max-width: calc(100% - 250px);
+      max-width: calc(100% - 200px);
     }
   }
 
