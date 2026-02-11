@@ -1,7 +1,7 @@
 <app-menu/>
 
 @if (userData && (userData.modulos.length !== 0 || userData.menu !== 1)) {
-  <button class="btn-menu-float" (click)="toggleMenu()" aria-label="Abrir menú">
+  <button class="btn-menu-float" [class.is-scrolled]="isScrolled" (click)="toggleMenu()" aria-label="Abrir menú">
     <i class="pi pi-bars"></i> <span>Menú</span>
   </button>
 }
@@ -11,7 +11,7 @@
     <router-outlet/>
   } @else {
     <div class="layout-container">
-      <div class="sidebar" [class.hidden]="!menuVisible">
+      <div class="sidebar" [class.hidden]="!menuVisible" [class.is-scrolled]="isScrolled">
         <menu-vertical/>
       </div>
       <div class="main-content">
