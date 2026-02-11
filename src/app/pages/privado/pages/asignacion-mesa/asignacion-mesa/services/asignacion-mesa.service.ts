@@ -66,6 +66,27 @@ export class ResponseConfiguracionMesas extends ResponseGeneral {
   respuesta!: ConfiguracionMesasPaginada;
 }
 
+
+export class ConvocatoriaTotales {
+  becados!: {
+    totalUsuarios: number,
+    totalConvocatorias: number
+  };
+  residentes!: {
+    totalUsuarios: number,
+    totalConvocatorias: number
+  };
+  externos!: {
+    totalUsuarios: number,
+    totalConvocatorias: number
+  };
+}
+
+// Clase de respuesta para totales de la convocatoria
+export class ResponseConvocatoriaTotales extends ResponseGeneral {
+  respuesta!: ConvocatoriaTotales;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -106,8 +127,6 @@ export class AsignacionMesaService {
     parametros = parametros.append('numMesasDisponibles', mesaConvocatroria.numMesasDisponibles.toString());
     parametros = parametros.append('numMedicosPorMesa', mesaConvocatroria.numMedicosPorMesa.toString());
 
-
-
     let ruta = `${this.serverEndPointURLAsignacion}/mesa-convocatoria`;
     return this.http.post<any>(ruta, { headers: this.header }, { params: parametros }).pipe(
       catchError(this.handleError),
@@ -117,15 +136,15 @@ export class AsignacionMesaService {
     );
   }
 
-   /**
-   * Obtener lista de configuraciones de mesas con paginación
-   * @param page Número de página (0-based)
-   * @param size Tamaño de página
-   */
+  /**
+  * Obtener lista de configuraciones de mesas con paginación
+  * @param page Número de página (0-based)
+  * @param size Tamaño de página
+  */
   getLstConfiguracionMesas(page: number = 0, size: number = 10): Observable<ResponseConfiguracionMesas> {
     const params = `?page=${page}&size=${size}`;
     return this.http.get<ResponseConfiguracionMesas>(
-      this.serverEndPointURLAsignacion + '/paginado' + params, 
+      this.serverEndPointURLAsignacion + '/paginado' + params,
       { headers: this.header }
     ).pipe(
       catchError(this.handleError),
@@ -135,6 +154,19 @@ export class AsignacionMesaService {
     );
   }
 
+  getConvocatoriaTotales(idConvocatoria: number): Observable<ResponseConvocatoriaTotales> {
+    let ruta = `${this.serverEndPointURLAsignacion}/convocatoria/${idConvocatoria}/totales`;
+
+
+    return this.http.get<ResponseConvocatoriaTotales>(ruta, { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: ResponseConvocatoriaTotales) => {
+        return response;
+      })
+    );
+
+  }
+
 
 
   // Método auxiliar para manejar errores
@@ -142,4 +174,7 @@ export class AsignacionMesaService {
     console.error("Error HTTP " + error.status + ':', error.message);
     return throwError(() => error);
   }
+
+
+
 }
