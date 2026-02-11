@@ -50,6 +50,8 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
   porcentaje: WritableSignal<number> = signal(0);
   estatus: WritableSignal<number> = signal(0);
 
+  cargando: WritableSignal<boolean> = signal(false);
+
   textoEstatus = computed(() => {
     return this.tipoEstatus
       .find(x => x.estatus === this.estatus())
@@ -97,19 +99,25 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
   guardarCalificaciones() {
     const id = this.form.get('convocatoria')?.value;
     if (!id) return;
+    if (this.errorCalificaciones) return;
+
+    this.cargando.set(true);
+
     this.cargaCalificacionesService.registrarCargaCalificaciones(id).subscribe({
       next: (respuesta) => {
         if (!respuesta.exito) {
           this.alertaService.error(respuesta.mensaje);
+          this.cargando.set(false);
           return;
         }
-        this.alertaService.exito('')
+        this.alertaService.exito('Se inició la carga de calificaciones');
       },
       error: (error) => {
         const msg = error?.error?.mensaje || error?.message || 'Error desconocido';
         this.alertaService.error(msg);
+        this.cargando.set(false);
       }
-    })
+    });
   }
 
   iniciarRefrescoAutomatico() {
@@ -197,9 +205,17 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
 
   private procesarRespuesta(data: RespuestaCalificaciones) {
     if (data) {
+      const porcentajeAnterior = this.porcentaje();
       this.calificaciones = data;
       this.porcentaje.set(data.porcentaje);
       this.estatus.set(data.idEstatusCarga);
+
+      if (this.porcentaje() === 100) {
+        if (porcentajeAnterior < 100) {
+          this.alertaService.exito('Se realizó la carga de la información');
+        }
+        this.cargando.set(false);
+      }
     }
   }
 
