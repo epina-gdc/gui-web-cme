@@ -1,4 +1,4 @@
-import {Component, computed, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, computed, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
 import {GeneralComponent} from '@components/general.component';
@@ -13,6 +13,7 @@ import {Asistencia, TableroAsistenciaInterface} from '@models/tableroAsistencia.
 import dayjs from 'dayjs';
 import {NgClass} from '@angular/common';
 import {saveAs} from 'file-saver';
+import {timer, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-tablero-informacion-asistencia',
@@ -27,9 +28,10 @@ import {saveAs} from 'file-saver';
   templateUrl: './tablero-informacion-asistencia.component.html',
   styleUrl: './tablero-informacion-asistencia.component.scss'
 })
-export class TableroInformacionAsistenciaComponent extends GeneralComponent implements OnInit {
+export class TableroInformacionAsistenciaComponent extends GeneralComponent implements OnInit, OnDestroy {
 
   filtroForm!: FormGroup;
+  private contadorTiempo: Subscription | undefined;
 
   catalogoTurno: WritableSignal<TipoDropdown[]> = signal([]);
   catalogoAsistencia: WritableSignal<TipoDropdown[]> = signal([]);
@@ -147,7 +149,10 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
       this.maxDate = dayjs(this.catalogoConvocatorias.fecFin).toDate();
     });
 
-    this.buscar();
+    this.contadorTiempo = timer(0, 180000).subscribe(() => {
+      this.buscar();
+    });
+
   }
 
   inicializarForm(): FormGroup {
@@ -240,6 +245,10 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
 
   get f() {
     return this.filtroForm.controls;
+  }
+
+  ngOnDestroy() {
+    this.contadorTiempo?.unsubscribe();
   }
 
 }

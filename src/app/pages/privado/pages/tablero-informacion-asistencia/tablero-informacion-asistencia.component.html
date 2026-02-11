@@ -12,43 +12,42 @@
   <div class="p-2 border-round-xl bg-white">
     <form [formGroup]="filtroForm">
       <div class="flex p-2">
-        <div class="flex lg:col-10 col-12">
-          <div class="col">
+        <div class="flex flex-wrap w-full">
+          <div class="xl:col-3 col-12">
             <div class="flex justify-content-between">
               <label class="field-label" for="fecha">Fecha</label>
             </div>
             <p-datepicker [minDate]="minDate" [maxDate]="maxDate" formControlName="fecha" [style]="{ 'width': '100%' }"
                           [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
-                          [placeholder]="'Ingresa una fecha'"/>
+                          [placeholder]="'Ingresa una fecha'"></p-datepicker>
           </div>
-          <div class="col">
+          <div class="xl:col-3 col-12">
             <div class="flex justify-content-between">
               <label class="field-label" for="turno">Turno</label>
             </div>
             <p-select formControlName="turno" [options]="catalogoTurno()" optionLabel="label"
                       placeholder="Selecciona un turno" class="w-full"/>
           </div>
-          <div class="col">
+          <div class="xl:col-3 col-12">
             <div class="flex justify-content-between">
               <label class="field-label" for="tipoAsistencia">Tipo de asistencia</label>
             </div>
             <p-select formControlName="tipoAsistencia" [options]="catalogoAsistencia()" optionLabel="label"
                       placeholder="Selecciona un tipo" class="w-full"/>
           </div>
-        </div>
-        <div class="lg:col-2 col-12 flex align-items-center">
-          <div class="flex align-items-center gap-4 justify-content-between mt-4">
-            <p-button type="button" class="w-full" variant="outlined" label="Limpiar" (onClick)="limpiar()"/>
-            <p-button type="button" class="w-full" label="Buscar" (onClick)="buscar()"/>
+          <div class="xl:col-3 col-12 flex align-items-center">
+            <div class="flex align-items-center gap-4 justify-content-between mt-4">
+              <p-button type="button" class="w-full" variant="outlined" label="Limpiar" (onClick)="limpiar()"/>
+              <p-button type="button" class="w-full" label="Buscar" (onClick)="buscar()"/>
+            </div>
           </div>
-
         </div>
       </div>
     </form>
   </div>
 
 
-  <div class="flex gap-3 justify-content-between my-4">
+  <div class="flex encabezado-totales sm:flex-column xl:flex-row gap-3 justify-content-between my-4">
     <div class="flex align-items-center p-3 bg-white border-round-xl w-full">
       <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5"
            style="background-color: #B0E0ED;">

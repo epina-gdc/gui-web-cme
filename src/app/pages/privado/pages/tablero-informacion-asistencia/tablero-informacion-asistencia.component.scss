@@ -97,6 +97,15 @@
   }
 
 
+  @media screen and (min-width: 351px) and (max-width: 575px) {
+    .encabezado-totales{
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+
+
 }
 
 
