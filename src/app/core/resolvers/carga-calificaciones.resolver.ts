@@ -4,13 +4,17 @@ import {CargaCalificacionesService} from '@services/carga-calificaciones.service
 import {forkJoin, Observable, of} from 'rxjs';
 import {AlertService} from '@services/alert.service';
 import {catchError, map} from 'rxjs/operators';
+import {CatalogosGeneralesService} from '@services/catalogos-generales.service';
 
 export const CargaCalificacionesResolver: ResolveFn<any> = (route, state) => {
   const cargaCalificacionesService: CargaCalificacionesService = inject(CargaCalificacionesService);
   const alertaService: AlertService = inject(AlertService);
+  const catalogosService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
 
   const $validaciones = cargaCalificacionesService.obtenerValidacionCalificaciones();
   const $registro = cargaCalificacionesService.consultaCargaCalificaciones();
+
+  return catalogosService.getConvocatorias();
 
   const handlePipeError = (obs$: Observable<any>) => obs$.pipe(
     catchError((error) => {

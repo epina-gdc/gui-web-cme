@@ -12,6 +12,7 @@ import {takeUntil} from 'rxjs/operators';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Select} from 'primeng/select';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
+import {Convocatoria} from '@models/convocatoria.interface';
 
 
 @Component({
@@ -86,10 +87,12 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
   }
 
   obtenerInformacion() {
-    this.activatedRoute.data.subscribe(({respuesta: valores}) => {
-      this.calificaciones = valores.registro.respuesta;
-      this.errorCalificaciones = valores.huboError;
-      this.porcentaje.update(() => this.calificaciones.porcentaje);
+    this.activatedRoute.data.subscribe(({respuesta}) => {
+      this.options = respuesta.respuesta.filter((item: Convocatoria) => item.tipo.idTipoConvocatoria === 1)
+        .map((item: Convocatoria) => ({
+          value: item.idConvocatoria,
+          label: item.desConvocatoria
+        }));
     });
   }
 
