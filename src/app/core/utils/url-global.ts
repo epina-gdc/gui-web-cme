@@ -13,7 +13,7 @@ export const NAV = {
   cargaCalificaciones: 'carga-calificaciones',
   asistenciaExtraordinaria: 'asistencia-extraordinaria',
   visualizacionAsistencia: 'visualizacion-asistencia',
-  tableroInformacionAsistencia: 'tablero-informacion',
+  tableroInformacionAsistencia: 'tablero-asistencia',
   asignacionMesa: 'asignacion-mesa',
   propuestaSindical: 'propuesta-sindical',
   gestionConvocatoria: 'gestion-convocatoria',
