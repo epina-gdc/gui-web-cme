@@ -84,6 +84,13 @@
 
   }
 
+  .contador-background {
+    background: //linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.1)),
+      url("assets/backgrounds/contador_background.png") no-repeat center top / cover;
+    //min-height: 100%;
+    //min-width: 100%;
+  }
+
 
   .footer-cme {
     background-color: var(--gob-mx-pr-imss-tono1);

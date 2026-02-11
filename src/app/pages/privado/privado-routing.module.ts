@@ -30,6 +30,7 @@ import {ErrorConfiguracionComponent} from '@privado/error-configuracion/error-co
 import {InicioModulosComponent} from '@privado/inicio-modulos/inicio-modulos.component';
 import {CargaCalificacionesResolver} from '../../core/resolvers/carga-calificaciones.resolver';
 import {tableroInformacionResolver} from '../../core/resolvers/tablero-informacion.resolver';
+import { MonitoreoAsignacionesComponent } from './pages/monitoreo-asignaciones/monitoreo-asignaciones.component';
 
 const routes: Routes = [{
   path: '',
@@ -108,6 +109,10 @@ const routes: Routes = [{
     {
       path: NAV.gestionConvocatoria,
       component: GestionConvocatoriasComponent,
+    },
+    {
+      path: NAV.monitoreoAsignaciones,
+      component: MonitoreoAsignacionesComponent
     },
     {
       path: NAV.errorConfig,
