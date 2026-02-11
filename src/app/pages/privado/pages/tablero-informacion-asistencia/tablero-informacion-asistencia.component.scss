@@ -22,11 +22,11 @@
   }
 
 
-
   //Encabezado HORA y TURNO
-  .primer-horario{
+  .primer-horario {
     background-color: #CCF4F040;
-    span{
+
+    span {
       color: #47A299;
       font-family: "Noto Sans";
       font-size: 12px;
@@ -35,9 +35,11 @@
       line-height: normal;
     }
   }
-  .segundo-horario{
+
+  .segundo-horario {
     background-color: #5EC5F41A;
-    span{
+
+    span {
       color: #15A5D1;
 
       /* Body SB 12 */
@@ -49,9 +51,10 @@
     }
   }
 
-  .tercer-horario{
+  .tercer-horario {
     background-color: #F3E8FF40;
-    span{
+
+    span {
       color: #7F5697;
 
       /* Body SB 12 */
@@ -63,9 +66,10 @@
     }
   }
 
-  .cuarto-horario{
+  .cuarto-horario {
     background-color: #FFF6A733;
-    span{
+
+    span {
       color: #9B8F2C;
 
       /* Body R 12 */
@@ -77,9 +81,10 @@
     }
   }
 
-  .quinto-horario{
+  .quinto-horario {
     background-color: #FFA7A933;
-    span{
+
+    span {
       color: #933537;
 
       /* Body R 12 */
@@ -92,6 +97,12 @@
   }
 
 
+  @media screen and (min-width: 351px) and (max-width: 575px) {
+    .encabezado-totales{
+      display: flex;
+      flex-direction: column;
+    }
+  }
 
 
 
