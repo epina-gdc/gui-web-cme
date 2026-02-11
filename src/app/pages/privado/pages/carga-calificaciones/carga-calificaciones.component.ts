@@ -30,13 +30,7 @@ import {Convocatoria} from '@models/convocatoria.interface';
 })
 export class CargaCalificacionesComponent implements OnInit, OnDestroy {
 
-
-  options: TipoDropdown[] = [
-    {value: 1, label: 'A'},
-    {value: 2, label: 'B'},
-    {value: 3, label: 'C'},
-    {value: 4, label: 'D'},
-  ];
+  options: TipoDropdown[] = [];
 
   confCargaCalificaciones: boolean = false;
   errorCalificaciones: boolean = false;
@@ -47,13 +41,14 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
   private readonly INTERVALO_REFRESCO = 30000;
 
   tipoEstatus: { estatus: number, descripcion: string }[] = [
+    {estatus: 0, descripcion: 'No se ha seleccionado Convocatoria'},
     {estatus: 1, descripcion: 'Procesando...'},
     {estatus: 2, descripcion: 'Completado'},
     {estatus: 3, descripcion: 'Proceso interrumpido'},
   ];
 
   porcentaje: WritableSignal<number> = signal(0);
-  estatus: WritableSignal<number> = signal(3);
+  estatus: WritableSignal<number> = signal(0);
 
   textoEstatus = computed(() => {
     return this.tipoEstatus
@@ -148,7 +143,7 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
     const handlePipeError = (obs$: Observable<any>) => obs$.pipe(
       catchError((error) => {
         const msg = error?.error?.mensaje || error?.message || 'Error desconocido';
-        return of({ error: true, msg });
+        return of({error: true, msg});
       })
     );
 
