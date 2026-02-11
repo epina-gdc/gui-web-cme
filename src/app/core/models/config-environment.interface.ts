@@ -7,5 +7,7 @@ export interface ConfigEnvironment {
     apiConvocatoria:string;
     apiDocumentos:string;
     apiAsignacionMesa:string;
+    apiCalificaciones: string;
+    apiAsistencia: string;
   }
 }

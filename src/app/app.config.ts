@@ -14,6 +14,8 @@ import {provideUserIdleConfig} from "angular-user-idle";
 import {TIEMPO_MAXIMO_SESION} from '@utils/tokens';
 import {TiempoSesion} from '@models/tiempo-sesion.interface';
 
+es.dayNamesMin = ["D","L","M","M","J","V","S"];
+
 export const appConfig: ApplicationConfig = {
   providers: [Mensajes,
     provideZoneChangeDetection({eventCoalescing: true}),

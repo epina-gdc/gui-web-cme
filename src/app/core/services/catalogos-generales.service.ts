@@ -231,6 +231,33 @@ export class CatalogosGeneralesService {
     );
   }
 
+  getTipoAsistencia(): Observable<any> {
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/tipoAsistencia', {headers: this.header}).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<any>) => {
+        return response;
+      })
+    );
+  }
+
+  getTurno(): Observable<any> {
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/turno', {headers: this.header}).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<any>) => {
+        return response;
+      })
+    );
+  }
+
+  getConvocatorias(): Observable<any> {
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/convocatorias', {headers: this.header}).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<any>) => {
+        return response;
+      })
+    );
+  }
+
   private handleError(error: HttpErrorResponse) {
 
     if (error.status) {
