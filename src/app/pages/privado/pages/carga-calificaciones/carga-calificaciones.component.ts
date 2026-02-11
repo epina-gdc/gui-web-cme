@@ -149,6 +149,10 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
   }
 
   cargarDatosPorId(id: number) {
+    this.porcentaje.set(0);
+    this.cargando.set(false);
+    this.errorCalificaciones = false;
+
     const handlePipeError = (obs$: Observable<any>) => obs$.pipe(
       catchError((error) => {
         const msg = error?.error?.mensaje || error?.message || 'Error desconocido';
@@ -179,7 +183,7 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
       }
 
       if (!registro.error && registro.respuesta) {
-        this.procesarRespuesta(registro.respuesta);
+        this.procesarRespuesta(registro.respuesta, true);
       }
     });
   }
@@ -203,14 +207,14 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
       });
   }
 
-  private procesarRespuesta(data: RespuestaCalificaciones) {
+  private procesarRespuesta(data: RespuestaCalificaciones, esCargaInicial: boolean = false) {
     if (data) {
       const porcentajeAnterior = this.porcentaje();
       this.calificaciones = data;
       this.porcentaje.set(data.porcentaje);
       this.estatus.set(data.idEstatusCarga);
 
-      if (this.porcentaje() === 100) {
+      if (this.porcentaje() === 100 && !esCargaInicial) {
         if (porcentajeAnterior < 100) {
           this.alertaService.exito('Se realizó la carga de la información');
         }

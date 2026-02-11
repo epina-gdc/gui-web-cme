@@ -11,7 +11,7 @@
     <router-outlet/>
   } @else {
     <div class="layout-container">
-      <div class="sidebar" [class.hidden]="!menuVisible" [class.is-scrolled]="isScrolled">
+      <div class="sidebar" [class.sidebar-collapsed]="!menuVisible" [class.is-scrolled]="isScrolled">
         <menu-vertical/>
       </div>
       <div class="main-content">
