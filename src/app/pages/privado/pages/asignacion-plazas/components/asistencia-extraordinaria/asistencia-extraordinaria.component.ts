@@ -72,7 +72,7 @@ export class AsistenciaExtraordinariaComponent {
     get tieneCita(): boolean {
         return (this.aspirante?.fechaCita == null && this.aspirante?.horaCita == null && this.aspirante?.turnoCita == null && this.aspirante?.mesaCita == null);
     }
-    // Simulación de búsqueda
+    // búsqueda
     search() {
 
         if (!this.searchQuery) {
@@ -107,33 +107,12 @@ export class AsistenciaExtraordinariaComponent {
             }
         });
 
-
-        // Simulamos un delay de red y asignamos datos estáticos basados en la imagen 2
-        /*   
-        setTimeout(() => {
-              this.aspirante = {
-                  nombre: 'Dr. Pablo Andrés García Bernal',
-                  matricula: '98161651',
-                  curp: 'BBPA841316HDFLRR01',
-                  rfc: 'BBPA841316HDF',
-                  especialidades: ['Cardiología', 'Anestesiología pediátrica', 'Neumología'],
-                  fotoUrl: 'https://www.femalefirst.co.uk/image-library/partners/bang/land/1000/r/robin-hood-actor-jack-patten-aW1hZ2VzMS8yMDI1LzExLzAzLzE3NjI.jpg', // Placeholder
-                  fecha: '15 de Mayo, 2025',
-                  hora: '07:00 Hrs.',
-                  mesa: 'Mesa 5',
-                  turno: '11:00 a 13:00 hrs.',
-                  modalidad: 'Externo',
-                  estatus: 'Concluido',
-                  verificacion: 'Sin verificación documental'
-              };
-              this.loading = false;
-          }, 500); 
-          */
     }
 
     clear() {
         this.searchQuery = '';
         this.aspirante = null;
+        this.foto = null;
     }
 
     register() {
@@ -207,7 +186,7 @@ export class AsistenciaExtraordinariaComponent {
                         this.aspirante.horaAsistencia = null;
                         this.aspirante.turnoAsistencia = null;
 
-                        this.alertService.informacion(this.MSG074); //  this.aspirante = null;
+                        this.alertService.informacion(this.MSG074);
 
                     }
                 } else {
