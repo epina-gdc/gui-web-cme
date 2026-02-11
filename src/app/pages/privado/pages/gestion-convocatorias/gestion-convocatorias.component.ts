@@ -13,7 +13,6 @@ import {Tab, TabList, Tabs} from 'primeng/tabs';
   imports: [
     AsignacionSustitucionComponent,
     ConfiguracionRegistroComponent,
-    MenuPlazasComponent,
     Tab,
     TabList,
     Tabs
