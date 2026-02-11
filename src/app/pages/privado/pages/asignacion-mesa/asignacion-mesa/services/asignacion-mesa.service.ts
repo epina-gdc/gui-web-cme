@@ -45,6 +45,7 @@ export class PageInfo {
 
 // Clase para la configuración de una mesa
 export class MesaConfiguracion {
+  idConvocatoria!: number;
   idMesaDetalle!: number | null;
   idMesaConvocatoria!: number;
   desConvocatoria!: string;

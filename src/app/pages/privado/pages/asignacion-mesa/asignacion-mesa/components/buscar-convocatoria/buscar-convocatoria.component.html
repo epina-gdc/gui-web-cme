@@ -56,23 +56,39 @@
             <ng-template pTemplate="body" let-row>
                 <tr>
                     <td>
-                        <p-button [label]="row.desConvocatoria" [link]="true" class="link-nom-conv"
+                        @if(row.estatus == 'PENDIENTE' && row.porcentajeConfiguracion
+                        < 100){ <p-button [label]="row.desConvocatoria" [link]="true" class="link-nom-conv"
                             (onClick)="onSeleccion(row)" />
+                        }@else {
+
+                        <span class="link-nom-conv" (onClick)="onSeleccion(row)">{{row.desConvocatoria}}</span>
+                        }
+
                     </td>
                     <td>{{ row.numMesasDisponibles || '-' }}</td>
                     <td>{{ row.numMedicosPorMesa || '-' }}</td>
                     <td>
-                        <p-tag [class]="'p-tag ' + (row.indActivo === 1 ? 'p-tag-info' : 'p-tag-success')"
-                            [value]="row.indActivo === 1 ? 'Activo' : 'Inactivo'">
+                        <p-tag [class]="'p-tag ' + (row.estatus === 'PENDIENTE'? 'p-tag-info' : 'p-tag-success')"
+                            [value]="row.estatus">
                         </p-tag>
                     </td>
-                    <td>{{ row.fecInicio ? 75 : 0 }}%</td>
+                    <td>{{ row.porcentajeConfiguracion}}%</td>
                     <td alignFrozen="right" pFrozenColumn>
                         <div class="flex align-items-center justify-content-center">
-                            <i class="cme-ellipsis cursor-pointer border-round-3xl"
+                            <i class="cme-ellipsis cursor-pointer border-round-3xl" onkeypress=""
+                                (click)="op.toggle($event)"
                                 [style]="{ 'font-size': '2.2rem', color: '#a9c9f8', background: '#f6faff' }">
                             </i>
                         </div>
+                        <p-popover #op>
+                            <ng-template #content>
+                                <div class="flex align-items-center boton-descargar cursor-pointer "
+                                    (click)="onEditar(row)" onkeypress="">
+                                    <i class=" pi pi-pencil" [style]="{ 'font-size': '1.2rem', color: '#a9c9f8'}"></i>
+                                    <span class="ms-2 acciones-tabla">Editar</span>
+                                </div>
+                            </ng-template>
+                        </p-popover>
                     </td>
                 </tr>
             </ng-template>
@@ -80,8 +96,10 @@
             <ng-template pTemplate="emptymessage">
                 <tr>
                     <td colspan="6">
-                        <div class="flex justify-content-center align-items-center">
-                            <img class="p-0" src="/assets/images/tabla_sin_resultados.svg" alt="Sin resultados">
+                        <div class="flex justify-content-center align-items-center flex-column">
+                            <img class="p-0" src="/assets/images/tabla_sin_resultados.svg"
+                                alt="No hay resultados de búsqueda">
+                            <p>No hay resultados de búsqueda</p>
                         </div>
                     </td>
                 </tr>
@@ -106,3 +124,42 @@
         </p-paginator>
     </p-card>
 </p-card>
+
+<p-dialog header="Editar configuración" [(visible)]="visible" [modal]="true" [style]="{ 'max-width': '560px' }"
+    draggable="false" resizable="false" styleClass="dialogEdit">
+    <span class="btg"></span>
+    <form [formGroup]="formularioEdicion">
+        <div class="grid">
+            <div class="col-12 lg:col">
+                <div class="formgrid grid gap-4">
+                    <div class="field col">
+                        <label class="field-label" for="idConvocatoria">No. de convocatoria</label>
+                        <p-select [options]="convocatorias" formControlName="idConvocatoria"
+                            placeholder="Selecciona una convocatoria" optionLabel="desConvocatoria"
+                            optionValue="idConvocatoria" class="w-full">
+                        </p-select>
+                    </div>
+
+                    <div class="field col">
+                        <label class="field-label" for="numMesasDisponibles">No. de mesas disponibles</label>
+                        <p-inputNumber formControlName="numMesasDisponibles" placeholder="Número de mesas"
+                            class="w-full" [showButtons]="true" [min]="1">
+                        </p-inputNumber>
+                    </div>
+
+                    <div class="field col">
+                        <label class="field-label" for="numMedicosPorMesa">No. de médicos por mesa</label>
+                        <p-inputNumber formControlName="numMedicosPorMesa" placeholder="Médicos por mesa" class="w-full"
+                            [showButtons]="true" [min]="1">
+                        </p-inputNumber>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-content-end gap-2 mt-3">
+            <p-button label="Cancelar" [outlined]="true" severity="danger" (onClick)="visible = false" />
+            <p-button label="Aceptar (No hay servicio de actualizacion )" [outlined]="true" severity="success"
+                (onClick)="guardarConfiguracionUpdate(formularioEdicion.value); visible = false" />
+        </div>
+    </form>
+</p-dialog>

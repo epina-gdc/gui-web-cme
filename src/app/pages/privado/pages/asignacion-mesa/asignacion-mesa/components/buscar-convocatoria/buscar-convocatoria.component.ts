@@ -18,6 +18,10 @@ import {
   ResponseConvocatorias
 } from '../../services/asignacion-mesa.service';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { Mensajes } from '@utils/mensajes';
+import { AlertService } from '@services/alert.service';
+import { DialogModule } from 'primeng/dialog';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-buscar-convocatoria',
@@ -32,7 +36,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
     PaginatorModule,
     TagModule,
     PopoverModule,
-    InputNumberModule
+    InputNumberModule,
+    DialogModule,
+    InputTextModule
   ],
   templateUrl: './buscar-convocatoria.component.html',
   styleUrl: './buscar-convocatoria.component.scss'
@@ -40,15 +46,20 @@ import { InputNumberModule } from 'primeng/inputnumber';
 export class BuscarConvocatoriaComponent implements OnInit {
 
   asignacionMesaService = inject(AsignacionMesaService);
+  mensajes = inject(Mensajes);
+  alertaService = inject(AlertService)
 
   formulario!: FormGroup;
+  formularioEdicion!: FormGroup;
+
   first: number = 0;
   rows: number = 10;
 
   numPaginaActual: number = 0;
   totalElementos: number = 0;
 
-  convocatoriaSeleccionada = model<Convocatoria | undefined>(undefined);
+  convocatoriaSeleccionada = model<MesaConfiguracion | undefined>(undefined);
+  convocatoriaSeleccionadaEdicion = model<MesaConfiguracion | undefined>(undefined);
 
   activeTab: WritableSignal<number> = signal(0);
 
@@ -57,10 +68,18 @@ export class BuscarConvocatoriaComponent implements OnInit {
 
   configuracionMesasTabla = model<MesaConfiguracion[]>([]);
 
+  visible: boolean = false;
+
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.formulario = this.fb.group({
+      idConvocatoria: [undefined, Validators.required],
+      numMesasDisponibles: [undefined, [Validators.required, Validators.min(1)]],
+      numMedicosPorMesa: [undefined, [Validators.required, Validators.min(1)]]
+    });
+
+    this.formularioEdicion = this.fb.group({
       idConvocatoria: [undefined, Validators.required],
       numMesasDisponibles: [undefined, [Validators.required, Validators.min(1)]],
       numMedicosPorMesa: [undefined, [Validators.required, Validators.min(1)]]
@@ -107,6 +126,7 @@ export class BuscarConvocatoriaComponent implements OnInit {
           console.log('Configuración guardada exitosamente:', response);
           this.consultarConvocatorias();
           this.formulario.reset();
+          this.alertaService.exito(this.mensajes.MSG083);
         },
         error: (err) => {
           console.error('Error al guardar configuración:', err);
@@ -126,8 +146,36 @@ export class BuscarConvocatoriaComponent implements OnInit {
     }
   }
 
-  onSeleccion(convocatoria: Convocatoria) {
+  onSeleccion(convocatoria: MesaConfiguracion) {
     this.convocatoriaSeleccionada.set(convocatoria);
 
   }
+
+
+  onEditar(convocatoria: MesaConfiguracion) {
+
+    this.convocatoriaSeleccionadaEdicion.update(v => convocatoria);
+
+    this.formularioEdicion = this.fb.group({
+      idConvocatoria: convocatoria.idConvocatoria,
+      numMesasDisponibles: convocatoria.numMesasDisponibles,
+      numMedicosPorMesa: convocatoria.numMedicosPorMesa,
+    });
+
+    this.formularioEdicion.get('idConvocatoria')?.disable();
+
+    this.visible = true;
+  }
+
+  applyPartialUpdate<T>(obj: T, updates: Partial<T>): T {
+    return { ...obj, ...updates };
+  }
+
+  guardarConfiguracionUpdate(convocatoria: any) {
+    const updatedConfigMesa = this.applyPartialUpdate(this.convocatoriaSeleccionadaEdicion(), convocatoria);
+    console.log('updatedConfigMesa:', updatedConfigMesa);    
+  }
+
+
+
 }

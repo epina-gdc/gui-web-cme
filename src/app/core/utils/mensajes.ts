@@ -46,6 +46,9 @@ export class Mensajes {
   public MSJ_FORMATO_NO_VALIDO: string = 'Formato no válido';
   public MSJ_CARGANDO_DOCUMENTO: string = 'Cargando documento';
   public MSJ_ERROR_CARGANDO_DOCUMENTO: string = 'Error al obtener documento';
-  public MSJ_SELECCIONAR_DOCUMENTO:string ='Seleccione el documento del que desea obtener la previsualización';
-  public MSJ_NOT_SUPPORT_IFRAMES: string ='Tu navegador no soporta iframes.';
+  public MSJ_SELECCIONAR_DOCUMENTO: string = 'Seleccione el documento del que desea obtener la previsualización';
+  public MSJ_NOT_SUPPORT_IFRAMES: string = 'Tu navegador no soporta iframes.';
+
+  // mensajes para Configuración y Asignación de mesas
+  public MSG083: string = 'Se guardo la configuración correctamente.';
 }

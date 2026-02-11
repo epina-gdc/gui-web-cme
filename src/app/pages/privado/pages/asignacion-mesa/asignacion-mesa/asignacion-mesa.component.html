@@ -21,6 +21,7 @@
 @case (0) {
 <app-buscar-convocatoria [(convocatoriaSeleccionada)]="convocatoriaActual" />
 @if(convocatoriaActual()){
+    {{convocatoriaActual() | json}}
     <app-detalle-convocatoria class="mt-4" />
 }
 }
