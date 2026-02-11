@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { environment } from '@env/environment.development';
 import { AsistenciaExtraordinariaResponse } from '@models/asistencia-extraordinaria.interface';
 @Injectable({
@@ -21,15 +20,11 @@ export class AsistenciaExtraordinariaService {
 
     header: HttpHeaders = new HttpHeaders({
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'GET,POST,OPTIONS,DELETE,PUT',
     });
 
-    constructor() { }
-
     busqueda(matriculaFolio: string): Observable<AsistenciaExtraordinariaResponse> {
-        return this.http.get<AsistenciaExtraordinariaResponse>(`${this.serverEndPointURLAsistenciaExtraordinaria}${this.uriBusqueda}${matriculaFolio}`, { headers: this.header });
+        return this.http.get<AsistenciaExtraordinariaResponse>(`${this.serverEndPointURLAsistenciaExtraordinaria}${this.uriBusqueda}${matriculaFolio}`,
+            { headers: this.header });
     }
 
     validar(matriculaFolio: string): Observable<AsistenciaExtraordinariaResponse> {
@@ -42,16 +37,6 @@ export class AsistenciaExtraordinariaService {
 
     confimar(idParticipante: string): Observable<AsistenciaExtraordinariaResponse> {
         return this.http.get<AsistenciaExtraordinariaResponse>(`${this.serverEndPointURLAsistenciaExtraordinaria}${this.uriConfirmacion}${idParticipante}`, { headers: this.header });
-    }
-
-    private handleError(error: HttpErrorResponse) {
-
-        if (error.status) {
-            //this._alertService?.error("Error "+error.status +'. Contácte al administrador');
-            console.log("Error " + error.status + '. Endpoint: ' + error.url + '. Contácte al administrador');
-            // Return an observable with a user-facing error message.
-        }
-        return throwError(error);
     }
 
 }

@@ -35,7 +35,7 @@
             <div class="grid mb-4">
                 <div class="col-12 md:col-4">
                     <asistencia-card [bg_color]="'#abc8f0'" [icono]="'cme-citados'" [encabezado]="'Turno'"
-                        [descripcion]="aspirante.turnoAsistencia? aspirante.turnoAsistencia:'-'" />
+                        [descripcion]="aspirante.turnoAsistencia?aspirante.turnoAsistencia:'-'" />
                 </div>
                 <div class="col-12 md:col-4">
                     <asistencia-card [bg_color]="'#abc8f0'" [icono]="'pi-clock'" [encabezado]="'Hora de asistencia'"
@@ -58,7 +58,7 @@
                     <!-- -->
                     <div
                         class="col-12 md:col-3 flex align-items-center justify-content-center md:justify-content-start">
-                        <img [src]="'https://www.femalefirst.co.uk/image-library/partners/bang/land/1000/r/robin-hood-actor-jack-patten-aW1hZ2VzMS8yMDI1LzExLzAzLzE3NjI.jpg'"
+                        <img [src]="foto ? foto : '/assets/images/default-profile.png'"
                             class="border-circle w-20rem h-20rem object-cover shadow-2" style="object-fit: cover;"
                             alt="Foto Doctor">
                     </div>
@@ -83,20 +83,28 @@
 
                         <div class="grid text-sm">
                             <div class="col-6 md:col-3 mb-2">
+                                @if (aspirante.fechaCita) {
                                 <asistencia-note [titulo]="'Fecha'" [descripcion]="aspirante.fechaCita"
                                     [icono]="'cme-citas'" [ajuste]="'ml-5'" [tamanio]="'text-xl'" />
+                                }
                             </div>
                             <div class="col-6 md:col-3 mb-2">
+                                @if(aspirante.horaCita) {
                                 <asistencia-note [titulo]="'Hora'" [descripcion]="aspirante.horaCita"
                                     [icono]="'cme-time'" />
+                                }
                             </div>
                             <div class="col-6 md:col-3 mb-2">
+                                @if(aspirante.mesaCita) {
                                 <asistencia-note [titulo]="'Mesa'" [descripcion]="aspirante.mesaCita"
                                     [icono]="'cme-numero-mesa'" [ajuste]="'ml-5'" [tamanio]="'text-xl'" />
+                                }
                             </div>
                             <div class="col-6 md:col-3 mb-2">
+                                @if(aspirante.turnoCita) {
                                 <asistencia-note [titulo]="'Turno'" [descripcion]="aspirante.turnoCita"
                                     [icono]="'cme-time'" />
+                                }
                             </div>
                             <div class="col-6 md:col-3 mb-2">
                                 <asistencia-note [titulo]="'Modalidad'" [descripcion]="aspirante.modalidad"
@@ -118,16 +126,16 @@
 
             </div>
             <div class="flex justify-content-end gap-3 mt-4 pt-3 border-top-1 border-gray-200">
-                <button pButton label="Eliminar" class="p-button-outlined p-button-danger px-4"
-                    (click)="delete()"></button>
+                <button pButton label="Eliminar" class="p-button-outlined p-button-danger px-4" (click)="delete()"
+                    [disabled]="tieneAsistencia"></button>
                 <button pButton label="Registrar" class="bg-teal-600 border-none hover:bg-teal-700 px-4"
-                    (click)="register()"></button>
+                    (click)="register()" [disabled]="!tieneAsistencia"></button>
             </div>
         </div>
 
         <ng-template #emptyState>
             <div
-                class="flex flex-column align-items-center justify-content-center mt-6 pt-4 animate-fade-in opacity-70">
+                class="flex flex-column align-items-center justify-content-center mt-1 pt-1 animate-fade-in opacity-70 h-screen">
                 <img class="p-0" src="/assets/images/tabla_sin_resultados.svg" alt="Sin resultados">
                 <p class="text-gray-500 text-lg">No hay resultados de búsqueda</p>
             </div>
