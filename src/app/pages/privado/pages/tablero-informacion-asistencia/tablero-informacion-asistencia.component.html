@@ -1,389 +1,206 @@
-<div class="flex gap-4">
-  <app-menu-plazas [tituloMenu]="'Menú'"></app-menu-plazas>
-  <div class="flex flex-column w-full">
-    <div class="flex justify-content-between align-items-center mt-1 mb-3 px-2">
-      <div>
-        <span class="titulo-seccion-asignacion">Tablero de información de asistencia</span>
+<div class="flex flex-column w-full">
+  <div class="flex justify-content-between align-items-center mt-1 mb-3 px-2">
+    <div>
+      <span class="titulo-seccion-asignacion">Tablero de información de asistencia</span>
+    </div>
+    <div class="flex me-3 cursor-pointer" (click)="descargarExcel()">
+      <i class="cme-impresora me-3" style="font-size: 1.6rem; color: #018699;"></i>
+      <span class="etiqueta-icono ">Imprimir reporte</span>
+    </div>
+  </div>
+
+  <div class="p-2 border-round-xl bg-white">
+    <form [formGroup]="filtroForm">
+      <div class="flex p-2">
+        <div class="flex lg:col-10 col-12">
+          <div class="col">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="fecha">Fecha</label>
+            </div>
+            <p-datepicker [minDate]="minDate" [maxDate]="maxDate" formControlName="fecha" [style]="{ 'width': '100%' }"
+                          [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
+                          [placeholder]="'Ingresa una fecha'"/>
+          </div>
+          <div class="col">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="turno">Turno</label>
+            </div>
+            <p-select formControlName="turno" [options]="catalogoTurno()" optionLabel="label"
+                      placeholder="Selecciona un turno" class="w-full"/>
+          </div>
+          <div class="col">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="tipoAsistencia">Tipo de asistencia</label>
+            </div>
+            <p-select formControlName="tipoAsistencia" [options]="catalogoAsistencia()" optionLabel="label"
+                      placeholder="Selecciona un tipo" class="w-full"/>
+          </div>
+        </div>
+        <div class="lg:col-2 col-12 flex align-items-center">
+          <div class="flex align-items-center gap-4 justify-content-between mt-4">
+            <p-button type="button" class="w-full" variant="outlined" label="Limpiar" (onClick)="limpiar()"/>
+            <p-button type="button" class="w-full" label="Buscar" (onClick)="buscar()"/>
+          </div>
+
+        </div>
       </div>
-      <div class="flex me-3 cursor-pointer">
-        <i class="cme-impresora me-3" style="font-size: 1.6rem; color: #018699;"></i>
-        <span class="etiqueta-icono ">Imprimir reporte</span>
+    </form>
+  </div>
+
+
+  <div class="flex gap-3 justify-content-between my-4">
+    <div class="flex align-items-center p-3 bg-white border-round-xl w-full">
+      <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5"
+           style="background-color: #B0E0ED;">
+        <i class="cme-citados p-3" style=" color: #597190;"></i>
+      </div>
+      <div class="flex flex-column">
+        <div class="flex">
+          <span class="login-card-titulo me-2">{{ asistencia().asistenciaIntExt[0].total  }}</span>
+          <span class="nombre-medico text-gray-600">{{ asistencia().asistenciaIntExt[0].descripcion  }}</span>
+        </div>
+        <span
+          class="detalle-card-asistencia">Internos: {{ asistencia().asistenciaIntExt[0].conteoInterno  }}</span>
+        <span
+          class="detalle-card-asistencia">Externos: {{ asistencia().asistenciaIntExt[0].conteoExterno  }}</span>
       </div>
     </div>
-
-    <div class="p-2 border-round-xl bg-white">
-      <form [formGroup]="filtroForm">
-        <div class="flex p-2">
-          <div class="flex lg:col-10 col-12">
-            <div class="col">
-              <div class="flex justify-content-between">
-                <label class="field-label" for="fecha">Fecha</label>
-              </div>
-              <p-datepicker formControlName="fecha" [style]="{ 'width': '100%' }"
-                            [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" [placeholder]="'Ingresa una fecha'" />
-            </div>
-            <div class="col">
-              <div class="flex justify-content-between">
-                <label class="field-label" for="turno">Turno</label>
-              </div>
-              <p-select formControlName="turno" [options]="dropTurno" optionLabel="label"
-                        placeholder="Selecciona un turno" class="w-full"/>
-            </div>
-            <div class="col">
-              <div class="flex justify-content-between">
-                <label class="field-label" for="tipoAsistencia">Tipo de asistencia</label>
-              </div>
-              <p-select formControlName="tipoAsistencia" [options]="dropDummie" optionLabel="label"
-                        placeholder="Selecciona un tipo" class="w-full"/>
-            </div>
-          </div>
-          <div class="lg:col-2 col-12 flex align-items-center">
-            <div class="flex align-items-center gap-4 justify-content-between mt-4">
-              <p-button type="button" class="w-full" variant="outlined" label="Limpiar" />
-              <p-button type="button" class="w-full" label="Buscar"   />
-            </div>
-
-          </div>
-        </div>
-      </form>
-    </div>
-
-    <div class="flex gap-3 justify-content-between my-4">
-      <div class="flex align-items-center p-3 bg-white border-round-xl w-full">
-        <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5" style="background-color: #B0E0ED;">
-          <i class="cme-citados p-3" style=" color: #597190;"></i>
-        </div>
-        <div class="flex flex-column">
-          <div class="flex">
-            <span class="login-card-titulo me-2">12,746</span>
-            <span class="nombre-medico text-gray-600">Total citados</span>
-          </div>
-          <span class="detalle-card-asistencia">Internos: 8234</span>
-          <span class="detalle-card-asistencia">Externos: 4512</span>
-        </div>
+    <div class="flex align-items-center p-3 bg-white border-round-xl w-full">
+      <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5"
+           style="background-color: #C0FBD2;">
+        <i class="cme-citados p-3" style=" color: #00B738;"></i>
       </div>
-      <div class="flex align-items-center p-3 bg-white border-round-xl w-full">
-        <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5" style="background-color: #C0FBD2;">
-          <i class="cme-citados p-3" style=" color: #00B738;"></i>
+      <div class="flex flex-column">
+        <div class="flex">
+          <span class="login-card-titulo me-2">{{ asistencia().asistenciaIntExt[1].total }}</span>
+          <span class="nombre-medico text-gray-600">{{ asistencia().asistenciaIntExt[1].descripcion }}</span>
         </div>
-        <div class="flex flex-column">
-          <div class="flex">
-            <span class="login-card-titulo me-2">12,550</span>
-            <span class="nombre-medico text-gray-600">Asistieron</span>
-          </div>
-          <span class="detalle-card-asistencia">Internos: 9800</span>
-          <span class="detalle-card-asistencia">Externos: 2750</span>
-        </div>
-      </div>
-      <div class="flex align-items-center p-3 bg-white border-round-xl w-full">
-        <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5" style="background-color: #FFBEBE;">
-          <i class="cme-citados p-3" style=" color: #DE6767;;"></i>
-        </div>
-        <div class="flex flex-column">
-          <div class="flex">
-            <span class="login-card-titulo me-2">196</span>
-            <span class="nombre-medico text-gray-600">No asistieron</span>
-          </div>
-          <span class="detalle-card-asistencia">Internos: 120</span>
-          <span class="detalle-card-asistencia">Externos: 76</span>
-        </div>
-      </div>
-      <div class="flex align-items-center p-3 bg-white border-round-xl w-full">
-        <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5" style="background-color: #ADB8CC;">
-          <i class="cme-citados p-3" style=" color: #597190;"></i>
-        </div>
-        <div class="flex flex-column">
-          <div class="flex">
-            <span class="login-card-titulo me-2">98.46%</span>
-            <span class="nombre-medico text-gray-600">Asistieron</span>
-          </div>
-          <span class="detalle-card-asistencia">Internos: 98.00%</span>
-          <span class="detalle-card-asistencia">Externos: 97.25</span>
-        </div>
+        <span
+          class="detalle-card-asistencia">Internos: {{ asistencia().asistenciaIntExt[1].conteoInterno }}</span>
+        <span
+          class="detalle-card-asistencia">Externos: {{ asistencia().asistenciaIntExt[1].conteoExterno }}</span>
       </div>
     </div>
+    <div class="flex align-items-center p-3 bg-white border-round-xl w-full">
+      <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5"
+           style="background-color: #FFBEBE;">
+        <i class="cme-citados p-3" style=" color: #DE6767;;"></i>
+      </div>
+      <div class="flex flex-column">
+        <div class="flex">
+          <span class="login-card-titulo me-2">{{ asistencia().asistenciaIntExt[2].total }}</span>
+          <span class="nombre-medico text-gray-600">{{ asistencia().asistenciaIntExt[2].descripcion }}</span>
+        </div>
+        <span
+          class="detalle-card-asistencia">Internos: {{ asistencia().asistenciaIntExt[2].conteoInterno }}</span>
+        <span
+          class="detalle-card-asistencia">Externos: {{ asistencia().asistenciaIntExt[2].conteoExterno }}</span>
+      </div>
+    </div>
+    <div class="flex align-items-center p-3 bg-white border-round-xl w-full">
+      <div class="flex  me-4 justify-content-center align-items-center border-round-xl shadow-5"
+           style="background-color: #ADB8CC;">
+        <i class="cme-citados p-3" style=" color: #597190;"></i>
+      </div>
+      <div class="flex flex-column">
+        <div class="flex">
+          <span class="login-card-titulo me-2">{{ asistencia().asistenciaIntExt[3].total  }}</span>
+          <span class="nombre-medico text-gray-600">{{ asistencia().asistenciaIntExt[3].descripcion }}</span>
+        </div>
+        <span
+          class="detalle-card-asistencia">Internos: {{ asistencia().asistenciaIntExt[3].conteoInterno }}</span>
+        <span
+          class="detalle-card-asistencia">Externos: {{ asistencia().asistenciaIntExt[3].conteoExterno }}</span>
+      </div>
+    </div>
+  </div>
+
+  @if (consultaPorCita()) {
     <p-card class="empty-border" [header]="'Asistencias con citas'">
       <span class="header-tab-documentacion">Médicos aspirantes esperados por <strong>&ensp;día y turno</strong></span>
       <div class="flex gap-2 mt-3">
-
-        <div class="dia-primer-turno border-round-xl p-3 w-full">
-          <div class="flex flex-column  border-bottom-1 border-black-alpha-10 align-items-start">
-            <span class="confirm-dialogo-menssaje text-gray-600">Turno 09:00 - 11:00 hrs.</span>
-            <span class="letras-menu-imss ">3800</span>
+        @for (asistenciaCita of asistencia().diaTurnoAsistenciaCita; track asistenciaCita.desTurno) {
+          <div [ngClass]="claseDiaTurno(asistenciaCita.desTurno)" class="border-round-xl p-3 w-full">
+            <div class="flex flex-column  border-bottom-1 border-black-alpha-10 align-items-start">
+              <span class="confirm-dialogo-menssaje text-gray-600">Turno {{ asistenciaCita.hora }}</span>
+              <span class="letras-menu-imss ">{{ asistenciaCita.conteo }}</span>
+            </div>
           </div>
-        </div>
-        <div class="dia-segundo-turno border-round-xl p-3 w-full">
-          <div class="flex flex-column  border-bottom-1 border-black-alpha-10 align-items-start">
-            <span class="confirm-dialogo-menssaje text-gray-600">Turno 11:00 - 13:00 hrs.</span>
-            <span class="letras-menu-imss ">2900</span>
-          </div>
-        </div>
-        <div class="dia-tercer-turno border-round-xl p-3 w-full">
-          <div class="flex flex-column  border-bottom-1 border-black-alpha-10 align-items-start">
-            <span class="confirm-dialogo-menssaje text-gray-600">Turno 13:00 - 15:00 hrs.</span>
-            <span class="letras-menu-imss ">2600</span>
-          </div>
-        </div>
-        <div class="dia-cuarto-turno border-round-xl p-3 w-full">
-          <div class="flex flex-column  border-bottom-1 border-black-alpha-10 align-items-start">
-            <span class="confirm-dialogo-menssaje text-gray-600">Turno 15:00 - 17:00 hrs.</span>
-            <span class="letras-menu-imss ">2000</span>
-          </div>
-        </div>
-        <div class="dia-quinto-turno border-round-xl p-3 w-full">
-          <div class="flex flex-column  border-bottom-1 border-black-alpha-10 align-items-start">
-            <span class="confirm-dialogo-menssaje text-gray-600">Turno 17:00 - 19:00 hrs.</span>
-            <span class="letras-menu-imss ">1446</span>
-          </div>
-        </div>
+        }
       </div>
       <div class="flex justify-content-end align-items-center mt-3">
-        <span class="header-tab-documentacion">Total de asistencias del día 10/04/2026: <strong>&ensp;12746&ensp;</strong> médicos aspirantes.</span>
+        <span
+          class="header-tab-documentacion">Total de asistencias del día {{fechaSeleccionada()}}: <strong>&ensp;{{totalAsistenciaCitas()}}&ensp;</strong> médicos aspirantes.</span>
         <i class="cme-total-aspirantes ms-2" style="font-size:3rem; color: #55BBD1"></i>
       </div>
     </p-card>
 
-    <p-card class="my-3 empty-border empty-card" >
+    <p-card class="my-3 empty-border empty-card">
       <span class="titulo-totales-calificacion text-color">Médicos aspirantes por <strong> hora y turno</strong></span>
       <div class="flex gap-3">
 
-        <div class="flex flex-column gap-3 w-full">
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="primer-horario ps-3">
-              <span>Horario <strong>09:00 - 10:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">2300 Médicos</span>
-            </div>
-          </div>
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="primer-horario ps-3">
-              <span>Horario <strong>10:00 - 11:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">1500 Médicos</span>
-            </div>
-          </div>
-        </div>
+        @for (columna of asistenciaCitaPorHora(); track columna) {
+          <div class="flex flex-column gap-3 w-full">
 
-        <div class="flex flex-column gap-3 w-full">
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="segundo-horario ps-3">
-              <span class="titulo-indicador-fecha text-blue-400">Horario <strong>11:00 - 12:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">2200 Médicos</span>
-            </div>
-          </div>
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="segundo-horario ps-3">
-              <span class="titulo-indicador-fecha text-blue-400">Horario <strong>12:00 - 13:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">700 Médicos</span>
-            </div>
-          </div>
-        </div>
+            @for (data of columna; track data) {
+              <div class="flex flex-column border-round-xl border border-gray-500 ">
+                <div [ngClass]="claseHoraTurno(data.desTurno)" class="ps-3">
+                  <span>Horario <strong>{{ data.hora }}</strong></span>
+                </div>
+                <div class="flex ps-3 py-3">
+                  <span class="indicador-fecha text-color">{{ data.conteo }} Médicos</span>
+                </div>
+              </div>
+            }
 
-        <div class="flex flex-column gap-3 w-full">
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="tercer-horario ps-3">
-              <span>Horario <strong>13:00 - 14:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">500 Médicos</span>
-            </div>
           </div>
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="tercer-horario ps-3">
-              <span>Horario <strong>14:00 - 15:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">500 Médicos</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex flex-column gap-3 w-full">
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="cuarto-horario ps-3">
-              <span>Horario <strong>15:00 - 16:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">1600 Médicos</span>
-            </div>
-          </div>
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="cuarto-horario ps-3">
-              <span>Horario <strong>16:00 - 17:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">300 Médicos</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex flex-column gap-3 w-full">
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="quinto-horario ps-3">
-              <span>Horario <strong>17:00 - 18:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">1200 Médicos</span>
-            </div>
-          </div>
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="quinto-horario ps-3">
-              <span>Horario <strong>18:00 - 19:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">146 Médicos</span>
-            </div>
-          </div>
-        </div>
+        }
       </div>
     </p-card>
+  }
+
+  @if (consultaExtraordinaria()) {
 
     <p-card class="empty-border mt-2" [header]="'Asistencias extraordinarias'">
       <span class="header-tab-documentacion">Médicos aspirantes esperados por <strong>&ensp;día y turno</strong></span>
       <div class="flex gap-2 mt-3">
 
-        <div class="dia-primer-turno border-round-xl p-3 w-full">
-          <div class="flex flex-column  border-bottom-1 border-black-alpha-10 align-items-start">
-            <span class="confirm-dialogo-menssaje text-gray-600">Turno 07:00 - 10:00 hrs.</span>
-            <span class="letras-menu-imss ">45</span>
+        @for (asistenciaExtraordinaria of asistencia().diaTurnoAsistenciaExtraordinaria; track asistenciaExtraordinaria.desTurno) {
+
+          <div [ngClass]="claseDiaTurno(asistenciaExtraordinaria.desTurno)" class="border-round-xl p-3 w-full">
+            <div class="flex flex-column  border-bottom-1 border-black-alpha-10 align-items-start">
+              <span class="confirm-dialogo-menssaje text-gray-600">Turno {{ asistenciaExtraordinaria.hora }}</span>
+              <span class="letras-menu-imss ">{{ asistenciaExtraordinaria.conteo }}</span>
+            </div>
           </div>
-        </div>
-        <div class="dia-segundo-turno border-round-xl p-3 w-full">
-          <div class="flex flex-column  border-bottom-1 border-black-alpha-10 align-items-start">
-            <span class="confirm-dialogo-menssaje text-gray-600">Turno 11:00 - 14:00 hrs.</span>
-            <span class="letras-menu-imss ">30</span>
-          </div>
-        </div>
-        <div class="dia-tercer-turno border-round-xl p-3 w-full">
-          <div class="flex flex-column  border-bottom-1 border-black-alpha-10 align-items-start">
-            <span class="confirm-dialogo-menssaje text-gray-600">Turno 15:00 - 18:00 hrs.</span>
-            <span class="letras-menu-imss ">20</span>
-          </div>
-        </div>
-        <div class="dia-cuarto-turno border-round-xl p-3 w-full">
-          <div class="flex flex-column  border-bottom-1 border-black-alpha-10 align-items-start">
-            <span class="confirm-dialogo-menssaje text-gray-600">Turno 19:00 - 22:00 hrs.</span>
-            <span class="letras-menu-imss ">16</span>
-          </div>
-        </div>
-        <div class="dia-quinto-turno border-round-xl p-3 w-full">
-          <div class="flex flex-column  border-bottom-1 border-black-alpha-10 align-items-start">
-            <span class="confirm-dialogo-menssaje text-gray-600">Turno 17:00 - 19:00 hrs.</span>
-            <span class="letras-menu-imss ">2</span>
-          </div>
-        </div>
+        }
       </div>
       <div class="flex justify-content-end align-items-center mt-3">
-        <span class="header-tab-documentacion">Total de asistencias del día 02/03/2026:&ensp;<strong>113</strong>&ensp;médicos aspirantes.</span>
+        <span class="header-tab-documentacion">Total de asistencias del día {{this.fechaSeleccionada()}}:&ensp;<strong>{{totalAsistenciaExtraordinaria()}}</strong>&ensp;médicos aspirantes.</span>
         <i class="cme-total-aspirantes ms-2" style="font-size:3rem; color: #55BBD1"></i>
       </div>
     </p-card>
 
-    <p-card class="my-3 empty-border empty-card" >
+    <p-card class="my-3 empty-border empty-card">
       <span class="titulo-totales-calificacion text-color">Médicos aspirantes por <strong>hora y turno</strong></span>
       <div class="flex gap-3">
 
-        <div class="flex flex-column gap-3 w-full">
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="primer-horario ps-3">
-              <span>Horario <strong>09:00 - 10:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">31 Médicos</span>
-            </div>
-          </div>
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="primer-horario ps-3">
-              <span>Horario <strong>10:00 - 11:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">14 Médicos</span>
-            </div>
-          </div>
-        </div>
+        @for (columna of asistenciaExtraordinariaPorHora(); track columna) {
 
-        <div class="flex flex-column gap-3 w-full">
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="segundo-horario ps-3">
-              <span class="titulo-indicador-fecha text-blue-400">Horario <strong>11:00 - 12:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">21 Médicos</span>
-            </div>
+          <div class="flex flex-column gap-3 w-full">
+            @for (data of columna; track data) {
+              <div class="flex flex-column border-round-xl border border-gray-500 ">
+                <div [ngClass]="claseHoraTurno(data.desTurno)" class=" ps-3">
+                  <span>Horario <strong>{{ data.hora }}</strong></span>
+                </div>
+                <div class="flex ps-3 py-3">
+                  <span class="indicador-fecha text-color">{{ data.conteo }} Médicos</span>
+                </div>
+              </div>
+            }
           </div>
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="segundo-horario ps-3">
-              <span class="titulo-indicador-fecha text-blue-400">Horario <strong>12:00 - 13:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">9 Médicos</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex flex-column gap-3 w-full">
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="tercer-horario ps-3">
-              <span>Horario <strong>13:00 - 14:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">13 Médicos</span>
-            </div>
-          </div>
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="tercer-horario ps-3">
-              <span>Horario <strong>14:00 - 15:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">7 Médicos</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex flex-column gap-3 w-full">
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="cuarto-horario ps-3">
-              <span>Horario <strong>15:00 - 16:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">12 Médicos</span>
-            </div>
-          </div>
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="cuarto-horario ps-3">
-              <span>Horario <strong>16:00 - 17:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">4 Médicos</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="flex flex-column gap-3 w-full">
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="quinto-horario ps-3">
-              <span>Horario <strong>17:00 - 18:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">1 Médicos</span>
-            </div>
-          </div>
-          <div class="flex flex-column border-round-xl border border-gray-500 ">
-            <div class="quinto-horario ps-3">
-              <span>Horario <strong>18:00 - 19:00 hrs</strong></span>
-            </div>
-            <div class="flex ps-3 py-3">
-              <span class="indicador-fecha text-color">1 Médicos</span>
-            </div>
-          </div>
-        </div>
+        }
       </div>
     </p-card>
-  </div>
+  }
 </div>
