@@ -87,6 +87,21 @@ export class ResponseConvocatoriaTotales extends ResponseGeneral {
   respuesta!: ConvocatoriaTotales;
 }
 
+
+export class Rama {
+  id!: number;
+  label!: string;
+  cvRama!: string;
+}
+
+export class ResponseRamaConvocatoria extends ResponseGeneral {
+  respuesta!: Rama[];
+}
+
+
+
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -142,10 +157,16 @@ export class AsignacionMesaService {
   * @param size Tamaño de página
   */
   getLstConfiguracionMesas(page: number = 0, size: number = 10): Observable<ResponseConfiguracionMesas> {
+
+    let parametros = new HttpParams();
+    parametros = parametros.append('page', page.toString());
+    parametros = parametros.append('size', size.toString());
+
     const params = `?page=${page}&size=${size}`;
     return this.http.get<ResponseConfiguracionMesas>(
-      this.serverEndPointURLAsignacion + '/paginado' + params,
-      { headers: this.header }
+      this.serverEndPointURLAsignacion + '/paginado',
+      { headers: this.header, params: parametros }
+
     ).pipe(
       catchError(this.handleError),
       map((response: ResponseConfiguracionMesas) => {
@@ -154,10 +175,14 @@ export class AsignacionMesaService {
     );
   }
 
+  /**
+   * 
+   * @param idConvocatoria 
+   * @returns 
+   */
+
   getConvocatoriaTotales(idConvocatoria: number): Observable<ResponseConvocatoriaTotales> {
     let ruta = `${this.serverEndPointURLAsignacion}/convocatoria/${idConvocatoria}/totales`;
-
-
     return this.http.get<ResponseConvocatoriaTotales>(ruta, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: ResponseConvocatoriaTotales) => {
@@ -167,6 +192,34 @@ export class AsignacionMesaService {
 
   }
 
+  /**
+   * 
+   * @param idConvocatoria 
+   * @returns 
+   */
+  getRamasConvocatoria(idConvocatoria: number): Observable<ResponseRamaConvocatoria> {
+    let parametros = new HttpParams();
+    parametros = parametros.append('idConvocatoria', idConvocatoria.toString());
+
+    return this.http.get<ResponseRamaConvocatoria>(this.serverEndPointURLAsignacion + '/ramas', { headers: this.header, params: parametros }).pipe(
+      catchError(this.handleError),
+      map((response: ResponseRamaConvocatoria) => {
+        return response;
+      })
+    );
+
+  }
+
+
+  getEspecialidadesRama(idRama: number, idMesaConvocatoria: number, idConvocatoria: number) {
+    let parametros = new HttpParams();
+    parametros = parametros.append('idRama', idRama.toString());
+    parametros = parametros.append('idConvocatoria', idConvocatoria.toString());
+    parametros = parametros.append('idMesaConvocatoria', idMesaConvocatoria.toString());
+
+    
+
+  }
 
 
   // Método auxiliar para manejar errores

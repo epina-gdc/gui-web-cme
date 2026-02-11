@@ -8,7 +8,7 @@
                 <div class="flex flex-column">
                     <label class="field-label col-12" for="rama">Rama de la especialidad</label>
                     <p-autoComplete class="w-full p-complete-rama" [(ngModel)]="ramaActual" [forceSelection]="true" id="rama"
-                        [suggestions]="filteredRamas" (completeMethod)="filterRama($event)" optionLabel="nombre">
+                        [suggestions]="filteredRamas" (completeMethod)="filterRama($event)" optionLabel="label">
                       <i class="cme-coplamar" style="font-size: 2.5rem; color: white"></i>
                     </p-autoComplete>
                 </div>
