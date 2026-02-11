@@ -43,40 +43,56 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
   fechaSeleccionada: WritableSignal<string | null> = signal(null);
 
   asistenciaCitaPorHora = computed(() => {
+    /* Agrupar turnos  CITA*/
     const data = this.asistencia().asistenciaCitaPorHora;
-    const resultado: Asistencia[][] = [];
+    const arrCitaHoraTurno: Asistencia[][] = [];
+    let turnoBase = data[0]?.desTurno;
+    let contadorTurnos;
 
-    for (let i = 0; i < data.length; i += 3) {
-      resultado.push(data.slice(i, i + 3));
+    contadorTurnos = data.filter(x => x.desTurno == turnoBase);
+
+    for (let i = 0; i < data.length; i += contadorTurnos.length) {
+      arrCitaHoraTurno.push(data.slice(i, i + contadorTurnos.length));
     }
-    return resultado;
+
+    return arrCitaHoraTurno;
   });
 
   asistenciaExtraordinariaPorHora = computed(() => {
+    /*Agrupar turnos EXTRAORDINARIO*/
     const data = this.asistencia().asistenciaExtraordinariaPorHora;
     const resultado: Asistencia[][] = [];
+    let turnoBase = data[0]?.desTurno;
+    let contadorTurnos;
 
-    for (let i = 0; i < data.length; i += 3) {
-      resultado.push(data.slice(i, i + 3));
+    contadorTurnos = data.filter(x => x.desTurno == turnoBase);
+
+    for (let i = 0; i < data.length; i += contadorTurnos.length) {
+      resultado.push(data.slice(i, i + contadorTurnos.length));
     }
+
     return resultado;
   });
 
   totalAsistenciaCitas = computed(() => {
     const medicos = this.asistencia().diaTurnoAsistenciaCita;
     let contador = 0;
+
     medicos.forEach(medico => {
       if (medico.conteo > 0) contador += medico.conteo;
     })
+
     return contador;
   });
 
   totalAsistenciaExtraordinaria = computed(() => {
     const medicos = this.asistencia().diaTurnoAsistenciaExtraordinaria;
     let contador = 0;
+
     medicos.forEach(medico => {
       if (medico.conteo > 0) contador += medico.conteo;
     })
+
     return contador;
   });
 
@@ -87,7 +103,6 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
   fechaActual = new Date();
   minDate: Date = this.fechaActual;
   maxDate: Date = this.fechaActual;
-
 
 
   catalogoConvocatorias: any;
@@ -185,19 +200,42 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
   }
 
 
-
   limpiar() {
     this.filtroForm.reset();
     this.buscar();
   }
 
   claseDiaTurno(turno: string): string {
-    return this.diaTurno.get(turno) || "";
+
+    let existeClase: boolean = false;
+    let clases = [];
+    const codigoClaseDefecto = 'Turno 5';
+
+    for (const clave of this.diaTurno.keys()) {
+      clases.push(clave)
+    }
+
+    const clase = clases.find(x => x == turno);
+    if (clase) existeClase = true;
+
+    return existeClase ? this.diaTurno.get(turno) || "" : this.diaTurno.get(codigoClaseDefecto) || "";
   }
 
   claseHoraTurno(turno: string): string {
+    let existeClase: boolean = false;
+    let clases = [];
+    const codigoClaseDefecto = '5';
 
-    return this.horaTurno.get(turno) || "";
+    for (const clave of this.horaTurno.keys()) {
+      clases.push(clave)
+    }
+
+    const clase = clases.find(x => x == turno);
+
+    if (clase) existeClase = true;
+
+
+    return existeClase ? this.horaTurno.get(turno) || "" : this.horaTurno.get(codigoClaseDefecto) || "";
   }
 
   get f() {
