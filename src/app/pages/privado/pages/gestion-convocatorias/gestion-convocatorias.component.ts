@@ -5,7 +5,6 @@ import {
 import {
   ConfiguracionRegistroComponent
 } from '@privado/gestion-convocatorias/components/configuracion-registro/configuracion-registro.component';
-import {MenuPlazasComponent} from '@privado/asignacion-plazas/components/menu-plazas/menu-plazas.component';
 import {Tab, TabList, Tabs} from 'primeng/tabs';
 
 @Component({

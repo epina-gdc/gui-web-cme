@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, HostListener, inject, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {MenuComponent} from '@components/menu/menu.component';
 import {InactividadDialogComponent} from '@components/inactividad-dialog/inactividad-dialog.component';
@@ -22,8 +22,20 @@ export class PrivadoComponent implements OnInit {
 
   userService = inject(UserService);
 
+  menuVisible = true;
+  isScrolled = false;
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const offset = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    this.isScrolled = offset > 30;
+  }
+
   ngOnInit() {
     this.userService.userData$.subscribe(user => this.userData = user);
   }
 
+  toggleMenu() {
+    this.menuVisible = !this.menuVisible;
+  }
 }

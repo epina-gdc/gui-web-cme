@@ -28,6 +28,7 @@ import {GestionConvocatoriasComponent} from '@privado/gestion-convocatorias/gest
 import {NotFoundComponent} from '@privado/not-found/not-found.component';
 import {ErrorConfiguracionComponent} from '@privado/error-configuracion/error-configuracion.component';
 import {InicioModulosComponent} from '@privado/inicio-modulos/inicio-modulos.component';
+import {CargaCalificacionesResolver} from '../../core/resolvers/carga-calificaciones.resolver';
 import {tableroInformacionResolver} from '../../core/resolvers/tablero-informacion.resolver';
 
 const routes: Routes = [{
@@ -77,6 +78,9 @@ const routes: Routes = [{
     {
       path: NAV.cargaCalificaciones,
       component: CargaCalificacionesComponent,
+      resolve: {
+        respuesta: CargaCalificacionesResolver
+      }
     },
     {
       path: NAV.asistenciaExtraordinaria,
