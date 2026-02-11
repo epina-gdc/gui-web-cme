@@ -63,7 +63,8 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
     horaFinFormateada: "--:--",
     numConCalificacion: 0,
     numSinCalificacion: 0,
-    porcentaje: 0
+    porcentaje: 0,
+    idEstatusCarga: 0
   };
 
   form!: FormGroup;
@@ -198,9 +199,7 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
     if (data) {
       this.calificaciones = data;
       this.porcentaje.set(data.porcentaje);
-      if (data.porcentaje === 100) {
-        this.estatus.set(2);
-      }
+      this.estatus.set(data.idEstatusCarga);
     }
   }
 
