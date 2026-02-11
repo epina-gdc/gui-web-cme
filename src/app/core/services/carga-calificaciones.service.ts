@@ -11,15 +11,15 @@ export class CargaCalificacionesService {
 
   http: HttpClient = inject(HttpClient);
 
-  consultaCargaCalificaciones(): Observable<any> {
-    return this.http.get(`${this.URLConvcatoria}/consultar-carga/1`);
+  consultaCargaCalificaciones(id: number): Observable<any> {
+    return this.http.get(`${this.URLConvcatoria}/consultar-carga/${id}`);
   }
 
-  registrarCargaCalificaciones(): Observable<any> {
-    return this.http.get(`${this.URLConvcatoria}/registrar-carga/1`);
+  registrarCargaCalificaciones(id: number): Observable<any> {
+    return this.http.get(`${this.URLConvcatoria}/registrar-carga/${id}`);
   }
 
-  obtenerValidacionCalificaciones(): Observable<any> {
-    return this.http.get(`${this.URLConvcatoria}/consultar-mesas-activas/1`);
+  obtenerValidacionCalificaciones(id: number): Observable<any> {
+    return this.http.get(`${this.URLConvcatoria}/consultar-mesas-activas/${id}`);
   }
 }

@@ -7,9 +7,9 @@ import {RespuestaCalificaciones} from '@models/respuesta-calificaciones.interfac
 import {CargaCalificacionesService} from '@services/carga-calificaciones.service';
 import {AlertService} from '@services/alert.service';
 import {Card} from 'primeng/card';
-import {Subject, switchMap, timer} from 'rxjs';
-import {takeUntil} from 'rxjs/operators';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {forkJoin, Observable, of, Subject, switchMap, timer} from 'rxjs';
+import {catchError, filter, takeUntil} from 'rxjs/operators';
+import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {Select} from 'primeng/select';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
 import {Convocatoria} from '@models/convocatoria.interface';
@@ -42,6 +42,8 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
   errorCalificaciones: boolean = false;
 
   private destroy$ = new Subject<void>();
+  private stopTimer$ = new Subject<void>();
+
   private readonly INTERVALO_REFRESCO = 30000;
 
   tipoEstatus: { estatus: number, descripcion: string }[] = [
@@ -80,7 +82,7 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
     this.iniciarRefrescoAutomatico();
   }
 
-  inicializarForm(): FormGroup{
+  inicializarForm(): FormGroup {
     return this.fb.group({
       convocatoria: [null],
     })
@@ -97,7 +99,9 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
   }
 
   guardarCalificaciones() {
-    this.cargaCalificacionesService.registrarCargaCalificaciones().subscribe({
+    const id = this.form.get('convocatoria')?.value;
+    if (!id) return;
+    this.cargaCalificacionesService.registrarCargaCalificaciones(id).subscribe({
       next: (respuesta) => {
         if (!respuesta.exito) {
           this.alertaService.error(respuesta.mensaje);
@@ -113,10 +117,12 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
   }
 
   iniciarRefrescoAutomatico() {
+    const id = this.form.get('convocatoria')?.value;
+    if (!id) return;
     timer(this.INTERVALO_REFRESCO, this.INTERVALO_REFRESCO)
       .pipe(
         takeUntil(this.destroy$),
-        switchMap(() => this.cargaCalificacionesService.consultaCargaCalificaciones())
+        switchMap(() => this.cargaCalificacionesService.consultaCargaCalificaciones(id))
       )
       .subscribe({
         next: (res) => {
@@ -129,17 +135,68 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.form.get('convocatoria')?.valueChanges.pipe(
+      takeUntil(this.destroy$),
+      filter(id => !!id)
+    ).subscribe(id => {
+      this.cargarDatosPorId(id);
+      this.reiniciarRefrescoAutomatico(id);
+    });
+  }
 
-    this.estatus.set(1);
+  cargarDatosPorId(id: number) {
+    const handlePipeError = (obs$: Observable<any>) => obs$.pipe(
+      catchError((error) => {
+        const msg = error?.error?.mensaje || error?.message || 'Error desconocido';
+        return of({ error: true, msg });
+      })
+    );
 
-    const intervalo = setInterval(() => {
-      if (this.porcentaje() < 100) {
-        this.porcentaje.update((a) => a + 1);
-      } else {
-        clearInterval(intervalo);
-        this.estatus.set(2);
+    forkJoin([
+      handlePipeError(this.cargaCalificacionesService.obtenerValidacionCalificaciones(id)),
+      handlePipeError(this.cargaCalificacionesService.consultaCargaCalificaciones(id))
+    ]).pipe(
+      takeUntil(this.destroy$)
+    ).subscribe(([validaciones, registro]) => {
+      const errores: string[] = [];
+
+      if (validaciones.error) errores.push(validaciones.msg);
+      if (registro.error) errores.push(registro.msg);
+
+      if (!validaciones.error && !validaciones.exito) {
+        errores.push(validaciones.mensaje || 'Error de validación');
+      } else if (!validaciones.error && validaciones.exito) {
       }
-    }, 50);
+
+      if (errores.length > 0) {
+        const mensajesUnicos = [...new Set(errores)];
+        mensajesUnicos.forEach(m => this.alertaService.error(m));
+        this.errorCalificaciones = true;
+      }
+
+      if (!registro.error && registro.respuesta) {
+        this.procesarRespuesta(registro.respuesta);
+      }
+    });
+  }
+
+  reiniciarRefrescoAutomatico(id: number) {
+    this.stopTimer$.next();
+
+    timer(this.INTERVALO_REFRESCO, this.INTERVALO_REFRESCO)
+      .pipe(
+        takeUntil(this.destroy$),
+        takeUntil(this.stopTimer$),
+        switchMap(() => this.cargaCalificacionesService.consultaCargaCalificaciones(id))
+      )
+      .subscribe({
+        next: (res) => {
+          if (res && !res.error) {
+            this.procesarRespuesta(res.respuesta);
+          }
+        },
+        error: (err) => console.error('Error en refresco automático', err)
+      });
   }
 
   private procesarRespuesta(data: RespuestaCalificaciones) {
