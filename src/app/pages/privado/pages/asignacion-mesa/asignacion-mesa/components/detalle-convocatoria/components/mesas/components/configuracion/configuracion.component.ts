@@ -22,7 +22,6 @@ interface Opcion {
     SelectModule],
   templateUrl: './configuracion.component.html',
   styleUrl: './configuracion.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfiguracionComponent {
   formulario!: FormGroup;

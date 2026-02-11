@@ -9,7 +9,14 @@ import { CommonModule } from '@angular/common';
 import { PaginatorModule, PaginatorState } from "primeng/paginator";
 import { TagModule } from 'primeng/tag';
 import { PopoverModule } from 'primeng/popover';
-import { AsignacionMesaService, Convocatoria, ResponseConvocatorias } from '../../services/asignacion-mesa.service';
+import {
+  AsignacionMesaService,
+  Convocatoria,
+  MesaConfiguracion,
+  MesaConvocatoriaRequest,
+  ResponseConfiguracionMesas,
+  ResponseConvocatorias
+} from '../../services/asignacion-mesa.service';
 import { InputNumberModule } from 'primeng/inputnumber';
 
 @Component({
@@ -25,13 +32,12 @@ import { InputNumberModule } from 'primeng/inputnumber';
     PaginatorModule,
     TagModule,
     PopoverModule,
-    InputNumberModule 
+    InputNumberModule
   ],
   templateUrl: './buscar-convocatoria.component.html',
-  styleUrl: './buscar-convocatoria.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  styleUrl: './buscar-convocatoria.component.scss'
 })
-export class BuscarConvocatoriaComponent implements OnInit{
+export class BuscarConvocatoriaComponent implements OnInit {
 
   asignacionMesaService = inject(AsignacionMesaService);
 
@@ -42,32 +48,26 @@ export class BuscarConvocatoriaComponent implements OnInit{
   numPaginaActual: number = 0;
   totalElementos: number = 0;
 
-  convocatoriaSeleccionada = model<any | null>(null);
+  convocatoriaSeleccionada = model<Convocatoria | undefined>(undefined);
 
   activeTab: WritableSignal<number> = signal(0);
+
   // Datos para los select
-  convocatorias: Convocatoria[] | undefined
+  convocatorias: Convocatoria[] = [];
 
-  // Datos de la tabla
-  convocatoriasTabla = [
-   
-  ];
-
+  configuracionMesasTabla = model<MesaConfiguracion[]>([]);
 
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.formulario = this.fb.group({
-      convocatoriaId: [undefined, Validators.required],
-      mesas: [undefined, Validators.required],
-      medicos: [undefined, Validators.required]
+      idConvocatoria: [undefined, Validators.required],
+      numMesasDisponibles: [undefined, [Validators.required, Validators.min(1)]],
+      numMedicosPorMesa: [undefined, [Validators.required, Validators.min(1)]]
     });
 
-    this.totalElementos = 24;
-
-
     this.loadConvocatorias();
-
+    this.consultarConvocatorias();
   }
 
   loadConvocatorias(): void {
@@ -75,37 +75,59 @@ export class BuscarConvocatoriaComponent implements OnInit{
       next: (response: ResponseConvocatorias) => {
         if (response.exito) {
           this.convocatorias = response.respuesta;
-        } 
+
+        }
       },
-      error: (err) => {}
+      error: (err) => {
+        console.error('Error al cargar convocatorias:', err);
+      }
     });
   }
 
-
-  guardarConfiguracion(): void {
-    
-    console.log(this.formulario.value)
+  consultarConvocatorias() {
+    this.asignacionMesaService.getLstConfiguracionMesas(this.numPaginaActual, this.rows).subscribe({
+      next: (response: ResponseConfiguracionMesas) => {
+        if (response.exito) {
+          this.configuracionMesasTabla.update(v => response.respuesta.content);
+          this.totalElementos = response.respuesta.page.totalElements;
+        }
+      },
+      error: (err) => {
+        console.error('Error al consultar configuración de mesas:', err);
+      }
+    });
   }
 
+  guardarConfiguracion(): void {
+    if (this.formulario.valid) {
+      const formData = this.formulario.value as MesaConvocatoriaRequest;
+
+      this.asignacionMesaService.guardarMesaConvocatoria(formData).subscribe({
+        next: (response) => {
+          console.log('Configuración guardada exitosamente:', response);
+          this.consultarConvocatorias();
+          this.formulario.reset();
+        },
+        error: (err) => {
+          console.error('Error al guardar configuración:', err);
+        }
+      });
+    } else {
+      console.warn('Formulario inválido');
+    }
+  }
 
   cambiarPagina(event: PaginatorState): void {
-    if (event.page) {
+    if (event.page !== undefined) {
       this.numPaginaActual = event.page;
     }
     if (this.activeTab() === 0) {
       this.consultarConvocatorias();
     }
   }
-  consultarConvocatorias() {
-    this.totalElementos = 24;
-  }
 
-  onSeleccion(convocatoria: any) {
-    if (convocatoria) {
-      this.convocatoriaSeleccionada.set(convocatoria || null);
-    } else {
-      this.convocatoriaSeleccionada.set(null);
-    }
-  }
+  onSeleccion(convocatoria: Convocatoria) {
+    this.convocatoriaSeleccionada.set(convocatoria);
 
+  }
 }

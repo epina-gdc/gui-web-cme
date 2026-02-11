@@ -10,7 +10,7 @@ import {Button} from "primeng/button";
   imports: [CommonModule, CardModule, Avatar, ProgressBarModule, Button],
   templateUrl: './detalle-convocatoria.component.html',
   styleUrl: './detalle-convocatoria.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  
 })
 export class DetalleConvocatoriaComponent implements OnInit, OnDestroy {
   value = signal(97);

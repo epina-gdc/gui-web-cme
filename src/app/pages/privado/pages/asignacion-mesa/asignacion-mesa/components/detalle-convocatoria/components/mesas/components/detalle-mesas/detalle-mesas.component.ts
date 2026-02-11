@@ -35,7 +35,7 @@ interface Mesa {
   ],
   templateUrl: './detalle-mesas.component.html',
   styleUrl: './detalle-mesas.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  
 })
 export class DetalleMesasComponent {
   mesas: Mesa[] = [
