@@ -14,8 +14,8 @@
                 placeholder="Ingrese su matrícula/folio"
                 formControlName="folio"
                 />
-            <p-button type="button" variant="outlined" label="Limpiar"  (click)="onLimpiar()" />
-            <p-button type="submit" label="Buscar" (onClick)="onBuscar()"   />
+            <p-button type="button" variant="outlined" label="Limpiar"  (click)="onLimpiar()" [disabled]="form.invalid"  />
+            <p-button type="submit" label="Buscar" (onClick)="onBuscar()" [disabled]="form.invalid"  />
           </div>
         </div>
       </div>
@@ -30,18 +30,8 @@
       </div>
     </div>
     
-
-    <!-- Aquí tu tabla / cards cuando haya resultados -->
     <div *ngIf="exist">
-      <!--<p-card class="mx-2 empty-border" [header]="'Información del médico aspirante'">
-        <div class="flex align-items-center p-4 flex-wrap imagen-seccion">
-          <div class="flex align-items-center justify-content-center
-                  flex-column half-border border-circle border-imagen-sm">
-            <img class="foto" role="presentation" [alt]="nombreFoto" [title]="nombreFoto" [src]="defaultFile"
-                style="object-fit: cover; height: 130%; width: 130%"/>
-          </div>
-        </div>
-      </p-card>-->
+      
       <app-info-aspirante></app-info-aspirante>
 
       <!--**ESCENARIO TABS-->
