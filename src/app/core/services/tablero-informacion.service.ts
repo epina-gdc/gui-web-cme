@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {environment} from '@env/environment.development';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
-import {VerificacionDocsExcelInterface} from '@models/verificacion-docs-excel.interface';
 
 @Injectable({
   providedIn: 'root'

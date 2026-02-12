@@ -1,47 +1,48 @@
 <div class="flex flex-column">
   <p class="titulo-seccion-asignacion">Control de Asistencia Médica</p>
-  <div class="flex justify-content-between gap-4 mt-4">
-    <p-card class="empty-border w-full ">
+  <div class="flex mt-4 flex-wrap">
+    <p-card class="empty-border w-full md:w-6 md:pr-4 mb-4 md:mb-0">
       <div class="flex h-8rem align-items-center">
-        <div class="flex align-items-center justify-content-center border-circle w-4rem h-4rem" style="background-color: #FFDF7F">
+        <div class="flex align-items-center justify-content-center border-circle w-4rem h-4rem"
+             style="background-color: #FFDF7F">
           <i class="cme-asignaciones " style="width: 1.5rem; color: white"></i>
         </div>
         <div class="flex flex-column ms-4">
           <p class="modal-titulo-tarjeta" style="color: #000">Día de asistencia</p>
-          <p class="titulo-nombre-aspirante">{{diaAsistencia()}}</p>
+          <p class="titulo-nombre-aspirante">{{ !datosMedico() ? '-' : diaAsistencia() }}</p>
         </div>
       </div>
     </p-card>
 
-    <p-card class="empty-border w-full ">
+    <p-card class="empty-border w-full md:w-6 md:pl-4">
       <div class="flex h-8rem align-items-center">
-        <div class="flex align-items-center justify-content-center border-circle w-4rem h-4rem" style="background-color: #ABC8F0">
+        <div class="flex align-items-center justify-content-center border-circle w-4rem h-4rem"
+             style="background-color: #ABC8F0">
           <i class="cme-time " style="width: 1.5rem; color: white"></i>
         </div>
         <div class="flex flex-column ms-4">
           <p class="modal-titulo-tarjeta" style="color: #000">Hora de asistencia</p>
-          <p class="titulo-nombre-aspirante">{{horaAsistencia()}}</p>
+          <p class="titulo-nombre-aspirante">{{ !datosMedico() ? '-' : horaAsistencia() }}</p>
         </div>
       </div>
     </p-card>
   </div>
 
-  <div class="mt-4">
-    <p-card class="mx-2 empty-border" [header]="'Información del médico aspirante'">
+  <div>
+    <p-card class="mx-2 empty-border " [header]="'Información del médico aspirante'">
 
-
-      @if(estatusAssitencia()== 1){
-        <div class="flex flex-column justify-content-center align-items-center py-5">
-          <img class="foto " role="presentation" alt="qr" title="qr"  src="/assets/images/qr.png"
-               style="object-fit: cover; height: 10%; width: 10%"/>
+      @if (!datosMedico()) {
+        <div class="flex flex-column justify-content-center align-items-center py-150p">
+          <img class="foto " role="presentation" alt="qr" title="qr" src="/assets/images/qr.png"
+               style="object-fit: cover"/>
           <span class="texto-escanear-qr mb-5">Listo para escanear</span>
         </div>
-      }
-      @if(estatusAssitencia() == 2){
+      } @else {
         <div class="flex justify-content-start">
           <div class="col-3 flex align-items-center justify-content-center
               flex-column  half-border border-circle me-5">
-            <img class="foto" role="presentation" alt="img médico" title="img médico"  src="/assets/images/img_medico.png"
+            <img class="foto" role="presentation" alt="img médico" title="img médico"
+                 src="/assets/images/img_medico.png"
                  style="object-fit: cover; height: 100%; width: 50%"/>
           </div>
           <div class="ms-5 col-5 p-2">
@@ -50,10 +51,10 @@
               <span class="subtitulo-card-aspirante my-1">Matrícula: <strong>98161651</strong></span>
               <span class="subtitulo-card-aspirante mt-4 mb-2"><strong>Especialidades</strong></span>
               <div class="flex flex-wrap">
-                @for(especialidad of especialidades; track especialidad){
+                @for (especialidad of especialidades; track especialidad) {
                   <div class="mr-4 pill-especialidad">
                 <span>
-                  {{especialidad}}
+                  {{ especialidad }}
                 </span>
                   </div>
                 }
@@ -94,7 +95,7 @@
         </div>
       }
     </p-card>
-    @if(estatusAssitencia() == 2){
+    @if (estatusAssitencia() == 2) {
       <div class="flex mt-2 justify-content-end">
         <p-button type="button" label="Escanear nuevo código QR"/>
       </div>
