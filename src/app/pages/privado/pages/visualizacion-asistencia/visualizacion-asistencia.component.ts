@@ -2,6 +2,8 @@ import {Component, OnDestroy, signal, WritableSignal} from '@angular/core';
 import {CardModule} from 'primeng/card';
 import {Button} from 'primeng/button';
 import {BehaviorSubject, Subscription, timer} from 'rxjs';
+import {AsistenciaService} from '@services/asistencia.service';
+import {AlertService} from '@services/alert.service';
 
 @Component({
   selector: 'app-visualizacion-asistencia',
@@ -32,7 +34,8 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
     turno: "11:00 a 13:00 hrs."
   }
 
-  constructor() {
+  constructor(private asistenciaService: AsistenciaService,
+              private alerService: AlertService) {
     this.medicoCargado$.subscribe(medicoCargado => {
       if (medicoCargado) {
         this.cargarDatos(medicoCargado);
@@ -61,5 +64,24 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
 
   handleNuevEscaneo() {
     this.resetearVista();
+  }
+
+  confirmarFolio() {
+    const folios  = ['A7654321', '']
+    const folio: string = '25D0100121';
+    this.asistenciaService.obtenerCita(folio).subscribe({
+      next: respuesta => {
+        if (!respuesta.exito) {
+          this.alerService.error(respuesta.mensaje);
+          return;
+        }
+        this.alerService.exito('Asistencia confirmada');
+      },
+      error: error => {
+        console.log(error);
+        this.alerService.error(error.error);
+        this.resetearVista();
+      }
+    })
   }
 }
