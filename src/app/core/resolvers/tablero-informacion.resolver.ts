@@ -1,8 +1,5 @@
-import {ResolveFn, Router} from '@angular/router';
+import {ResolveFn} from '@angular/router';
 import {inject} from '@angular/core';
-import {VerificacionDocsService} from '@services/verificacion-docs.service';
-import {catchError} from 'rxjs/operators';
-import {AlertService} from '@services/alert.service';
 import {CatalogosGeneralesService} from '@services/catalogos-generales.service';
 import {forkJoin} from 'rxjs';
 

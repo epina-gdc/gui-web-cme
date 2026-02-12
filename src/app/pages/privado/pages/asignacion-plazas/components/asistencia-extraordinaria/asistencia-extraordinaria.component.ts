@@ -1,24 +1,24 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {Component, inject} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {FormsModule} from '@angular/forms';
 
 // PrimeNG Imports
-import { InputTextModule } from 'primeng/inputtext';
-import { ButtonModule } from 'primeng/button';
-import { CardModule } from 'primeng/card';
-import { ChipModule } from 'primeng/chip';
-import { DividerModule } from 'primeng/divider';
-import { ConfirmDialogModule } from 'primeng/confirmdialog'; // <--- Importar Módulo
-import { ConfirmationService } from 'primeng/api'; // <--- Importar Servicio
-import { ToastModule } from 'primeng/toast'; // Opcional: Para mostrar mensaje de éxito
+import {InputTextModule} from 'primeng/inputtext';
+import {ButtonModule} from 'primeng/button';
+import {CardModule} from 'primeng/card';
+import {ChipModule} from 'primeng/chip';
+import {DividerModule} from 'primeng/divider';
+import {ConfirmDialogModule} from 'primeng/confirmdialog'; // <--- Importar Módulo
+import {ConfirmationService} from 'primeng/api'; // <--- Importar Servicio
+import {ToastModule} from 'primeng/toast'; // Opcional: Para mostrar mensaje de éxito
+import {AsistenciaCardComponent} from '@components/asistencia-card/asistencia-card.component';
+import {AsistenciaNoteComponent} from '@components/asistencia-note/asistencia-note.component';
+import {Fotografia} from '@models/fotografia';
+import {DocumentoService} from "@services/documentos.service";
+import {AlertService} from '@services/alert.service';
+import {AsistenciaExtraordinariaService} from '@services/asistencia-extraordinaria.service';
+import {AsistenciaAspirante, AsistenciaExtraordinariaResponse} from '@models/asistencia-extraordinaria.interface';
 
-import { AsistenciaCardComponent } from '@components/asistencia-card/asistencia-card.component';
-import { AsistenciaNoteComponent } from '@components/asistencia-note/asistencia-note.component';
-import { Fotografia } from '@models/fotografia';
-import { DocumentoService } from "@services/documentos.service";
-import { AlertService } from '@services/alert.service';
-import { AsistenciaExtraordinariaService } from '@services/asistencia-extraordinaria.service';
-import { AsistenciaExtraordinariaResponse, AsistenciaAspirante, Medico } from '@models/asistencia-extraordinaria.interface';
 // Interfaz para los datos del médico
 @Component({
     selector: 'app-asistencia-extraordinaria',
@@ -164,7 +164,7 @@ export class AsistenciaExtraordinariaComponent {
             acceptButtonStyleClass: 'btn-modal-confirmar',
             rejectButtonStyleClass: 'btn-modal-cancelar',
             accept: () => { /* ... */
-                // Lógica real de eliminación             
+                // Lógica real de eliminación
                 if (this.aspirante) {
                     this.eliminar(this.aspirante.idParticipante.toString());
                 } else {
@@ -213,4 +213,4 @@ export class AsistenciaExtraordinariaComponent {
         });
     }
 
-} 
+}
