@@ -14,5 +14,5 @@ import { MesaConfiguracion, Rama } from '../../services/asignacion-mesa.service'
 export class DetalleConvocatoriaComponent {
   convocatoriaSeleccionada = model<MesaConfiguracion | undefined>(undefined);
   ramaActual = model<Rama | undefined>(undefined);
-
+  accionActualiza = model<boolean | undefined>(undefined);
 }

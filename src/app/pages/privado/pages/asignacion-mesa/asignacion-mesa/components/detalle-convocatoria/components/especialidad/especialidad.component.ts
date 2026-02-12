@@ -7,7 +7,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AsignacionMesaService, MesaConfiguracion, Rama, TotalesMedicosRama } from '../../../../services/asignacion-mesa.service';
+import { AsignacionMesaService, Especialidad, MesaConfiguracion, Rama, ResponseRamaConvocatoria, TotalesMedicosRama } from '../../../../services/asignacion-mesa.service';
 
 @Component({
   selector: 'app-especialidad',
@@ -30,35 +30,31 @@ export class EspecialidadComponent {
       this.onSelectRama(this.ramaActual());
     });
 
+    effect(() => {
+      if (this.accionActualiza()) {
+        this.onSelectRama(this.ramaActual());
+      }
+    });
   }
 
+  accionActualiza = model<boolean | undefined>(undefined);
   asignacionMesaService = inject(AsignacionMesaService);
-
   convocatoriaSeleccionada = model<MesaConfiguracion | undefined>(undefined);
-  ramas: Rama[] = []
-
-
-  especialidades: any[] = [];
+  ramas: Rama[] = [];
+  especialidades: Especialidad[] = [];
   totalMedicos: number = 0;
-
-  filteredRamas: any[] = [];
+  filteredRamas: Rama[] = [];
   ramaActual = model<Rama | undefined>(undefined);
-
   totalesMedicosRama: TotalesMedicosRama = {};
-
+  datoRama: Especialidad | undefined = {};
 
   ngOnInit(): void {
     this.obtenerRamas();
-    this.calcularTotal();
-  }
-
-  private calcularTotal(): void {
-    this.totalMedicos = this.especialidades.reduce((sum, e) => sum + e.cantidad, 0);
   }
 
   obtenerRamas() {
     this.asignacionMesaService.getRamasConvocatoria(this.convocatoriaSeleccionada()?.idConvocatoria as number).subscribe({
-      next: (response: any) => {
+      next: (response: ResponseRamaConvocatoria) => {
         console.log('Respuesta:', response);
         this.ramas = response.respuesta;
       },
@@ -66,15 +62,12 @@ export class EspecialidadComponent {
         console.error('Error:', err);
       }
     }
-
     );
   }
 
   filterRama(event: AutoCompleteCompleteEvent) {
-    let filtered: any[] = [];
+    let filtered: Rama[] = [];
     let query = event.query;
-
-
     if (this.ramas && this.ramas.length > 0) {
       for (let i = 0; i < (this.ramas).length; i++) {
         let ramaAux = (this.ramas)[i];
@@ -83,35 +76,30 @@ export class EspecialidadComponent {
         }
       }
     }
-
-
     this.filteredRamas = filtered;
   }
 
   onSelectRama(ramaSeleccionada: Rama | undefined) {
-
     if (ramaSeleccionada) {
       // obetenr el total de medicos especialidad rama
       this.asignacionMesaService.getTotalesMedicosRama(ramaSeleccionada.id, this.convocatoriaSeleccionada()?.idMesaConvocatoria as number, this.convocatoriaSeleccionada()?.idConvocatoria as number).subscribe({
         next: (response: any) => {
           console.log('Respuesta:', response);
-          this.totalesMedicosRama = response.respuesta;
-          this.especialidades = response.respuesta.especialidades;
-          this.calcularTotal();
+          this.totalesMedicosRama = response.respuesta.totalMedicos;
+          this.filtrarEspecialidades(response.respuesta.especialidades)
+
         },
         error: (err) => {
           console.error('Error:', err);
         }
       }
-
       );
-
-      // obtener especialidades por rama
-
-      
-
     }
-
-
   }
+
+  filtrarEspecialidades(lstEspecialidades: Especialidad[]) {
+    this.datoRama = lstEspecialidades.find(especialidad => this.ramaActual()?.cveRama == especialidad.cveEspecialidad);
+    this.especialidades = lstEspecialidades.filter(especialidad => this.ramaActual()?.cveRama != especialidad.cveEspecialidad);
+  }
+
 }

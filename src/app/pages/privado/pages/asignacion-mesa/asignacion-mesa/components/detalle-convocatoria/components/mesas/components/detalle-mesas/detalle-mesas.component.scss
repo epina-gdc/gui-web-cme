@@ -42,7 +42,9 @@ ul {
   &.mesa-amarilla {
     border-color: #E5B400;
     color: #E5B400;
-    ;
+    .txt-esp-label{
+      color: #997800;
+    }
   }
 
   &.mesa-azul {

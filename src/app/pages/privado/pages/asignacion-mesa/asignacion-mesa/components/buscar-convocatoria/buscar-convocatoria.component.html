@@ -57,7 +57,7 @@
                 <tr>
                     <td>
                         @if(row.estatus == 'PENDIENTE' || row.porcentajeConfiguracion
-                        < 100){ <p-button [label]="row.desConvocatoria" [link]="true" class="link-nom-conv"
+                        < 100){ <p-button [label]="row.desConvocatoria" [link]="true" class="link-nom-conv p-0"
                             (onClick)="onSeleccion(row)" />
                         }@else {
                             <span class="link-nom-conv">{{row.desConvocatoria}}</span>

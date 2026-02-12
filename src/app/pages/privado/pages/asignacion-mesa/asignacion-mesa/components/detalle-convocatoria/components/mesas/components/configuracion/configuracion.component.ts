@@ -5,9 +5,10 @@ import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
-import { AsignacionMesaService, Especialida, MesaConfiguracion, MesaDisponibilidad, Rama, Turno } from '@pages/privado/pages/asignacion-mesa/asignacion-mesa/services/asignacion-mesa.service';
+import { AsignacionMesaService, Especialidad, MesaConfiguracion, MesaDisponibilidad, Rama, Turno } from '@pages/privado/pages/asignacion-mesa/asignacion-mesa/services/asignacion-mesa.service';
 import { InputNumberModule } from 'primeng/inputnumber';
 import dayjs from 'dayjs';
+import { CommonModule } from '@angular/common';
 interface Opcion {
   id: number;
   nombre: string;
@@ -15,7 +16,9 @@ interface Opcion {
 
 @Component({
   selector: 'app-configuracion',
-  imports: [CardModule,
+  imports: [
+    CommonModule,
+    CardModule,
     ButtonModule,
     FormsModule,
     InputTextModule,
@@ -32,7 +35,7 @@ export class ConfiguracionComponent {
   asignacionMesaService = inject(AsignacionMesaService);
 
   convocatoriaSeleccionada = model<MesaConfiguracion | undefined>(undefined);
-  accionGuardar = model<boolean | undefined>(undefined);
+  accionActualiza = model<boolean | undefined>(undefined);
 
   ramaActual = model<Rama | undefined>(undefined);
 
@@ -42,7 +45,11 @@ export class ConfiguracionComponent {
   // Datos para los selects
   mesas: MesaDisponibilidad[] = [];
   turnos: Turno[] = [];
-  especialidades: Especialida[] = [];
+  especialidades: Especialidad[] = [];
+
+  minDate: Date = new Date();
+  maxDate: Date = new Date();
+
 
   constructor(private fb: FormBuilder) { }
 
@@ -54,7 +61,13 @@ export class ConfiguracionComponent {
       numMedicosCupo: ['', [Validators.required, Validators.min(1)]],
       idEspecialidad: ['', Validators.required]
     });
+    
+    this.minDate = dayjs(this.convocatoriaSeleccionada()?.fechaInicio).toDate();
+    this.maxDate = dayjs(this.convocatoriaSeleccionada()?.fechaFin).toDate();
+
     this.obtenerListados();
+
+
   }
 
   limpiarFormulario(): void {
@@ -118,9 +131,9 @@ export class ConfiguracionComponent {
           console.log('Respuesta:', response);
           //this.limpiarFormulario();
           //this.obtenerListados();
-          this.accionGuardar.update((value) => true);
+          this.accionActualiza.update((value) => true);
           setTimeout(() => {
-            this.accionGuardar.update((value) => false);
+            this.accionActualiza.update((value) => false);
           }, 500);
 
         },

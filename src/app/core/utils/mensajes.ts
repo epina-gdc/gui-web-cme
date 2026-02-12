@@ -51,4 +51,5 @@ export class Mensajes {
 
   // mensajes para Configuración y Asignación de mesas
   public MSG083: string = 'Se guardo la configuración correctamente.';
+  public MSG084: string = '¿Está seguro de que desea eliminar la especialidad de la mesa?';
 }

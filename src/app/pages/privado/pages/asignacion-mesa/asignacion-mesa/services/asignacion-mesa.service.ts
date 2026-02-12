@@ -54,6 +54,9 @@ export class MesaConfiguracion {
   numMedicosPorMesa!: number;
   estatus!: string;
   porcentajeConfiguracion!: number;
+  fechaInicio!: string;
+  fechaFin!: string;
+
 }
 
 // Clase para la estructura de respuesta con paginación
@@ -92,21 +95,22 @@ export class ResponseConvocatoriaTotales extends ResponseGeneral {
 export class Rama {
   id!: number;
   label!: string;
-  cvRama!: string;
+  cveRama!: string;
 }
 
 export class ResponseRamaConvocatoria extends ResponseGeneral {
   respuesta!: Rama[];
 }
 
-export class Especialida {
+export class Especialidad {
   descripcionEspecialidad?: string;
   totalUsuarios?: number;
   value?: number;
   label?: string;
+  cveEspecialidad?: string;
 }
 export class TotalesMedicosRama {
-  especialidades?: Especialida[];
+  especialidades?: Especialidad[];
   totalMedicos?: number;
 }
 
@@ -116,7 +120,7 @@ export class ResponseTotalesMedicosRama extends ResponseGeneral {
 
 
 export class ResponseEspecialidadRama extends ResponseGeneral {
-  respuesta!: Especialida[];
+  respuesta!: Especialidad[];
 }
 
 export class MesaDisponibilidad {
@@ -149,7 +153,23 @@ export class RequestMesaDetalle {
   numMedicosCupo!: number;
 }
 
-export class MesaDetalle{
+export class EspecialidaDetalle {
+  idMesaDetalle!: number;
+  numeroMesa!: number;
+  especialidad!: string;
+  numMedicosCupo!: number;
+}
+export class TurnoMesaDetalle {
+  turno!: string;
+  especialidades!: EspecialidaDetalle[];
+
+}
+
+export class MesaDetalle {
+  numeroMesa!: number;
+  tituloMesa!: string;
+  totalMedicos!: number;
+  turnos!: TurnoMesaDetalle[];
 
 }
 
@@ -338,14 +358,24 @@ export class AsignacionMesaService {
   }
 
 
-  getDetalleMesaFecha(idMesaConvocatoria: number, fecha: string):Observable<ResponseMesaDetalle> {
+  getDetalleMesaFecha(idMesaConvocatoria: number, fecha: string): Observable<ResponseMesaDetalle> {
     let parametros = new HttpParams();
     parametros = parametros.append('idMesaConvocatoria', idMesaConvocatoria.toString());
     parametros = parametros.append('fecha', fecha.toString());
 
-    return this.http.get<ResponseMesaDetalle>(this.serverEndPointURLAsignacion + '/detalle-mesas', { headers: this.header , params: parametros}).pipe(
+    return this.http.get<ResponseMesaDetalle>(this.serverEndPointURLAsignacion + '/detalle-mesas', { headers: this.header, params: parametros }).pipe(
       catchError(this.handleError),
       map((response: ResponseMesaDetalle) => {
+        return response;
+      })
+    );
+
+  }
+
+  eliminarEspecialidadMesa(idMesaDetalle: number): Observable<ResponseGeneral> {
+    return this.http.put<ResponseGeneral>(this.serverEndPointURLAsignacion + '/mesa-detalle/' + idMesaDetalle.toString() + '/desactivar', { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: ResponseGeneral) => {
         return response;
       })
     );

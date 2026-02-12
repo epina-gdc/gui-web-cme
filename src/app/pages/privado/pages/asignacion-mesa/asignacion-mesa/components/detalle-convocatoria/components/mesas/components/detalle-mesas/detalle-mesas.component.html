@@ -7,8 +7,8 @@
                 <span>Fecha de atención</span>
 
             </label>
-            <p-datePicker appendTo="body" [(ngModel)]="fechaSeleccionada"  class="flex w-full p-date-ate" [iconDisplay]="'input'"
-                [showIcon]="true" inputId="icondisplay" />
+            <p-datePicker appendTo="body" [(ngModel)]="fechaSeleccionada" class="flex w-full p-date-ate"
+                [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" [minDate]="minDate" [maxDate]="maxDate"  da />
         </div>
     </div>
 
@@ -16,37 +16,33 @@
     <div class="col-12">
         <div class="grid lst-mesas">
 
-            @for (mesa of mesas; track mesa.id; let i = $index) {
+            @for (mesa of mesas; track mesa; let i = $index) {
             @let bgColorClass = i % 2 === 0 ? 'mesa-amarilla' : 'mesa-azul';
             <div class="col-12 sm:col-6 md:col-20 lg:col-20 xl:col-20 ">
                 <div class="card-mesa p-3 border-round-xl border-0 h-full position-relative" [class]="bgColorClass">
                     <div class="mb-4">
                         <div class="">
-                            <span class="font-semibold text-3xl">{{ mesa.nombre }}</span>
+                            <span class="font-semibold text-3xl">{{ mesa.tituloMesa }}</span>
                         </div>
                         <hr class=" my-2" [class]="bgColorClass">
-                        @for (turno of mesa.turnos; track turno.id) {
+                        @for (turno of mesa.turnos; track turno) {
                         <div class="mb-2">
                             <p-chip styleClass="border-1 text-xs px-2 py-1 rounded-lg" [class]="bgColorClass">
                                 <span class="font-semibold text-xs">
                                     <span>
-                                        {{ turno.nombre }}
-                                    </span>
-                                    &nbsp;
-                                    <span>
-                                        {{ turno.horaInicio }} a {{ turno.horaFin }} hrs.
+                                        {{ turno.turno }}
                                     </span>
                                 </span>
                             </p-chip>
 
                             <ul class="list-none pl-0 mt-3 mb-0" [class]="bgColorClass">
-                                @for (esp of turno.especialidades; track esp.id) {
+                                @for (esp of turno.especialidades; track esp) {
                                 <li>
                                     <div class="flex flex-row justify-content-start align-content-center  gap-2">
                                         <div class="flex-none">
 
                                             <p-button icon="pi pi-times" [rounded]="true" severity="danger"
-                                                [outlined]="true" styleClass="btn-del" [class]="'btn-del'" />
+                                                [outlined]="true" styleClass="btn-del" [class]="'btn-del'" (onClick)="onEiminarEspecialidadMesa(esp)" />
                                         </div>
 
                                         <div class="flex-grow-1 flex">
@@ -54,12 +50,11 @@
                                             <div
                                                 class="flex flex-row justify-content-between w-full align-items-center text-sm font-semibold">
                                                 <div class="flex-grow-1">
-                                                    <span>{{ esp.descripcion }}</span>
+                                                    <span class="txt-esp-label">{{ esp.especialidad }}</span>
                                                 </div>
-                                                <div class="flex-none">
-                                                    <span>{{ esp.cantidad }}</span>
-                                                    @if (esp.hasBecario ) {
-
+                                                <div class="flex-none txt-esp-label">
+                                                    <span>{{ esp.numMedicosCupo }}</span>
+                                                    @if (false ) {
                                                     &nbsp;
                                                     <p-chip class="is-becario"><span> {{'B'}}</span></p-chip>
                                                     }
@@ -78,8 +73,8 @@
                     <div class=" position-absolute bottom-0 mb-2 w-full pe-4">
 
                         <div class="flex flex-row justify-content-between w-full">
-                            <span class="text-sm font-medium text-gray-600">Total de médicos:</span>
-                            <span class="text-xl font-bold text-gray-900">{{ getTotalMedicosMesa(mesa) }}</span>
+                            <span class="text-base font-medium text-gray-600">Total de médicos:</span>
+                            <span class="text-base font-bold text-gray-900">{{ mesa.totalMedicos}}</span>
                         </div>
                     </div>
 
@@ -95,3 +90,6 @@
 
 
 </p-card>
+
+<p-confirmDialog [closable]="true" styleClass="custom-confirm-dialog">
+</p-confirmDialog>
