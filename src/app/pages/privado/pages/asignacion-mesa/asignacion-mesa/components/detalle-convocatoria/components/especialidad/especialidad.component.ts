@@ -32,6 +32,7 @@ export class EspecialidadComponent {
 
     effect(() => {
       if (this.accionActualiza()) {
+        this.obtenerRamas();
         this.onSelectRama(this.ramaActual());
       }
     });

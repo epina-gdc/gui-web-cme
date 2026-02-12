@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, model } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -32,6 +32,14 @@ interface Opcion {
 })
 export class ConfiguracionComponent {
 
+  constructor(private fb: FormBuilder) {
+    effect(() => {
+      if (this.accionActualiza()) {
+        this.obtenerListados();
+      }
+    });
+  }
+
   asignacionMesaService = inject(AsignacionMesaService);
 
   convocatoriaSeleccionada = model<MesaConfiguracion | undefined>(undefined);
@@ -51,7 +59,7 @@ export class ConfiguracionComponent {
   maxDate: Date = new Date();
 
 
-  constructor(private fb: FormBuilder) { }
+
 
   ngOnInit(): void {
     this.formulario = this.fb.group({
@@ -61,7 +69,7 @@ export class ConfiguracionComponent {
       numMedicosCupo: ['', [Validators.required, Validators.min(1)]],
       idEspecialidad: ['', Validators.required]
     });
-    
+
     this.minDate = dayjs(this.convocatoriaSeleccionada()?.fechaInicio).toDate();
     this.maxDate = dayjs(this.convocatoriaSeleccionada()?.fechaFin).toDate();
 
@@ -130,7 +138,7 @@ export class ConfiguracionComponent {
         next: (response: any) => {
           console.log('Respuesta:', response);
           //this.limpiarFormulario();
-          //this.obtenerListados();
+          this.obtenerListados();
           this.accionActualiza.update((value) => true);
           setTimeout(() => {
             this.accionActualiza.update((value) => false);
