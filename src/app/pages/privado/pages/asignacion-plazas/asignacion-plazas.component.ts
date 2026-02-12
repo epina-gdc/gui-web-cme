@@ -12,6 +12,8 @@ import {Button} from "primeng/button";
 
 import {AlertService} from '@services/alert.service';
 import {Subject} from 'rxjs';
+import { AsignacionPlazaService } from '@services/asignacion-plaza.service';
+import { BusquedaResponse } from '@models/datosAsignacion';
 
 @Component({
   selector: 'app-asignacion-plazas',
@@ -31,12 +33,13 @@ import {Subject} from 'rxjs';
 })
 export class AsignacionPlazasComponent {
   alertaService: AlertService = inject(AlertService);
+  asignacionService: AsignacionPlazaService = inject(AsignacionPlazaService);
   
   tab: number = 0;
   form!: FormGroup;
   exist = false;
 
-
+  busqueda!: BusquedaResponse;
 
   private destroy$ = new Subject<void>();
 
@@ -48,25 +51,29 @@ export class AsignacionPlazasComponent {
     });
   }
 
- 
-
+  onBuscar() {
+    const matricula = this.form.get('folio')!.value as string;
+    this.asignacionService.getAspirante(matricula).subscribe({
+      next: (response) => {
+        //console.log(response);
+        if(response.exito){
+          this.busqueda = response.respuesta;
+          this.exist = true;
+        } else {
+          this.alertaService.error('No se encontró matrícula/folio.');
+          this.exist = false;
+        }
+      },
+      error: (error) => {
+        //console.log(error);
+        this.alertaService.error('No se encontró matrícula/folio.');
+        this.exist = false;
+      }
+    })
+  }
 
   onLimpiar() {
     this.form.reset({ folio: '' });
     this.exist = false;
-  }
-
-  onBuscar() {
-    const value = this.form.get('folio')!.value as string;;
-    if (value == '123') {
-      this.exist = true;
-      return;
-    } 
-    
-    this.alertaService.error('No se encontró matrícula/folio.');
-
-    //Get datos
-    // this.service.buscar(value).subscribe(res => this.hayResultados = res?.length > 0);
-    this.exist = false; // placeholder
   }
 }

@@ -12,7 +12,7 @@
           <!-- Main content -->
           <div class="info-main">
             <div class="info-toprow">
-              <h2 class="info-name">{{ medico.nombreCompleto }}</h2>
+              <h2 class="info-name">{{ infoAspirante?.nombreCompleto }}</h2>
 
               <!-- Actions -->
               <div class="info-actions gap-5">
@@ -40,14 +40,14 @@
             <div class="info-grid">
               <div class="info-item">
                 <div class="info-label">Matrícula</div>
-                <div class="info-value">{{ medico.matricula }}</div>
+                <div class="info-value">{{ infoAspirante?.matriculaFolio }}</div>
               </div>
 
               <div class="info-item asp-item-wide">
                 <div class="info-label">Especialidad(es)</div>
 
                 <div class="esp-inline">
-                  <ng-container *ngFor="let e of medico.especialidades; let last = last">
+                  <ng-container *ngFor="let e of infoAspirante?.especialidades; let last = last">
                     <span class="esp-item-text">{{ e }}</span>
                     <span *ngIf="!last" class="esp-sep">/</span>
                   </ng-container>
@@ -56,27 +56,27 @@
 
               <div class="info-item">
                 <div class="info-label">Sexo</div>
-                <div class="info-value">{{ medico.sexo }}</div>
+                <div class="info-value">{{ infoAspirante?.genero }}</div>
               </div>
 
               <div class="info-item">
                 <div class="info-label">CURP</div>
-                <div class="info-value">{{ medico.curp }}</div>
+                <div class="info-value">{{ infoAspirante?.curp }}</div>
               </div>
 
               <div class="info-item">
                 <div class="info-label">RFC</div>
-                <div class="info-value">{{ medico.rfc }}</div>
+                <div class="info-value">{{ infoAspirante?.rfc }}</div>
               </div>
 
               <div class="info-item">
                 <div class="info-label">Correo electrónico</div>
-                <div class="info-value">{{ medico.email }}</div>
+                <div class="info-value">{{ infoAspirante?.correo }}</div>
               </div>
 
               <div class="info-item">
                 <div class="info-label">Correo electrónico adicional</div>
-                <div class="info-value">{{ medico.emailAdicional }}</div>
+                <div class="info-value">{{ infoAspirante?.correoAdicional }}</div>
               </div>
             </div>
           </div>

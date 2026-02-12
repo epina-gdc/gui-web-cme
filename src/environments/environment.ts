@@ -10,8 +10,9 @@ export const environment: ConfigEnvironment = {
     apiRegistro: base + 'mscme-registro/api',
     apiConvocatoria: base + '/mscme-convocatoria/api',
     apiDocumentos: "",
-    apiAsistencia: '/mscme-asistencia/api',
+    apiAsistencia: base + '/mscme-asistencia/api',
     apiCalificaciones: base + '/mscme-calificaciones/api',
+    apiAsignacionPlaza: base + '/mscme-asignacion/api',
   }
 }
 

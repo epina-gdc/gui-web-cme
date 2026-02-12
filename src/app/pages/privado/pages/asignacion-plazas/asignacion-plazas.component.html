@@ -15,7 +15,7 @@
                 formControlName="folio"
                 />
             <p-button type="button" variant="outlined" label="Limpiar"  (click)="onLimpiar()" [disabled]="form.invalid"  />
-            <p-button type="submit" label="Buscar" (onClick)="onBuscar()" [disabled]="form.invalid"  />
+            <p-button type="submit" label="Buscar" [disabled]="form.invalid"  />
           </div>
         </div>
       </div>
@@ -32,7 +32,7 @@
     
     <div *ngIf="exist">
       
-      <app-info-aspirante></app-info-aspirante>
+      <app-info-aspirante [infoAspirante]="busqueda.datosGenerales!" [tipo]="1"></app-info-aspirante>
 
       <!--**ESCENARIO TABS-->
       <div class="py-1 px-4 md:bg-white border-round-xl mb-4">

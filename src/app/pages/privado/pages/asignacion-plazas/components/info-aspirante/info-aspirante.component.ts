@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {Card} from "primeng/card";
 import {Avatar} from 'primeng/avatar';
 import {CommonModule} from '@angular/common';
+import { InfoAspirante } from '@models/datosAsignacion';
 
 @Component({
   selector: 'app-info-aspirante',
@@ -10,6 +11,8 @@ import {CommonModule} from '@angular/common';
   styleUrl: './info-aspirante.component.scss'
 })
 export class InfoAspiranteComponent {
+  @Input() infoAspirante!: InfoAspirante;
+  @Input() tipo!: number;
 
   medico = {
     fotoUrl: '/assets/images/img_medico.png',
@@ -22,6 +25,10 @@ export class InfoAspiranteComponent {
     email: 'pablo_garcia@gmail.com',
     emailAdicional: 'pablo_bernal@gmail.com',
   };
+
+  ngOnInit(): void {
+    console.log(this.infoAspirante);
+  }
 
   rechazarOferta() {
     // abrir diálogo / confirm
