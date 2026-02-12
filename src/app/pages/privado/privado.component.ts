@@ -22,7 +22,7 @@ export class PrivadoComponent implements OnInit {
 
   userService = inject(UserService);
 
-  menuVisible = true;
+  menuVisible = false;
   isScrolled = false;
 
   @HostListener('window:scroll', [])
