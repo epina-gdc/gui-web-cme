@@ -13,7 +13,7 @@ import {Asistencia, TableroAsistenciaInterface} from '@models/tableroAsistencia.
 import dayjs from 'dayjs';
 import {NgClass} from '@angular/common';
 import {saveAs} from 'file-saver';
-import {timer, Subscription} from 'rxjs';
+import {Subscription, timer} from 'rxjs';
 
 @Component({
   selector: 'app-tablero-informacion-asistencia',
