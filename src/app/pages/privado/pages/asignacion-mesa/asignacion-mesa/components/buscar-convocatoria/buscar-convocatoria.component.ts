@@ -123,10 +123,17 @@ export class BuscarConvocatoriaComponent implements OnInit {
 
       this.asignacionMesaService.guardarMesaConvocatoria(formData).subscribe({
         next: (response) => {
-          console.log('Configuración guardada exitosamente:', response);
-          this.consultarConvocatorias();
-          this.formulario.reset();
-          this.alertaService.exito(this.mensajes.MSG083);
+
+          if (response.exito) {
+
+            console.log('Configuración guardada exitosamente:', response);
+            this.consultarConvocatorias();
+            this.formulario.reset();
+            this.alertaService.exito(this.mensajes.MSG083);
+          }
+          if (!response.exito) {
+            this.alertaService.error(response.mensaje);
+          }
         },
         error: (err) => {
           console.error('Error al guardar configuración:', err);
@@ -173,7 +180,7 @@ export class BuscarConvocatoriaComponent implements OnInit {
 
   guardarConfiguracionUpdate(convocatoria: any) {
     const updatedConfigMesa = this.applyPartialUpdate(this.convocatoriaSeleccionadaEdicion(), convocatoria);
-    console.log('updatedConfigMesa:', updatedConfigMesa);    
+    console.log('updatedConfigMesa:', updatedConfigMesa);
   }
 
 

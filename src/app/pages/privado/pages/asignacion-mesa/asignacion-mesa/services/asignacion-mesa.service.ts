@@ -121,13 +121,40 @@ export class ResponseEspecialidadRama extends ResponseGeneral {
 
 export class MesaDisponibilidad {
   numeroMesa!: number;
-  medicosPorMesa!:number;
+  medicosPorMesa!: number;
   lugaresDisponibles!: number;
 }
 
 
 export class ResponseMesasDisponibilidad extends ResponseGeneral {
   respuesta!: MesaDisponibilidad[];
+}
+
+
+export class Turno {
+  value!: number;
+  label!: string;
+}
+
+export class ResponseTurnos extends ResponseGeneral {
+  respuesta!: Turno[];
+}
+
+export class RequestMesaDetalle {
+  idMesaConvocatoria!: number;
+  fecAtencion!: string;
+  numMesa!: number;
+  idEspecialidad!: number;
+  idTurno!: number;
+  numMedicosCupo!: number;
+}
+
+export class MesaDetalle{
+
+}
+
+export class ResponseMesaDetalle extends ResponseGeneral {
+  respuesta!: MesaDetalle[];
 }
 
 
@@ -270,7 +297,58 @@ export class AsignacionMesaService {
 
   }
 
-  getMesasDisponibilidad(idMesaConvocatoria : number): Observable<any> {
+  getMesasDisponibilidad(idMesaConvocatoria: number): Observable<ResponseMesasDisponibilidad> {
+    let parametros = new HttpParams();
+    parametros = parametros.append('idMesaConvocatoria', idMesaConvocatoria.toString());
+
+    return this.http.get<ResponseMesasDisponibilidad>(this.serverEndPointURLAsignacion + '/disponibilidad', { headers: this.header, params: parametros }).pipe(
+      catchError(this.handleError),
+      map((response: ResponseMesasDisponibilidad) => {
+        return response;
+      })
+    );
+  }
+
+  getTurnos(): Observable<ResponseTurnos> {
+    return this.http.get<ResponseTurnos>(this.serverEndPointURLAsignacion + '/turnos', { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: ResponseTurnos) => {
+        return response;
+      })
+    );
+  }
+
+
+  guardarConfiguracionMesa(mesaDetalle: RequestMesaDetalle): Observable<ResponseGeneral> {
+    let parametros = new HttpParams();
+    parametros = parametros.append('idMesaConvocatoria', mesaDetalle.idMesaConvocatoria.toString());
+    parametros = parametros.append('fecAtencion', mesaDetalle.fecAtencion.toString());
+    parametros = parametros.append('numMesa', mesaDetalle.numMesa.toString());
+    parametros = parametros.append('idEspecialidad', mesaDetalle.idEspecialidad.toString());
+    parametros = parametros.append('idTurno', mesaDetalle.idTurno.toString());
+    parametros = parametros.append('numMedicosCupo', mesaDetalle.numMedicosCupo.toString());
+
+    let ruta = `${this.serverEndPointURLAsignacion}/mesa-detalle`;
+    return this.http.post<ResponseGeneral>(ruta, { headers: this.header }, { params: parametros }).pipe(
+      catchError(this.handleError),
+      map((response: ResponseGeneral) => {
+        return response;
+      })
+    );
+  }
+
+
+  getDetalleMesaFecha(idMesaConvocatoria: number, fecha: string):Observable<ResponseMesaDetalle> {
+    let parametros = new HttpParams();
+    parametros = parametros.append('idMesaConvocartoriqa', idMesaConvocatoria.toString());
+    parametros = parametros.append('fecha', fecha.toString());
+
+    return this.http.get<ResponseMesaDetalle>(this.serverEndPointURLAsignacion + '/turnos', { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: ResponseMesaDetalle) => {
+        return response;
+      })
+    );
 
   }
 

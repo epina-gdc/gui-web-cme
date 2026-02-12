@@ -1,8 +1,9 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
+import { ChangeDetectionStrategy, Component, model } from '@angular/core';
 import { DatePickerModule } from 'primeng/datepicker';
-import {CardModule} from 'primeng/card';
-import {ChipModule} from 'primeng/chip';
-import {ButtonModule} from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { ChipModule } from 'primeng/chip';
+import { ButtonModule } from 'primeng/button';
+import { MesaConfiguracion } from '@pages/privado/pages/asignacion-mesa/asignacion-mesa/services/asignacion-mesa.service';
 
 interface Especialidad {
   id: number;
@@ -35,9 +36,11 @@ interface Mesa {
   ],
   templateUrl: './detalle-mesas.component.html',
   styleUrl: './detalle-mesas.component.scss',
-  
+
 })
 export class DetalleMesasComponent {
+  convocatoriaSeleccionada = model<MesaConfiguracion | undefined>(undefined);
+
   mesas: Mesa[] = [
     {
       id: 1,
@@ -58,25 +61,25 @@ export class DetalleMesasComponent {
           horaInicio: '11:00',
           horaFin: '13:00',
           especialidades: [
-            { id: 2, descripcion: 'Pediatría (4 años)', cantidad: 12 , hasBecario: true},
-            {id:3,descripcion:'Medicina familiar (5 años)',cantidad:21},
-            {id:4,descripcion:'Pediatría (4 años)',cantidad:12},
-            {id:5,descripcion:'Medicina familiar (5 años)',cantidad:21},
-            {id:6,descripcion:'Pediatría (4 años)',cantidad:12},
-            {id:7,descripcion:'Medicina familiar (5 años)',cantidad:21},
-            {id:8,descripcion:'Pediatría (4 años)',cantidad:12},
-            {id:9,descripcion:'Medicina familiar (5 años)',cantidad:21},
-            {id:10,descripcion:'Pediatría (4 años)',cantidad:12},
-            {id:11,descripcion:'Medicina familiar (5 años)',cantidad:21},
-            {id:12,descripcion:'Pediatría (4 años)',cantidad:12},
-            {id:13,descripcion:'Medicina familiar (5 años)',cantidad:21},
-            {id:14,descripcion:'Pediatría (4 años)',cantidad:12},
-            {id:15,descripcion:'Medicina familiar (5 años)',cantidad:21},
-            {id:16,descripcion:'Pediatría (4 años)',cantidad:12},
-            {id:17,descripcion:'Medicina familiar (5 años)',cantidad:21},
-            {id:18,descripcion:'Pediatría (4 años)',cantidad:12},
-            {id:19,descripcion:'Medicina familiar (5 años)',cantidad:21},
-            {id:20,descripcion:'Pediatría (4 años)',cantidad:12},
+            { id: 2, descripcion: 'Pediatría (4 años)', cantidad: 12, hasBecario: true },
+            { id: 3, descripcion: 'Medicina familiar (5 años)', cantidad: 21 },
+            { id: 4, descripcion: 'Pediatría (4 años)', cantidad: 12 },
+            { id: 5, descripcion: 'Medicina familiar (5 años)', cantidad: 21 },
+            { id: 6, descripcion: 'Pediatría (4 años)', cantidad: 12 },
+            { id: 7, descripcion: 'Medicina familiar (5 años)', cantidad: 21 },
+            { id: 8, descripcion: 'Pediatría (4 años)', cantidad: 12 },
+            { id: 9, descripcion: 'Medicina familiar (5 años)', cantidad: 21 },
+            { id: 10, descripcion: 'Pediatría (4 años)', cantidad: 12 },
+            { id: 11, descripcion: 'Medicina familiar (5 años)', cantidad: 21 },
+            { id: 12, descripcion: 'Pediatría (4 años)', cantidad: 12 },
+            { id: 13, descripcion: 'Medicina familiar (5 años)', cantidad: 21 },
+            { id: 14, descripcion: 'Pediatría (4 años)', cantidad: 12 },
+            { id: 15, descripcion: 'Medicina familiar (5 años)', cantidad: 21 },
+            { id: 16, descripcion: 'Pediatría (4 años)', cantidad: 12 },
+            { id: 17, descripcion: 'Medicina familiar (5 años)', cantidad: 21 },
+            { id: 18, descripcion: 'Pediatría (4 años)', cantidad: 12 },
+            { id: 19, descripcion: 'Medicina familiar (5 años)', cantidad: 21 },
+            { id: 20, descripcion: 'Pediatría (4 años)', cantidad: 12 },
 
           ]
         },
@@ -87,24 +90,24 @@ export class DetalleMesasComponent {
           horaFin: '13:00',
           especialidades: [
             { id: 2, descripcion: 'Pediatría (4 años)', cantidad: 12 },
-            {id:3,descripcion:'Medicina familiar (5 años)',cantidad:21},
-            {id:4,descripcion:'Pediatría (4 años)',cantidad:12},
-            {id:5,descripcion:'Medicina familiar (5 años)',cantidad:21},
-            {id:6,descripcion:'Pediatría (4 años)',cantidad:12},
-            {id:7,descripcion:'Medicina familiar (5 años)',cantidad:21},
-            {id:8,descripcion:'Pediatría (4 años)',cantidad:12},
-            {id:9,descripcion:'Medicina familiar (5 años)',cantidad:21},
-            {id:10,descripcion:'Pediatría (4 años)',cantidad:12},
-            {id:11,descripcion:'Medicina familiar (5 años)',cantidad:21},
-            {id:12,descripcion:'Pediatría (4 años)',cantidad:12},
-            {id:13,descripcion:'Medicina familiar (5 años)',cantidad:21},
-            {id:14,descripcion:'Pediatría (4 años)',cantidad:12},
-            {id:15,descripcion:'Medicina familiar (5 años)',cantidad:21},
-            {id:16,descripcion:'Pediatría (4 años)',cantidad:12},
-            {id:17,descripcion:'Medicina familiar (5 años)',cantidad:21},
-            {id:18,descripcion:'Pediatría (4 años)',cantidad:12},
-            {id:19,descripcion:'Medicina familiar (5 años)',cantidad:21},
-            {id:20,descripcion:'Pediatría (4 años)',cantidad:12},
+            { id: 3, descripcion: 'Medicina familiar (5 años)', cantidad: 21 },
+            { id: 4, descripcion: 'Pediatría (4 años)', cantidad: 12 },
+            { id: 5, descripcion: 'Medicina familiar (5 años)', cantidad: 21 },
+            { id: 6, descripcion: 'Pediatría (4 años)', cantidad: 12 },
+            { id: 7, descripcion: 'Medicina familiar (5 años)', cantidad: 21 },
+            { id: 8, descripcion: 'Pediatría (4 años)', cantidad: 12 },
+            { id: 9, descripcion: 'Medicina familiar (5 años)', cantidad: 21 },
+            { id: 10, descripcion: 'Pediatría (4 años)', cantidad: 12 },
+            { id: 11, descripcion: 'Medicina familiar (5 años)', cantidad: 21 },
+            { id: 12, descripcion: 'Pediatría (4 años)', cantidad: 12 },
+            { id: 13, descripcion: 'Medicina familiar (5 años)', cantidad: 21 },
+            { id: 14, descripcion: 'Pediatría (4 años)', cantidad: 12 },
+            { id: 15, descripcion: 'Medicina familiar (5 años)', cantidad: 21 },
+            { id: 16, descripcion: 'Pediatría (4 años)', cantidad: 12 },
+            { id: 17, descripcion: 'Medicina familiar (5 años)', cantidad: 21 },
+            { id: 18, descripcion: 'Pediatría (4 años)', cantidad: 12 },
+            { id: 19, descripcion: 'Medicina familiar (5 años)', cantidad: 21 },
+            { id: 20, descripcion: 'Pediatría (4 años)', cantidad: 12 },
 
           ]
         }

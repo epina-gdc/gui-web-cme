@@ -1,8 +1,13 @@
 <p-card class="empty-border mt-4">
-    
 
-    <app-conteo  [(convocatoriaSeleccionada)]="convocatoriaSeleccionada" ></app-conteo>
-    <app-especialidad [(convocatoriaSeleccionada)]="convocatoriaSeleccionada" class="mt-4" ></app-especialidad>
-    <app-mesas [(convocatoriaSeleccionada)]="convocatoriaSeleccionada"  class="mt-4"></app-mesas>
-    
+
+    <app-conteo [(convocatoriaSeleccionada)]="convocatoriaSeleccionada"></app-conteo>
+    <app-especialidad [(ramaActual)]="ramaActual" [(convocatoriaSeleccionada)]="convocatoriaSeleccionada"
+        class="mt-4"></app-especialidad>
+    @if(ramaActual()){
+
+    <app-mesas [(ramaActual)]="ramaActual" [(convocatoriaSeleccionada)]="convocatoriaSeleccionada"
+        class="mt-4"></app-mesas>
+    }
+
 </p-card>

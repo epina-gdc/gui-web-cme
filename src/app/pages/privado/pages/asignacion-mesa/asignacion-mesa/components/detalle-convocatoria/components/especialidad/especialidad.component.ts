@@ -42,7 +42,7 @@ export class EspecialidadComponent {
   totalMedicos: number = 0;
 
   filteredRamas: any[] = [];
-  ramaActual = signal<Rama | undefined>(undefined);
+  ramaActual = model<Rama | undefined>(undefined);
 
   totalesMedicosRama: TotalesMedicosRama = {};
 
@@ -74,12 +74,16 @@ export class EspecialidadComponent {
     let filtered: any[] = [];
     let query = event.query;
 
-    for (let i = 0; i < (this.ramas).length; i++) {
-      let ramaAux = (this.ramas)[i];
-      if (ramaAux.label.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        filtered.push(ramaAux);
+
+    if (this.ramas && this.ramas.length > 0) {
+      for (let i = 0; i < (this.ramas).length; i++) {
+        let ramaAux = (this.ramas)[i];
+        if (ramaAux.label.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+          filtered.push(ramaAux);
+        }
       }
     }
+
 
     this.filteredRamas = filtered;
   }
@@ -103,6 +107,9 @@ export class EspecialidadComponent {
       );
 
       // obtener especialidades por rama
+
+      
+
     }
 
 

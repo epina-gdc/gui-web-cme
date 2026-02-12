@@ -1,10 +1,12 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {ButtonModule} from 'primeng/button';
-import {CardModule} from 'primeng/card';
-import {InputTextModule} from 'primeng/inputtext';
-import {SelectModule} from 'primeng/select';
+import { ChangeDetectionStrategy, Component, inject, model } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
+import { AsignacionMesaService, Especialida, MesaConfiguracion, MesaDisponibilidad, Rama, Turno } from '@pages/privado/pages/asignacion-mesa/asignacion-mesa/services/asignacion-mesa.service';
+import { InputNumberModule } from 'primeng/inputnumber';
 interface Opcion {
   id: number;
   nombre: string;
@@ -18,59 +20,100 @@ interface Opcion {
     InputTextModule,
     ReactiveFormsModule,
     DatePickerModule,
-    SelectModule],
+    SelectModule,
+    InputNumberModule
+  ],
   templateUrl: './configuracion.component.html',
   styleUrl: './configuracion.component.scss',
 })
 export class ConfiguracionComponent {
+
+  asignacionMesaService = inject(AsignacionMesaService);
+
+  convocatoriaSeleccionada = model<MesaConfiguracion | undefined>(undefined);
+  ramaActual = model<Rama | undefined>(undefined);
+
+
   formulario!: FormGroup;
 
   // Datos para los selects
-  mesas: Opcion[] = [
-    { id: 1, nombre: 'Mesa 1' },
-    { id: 2, nombre: 'Mesa 2' },
-    { id: 3, nombre: 'Mesa 3' },
-    { id: 4, nombre: 'Mesa 4' }
-  ];
-
-  turnos: Opcion[] = [
-    { id: 1, nombre: 'Matutino' },
-    { id: 2, nombre: 'Vespertino' },
-    { id: 3, nombre: 'Nocturno' }
-  ];
-
-  especialidades: Opcion[] = [
-    { id: 1, nombre: 'Cirugía pediátrica (6 años)' },
-    { id: 2, nombre: 'Alergia e inmunología (6 años)' },
-    { id: 3, nombre: 'Cardiología pediátrica (6 años)' },
-    { id: 4, nombre: 'Endocrinología (5 años)' },
-    { id: 5, nombre: 'Gastroenterología (5 años)' }
-  ];
+  mesas: MesaDisponibilidad[] = [];
+  turnos: Turno[] = [];
+  especialidades: Especialida[] = [];
 
   constructor(private fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.formulario = this.fb.group({
-      fechaAtencion: ['', Validators.required],
-      mesa: ['', Validators.required],
-      turno: ['', Validators.required],
-      medicosPorTurno: ['', [Validators.required, Validators.min(1)]],
-      especialidad: ['', Validators.required]
+      fecAtencion: ['', Validators.required],
+      numMesa: ['', Validators.required],
+      idTurno: ['', Validators.required],
+      numMedicosCupo: ['', [Validators.required, Validators.min(1)]],
+      idEspecialidad: ['', Validators.required]
     });
+    this.obtenerListados();
   }
 
   limpiarFormulario(): void {
     this.formulario.reset();
-    // Si necesitas mantener la fecha actual al limpiar:
-    // this.formulario.patchValue({ fechaAtencion: new Date() });
+  }
+
+  obtenerListados(): void {
+    // listado de mesas
+    this.asignacionMesaService.getMesasDisponibilidad(this.convocatoriaSeleccionada()?.idMesaConvocatoria as number).subscribe({
+      next: (response: any) => {
+        console.log('Respuesta:', response);
+        this.mesas = response.respuesta;
+      },
+      error: (err) => {
+        console.error('Error:', err);
+      }
+    });
+
+    // listado de turnos  
+
+    this.asignacionMesaService.getTurnos().subscribe({
+      next: (response: any) => {
+        console.log('Respuesta:', response);
+        this.turnos = response.respuesta;
+      },
+      error: (err) => {
+        console.error('Error:', err);
+      }
+    });
+
+    // listado de especialidades por rama 
+
+    this.asignacionMesaService.getEspecialidadesRama(this.ramaActual()?.id as number, this.convocatoriaSeleccionada()?.idMesaConvocatoria as number, this.convocatoriaSeleccionada()?.idConvocatoria as number).subscribe({
+      next: (response: any) => {
+        console.log('Respuesta:', response);
+        this.especialidades = response.respuesta;
+      },
+      error: (err) => {
+        console.error('Error:', err);
+      }
+    }
+
+    )
+
   }
 
   guardar(): void {
     if (this.formulario.valid) {
-      console.log('Datos guardados:', this.formulario.value);
+
+      const mesaDetalle = {
+        idMesaConvocatoria: this.convocatoriaSeleccionada()?.idMesaConvocatoria as number,
+        fecAtencion: this.formulario.value.fecAtencion as string,
+        numMesa: this.formulario.value.numMesa as number,
+        idEspecialidad: this.formulario.value.idEspecialidad as number,
+        idTurno: this.formulario.value.idTurno as number,
+        numMedicosCupo: this.formulario.value.numMedicosCupo as number
+      }
+
+
       // Aquí iría la lógica de envío a API
     } else {
       console.log('Formulario inválido');
     }
   }
- }
+}

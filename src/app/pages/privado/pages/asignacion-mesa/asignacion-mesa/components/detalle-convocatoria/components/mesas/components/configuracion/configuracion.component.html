@@ -1,71 +1,72 @@
+<p-card [style]="{width: 'width'}" styleClass="styleClass">
+    <ng-template pTemplate="header">
+        <div class="p-3 border-bottom"><span class="font-semibold text-xl">Configuración de mesas </span></div>
+    </ng-template>
 
-    <p-card [style]="{width: 'width'}" styleClass="styleClass">
-        <ng-template pTemplate="header">
-            <div class="p-3 border-bottom"><span class="font-semibold text-xl">Configuración de mesas </span></div>
-        </ng-template>
+    <!-- Formulario -->
 
-        <!-- Formulario -->
+    <form [formGroup]="formulario">
+        <div class="flex flex-column md:flex-row gap-4">
+            <!-- Columna izquierda: Fecha, Mesa, Turno -->
+            <div class="flex-grow-1">
+                <div class="form-grid grid">
+                    <div class="field col-12 md:col-6 lg:col-4">
+                        <label for="fechaAtencion" class="field-label flex pt-2 justify-content-between">
+                            <span>Fecha de atención</span>
+                            <span class="text-xs text-black-50 ">Obligatorio</span>
+                        </label>
+                        <p-datePicker formControlName="fechaAtencion" class="flex w-full p-date-ate"
+                            [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" />
+                    </div>
 
-        <form [formGroup]="formulario">
-            <div class="flex flex-column md:flex-row gap-4">
-                <!-- Columna izquierda: Fecha, Mesa, Turno -->
-                <div class="flex-grow-1">
-                    <div class="form-grid grid">
-                        <div class="field col-12 md:col-6 lg:col-4">
-                            <label for="fechaAtencion" class="field-label flex pt-2 justify-content-between">
-                                <span>Fecha de atención</span>
-                                <span class="text-xs text-black-50 ">Obligatorio</span>
-                            </label>
-                            <p-datePicker formControlName="fechaAtencion" class="flex w-full p-date-ate" [iconDisplay]="'input'"
-                                [showIcon]="true" inputId="icondisplay" />
-                        </div>
+                    <div class="field col-12 md:col-6 lg:col-4">
+                        <label for="mesa" class="field-label flex pt-2 justify-content-between">
+                            <span>Mesa</span>
+                            <span class="text-xs text-black-50 ">Obligatorio</span>
+                        </label>
+                        <p-select id="mesa" [options]="mesas" formControlName="mesa" placeholder="Ingresa mesa"
+                            optionLabel="numeroMesa" optionValue="numeroMesa" class="w-full"></p-select>
+                    </div>
 
-                        <div class="field col-12 md:col-6 lg:col-4">
-                            <label for="mesa" class="field-label flex pt-2 justify-content-between">
-                                <span>Mesa</span>
-                                <span class="text-xs text-black-50 ">Obligatorio</span>
-                            </label>
-                            <p-select id="mesa" [options]="mesas" formControlName="mesa" placeholder="Ingresa mesa"
-                                optionLabel="nombre" optionValue="id" class="w-full"></p-select>
-                        </div>
+                    <div class="field col-12 md:col-6 lg:col-4">
+                        <label for="turno" class="field-label flex pt-2 justify-content-between">
+                            <span>Turno</span>
+                            <span class="text-xs text-black-50 ">Obligatorio</span></label>
+                        <p-select id="turno" [options]="turnos" formControlName="turno" placeholder="Ingresa turno"
+                            optionLabel="label" optionValue="value" class="w-full"></p-select>
+                    </div>
 
-                        <div class="field col-12 md:col-6 lg:col-4">
-                            <label for="turno" class="field-label flex pt-2 justify-content-between">
-                                <span>Turno</span>
-                                <span class="text-xs text-black-50 ">Obligatorio</span></label>
-                            <p-select id="turno" [options]="turnos" formControlName="turno" placeholder="Ingresa turno"
-                                optionLabel="nombre" optionValue="id" class="w-full"></p-select>
-                        </div>
+                    <div class="field col-12 md:col-6 lg:col-4">
+                        <label for="medicosPorTurno" class="field-label flex pt-2 justify-content-between">
+                            <span>No. médicos por turno</span>
+                            <span class="text-xs text-black-50 ">Obligatorio</span></label>
 
-                        <div class="field col-12 md:col-6 lg:col-4">
-                            <label for="medicosPorTurno" class="field-label flex pt-2 justify-content-between">
-                                <span>No. médicos por turno</span>
-                                <span class="text-xs text-black-50 ">Obligatorio</span></label>
-                            <input type="text" pInputText id="medicosPorTurno" formControlName="medicosPorTurno"
-                                placeholder="Ingresa No. médicos por turno" class="w-full" />
-                        </div>
+                        <p-inputNumber formControlName="medicosPorTurno" placeholder="Ingresa No. médicos por turno"
+                            class="w-full" [showButtons]="true" [min]="1">
+                        </p-inputNumber>
 
-                        <div class=" field col-12 md:col-6 lg:col-4">
-                            <label for="especialidad" class="field-label flex pt-2 justify-content-between">
-                                <span>Especialidad</span>
-                                <span class="text-xs text-black-50 ">Obligatorio</span></label>
-                            <p-select id="especialidad" [options]="especialidades" formControlName="especialidad"
-                                placeholder="Ingresa especialidades" optionLabel="nombre" optionValue="id"
-                                class="w-full"></p-select>
-                        </div>
 
-                        <div class=" field col-12 md:col-4">
-                            <div class="flex gap-4 align-content-center h-full btn-form">
-                                <p-button label="Limpiar" [outlined]="true" (click)="limpiarFormulario()" />
-                                <p-button label="Guardar" (click)="guardar()" />
-                            </div>
+                    </div>
+
+                    <div class=" field col-12 md:col-6 lg:col-4">
+                        <label for="especialidad" class="field-label flex pt-2 justify-content-between">
+                            <span>Especialidad</span>
+                            <span class="text-xs text-black-50 ">Obligatorio</span></label>
+                        <p-select id="especialidad" [options]="especialidades" formControlName="especialidad"
+                            placeholder="Ingresa especialidades" optionLabel="label" optionValue="value"
+                            class="w-full"></p-select>
+                    </div>
+
+                    <div class=" field col-12 md:col-4">
+                        <div class="flex gap-4 align-content-center h-full btn-form">
+                            <p-button label="Limpiar" [outlined]="true" (click)="limpiarFormulario()" />
+                            <p-button label="Guardar" (click)="guardar()" />
                         </div>
                     </div>
                 </div>
-
-                <!-- Columna derecha: Botones -->
-
             </div>
-        </form>
-    </p-card>
 
+
+        </div>
+    </form>
+</p-card>

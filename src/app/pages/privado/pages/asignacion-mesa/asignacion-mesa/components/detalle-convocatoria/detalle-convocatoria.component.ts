@@ -3,7 +3,7 @@ import { ConteoComponent } from "./components/conteo/conteo.component";
 import { EspecialidadComponent } from "./components/especialidad/especialidad.component";
 import { MesasComponent } from "./components/mesas/mesas.component";
 import { CardModule } from 'primeng/card';
-import { MesaConfiguracion } from '../../services/asignacion-mesa.service';
+import { MesaConfiguracion, Rama } from '../../services/asignacion-mesa.service';
 
 @Component({
   selector: 'app-detalle-convocatoria',
@@ -13,5 +13,6 @@ import { MesaConfiguracion } from '../../services/asignacion-mesa.service';
 })
 export class DetalleConvocatoriaComponent {
   convocatoriaSeleccionada = model<MesaConfiguracion | undefined>(undefined);
+  ramaActual = model<Rama | undefined>(undefined);
 
 }

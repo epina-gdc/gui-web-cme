@@ -1,7 +1,7 @@
 import { Component, model } from '@angular/core';
 import { ConfiguracionComponent } from "./components/configuracion/configuracion.component";
 import { DetalleMesasComponent } from "./components/detalle-mesas/detalle-mesas.component";
-import { MesaConfiguracion } from '../../../../services/asignacion-mesa.service';
+import { MesaConfiguracion, Rama } from '../../../../services/asignacion-mesa.service';
 
 
 @Component({
@@ -15,4 +15,5 @@ import { MesaConfiguracion } from '../../../../services/asignacion-mesa.service'
 })
 export class MesasComponent {
   convocatoriaSeleccionada = model<MesaConfiguracion | undefined>(undefined);
+  ramaActual = model<Rama | undefined>(undefined);
 }
