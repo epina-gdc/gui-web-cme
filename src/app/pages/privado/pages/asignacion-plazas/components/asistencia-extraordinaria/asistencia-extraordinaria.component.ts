@@ -1,40 +1,25 @@
-import {Component, inject} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 // PrimeNG Imports
-import {InputTextModule} from 'primeng/inputtext';
-import {ButtonModule} from 'primeng/button';
-import {CardModule} from 'primeng/card';
-import {ChipModule} from 'primeng/chip';
-import {DividerModule} from 'primeng/divider';
-import {ConfirmDialogModule} from 'primeng/confirmdialog'; // <--- Importar Módulo
-import {ConfirmationService} from 'primeng/api'; // <--- Importar Servicio
-import {ToastModule} from 'primeng/toast'; // Opcional: Para mostrar mensaje de éxito
-import {MenuAsistenciasComponent} from "../menu-asistencias/menu-asistencias.component";
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { ChipModule } from 'primeng/chip';
+import { DividerModule } from 'primeng/divider';
+import { ConfirmDialogModule } from 'primeng/confirmdialog'; // <--- Importar Módulo
+import { ConfirmationService } from 'primeng/api'; // <--- Importar Servicio
+import { ToastModule } from 'primeng/toast'; // Opcional: Para mostrar mensaje de éxito
 
-import {AsistenciaCardComponent} from '@components/asistencia-card/asistencia-card.component';
-import {AsistenciaNoteComponent} from '@components/asistencia-note/asistencia-note.component';
-import {AlertService} from '@services/alert.service';
-
+import { AsistenciaCardComponent } from '@components/asistencia-card/asistencia-card.component';
+import { AsistenciaNoteComponent } from '@components/asistencia-note/asistencia-note.component';
+import { Fotografia } from '@models/fotografia';
+import { DocumentoService } from "@services/documentos.service";
+import { AlertService } from '@services/alert.service';
+import { AsistenciaExtraordinariaService } from '@services/asistencia-extraordinaria.service';
+import { AsistenciaExtraordinariaResponse, AsistenciaAspirante, Medico } from '@models/asistencia-extraordinaria.interface';
 // Interfaz para los datos del médico
-interface Doctor {
-    nombre: string;
-    matricula: string;
-    curp: string;
-    rfc: string;
-    especialidades: string[];
-    fotoUrl: string;
-    // Datos de la cita/asistencia
-    fecha: string;
-    hora: string;
-    mesa: string;
-    turno: string;
-    modalidad: string;
-    estatus: string;
-    verificacion: string;
-}
-
 @Component({
     selector: 'app-asistencia-extraordinaria',
     standalone: true,
@@ -48,7 +33,6 @@ interface Doctor {
         DividerModule,
         ConfirmDialogModule, // <--- Agregar a imports
         ToastModule, // Opcional
-        MenuAsistenciasComponent,
         AsistenciaCardComponent,
         AsistenciaNoteComponent
     ],
@@ -58,15 +42,37 @@ interface Doctor {
 })
 export class AsistenciaExtraordinariaComponent {
     alertService: AlertService = inject(AlertService);
+    asistenciaService: AsistenciaExtraordinariaService = inject(AsistenciaExtraordinariaService);
+    documentoService: DocumentoService = inject(DocumentoService);
+
+    private readonly MSG073: string = "El médico aspirante no cuenta con un registro previo.";
+    private readonly MSG074: string = "El médico aspirante no cuenta con una cita.";
+    private readonly MSG075: string = "El médico aspirante no cuenta con cita. ¿Desea registrar su asistencia?.";
+    private readonly MSG076: string = "Se realizo con éxito el registro de la asistencia.";
+    private readonly MSG077: string = "¿Está seguro de que desea eliminar esta cita?.";
+
     searchQuery: string = '';
-    doctor: Doctor | null = null;
+    aspirante: AsistenciaAspirante | null = null;
     loading: boolean = false;
+
+    foto!: any;
+    archivoFoto!: File;
+    selectFile!: File | undefined;
+    defaultFile!: File | undefined;
+    datosFoto!: Fotografia;
+
     constructor(
         private confirmationService: ConfirmationService,
     ) { }
 
+    get tieneAsistencia(): boolean {
+        return (this.aspirante?.diaAsistenciaCita == null && this.aspirante?.horaAsistencia == null && this.aspirante?.turnoAsistencia == null);
+    }
 
-    // Simulación de búsqueda
+    get tieneCita(): boolean {
+        return (this.aspirante?.fechaCita == null && this.aspirante?.horaCita == null && this.aspirante?.turnoCita == null && this.aspirante?.mesaCita == null);
+    }
+    // búsqueda
     search() {
 
         if (!this.searchQuery) {
@@ -76,36 +82,43 @@ export class AsistenciaExtraordinariaComponent {
 
         this.loading = true;
 
-        // Simulamos un delay de red y asignamos datos estáticos basados en la imagen 2
-        setTimeout(() => {
-            this.doctor = {
-                nombre: 'Dr. Pablo Andrés García Bernal',
-                matricula: '98161651',
-                curp: 'BBPA841316HDFLRR01',
-                rfc: 'BBPA841316HDF',
-                especialidades: ['Cardiología', 'Anestesiología pediátrica', 'Neumología'],
-                fotoUrl: 'https://www.femalefirst.co.uk/image-library/partners/bang/land/1000/r/robin-hood-actor-jack-patten-aW1hZ2VzMS8yMDI1LzExLzAzLzE3NjI.jpg', // Placeholder
-                fecha: '15 de Mayo, 2025',
-                hora: '07:00 Hrs.',
-                mesa: 'Mesa 5',
-                turno: '11:00 a 13:00 hrs.',
-                modalidad: 'Externo',
-                estatus: 'Concluido',
-                verificacion: 'Sin verificación documental'
-            };
-            this.loading = false;
-        }, 500);
+        this.asistenciaService.busqueda(this.searchQuery).subscribe({
+            next: (response: AsistenciaExtraordinariaResponse) => {
+                if (response.exito && response.respuesta) {
+                    const data = response.respuesta;
+                    this.aspirante = response.respuesta;
+                    if (this.tieneCita) {
+                        this.alertService.informacion(this.MSG073);
+                    }
+                    if (this.tieneAsistencia) {
+                        this.alertService.informacion(this.MSG074);
+                    }
+                    if (response.respuesta?.uuidArchivo) {
+                        this.obtenerFotografia(response.respuesta?.uuidArchivo);
+                    }
+                } else {
+                    this.alertService.error(response.mensaje);
+                }
+                this.loading = false;
+            },
+            error: (err) => {
+                this.alertService.error('Error en la búsqueda');
+                this.loading = false;
+            }
+        });
+
     }
 
     clear() {
         this.searchQuery = '';
-        this.doctor = null;
+        this.aspirante = null;
+        this.foto = null;
     }
 
     register() {
 
         this.confirmationService.confirm({
-            message: 'El médico aspirante no cuenta con cita \n ¿Desea registrar su asistencia?',
+            message: 'El médico aspirante no cuenta con cita. \n ¿Desea registrar su asistencia?',
             header: ' ',
             acceptLabel: 'Sí, confirmar',
             rejectLabel: 'Cancelar',
@@ -114,17 +127,36 @@ export class AsistenciaExtraordinariaComponent {
             rejectButtonStyleClass: 'btn-modal-cancelar',
             accept: () => { /* ... */
                 // Lógica real de registro
-                this.alertService.exito('Asistencia registrada', 'Confirmado')
-                console.log('Asistencia registrada');
+                if (this.aspirante) {
+                    this.confirmar(this.aspirante.idParticipante.toString());
+                } else {
+                    console.log('Aspirante no encontrado para registrar asistencia');
+                }
             }
         });
 
     }
 
+    confirmar(idParticipante: string) {
+        this.asistenciaService.confimar(idParticipante).subscribe({
+            next: (response: AsistenciaExtraordinariaResponse) => {
+                if (response.exito && response.respuesta) {
+                    this.aspirante = response.respuesta;
+                    this.alertService.exito(this.MSG076);
+                } else {
+                    this.alertService.error(response.mensaje);
+                }
+            },
+            error: (err) => {
+                this.alertService.error('Error al confirmar la asistencia');
+            }
+        });
+    }
+
     delete() {
 
         this.confirmationService.confirm({
-            message: '¿Estas seguro de eliminar el registro de asistencia?',
+            message: this.MSG077,
             header: ' ',
             acceptLabel: 'Sí, confirmar',
             rejectLabel: 'Cancelar',
@@ -132,12 +164,53 @@ export class AsistenciaExtraordinariaComponent {
             acceptButtonStyleClass: 'btn-modal-confirmar',
             rejectButtonStyleClass: 'btn-modal-cancelar',
             accept: () => { /* ... */
-                // Lógica real de eliminación
-                this.doctor = null; // Limpiamos el doctor
-                this.searchQuery = ''; // Limpiamos búsqueda
-                this.alertService.informacion('Registro eliminado')
-
+                // Lógica real de eliminación             
+                if (this.aspirante) {
+                    this.eliminar(this.aspirante.idParticipante.toString());
+                } else {
+                    console.log('Aspirante no encontrado para registrar asistencia');
+                }
+            },
+            reject: () => {
+                this.alertService.informacion("El sistema no realiza ningún cambio. Se mantiene la información actual de la cita");
             }
         });
     }
-}
+
+    eliminar(idParticipante: string) {
+        this.asistenciaService.eliminar(idParticipante).subscribe({
+            next: (response: AsistenciaExtraordinariaResponse) => {
+                if (response.exito) {
+                    if (this.aspirante) {
+                        this.aspirante.diaAsistenciaCita = null;
+                        this.aspirante.horaAsistencia = null;
+                        this.aspirante.turnoAsistencia = null;
+
+                        this.alertService.informacion(this.MSG074);
+
+                    }
+                } else {
+                    this.alertService.error(response.mensaje);
+                }
+            },
+            error: (err) => {
+                this.alertService.error('Error al eliminar la cita');
+            }
+        });
+    }
+
+    obtenerFotografia(uuidArchivo: string): void {
+
+        this.documentoService.getFotografia(uuidArchivo).pipe(
+        ).subscribe({
+            next: (response: any) => {
+                this.selectFile = response;
+                const nombreArchivo = 'foto_perfil.png';
+                const tipoArchivo = response.type;
+                this.defaultFile = new File([response], nombreArchivo, { type: tipoArchivo });
+                this.foto = URL.createObjectURL(this.defaultFile);
+            }
+        });
+    }
+
+} 
