@@ -340,10 +340,10 @@ export class AsignacionMesaService {
 
   getDetalleMesaFecha(idMesaConvocatoria: number, fecha: string):Observable<ResponseMesaDetalle> {
     let parametros = new HttpParams();
-    parametros = parametros.append('idMesaConvocartoriqa', idMesaConvocatoria.toString());
+    parametros = parametros.append('idMesaConvocatoria', idMesaConvocatoria.toString());
     parametros = parametros.append('fecha', fecha.toString());
 
-    return this.http.get<ResponseMesaDetalle>(this.serverEndPointURLAsignacion + '/turnos', { headers: this.header }).pipe(
+    return this.http.get<ResponseMesaDetalle>(this.serverEndPointURLAsignacion + '/detalle-mesas', { headers: this.header , params: parametros}).pipe(
       catchError(this.handleError),
       map((response: ResponseMesaDetalle) => {
         return response;

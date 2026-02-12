@@ -1,9 +1,11 @@
-import { ChangeDetectionStrategy, Component, model } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, model, signal } from '@angular/core';
 import { DatePickerModule } from 'primeng/datepicker';
 import { CardModule } from 'primeng/card';
 import { ChipModule } from 'primeng/chip';
 import { ButtonModule } from 'primeng/button';
-import { MesaConfiguracion } from '@pages/privado/pages/asignacion-mesa/asignacion-mesa/services/asignacion-mesa.service';
+import { AsignacionMesaService, MesaConfiguracion } from '@pages/privado/pages/asignacion-mesa/asignacion-mesa/services/asignacion-mesa.service';
+import { FormsModule } from '@angular/forms';
+import dayjs from 'dayjs';
 
 interface Especialidad {
   id: number;
@@ -29,6 +31,7 @@ interface Mesa {
 @Component({
   selector: 'app-detalle-mesas',
   imports: [
+    FormsModule,
     CardModule,
     DatePickerModule,
     ChipModule,
@@ -39,7 +42,26 @@ interface Mesa {
 
 })
 export class DetalleMesasComponent {
+
+
+  constructor() {
+    effect(() => {
+      this.onSeleccionarFecha(this.fechaSeleccionada());
+    });
+
+    effect(() => {
+      if (this.accionGuardar()) {
+        this.onSeleccionarFecha(this.fechaSeleccionada());
+      }
+    });
+
+  }
+
+  asignacionMesaService = inject(AsignacionMesaService);
   convocatoriaSeleccionada = model<MesaConfiguracion | undefined>(undefined);
+  accionGuardar = model<boolean | undefined>(undefined);
+  fechaSeleccionada = signal<Date | undefined>(undefined);
+
 
   mesas: Mesa[] = [
     {
@@ -315,18 +337,36 @@ export class DetalleMesasComponent {
     }
   ];
 
+  onSeleccionarFecha(fecha: Date | undefined) {
 
+    if (fecha) {
+      this.asignacionMesaService.getDetalleMesaFecha(this.convocatoriaSeleccionada()?.idMesaConvocatoria as number, dayjs(fecha).format('YYYY-MM-DD')).subscribe({
+        next: (response: any) => {
+          console.log('Respuesta:', response);
+          this.mesas = response.respuesta;
+        },
+        error: (err) => {
+          console.error('Error:', err);
+        }
+      });
+    }
+
+  }
 
   getTotalMedicosMesa(mesa: Mesa): number {
-    return mesa.turnos.reduce(
-      (sumTurnos, turno) =>
-        sumTurnos +
-        turno.especialidades.reduce(
-          (sumEsp, especialidad) => sumEsp + especialidad.cantidad,
-          0
-        ),
-      0
-    );
+    if (mesa.turnos) {
+
+      return mesa.turnos.reduce(
+        (sumTurnos, turno) =>
+          sumTurnos +
+          turno.especialidades.reduce(
+            (sumEsp, especialidad) => sumEsp + especialidad.cantidad,
+            0
+          ),
+        0
+      );
+    }
+    return 0;
   }
 
 }

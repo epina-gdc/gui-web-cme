@@ -16,4 +16,7 @@ import { MesaConfiguracion, Rama } from '../../../../services/asignacion-mesa.se
 export class MesasComponent {
   convocatoriaSeleccionada = model<MesaConfiguracion | undefined>(undefined);
   ramaActual = model<Rama | undefined>(undefined);
+
+  accionGuardar = model<boolean | undefined>(undefined);
+
 }

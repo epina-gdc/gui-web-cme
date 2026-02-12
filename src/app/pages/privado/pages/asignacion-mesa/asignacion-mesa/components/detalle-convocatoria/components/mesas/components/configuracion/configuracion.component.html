@@ -11,12 +11,12 @@
             <div class="flex-grow-1">
                 <div class="form-grid grid">
                     <div class="field col-12 md:col-6 lg:col-4">
-                        <label for="fechaAtencion" class="field-label flex pt-2 justify-content-between">
+                        <label for="fecAtencion" class="field-label flex pt-2 justify-content-between">
                             <span>Fecha de atención</span>
                             <span class="text-xs text-black-50 ">Obligatorio</span>
                         </label>
-                        <p-datePicker formControlName="fechaAtencion" class="flex w-full p-date-ate"
-                            [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" />
+                        <p-datePicker formControlName="fecAtencion" class="flex w-full p-date-ate"
+                            [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" placeholder="Ingresa fecha" />
                     </div>
 
                     <div class="field col-12 md:col-6 lg:col-4">
@@ -24,7 +24,7 @@
                             <span>Mesa</span>
                             <span class="text-xs text-black-50 ">Obligatorio</span>
                         </label>
-                        <p-select id="mesa" [options]="mesas" formControlName="mesa" placeholder="Ingresa mesa"
+                        <p-select id="mesa" [options]="mesas" formControlName="numMesa" placeholder="Ingresa mesa"
                             optionLabel="numeroMesa" optionValue="numeroMesa" class="w-full"></p-select>
                     </div>
 
@@ -32,7 +32,7 @@
                         <label for="turno" class="field-label flex pt-2 justify-content-between">
                             <span>Turno</span>
                             <span class="text-xs text-black-50 ">Obligatorio</span></label>
-                        <p-select id="turno" [options]="turnos" formControlName="turno" placeholder="Ingresa turno"
+                        <p-select id="turno" [options]="turnos" formControlName="idTurno" placeholder="Ingresa turno"
                             optionLabel="label" optionValue="value" class="w-full"></p-select>
                     </div>
 
@@ -41,7 +41,7 @@
                             <span>No. médicos por turno</span>
                             <span class="text-xs text-black-50 ">Obligatorio</span></label>
 
-                        <p-inputNumber formControlName="medicosPorTurno" placeholder="Ingresa No. médicos por turno"
+                        <p-inputNumber formControlName="numMedicosCupo" placeholder="Ingresa No. médicos por turno"
                             class="w-full" [showButtons]="true" [min]="1">
                         </p-inputNumber>
 
@@ -52,15 +52,15 @@
                         <label for="especialidad" class="field-label flex pt-2 justify-content-between">
                             <span>Especialidad</span>
                             <span class="text-xs text-black-50 ">Obligatorio</span></label>
-                        <p-select id="especialidad" [options]="especialidades" formControlName="especialidad"
+                        <p-select id="especialidad" [options]="especialidades" formControlName="idEspecialidad"
                             placeholder="Ingresa especialidades" optionLabel="label" optionValue="value"
                             class="w-full"></p-select>
                     </div>
 
                     <div class=" field col-12 md:col-4">
                         <div class="flex gap-4 align-content-center h-full btn-form">
-                            <p-button label="Limpiar" [outlined]="true" (click)="limpiarFormulario()" />
-                            <p-button label="Guardar" (click)="guardar()" />
+                            <p-button label="Limpiar" [outlined]="true" (onClick)="limpiarFormulario()" />
+                            <p-button label="Guardar" (onClick)="guardar()" />
                         </div>
                     </div>
                 </div>

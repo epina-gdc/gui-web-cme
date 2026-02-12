@@ -7,6 +7,7 @@ import { SelectModule } from 'primeng/select';
 import { DatePickerModule } from 'primeng/datepicker';
 import { AsignacionMesaService, Especialida, MesaConfiguracion, MesaDisponibilidad, Rama, Turno } from '@pages/privado/pages/asignacion-mesa/asignacion-mesa/services/asignacion-mesa.service';
 import { InputNumberModule } from 'primeng/inputnumber';
+import dayjs from 'dayjs';
 interface Opcion {
   id: number;
   nombre: string;
@@ -31,6 +32,8 @@ export class ConfiguracionComponent {
   asignacionMesaService = inject(AsignacionMesaService);
 
   convocatoriaSeleccionada = model<MesaConfiguracion | undefined>(undefined);
+  accionGuardar = model<boolean | undefined>(undefined);
+
   ramaActual = model<Rama | undefined>(undefined);
 
 
@@ -103,15 +106,32 @@ export class ConfiguracionComponent {
 
       const mesaDetalle = {
         idMesaConvocatoria: this.convocatoriaSeleccionada()?.idMesaConvocatoria as number,
-        fecAtencion: this.formulario.value.fecAtencion as string,
+        fecAtencion: dayjs(this.formulario.value.fecAtencion).format('YYYY-MM-DD'),
         numMesa: this.formulario.value.numMesa as number,
         idEspecialidad: this.formulario.value.idEspecialidad as number,
         idTurno: this.formulario.value.idTurno as number,
         numMedicosCupo: this.formulario.value.numMedicosCupo as number
       }
-
-
       // Aquí iría la lógica de envío a API
+      this.asignacionMesaService.guardarConfiguracionMesa(mesaDetalle).subscribe({
+        next: (response: any) => {
+          console.log('Respuesta:', response);
+          //this.limpiarFormulario();
+          //this.obtenerListados();
+          this.accionGuardar.update((value) => true);
+          setTimeout(() => {
+            this.accionGuardar.update((value) => false);
+          }, 500);
+
+        },
+        error: (err) => {
+          console.error('Error:', err);
+        }
+      });
+
+
+
+
     } else {
       console.log('Formulario inválido');
     }
