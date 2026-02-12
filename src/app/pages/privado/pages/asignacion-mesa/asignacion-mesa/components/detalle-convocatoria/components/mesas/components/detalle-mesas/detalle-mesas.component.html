@@ -1,13 +1,13 @@
 <p-card [style]="{width: 'width'}" styleClass="styleClass">
 
     <div class="col-12 font-normal text-xl">Mesas</div>
-    <div class="col-12 md:col-6">
+    <div class="col-12 md:col-6 lg:col-4">
         <div class="">
             <label for="fechaAtencion" class="field-label">
                 <span>Fecha de atención</span>
 
             </label>
-            <p-calendar formControlName="fechaAtencion" class="flex w-full" [iconDisplay]="'input'" [showIcon]="true"
+            <p-datePicker formControlName="fechaAtencion" class="flex w-full p-date-ate" [iconDisplay]="'input'" [showIcon]="true"
                 inputId="icondisplay" />
         </div>
     </div>

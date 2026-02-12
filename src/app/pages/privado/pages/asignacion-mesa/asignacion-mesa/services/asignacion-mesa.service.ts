@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment.development';
+import { extend } from 'dayjs';
 import { catchError, map, Observable, throwError } from 'rxjs';
 
 // Interfaces existentes (mantenidas para compatibilidad)
@@ -98,8 +99,36 @@ export class ResponseRamaConvocatoria extends ResponseGeneral {
   respuesta!: Rama[];
 }
 
+export class Especialida {
+  descripcionEspecialidad?: string;
+  totalUsuarios?: number;
+  value?: number;
+  label?: string;
+}
+export class TotalesMedicosRama {
+  especialidades?: Especialida[];
+  totalMedicos?: number;
+}
+
+export class ResponseTotalesMedicosRama extends ResponseGeneral {
+  respuesta!: TotalesMedicosRama;
+}
 
 
+export class ResponseEspecialidadRama extends ResponseGeneral {
+  respuesta!: Especialida[];
+}
+
+export class MesaDisponibilidad {
+  numeroMesa!: number;
+  medicosPorMesa!:number;
+  lugaresDisponibles!: number;
+}
+
+
+export class ResponseMesasDisponibilidad extends ResponseGeneral {
+  respuesta!: MesaDisponibilidad[];
+}
 
 
 @Injectable({
@@ -211,13 +240,37 @@ export class AsignacionMesaService {
   }
 
 
-  getEspecialidadesRama(idRama: number, idMesaConvocatoria: number, idConvocatoria: number) {
+  getTotalesMedicosRama(idRama: number, idMesaConvocatoria: number, idConvocatoria: number): Observable<ResponseTotalesMedicosRama> {
     let parametros = new HttpParams();
     parametros = parametros.append('idRama', idRama.toString());
     parametros = parametros.append('idConvocatoria', idConvocatoria.toString());
     parametros = parametros.append('idMesaConvocatoria', idMesaConvocatoria.toString());
 
-    
+    return this.http.get<ResponseTotalesMedicosRama>(this.serverEndPointURLAsignacion + '/totales-medicos-rama', { headers: this.header, params: parametros }).pipe(
+      catchError(this.handleError),
+      map((response: ResponseTotalesMedicosRama) => {
+        return response;
+      })
+    );
+  }
+
+
+  getEspecialidadesRama(idRama: number, idMesaConvocatoria: number, idConvocatoria: number): Observable<ResponseEspecialidadRama> {
+    let parametros = new HttpParams();
+    parametros = parametros.append('idRama', idRama.toString());
+    parametros = parametros.append('idConvocatoria', idConvocatoria.toString());
+    parametros = parametros.append('idMesaConvocatoria', idMesaConvocatoria.toString());
+
+    return this.http.get<ResponseEspecialidadRama>(this.serverEndPointURLAsignacion + '/especialidades-por-rama', { headers: this.header, params: parametros }).pipe(
+      catchError(this.handleError),
+      map((response: ResponseEspecialidadRama) => {
+        return response;
+      })
+    );
+
+  }
+
+  getMesasDisponibilidad(idMesaConvocatoria : number): Observable<any> {
 
   }
 

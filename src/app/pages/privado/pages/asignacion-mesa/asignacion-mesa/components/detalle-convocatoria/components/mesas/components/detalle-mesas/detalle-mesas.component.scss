@@ -118,3 +118,10 @@ p-chip.is-becario {
   padding-top: 2.2px;
   font-size: 9px;
 }
+
+::ng-deep .p-date-ate {
+  .p-datepicker {
+    width: 100%;
+    ;
+  }
+}

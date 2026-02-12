@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {CalendarModule} from 'primeng/calendar';
+import { DatePickerModule } from 'primeng/datepicker';
 import {CardModule} from 'primeng/card';
 import {ChipModule} from 'primeng/chip';
 import {ButtonModule} from 'primeng/button';
@@ -29,7 +29,7 @@ interface Mesa {
   selector: 'app-detalle-mesas',
   imports: [
     CardModule,
-    CalendarModule,
+    DatePickerModule,
     ChipModule,
     ButtonModule,
   ],

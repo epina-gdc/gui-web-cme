@@ -1,11 +1,10 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ButtonModule} from 'primeng/button';
-import {CalendarModule} from 'primeng/calendar';
 import {CardModule} from 'primeng/card';
 import {InputTextModule} from 'primeng/inputtext';
 import {SelectModule} from 'primeng/select';
-
+import { DatePickerModule } from 'primeng/datepicker';
 interface Opcion {
   id: number;
   nombre: string;
@@ -18,7 +17,7 @@ interface Opcion {
     FormsModule,
     InputTextModule,
     ReactiveFormsModule,
-    CalendarModule,
+    DatePickerModule,
     SelectModule],
   templateUrl: './configuracion.component.html',
   styleUrl: './configuracion.component.scss',

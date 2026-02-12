@@ -1,6 +1,7 @@
-import {Component} from '@angular/core';
-import {ConfiguracionComponent} from "./components/configuracion/configuracion.component";
-import {DetalleMesasComponent} from "./components/detalle-mesas/detalle-mesas.component";
+import { Component, model } from '@angular/core';
+import { ConfiguracionComponent } from "./components/configuracion/configuracion.component";
+import { DetalleMesasComponent } from "./components/detalle-mesas/detalle-mesas.component";
+import { MesaConfiguracion } from '../../../../services/asignacion-mesa.service';
 
 
 @Component({
@@ -8,10 +9,10 @@ import {DetalleMesasComponent} from "./components/detalle-mesas/detalle-mesas.co
   imports: [
     ConfiguracionComponent,
     DetalleMesasComponent
-],
+  ],
   templateUrl: './mesas.component.html',
   styleUrl: './mesas.component.scss',
 })
 export class MesasComponent {
-
+  convocatoriaSeleccionada = model<MesaConfiguracion | undefined>(undefined);
 }
