@@ -14,8 +14,8 @@
                 placeholder="Ingrese su matrícula/folio"
                 formControlName="folio"
                 />
-            <p-button type="button" variant="outlined" label="Limpiar"  (click)="onLimpiar()" [disabled]="form.invalid"  />
-            <p-button type="submit" label="Buscar" [disabled]="form.invalid"  />
+            <p-button type="button" variant="outlined" label="Limpiar"  (click)="onLimpiar()"  />
+            <p-button type="submit" label="Buscar" [disabled]="form.get('folio')?.invalid"   />
           </div>
         </div>
       </div>
@@ -75,7 +75,7 @@
       </div>
       @switch (tab) {
         @case (0) {
-          <app-plaza-ordinaria></app-plaza-ordinaria>
+          <app-plaza-ordinaria [infoAspirante]="busqueda.datosGenerales!"></app-plaza-ordinaria>
         }
         @case (1) {
           <app-coplamar></app-coplamar>

@@ -90,3 +90,16 @@ export class Plaza {
     esFavorita?:boolean;
     cveZona?:number;
 }
+
+export const TipoAsignación = {
+    PlazaOrdinaria: 1,
+    PlazaCoplamar: 2,
+    Sustitucion08: 3,
+    CambioRama: 4,
+    RechazoOferta: 5
+} as const;
+
+export const Regimen ={
+    PlazaOrdinaria: 1,
+    Complamar: 2
+} as const;

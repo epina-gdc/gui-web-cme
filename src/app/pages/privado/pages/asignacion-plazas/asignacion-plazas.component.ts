@@ -13,7 +13,7 @@ import {Button} from "primeng/button";
 import {AlertService} from '@services/alert.service';
 import {Subject} from 'rxjs';
 import { AsignacionPlazaService } from '@services/asignacion-plaza.service';
-import { BusquedaResponse } from '@models/datosAsignacion';
+import { BusquedaResponse, InfoAspirante } from '@models/datosAsignacion';
 
 @Component({
   selector: 'app-asignacion-plazas',
@@ -52,12 +52,18 @@ export class AsignacionPlazasComponent {
   }
 
   onBuscar() {
-    const matricula = this.form.get('folio')!.value as string;
+    this.form.get('folio')?.markAsTouched();
+    this.form.updateValueAndValidity();
+
+    const matricula = (this.form.get('folio')?.value ?? '').toString().trim();
+
+    if (!matricula) return; // evita buscar vacío
+
     this.asignacionService.getAspirante(matricula).subscribe({
       next: (response) => {
-        //console.log(response);
+        console.log('Result ', response);
         if(response.exito){
-          this.busqueda = response.respuesta;
+          this.busqueda = structuredClone(response.respuesta);;
           this.exist = true;
         } else {
           this.alertaService.error('No se encontró matrícula/folio.');
@@ -75,5 +81,8 @@ export class AsignacionPlazasComponent {
   onLimpiar() {
     this.form.reset({ folio: '' });
     this.exist = false;
+
+    //this.form.markAsPristine();
+    //this.form.markAsUntouched();
   }
 }

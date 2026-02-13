@@ -1,84 +1,109 @@
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" [closable]="true" styleClass="custom-title-confirm-dialog">
+</p-confirmDialog>
+
 <p-card class="mx-2 empty-border info-card" [header]="'Información del médico aspirante'">
-        <div class="mx-4 info-body">
-          <!-- Avatar -->
-          <div class="info-avatar">
-            <p-avatar
-              [image]="medico.fotoUrl"
-              shape="circle"
-              size="xlarge">
-            </p-avatar>
+  <div class="mx-4 info-body">
+    <!-- Avatar -->
+    <div class="info-avatar">
+      <p-avatar [image]="aspirante.fotoUrl" shape="circle" size="xlarge">
+      </p-avatar>
+    </div>
+
+    <!-- Main content -->
+    <div class="info-main">
+      <div class="info-toprow">
+        <h2 class="info-name">{{ aspirante.nombreCompleto }}</h2>
+
+        <!-- Actions -->
+        <div class="info-actions gap-5">
+          <div class="flex align-items-center justify-content-center gap-2" style="cursor: pointer; color: #63c2ea;"
+            (click)="rechazarOferta()">
+            <i class="cme-rechazo-oferta" style="font-size: 1.4rem"></i>
+            <p style="font-size: 12px; font-weight: 500;">Rechazo de oferta</p>
+          </div>
+          <div class="flex align-items-center justify-content-center gap-2" style="cursor: pointer; color: #63c2ea;"
+            (click)="cambiarRama()">
+            <i class="cme-cambio-rama" style="font-size: 1.4rem"></i>
+            <p style="font-size: 12px; font-weight: 500;">Cambio de rama</p>
           </div>
 
-          <!-- Main content -->
-          <div class="info-main">
-            <div class="info-toprow">
-              <h2 class="info-name">{{ infoAspirante?.nombreCompleto }}</h2>
+          <div class="flex align-items-center justify-content-center gap-2" style="cursor: pointer; color: #63c2ea;"
+            (click)="reimprimirVerificacion()">
+            <i class="cme-file" style="font-size: 1.8rem"></i>
+            <p style="font-size: 12px; font-weight: 500;">Reimpresión de verificación</p>
+          </div>
 
-              <!-- Actions -->
-              <div class="info-actions gap-5">
-                <div class="flex align-items-center justify-content-center gap-2" style="cursor: pointer; color: #63c2ea;"
-                    (click)="rechazarOferta()">
-                  <i class="cme-rechazo-oferta" style="font-size: 1.4rem"></i>
-                  <p style="font-size: 12px; font-weight: 500;">Rechazo de oferta</p>
-                </div>
-                <div class="flex align-items-center justify-content-center gap-2" style="cursor: pointer; color: #63c2ea;"
-                    (click)="cambiarRama()">
-                  <i class="cme-cambio-rama" style="font-size: 1.4rem"></i>
-                  <p style="font-size: 12px; font-weight: 500;">Cambio de rama</p>
-                </div>
+        </div>
+      </div>
 
-                <div class="flex align-items-center justify-content-center gap-2" style="cursor: pointer; color: #63c2ea;"
-                    (click)="reimprimirVerificacion()">
-                  <i class="cme-file" style="font-size: 1.8rem"></i>
-                  <p style="font-size: 12px; font-weight: 500;">Reimpresión de verificación</p>
-                </div>
+      <!-- Info grid -->
+      <div class="info-grid">
+        <div class="info-item">
+          <div class="info-label">Matrícula</div>
+          <div class="info-value">{{ aspirante.matricula }}</div>
+        </div>
 
-              </div>
-            </div>
+        <div class="info-item asp-item-wide">
+          <div class="info-label">Especialidad(es)</div>
 
-            <!-- Info grid -->
-            <div class="info-grid">
-              <div class="info-item">
-                <div class="info-label">Matrícula</div>
-                <div class="info-value">{{ infoAspirante?.matriculaFolio }}</div>
-              </div>
-
-              <div class="info-item asp-item-wide">
-                <div class="info-label">Especialidad(es)</div>
-
-                <div class="esp-inline">
-                  <ng-container *ngFor="let e of infoAspirante?.especialidades; let last = last">
-                    <span class="esp-item-text">{{ e }}</span>
-                    <span *ngIf="!last" class="esp-sep">/</span>
-                  </ng-container>
-                </div>
-              </div>
-
-              <div class="info-item">
-                <div class="info-label">Sexo</div>
-                <div class="info-value">{{ infoAspirante?.genero }}</div>
-              </div>
-
-              <div class="info-item">
-                <div class="info-label">CURP</div>
-                <div class="info-value">{{ infoAspirante?.curp }}</div>
-              </div>
-
-              <div class="info-item">
-                <div class="info-label">RFC</div>
-                <div class="info-value">{{ infoAspirante?.rfc }}</div>
-              </div>
-
-              <div class="info-item">
-                <div class="info-label">Correo electrónico</div>
-                <div class="info-value">{{ infoAspirante?.correo }}</div>
-              </div>
-
-              <div class="info-item">
-                <div class="info-label">Correo electrónico adicional</div>
-                <div class="info-value">{{ infoAspirante?.correoAdicional }}</div>
-              </div>
-            </div>
+          <div class="esp-inline">
+            <ng-container *ngFor="let e of aspirante.especialidades; let last = last">
+              <span class="esp-item-text">{{ e }}</span>
+              <span *ngIf="!last" class="esp-sep">/</span>
+            </ng-container>
           </div>
         </div>
-      </p-card>
+
+        <div class="info-item">
+          <div class="info-label">Sexo</div>
+          <div class="info-value">{{ aspirante.sexo }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">CURP</div>
+          <div class="info-value">{{ aspirante.curp }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">RFC</div>
+          <div class="info-value">{{ aspirante.rfc }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">Correo electrónico</div>
+          <div class="info-value">{{ aspirante.email }}</div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-label">Correo electrónico adicional</div>
+          <div class="info-value">{{ aspirante.emailAdicional }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</p-card>
+
+
+<p-confirmDialog
+  key="rechazoOferta"
+  [style]="{width: '50vw'}" [baseZIndex]="10000" [closable]="true"
+  styleClass="custom-title-confirm-dialog"
+>
+  <ng-template pTemplate="message">
+    <div class="rechazo-body">
+      <p class="pregunta">¿Estás seguro de rechazar la oferta?</p>
+
+      <label class="label-motivo">Seleccione el motivo del rechazo</label>
+
+      <p-select
+        class="w-full"
+        [options]="motivos"
+        optionLabel="label"
+        optionValue="value"
+        [(ngModel)]="motivoSeleccionado"
+        placeholder="Selecciona el motivo"
+        appendTo="body"
+      ></p-select>
+    </div>
+  </ng-template>
+</p-confirmDialog>
