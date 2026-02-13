@@ -83,7 +83,7 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
           return;
         }
         this.alerService.exito(respuesta.mensaje);
-        this.datosMedico.set(respuesta.respuesta);
+        this.cargarDatos(respuesta.respuesta);
         this.obtenerFotografia(respuesta.respuesta.uuidArchivo);
       },
       error: error => {

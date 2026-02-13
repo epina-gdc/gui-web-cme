@@ -46,8 +46,8 @@
           </div>
           <div class="md:ms-5 md:col-8 col-12 p-2">
             <div class="flex flex-column">
-              <span class="titulo-card-aspirante">Dr. Pablo Andrés García Bernal</span>
-              <span class="subtitulo-card-aspirante my-1">Matrícula: <strong>98161651</strong></span>
+              <span class="titulo-card-aspirante">Dr. {{ datosMedico()?.nomParticipante }}</span>
+              <span class="subtitulo-card-aspirante my-1">Matrícula: <strong>{{ datosMedico()?.matricula }}</strong></span>
               <span class="subtitulo-card-aspirante mt-4 mb-2"><strong>Especialidades</strong></span>
               <div class="flex flex-wrap">
                 @for (especialidad of datosMedico()?.especialidades; track especialidad) {
