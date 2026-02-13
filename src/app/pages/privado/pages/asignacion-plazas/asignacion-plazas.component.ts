@@ -38,6 +38,7 @@ export class AsignacionPlazasComponent {
   tab: number = 0;
   form!: FormGroup;
   exist = false;
+  tieneAsignacion: boolean = false;
 
   busqueda!: BusquedaResponse;
 
@@ -63,26 +64,29 @@ export class AsignacionPlazasComponent {
       next: (response) => {
         console.log('Result ', response);
         if(response.exito){
-          this.busqueda = structuredClone(response.respuesta);;
+          this.busqueda = structuredClone(response.respuesta);
           this.exist = true;
+          if(this.busqueda.asignacionMedico?.id != null && this.busqueda.asignacionMedico?.id > 0)
+            this.tieneAsignacion = true;
+          else
+            this.tieneAsignacion = false;
         } else {
           this.alertaService.error('No se encontró matrícula/folio.');
           this.exist = false;
+          this.tieneAsignacion = false;
         }
       },
       error: (error) => {
         //console.log(error);
         this.alertaService.error('No se encontró matrícula/folio.');
         this.exist = false;
+        this.tieneAsignacion = false;
       }
-    })
+    });
   }
 
   onLimpiar() {
     this.form.reset({ folio: '' });
     this.exist = false;
-
-    //this.form.markAsPristine();
-    //this.form.markAsUntouched();
   }
 }

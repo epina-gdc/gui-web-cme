@@ -2,14 +2,14 @@ export class AsignacionRequest{
     idUsuario!:number;
     //1=PLAZA ORDINARIA, 2=PLAZA COPLAMAR, 3=SUSTITUCIÓN 08, 4=CAMBIO DE RAMA, 5=RECHAZO DE OFERTA
     idTipoAsignacionPlaza!:number;
-    idPlaza!:number;
-    idMotivoRechazo!:number;
-    cveOoad!:string;
-    desOoad!:string;
-    cveZona!:string;
-    desZona!:string;
-    cveEspecialidad!:string;
-    desEspecialidad!:string;
+    idPlaza?:number;
+    idMotivoRechazo?:number;
+    cveOoad?:string;
+    desOoad?:string;
+    cveZona?:string;
+    desZona?:string;
+    cveEspecialidad?:string;
+    desEspecialidad?:string;
 }
 
 export class DisponiblesRequest {
@@ -42,17 +42,20 @@ export class InfoAspirante {
     rfc?:string;
     correo?:string;
     correoAdicional?:string;
+    idTipoConvocatoria!:number;
+    tipoConvocatoria!:string;
 }
 
 export class AsignacionPlaza {
-    idTipoAsignacion?:TipoAsignacion;
+    id?:number;
+    idTipoAsignacion?:Asignacion;
     idPlazaLayout?:Plaza
-    idMotivoRechazo?:number;
+    idMotivoRechazo?:MotivoRechazo;
     idSustitucion?:number;
     stpAsignacion?:number;
 }
 
-export class TipoAsignacion {
+export class Asignacion {
     id!:number;
     desTipoAsignacion!:string;
 }
@@ -91,7 +94,12 @@ export class Plaza {
     cveZona?:number;
 }
 
-export const TipoAsignación = {
+export class MotivoRechazo {
+    id!:number;
+    desMotivo!:string;
+}
+
+export const TipoAsignacion = {
     PlazaOrdinaria: 1,
     PlazaCoplamar: 2,
     Sustitucion08: 3,
@@ -103,3 +111,8 @@ export const Regimen ={
     PlazaOrdinaria: 1,
     Complamar: 2
 } as const;
+
+export interface DropMotivo {
+  desMotivo: string;
+  idMotivoRechazo: number;
+}

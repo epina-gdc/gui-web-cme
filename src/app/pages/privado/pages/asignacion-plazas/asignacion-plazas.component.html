@@ -10,12 +10,10 @@
         <h2 class="titulo-asignaciones">Búsqueda por matrícula/folio</h2>
         <div class="search_form">
           <div class="md:col-4 col-12 flex align-content-center flex-1 gap-3 pt-4">
-            <input pInputText class="w-full" type="text" id="folio"
-                placeholder="Ingrese su matrícula/folio"
-                formControlName="folio"
-                />
-            <p-button type="button" variant="outlined" label="Limpiar"  (click)="onLimpiar()"  />
-            <p-button type="submit" label="Buscar" [disabled]="form.get('folio')?.invalid"   />
+            <input pInputText class="w-full" type="text" id="folio" placeholder="Ingrese su matrícula/folio"
+              formControlName="folio" />
+            <p-button type="button" variant="outlined" label="Limpiar" (click)="onLimpiar()" />
+            <p-button type="submit" label="Buscar" [disabled]="form.get('folio')?.invalid" />
           </div>
         </div>
       </div>
@@ -29,64 +27,58 @@
         <p class="empty__text">No hay resultados de búsqueda</p>
       </div>
     </div>
-    
+
     <div *ngIf="exist">
-      
-      <app-info-aspirante [infoAspirante]="busqueda.datosGenerales!" [tipo]="1"></app-info-aspirante>
+      <app-info-aspirante [asignacion]="busqueda" [tipo]="1"></app-info-aspirante>
 
       <!--**ESCENARIO TABS-->
-      <div class="py-1 px-4 md:bg-white border-round-xl mb-4">
-        <p-tabs [value]="tab" class="tab-documentacion">
-          <p-tablist class="flex flex-row">
-            <p-tab [value]="0" (click)="tab = 0" class="w-auto">
-              <div class="header-tab-documentacion">
-                <i class="cme-coplamar me-3"
-                  [ngStyle]="{
+      <div *ngIf="!tieneAsignacion">
+        <div class="py-1 px-4 md:bg-white border-round-xl mb-4">
+          <p-tabs [value]="tab" class="tab-documentacion">
+            <p-tablist class="flex flex-row">
+              <p-tab [value]="0" (click)="tab = 0" class="w-auto">
+                <div class="header-tab-documentacion">
+                  <i class="cme-coplamar me-3" [ngStyle]="{
                     'color': tab == 0 ? '#404041' : '#ADB8CC'
-                  }"
-              style="font-size: 1.4rem"></i>
-                <p>Plazas ordinarias</p>
-              </div>
-            </p-tab>
-            <p-tab [value]="1" (click)="tab = 1" class="w-auto">
-              <div class="header-tab-documentacion">
-                <i class="cme-coplamar me-3"
-                  [ngStyle]="{
+                  }" style="font-size: 1.4rem"></i>
+                  <p>Plazas ordinarias</p>
+                </div>
+              </p-tab>
+              <p-tab [value]="1" (click)="tab = 1" class="w-auto">
+                <div class="header-tab-documentacion">
+                  <i class="cme-coplamar me-3" [ngStyle]="{
                     'color': tab == 1 ? '#404041' : '#ADB8CC'
-                    }"
-                  style="font-size: 1.4rem"></i>
-                <p>COPLAMAR</p>
-              </div>
-            </p-tab>
+                    }" style="font-size: 1.4rem"></i>
+                  <p>COPLAMAR</p>
+                </div>
+              </p-tab>
 
               <p-tab [value]="2" (click)="tab = 2" class="w-auto">
                 <div class="header-tab-documentacion">
-                  <i class="cme-sustitucion me-3"
-                    [ngStyle]="{
+                  <i class="cme-sustitucion me-3" [ngStyle]="{
                       'color': tab == 2 ? '#404041' : '#ADB8CC'
-                      }"
-                    style="font-size: 1.4rem"></i>
+                      }" style="font-size: 1.4rem"></i>
                   <p>Asignación de sustitución</p>
                 </div>
               </p-tab>
 
-          </p-tablist>
-        </p-tabs>
-      </div>
-      @switch (tab) {
+            </p-tablist>
+          </p-tabs>
+        </div>
+        @switch (tab) {
         @case (0) {
-          <app-plaza-ordinaria [infoAspirante]="busqueda.datosGenerales!"></app-plaza-ordinaria>
+        <app-plaza-ordinaria [infoAspirante]="busqueda.datosGenerales!"></app-plaza-ordinaria>
         }
         @case (1) {
-          <app-coplamar></app-coplamar>
+        <app-coplamar></app-coplamar>
         }
         @case (2) {
-          <app-asignacion-sustitucion></app-asignacion-sustitucion>
+        <app-asignacion-sustitucion></app-asignacion-sustitucion>
         }
-      }
-      <!--**ESCENARIO TABS-->
+        }
+        <!--**ESCENARIO TABS-->
+      </div>
+
     </div>
   </main>
 </section>
-
-

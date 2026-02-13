@@ -1,109 +1,117 @@
-<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" [closable]="true" styleClass="custom-title-confirm-dialog">
-</p-confirmDialog>
-
 <p-card class="mx-2 empty-border info-card" [header]="'Información del médico aspirante'">
-  <div class="mx-4 info-body">
-    <!-- Avatar -->
-    <div class="info-avatar">
-      <p-avatar [image]="aspirante.fotoUrl" shape="circle" size="xlarge">
-      </p-avatar>
-    </div>
-
-    <!-- Main content -->
-    <div class="info-main">
-      <div class="info-toprow">
-        <h2 class="info-name">{{ aspirante.nombreCompleto }}</h2>
-
-        <!-- Actions -->
-        <div class="info-actions gap-5">
-          <div class="flex align-items-center justify-content-center gap-2" style="cursor: pointer; color: #63c2ea;"
-            (click)="rechazarOferta()">
-            <i class="cme-rechazo-oferta" style="font-size: 1.4rem"></i>
-            <p style="font-size: 12px; font-weight: 500;">Rechazo de oferta</p>
-          </div>
-          <div class="flex align-items-center justify-content-center gap-2" style="cursor: pointer; color: #63c2ea;"
-            (click)="cambiarRama()">
-            <i class="cme-cambio-rama" style="font-size: 1.4rem"></i>
-            <p style="font-size: 12px; font-weight: 500;">Cambio de rama</p>
-          </div>
-
-          <div class="flex align-items-center justify-content-center gap-2" style="cursor: pointer; color: #63c2ea;"
-            (click)="reimprimirVerificacion()">
-            <i class="cme-file" style="font-size: 1.8rem"></i>
-            <p style="font-size: 12px; font-weight: 500;">Reimpresión de verificación</p>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- Info grid -->
-      <div class="info-grid">
-        <div class="info-item">
-          <div class="info-label">Matrícula</div>
-          <div class="info-value">{{ aspirante.matricula }}</div>
-        </div>
-
-        <div class="info-item asp-item-wide">
-          <div class="info-label">Especialidad(es)</div>
-
-          <div class="esp-inline">
-            <ng-container *ngFor="let e of aspirante.especialidades; let last = last">
-              <span class="esp-item-text">{{ e }}</span>
-              <span *ngIf="!last" class="esp-sep">/</span>
-            </ng-container>
-          </div>
-        </div>
-
-        <div class="info-item">
-          <div class="info-label">Sexo</div>
-          <div class="info-value">{{ aspirante.sexo }}</div>
-        </div>
-
-        <div class="info-item">
-          <div class="info-label">CURP</div>
-          <div class="info-value">{{ aspirante.curp }}</div>
-        </div>
-
-        <div class="info-item">
-          <div class="info-label">RFC</div>
-          <div class="info-value">{{ aspirante.rfc }}</div>
-        </div>
-
-        <div class="info-item">
-          <div class="info-label">Correo electrónico</div>
-          <div class="info-value">{{ aspirante.email }}</div>
-        </div>
-
-        <div class="info-item">
-          <div class="info-label">Correo electrónico adicional</div>
-          <div class="info-value">{{ aspirante.emailAdicional }}</div>
-        </div>
+  <div class="grid">
+    <div class="col-12 md:col-2">
+      <div class="info-avatar flex align-items-center justify-content-center">
+        <p-avatar [image]="aspirante.fotoUrl" shape="circle" size="xlarge">
+        </p-avatar>
       </div>
     </div>
+
+    <div class="col-12 md:col-10">
+      <div class="grid">
+        <div class="col-12 md:col-6">
+          <h2 class="info-name">{{ aspirante.nombreCompleto }}</h2>
+        </div>
+
+        <div class="col-12 md:col-6">
+          <div *ngIf="!tieneAsignacion" class="grid">
+            <div class="col-12 md:col-4 flex align-items-center justify-content-start gap-2"
+              style="cursor: pointer; color: #63c2ea;" (click)="rechazarOferta()">
+              <i class="cme-rechazo-oferta" style="font-size: 1.4rem"></i>
+              <p style="font-size: 11px; font-weight: 500; text-align: left;">Rechazo de oferta</p>
+            </div>
+            <div class="col-12 md:col-4 flex align-items-center justify-content-start gap-2"
+              style="cursor: pointer; color: #63c2ea;" (click)="cambiarRama()">
+              <i class="cme-cambio-rama" style="font-size: 1.4rem"></i>
+              <p style="font-size: 11px; font-weight: 500; text-align: left;">Cambio de rama</p>
+            </div>
+            <div class="col-12 md:col-4 flex align-items-center justify-content-start gap-2"
+              style="cursor: pointer; color: #63c2ea;" (click)="reimprimirVerificacion()">
+              <i class="cme-file" style="font-size: 1.8rem"></i>
+              <p style="font-size: 11px; font-weight: 500; text-align: left;">Reimpresión de verificación</p>
+            </div>
+          </div>
+
+          <div *ngIf="tieneAsignacion" class="grid">
+            <div *ngIf="tieneAsignacion" class="col-12 md:col-6 flex align-items-center justify-content-start gap-2">
+              <p-tag [value]="getTagTexto(tipoAsignacion)" [styleClass]="getTagClass(tipoAsignacion)"
+                icon="pi pi-circle"></p-tag>
+            </div>
+            <div class="col-12 md:col-6 flex align-items-center justify-content-start gap-2"
+              style="cursor: pointer; color: #63c2ea;" (click)="reimprimirVerificacion()">
+              <i class="cme-file" style="font-size: 1.8rem"></i>
+              <p style="font-size: 11px; font-weight: 500; text-align: left;">Reimpresión de verificación</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="col-12">
+        <div class="grid">
+          <div class="col-12 md:col-2">
+            <div class="info-label">Matrícula</div>
+            <div class="info-value">{{ aspirante.matricula }}</div>
+          </div>
+
+          <div class="col-12 md:col-2">
+            <div class="info-label">Especialidad(es)</div>
+
+            <div class="esp-inline">
+              <ng-container *ngFor="let e of aspirante.especialidades; let last = last">
+                <span class="esp-item-text">{{ e }}</span>
+                <span *ngIf="!last" class="esp-sep">/</span>
+              </ng-container>
+            </div>
+          </div>
+          <div class="col-12 md:col-1">
+            <div class="info-label">Sexo</div>
+            <div class="info-value">{{ aspirante.sexo }}</div>
+          </div>
+          <div class="col-12 md:col-2">
+            <div class="info-label">CURP</div>
+            <div class="info-value">{{ aspirante.curp }}</div>
+          </div>
+          <div class="col-12 md:col-1">
+            <div class="info-label">RFC</div>
+            <div class="info-value">{{ aspirante.rfc }}</div>
+          </div>
+          <div class="col-12 md:col-2">
+            <div class="info-label">Correo electrónico</div>
+            <div class="info-value">{{ aspirante.email }}</div>
+          </div>
+          <div class="col-12 md:col-2">
+            <div class="info-label">Correo electrónico adicional</div>
+            <div class="info-value">{{ aspirante.emailAdicional }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </p-card>
 
 
-<p-confirmDialog
-  key="rechazoOferta"
-  [style]="{width: '50vw'}" [baseZIndex]="10000" [closable]="true"
-  styleClass="custom-title-confirm-dialog"
->
+<p-confirmDialog key="cambioRama" [style]="{width: '50vw'}" [baseZIndex]="10000" [closable]="true"
+  styleClass="custom-title-confirm-dialog">
+</p-confirmDialog>
+
+<p-confirmDialog key="rechazoOferta" [style]="{width: '50vw'}" [baseZIndex]="10000" [closable]="true"
+  styleClass="custom-form-confirm-dialog">
   <ng-template pTemplate="message">
-    <div class="rechazo-body">
+    <div class="message-body">
       <p class="pregunta">¿Estás seguro de rechazar la oferta?</p>
+      <label class="field-label" for="motivos">Seleccione el motivo del rechazo</label>
+      <p-select [options]="motivos" inputId="motivos" optionLabel="desMotivo" optionValue="idMotivoRechazo"
+        placeholder="Selecciona el motivo" class="w-full" appendTo="body" [(ngModel)]="motivoSeleccionado" />
+    </div>
+    <div class="acciones">
+      <p-button type="button" label="Cancelar" severity="danger" variant="outlined"
+        (click)="cancelarConfirmacion()"></p-button>
 
-      <label class="label-motivo">Seleccione el motivo del rechazo</label>
-
-      <p-select
-        class="w-full"
-        [options]="motivos"
-        optionLabel="label"
-        optionValue="value"
-        [(ngModel)]="motivoSeleccionado"
-        placeholder="Selecciona el motivo"
-        appendTo="body"
-      ></p-select>
+      <p-button type="button" label="Confirmar rechazo" variant="outlined" [disabled]="!motivoSeleccionado"
+        (click)="confirmarRechazo()"></p-button>
     </div>
   </ng-template>
 </p-confirmDialog>

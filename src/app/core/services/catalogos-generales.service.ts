@@ -258,6 +258,15 @@ export class CatalogosGeneralesService {
     );
   }
 
+  getMotivosRechazo(): Observable<any> {
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/motivoRechazo', {headers: this.header}).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<any>) => {
+        return response;
+      })
+    );
+  }
+
   private handleError(error: HttpErrorResponse) {
 
     if (error.status) {
