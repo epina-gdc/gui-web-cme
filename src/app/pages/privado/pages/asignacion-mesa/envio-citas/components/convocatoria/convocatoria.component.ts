@@ -1,13 +1,22 @@
-import {CommonModule} from '@angular/common';
-import {ChangeDetectionStrategy, Component, signal} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {CardModule} from "primeng/card";
-import {SelectModule} from "primeng/select";
-import {ButtonModule} from "primeng/button";
+import { CommonModule } from '@angular/common';
+import { Component, effect, inject, model, signal } from '@angular/core';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CardModule } from "primeng/card";
+import { SelectModule } from "primeng/select";
+import { ButtonModule } from "primeng/button";
+import { AsignacionMesaService, Convocatoria, ResponseConvocatorias } from '../../../asignacion-mesa/services/asignacion-mesa.service';
+import { EnvioCitasService, TotalCitas } from '../../services/envio-citas.service';
+
+export enum TypeMedico {
+  BECADOS = 1,
+  RESIDENTES = 2,
+  EXTERNOS = 3,
+}
 
 @Component({
   selector: 'app-convocatoria',
   imports: [
+    FormsModule,
     CommonModule,
     ReactiveFormsModule,
     CardModule,
@@ -16,31 +25,65 @@ import {ButtonModule} from "primeng/button";
   ],
   templateUrl: './convocatoria.component.html',
   styleUrl: './convocatoria.component.scss',
-  
+
 })
 export class ConvocatoriaComponent {
 
-  constructor(private fb: FormBuilder) { }
-  tipoMedSelect = signal(0);
-  convocatorias = [
-    { id: '1', nombre: 'Convocatoria 1' },
-    { id: '2', nombre: 'Convocatoria 2' },
-    { id: '3', nombre: 'Convocatoria 3' }
-  ];
+  constructor() {
+    effect(() => {
+      this.convocatoriaSelect();
+      this.tipoMedSelect();
+      this.cargaTotales();
+    });
+  }
 
-  formulario!: FormGroup;
+  tipoMed = TypeMedico;
+  asignacionMesaService = inject(AsignacionMesaService);
+  envioCitasService = inject(EnvioCitasService);
+
+  tipoMedSelect = signal<TypeMedico>(TypeMedico.BECADOS);
+  convocatorias: Convocatoria[] = [];
+  convocatoriaSelect = model<number | undefined>(undefined);
+
+  totalCitas = model<TotalCitas | undefined>(undefined);
 
 
   ngOnInit(): void {
-    this.formulario = this.fb.group({
-      convocatoriaId: ['', Validators.required],
+    this.loadConvocatorias();
+  }
 
+  loadConvocatorias(): void {
+    this.asignacionMesaService.getLstConvocatorias().subscribe({
+      next: (response: ResponseConvocatorias) => {
+        if (response.exito) {
+          this.convocatorias = response.respuesta;
+
+        }
+      },
+      error: (err) => {
+        console.error('Error al cargar convocatorias:', err);
+      }
     });
-
   }
 
 
-  onCambioMedSelec(tipo: number) {
+  cargaTotales() {
+    if (this.convocatoriaSelect()) {
+      this.envioCitasService.consultaTotalesCitas(this.convocatoriaSelect() as number, this.tipoMedSelect()).subscribe({
+        next: (response) => {
+          console.log(response);
+        if(response.exito){
+          this.totalCitas.update(valor => response.respuesta);
+        }
+        },
+        error: (err) => {
+          console.error('Error al cargar totales:', err);
+        }
+      });
+    }
+  }
+
+  onCambioMedSelec(tipo: TypeMedico) {
     this.tipoMedSelect.update(valor => tipo);
   }
 }

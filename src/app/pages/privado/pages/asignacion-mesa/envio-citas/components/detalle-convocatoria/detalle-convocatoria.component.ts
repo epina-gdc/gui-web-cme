@@ -1,9 +1,10 @@
 import {CommonModule} from '@angular/common';
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, model, OnDestroy, OnInit, signal} from '@angular/core';
 import {Avatar} from "primeng/avatar";
 import {CardModule} from 'primeng/card';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {Button} from "primeng/button";
+import { TotalCitas } from '../../services/envio-citas.service';
 
 @Component({
   selector: 'app-detalle-convocatoria',
@@ -16,7 +17,7 @@ export class DetalleConvocatoriaComponent implements OnInit, OnDestroy {
   value = signal(97);
   private intervalId: number | null = null;
 
-
+  totalCitas = model<TotalCitas | undefined>(undefined);
 
 
   ngOnInit(): void {
