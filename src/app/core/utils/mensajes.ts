@@ -24,7 +24,18 @@ export class Mensajes {
   public MSG026: string = 'Datos guardados correctamente.';
   public MSG037: string = 'La información está incompleta, favor de verificar.';
   public MSG039: string = '¡Registro exitoso!. Te hemos enviado un correo con los detalles. No olvides revisarlo.';
-  public MSG041: string = 'Actualmente no hay plazas ofertadas vacantes disponibles. Por favor, consulta más adelante.'
+  public MSG041: string = 'Actualmente no hay plazas ofertadas vacantes disponibles. Por favor, consulta más adelante.';
+  public MSG043: string = 'No se encontró matrícula/folio.';
+  public MSG044: string = 'No hay plazas disponibles.';
+  public MSG047: string = 'Se realizó la asignación de sustitución 08.';
+  public MSG048: string = '¿Estás seguro de realizar un cambio de rama?';
+  public MSG049: string = 'El médico aspirante cuenta con un cambio de rama.';
+  public MSG050: string = 'Se realizó con éxito el rechazo de oferta.';
+  public MSG051: string = 'El médico aspirante cuenta con un rechazo de oferta.';
+  public MSG052: string = 'Se realizó con éxito el cambio de rama.';
+  public MSG056: string = 'El médico aspirante no cumple con los requisitos.';
+  public MSG057a: string = 'El médico aspirante ya cuenta con una asignación.';
+  public MSG057: string = 'El médico aspirante ya cuenta con una asignación de sustitución.';
   public MSG062: string = 'Tu contraseña ha sido actualizada correctamente, te hemos enviado un correo con los detalles del cambio de contraseña. Por seguridad, no compartas tu contraseña con nadie.';
   public MSG063: string = 'El enlace ha expirado o no es válido. Por favor, solicita un nuevo cambio de contraseña';
 
@@ -46,6 +57,10 @@ export class Mensajes {
   public MSJ_FORMATO_NO_VALIDO: string = 'Formato no válido';
   public MSJ_CARGANDO_DOCUMENTO: string = 'Cargando documento';
   public MSJ_ERROR_CARGANDO_DOCUMENTO: string = 'Error al obtener documento';
-  public MSJ_SELECCIONAR_DOCUMENTO:string ='Seleccione el documento del que desea obtener la previsualización';
-  public MSJ_NOT_SUPPORT_IFRAMES: string ='Tu navegador no soporta iframes.';
+  public MSJ_SELECCIONAR_DOCUMENTO: string = 'Seleccione el documento del que desea obtener la previsualización';
+  public MSJ_NOT_SUPPORT_IFRAMES: string = 'Tu navegador no soporta iframes.';
+
+  // mensajes para Configuración y Asignación de mesas
+  public MSG083: string = 'Se guardo la configuración correctamente.';
+  public MSG084: string = '¿Está seguro de que desea eliminar la especialidad de la mesa?';
 }

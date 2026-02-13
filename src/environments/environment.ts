@@ -1,4 +1,4 @@
-import { ConfigEnvironment } from '@models/config-environment.interface';
+import {ConfigEnvironment} from '@models/config-environment.interface';
 
 const base: string = 'http://10.166.120:1052/';
 
@@ -10,9 +10,11 @@ export const environment: ConfigEnvironment = {
     apiRegistro: base + 'mscme-registro/api',
     apiConvocatoria: base + '/mscme-convocatoria/api',
     apiDocumentos: "",
-    apiAsistencia: '/mscme-asistencia/api',
+    apiAsistencia: base + '/mscme-asistencia/api',
+    apiAsignacionMesa: base + '/mscme-asignacion',
     apiCalificaciones: base + '/mscme-calificaciones/api',
-    apiSindical: '/mscme-sindical/'
+    apiAsignacionPlaza: base + '/mscme-asignacion/api',
+    apiSindical: base + '/mscme-sindical/'
   }
 }
 

@@ -5,21 +5,21 @@
         <div class="flex justify-content-between">
           <label class="field-label" for="especialidad">Especialidad</label>
         </div>
-        <p-select [options]="especialidadList" formControlName="especialidad" optionLabel="label"
+        <p-select [options]="especialidadList" formControlName="especialidad" id="especialidad" optionValue="value" optionLabel="label"
                   placeholder="Selecciona una especialidad" class="w-full"/>
       </div>
       <div class="md:col-4 col-12">
         <div class="flex justify-content-between">
           <label class="field-label" for="ooad">OOAD</label>
         </div>
-        <p-select [options]="ooadList" formControlName="ooad" optionLabel="label"
-                  placeholder="Selecciona una OOAD" class="w-full"/>
+        <p-select [options]="ooadList" formControlName="ooad" id="ooad" optionValue="value" optionLabel="label"
+                  placeholder="Selecciona una OOAD" class="w-full" onc (onChange)="getUnidad()"/>
       </div>
       <div class="md:col-4 col-12">
         <div class="flex justify-content-between">
           <label class="field-label" for="unidad">Unidad</label>
         </div>
-        <p-select [options]="unidadList" formControlName="unidad" optionLabel="label"
+        <p-select [options]="unidadList" formControlName="unidad" id="unidad" optionValue="value" optionLabel="label"
                   placeholder="Selecciona unidad médica" class="w-full"/>
       </div>
 
@@ -42,10 +42,11 @@
     </div>
   </form>
 </div>
-<div class="flex my-3">
-  <p class="titulo-seccion-asignacion">Plazas disponibles</p>
-</div>
+
 @if(plazasList().length > 0){
+  <div class="flex my-3">
+    <p class="titulo-seccion-asignacion">Plazas disponibles</p>
+  </div>
   <div class="flex flex-column bg-white border-round-lg p-3 w-full">
     @for ( registro of plazasList(); track registro.id) {
       <app-plaza-disponible-card [plaza]="registro"

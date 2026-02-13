@@ -22,13 +22,24 @@ export class PrivadoComponent implements OnInit {
 
   userService = inject(UserService);
 
-  menuVisible = true;
+  menuVisible = false;
   isScrolled = false;
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.checkResolution();
+  }
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const offset = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
     this.isScrolled = offset > 30;
+  }
+
+  checkResolution() {
+    if (window.innerWidth < 1025) {
+      this.menuVisible = false;
+    }
   }
 
   ngOnInit() {

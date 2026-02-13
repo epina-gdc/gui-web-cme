@@ -14,4 +14,22 @@
       line-height: normal;
     }
   }
+
+  .py-150p {
+    padding: 150px 0;
+  }
+
+  .lg\:col-fit {
+    @media screen and (min-width: 992px) {
+      flex: 0 0 auto !important;
+      width: auto !important;
+      max-width: 100%;
+      padding-left: 0.5rem;
+      padding-right: 0.5rem;
+    }
+  }
+
+  .sin-salto {
+    white-space: nowrap;
+  }
 }
