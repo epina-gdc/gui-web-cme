@@ -1,4 +1,4 @@
-import {Component, OnDestroy, signal, WritableSignal} from '@angular/core';
+import {Component, HostListener, OnDestroy, signal, WritableSignal} from '@angular/core';
 import {CardModule} from 'primeng/card';
 import {Button} from 'primeng/button';
 import {BehaviorSubject, Subscription, timer} from 'rxjs';
@@ -13,6 +13,8 @@ import {UsuarioAsistencia} from '@models/asistencia.interface';
   styleUrl: './visualizacion-asistencia.component.scss'
 })
 export class VisualizacionAsistenciaComponent implements OnDestroy {
+  buffer: string = '';
+  ultimaPulsacion: number = Date.now();
 
   datosMedico = signal<UsuarioAsistencia | null>(null);
   private timerSubscription?: Subscription;
@@ -86,5 +88,34 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
         this.resetearVista();
       }
     })
+  }
+
+  @HostListener('window:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    const umbralTiempo = 50; // Milisegundos entre teclas
+    const ahora = Date.now();
+
+    // Si el tiempo entre teclas es muy corto, es un escáner, no un humano
+    if (ahora - this.ultimaPulsacion > umbralTiempo) {
+      this.buffer = '';
+    }
+
+    if (event.key === 'Enter') {
+      if (this.buffer.length > 0) {
+        this.procesarRespuesta(this.buffer);
+        this.buffer = '';
+      }
+    } else {
+      // Evitamos capturar teclas de función como 'Shift' o 'Control'
+      if (event.key.length === 1) {
+        this.buffer += event.key;
+      }
+    }
+
+    this.ultimaPulsacion = ahora;
+  }
+
+  procesarRespuesta(code: string) {
+    console.log('Producto escaneado:', code);
   }
 }
