@@ -38,14 +38,14 @@
           <span class="texto-escanear-qr mb-5">Listo para escanear</span>
         </div>
       } @else {
-        <div class="flex justify-content-start">
-          <div class="col-3 flex align-items-center justify-content-center
+        <div class="flex justify-content-start flex-wrap">
+          <div class="col-12 md:col-3 flex align-items-center justify-content-center
               flex-column  half-border border-circle me-5">
             <img class="foto" role="presentation" alt="img médico" title="img médico" [src]="fotoUrl"
                  style="object-fit: cover; height: 100%; width: 50%"/>
           </div>
-          <div class="ms-5 col-7 p-2">
-            <div class="flex flex-column ">
+          <div class="md:ms-5 md:col-8 col-12 p-2">
+            <div class="flex flex-column">
               <span class="titulo-card-aspirante">Dr. Pablo Andrés García Bernal</span>
               <span class="subtitulo-card-aspirante my-1">Matrícula: <strong>98161651</strong></span>
               <span class="subtitulo-card-aspirante mt-4 mb-2"><strong>Especialidades</strong></span>
@@ -60,22 +60,22 @@
               </div>
 
             </div>
-            <div class="flex justify-content-between gap-1 mt-6 mb-5">
-              <div class="flex align-items-center">
+            <div class="flex mt-6 mb-5 flex-wrap lg:flex-nowrap">
+              <div class="flex align-items-center col-12 md:col-6 lg:col-fit">
                 <i class="cme-citas mr-3" style="color: #41ABCA; font-size: 2rem"></i>
                 <div class="flex flex-column">
                   <span class="nombre-doc" style="color: #000">Fecha</span>
                   <span class="subtitle-previsualizacion" style="color: #58595C">{{ datosMedico()?.fechaCita }}</span>
                 </div>
               </div>
-              <div class="flex align-items-center">
+              <div class="flex align-items-center col-12 md:col-6 lg:col-fit">
                 <i class="cme-time mr-3" style="color: #41ABCA; font-size: 1.6rem"></i>
                 <div class="flex flex-column">
                   <span class="nombre-doc" style="color: #000">Hora</span>
                   <span class="subtitle-previsualizacion" style="color: #58595C">{{ datosMedico()?.horaCita }}</span>
                 </div>
               </div>
-              <div class="flex align-items-center">
+              <div class="flex align-items-center col-12 md:col-6 lg:col-fit">
                 <i class="cme-numero-mesa mr-3" style="color: #41ABCA; font-size: 2rem"></i>
                 <div class="flex flex-column">
                   <span class="nombre-doc" style="color: #000">Mesa</span>
@@ -83,7 +83,7 @@
                         style="color: #58595C">Mesa {{ datosMedico()?.mesaCita }}</span>
                 </div>
               </div>
-              <div class="flex align-items-center">
+              <div class="flex align-items-center col-12 md:col-6 lg:col-fit">
                 <i class="cme-time mr-3" style="color: #41ABCA; font-size: 1.6rem"></i>
                 <div class="flex flex-column">
                   <span class="nombre-doc" style="color: #000">Turno</span>
