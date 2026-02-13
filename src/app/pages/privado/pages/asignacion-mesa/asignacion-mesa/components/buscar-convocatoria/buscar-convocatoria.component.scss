@@ -3,8 +3,21 @@
 }
 
 ::ng-deep .link-nom-conv {
+  font-weight: 300;
+  color: #007AFF !important;
+
+  .p-button {
+    padding: 0;
+
+  }
+
   .p-button-label {
     font-weight: 300;
     color: #007AFF !important;
   }
+}
+
+::ng-deep .dialogEdit {
+  border-radius: 8px;
+  border-top: #0F9B9B solid 10px;
 }

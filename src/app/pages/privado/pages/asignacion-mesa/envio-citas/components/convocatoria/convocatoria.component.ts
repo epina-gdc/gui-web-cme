@@ -16,7 +16,7 @@ import {ButtonModule} from "primeng/button";
   ],
   templateUrl: './convocatoria.component.html',
   styleUrl: './convocatoria.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  
 })
 export class ConvocatoriaComponent {
 

@@ -8,6 +8,6 @@ import {ProcesoAsignacionComponent} from "./components/proceso-asignacion/proces
   imports: [ConvocatoriaComponent, DetalleConvocatoriaComponent, ProcesoAsignacionComponent],
   templateUrl: './envio-citas.component.html',
   styleUrl: './envio-citas.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  
 })
 export class EnvioCitasComponent { }
