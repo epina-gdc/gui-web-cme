@@ -14,7 +14,7 @@ import {
 } from '@pages/privado/shared/header-medico-detalle-oferta/header-medico-detalle-oferta.component';
 import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {DetallePlazaComponent} from '@privado/asignacion-plazas/components/detalle-plaza/detalle-plaza.component';
-import { DialogModule } from 'primeng/dialog';
+
 
 @Component({
   selector: 'app-plaza-ordinaria',
