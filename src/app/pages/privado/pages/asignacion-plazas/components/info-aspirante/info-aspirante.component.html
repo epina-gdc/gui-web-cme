@@ -33,8 +33,8 @@
           </div>
 
           <div *ngIf="tieneAsignacion" class="grid">
-            <div *ngIf="tieneAsignacion" class="col-12 md:col-6 flex align-items-center justify-content-start gap-2">
-              <p-tag [value]="getTagTexto(tipoAsignacion)" [styleClass]="getTagClass(tipoAsignacion)"
+            <div class="col-12 md:col-6 flex align-items-center justify-content-start gap-2">
+              <p-tag *ngIf="muestraTag" [value]="getTagTexto(tipoAsignacion)" [styleClass]="getTagClass(tipoAsignacion)"
                 icon="pi pi-circle"></p-tag>
             </div>
             <div class="col-12 md:col-6 flex align-items-center justify-content-start gap-2"
@@ -103,7 +103,7 @@
     <div class="message-body">
       <p class="pregunta">¿Estás seguro de rechazar la oferta?</p>
       <label class="field-label" for="motivos">Seleccione el motivo del rechazo</label>
-      <p-select [options]="motivos" inputId="motivos" optionLabel="desMotivo" optionValue="idMotivoRechazo"
+      <p-select [options]="motivos" inputId="motivos" optionLabel="label" optionValue="value"
         placeholder="Selecciona el motivo" class="w-full" appendTo="body" [(ngModel)]="motivoSeleccionado" />
     </div>
     <div class="acciones">

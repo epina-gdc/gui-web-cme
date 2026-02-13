@@ -102,13 +102,15 @@
     :host ::ng-deep .p-tablist-tab-list {
       overflow: hidden;
     }
+    :host ::ng-deep .p-tab {
+      min-width: fit-content;
+    }
   }
 
   @media screen and (max-width: 767px) {
     .cme-deals {
       display: none;
     }
-
 
     :host ::ng-deep .p-tablist-tab-list {
       background-color: #dddddd;

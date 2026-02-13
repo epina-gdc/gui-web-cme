@@ -70,10 +70,10 @@
         <app-plaza-ordinaria [infoAspirante]="busqueda.datosGenerales!"></app-plaza-ordinaria>
         }
         @case (1) {
-        <app-coplamar></app-coplamar>
+        <app-coplamar [infoAspirante]="busqueda.datosGenerales!"></app-coplamar>
         }
         @case (2) {
-        <app-asignacion-sustitucion></app-asignacion-sustitucion>
+        <app-asignacion-sustitucion [infoAspirante]="busqueda.datosGenerales!"></app-asignacion-sustitucion>
         }
         }
         <!--**ESCENARIO TABS-->

@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, inject, Input } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
 import { Select } from 'primeng/select';
 import {Button} from 'primeng/button';
-
-type Opt = { label: string; value: string };
+import { InfoAspirante } from '@models/datosAsignacion';
+import { AsignacionPlazaService } from '@services/asignacion-plaza.service';
+import { TipoDropdown } from '@models/tipo-dropdown.interface';
+import { mapearArregloTipoDropdown } from '@utils/funciones';
+import { CatalogosGeneralesService } from '@services/catalogos-generales.service';
 
 @Component({
   selector: 'app-asignacion-sustitucion',
@@ -13,20 +16,14 @@ type Opt = { label: string; value: string };
   styleUrl: './asignacion-sustitucion.component.scss'
 })
 export class AsignacionSustitucionComponent {
-  ooadOptions: Opt[] = [
-    { label: 'Ciudad de México Sur', value: '1' },
-    { label: 'Ciudad de México Norte', value: '2' },
-  ];
-  zonaOptions: Opt[] = [
-    { label: 'Centro', value: '1' },
-    { label: 'Norte', value: '2' },
-    { label: 'Sur', value: '3' },
-  ];
-  especialidadOptions: Opt[] = [
-    { label: 'Cardiología', value: '1' },
-    { label: 'Pediatría', value: '2' },
-    { label: 'Medicina Interna', value: '3' },
-  ];
+  @Input() infoAspirante!: InfoAspirante;
+  
+  asignacionPlazaService: AsignacionPlazaService = inject(AsignacionPlazaService);
+  catalogosService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
+  
+  ooadOptions: TipoDropdown[] = [];
+  zonaOptions: TipoDropdown[] = [];
+  especialidadOptions: TipoDropdown[] = [];
 
   asignacionConfirmada = false;
 
@@ -36,43 +33,115 @@ export class AsignacionSustitucionComponent {
     especialidadLabel: string;
   } | null = null;
 
-  form!: FormGroup;
+  formSustitucion!: FormGroup;
+  default_catalogo: TipoDropdown = {value:0,label:'Seleccione una opción'};
 
   constructor(private fb: FormBuilder) {}
   
   ngOnInit(): void {
-    this.form = this.fb.group({
+    /*this.formSustitucion = this.fb.group({
+      ooad: ['' as string | null, Validators.required],
+      zona: ['' as string | null, Validators.required],
+      especialidad: ['' as string | null, Validators.required],
+    });*/
+  }
+
+  ngOnChanges(): void {
+    this.formSustitucion = this.fb.group({
       ooad: ['' as string | null, Validators.required],
       zona: ['' as string | null, Validators.required],
       especialidad: ['' as string | null, Validators.required],
     });
+    this.getEspecialidades();
+    this.getOoad();
   }
 
-  private labelFrom(options: Opt[], value: string | null): string {
+  onChangeOoad(){
+    this.zonaOptions = [];
+    const zonaCtrl = this.formSustitucion.get('zona');
+    zonaCtrl?.reset(null);
+
+    zonaCtrl?.updateValueAndValidity({ emitEvent: false });
+    this.formSustitucion.updateValueAndValidity({ emitEvent: false });
+
+    this.getOoad();
+
+  }
+
+  getEspecialidades(): void {
+    this.asignacionPlazaService.getEspecialidadByMatricula(this.infoAspirante.matriculaFolio).subscribe({
+      next: (result) => {
+        if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
+          this.especialidadOptions = mapearArregloTipoDropdown(result.respuesta, 'label', 'value');
+          //this.especialidadList.unshift(this.default_catalogo);
+          const idEspecialidad = result.respuesta[0]?.value ?? null;
+          this.formSustitucion.get('especialidad')?.patchValue(idEspecialidad);
+          return;
+        } else{
+          this.especialidadOptions = [];
+          return;
+        }
+      }
+    })
+  }
+
+  getOoad(): void {
+    this.catalogosService.getLstOOADS().subscribe({
+      next: (result) => {
+        console.log('Catalogo', result);
+        if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
+          this.ooadOptions = mapearArregloTipoDropdown(result.respuesta, 'desOoad', 'cveOoad');
+          this.ooadOptions.unshift(this.default_catalogo);
+          return;
+        } else {
+          this.ooadOptions = [];
+          return;
+        }
+      }
+    })
+  }
+
+  getZonas(): void {
+    const idOoad = this.formSustitucion.get('ooad')?.value;
+    this.catalogosService.getZonas(idOoad).subscribe({
+      next: (result) => {
+        console.log('Zonas', result);
+        if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
+          this.zonaOptions = mapearArregloTipoDropdown(result.respuesta, 'desZona', 'cveZona');
+          this.zonaOptions.unshift(this.default_catalogo);
+          return;
+        } else {
+          this.zonaOptions = [];
+          return;
+        }
+      }
+    })
+  }
+
+
+  private labelFrom(options: TipoDropdown[], value: string | null): string {
     if (!value) return '';
     return options.find(x => x.value === value)?.label ?? value;
   }
 
   asignar(): void {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
+    if (this.formSustitucion.invalid) {
+      this.formSustitucion.markAllAsTouched();
+      console.log('error');
       return;
     }
 
-    const v = this.form.getRawValue();
+    const v = this.formSustitucion.getRawValue();
 
-    // Aquí iría tu llamada a API (y en el success haces lo de abajo)
     this.resumenAsignacion = {
       ooadLabel: this.labelFrom(this.ooadOptions, v.ooad),
       zonaLabel: this.labelFrom(this.zonaOptions, v.zona),
       especialidadLabel: this.labelFrom(this.especialidadOptions, v.especialidad),
     };
 
-    this.asignacionConfirmada = true;
-  }
+    console.log(this.resumenAsignacion);
 
-  editarAsignacion(): void {
-    this.asignacionConfirmada = false;
+    this.asignacionConfirmada = true;
   }
 
   imprimirCedula(): void {

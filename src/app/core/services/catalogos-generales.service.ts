@@ -148,6 +148,15 @@ export class CatalogosGeneralesService {
     );
   }
 
+  getZonas(cveOoad: string): Observable<HttpRespuesta<any>> {
+    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/zonas/${cveOoad}`, {headers: this.header}).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<any>) => {
+        return response;
+      })
+    );
+  }
+
   getLstCodigosPostales(cp: number): Observable<HttpRespuesta<any>> {
     return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/codigos-postales/buscar/${cp}`, {headers: this.header}).pipe(
       catchError(this.handleError),

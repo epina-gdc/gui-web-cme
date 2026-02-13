@@ -3,7 +3,7 @@ import { Card } from "primeng/card";
 import { Avatar } from 'primeng/avatar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { CommonModule } from '@angular/common';
-import { AsignacionRequest, BusquedaResponse, DropMotivo, InfoAspirante, TipoAsignacion } from '@models/datosAsignacion';
+import { AsignacionRequest, BusquedaResponse, TipoAsignacion } from '@models/datosAsignacion';
 import { DocumentoService } from '@services/documentos.service';
 import { ConfirmationService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
@@ -12,13 +12,14 @@ import { FormsModule } from '@angular/forms';
 import { Button } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { CatalogosGeneralesService } from '@services/catalogos-generales.service';
-import { mapearArregloMotivos } from '@utils/funciones';
+import { mapearArregloTipoDropdown } from '@utils/funciones';
 import { AsignacionPlazaService } from '@services/asignacion-plaza.service';
 import { AlertService } from '@services/alert.service';
 import { Mensajes } from '@utils/mensajes';
 import { VerificacionDocsService } from '@services/verificacion-docs.service';
 import { DictamenRespuesta } from '@models/dictamen-respuesta.interface';
 import { AdjuntoOpinion, OpinionTecnicaRespuesta } from '@models/opnion-tecnia-respuesta.interface';
+import { TipoDropdown } from '@models/tipo-dropdown.interface';
 
 @Component({
   selector: 'app-info-aspirante',
@@ -42,6 +43,7 @@ export class InfoAspiranteComponent {
   idUsuario: number = 0;
   tieneAsignacion: boolean = false;
   tipoAsignacion: number = 0;
+  muestraTag: boolean=false;
 
   aspirante = {
     fotoUrl: '',
@@ -58,7 +60,7 @@ export class InfoAspiranteComponent {
   visibleRechazo = false;
   loading = false;
 
-  motivos: DropMotivo[] = [];
+  motivos: TipoDropdown[] = [];
 
   motivoSeleccionado: string | null = null;
 
@@ -76,9 +78,11 @@ export class InfoAspiranteComponent {
     if (this.asignacion.asignacionMedico?.id != null && this.asignacion.asignacionMedico?.id > 0) {
       this.tieneAsignacion = true;
       this.tipoAsignacion = this.asignacion.asignacionMedico.idTipoAsignacion?.id ?? 0;
+      this.muestraTag = this.tipoAsignacion == 3 || this.tipoAsignacion == 4 || this.tipoAsignacion == 5 ? true: false;
       this.getMessage(this.tipoAsignacion);
     } else {
       this.tieneAsignacion = false;
+      this.muestraTag = false;
       this.tipoAsignacion = 0;
     }
     this.idUsuario = this.asignacion.datosGenerales?.idUsuario ?? 0;
@@ -109,7 +113,7 @@ export class InfoAspiranteComponent {
     this.catalogosService.getMotivosRechazo().subscribe({
       next: (result) => {
         if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
-          this.motivos = mapearArregloMotivos(result.respuesta, 'desMotivo', 'idMotivoRechazo');
+          this.motivos = mapearArregloTipoDropdown(result.respuesta, 'desMotivo', 'idMotivoRechazo');
           return;
         }
       }

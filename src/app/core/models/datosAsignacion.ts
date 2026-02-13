@@ -111,8 +111,3 @@ export const Regimen ={
     PlazaOrdinaria: 1,
     Complamar: 2
 } as const;
-
-export interface DropMotivo {
-  desMotivo: string;
-  idMotivoRechazo: number;
-}
