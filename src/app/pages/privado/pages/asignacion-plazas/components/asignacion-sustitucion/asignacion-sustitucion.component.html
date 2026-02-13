@@ -1,1 +1,33 @@
-<p>asignacion-sustitucion works!</p>
+<div class="flex flex-column bg-white border-round-lg p-3 w-full" style="min-height: 180px;">
+    <form *ngIf="!asignacionConfirmada" id="formSustitucion" [formGroup]="formSustitucion">
+        <div class="grid align-items-end">
+            <div class="col-12 md:col-11">
+                <div class="grid">
+                    <div class="col-12 md:col-4">
+                        <label class="field-label" for="ooad">OOAD</label>
+                        <p-select [options]="ooadOptions" formControlName="ooad" inputId="ooad" optionLabel="label" optionValue="value"
+                        placeholder="Selecciona una OOAD" class="w-full" (onChange)="onChangeOoad()"/>
+                    </div>
+                    <div class="col-12 md:col-4">
+                        <label class="field-label" for="zona">Zona</label>
+                        <p-select [options]="zonaOptions" formControlName="zona" inputId="zona" optionLabel="label" optionValue="value"
+                        placeholder="Selecciona una Zona" class="w-full"/>
+                    </div>
+                    <div class="col-12 md:col-4">
+                        <label class="field-label" for="especialidad">Especialidad</label>
+                        <p-select [options]="especialidadOptions" formControlName="especialidad" inputId="especialidad" optionLabel="label" optionValue="value"
+                        placeholder="Selecciona una Especialidad" class="w-full"/>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-12 md:col-1 align-content-center">
+                <div class="grid">
+                    <div class="col-12 flex align-content-center">
+                        <p-button type="button" label="Asignar" (onClick)="asignar()" [disabled]="formSustitucion.invalid"  /> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

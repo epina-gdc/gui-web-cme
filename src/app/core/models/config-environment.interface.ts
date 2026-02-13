@@ -9,5 +9,6 @@ export interface ConfigEnvironment {
     apiAsignacionMesa:string;
     apiCalificaciones: string;
     apiAsistencia: string;
+    apiAsignacionPlaza:string;
   }
 }

@@ -18,6 +18,7 @@
   "@angular/platform-browser": "19.2.16",
   "@angular/platform-browser-dynamic": "19.2.16",
   "@angular/router": "19.2.16",
+  "@angular/localize": "19.2.16",
   "@auth0/angular-jwt": "^5.2.0",
   "@ng-bootstrap/ng-bootstrap": "^18.0.0",
   "@primeng/themes": "^19.1.4",
