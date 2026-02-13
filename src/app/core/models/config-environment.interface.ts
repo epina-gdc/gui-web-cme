@@ -10,5 +10,6 @@ export interface ConfigEnvironment {
     apiCalificaciones: string;
     apiAsistencia: string;
     apiAsignacionPlaza:string;
+    apiSindical: string;
   }
 }
