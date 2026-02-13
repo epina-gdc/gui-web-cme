@@ -1,50 +1,48 @@
-<p-card class=" empty-border">
+<p-card class="empty-border">
     <!-- Formulario -->
     <p-card class="empty-border p-4">
         <form [formGroup]="formulario">
-            <div class=" grid ">
+            <div class="grid">
                 <div class="col-12 lg:col">
                     <div class="formgrid grid gap-4">
                         <div class="field col">
-                            <label class="field-label" for="convocatoriaId">No. de convocatoria</label>
-                            <p-select [options]="convocatorias" formControlName="convocatoriaId"
-                                placeholder="Selecciona una convocatoria" optionLabel="nombre" optionValue="id"
-                                class="w-full"></p-select>
-                        </div>
-
-                        <div class="field col ">
-                            <label class="field-label" for="mesas">No. de mesas disponibles</label>
-                            <p-select [options]="mesasDisponibles" formControlName="mesas"
-                                placeholder="Selecciona número de mesas" optionLabel="label" optionValue="value"
-                                class="w-full"></p-select>
+                            <label class="field-label" for="idConvocatoria">No. de convocatoria</label>
+                            <p-select [options]="convocatorias" formControlName="idConvocatoria"
+                                placeholder="Selecciona una convocatoria" optionLabel="desConvocatoria"
+                                optionValue="idConvocatoria" class="w-full">
+                            </p-select>
                         </div>
 
                         <div class="field col">
-                            <label class="field-label" for="medicos">No. de médicos por mesa</label>
-                            <p-select [options]="medicosPorMesa" formControlName="medicos"
-                                placeholder="Selecciona médicos por mesa" optionLabel="label" optionValue="value"
-                                class="w-full"></p-select>
+                            <label class="field-label" for="numMesasDisponibles">No. de mesas disponibles</label>
+                            <p-inputNumber formControlName="numMesasDisponibles" placeholder="Número de mesas"
+                                class="w-full" [showButtons]="true" [min]="1">
+                            </p-inputNumber>
+                        </div>
+
+                        <div class="field col">
+                            <label class="field-label" for="numMedicosPorMesa">No. de médicos por mesa</label>
+                            <p-inputNumber formControlName="numMedicosPorMesa" placeholder="Médicos por mesa"
+                                class="w-full" [showButtons]="true" [min]="1">
+                            </p-inputNumber>
                         </div>
                     </div>
                 </div>
 
                 <div class="lg:col-fixed col-12 flex-column flex justify-content-end" style="width:213px">
-                    <p-button label="Guardar configuración" (onclick)="guardarConfiguracion()"
-                        [disabled]="formulario.invalid"></p-button>
+                    <p-button label="Guardar configuración" (onClick)="guardarConfiguracion()"
+                        [disabled]="formulario.invalid">
+                    </p-button>
                 </div>
             </div>
-
-
         </form>
-
     </p-card>
 
     <!-- Tabla -->
     <p-card class="empty-border">
         <h3 class="text-lg font-semibold mb-4">Tabla de convocatorias</h3>
-
-        <p-table [value]="convocatoriasTabla" [scrollable]="true" [resizableColumns]="true"
-            [tableStyle]="{'min-width': '50rem'}"> >
+        <p-table [value]="configuracionMesasTabla()" [scrollable]="true" [resizableColumns]="true"
+            [tableStyle]="{'min-width': '50rem'}">
             <ng-template pTemplate="header">
                 <tr>
                     <th pResizableColumn>No. de convocatoria</th>
@@ -55,37 +53,51 @@
                     <th style="min-width: 100px" alignFrozen="right" pFrozenColumn>Acciones</th>
                 </tr>
             </ng-template>
-
             <ng-template pTemplate="body" let-row>
                 <tr>
-                    <td><p-button label="{{ row.nombre }}" [link]="true" class="link-nom-conv" (onClick)="onSeleccion(row)" /></td>
-                    <td>{{ row.mesas }}</td>
-                    <td>{{ row.medicosPorMesa }}</td>
                     <td>
-                        <p-tag class="p-tag p-tag-info" *ngIf="row.idEstatus === 1">{{ row.estatus }}</p-tag>
-                        <p-tag class="p-tag p-tag-success" *ngIf="row.idEstatus === 2">{{ row.estatus}}</p-tag>
+                        @if(row.estatus == 'PENDIENTE' || row.porcentajeConfiguracion
+                        < 100){ <p-button [label]="row.desConvocatoria" [link]="true" class="link-nom-conv p-0"
+                            (onClick)="onSeleccion(row)" />
+                        }@else {
+                            <span class="link-nom-conv">{{row.desConvocatoria}}</span>
+                        }
+
                     </td>
-                    <td>{{ row.porcentaje }}%</td>
+                    <td>{{ row.numMesasDisponibles || '-' }}</td>
+                    <td>{{ row.numMedicosPorMesa || '-' }}</td>
+                    <td>
+                        <p-tag [class]="'p-tag ' + (row.estatus === 'PENDIENTE'? 'p-tag-info' : 'p-tag-success')"
+                            [value]="row.estatus">
+                        </p-tag>
+                    </td>
+                    <td>{{ row.porcentajeConfiguracion}}%</td>
                     <td alignFrozen="right" pFrozenColumn>
-
-                        
-
                         <div class="flex align-items-center justify-content-center">
-                            <i class="cme-ellipsis cursor-pointer border-round-3xl"
-                                [style]="{ 'font-size': '2.2rem', color: '#a9c9f8', background: '#f6faff' }"></i>
+                            <i class="cme-ellipsis cursor-pointer border-round-3xl" onkeypress=""
+                                [style]="{ 'font-size': '2.2rem', color: '#a9c9f8', background: '#f6faff' }">
+                            </i>
                         </div>
-
-
-                        
-
+                        <p-popover #op>
+                            <ng-template #content>
+                                <div class="flex align-items-center boton-descargar cursor-pointer "
+                                    (click)="onEditar(row)" onkeypress="">
+                                    <i class=" pi pi-pencil" [style]="{ 'font-size': '1.2rem', color: '#a9c9f8'}"></i>
+                                    <span class="ms-2 acciones-tabla">Editar</span>
+                                </div>
+                            </ng-template>
+                        </p-popover>
                     </td>
                 </tr>
             </ng-template>
-            <ng-template #emptymessage>
+
+            <ng-template pTemplate="emptymessage">
                 <tr>
-                    <td colspan="10">
-                        <div class="flex justify-content-center align-items-center">
-                            <img class="p-0" src="/assets/images/tabla_sin_resultados.svg" alt="Sin resultados">
+                    <td colspan="6">
+                        <div class="flex justify-content-center align-items-center flex-column">
+                            <img class="p-0" src="/assets/images/tabla_sin_resultados.svg"
+                                alt="No hay resultados de búsqueda">
+                            <p>No hay resultados de búsqueda</p>
                         </div>
                     </td>
                 </tr>
@@ -94,6 +106,7 @@
 
         <p-paginator class="paginator-oferta" (onPageChange)="cambiarPagina($event)" [first]="first" [rows]="rows"
             [totalRecords]="totalElementos">
+
             <ng-template pTemplate="previouspagelinkicon">
                 <div class="flex align-items-center">
                     <span class="pi pi-chevron-left text-xl font-normal mr-2"></span>
@@ -109,3 +122,42 @@
         </p-paginator>
     </p-card>
 </p-card>
+
+<p-dialog header="Editar configuración" [(visible)]="visible" [modal]="true" [style]="{ 'max-width': '560px' }"
+    draggable="false" resizable="false" styleClass="dialogEdit">
+    <span class="btg"></span>
+    <form [formGroup]="formularioEdicion">
+        <div class="grid">
+            <div class="col-12 lg:col">
+                <div class="formgrid grid gap-4">
+                    <div class="field col">
+                        <label class="field-label" for="idConvocatoria">No. de convocatoria</label>
+                        <p-select [options]="convocatorias" formControlName="idConvocatoria"
+                            placeholder="Selecciona una convocatoria" optionLabel="desConvocatoria"
+                            optionValue="idConvocatoria" class="w-full">
+                        </p-select>
+                    </div>
+
+                    <div class="field col">
+                        <label class="field-label" for="numMesasDisponibles">No. de mesas disponibles</label>
+                        <p-inputNumber formControlName="numMesasDisponibles" placeholder="Número de mesas"
+                            class="w-full" [showButtons]="true" [min]="1">
+                        </p-inputNumber>
+                    </div>
+
+                    <div class="field col">
+                        <label class="field-label" for="numMedicosPorMesa">No. de médicos por mesa</label>
+                        <p-inputNumber formControlName="numMedicosPorMesa" placeholder="Médicos por mesa" class="w-full"
+                            [showButtons]="true" [min]="1">
+                        </p-inputNumber>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-content-end gap-2 mt-3">
+            <p-button label="Cancelar" [outlined]="true" severity="danger" (onClick)="visible = false" />
+            <p-button label="Aceptar (No hay servicio de actualizacion )" [outlined]="true" severity="success"
+                (onClick)="guardarConfiguracionUpdate(formularioEdicion.value); visible = false" />
+        </div>
+    </form>
+</p-dialog>

@@ -1,12 +1,13 @@
-import {Component} from '@angular/core';
+import { Component, effect, inject, model, signal } from '@angular/core';
 
-import {CardModule} from 'primeng/card';
-import {IconFieldModule} from 'primeng/iconfield';
-import {InputIconModule} from 'primeng/inputicon';
-import {InputTextModule} from 'primeng/inputtext';
-import {AutoCompleteCompleteEvent, AutoCompleteModule} from 'primeng/autocomplete';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {CommonModule} from '@angular/common';
+import { CardModule } from 'primeng/card';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
+import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocomplete';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import { AsignacionMesaService, Especialidad, MesaConfiguracion, Rama, ResponseRamaConvocatoria, TotalesMedicosRama } from '../../../../services/asignacion-mesa.service';
 
 @Component({
   selector: 'app-especialidad',
@@ -24,56 +25,82 @@ import {CommonModule} from '@angular/common';
 })
 export class EspecialidadComponent {
 
-  ramas: any[] = [
-    { id: 1, nombre: 'Medicina interna' },
-    { id: 2, nombre: 'Medicina general' },
-    { id: 3, nombre: 'Medicina familiar' },
-    { id: 4, nombre: 'Pediatría' },
-    { id: 5, nombre: 'Medicina del trabajo' },
-    { id: 6, nombre: 'Medicina del deporte' },
-  ]
+  constructor() {
+    effect(() => {
+      this.onSelectRama(this.ramaActual());
+    });
 
-  especialidades: any[] = [
-    { id: 1, nombre: 'Cirugía pediátrica (6 años)', cantidad: 34 },
-    { id: 2, nombre: 'Alergia a inmunología clínica pediátrica (6 años)', cantidad: 50 },
-    { id: 3, nombre: 'Cardiología pediátrica (6 años)', cantidad: 50 },
-    { id: 4, nombre: 'Endocrinología pediátrica (5 años)', cantidad: 34 },
-    { id: 5, nombre: 'Gastroenterología y nutrición pediátrica (5 años)', cantidad: 12 },
-    { id: 6, nombre: 'Hematología pediátrica (5 años)', cantidad: 34 },
-    { id: 7, nombre: 'Infectología pediátrica (5 años)', cantidad: 34 },
-    { id: 8, nombre: 'Medicina del enfermo en estado crítico (6 años)', cantidad: 34 },
-    { id: 9, nombre: 'Nefrología pediátrica (6 años)', cantidad: 34 },
-    { id: 10, nombre: 'Neonatología (6 años)', cantidad: 34 },
-    { id: 11, nombre: 'Neurología pediátrica (5 años)', cantidad: 34 },
-    { id: 12, nombre: 'Oncología pediátrica (5 años)', cantidad: 34 },
-    { id: 13, nombre: 'Reumatología pediátrica (5 años)', cantidad: 34 },
-    { id: 14, nombre: 'Urgencias pediátricas (5 años)', cantidad: 34 },
-    { id: 15, nombre: 'Hematología pediátrica (5 años)', cantidad: 34 }
-  ];
-  totalMedicos: number = 0;
-
-  filteredRamas: any[] = [];
-  ramaActual: any;
-
-  ngOnInit(): void {
-    this.calcularTotal();
+    effect(() => {
+      if (this.accionActualiza()) {
+        this.obtenerRamas();
+        this.onSelectRama(this.ramaActual());
+      }
+    });
   }
 
-  private calcularTotal(): void {
-    this.totalMedicos = this.especialidades.reduce((sum, e) => sum + e.cantidad, 0);
+  accionActualiza = model<boolean | undefined>(undefined);
+  asignacionMesaService = inject(AsignacionMesaService);
+  convocatoriaSeleccionada = model<MesaConfiguracion | undefined>(undefined);
+  ramas: Rama[] = [];
+  especialidades: Especialidad[] = [];
+  totalMedicos: number = 0;
+  filteredRamas: Rama[] = [];
+  ramaActual = model<Rama | undefined>(undefined);
+  totalesMedicosRama: TotalesMedicosRama = {};
+  datoRama: Especialidad | undefined = {};
+
+  ngOnInit(): void {
+    this.obtenerRamas();
+  }
+
+  obtenerRamas() {
+    this.asignacionMesaService.getRamasConvocatoria(this.convocatoriaSeleccionada()?.idConvocatoria as number).subscribe({
+      next: (response: ResponseRamaConvocatoria) => {
+        console.log('Respuesta:', response);
+        this.ramas = response.respuesta;
+      },
+      error: (err) => {
+        console.error('Error:', err);
+      }
+    }
+    );
   }
 
   filterRama(event: AutoCompleteCompleteEvent) {
-    let filtered: any[] = [];
+    let filtered: Rama[] = [];
     let query = event.query;
-
-    for (let i = 0; i < (this.ramas as any[]).length; i++) {
-      let ramaAux = (this.ramas as any[])[i];
-      if (ramaAux.nombre.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-        filtered.push(ramaAux);
+    if (this.ramas && this.ramas.length > 0) {
+      for (let i = 0; i < (this.ramas).length; i++) {
+        let ramaAux = (this.ramas)[i];
+        if (ramaAux.label.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+          filtered.push(ramaAux);
+        }
       }
     }
-
     this.filteredRamas = filtered;
   }
+
+  onSelectRama(ramaSeleccionada: Rama | undefined) {
+    if (ramaSeleccionada) {
+      // obetenr el total de medicos especialidad rama
+      this.asignacionMesaService.getTotalesMedicosRama(ramaSeleccionada.id, this.convocatoriaSeleccionada()?.idMesaConvocatoria as number, this.convocatoriaSeleccionada()?.idConvocatoria as number).subscribe({
+        next: (response: any) => {
+          console.log('Respuesta:', response);
+          this.totalesMedicosRama = response.respuesta.totalMedicos;
+          this.filtrarEspecialidades(response.respuesta.especialidades)
+
+        },
+        error: (err) => {
+          console.error('Error:', err);
+        }
+      }
+      );
+    }
+  }
+
+  filtrarEspecialidades(lstEspecialidades: Especialidad[]) {
+    this.datoRama = lstEspecialidades.find(especialidad => this.ramaActual()?.cveRama == especialidad.cveEspecialidad);
+    this.especialidades = lstEspecialidades.filter(especialidad => this.ramaActual()?.cveRama != especialidad.cveEspecialidad);
+  }
+
 }

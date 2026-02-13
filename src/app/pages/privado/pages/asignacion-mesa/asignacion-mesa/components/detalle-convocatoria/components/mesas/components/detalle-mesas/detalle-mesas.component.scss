@@ -42,7 +42,9 @@ ul {
   &.mesa-amarilla {
     border-color: #E5B400;
     color: #E5B400;
-    ;
+    .txt-esp-label{
+      color: #997800;
+    }
   }
 
   &.mesa-azul {
@@ -117,4 +119,11 @@ p-chip.is-becario {
   flex-direction: column;
   padding-top: 2.2px;
   font-size: 9px;
+}
+
+::ng-deep .p-date-ate {
+  .p-datepicker {
+    width: 100%;
+    ;
+  }
 }
