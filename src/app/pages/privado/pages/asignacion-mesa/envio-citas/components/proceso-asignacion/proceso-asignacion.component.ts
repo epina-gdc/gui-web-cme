@@ -6,7 +6,7 @@ import {CardModule} from "primeng/card";
   imports: [CardModule],
   templateUrl: './proceso-asignacion.component.html',
   styleUrl: './proceso-asignacion.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  
 })
 export class ProcesoAsignacionComponent {
 

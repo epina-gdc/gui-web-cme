@@ -27,8 +27,40 @@
 ::ng-deep .p-complete-rama {
   .p-autocomplete {
     width: 100%;
+
     input {
       width: 100%;
     }
   }
+
+  .p-autocomplete-dropdown {
+    background-color: transparent;
+    background-color: transparent;
+    border: none;
+    border-top: 1px solid #f5f6f7;
+    border-bottom: 1px solid #f5f6f7;
+    border-right: 1px solid #f5f6f7;
+
+    chevrondownicon {
+      display: none;
+    }
+
+    &:after {
+      /* use !important to prevent issues with browser extensions that change fonts */
+      font-family: 'icomoon', sans-serif !important;
+      speak: never;
+      font-style: normal;
+      font-weight: normal;
+      font-variant: normal;
+      text-transform: none;
+      line-height: 1;
+
+      /* Better Font Rendering =========== */
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      content: "\e90e";
+      color: #ADB8CC;
+    }
+  }
+
 }

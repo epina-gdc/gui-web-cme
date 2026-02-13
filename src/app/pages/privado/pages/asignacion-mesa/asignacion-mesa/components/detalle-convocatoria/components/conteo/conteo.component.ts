@@ -1,8 +1,9 @@
-import {Component} from '@angular/core';
+import { Component, effect, inject, model, signal } from '@angular/core';
 
-import {IconFieldModule} from 'primeng/iconfield';
-import {InputIconModule} from 'primeng/inputicon';
-import {InputTextModule} from 'primeng/inputtext';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
+import { AsignacionMesaService, ConvocatoriaTotales, MesaConfiguracion } from '../../../../services/asignacion-mesa.service';
 
 @Component({
   selector: 'app-conteo',
@@ -10,27 +11,42 @@ import {InputTextModule} from 'primeng/inputtext';
     IconFieldModule,
     InputIconModule,
     InputTextModule,
-],
+  ],
   templateUrl: './conteo.component.html',
   styleUrl: './conteo.component.scss',
 })
 export class ConteoComponent {
-  conteo = {
-    becados: { actual: 0, total: 300 },
-    residentes: { actual: 0, total: 200 },
-    externos: { actual: 0, total: 100 }
-  };
 
-  constructor() { }
+  constructor() {
+    effect(() => {
+      if (this.accionActualiza()) {
+        this.cargaConteo();
+      }
+    });
+
+  }
+
+  accionActualiza = model<boolean | undefined>(undefined);
+
+  conteo = signal<ConvocatoriaTotales | undefined>(undefined);
+  asignacionMesaService = inject(AsignacionMesaService);
+  convocatoriaSeleccionada = model<MesaConfiguracion | undefined>(undefined);
 
   ngOnInit(): void {
-    // Aquí podrías cargar datos desde un servicio si es dinámico
-    // Ejemplo:
-    // this.cargarConteo();
+    this.cargaConteo();
   }
 
-  // Ejemplo de método para actualizar (opcional)
-  actualizarConteo(categoria: keyof typeof this.conteo, valor: number): void {
-    this.conteo[categoria].actual = Math.min(valor, this.conteo[categoria].total);
+  cargaConteo() {
+    this.asignacionMesaService.getConvocatoriaTotales(1).subscribe({
+      next: (response: any) => {
+        console.log('Respuesta:', response);
+        this.conteo.update(v => response.respuesta);
+      },
+      error: (err) => {
+        console.error('Error:', err);
+      }
+    });
   }
+
+
 }
