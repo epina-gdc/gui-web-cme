@@ -33,8 +33,8 @@
 
       @if (!datosMedico()) {
         <div class="flex flex-column justify-content-center align-items-center py-150p">
-          <img class="foto " role="presentation" alt="qr" title="qr" src="/assets/images/qr.png"
-               style="object-fit: cover" (click)="confirmarFolio()" class="cursor-pointer"/>
+          <img role="presentation" alt="qr" title="qr" src="/assets/images/qr.png"
+               style="object-fit: cover" (click)="confirmarFolio()" class="cursor-pointer foto"/>
           <span class="texto-escanear-qr mb-5">Listo para escanear</span>
         </div>
       } @else {
@@ -44,7 +44,7 @@
             <img class="foto" role="presentation" alt="img médico" title="img médico" [src]="fotoUrl"
                  style="object-fit: cover; height: 100%; width: 50%"/>
           </div>
-          <div class="ms-5 col-5 p-2">
+          <div class="ms-5 col-7 p-2">
             <div class="flex flex-column ">
               <span class="titulo-card-aspirante">Dr. Pablo Andrés García Bernal</span>
               <span class="subtitulo-card-aspirante my-1">Matrícula: <strong>98161651</strong></span>
@@ -60,23 +60,23 @@
               </div>
 
             </div>
-            <div class="flex justify-content-between mt-6 mb-5">
+            <div class="flex justify-content-between gap-1 mt-6 mb-5">
               <div class="flex align-items-center">
-                <i class="cme-citas me-3" style="color: #41ABCA; font-size: 2rem"></i>
+                <i class="cme-citas mr-3" style="color: #41ABCA; font-size: 2rem"></i>
                 <div class="flex flex-column">
                   <span class="nombre-doc" style="color: #000">Fecha</span>
                   <span class="subtitle-previsualizacion" style="color: #58595C">{{ datosMedico()?.fechaCita }}</span>
                 </div>
               </div>
               <div class="flex align-items-center">
-                <i class="cme-time me-3" style="color: #41ABCA; font-size: 1.6rem"></i>
+                <i class="cme-time mr-3" style="color: #41ABCA; font-size: 1.6rem"></i>
                 <div class="flex flex-column">
                   <span class="nombre-doc" style="color: #000">Hora</span>
                   <span class="subtitle-previsualizacion" style="color: #58595C">{{ datosMedico()?.horaCita }}</span>
                 </div>
               </div>
               <div class="flex align-items-center">
-                <i class="cme-numero-mesa me-3" style="color: #41ABCA; font-size: 2rem"></i>
+                <i class="cme-numero-mesa mr-3" style="color: #41ABCA; font-size: 2rem"></i>
                 <div class="flex flex-column">
                   <span class="nombre-doc" style="color: #000">Mesa</span>
                   <span class="subtitle-previsualizacion"
@@ -84,7 +84,7 @@
                 </div>
               </div>
               <div class="flex align-items-center">
-                <i class="cme-time me-3" style="color: #41ABCA; font-size: 1.6rem"></i>
+                <i class="cme-time mr-3" style="color: #41ABCA; font-size: 1.6rem"></i>
                 <div class="flex flex-column">
                   <span class="nombre-doc" style="color: #000">Turno</span>
                   <span class="subtitle-previsualizacion" style="color: #58595C">{{ datosMedico()?.turnoCita }}</span>
