@@ -257,6 +257,14 @@ export class CatalogosGeneralesService {
       })
     );
   }
+  getSeccionSindical(ooad: string): Observable<any> {
+    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/seccion-sindical/ooad/${ooad}`, {headers: this.header}).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<any>) => {
+        return response;
+      })
+    );
+  }
 
   private handleError(error: HttpErrorResponse) {
 

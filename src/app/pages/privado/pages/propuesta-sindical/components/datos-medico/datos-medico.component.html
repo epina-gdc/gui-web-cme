@@ -1,152 +1,198 @@
-<div class="flex p-3 bg-white border-round-xl my-3">
+<div class="flex flex-wrap p-3 bg-white border-round-xl my-3">
   <div class="md:col-5 col-12">
-    <form [formGroup]="form" >
+    <form [formGroup]="form">
       <div class="flex justify-content-between">
         <label class="field-label" for="matricula">Matrícula/Folio</label>
       </div>
-      <input pInputText class="w-full" type="text" id=",matricula"
+      <input pInputText class="w-full" type="text" id="matricula"
              placeholder="Ingresa matrícula"
              formControlName="matricula"/>
     </form>
   </div>
   <div class="md:col-4 col-12 flex align-content-center flex-1 gap-3 mt-4">
-    <p-button type="button" variant="outlined" label="Limpiar" />
-    <p-button type="button" label="Buscar"   />
+    <p-button type="button" variant="outlined" label="Limpiar" (onClick)="limpiar()"/>
+    <p-button type="button" label="Buscar" (onClick)="consultarMatriculaFolio()" [disabled]="this.form.invalid"/>
   </div>
 </div>
 
-@if (data) {
+@if (datosMedico()) {
   <p-card class="empty-border" [header]="'Datos del médico aspirante'">
-    <div class="flex p-2">
-      <article class="lg:col-3 col-12 flex flex-row mb-4 lg:mb-0 justify-content-center">
-        <upload-photo [disableUpload]="false"
+    <div class="contenedor-info p-2">
+      <div class="lg:col-3 col-12 flex flex-row mb-4 lg:mb-0 justify-content-center contenedor-imagen">
+        <upload-photo [disableUpload]="!!this.datosMedico()?.idPropuestaSindical"
                       (fileSelected)="archivoSeleccionado($event)"
                       [clearOnFailedSave]="needsCleanup"
                       [existingFile]="defaultFile" (cleanupDone)="onCleanupDone()" class="mt-5"/>
-      </article>
+      </div>
       <div class="flex flex-column w-full">
-        <div class="flex justify-content-between mb-3">
+        <div class="flex flex-wrap justify-content-between mb-3 gap-2">
           <div class="flex align-items-center">
-            <span class="titulo-nombre-aspirante font-semibold me-4">Pablo Andrés García Bernal</span>
-            <p-badge [value]="'• ' + 'Plaza ordinaria'" severity="warn"/>
+            <span class="titulo-nombre-aspirante font-semibold me-4">{{ this.datosMedico()?.nombreCompleto }}</span>
+            @if (this.datosMedico()?.categoriaPlaza) {
+              <p-badge [value]="'• ' + datosMedico()?.categoriaPlaza" severity="warn"/>
+            }
+
           </div>
-          <div class="flex cursor-pointer align-items-center">
-            <i class="cme-impresora" style="font-size: 1.2rem; color:#08865C;"></i>
-            <span class="ms-2 header-tab-documentacion" style="color:#08865C;" >Imprimir propuesta sindical</span>
-          </div>
+          @if (this.datosMedico()?.idPropuestaSindical) {
+            <div class="flex align-items-center justify-content-center">
+              <span class="titulo-nombre-aspirante">Folio:</span>
+              &nbsp;
+              <span class="titulo-nombre-aspirante font-normal">{{ this.datosMedico()?.refFolioPropuesta }}</span>
+            </div>
+
+            <div class="flex cursor-pointer align-items-center">
+              <i class="cme-impresora" style="font-size: 1.2rem; color:#08865C;"></i>
+              <span class="ms-2 header-tab-documentacion" (click)="imprimirPropuesta()" style="color:#08865C;">Imprimir propuesta sindical</span>
+            </div>
+          }
         </div>
         <span class="titulo-menu-asignacion font-normal text-color mb-3">Información del médico</span>
-        <div class="flex gap-5 mb-3">
+        <div class="flex flex-wrap gap-5 mb-3">
           <div class="flex flex-column detalle-aspirante">
             <span>Sexo</span>
-            <p>Masculino</p>
+            <p>{{ this.datosMedico()?.genero }}</p>
           </div>
           <div class="flex flex-column  detalle-aspirante">
             <span>Fecha de nacimiento</span>
-            <p>28/08/1990</p>
+            <p>{{ this.datosMedico()?.fechaNacimiento }}</p>
+
           </div>
           <div class="flex flex-column  detalle-aspirante">
             <span>Nacionalidad</span>
-            <p>Masculina</p>
+            <p>{{ this.datosMedico()?.nacionalidad }}</p>
           </div>
           <div class="flex flex-column  detalle-aspirante">
             <span>Edad</span>
-            <p>35 años</p>
+            <p>{{ this.datosMedico()?.edad }} años</p>
           </div>
           <div class="flex flex-column  detalle-aspirante">
             <span>CURP</span>
-            <p>GABP900818HDFLRR01</p>
+            <p>{{ this.datosMedico()?.curp }}</p>
           </div>
           <div class="flex flex-column  detalle-aspirante">
             <span>RFC</span>
-            <p>GABP090818HD</p>
+            <p>{{ this.datosMedico()?.rfc }}</p>
           </div>
         </div>
         <span class="titulo-menu-asignacion font-normal text-color mb-3">Información de asignación</span>
-        <div class="flex gap-5 mb-3 pb-4 border-bottom-2 border-blue-50">
+        <div class="flex flex-wrap gap-5 mb-3 pb-4 border-bottom-2 border-blue-50">
           <div class="flex flex-column detalle-aspirante ">
             <span>Plaza asignada</span>
-            <p>Plaza 12345-A</p>
+            @if (this.datosMedico()?.numeroPlaza) {
+              <p>Plaza {{ this.datosMedico()?.numeroPlaza }}</p>
+            }
           </div>
           <div class="flex flex-column  detalle-aspirante">
             <span>OOAD asignada</span>
-            <p>OOAD Jalisco</p>
+            <p>{{ this.datosMedico()?.ooadPlaza }}</p>
           </div>
           <div class="flex flex-column  detalle-aspirante">
             <span>Zona</span>
-            <p>Zona 3 Jalisco</p>
+            <p>Zona {{ this.datosMedico()?.zonaPlaza }}</p>
           </div>
           <div class="flex flex-column  detalle-aspirante">
             <span>Categoría</span>
-            <p>Médico General</p>
+            <p>{{ this.datosMedico()?.categoriaPlaza }}</p>
           </div>
           <div class="flex flex-column  detalle-aspirante">
             <span>Especialidad</span>
-            <p>Cardiología</p>
+            <p>{{ this.datosMedico()?.especialidadPlaza }}</p>
           </div>
           <div class="flex flex-column  detalle-aspirante">
             <span>Modalidad</span>
-            <p>Presencial</p>
+            <p>{{ this.datosMedico()?.modalidad }}</p>
           </div>
           <div class="flex flex-column  detalle-aspirante">
             <span>Tipo de unidad</span>
-            <p>Ordinario</p>
+            <p>{{ this.datosMedico()?.tipoUnidad }}</p>
           </div>
         </div>
         <span class="titulo-menu-asignacion font-normal text-color mb-3">Dirección</span>
-        <div class="flex gap-5 mb-3 pb-4 border-bottom-2 border-blue-50">
+        <div class="flex flex-wrap gap-5 mb-3 pb-4 border-bottom-2 border-blue-50">
           <div class="flex flex-column detalle-aspirante">
             <span>Entidad</span>
-            <p>Jalisco</p>
+            <p>{{ this.datosMedico()?.entidadDireccion }}</p>
           </div>
           <div class="flex flex-column  detalle-aspirante">
             <span>Municipio</span>
-            <p>Guadalajara</p>
+            <p>{{ this.datosMedico()?.municipioDireccion }}</p>
           </div>
           <div class="flex flex-column  detalle-aspirante">
             <span>Código postal</span>
-            <p>44100</p>
+            <p>{{ this.datosMedico()?.codigoPostalDireccion }}</p>
           </div>
           <div class="flex flex-column  detalle-aspirante">
             <span>Colonia</span>
-            <p>Centro</p>
+            <p>{{ this.datosMedico()?.coloniaDireccion }}</p>
           </div>
           <div class="flex flex-column  detalle-aspirante">
             <span>Calle</span>
-            <p>Av. Juárez</p>
+            <p>{{ this.datosMedico()?.calleDireccion }}</p>
           </div>
           <div class="flex flex-column  detalle-aspirante">
             <span>Número exterior</span>
-            <p>123</p>
+            <p>{{ this.datosMedico()?.numExtDireccion }}</p>
           </div>
         </div>
         <span class="titulo-menu-asignacion font-normal text-color mb-3">Sección sindical</span>
         <div class="flex gap-5 mb-3 pb-4 border-bottom-2 border-blue-50">
           <div class="flex flex-column detalle-aspirante">
-            <p>Sección III</p>
+            <p>{{ this.datoSeccionSindical()?.desTipoSeccion }}</p>
           </div>
         </div>
         <span class="titulo-menu-asignacion font-normal text-color mb-3">Información de contacto</span>
         <div class="flex gap-5 mb-3">
           <div class="flex flex-column detalle-aspirante">
             <span>Teléfono celular</span>
-            <p>3312345678</p>
+            <p>{{ this.datosMedico()?.celularContacto }}</p>
           </div>
           <div class="flex flex-column  detalle-aspirante">
             <span>Otro teléfono de contacto</span>
-            <p>3398764532</p>
+            <p>{{ this.datosMedico()?.otroNumeroContacto }}</p>
           </div>
         </div>
       </div>
     </div>
   </p-card>
-  <div class="flex justify-content-end mt-3">
-    <p-button variant="outlined" label="Cancelar propuesta" severity="warn"/>
+  <div class="flex justify-content-end mt-3 gap-3">
+    @if (this.datosMedico()?.idPropuestaSindical) {
+      <p-button variant="outlined" label="Cancelar propuesta" (onClick)="dialogCancelacion = true"
+                severity="warn"/>
+    }
+    @if (!this.datosMedico()?.idPropuestaSindical) {
+      <p-button label="Nueva propuesta sindical" (onClick)="generarNuevaPropuesta()"
+                [disabled]="!this.blnFotoGuardada"
+      />
+    }
   </div>
-}@else{
+} @else {
   <div class="flex flex-column justify-content-center align-items-center h-30rem">
     <img class="p-0"
          src="/assets/images/tabla_sin_resultados.svg" alt="Sin resultados">
     <span class="sin-resultados mt-2">No hay resultados de búsqueda</span>
   </div>
 }
+
+
+<p-dialog
+  [(visible)]="dialogCancelacion"
+  [modal]="true"
+  [closable]="true"
+  [styleClass]="'dialog'"
+  [draggable]="false"
+  [resizable]="false"
+  [showHeader]="true"
+  [header]="'Rechazo de oferta'"
+>
+
+  <div class="flex justify-content-center mb-5">
+    <p class="font-normal text-xl">¿Estás seguro de cancelar la propuesta sindical?</p>
+  </div>
+
+  <div class="flex justify-content-end">
+    <p-button variant="outlined" label="Cancelar" (onClick)="dialogCancelacion = false" severity="warn"
+              class="me-3"/>
+    <p-button variant="outlined" (onClick)="cancelarPropuesta()" label="Aceptar"/>
+
+  </div>
+</p-dialog>

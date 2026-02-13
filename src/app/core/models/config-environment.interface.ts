@@ -8,5 +8,6 @@ export interface ConfigEnvironment {
     apiDocumentos: string;
     apiCalificaciones: string;
     apiAsistencia: string;
+    apiSindical: string;
   }
 }
