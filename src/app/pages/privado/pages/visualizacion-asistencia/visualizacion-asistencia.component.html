@@ -9,7 +9,7 @@
         </div>
         <div class="flex flex-column ms-4">
           <p class="modal-titulo-tarjeta" style="color: #000">Día de asistencia</p>
-          <p class="titulo-nombre-aspirante">{{ !datosMedico() ? '-' : diaAsistencia() }}</p>
+          <p class="titulo-nombre-aspirante">{{ !datosMedico() ? '-' : datosMedico()?.diaAsistenciaCita }}</p>
         </div>
       </div>
     </p-card>
@@ -22,7 +22,7 @@
         </div>
         <div class="flex flex-column ms-4">
           <p class="modal-titulo-tarjeta" style="color: #000">Hora de asistencia</p>
-          <p class="titulo-nombre-aspirante">{{ !datosMedico() ? '-' : horaAsistencia() }}</p>
+          <p class="titulo-nombre-aspirante">{{ !datosMedico() ? '-' : datosMedico()?.horaAsistencia }}</p>
         </div>
       </div>
     </p-card>
@@ -51,7 +51,7 @@
               <span class="subtitulo-card-aspirante my-1">Matrícula: <strong>98161651</strong></span>
               <span class="subtitulo-card-aspirante mt-4 mb-2"><strong>Especialidades</strong></span>
               <div class="flex flex-wrap">
-                @for (especialidad of especialidades; track especialidad) {
+                @for (especialidad of datosMedico()?.especialidades; track especialidad) {
                   <div class="mr-4 pill-especialidad">
                 <span>
                   {{ especialidad }}
@@ -66,28 +66,29 @@
                 <i class="cme-citas me-3" style="color: #41ABCA; font-size: 2rem"></i>
                 <div class="flex flex-column">
                   <span class="nombre-doc" style="color: #000">Fecha</span>
-                  <span class="subtitle-previsualizacion" style="color: #58595C">{{ data.fecha }}</span>
+                  <span class="subtitle-previsualizacion" style="color: #58595C">{{ datosMedico()?.fechaCita }}</span>
                 </div>
               </div>
               <div class="flex align-items-center">
                 <i class="cme-time me-3" style="color: #41ABCA; font-size: 1.6rem"></i>
                 <div class="flex flex-column">
                   <span class="nombre-doc" style="color: #000">Hora</span>
-                  <span class="subtitle-previsualizacion" style="color: #58595C">{{ data.hora }}</span>
+                  <span class="subtitle-previsualizacion" style="color: #58595C">{{ datosMedico()?.horaCita }}</span>
                 </div>
               </div>
               <div class="flex align-items-center">
                 <i class="cme-numero-mesa me-3" style="color: #41ABCA; font-size: 2rem"></i>
                 <div class="flex flex-column">
                   <span class="nombre-doc" style="color: #000">Mesa</span>
-                  <span class="subtitle-previsualizacion" style="color: #58595C">Mesa {{ data.mesa }}</span>
+                  <span class="subtitle-previsualizacion"
+                        style="color: #58595C">Mesa {{ datosMedico()?.mesaCita }}</span>
                 </div>
               </div>
               <div class="flex align-items-center">
                 <i class="cme-time me-3" style="color: #41ABCA; font-size: 1.6rem"></i>
                 <div class="flex flex-column">
                   <span class="nombre-doc" style="color: #000">Turno</span>
-                  <span class="subtitle-previsualizacion" style="color: #58595C">{{ data.turno }}</span>
+                  <span class="subtitle-previsualizacion" style="color: #58595C">{{ datosMedico()?.turnoCita }}</span>
                 </div>
               </div>
             </div>

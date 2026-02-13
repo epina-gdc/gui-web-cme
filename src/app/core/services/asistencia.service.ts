@@ -2,7 +2,6 @@ import {inject, Injectable} from '@angular/core';
 import {environment} from '@env/environment.development';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {AsistenciaExtraordinariaResponse} from '@models/asistencia-extraordinaria.interface';
 
 @Injectable({
   providedIn: 'root'

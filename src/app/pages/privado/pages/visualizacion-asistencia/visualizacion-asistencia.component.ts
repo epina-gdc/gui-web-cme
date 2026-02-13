@@ -4,6 +4,7 @@ import {Button} from 'primeng/button';
 import {BehaviorSubject, Subscription, timer} from 'rxjs';
 import {AsistenciaService} from '@services/asistencia.service';
 import {AlertService} from '@services/alert.service';
+import {UsuarioAsistencia} from '@models/asistencia.interface';
 
 @Component({
   selector: 'app-visualizacion-asistencia',
@@ -13,9 +14,9 @@ import {AlertService} from '@services/alert.service';
 })
 export class VisualizacionAsistenciaComponent implements OnDestroy {
 
-  datosMedico = signal<any | null>(null);
+  datosMedico = signal<UsuarioAsistencia | null>(null);
   private timerSubscription?: Subscription;
-  public medicoCargado$ = new BehaviorSubject<any | null>(null);
+  public medicoCargado$ = new BehaviorSubject<UsuarioAsistencia | null>(null);
 
   diaAsistencia: WritableSignal<string> = signal("08/08/2026");
   horaAsistencia: WritableSignal<string> = signal("16:30 Hrs.");
@@ -75,7 +76,9 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
           this.alerService.error(respuesta.mensaje);
           return;
         }
-        this.alerService.exito('Asistencia confirmada');
+        this.alerService.exito(respuesta.mensaje);
+        this.datosMedico.set(respuesta.respuesta);
+
       },
       error: error => {
         console.log(error);
