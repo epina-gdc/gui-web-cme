@@ -1,7 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment.development';
-import { extend } from 'dayjs';
 import { catchError, map, Observable, throwError } from 'rxjs';
 
 // Interfaces existentes (mantenidas para compatibilidad)

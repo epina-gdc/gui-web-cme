@@ -16,7 +16,7 @@
     <div class="col-12">
         <div class="grid lst-mesas">
 
-            @for (mesa of mesas; track mesa; let i = $index) {
+            @for (mesa of mesas; track mesa.numeroMesa; let i = $index) {
             @let bgColorClass = i % 2 === 0 ? 'mesa-amarilla' : 'mesa-azul';
             <div class="col-12 sm:col-6 md:col-20 lg:col-20 xl:col-20 ">
                 <div class="card-mesa p-3 border-round-xl border-0 h-full position-relative" [class]="bgColorClass">
@@ -25,7 +25,7 @@
                             <span class="font-semibold text-3xl">{{ mesa.tituloMesa }}</span>
                         </div>
                         <hr class=" my-2" [class]="bgColorClass">
-                        @for (turno of mesa.turnos; track turno) {
+                        @for (turno of mesa.turnos; track turno.turno) {
                         <div class="mb-2">
                             <p-chip styleClass="border-1 text-xs px-2 py-1 rounded-lg" [class]="bgColorClass">
                                 <span class="font-semibold text-xs">
@@ -36,7 +36,7 @@
                             </p-chip>
 
                             <ul class="list-none pl-0 mt-3 mb-0" [class]="bgColorClass">
-                                @for (esp of turno.especialidades; track esp) {
+                                @for (esp of turno.especialidades; track esp.idMesaDetalle) {
                                 <li>
                                     <div class="flex flex-row justify-content-start align-content-center  gap-2">
                                         <div class="flex-none">

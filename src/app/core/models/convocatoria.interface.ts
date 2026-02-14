@@ -12,3 +12,15 @@ export interface TipoConvocatoria {
   desTipoConvocatoria: string,
   indActivo: number,
 }
+
+export interface ConvocatoriaPermisoSustitucion {
+  idConvocatoria: number;
+  desConvocatoria: string;
+  fecInicio: string;
+  fecFin: string;
+  tipoConvocatoria: TipoConvocatoria;
+  refUrlTableroOferta: string;
+  indHabilitaRegistro: number;
+  indPermisoSustitucion: number;
+  indActivo: number;
+}
