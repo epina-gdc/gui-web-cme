@@ -7,7 +7,6 @@
 
                     @if(!totalCitas() || totalCitas()?.porcentajeEnviados == 0){
                     <div class="container-wave">
-
                         <span class="dot"></span>
                     </div>
 
@@ -100,12 +99,11 @@
 
                             <div class="col-fixed ">
                                 <p-button label="Enviar citas" (onClick)="onEnviarCitas()"
-                                    [disabled]="!convocatoriaSelect() || !tipoMedicoSelect()"></p-button>
+                                    [disabled]="!convocatoriaSelect() || !tipoMedicoSelect() || tieneFechaYHoraFin(totalCitas())"></p-button>
                             </div>
                         </div>
                         <div class="grid p2 m-2">
                             <div class="card-t-c border-round-2xl p-3 w-full">
-
                                 <div class="col-12 font-bold text-lg">
                                     <span>Total de citas enviadas con error</span>
                                 </div>
@@ -114,7 +112,6 @@
                                     <span class="cant">{{totalCitas()?.totalesNoEnviados}}</span>
                                 </div>
                             </div>
-
                         </div>
                     </div>
 

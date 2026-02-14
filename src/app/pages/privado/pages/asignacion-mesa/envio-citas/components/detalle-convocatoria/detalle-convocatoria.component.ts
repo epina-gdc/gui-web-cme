@@ -36,7 +36,7 @@ export class DetalleConvocatoriaComponent implements OnInit, OnDestroy {
 
   onEnviarCitas() {
 
-    if(!this.convocatoriaSelect() || !this.tipoMedicoSelect()){
+    if (!this.convocatoriaSelect() || !this.tipoMedicoSelect()) {
       return
     }
     this.envioCitasService.guardarAsignacionCitas(this.convocatoriaSelect() as number, this.tipoMedicoSelect() as number).subscribe({
@@ -55,6 +55,16 @@ export class DetalleConvocatoriaComponent implements OnInit, OnDestroy {
     );
   }
 
+  // VERIFICA SI EL PROCESO HA FINALIZADO (tiene fechaFin y horaFin)
+  tieneFechaYHoraFin(total: TotalCitas | undefined): boolean {
+    if (!total) return false;
 
+    const fechasHoras = total.fechasHorasEnvios;
 
+    if (!fechasHoras) return false;
+
+    // Verifica que fechaFin y horaFin tengan valores no vacíos
+    return !!(fechasHoras.fechaFin && fechasHoras.fechaFin.trim()) ||
+      !!(fechasHoras.horaFin && fechasHoras.horaFin.trim());
+  }
 }

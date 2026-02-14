@@ -2,7 +2,6 @@
   display: block;
 }
 
-
 .card-med {
   min-height: 117px;
   cursor: pointer;
@@ -12,7 +11,6 @@
     font-size: 12px !important;
     color: #62748E;
   }
-
 
   .card-label {
     font-size: 14px;
@@ -43,9 +41,21 @@
         color: #155DFC;
       }
     }
+
+    &.completed {
+      background-color: #EFF6FF;
+      border: solid 1px #155DFC;
+      box-shadow: 0 4px 12px rgba(21, 93, 252, 0.25);
+      
+      .card-label {
+        color: #45556C;
+      }
+
+      .card-num {
+        color: #155DFC;
+      }
+    }
   }
-
-
 
   &.residentes {
     background-color: #F3FFEE73;
@@ -61,6 +71,20 @@
     &.select {
       border: solid 1px #0AD50A;
       box-shadow: -1px 4px 4px 0px #0AD50A99;
+
+      .card-num {
+        color: #0AD50A;
+      }
+    }
+
+    &.completed {
+      background-color: #F3FFEE;
+      border: solid 1px #0AD50A;
+      box-shadow: 0 4px 12px rgba(10, 213, 10, 0.25);
+      
+      .card-label {
+        color: #456C4A;
+      }
 
       .card-num {
         color: #0AD50A;
@@ -88,6 +112,19 @@
       }
     }
 
+    &.completed {
+      background-color: #FFEBEB;
+      border: solid 1px #E10000;
+      box-shadow: 0 4px 12px rgba(225, 0, 0, 0.25);
+      
+      .card-label {
+        color: #45556C;
+      }
+
+      .card-num {
+        color: #E10000;
+      }
+    }
   }
 
   &.total {
@@ -100,6 +137,5 @@
     .card-num {
       color: #314158;
     }
-
   }
 }

@@ -37,6 +37,9 @@ export class ConvocatoriaComponent implements OnInit {
   totalCitas = model<TotalCitas | undefined>(undefined);
   loading = signal(false);
 
+  // MAPA PARA GUARDAR TOTALES POR TIPO DE MÉDICO
+  private totalesPorTipo = new Map<TypeMedico, TotalCitas>();
+
   // INTERVALO PARA ACTUALIZACIÓN PERIÓDICA
   private intervalId: number | null = null;
   private readonly INTERVAL_TIME = 20000; // 20 segundos
@@ -46,6 +49,11 @@ export class ConvocatoriaComponent implements OnInit {
     effect(() => {
       const convocatoria = this.convocatoriaSelect();
       const tipoMed = this.tipoMedicoSelect();
+
+      if (convocatoria) {
+        // Revisar todos los tipos de médico al seleccionar convocatoria
+        this.revisarTodosLosTipos(convocatoria);
+      }
 
       if (convocatoria && tipoMed) {
         this.cargaTotales(convocatoria, tipoMed);
@@ -82,7 +90,37 @@ export class ConvocatoriaComponent implements OnInit {
   }
 
   // ============================================
-  // CARGA INICIAL DE LOS TOTALES
+  // REVISAR TODOS LOS TIPOS DE MÉDICO AL SELECCIONAR CONVOCATORIA
+  // ============================================
+  private revisarTodosLosTipos(convocatoriaId: number): void {
+    // Consultar totales para cada tipo de médico
+    this.consultarTotalesTipo(convocatoriaId, TypeMedico.BECADOS);
+    this.consultarTotalesTipo(convocatoriaId, TypeMedico.RESIDENTES);
+    this.consultarTotalesTipo(convocatoriaId, TypeMedico.EXTERNOS);
+  }
+
+  // ============================================
+  // CONSULTAR TOTALES DE UN TIPO ESPECÍFICO (sin afectar la vista actual)
+  // ============================================
+  private consultarTotalesTipo(convocatoriaId: number, tipoMed: TypeMedico): void {
+    this.envioCitasService.consultaTotalesCitas(convocatoriaId, tipoMed)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response) => {
+          if (response.exito) {
+            const datosTotales = response.respuesta;
+            // Guardar en el mapa sin afectar la vista actual
+            this.totalesPorTipo.set(tipoMed, datosTotales);
+          }
+        },
+        error: (err) => {
+          console.error(`Error al cargar totales ${tipoMed}:`, err);
+        }
+      });
+  }
+
+  // ============================================
+  // CARGA INICIAL DE LOS TOTALES (para el tipo seleccionado)
   // ============================================
   private cargaTotales(convocatoriaId: number, tipoMed: TypeMedico): void {
     // Limpiar los totales antes de cargar nuevos datos
@@ -124,7 +162,7 @@ export class ConvocatoriaComponent implements OnInit {
   }
 
   // ============================================
-  // CONSULTA LOS TOTALES AL SERVICIO (lógica común)
+  // CONSULTA LOS TOTALES AL SERVICIO (lógica común - afecta la vista)
   // ============================================
   private consultarTotales(convocatoriaId: number, tipoMed: TypeMedico): void {
     this.loading.set(true);
@@ -135,12 +173,16 @@ export class ConvocatoriaComponent implements OnInit {
         next: (response) => {
           console.log('Respuesta totales:', response);
           if (response.exito) {
-            this.totalCitas.set(response.respuesta);
+            const datosTotales = response.respuesta;
+            this.totalCitas.set(datosTotales);
+            
+            // Guardar los totales por tipo de médico
+            this.totalesPorTipo.set(tipoMed, datosTotales);
             
             // Verificar si ya terminó después de actualizar
-            if (this.tieneFechaYHoraFin(response.respuesta)) {
+            if (this.tieneFechaYHoraFin(datosTotales)) {
               this.detenerActualizacionPeriodica();
-              console.log('Proceso completado: fechaFin y horaFin disponibles');
+              console.log(' Proceso completado: fechaFin y horaFin disponibles');
             }
           }
           this.loading.set(false);
@@ -176,9 +218,15 @@ export class ConvocatoriaComponent implements OnInit {
            !!(fechasHoras.horaFin && fechasHoras.horaFin.trim());
   }
 
+  // ============================================
+  // VERIFICA SI UN TIPO DE MÉDICO YA SE PROCESÓ
+  // ============================================
+  protected tieneProcesoCompletado(tipo: TypeMedico): boolean {
+    const totales = this.totalesPorTipo.get(tipo);
+    return this.tieneFechaYHoraFin(totales);
+  }
+
   onCambioMedSelec(tipo: TypeMedico): void {
-    // Limpiar los totales antes de cambiar el tipo
-    this.totalCitas.set(undefined);
     // Establecer el nuevo tipo de médico
     this.tipoMedicoSelect.set(tipo);
   }

@@ -15,6 +15,7 @@
                 <div class="col-12 sm:col-6 lg:col-3">
                     <div class="card-med becados border-round-2xl p-3 pointer"
                         [class.select]="tipoMedicoSelect() == tipoMed.BECADOS"
+                        [class.completed]="tieneProcesoCompletado(tipoMed.BECADOS)"
                         (click)="onCambioMedSelec(tipoMed.BECADOS)" >
                         <div class="flex flex-column">
                             <label class="card-label mb-0" for="numB">Total de Médicos becados </label>
@@ -32,6 +33,7 @@
                 <div class="col-12 sm:col-6 lg:col-3">
                     <div class="card-med residentes border-round-2xl p-3 pointer"
                         [class.select]="tipoMedicoSelect() == tipoMed.RESIDENTES"
+                        [class.completed]="tieneProcesoCompletado(tipoMed.RESIDENTES)"
                         (click)="onCambioMedSelec(tipoMed.RESIDENTES)">
                         <div class="flex flex-column">
                             <label class="card-label" for="numR">Total de Médicos residentes </label>
@@ -49,6 +51,7 @@
                 <div class="col-12 sm:col-6 lg:col-3">
                     <div class="card-med externos border-round-2xl p-3 pointer"
                         [class.select]="tipoMedicoSelect() == tipoMed.EXTERNOS"
+                        [class.completed]="tieneProcesoCompletado(tipoMed.EXTERNOS)"
                         (click)="onCambioMedSelec(tipoMed.EXTERNOS)">
                         <div class="flex flex-column">
                             <label class="card-label" for="numE">Total de Médicos externos </label>
