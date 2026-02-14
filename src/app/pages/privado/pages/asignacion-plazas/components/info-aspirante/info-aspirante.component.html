@@ -89,6 +89,46 @@
       </div>
     </div>
 
+
+    <!--Zona asignación por sustitución-->
+    <div class="col-12" *ngIf="tipoAsignacion == 3">
+        <div class="grid">
+          <div class="col-12 md:col-2"></div>
+            <div class="col-12 md:col-10 ">
+              <h3 class="titulo-seccion">Asignación de sustitución</h3>
+            </div>
+
+            <div class="col-12 md:col-2"></div>
+            <div class="col-12 md:col-3 flex align-items-center justify-content-start gap-2">
+              <i class="cme-lugar" style="color: #63c2ea;font-size: 1.7rem" ></i>
+              <div class="flex flex-column line-height-2" style="font-size: 12px;text-align: left;">
+                <span class="font-semibold text-900">OOAD</span>
+                <span class="font-semibold text-600">{{ aspirante.asignacion.ooad }}</span>
+              </div>
+            </div>
+            <div class="col-12 md:col-2 flex align-items-center justify-content-start gap-2">
+              <i class="cme-pin" style="color: #63c2ea;font-size: 1.7rem" ></i>
+              <div class="flex flex-column line-height-2" style="font-size: 12px;text-align: left;">
+                <span class="font-semibold text-900">Zona</span>
+                <span class="font-semibold text-600">{{ aspirante.asignacion.zona }}</span>
+              </div>
+            </div>
+            <div class="col-12 md:col-2 flex align-items-center justify-content-start gap-2">
+              <i class="cme-total" style="color: #63c2ea;font-size: 1.7rem" ></i>
+              <div class="flex flex-column line-height-2" style="font-size: 12px;text-align: left;">
+                <span class="font-semibold text-900">Especialidad</span>
+                <span class="font-semibold text-600">{{ aspirante.asignacion.especialidad }}</span>
+              </div>
+            </div>
+            <div class="col-12 md:col-3 flex align-items-center justify-content-center">
+              <p-button type="button" variant="outlined" label="Imprimir cedula" (click)="imprimirCedula()" />
+            </div>
+          
+        </div>
+
+      
+    </div>
+
   </div>
 </p-card>
 

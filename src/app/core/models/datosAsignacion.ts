@@ -51,7 +51,7 @@ export class AsignacionPlaza {
     idTipoAsignacion?:Asignacion;
     idPlazaLayout?:Plaza
     idMotivoRechazo?:MotivoRechazo;
-    idSustitucion?:number;
+    idSustitucion?:Sustitucion;
     stpAsignacion?:number;
 }
 
@@ -94,10 +94,32 @@ export class Plaza {
     cveZona?:number;
 }
 
+export class Sustitucion {
+    id!:number;
+    cveOoad!:string;
+    desOoad!:string;
+    cveZona!:string;
+    desZona!:string;
+    cveEspecialidad!:string;
+    desEspecialidad!:string;
+}
+
 export class MotivoRechazo {
     id!:number;
     desMotivo!:string;
 }
+
+export interface Cedula {
+    nombreAdjunto: string;
+    adjunto: string; 
+}
+
+export interface CedulaResponse {
+    exito: boolean;
+    mensaje: string;
+    respuesta: Cedula; 
+}
+
 
 export const TipoAsignacion = {
     PlazaOrdinaria: 1,
