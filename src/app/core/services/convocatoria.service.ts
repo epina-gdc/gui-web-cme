@@ -1,19 +1,20 @@
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {inject, Injectable} from '@angular/core';
-import {environment} from '@env/environment.development';
-import {Observable, throwError} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
-import {AspiranteRequest, InteresLaboralRequest} from '@models/aspirante';
-import {DataFotografia} from '@models/fotografia';
-import {DatosDocumentoResponse} from '@models/datosDocumento';
-import {ContactoRequest, DataContacto} from '@models/datosContacto';
-
-import {DataDomicilio, ResidenciaRequest} from '@models/datosDomicilio';
-import {AlertService} from './alert.service';
-import {dataGenerales, DatosGeneralesRequest} from '@models/datosGenerales';
-import {ResponseGeneral} from '@models/responseGeneral';
-import {SolicitudGuardarDocumentacion} from '@models/solicitud-guardar-documentacion.interface';
-import {HttpRespuesta} from '@models/http-respuesta.interface';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { environment } from '@env/environment.development';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { AspiranteRequest, InteresLaboralRequest } from '@models/aspirante';
+import { DataFotografia } from '@models/fotografia';
+import { DatosDocumentoResponse } from '@models/datosDocumento';
+import { ContactoRequest, DataContacto } from '@models/datosContacto';
+import { Convocatoria, ConvocatoriaPermisoSustitucion } from '@models/convocatoria.interface';
+import { DataDomicilio, ResidenciaRequest } from '@models/datosDomicilio';
+import { AlertService } from './alert.service';
+import { dataGenerales, DatosGeneralesRequest } from '@models/datosGenerales';
+import { ResponseGeneral } from '@models/responseGeneral';
+import { SolicitudGuardarDocumentacion } from '@models/solicitud-guardar-documentacion.interface';
+import { HttpRespuesta } from '@models/http-respuesta.interface';
+import { BusquedaPermisoEspecifico, BusquedaPermisoEspecificoResult } from '@models/asignacion-sustitucion.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,9 @@ import {HttpRespuesta} from '@models/http-respuesta.interface';
 export class ConvocatoriaService {
   private readonly serverEndPointURLConvocatoria = `${environment.api.apiConvocatoria}`;
   private readonly serverEndPointURLDocumento = `${environment.api.apiDocumentos}`;
-
+  private readonly VERSION_API: string = '/v1/';
+  private readonly CONFIGURACION = 'configuracion';
+  private readonly serverEndPointURLAsignacionSituacion = `${environment.api.apiConvocatoria}${this.VERSION_API}${this.CONFIGURACION}`;
   http: HttpClient = inject(HttpClient);
   _alertServices: AlertService = inject(AlertService);
 
@@ -42,7 +45,7 @@ export class ConvocatoriaService {
 
 
   getDatosResidencia(idUsuario: number): Observable<any> {
-    return this.http.get<DataDomicilio>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-residencia/${idUsuario}`, {headers: this.header}).pipe(
+    return this.http.get<DataDomicilio>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-residencia/${idUsuario}`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: DataDomicilio) => {
         return response;
@@ -51,7 +54,7 @@ export class ConvocatoriaService {
   }
 
   getDatosDependientes(idUsuario: number): Observable<any> {
-    return this.http.get<any>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-dependientes/${idUsuario}`, {headers: this.header}).pipe(
+    return this.http.get<any>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-dependientes/${idUsuario}`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response;
@@ -61,7 +64,7 @@ export class ConvocatoriaService {
 
 
   getDatosEmpleo(idUsuario: number): Observable<any> {
-    return this.http.get<any>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-empleo/${idUsuario}`, {headers: this.header}).pipe(
+    return this.http.get<any>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-empleo/${idUsuario}`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response;
@@ -70,7 +73,7 @@ export class ConvocatoriaService {
   }
 
   getDatosGenerales(idUsuario: number): Observable<dataGenerales> {
-    return this.http.get<dataGenerales>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-generales/${idUsuario}`, {headers: this.header}).pipe(
+    return this.http.get<dataGenerales>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-generales/${idUsuario}`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: dataGenerales) => {
         return response;
@@ -80,7 +83,7 @@ export class ConvocatoriaService {
 
 
   getDatosContacto(idUsuario: number): Observable<any> {
-    return this.http.get<DataContacto>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-contacto/${idUsuario}`, {headers: this.header}).pipe(
+    return this.http.get<DataContacto>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-contacto/${idUsuario}`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: DataContacto) => {
         return response;
@@ -90,7 +93,7 @@ export class ConvocatoriaService {
 
 
   getDatosInteresLaboral(idUsuario: number): Observable<any> {
-    return this.http.get<any>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-interes-laboral/${idUsuario}`, {headers: this.header}).pipe(
+    return this.http.get<any>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-interes-laboral/${idUsuario}`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response;
@@ -99,7 +102,7 @@ export class ConvocatoriaService {
   }
 
   getDatosFotografia(idUsuario: number): Observable<DataFotografia> {
-    return this.http.get<any>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-fotografia/${idUsuario}`, {headers: this.header}).pipe(
+    return this.http.get<any>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-fotografia/${idUsuario}`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: DataFotografia) => {
         return response;
@@ -109,7 +112,7 @@ export class ConvocatoriaService {
 
 
   getDatosDocumentos(idUsuario: number): Observable<any> {
-    return this.http.get<DatosDocumentoResponse>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-documentos/${idUsuario}`, {headers: this.header}).pipe(
+    return this.http.get<DatosDocumentoResponse>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-documentos/${idUsuario}`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: DatosDocumentoResponse) => {
         return response;
@@ -118,7 +121,7 @@ export class ConvocatoriaService {
   }
 
   getDatosDocumentosEscolares(idUsuario: number): Observable<any> {
-    return this.http.get<DatosDocumentoResponse>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-documentos-escolaridad/${idUsuario}`, {headers: this.header}).pipe(
+    return this.http.get<DatosDocumentoResponse>(`${this.serverEndPointURLConvocatoria}/aspirante/datos-documentos-escolaridad/${idUsuario}`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: DatosDocumentoResponse) => {
         return response;
@@ -128,7 +131,7 @@ export class ConvocatoriaService {
 
 
   getVerificacionAspirante(idUsuario: number): Observable<any> {
-    return this.http.get<any>(`${this.serverEndPointURLConvocatoria}/verificacion/aspirante/${idUsuario}`, {headers: this.header}).pipe(
+    return this.http.get<any>(`${this.serverEndPointURLConvocatoria}/verificacion/aspirante/${idUsuario}`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response;
@@ -138,7 +141,7 @@ export class ConvocatoriaService {
 
   getEvaluacionDocumentos(idUsuario: number): Observable<any> {
     let ruta = `${this.serverEndPointURLConvocatoria}/verificacion/aspirante/evaluacion-documentos/${idUsuario}`;
-    return this.http.get<any>(ruta, {headers: this.header}).pipe(
+    return this.http.get<any>(ruta, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response;
@@ -148,7 +151,7 @@ export class ConvocatoriaService {
 
   guardarDatosGenerales(aspirante: DatosGeneralesRequest): Observable<any> {
     let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-generales`;
-    return this.http.post<any>(ruta, aspirante, {headers: this.header}).pipe(
+    return this.http.post<any>(ruta, aspirante, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response;
@@ -158,7 +161,7 @@ export class ConvocatoriaService {
 
   guardarDatosDocumentosEscolares(solicitud: SolicitudGuardarDocumentacion): Observable<any> {
     let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-documentos-escolaridad`;
-    return this.http.post<any>(ruta, solicitud, {headers: this.header}).pipe(
+    return this.http.post<any>(ruta, solicitud, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response;
@@ -168,7 +171,7 @@ export class ConvocatoriaService {
 
   terminarRegistro(solicitud: SolicitudGuardarDocumentacion): Observable<any> {
     let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/finalizar-datos-documentos-escolaridad`;
-    return this.http.post<any>(ruta, solicitud, {headers: this.header}).pipe(
+    return this.http.post<any>(ruta, solicitud, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response;
@@ -179,7 +182,7 @@ export class ConvocatoriaService {
 
   guardarVerificacionAspirante(aspirante: AspiranteRequest): Observable<any> {
     let ruta = `${this.serverEndPointURLConvocatoria}/verificacion/aspirante'`;
-    return this.http.post<any>(ruta, aspirante, {headers: this.header}).pipe(
+    return this.http.post<any>(ruta, aspirante, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response;
@@ -189,7 +192,7 @@ export class ConvocatoriaService {
 
   guardarFoto(foto: any): Observable<any> {
     let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-fotografia`;
-    return this.http.post<any>(ruta, foto, {headers: this.header}).pipe(
+    return this.http.post<any>(ruta, foto, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response;
@@ -200,7 +203,7 @@ export class ConvocatoriaService {
 
   guardarDocumento(documento: any): Observable<any> {
     let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-documentos`
-    return this.http.post<any>(ruta, documento, {headers: this.header}).pipe(
+    return this.http.post<any>(ruta, documento, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response
@@ -212,7 +215,7 @@ export class ConvocatoriaService {
 
   guardarInteresLaboral(interes: InteresLaboralRequest): Observable<any> {
     let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-interes-laboral`
-    return this.http.post<any>(ruta, interes, {headers: this.header}).pipe(
+    return this.http.post<any>(ruta, interes, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response
@@ -224,7 +227,7 @@ export class ConvocatoriaService {
 
   guardarContacto(datosContacto: ContactoRequest): Observable<any> {
     let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-contacto`
-    return this.http.post<any>(ruta, datosContacto, {headers: this.header}).pipe(
+    return this.http.post<any>(ruta, datosContacto, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response
@@ -236,7 +239,7 @@ export class ConvocatoriaService {
 
   guardarResidencia(residencia: ResidenciaRequest): Observable<any> {
     let ruta = `${this.serverEndPointURLConvocatoria}/aspirante/datos-residencia`
-    return this.http.post<any>(ruta, residencia, {headers: this.header}).pipe(
+    return this.http.post<any>(ruta, residencia, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response
@@ -248,7 +251,7 @@ export class ConvocatoriaService {
 
   consultarPlazas(filtros: any, parameters: any): Observable<any> {
 
-    const {page, size, sort} = parameters;
+    const { page, size, sort } = parameters;
 
     let parametros = new HttpParams();
     parametros = parametros.set('page', page);
@@ -257,7 +260,7 @@ export class ConvocatoriaService {
 
 
     const ruta = `${this.serverEndPointURLConvocatoria}/plazas/consultar`;
-    return this.http.post<any>(ruta, filtros, {headers: this.header, params: parametros}).pipe(
+    return this.http.post<any>(ruta, filtros, { headers: this.header, params: parametros }).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response
@@ -320,7 +323,7 @@ export class ConvocatoriaService {
 
   consultarFavoritos(filtros: any, parameters: any): Observable<any> {
 
-    const {page, size, sort} = parameters;
+    const { page, size, sort } = parameters;
 
     let parametros = new HttpParams();
     parametros = parametros.set('page', page);
@@ -329,12 +332,68 @@ export class ConvocatoriaService {
 
 
     const ruta = `${this.serverEndPointURLConvocatoria}/plazas-favoritas/consultar`;
-    return this.http.post<any>(ruta, filtros, {headers: this.header, params: parametros}).pipe(
+    return this.http.post<any>(ruta, filtros, { headers: this.header, params: parametros }).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response
       }),
     )
+  }
+
+  /**
+   * 
+   * Acceso al módulo Configuración de asignación por sustitución.
+   * 
+   */
+
+  estadoGlobalConvocatoria(idConvocatoria: number): Observable<HttpRespuesta<ConvocatoriaPermisoSustitucion>> {
+    let ruta = `${this.serverEndPointURLAsignacionSituacion}/convocatoriaEstado/${idConvocatoria}`;
+    return this.http.get<HttpRespuesta<ConvocatoriaPermisoSustitucion>>(ruta, { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<ConvocatoriaPermisoSustitucion>) => {
+        return response;
+      })
+    );
+  }
+
+  actualizarPermisoGlobalConvocatoria(idConvocatoria: number, estatus: number): Observable<HttpRespuesta<ConvocatoriaPermisoSustitucion>> {
+    let ruta = `${this.serverEndPointURLAsignacionSituacion}/limiteContratacion/${idConvocatoria}/estado/${estatus}`;
+    return this.http.put<HttpRespuesta<ConvocatoriaPermisoSustitucion>>(ruta, { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<ConvocatoriaPermisoSustitucion>) => {
+        return response;
+      })
+    );
+  }
+
+  buscarPermisoEspecifico(buscar: BusquedaPermisoEspecifico): Observable<HttpRespuesta<BusquedaPermisoEspecificoResult>> {
+    let ruta = `${this.serverEndPointURLAsignacionSituacion}/limiteContratacionEspecifico/buscar`;
+    return this.http.post<HttpRespuesta<BusquedaPermisoEspecificoResult>>(ruta, buscar, { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<BusquedaPermisoEspecificoResult>) => {
+        return response;
+      })
+    );
+  }
+
+  activarDesactivarPermisoEspecifico(idPermisoSustitucion: number, estatus: number): Observable<HttpRespuesta<BusquedaPermisoEspecificoResult>> {
+    let ruta = `${this.serverEndPointURLAsignacionSituacion}/limiteContratacionEspecifico/${idPermisoSustitucion}/estado/${estatus}`;
+    return this.http.put<HttpRespuesta<BusquedaPermisoEspecificoResult>>(ruta, {}, { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<BusquedaPermisoEspecificoResult>) => {
+        return response;
+      })
+    );
+  }
+
+  lstContratacionesEspecificosDesativadas(idConvocatoria: number): Observable<HttpRespuesta<BusquedaPermisoEspecificoResult[]>> {
+    let ruta = `${this.serverEndPointURLAsignacionSituacion}/listar/limitesDesactivados/${idConvocatoria}`;
+    return this.http.get<HttpRespuesta<BusquedaPermisoEspecificoResult[]>>(ruta, { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<BusquedaPermisoEspecificoResult[]>) => {
+        return response;
+      })
+    );
   }
 
   private handleError(error: ResponseGeneral) {
