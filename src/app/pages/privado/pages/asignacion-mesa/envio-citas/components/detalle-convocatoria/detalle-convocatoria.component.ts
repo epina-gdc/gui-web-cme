@@ -1,40 +1,60 @@
-import {CommonModule} from '@angular/common';
-import {ChangeDetectionStrategy, Component, model, OnDestroy, OnInit, signal} from '@angular/core';
-import {Avatar} from "primeng/avatar";
-import {CardModule} from 'primeng/card';
-import {ProgressBarModule} from 'primeng/progressbar';
-import {Button} from "primeng/button";
-import { TotalCitas } from '../../services/envio-citas.service';
+import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, model, OnDestroy, OnInit, signal } from '@angular/core';
+import { Avatar } from "primeng/avatar";
+import { CardModule } from 'primeng/card';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { Button } from "primeng/button";
+import { EnvioCitasService, TotalCitas, TypeMedico } from '../../services/envio-citas.service';
+
+import { Mensajes } from '@utils/mensajes';
+import { AlertService } from '@services/alert.service';
 
 @Component({
   selector: 'app-detalle-convocatoria',
   imports: [CommonModule, CardModule, Avatar, ProgressBarModule, Button],
   templateUrl: './detalle-convocatoria.component.html',
   styleUrl: './detalle-convocatoria.component.scss',
-  
+
 })
 export class DetalleConvocatoriaComponent implements OnInit, OnDestroy {
-  value = signal(97);
-  private intervalId: number | null = null;
+
+  envioCitasService = inject(EnvioCitasService);
+  alertaService = inject(AlertService)
+  mensajes = inject(Mensajes);
+
 
   totalCitas = model<TotalCitas | undefined>(undefined);
-
+  convocatoriaSelect = model<number | undefined>(undefined);
+  tipoMedicoSelect = model<TypeMedico | undefined>(undefined);
 
   ngOnInit(): void {
-    this.intervalId = window.setInterval(() => {
-      if (this.value() < 95) {
-        this.value.update(valor => 95);
-      } else {
 
-        this.value.update(valor => (valor + 1) % 101); // 0 a 100
-      }
-    }, 1000); // cada segundo
   }
 
   ngOnDestroy(): void {
-    if (this.intervalId !== null) {
-      clearInterval(this.intervalId);
-    }
   }
+
+  onEnviarCitas() {
+
+    if(!this.convocatoriaSelect() || !this.tipoMedicoSelect()){
+      return
+    }
+    this.envioCitasService.guardarAsignacionCitas(this.convocatoriaSelect() as number, this.tipoMedicoSelect() as number).subscribe({
+      next: (response) => {
+        if (response.exito) {
+          this.alertaService.informacion(this.mensajes.MSG_INICIO_CORREOS);
+        } else {
+          this.alertaService.error(response.mensaje);
+        }
+      },
+      error: (error) => {
+        this.alertaService.error(error.error.mensaje);
+      }
+
+    }
+    );
+  }
+
+
 
 }

@@ -9,6 +9,12 @@ export class ResponseGeneral {
   mensaje!: string;
 }
 
+export class FechasHorasEnvios {
+  fechaInicio!: String;
+  fechaFin!: String;
+  horaInicio!: String;
+  horaFin!: String;
+}
 export class TotalCitas {
   totalBecados!: number;
   totalResidentes!: number;
@@ -17,7 +23,7 @@ export class TotalCitas {
   totalesEnviados!: number;
   totalesNoEnviados!: number;
   porcentajeEnviados!: number;
-  fechasHorasEnvios?: null;
+  fechasHorasEnvios?: FechasHorasEnvios | null;
   validaBecados!: true;
   validaResidentes!: true;
   validaMedicosExterno!: true;
@@ -35,6 +41,13 @@ export class RequestAsignacionCitas {
 
 export class ResponseAsignacionCitas extends ResponseGeneral {
   respuesta!: string;
+}
+
+
+export enum TypeMedico {
+  BECADOS = 1,
+  RESIDENTES = 2,
+  EXTERNOS = 3,
 }
 
 
@@ -69,7 +82,7 @@ export class EnvioCitasService {
     );
   }
 
-  guardarAsignacioncitas(idConvocatoria: number, idTipoMedico: number): Observable<ResponseGeneral> {
+  guardarAsignacionCitas(idConvocatoria: number, idTipoMedico: number): Observable<ResponseGeneral> {
     return this.http.post<ResponseGeneral>(this.serverEndPointURLAsignacion + '/registar-asignacion-citas', { idConvocatoria: idConvocatoria, idTipoMedico: idTipoMedico }, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: ResponseGeneral) => {

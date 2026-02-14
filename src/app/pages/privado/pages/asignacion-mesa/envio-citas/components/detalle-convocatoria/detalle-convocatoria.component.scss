@@ -1,75 +1,143 @@
+// ============================================
+// VARIABLES
+// ============================================
+$color-primary: #0043CE;
+$color-success: #198038;
+$color-secondary: #65A0E0;
+$color-bg-light: #EAF2FB;
+$color-progress-bg: #E0E0E0;
+
+$size-avatar: 36px;
+$size-avatar-card: 32px;
+$size-dot: 10px;
+$progress-height: 8px;
+
+// ============================================
+// HOST
+// ============================================
 :host {
   display: block;
-
 }
 
+// ============================================
+// AVATAR
+// ============================================
 ::ng-deep .av {
-  height: 40px;
-  width: 40px;
-
-  &:not(.full) {
-    background-color: white;
-    border: solid 2px #0043CE;
-    font-weight: bold;
-
-    .dot {
-      height: 10px;
-      width: 10px;
-      background-color: #0043CE;
-      border-radius: 50%;
-      display: inline-block;
-    }
-
-    i {
-      display: none;
-
-    }
-  }
-
+  height: $size-avatar;
+  width: $size-avatar;
 
   &.full {
-    background-color: #198038 !important;
-    border: node;
+    background-color: $color-success !important;
+    border: none; 
     color: white;
   }
-
 }
 
+// ============================================
+// PROGRESS BAR
+// ============================================
 ::ng-deep .pgB {
   display: block !important;
 
   .p-progressbar {
-    height: 8px;
-    background-color: #E0E0E0;
-  }
+    height: $progress-height;
+    background-color: $color-progress-bg;
 
-  .p-progressbar-value {
-    background-color: #198038;
+    &-value {
+      background-color: $color-success;
+    }
   }
 }
 
+// ============================================
+// AVATAR CARD
+// ============================================
 ::ng-deep .av-card {
-  height: 32px;
-  width: 32px;
-  background-color: #65A0E0;
+  height: $size-avatar-card;
+  width: $size-avatar-card;
+  background-color: $color-secondary;
 }
 
-.card-fec-h {
-  background-color: #EAF2FB;
+// ============================================
+// CARD STYLES
+// ============================================
+.card-fec-h,
+.card-t-c {
+  background-color: $color-bg-light;
 }
 
 .card-t-c {
-  background-color: #EAF2FB;
-
   .c-hr {
     border-width: 2px;
-    border-color: #65A0E0;
+    border-color: $color-secondary;
     margin: 0;
   }
 
   .cant {
     font-weight: 600;
-    font-style: SemiBold;
     font-size: 40px;
+  }
+}
+
+// ============================================
+// WAVE ANIMATION CONTAINER
+// ============================================
+.container-wave {
+  position: relative;
+  display: block;
+  width: $size-avatar;
+  height: $size-avatar;
+  border-radius: 50%;
+  border: solid 2px $color-primary;
+
+  .dot {
+    height: $size-dot;
+    width: $size-dot;
+    background-color: $color-primary;
+    border-radius: 50%;
+    display: inline-block;
+    z-index: 100;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .circle {
+    display: block;
+    height: $size-avatar;
+    width: $size-avatar;
+    border-radius: 50%;
+    background: $color-primary;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+
+  .delay1 {
+    animation: waves 2.5s linear 0.1s infinite;
+    z-index: 1;
+  }
+
+  .delay2 {
+    animation: waves 2.5s linear 0.7s infinite;
+    z-index: 1;
+  }
+}
+
+// ============================================
+// KEYFRAMES
+// ============================================
+@keyframes waves {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
   }
 }
