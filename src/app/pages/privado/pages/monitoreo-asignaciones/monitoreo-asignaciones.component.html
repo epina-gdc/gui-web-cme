@@ -1,4 +1,4 @@
-<div class="contador-container contador-background">
+<div class="contador-container contador-background" [class.celebration]="mostrarCelebration">
   <h1 class="titulo">{{ titulo }}</h1>
-  <div *ngIf="!pausado" class="numero">{{ valorFormateado }}</div>
+  <div *ngIf="!mostrarCelebration" class="numero">{{ totalFormateado }}</div>
 </div>
