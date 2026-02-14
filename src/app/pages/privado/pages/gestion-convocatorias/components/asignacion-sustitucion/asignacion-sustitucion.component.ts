@@ -294,15 +294,14 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
     this._ConvocatoriaService
       .activarDesactivarPermisoEspecifico(idPermisoEspecifico, indPermisoSustitucion)
       .subscribe((respuesta: HttpRespuesta<any>) => {
-        console.log("Respuesta de la actualización específica", respuesta);
+
+        this._alertServices.informacion("Se guardó la configuración correctamente.");
 
         if (this.sinFiltrosEspecificos) {
           this.listaContratacionesEspecificosDesativadas(this.formAsignacion.value.convocatoria);
         } else {
           this.buscar();
         }
-
-
 
       });
   }
@@ -386,45 +385,14 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
       rejectLabel: 'Cancelar',
       acceptButtonStyleClass: 'btn-modal-confirmar',
       rejectButtonStyleClass: 'btn-modal-cancelar',
-
       accept: () => {
         aplicado = true;
         this.actualizarPermisoEspecifico(item.idPermisoSustitucion, nuevoValor ? 1 : 0);
         this.setEstatus(item.idPermisoSustitucion, nuevoValor);
       },
-
       reject: () => this.setEstatus(item.idPermisoSustitucion, valorAnterior),
     });
   }
-  /*
-    confirmarCambioEstatus(item: TbConfiguracionAsignacionSustitucion, nuevoValor: boolean) {
-      const valorAnterior = item.estatus; // lo que tenía antes del click
-    
-      let msj = nuevoValor
-        ? "¿Desea activar el permiso de sustitución para esta configuración específica?"
-        : "¿Desea desactivar el permiso de sustitución para esta configuración específica?";
-  
-      console.log("Configuración seleccionada para cambio de estatus", nuevoValor);
-      this.confirmationService.confirm({
-        message: msj,
-        header: ' ',
-        acceptLabel: 'Sí, confirmar',
-        rejectLabel: 'Cancelar',
-        // IMPORTANTE: Estas clases deben coincidir con el CSS Global
-        acceptButtonStyleClass: 'btn-modal-confirmar',
-        rejectButtonStyleClass: 'btn-modal-cancelar',
-        accept: () => {
-          this.actualizarPermisoEspecifico(item.idPermisoSustitucion, nuevoValor ? 1 : 0);
-        },
-        reject: () => {
-          // ✅ revertimos el toggle
-          item.estatus = valorAnterior;
-          this._alertServices.informacion('El sistema no realiza ningún cambio. Se mantiene la información actual.');
-        },
-      });
-  
-    }
-  */
 
   activardesctivar(item: TbConfiguracionAsignacionSustitucion) {
     console.log("Configuración seleccionada para activar/desactivar", item);
