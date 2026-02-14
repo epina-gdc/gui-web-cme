@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, inject, Input, OnInit, signal, WritableSignal} from '@angular/core';
 import {GeneralComponent} from '@components/general.component';
 import {AsignacionService} from '@services/asignacion.service';
 import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
@@ -14,6 +14,7 @@ import {Button} from 'primeng/button';
 import {InputText} from 'primeng/inputtext';
 import {PlazaDisponibleCardComponent} from '@components/plaza-disponible-card/plaza-disponible-card.component';
 import {Select} from 'primeng/select';
+import { InfoAspirante } from '@models/datosAsignacion';
 
 @Component({
   selector: 'app-coplamar',
@@ -29,6 +30,7 @@ import {Select} from 'primeng/select';
   providers: [DialogService]
 })
 export class CoplamarComponent extends GeneralComponent implements OnInit {
+  @Input() infoAspirante!: InfoAspirante;
 
   asignacionService: AsignacionService = inject(AsignacionService);
   fb: FormBuilder = inject(FormBuilder);
