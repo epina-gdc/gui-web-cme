@@ -17,11 +17,11 @@ export class AsignacionesMonitoreoService {
     private readonly http: HttpClient = inject(HttpClient);
     private readonly alertService: AlertService = inject(AlertService);
 
-    // URL del endpoint - usar configuración del environment o URL directa
-    private readonly serverEndPoint = 'http://10.166.0.120:1061/mscme-asignacion/v1/plaza/totalAsignacionesPorTipo';
+    private get serverEndPoint(): string {
+        return (environment?.api?.apiAsignacionPlaza || '') + this.version + 'plaza/totalAsignacionesPorTipo';
+    }
 
     private readonly version: string = '/v1/';
-    private urlAsignacion: string = environment.api.apiAsignacionPlaza + this.version;
 
     private readonly header: HttpHeaders = new HttpHeaders({
         'Content-Type': 'application/json',
@@ -38,7 +38,6 @@ export class AsignacionesMonitoreoService {
      */
     obtenerAsignacionesPorTipo(): Observable<TipoAsignacionMonitoreo[]> {
         return this.http.get<AsignacionesMonitoreoRespuesta>(
-            //this.urlAsignacion + 'plaza/totalAsignacionesPorTipo',
             this.serverEndPoint,
             { headers: this.header }
         ).pipe(
@@ -52,7 +51,7 @@ export class AsignacionesMonitoreoService {
      * @returns Observable que emite cada 60 segundos
      */
     obtenerAsignacionesEnTiempoReal(): Observable<TipoAsignacionMonitoreo[]> {
-        return interval(6000).pipe(
+        return interval(60000).pipe(
             startWith(0), // Emitir inmediatamente sin esperar 60s
             switchMap(() => this.obtenerAsignacionesPorTipo()),
             catchError(error => {
