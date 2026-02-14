@@ -1,25 +1,29 @@
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" [closable]="true" styleClass="custom-confirm-dialog">
+</p-confirmDialog>
 <div class="flex align-items-center bg-white w-full border-round-xl p-3 mb-3">
   <i class="cme-time me-3" style="color: #FAA604; font-size: 2rem"></i>
   <div class="flex flex-column ">
     <span class="titulo-documento text-color">Configuración de asignaciones por sustitución.</span>
-    <span class="doc-tab text-color">Se podrá modificar la configuración correspondiente a las asignaciones de sustitución.</span>
+    <span class="doc-tab text-color">Se podrá modificar la configuración correspondiente a las asignaciones de
+      sustitución.</span>
   </div>
 </div>
 <p-card class="empty-border" [header]="'Convocatorias disponibles'">
   <div class="flex flex-column">
-    <form [formGroup]="form">
+    <form [formGroup]="formAsignacion" (ngSubmit)="buscar()">
 
-    <div class="lg:col-4 col-12">
-      <div class="flex justify-content-between">
-        <label class="field-label" for="convocatoria">Convocatoria</label>
+      <div class="lg:col-4 col-12">
+        <div class="flex justify-content-between">
+          <label class="field-label" for="convocatoria">Convocatoria</label>
+        </div>
+        <p-select [options]="optionsConvocatorias" formControlName="convocatoria" optionLabel="label"
+          optionValue="value" placeholder="Selecciona una convocatoria" class="w-full" />
       </div>
-      <p-select [options]="options" formControlName="convocatoria" optionLabel="label"
-                placeholder="Selecciona una convocatoria" class="w-full"/>
-    </div>
-    <div class="flex align-items-center">
-      <span class="modal-prev-sub-titulo font-medium me-2 my-4 text-color">Activar/Desactivar la validación para el límite de contrataciones por sustitución 08 en todas las OOAD, Zonas y Especialidades</span>
-      <p-toggleswitch formControlName="limiteContratacionesEspecifica" />
-    </div>
+      <div class="flex align-items-center">
+        <span class="modal-prev-sub-titulo font-medium me-2 my-4 text-color">Activar/Desactivar la validación para el
+          límite de contrataciones por sustitución 08 en todas las OOAD, Zonas y Especialidades</span>
+        <p-toggleswitch formControlName="limiteContratacionesEspecifica" />
+      </div>
 
       <div class="flex">
         <div class="lg:col-3 col-12">
@@ -27,8 +31,8 @@
             <label class="field-label" for="ooad">OOAD</label>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
-          <p-select [options]="options" formControlName="ooad" optionLabel="label"
-                    placeholder="Selecciona una OOAD" class="w-full"/>
+          <p-select [options]="optionsOOADS" formControlName="ooad" optionLabel="label" optionValue="value"
+            placeholder="Selecciona una OOAD" class="w-full" />
         </div>
 
         <div class="lg:col-3 col-12">
@@ -36,8 +40,8 @@
             <label class="field-label" for="zona">Zona</label>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
-          <p-select [options]="options" formControlName="zona" optionLabel="label"
-                    placeholder="Selecciona una zona" class="w-full"/>
+          <p-select [options]="optionsZonas" formControlName="zona" optionLabel="label" optionValue="value"
+            placeholder="Selecciona una zona" class="w-full" />
         </div>
 
         <div class="lg:col-3 col-12">
@@ -45,29 +49,26 @@
             <label class="field-label" for="especialidad">Especialidad</label>
             <p class="label-obligatorio">Obligatorio</p>
           </div>
-          <p-select [options]="options" formControlName="especialidad" optionLabel="label"
-                    placeholder="Selecciona una especialidad" class="w-full"/>
+          <p-select [options]="optionsEspecialidades" formControlName="especialidad" optionLabel="label"
+            optionValue="value" placeholder="Selecciona una especialidad" class="w-full" />
         </div>
 
         <div class="lg:col-3 col-12 flex align-items-center">
           <div class="flex align-items-center gap-4 justify-content-between mt-4">
-            <p-button type="button" class="w-full" variant="outlined" label="Limpiar" />
-            <p-button type="button" class="w-full" label="Buscar"   />
+            <p-button type="button" class="w-full" variant="outlined" label="Limpiar" (click)="limpiar()" />
+            <p-button type="submmit" class="w-full" label="Buscar" />
           </div>
 
         </div>
       </div>
       <div class="flex align-items-center">
-        <span class="modal-prev-sub-titulo font-medium me-2 my-4 text-color">Activar/Desactivar la validación para el límite de contrataciones por sustitución 08</span>
+        <span class="modal-prev-sub-titulo font-medium me-2 my-4 text-color">Activar/Desactivar la validación para el
+          límite de contrataciones por sustitución 08</span>
         <p-toggleswitch formControlName="limiteContrataciones" />
       </div>
     </form>
 
-    <p-table
-      [value]="datosConfiguracion()"
-      [scrollable]="true"
-      [resizableColumns]="true" columnResizeMode="expand"
-    >
+    <p-table [value]="datosConfiguracion()" [scrollable]="true" [resizableColumns]="true" columnResizeMode="expand">
       <ng-template #caption>
         <div class="flex justify-content-between seccion-titulo">
           <span class="titulo-tabla">Configuración</span>
@@ -87,19 +88,28 @@
           <td>{{ configuracion.nombreOoad }}</td>
           <td>{{ configuracion.zona }}</td>
           <td>{{ configuracion.especialidad }}</td>
-          <td><p-toggleswitch [ngModel]="configuracion.estatus" /></td>
+          <td>
+            <p-toggleswitch [ngModel]="configuracion.estatus" [ngModelOptions]="{ standalone: true }"
+              (ngModelChange)="confirmarCambioEstatus(configuracion, $event)"
+              [inputId]="'estatus-' + configuracion.idPermisoSustitucion" />
+          </td>
 
         </tr>
       </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="4">
+            <div class="flex flex-column align-items-center py-5">
+              <i class="pi pi-info-circle text-4xl mb-3" style="color: var(--text-color)"></i>
+              <span class="text-lg font-medium" style="color: var(--text-color)">No se encontraron resultados</span>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
     </p-table>
-    <p-paginator
-      styleClass="justify-content-end"
-      [showFirstLastIcon]="false"
-      [first]="first"
-      [rows]="rows"
-      [totalRecords]="totalElementos"
-      (onPageChange)="onPageChange($event)"
-    >
+
+    <p-paginator styleClass="justify-content-end" [showFirstLastIcon]="false" [first]="first()" [rows]="rows()"
+      [totalRecords]="totalElementos" (onPageChange)="onPageChange($event)">
       <ng-template pTemplate="previouspagelinkicon">
         <div class="flex align-items-center">
           <span class="pi pi-chevron-left text-xl font-normal mr-2"></span>

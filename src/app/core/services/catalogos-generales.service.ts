@@ -2,14 +2,16 @@
  * Develop: Ameyalli Victoria S
  * 2025
  */
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {inject, Injectable} from '@angular/core';
-import {CatDocVerifResponse, CatPaisResponse, CatPerfilResponse, CatSubperfilResponse} from '@models/catalogoGeneral';
-import {HttpRespuesta} from '@models/http-respuesta.interface';
-import {Observable, throwError} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
-import {environment} from '@env/environment.development';
-import {AlertService} from '@services/alert.service';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { CatDocVerifResponse, CatPaisResponse, CatPerfilResponse, CatSubperfilResponse } from '@models/catalogoGeneral';
+import { HttpRespuesta } from '@models/http-respuesta.interface';
+import { Observable, throwError } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { environment } from '@env/environment.development';
+import { AlertService } from '@services/alert.service';
+import { Convocatoria } from '@models/convocatoria.interface';
+import { Especialidades } from '@models/especialidad';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +19,7 @@ import {AlertService} from '@services/alert.service';
 export class CatalogosGeneralesService {
   private readonly VERSION_API: string = '/v1/';
   private readonly serverEndPointURLCatalogos = `${environment.api.apiCatalogos + this.VERSION_API + 'catalogos'}`;
-  private readonly serverEndPointURLCatalogos1 = `${environment.api.apiConvocatoria  + '/catalogos'}`;
+  private readonly serverEndPointURLCatalogos1 = `${environment.api.apiConvocatoria + '/catalogos'}`;
   private readonly serverEndPointURLVerificacionDocs = `${environment.api.apiConvocatoria + '/verificacion/catalogos'}`;
   protected _alertService: AlertService;
   protected http: HttpClient;
@@ -37,7 +39,7 @@ export class CatalogosGeneralesService {
 
   /**Obtener Listado de Perfiles */
   getLstPerfil(): Observable<CatPerfilResponse> {
-    return this.http.get<CatPerfilResponse>(this.serverEndPointURLCatalogos + '/perfiles-medicos', {headers: this.header}).pipe(
+    return this.http.get<CatPerfilResponse>(this.serverEndPointURLCatalogos + '/perfiles-medicos', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: CatPerfilResponse) => {
         return response;
@@ -46,7 +48,7 @@ export class CatalogosGeneralesService {
   }
 
   getLstSubPerfil(): Observable<CatSubperfilResponse> {
-    return this.http.get<CatSubperfilResponse>(this.serverEndPointURLCatalogos + '/subperfiles-medicos/perfil/6', {headers: this.header}).pipe(
+    return this.http.get<CatSubperfilResponse>(this.serverEndPointURLCatalogos + '/subperfiles-medicos/perfil/6', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: CatSubperfilResponse) => {
         return response;
@@ -56,7 +58,7 @@ export class CatalogosGeneralesService {
 
 
   getLstPais(): Observable<CatPaisResponse> {
-    return this.http.get<CatPaisResponse>(this.serverEndPointURLCatalogos + '/paises', {headers: this.header}).pipe(
+    return this.http.get<CatPaisResponse>(this.serverEndPointURLCatalogos + '/paises', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: CatPaisResponse) => {
         return response;
@@ -65,7 +67,7 @@ export class CatalogosGeneralesService {
   }
 
   getLstDocumentosVerificacion(): Observable<CatDocVerifResponse> {
-    return this.http.get<CatDocVerifResponse>(this.serverEndPointURLCatalogos + '/documentos-verificacion', {headers: this.header}).pipe(
+    return this.http.get<CatDocVerifResponse>(this.serverEndPointURLCatalogos + '/documentos-verificacion', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: CatDocVerifResponse) => {
         return response;
@@ -75,7 +77,7 @@ export class CatalogosGeneralesService {
 
 
   getLstSexos(): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/sexos', {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/sexos', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -84,7 +86,7 @@ export class CatalogosGeneralesService {
   }
 
   getLstLugarNacimiento(): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/lugares-nacimiento', {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/lugares-nacimiento', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -93,7 +95,7 @@ export class CatalogosGeneralesService {
   }
 
   getLstEstadosCiviles(): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/estados-civiles', {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/estados-civiles', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -103,7 +105,7 @@ export class CatalogosGeneralesService {
 
 
   getLstEstadosByPais(idPais: number): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/estados/pais/${idPais}`, {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/estados/pais/${idPais}`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -112,7 +114,7 @@ export class CatalogosGeneralesService {
   }
 
   getLstDelegacionesMunicipiosByEstado(idEstado: number): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/delegaciones-municipios/estado/${idEstado}`, {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/delegaciones-municipios/estado/${idEstado}`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -121,7 +123,7 @@ export class CatalogosGeneralesService {
   }
 
   getLstColoniasByDelegacion(idMunicipio: number): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/colonias/delegacion/${idMunicipio}`, {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/colonias/delegacion/${idMunicipio}`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -130,7 +132,7 @@ export class CatalogosGeneralesService {
   }
 
   getLstOOADS(): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/ooads`, {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/ooads`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -140,7 +142,7 @@ export class CatalogosGeneralesService {
 
 
   getLstZonas(ooad: number): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/zonas/${ooad}`, {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/zonas/${ooad}`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -158,7 +160,7 @@ export class CatalogosGeneralesService {
   }
 
   getLstCodigosPostales(cp: number): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/codigos-postales/buscar/${cp}`, {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/codigos-postales/buscar/${cp}`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -167,7 +169,7 @@ export class CatalogosGeneralesService {
   }
 
   getLstTiposDocumentos(): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/tiposdocumento-especialidad', {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/tiposdocumento-especialidad', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -176,7 +178,7 @@ export class CatalogosGeneralesService {
   }
 
   getLstEspecialidades(): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/especialidades', {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/especialidades', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -185,7 +187,7 @@ export class CatalogosGeneralesService {
   }
 
   getLstEstatusVerificacion(): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLVerificacionDocs + '/estatusVerificacion', {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLVerificacionDocs + '/estatusVerificacion', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -194,7 +196,7 @@ export class CatalogosGeneralesService {
   }
 
   getLstDiasSemana(): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/diasSemana', {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/diasSemana', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -204,7 +206,7 @@ export class CatalogosGeneralesService {
 
 
   getLstRegimen(): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos1 + '/regimen', {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos1 + '/regimen', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -213,7 +215,7 @@ export class CatalogosGeneralesService {
   }
 
   getLstBono(): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos1 + '/bono-dificil-cobertura', {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos1 + '/bono-dificil-cobertura', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -222,7 +224,7 @@ export class CatalogosGeneralesService {
   }
 
   getLstPreguntas(): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos1 + '/preguntas-frecuentes', {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos1 + '/preguntas-frecuentes', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -232,7 +234,7 @@ export class CatalogosGeneralesService {
 
 
   getDocumentos(ooad: string, zona: number): Observable<any> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos1 + '/documentos-ooad/'+ ooad + `/${zona}`, {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos1 + '/documentos-ooad/' + ooad + `/${zona}`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -241,7 +243,7 @@ export class CatalogosGeneralesService {
   }
 
   getTipoAsistencia(): Observable<any> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/tipoAsistencia', {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/tipoAsistencia', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -250,7 +252,7 @@ export class CatalogosGeneralesService {
   }
 
   getTurno(): Observable<any> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/turno', {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/turno', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -259,7 +261,7 @@ export class CatalogosGeneralesService {
   }
 
   getConvocatorias(): Observable<any> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/convocatorias', {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/convocatorias', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -284,6 +286,23 @@ export class CatalogosGeneralesService {
     );
   }
 
+  getLsConvocatorias(): Observable<HttpRespuesta<Convocatoria[]>> {
+    return this.http.get<HttpRespuesta<Convocatoria[]>>(this.serverEndPointURLCatalogos + '/convocatorias', { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<Convocatoria[]>) => {
+        return response;
+      })
+    );
+  }
+
+  getLsEspecialidades(): Observable<Especialidades[]> {
+    return this.http.get<Especialidades[]>(this.serverEndPointURLCatalogos + '/especialidades', { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: Especialidades[]) => {
+        return response;
+      })
+    );
+  }
   private handleError(error: HttpErrorResponse) {
 
     if (error.status) {

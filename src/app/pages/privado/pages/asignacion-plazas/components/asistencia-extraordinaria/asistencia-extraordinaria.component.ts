@@ -1,23 +1,21 @@
-import {Component, inject} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 // PrimeNG Imports
-import {InputTextModule} from 'primeng/inputtext';
-import {ButtonModule} from 'primeng/button';
-import {CardModule} from 'primeng/card';
-import {ChipModule} from 'primeng/chip';
-import {DividerModule} from 'primeng/divider';
-import {ConfirmDialogModule} from 'primeng/confirmdialog'; // <--- Importar Módulo
-import {ConfirmationService} from 'primeng/api'; // <--- Importar Servicio
-import {ToastModule} from 'primeng/toast'; // Opcional: Para mostrar mensaje de éxito
-import {AsistenciaCardComponent} from '@components/asistencia-card/asistencia-card.component';
-import {AsistenciaNoteComponent} from '@components/asistencia-note/asistencia-note.component';
-import {Fotografia} from '@models/fotografia';
-import {DocumentoService} from "@services/documentos.service";
-import {AlertService} from '@services/alert.service';
-import {AsistenciaExtraordinariaService} from '@services/asistencia-extraordinaria.service';
-import {AsistenciaAspirante, AsistenciaExtraordinariaResponse} from '@models/asistencia-extraordinaria.interface';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { ChipModule } from 'primeng/chip';
+import { DividerModule } from 'primeng/divider';
+import { ConfirmDialogModule } from 'primeng/confirmdialog'; // <--- Importar Módulo
+import { ConfirmationService } from 'primeng/api'; // <--- Importar Servicio
+import { ToastModule } from 'primeng/toast'; // Opcional: Para mostrar mensaje de éxito
+// Componentes e Interfaces
+import { GeneralComponent } from '@components/general.component';
+import { AsistenciaCardComponent } from '@components/asistencia-card/asistencia-card.component';
+import { AsistenciaNoteComponent } from '@components/asistencia-note/asistencia-note.component';
+import { Fotografia } from '@models/fotografia';
+import { AsistenciaAspirante, AsistenciaExtraordinariaResponse } from '@models/asistencia-extraordinaria.interface';
 
 // Interfaz para los datos del médico
 @Component({
@@ -40,10 +38,7 @@ import {AsistenciaAspirante, AsistenciaExtraordinariaResponse} from '@models/asi
     templateUrl: './asistencia-extraordinaria.component.html',
     styleUrls: ['./asistencia-extraordinaria.component.scss']
 })
-export class AsistenciaExtraordinariaComponent {
-    alertService: AlertService = inject(AlertService);
-    asistenciaService: AsistenciaExtraordinariaService = inject(AsistenciaExtraordinariaService);
-    documentoService: DocumentoService = inject(DocumentoService);
+export class AsistenciaExtraordinariaComponent extends GeneralComponent {
 
     private readonly MSG073: string = "El médico aspirante no cuenta con un registro previo.";
     private readonly MSG074: string = "El médico aspirante no cuenta con una cita.";
@@ -63,7 +58,9 @@ export class AsistenciaExtraordinariaComponent {
 
     constructor(
         private confirmationService: ConfirmationService,
-    ) { }
+    ) {
+        super();
+    }
 
     get tieneAsistencia(): boolean {
         return (this.aspirante?.diaAsistenciaCita == null && this.aspirante?.horaAsistencia == null && this.aspirante?.turnoAsistencia == null);
@@ -76,7 +73,7 @@ export class AsistenciaExtraordinariaComponent {
     search() {
 
         if (!this.searchQuery) {
-            this.alertService.error("Requiere una matricula o folio");
+            this._alertServices.error("Requiere una matricula o folio");
             return
         };
 
@@ -88,21 +85,21 @@ export class AsistenciaExtraordinariaComponent {
                     const data = response.respuesta;
                     this.aspirante = response.respuesta;
                     if (this.tieneCita) {
-                        this.alertService.informacion(this.MSG073);
+                        this._alertServices.informacion(this.MSG073);
                     }
                     if (this.tieneAsistencia) {
-                        this.alertService.informacion(this.MSG074);
+                        this._alertServices.informacion(this.MSG074);
                     }
                     if (response.respuesta?.uuidArchivo) {
                         this.obtenerFotografia(response.respuesta?.uuidArchivo);
                     }
                 } else {
-                    this.alertService.error(response.mensaje);
+                    this._alertServices.error(response.mensaje);
                 }
                 this.loading = false;
             },
             error: (err) => {
-                this.alertService.error('Error en la búsqueda');
+                this._alertServices.error('Error en la búsqueda');
                 this.loading = false;
             }
         });
@@ -142,13 +139,13 @@ export class AsistenciaExtraordinariaComponent {
             next: (response: AsistenciaExtraordinariaResponse) => {
                 if (response.exito && response.respuesta) {
                     this.aspirante = response.respuesta;
-                    this.alertService.exito(this.MSG076);
+                    this._alertServices.exito(this.MSG076);
                 } else {
-                    this.alertService.error(response.mensaje);
+                    this._alertServices.error(response.mensaje);
                 }
             },
             error: (err) => {
-                this.alertService.error('Error al confirmar la asistencia');
+                this._alertServices.error('Error al confirmar la asistencia');
             }
         });
     }
@@ -172,7 +169,7 @@ export class AsistenciaExtraordinariaComponent {
                 }
             },
             reject: () => {
-                this.alertService.informacion("El sistema no realiza ningún cambio. Se mantiene la información actual de la cita");
+                this._alertServices.informacion("El sistema no realiza ningún cambio. Se mantiene la información actual de la cita");
             }
         });
     }
@@ -186,15 +183,15 @@ export class AsistenciaExtraordinariaComponent {
                         this.aspirante.horaAsistencia = null;
                         this.aspirante.turnoAsistencia = null;
 
-                        this.alertService.informacion(this.MSG074);
+                        this._alertServices.informacion(this.MSG074);
 
                     }
                 } else {
-                    this.alertService.error(response.mensaje);
+                    this._alertServices.error(response.mensaje);
                 }
             },
             error: (err) => {
-                this.alertService.error('Error al eliminar la cita');
+                this._alertServices.error('Error al eliminar la cita');
             }
         });
     }

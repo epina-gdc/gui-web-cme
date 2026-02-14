@@ -1,14 +1,15 @@
-import {CommonModule} from "@angular/common";
-import {Component, inject} from "@angular/core";
-import {Mensajes} from "@utils/mensajes";
-import {Router} from '@angular/router';
-import {NAV} from "@utils/url-global";
-import {CatalogosGeneralesService} from "@services/catalogos-generales.service";
-import {RegistroMedicoService} from "@services/registro-medico.service";
-import {AlertService} from "@services/alert.service";
-import {AuthService} from "@services/auth.service";
-import {DocumentoService} from "@services/documentos.service";
-import {ConvocatoriaService} from "@services/convocatoria.service";
+import { CommonModule } from "@angular/common";
+import { Component, inject } from "@angular/core";
+import { Mensajes } from "@utils/mensajes";
+import { Router } from '@angular/router';
+import { NAV } from "@utils/url-global";
+import { CatalogosGeneralesService } from "@services/catalogos-generales.service";
+import { RegistroMedicoService } from "@services/registro-medico.service";
+import { AlertService } from "@services/alert.service";
+import { AuthService } from "@services/auth.service";
+import { DocumentoService } from "@services/documentos.service";
+import { ConvocatoriaService } from "@services/convocatoria.service";
+import { AsistenciaExtraordinariaService } from '@services/asistencia-extraordinaria.service';
 
 @Component({
   selector: 'app-general',
@@ -29,6 +30,7 @@ export class GeneralComponent {
   protected _ConvocatoriaService: ConvocatoriaService;
   protected authService = inject(AuthService);
   protected documentoService = inject(DocumentoService);
+  protected asistenciaService = inject(AsistenciaExtraordinariaService);
   /* SE COMENTA TIMER */
   /* protected sessionTimerService= inject(SessionTimerService); */
 
@@ -42,6 +44,7 @@ export class GeneralComponent {
     this._ConvocatoriaService = inject(ConvocatoriaService);
     this.authService = inject(AuthService);
     this.documentoService = inject(DocumentoService);
+    this.asistenciaService = inject(AsistenciaExtraordinariaService);
   }
 
   public onlyNumbers(event: any) {
