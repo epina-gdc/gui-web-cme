@@ -1,4 +1,4 @@
-import { Component, signal, WritableSignal } from '@angular/core';
+import { Component, signal, WritableSignal, computed } from '@angular/core';
 import { forkJoin } from 'rxjs';
 import { Card } from 'primeng/card';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -46,9 +46,19 @@ interface TbConfiguracionAsignacionSustitucion {
 export class AsignacionSustitucionComponent extends GeneralComponent {
   formAsignacion!: FormGroup;
 
-  first: number = 0;
-  rows: number = 10;
-  totalElementos = 0;
+  first = signal(0);
+  rows = signal(10);
+
+  private datosConfiguracionAll = signal<TbConfiguracionAsignacionSustitucion[]>([]);
+
+  totalElementos = computed(() => this.datosConfiguracionAll().length);
+
+  datosConfiguracion = computed(() => {
+    const data = this.datosConfiguracionAll();
+    const start = this.first();
+    const end = start + this.rows();
+    return data.slice(start, end);
+  });
 
   optionsOOADS: TipoDropdown[] = [];
   optionsEspecialidades: TipoDropdown[] = [];
@@ -60,7 +70,7 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
   estadoConvocatoriaPermisoSustitucion: ConvocatoriaPermisoSustitucion | null = null;
   edoGlobalConvocatoria: boolean = false;
 
-  datosConfiguracion: WritableSignal<TbConfiguracionAsignacionSustitucion[]> = signal([]);
+
 
   constructor(
     private fb: FormBuilder,
@@ -75,7 +85,23 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
   get sinFiltrosEspecificos(): boolean {
     return !(this.formAsignacion.value.ooad && this.formAsignacion.value.zona && this.formAsignacion.value.especialidad);
   }
+  private syncPaginatorToData(): void {
+    const total = this.datosConfiguracionAll().length;
 
+    if (total === 0) {
+      this.first.set(0);
+      return;
+    }
+
+    const r = this.rows();
+    const f = this.first();
+
+    // Si estás parado en una página que ya no existe (por filtros/actualización)
+    if (f >= total) {
+      const lastFirst = Math.floor((total - 1) / r) * r;
+      this.first.set(lastFirst);
+    }
+  }
   inicializarForm(): FormGroup {
     return this.fb.group({
       convocatoria: [null],
@@ -137,8 +163,9 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
 
   }
 
-  onPageChange(valor: any) {
-    console.log(valor);
+  onPageChange(event: any) {
+    this.first.set(event.first);
+    this.rows.set(event.rows);
   }
 
   obtenerCatalogos() {
@@ -203,7 +230,10 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
             especialidad: respuesta.respuesta.desEspecialidad,
             estatus: (respuesta.respuesta.indPermisoSustitucion === 1) ? true : false
           }
-          this.datosConfiguracion.set([row]);
+          this.datosConfiguracionAll.set([row]);
+          this.first.set(0);
+          this.syncPaginatorToData();
+
           this.formAsignacion.controls['limiteContrataciones'].setValue((respuesta.respuesta.indPermisoSustitucion === 1) ? true : false, { emitEvent: false });
         },
         error: (error) => {
@@ -215,9 +245,13 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
   }
 
   limpiar() {
-    this.formAsignacion.reset();
-    //this.ActivaDesactivaOOADZonaEspecialidades = false;
-    console.log('Formulario limpiado');
+    this.formAsignacion.controls['limiteContrataciones'].reset({ value: false }, { emitEvent: false });
+    this.formAsignacion.controls['ooad'].reset({ value: null }, { emitEvent: false });
+    this.formAsignacion.controls['zona'].reset({ value: null }, { emitEvent: false });
+    this.formAsignacion.controls['especialidad'].reset({ value: null }, { emitEvent: false });
+    this.datosConfiguracionAll.set([]);
+    this.first.set(0);
+    this.syncPaginatorToData();
   }
 
   estadoGlobalConvocatoria(form: FormGroup, idConvocatoria: number) {
@@ -288,9 +322,9 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
             estatus: (item.indPermisoSustitucion === 1) ? true : false
           }));
 
-
-
-          this.datosConfiguracion.set([...rows])
+          this.datosConfiguracionAll.set(rows);
+          this.first.set(0);
+          this.syncPaginatorToData();
         }
 
       });
@@ -307,20 +341,16 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
       acceptButtonStyleClass: 'btn-modal-confirmar',
       rejectButtonStyleClass: 'btn-modal-cancelar',
       accept: () => { /* ... */
-        // Lógica real de eliminación
-        // alert => 'Permiso de sustitución desactivado para esta convocatoria. Se eliminarán todas las asignaciones realizadas.'
-        // Aquí puedes agregar la lógica para eliminar las asignaciones realizadas
-        // Por ejemplo, podrías llamar a un servicio que se encargue de esta tarea
-        //  this.limpiar();
-        // this.estadoGlobalConvocatoria(this.formAsignacion.value.convocatoria);
-        // this.buscar();
+
         if (key === 'limiteContratacionesEspecifica') {
 
           form.controls['limiteContrataciones'].reset({ value: false, disabled: !value }, { emitEvent: false });
           form.controls['ooad'].reset({ value: null, disabled: !value }, { emitEvent: false });
           form.controls['zona'].reset({ value: null, disabled: !value }, { emitEvent: false });
           form.controls['especialidad'].reset({ value: null, disabled: !value }, { emitEvent: false });
-          this.datosConfiguracion.set([]);
+          this.datosConfiguracionAll.set([]);
+          this.first.set(0);
+          this.syncPaginatorToData();
           this.actualizacionGeneral(form, value);
 
         }
@@ -336,38 +366,65 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
       }
     });
   }
-
-  confirmarCambioEstatus(item: TbConfiguracionAsignacionSustitucion, nuevoValor: boolean) {
-    let msj = nuevoValor ? "¿Desea activar el permiso de sustitución para esta configuración específica?" : "¿Desea desactivar el permiso de sustitución para esta configuración específica?";
-
-    this.confirmationService.confirm({
-      message: msj,
-      header: ' ',
-      acceptLabel: 'Sí, confirmar',
-      rejectLabel: 'Cancelar',
-      // IMPORTANTE: Estas clases deben coincidir con el CSS Global
-      acceptButtonStyleClass: 'btn-modal-confirmar',
-      rejectButtonStyleClass: 'btn-modal-cancelar',
-      accept: () => {
-        // Lógica real de activación/desactivación
-        // Aquí puedes agregar la lógica para activar o desactivar el permiso de sustitución para esta configuración específica
-        // Por ejemplo, podrías llamar a un servicio que se encargue de esta tarea
-        // this._ConvocatoriaService.activarDesactivarPermisoEspecifico(idPermisoEspecifico, nuevoValor).subscribe(...);
-        // this._alertServices.informacion("El sistema ha actualizado la configuración según tu selección.");
-        //
-        this.actualizarPermisoEspecifico(item.idPermisoSustitucion, nuevoValor ? 1 : 0);
-
-      },
-      reject: () => {
-        // Lógica para revertir el cambio en la interfaz si el usuario cancela
-        // Por ejemplo, podrías revertir el estado del toggle switch a su valor anterior
-        // this.formAsignacion.controls['limiteContratacionesEspecifica'].setValue(previousValue, { emitEvent: false });
-        this._alertServices.informacion("El sistema no realiza ningún cambio. Se mantiene la información actual de la configuración.");
-      }
-    });
-
+  private setEstatus(idPermisoSustitucion: number, estatus: boolean) {
+    this.datosConfiguracionAll.update(list =>
+      list.map(r =>
+        r.idPermisoSustitucion === idPermisoSustitucion ? { ...r, estatus } : r
+      )
+    );
   }
 
+  confirmarCambioEstatus(item: TbConfiguracionAsignacionSustitucion, nuevoValor: boolean) {
+    const valorAnterior = item.estatus;
+    let aplicado = false;
+
+    this.confirmationService.confirm({
+      message: nuevoValor
+        ? '¿Desea activar el permiso de sustitución para esta configuración específica?'
+        : '¿Desea desactivar el permiso de sustitución para esta configuración específica?',
+      acceptLabel: 'Sí, confirmar',
+      rejectLabel: 'Cancelar',
+      acceptButtonStyleClass: 'btn-modal-confirmar',
+      rejectButtonStyleClass: 'btn-modal-cancelar',
+
+      accept: () => {
+        aplicado = true;
+        this.actualizarPermisoEspecifico(item.idPermisoSustitucion, nuevoValor ? 1 : 0);
+        this.setEstatus(item.idPermisoSustitucion, nuevoValor);
+      },
+
+      reject: () => this.setEstatus(item.idPermisoSustitucion, valorAnterior),
+    });
+  }
+  /*
+    confirmarCambioEstatus(item: TbConfiguracionAsignacionSustitucion, nuevoValor: boolean) {
+      const valorAnterior = item.estatus; // lo que tenía antes del click
+    
+      let msj = nuevoValor
+        ? "¿Desea activar el permiso de sustitución para esta configuración específica?"
+        : "¿Desea desactivar el permiso de sustitución para esta configuración específica?";
+  
+      console.log("Configuración seleccionada para cambio de estatus", nuevoValor);
+      this.confirmationService.confirm({
+        message: msj,
+        header: ' ',
+        acceptLabel: 'Sí, confirmar',
+        rejectLabel: 'Cancelar',
+        // IMPORTANTE: Estas clases deben coincidir con el CSS Global
+        acceptButtonStyleClass: 'btn-modal-confirmar',
+        rejectButtonStyleClass: 'btn-modal-cancelar',
+        accept: () => {
+          this.actualizarPermisoEspecifico(item.idPermisoSustitucion, nuevoValor ? 1 : 0);
+        },
+        reject: () => {
+          // ✅ revertimos el toggle
+          item.estatus = valorAnterior;
+          this._alertServices.informacion('El sistema no realiza ningún cambio. Se mantiene la información actual.');
+        },
+      });
+  
+    }
+  */
 
   activardesctivar(item: TbConfiguracionAsignacionSustitucion) {
     console.log("Configuración seleccionada para activar/desactivar", item);

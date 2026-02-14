@@ -91,7 +91,7 @@
           <td>
             <p-toggleswitch [ngModel]="configuracion.estatus" [ngModelOptions]="{ standalone: true }"
               (ngModelChange)="confirmarCambioEstatus(configuracion, $event)"
-              [inputId]="configuracion.idPermisoEspecifico" />
+              [inputId]="'estatus-' + configuracion.idPermisoSustitucion" />
           </td>
 
         </tr>
@@ -108,7 +108,7 @@
       </ng-template>
     </p-table>
 
-    <p-paginator styleClass="justify-content-end" [showFirstLastIcon]="false" [first]="first" [rows]="rows"
+    <p-paginator styleClass="justify-content-end" [showFirstLastIcon]="false" [first]="first()" [rows]="rows()"
       [totalRecords]="totalElementos" (onPageChange)="onPageChange($event)">
       <ng-template pTemplate="previouspagelinkicon">
         <div class="flex align-items-center">
