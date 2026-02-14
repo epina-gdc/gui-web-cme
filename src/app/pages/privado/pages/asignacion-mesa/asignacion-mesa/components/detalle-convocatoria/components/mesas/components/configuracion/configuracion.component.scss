@@ -2,14 +2,20 @@
   display: block;
 }
 
-@layer app-components {
-
-  ::ng-deep p-calendar{
-    span.p-datepicker{
-      width: -webkit-fill-available!important;
-    }
+::ng-deep p-calendar {
+  span.p-datepicker {
+    width: -webkit-fill-available !important;
   }
-  .btn-form{
-    margin-top: 23px;
+}
+
+.btn-form {
+  margin-top: 23px;
+}
+
+
+::ng-deep .p-date-ate {
+  .p-datepicker {
+    width: 100%;
+    ;
   }
 }

@@ -150,6 +150,15 @@ export class CatalogosGeneralesService {
     );
   }
 
+  getZonas(cveOoad: string): Observable<HttpRespuesta<any>> {
+    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/zonas/${cveOoad}`, {headers: this.header}).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<any>) => {
+        return response;
+      })
+    );
+  }
+
   getLstCodigosPostales(cp: number): Observable<HttpRespuesta<any>> {
     return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/codigos-postales/buscar/${cp}`, { headers: this.header }).pipe(
       catchError(this.handleError),
@@ -253,6 +262,23 @@ export class CatalogosGeneralesService {
 
   getConvocatorias(): Observable<any> {
     return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/convocatorias', { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<any>) => {
+        return response;
+      })
+    );
+  }
+  getSeccionSindical(ooad: string): Observable<any> {
+    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/seccion-sindical/ooad/${ooad}`, {headers: this.header}).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<any>) => {
+        return response;
+      })
+    );
+  }
+
+  getMotivosRechazo(): Observable<any> {
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/motivoRechazo', {headers: this.header}).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;

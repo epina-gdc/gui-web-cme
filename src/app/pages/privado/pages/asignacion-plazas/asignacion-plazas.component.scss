@@ -38,6 +38,49 @@
     line-height: normal;
   }
 
+  .page {
+    background: #f3f5f7;
+    min-height: 100vh;
+  }
+
+  /* Buscador */
+  .search_form {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: min(860px, 100%);
+  }
+    
+  .content {
+    margin: 0 16px 16px 16px;
+    min-height: calc(100vh - 250px - 32px);
+    padding: 24px;
+    display: grid;
+    place-items: center;
+  }
+
+  /* Empty state */
+  .empty {
+    display: grid;
+    place-items: center;
+    gap: 10px;
+    opacity: 0.9;
+  }
+
+  .empty__img {
+    width: 90px;
+    height: auto;
+  }
+
+  .empty__text {
+    margin: 0;
+    font-size: 14px;
+    color: #8a96a3;
+  }
+
+
   @media (max-width: 768px) {
 
     :host ::ng-deep .p-tab {
@@ -59,13 +102,15 @@
     :host ::ng-deep .p-tablist-tab-list {
       overflow: hidden;
     }
+    :host ::ng-deep .p-tab {
+      min-width: fit-content;
+    }
   }
 
   @media screen and (max-width: 767px) {
     .cme-deals {
       display: none;
     }
-
 
     :host ::ng-deep .p-tablist-tab-list {
       background-color: #dddddd;

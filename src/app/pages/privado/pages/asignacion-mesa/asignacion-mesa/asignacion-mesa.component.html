@@ -10,7 +10,7 @@
             </p-tab>
             <p-tab [value]="1" (click)="tab = 1" class="col flex justify-content-center">
                 <div class="flex align-items-center gap-2">
-                   <i class="cme-citas" style="font-size: 2rem;"></i>
+                    <i class="cme-citas" style="font-size: 2rem;"></i>
                     <span class="text-xl font-normal"> Envío de Citas</span>
                 </div>
             </p-tab>
@@ -21,7 +21,7 @@
 @case (0) {
 <app-buscar-convocatoria [(convocatoriaSeleccionada)]="convocatoriaActual" />
 @if(convocatoriaActual()){
-    <app-detalle-convocatoria class="mt-4" />
+<app-detalle-convocatoria [(convocatoriaSeleccionada)]="convocatoriaActual" class="mt-4" />
 }
 }
 @case (1) {

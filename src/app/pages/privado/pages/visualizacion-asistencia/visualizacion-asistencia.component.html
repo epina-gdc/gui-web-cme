@@ -9,7 +9,7 @@
         </div>
         <div class="flex flex-column ms-4">
           <p class="modal-titulo-tarjeta" style="color: #000">Día de asistencia</p>
-          <p class="titulo-nombre-aspirante">{{ !datosMedico() ? '-' : diaAsistencia() }}</p>
+          <p class="titulo-nombre-aspirante">{{ !datosMedico() ? '-' : datosMedico()?.diaAsistenciaCita }}</p>
         </div>
       </div>
     </p-card>
@@ -22,7 +22,7 @@
         </div>
         <div class="flex flex-column ms-4">
           <p class="modal-titulo-tarjeta" style="color: #000">Hora de asistencia</p>
-          <p class="titulo-nombre-aspirante">{{ !datosMedico() ? '-' : horaAsistencia() }}</p>
+          <p class="titulo-nombre-aspirante">{{ !datosMedico() ? '-' : datosMedico()?.horaAsistencia }}</p>
         </div>
       </div>
     </p-card>
@@ -33,25 +33,24 @@
 
       @if (!datosMedico()) {
         <div class="flex flex-column justify-content-center align-items-center py-150p">
-          <img class="foto " role="presentation" alt="qr" title="qr" src="/assets/images/qr.png"
-               style="object-fit: cover"/>
+          <img role="presentation" alt="qr" title="qr" src="/assets/images/qr.png"
+               style="object-fit: cover" (click)="confirmarFolio()" class="cursor-pointer foto"/>
           <span class="texto-escanear-qr mb-5">Listo para escanear</span>
         </div>
       } @else {
-        <div class="flex justify-content-start">
-          <div class="col-3 flex align-items-center justify-content-center
+        <div class="flex justify-content-start flex-wrap">
+          <div class="col-12 md:col-3 flex align-items-center justify-content-center
               flex-column  half-border border-circle me-5">
-            <img class="foto" role="presentation" alt="img médico" title="img médico"
-                 src="/assets/images/img_medico.png"
+            <img class="foto" role="presentation" alt="img médico" title="img médico" [src]="fotoUrl"
                  style="object-fit: cover; height: 100%; width: 50%"/>
           </div>
-          <div class="ms-5 col-5 p-2">
-            <div class="flex flex-column ">
-              <span class="titulo-card-aspirante">Dr. Pablo Andrés García Bernal</span>
-              <span class="subtitulo-card-aspirante my-1">Matrícula: <strong>98161651</strong></span>
+          <div class="md:ms-5 md:col-8 col-12 p-2">
+            <div class="flex flex-column">
+              <span class="titulo-card-aspirante">Dr. {{ datosMedico()?.nomParticipante }}</span>
+              <span class="subtitulo-card-aspirante my-1">Matrícula: <strong>{{ datosMedico()?.matricula }}</strong></span>
               <span class="subtitulo-card-aspirante mt-4 mb-2"><strong>Especialidades</strong></span>
               <div class="flex flex-wrap">
-                @for (especialidad of especialidades; track especialidad) {
+                @for (especialidad of datosMedico()?.especialidades; track especialidad) {
                   <div class="mr-4 pill-especialidad">
                 <span>
                   {{ especialidad }}
@@ -61,33 +60,34 @@
               </div>
 
             </div>
-            <div class="flex justify-content-between mt-6 mb-5">
-              <div class="flex align-items-center">
-                <i class="cme-citas me-3" style="color: #41ABCA; font-size: 2rem"></i>
+            <div class="flex mt-6 mb-5 flex-wrap lg:flex-nowrap">
+              <div class="flex align-items-center col-12 md:col-6 lg:col-fit">
+                <i class="cme-citas mr-3" style="color: #41ABCA; font-size: 2rem"></i>
                 <div class="flex flex-column">
                   <span class="nombre-doc" style="color: #000">Fecha</span>
-                  <span class="subtitle-previsualizacion" style="color: #58595C">{{ data.fecha }}</span>
+                  <span class="subtitle-previsualizacion" style="color: #58595C">{{ datosMedico()?.fechaCita }}</span>
                 </div>
               </div>
-              <div class="flex align-items-center">
-                <i class="cme-time me-3" style="color: #41ABCA; font-size: 1.6rem"></i>
+              <div class="flex align-items-center col-12 md:col-6 lg:col-fit">
+                <i class="cme-time mr-3" style="color: #41ABCA; font-size: 1.6rem"></i>
                 <div class="flex flex-column">
                   <span class="nombre-doc" style="color: #000">Hora</span>
-                  <span class="subtitle-previsualizacion" style="color: #58595C">{{ data.hora }}</span>
+                  <span class="subtitle-previsualizacion" style="color: #58595C">{{ datosMedico()?.horaCita }}</span>
                 </div>
               </div>
-              <div class="flex align-items-center">
-                <i class="cme-numero-mesa me-3" style="color: #41ABCA; font-size: 2rem"></i>
+              <div class="flex align-items-center col-12 md:col-6 lg:col-fit">
+                <i class="cme-numero-mesa mr-3" style="color: #41ABCA; font-size: 2rem"></i>
                 <div class="flex flex-column">
                   <span class="nombre-doc" style="color: #000">Mesa</span>
-                  <span class="subtitle-previsualizacion" style="color: #58595C">Mesa {{ data.mesa }}</span>
+                  <span class="subtitle-previsualizacion"
+                        style="color: #58595C">Mesa {{ datosMedico()?.mesaCita }}</span>
                 </div>
               </div>
-              <div class="flex align-items-center">
-                <i class="cme-time me-3" style="color: #41ABCA; font-size: 1.6rem"></i>
+              <div class="flex align-items-center col-12 md:col-6 lg:col-fit">
+                <i class="cme-time mr-3" style="color: #41ABCA; font-size: 1.6rem"></i>
                 <div class="flex flex-column">
                   <span class="nombre-doc" style="color: #000">Turno</span>
-                  <span class="subtitle-previsualizacion" style="color: #58595C">{{ data.turno }}</span>
+                  <span class="subtitle-previsualizacion" style="color: #58595C">{{ datosMedico()?.turnoCita }}</span>
                 </div>
               </div>
             </div>
