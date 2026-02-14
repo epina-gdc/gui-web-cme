@@ -2,16 +2,51 @@
   display: block;
 }
 
+// ============================================
+// VARIABLES
+// ============================================
+$card-min-height: 117px;
+$border-width: 0px;
+$border-radius: 12px;
+$box-shadow-selected: -1px 4px 4px 0px;
 
+// Colores base
+$color-becados: #155DFC;
+$color-residentes: #0AD50A;
+$color-externos: #E10000;
+$color-text: #45556C;
+$color-text-secondary: #62748E;
+$color-total-num: #314158;
+
+// Transparencias
+$alpha-semi: 0.45; // 73 en hexadecimal
+$alpha-shadow-completed: 0.25;
+$alpha-shadow-selected: 0.6;
+
+// Colores con transparencia
+$bg-becados-semi: rgba(239, 246, 255, $alpha-semi);
+$bg-becados-solid: #EFF6FF;
+
+$bg-residentes-semi: rgba(243, 255, 238, $alpha-semi);
+$bg-residentes-solid: #F3FFEE;
+
+$bg-externos-semi: rgba(255, 235, 235, $alpha-semi);
+$bg-externos-solid: #FFEBEB;
+
+$bg-total: #F5F7FF;
+
+// ============================================
+// ESTILOS BASE DE LA TARJETA
+// ============================================
 .card-med {
-  min-height: 117px;
+  min-height: $card-min-height;
+  cursor: pointer;
 
   .p-button-label-ir,
   .pi::before {
     font-size: 12px !important;
-    color: #62748E;
+    color: $color-text-secondary;
   }
-
 
   .card-label {
     font-size: 14px;
@@ -22,83 +57,73 @@
     font-size: 30px;
     font-weight: 600;
   }
+}
 
-  &.becados {
-    background-color: #EFF6FF73;
+// ============================================
+// MIXIN PARA ESTILOS DE TIPO DE MÉDICO
+// ============================================
+@mixin tipo-medico($color, $bg-semi, $bg-solid, $text-color) {
+  background-color: $bg-semi;
 
-    .card-label {
-      color: #45556C73;
-    }
+  .card-label {
+    color: rgba($text-color, $alpha-semi);
+  }
+
+  .card-num {
+    color: rgba($color, $alpha-semi);
+  }
+
+  &.select {
+    border: solid $border-width $color;
+    box-shadow: $box-shadow-selected rgba($color, $alpha-shadow-selected);
 
     .card-num {
-      color: #155DFC73;
-    }
-
-    &.select {
-      border: solid 1px #154FFC;
-      box-shadow: -1px 4px 4px 0px #155DFC99;
-
-      .card-num {
-        color: #155DFC;
-      }
+      color: $color;
     }
   }
 
-
-
-  &.residentes {
-    background-color: #F3FFEE73;
+  &.completed {
+    background-color: $bg-solid;
+    border: solid $border-width $color;
+    box-shadow: $box-shadow-selected rgba($color, $alpha-shadow-selected);
 
     .card-label {
-      color: #456C4A73;
+      color: $text-color;
     }
 
     .card-num {
-      color: #0AD50A73;
-    }
-
-    &.select {
-      border: solid 1px #0AD50A;
-      box-shadow: -1px 4px 4px 0px #0AD50A99;
-
-      .card-num {
-        color: #0AD50A;
-      }
+      color: $color;
     }
   }
+}
 
-  &.externos {
-    background-color: #FFEBEB73;
+// ============================================
+// APLICAR ESTILOS POR TIPO
+// ============================================
+.card-med.becados {
+  @include tipo-medico($color-becados, $bg-becados-semi, $bg-becados-solid, $color-text);
+}
 
-    .card-label {
-      color: #45556C73;
-    }
+.card-med.residentes {
+  @include tipo-medico($color-residentes, $bg-residentes-semi, $bg-residentes-solid, #456C4A);
+}
 
-    .card-num {
-      color: #E1000073;
-    }
+.card-med.externos {
+  @include tipo-medico($color-externos, $bg-externos-semi, $bg-externos-solid, $color-text);
+}
 
-    &.select {
-      border: solid 1px #E10000;
-      box-shadow: -1px 4px 4px 0px #E10000;
+// ============================================
+// ESTILOS TARJETA TOTAL
+// ============================================
+.card-med.total {
+  background-color: $bg-total;
+  cursor: auto;
 
-      .card-num {
-        color: #E10000;
-      }
-    }
-
+  .card-label {
+    color: $color-text;
   }
 
-  &.total {
-    background-color: #F5F7FF;
-
-    .card-label {
-      color: #45556C;
-    }
-
-    .card-num {
-      color: #314158;
-    }
-
+  .card-num {
+    color: $color-total-num;
   }
 }
