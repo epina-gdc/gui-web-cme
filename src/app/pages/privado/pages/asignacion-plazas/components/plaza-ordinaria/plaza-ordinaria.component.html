@@ -1,19 +1,19 @@
-<div class="flex flex-column bg-white border-round-lg p-3 w-full">
+<div class="flex flex-column bg-white border-round-lg p-3 w-full" style="min-height: 180px;">
   <form [formGroup]="filtroForm">
-    <div class="flex flex-row">
+    <div class="grid">
       <div class="md:col-4 col-12">
         <div class="flex justify-content-between">
           <label class="field-label" for="especialidad">Especialidad</label>
         </div>
         <p-select [options]="especialidadList" formControlName="especialidad" id="especialidad" optionValue="value" optionLabel="label"
-                  placeholder="Selecciona una especialidad" class="w-full"/>
+                  placeholder="Selecciona una especialidad" class="w-full" (onChange)="onChangeEspecialidad()"/>
       </div>
       <div class="md:col-4 col-12">
         <div class="flex justify-content-between">
           <label class="field-label" for="ooad">OOAD</label>
         </div>
         <p-select [options]="ooadList" formControlName="ooad" id="ooad" optionValue="value" optionLabel="label"
-                  placeholder="Selecciona una OOAD" class="w-full" onc (onChange)="getUnidad()"/>
+                  placeholder="Selecciona una OOAD" class="w-full" (onChange)="onChangeOoad()"/>
       </div>
       <div class="md:col-4 col-12">
         <div class="flex justify-content-between">
@@ -23,8 +23,7 @@
                   placeholder="Selecciona unidad médica" class="w-full"/>
       </div>
 
-    </div>
-    <div class="flex flex-row">
+      <!--Segunda linea-->
       <div class="md:col-4 col-12">
         <div class="flex justify-content-between">
           <label class="field-label" for="plaza">Plaza</label>
@@ -34,11 +33,11 @@
                formControlName="plaza"/>
       </div>
 
-
       <div class="md:col-4 col-12 flex align-content-center flex-1 gap-3 pt-4">
-        <p-button type="button" variant="outlined" label="Limpiar" />
+        <p-button type="button" variant="outlined" label="Limpiar" (onClick)="limpiar()" />
         <p-button type="button" label="Consultar" (onClick)="consultarPlazas()"   />
       </div>
+
     </div>
   </form>
 </div>
@@ -48,11 +47,33 @@
     <p class="titulo-seccion-asignacion">Plazas disponibles</p>
   </div>
   <div class="flex flex-column bg-white border-round-lg p-3 w-full">
-    @for ( registro of plazasList(); track registro.id) {
-      <app-plaza-disponible-card [plaza]="registro"
+    @for ( registro of plazasList(); track registro.idPlaza) {
+      <app-plaza-disponible-card [plaza]="registro" [idUsuario]="idUsuario"
                                  (abrirDetalleEvent)="show($event)"
       ></app-plaza-disponible-card>
     }
+  </div>
+  <p-paginator class="paginator-oferta" (onPageChange)="cambiarPagina($event)" [first]="first" [rows]="rows"
+    [totalRecords]="totalElementos">
+    <ng-template pTemplate="previouspagelinkicon">
+      <div class="flex align-items-center">
+        <span class="pi pi-chevron-left text-xl font-normal mr-2"></span>
+        <span class="font-semibold mr-5">Anterior</span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="nextpagelinkicon">
+      <div class="flex align-items-center">
+        <span class="font-semibold ml-5">Siguiente</span>
+        <span class="pi pi-chevron-right text-xl font-normal ml-2"></span>
+      </div>
+    </ng-template>
+  </p-paginator>
+} @else {
+  <div *ngIf="sinResultados">
+    <div class="flex justify-content-center align-items-center flex-column">
+      <img class="p-0" src="/assets/images/tabla_sin_resultados.svg" alt="Sin resultados">
+      <p class="mt-2 sinResultados">No hay plazas disponibles. </p>
+    </div>
   </div>
 }
 

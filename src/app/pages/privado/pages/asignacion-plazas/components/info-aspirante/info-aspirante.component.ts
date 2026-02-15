@@ -3,7 +3,7 @@ import { Card } from "primeng/card";
 import { Avatar } from 'primeng/avatar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { CommonModule } from '@angular/common';
-import { AsignacionRequest, BusquedaResponse, TipoAsignacion } from '@models/datosAsignacion';
+import { AsignacionRequest, BusquedaResponse, CedulaResponse, Plaza, TipoAsignacion } from '@models/datosAsignacion';
 import { DocumentoService } from '@services/documentos.service';
 import { ConfirmationService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
@@ -30,7 +30,8 @@ import { TipoDropdown } from '@models/tipo-dropdown.interface';
 })
 export class InfoAspiranteComponent {
   @Input() asignacion!: BusquedaResponse;
-  @Input() tipo!: number;
+  @Input() refreshKey = 0;
+
 
   documentoService: DocumentoService = inject(DocumentoService);
   catalogosService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
@@ -55,7 +56,14 @@ export class InfoAspiranteComponent {
     rfc: '',
     email: '',
     emailAdicional: '',
+    asignacion: {
+      ooad: '',
+      zona: '',
+      especialidad: ''
+    }, 
+    plaza: new Plaza()
   };
+
 
   visibleRechazo = false;
   loading = false;
@@ -75,16 +83,6 @@ export class InfoAspiranteComponent {
   }
 
   obtenerAspirante() {
-    if (this.asignacion.asignacionMedico?.id != null && this.asignacion.asignacionMedico?.id > 0) {
-      this.tieneAsignacion = true;
-      this.tipoAsignacion = this.asignacion.asignacionMedico.idTipoAsignacion?.id ?? 0;
-      this.muestraTag = this.tipoAsignacion == 3 || this.tipoAsignacion == 4 || this.tipoAsignacion == 5 ? true: false;
-      this.getMessage(this.tipoAsignacion);
-    } else {
-      this.tieneAsignacion = false;
-      this.muestraTag = false;
-      this.tipoAsignacion = 0;
-    }
     this.idUsuario = this.asignacion.datosGenerales?.idUsuario ?? 0;
     this.aspirante.nombreCompleto = this.asignacion.datosGenerales?.nombreCompleto ?? '';
     this.aspirante.matricula = this.asignacion.datosGenerales?.matriculaFolio ?? '';
@@ -94,6 +92,26 @@ export class InfoAspiranteComponent {
     this.aspirante.email = this.asignacion.datosGenerales?.correo ?? '';
     this.aspirante.emailAdicional = this.asignacion.datosGenerales?.correoAdicional ?? '';
     this.obtenerFotografia(this.asignacion.datosGenerales?.refFotografia ?? '');
+    if (this.asignacion.asignacionMedico?.id != null && this.asignacion.asignacionMedico?.id > 0) {
+      //Sustitución
+      this.aspirante.asignacion.ooad = this.asignacion.asignacionMedico?.idSustitucion?.desOoad ?? '';
+      this.aspirante.asignacion.zona = this.asignacion.asignacionMedico?.idSustitucion?.desZona ?? '';
+      this.aspirante.asignacion.especialidad = this.asignacion.asignacionMedico?.idSustitucion?.desEspecialidad ?? '';
+      this.aspirante.plaza = this.asignacion.asignacionMedico.idPlazaLayout ?? new Plaza();
+
+      this.tieneAsignacion = true;
+      this.tipoAsignacion = this.asignacion.asignacionMedico.idTipoAsignacion?.id ?? 0;
+      this.muestraTag = this.tipoAsignacion == 3 || this.tipoAsignacion == 4 || this.tipoAsignacion == 5 ? true: false;
+      if(this.refreshKey == 0)
+        this.getMessage(this.tipoAsignacion);
+      else
+        this.refreshKey = 0;
+    } else {
+      this.tieneAsignacion = false;
+      this.muestraTag = false;
+      this.tipoAsignacion = 0;
+    }
+    
   }
 
   obtenerFotografia(uuidArchivo: string): void {
@@ -169,6 +187,10 @@ export class InfoAspiranteComponent {
     }
   }
 
+  imprimirCedula(){
+    this.descargaCedula(this.idUsuario);
+  }
+
   asignarPlaza(tipo: number, motivoRechazo?: number) {
     let request: AsignacionRequest = {
       idUsuario: this.idUsuario,
@@ -187,6 +209,34 @@ export class InfoAspiranteComponent {
       error: (error) => {
         //console.log(error);
         this.alertaService.error('Ocurrió un error al registrar la asignación.');
+      }
+    });
+  }
+
+  descargaCedula(idUsuario: number) {
+    this.asignacionService.descargarCedula(idUsuario).subscribe({
+      next: (respuesta: CedulaResponse) => {
+        if (respuesta.exito) {
+          const adjunto = respuesta.respuesta;
+          if (adjunto && adjunto.adjunto) {
+            const base64Data = adjunto.adjunto;
+            const nombreArchivo = adjunto.nombreAdjunto || 'cedula.pdf';
+            const contentType = 'application/pdf';
+            const pdfBlob = this.b64toBlob(base64Data, contentType);
+            const pdfUrl = URL.createObjectURL(pdfBlob);
+            window.open(pdfUrl, '_blank');
+          } else {
+            console.error('Error: El JSON es exitoso pero falta el Base64 del PDF.');
+          }
+        } else {
+          this.alertaService.error('Error al imprimir la cedula');
+          console.error('Error del servicio:', respuesta.mensaje);
+        }
+      },
+      error: (error) => {
+        // Manejar errores de conexión o HTTP
+        this.alertaService.error('Error al imprimir los documentos');
+        console.error('Error de conexión o HTTP al obtener la cedula:', error);
       }
     });
   }
