@@ -15,7 +15,6 @@ export const environment: ConfigEnvironment = {
     apiCalificaciones: base + '/mscme-calificaciones/api',
     apiAsignacionPlaza: base + 'mscme-asignacion',
     apiSindical: base + '/mscme-sindical/',
-    apiAsignacionMonitoreo: base + 'mscme-asignacion',
   }
 } */
 
