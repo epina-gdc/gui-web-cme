@@ -3,6 +3,7 @@ import {Card} from 'primeng/card';
 import {Badge} from 'primeng/badge';
 import {CurrencyPipe, TitleCasePipe} from '@angular/common';
 import {OportunidadLaboral} from '@models/oportunidad-laboral.interface';
+import { Plaza } from '@models/datosAsignacion';
 
 
 @Component({
@@ -24,8 +25,8 @@ export class PlazaDisponibleCardComponent implements OnInit{
 
   isMobileView: boolean = false;
 
-  @Input() plaza: any = [];
-  @Output() abrirDetalleEvent = new EventEmitter<OportunidadLaboral>();
+  @Input() plaza: Plaza = new Plaza();
+  @Output() abrirDetalleEvent = new EventEmitter<Plaza>();
 
   constructor(private readonly currencyPipe: CurrencyPipe) {
 

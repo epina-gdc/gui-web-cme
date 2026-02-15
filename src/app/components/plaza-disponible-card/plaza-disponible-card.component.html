@@ -13,7 +13,7 @@
         </div>
         <div class="flex flex-column  p-0 mt-1">
           <p class="titulo-label-oferta-card">Tipo de unidad</p>
-          <p class="texto-label-oferta-card">{{ plaza.tipoUnidad | titlecase }}</p>
+          <p class="texto-label-oferta-card">{{ plaza.regimen| titlecase }}</p>
         </div>
         <div class="flex flex-column p-0 mt-1">
           <p class="titulo-label-oferta-card">Turno</p>
@@ -29,18 +29,18 @@
         </div>
         <div class="flex flex-column p-0 mt-1">
           <p class="titulo-label-oferta-card">No. de plaza</p>
-          <p class="texto-label-oferta-card">{{ plaza.numeroPlaza }}</p>
+          <p class="texto-label-oferta-card">{{ plaza.numPlaza }}</p>
         </div>
         <div class="flex flex-column p-0 mt-1">
           <p class="titulo-label-oferta-card">Puesto</p>
-          <p class="texto-label-oferta-card">{{ plaza.puesto }}</p>
+          <p class="texto-label-oferta-card">{{ plaza.cvePuesto }}</p>
         </div>
       </div>
       <hr class="my-4">
       @if (!isMobileView) {
         <div class="flex flex-row justify-content-start align-items-center gap-2 mb-4">
-          <p class="nombre-unidad-oferta-card">{{ plaza.hospital.nombre | titlecase }}</p>
-          @if (+plaza.hospital.tipo == 1) {
+          <p class="nombre-unidad-oferta-card">{{ plaza.umf | titlecase }}</p>
+          @if (plaza.nuevoHospital == 1) {
             <p-badge [value]="'• ' + 'Nuevo hospital'" severity="warn"/>
           }
         </div>
@@ -52,17 +52,17 @@
               <i class="cme-pin me-5" [style]="{ 'font-size': '2.2rem', color: '#23c8a7'}"></i>
               <div class="flex flex-column">
                 <p class="titulo-label-oferta-card">OOAD</p>
-                <p class="texto-label-oferta-card">{{ plaza.hospital.direccion | titlecase }}</p>
+                <p class="texto-label-oferta-card">{{ plaza.ooad| titlecase }}</p>
               </div>
             </div>
           </div>
           <div class="flex flex-column align-items-center col-6 lg:col-2 p-0 mt-1">
             <p class="titulo-label-oferta-card">Zona</p>
-            <p class="texto-label-oferta-card">{{ plaza.hospital.zona | titlecase }}</p>
+            <p class="texto-label-oferta-card">{{ plaza.zona | titlecase }}</p>
           </div>
           <div class="flex flex-column col-12 lg:col-6 p-0 mt-1">
             <p class="titulo-label-oferta-card">Dirección</p>
-            <p class="texto-label-oferta-card">{{ plaza.hospital.direccion | titlecase }}</p>
+            <p class="texto-label-oferta-card">{{ plaza.direccion | titlecase }}</p>
           </div>
         </div>
       </div>
@@ -74,11 +74,11 @@
       </div>
       <div class="flex justify-content-evenly">
         <div class="flex flex-column align-items-center gap-2">
-          <p class="texto-sueldo"> {{ plaza.sueldoMensual.estimadoBruto |  currency:'USD':'symbol':'1.2-2' }} </p>
+          <p class="texto-sueldo"> {{ plaza.sueldoMensualBruto|  currency:'USD':'symbol':'1.2-2' }} </p>
           <p class="leyenda-sueldo"> Estimado bruto </p>
         </div>
         <div class="flex flex-column align-items-center gap-2">
-          <p class="texto-sueldo"> {{ plaza.sueldoMensual.estimadoNeto |  currency:'USD':'symbol':'1.2-2' }} </p>
+          <p class="texto-sueldo"> {{ plaza.sueldoMensualNeto|  currency:'USD':'symbol':'1.2-2' }} </p>
           <p class="leyenda-sueldo"> Estimado neto </p>
         </div>
       </div>

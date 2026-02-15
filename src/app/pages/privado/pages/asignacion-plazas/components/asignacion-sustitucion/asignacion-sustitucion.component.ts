@@ -149,7 +149,7 @@ export class AsignacionSustitucionComponent {
       idTipoAsignacionPlaza: TipoAsignacion.Sustitucion08,
       cveOoad: v.ooad,
       desOoad: this.resumenAsignacion.ooadLabel,
-      cveZona: v.zona.toString().padStart(2, '0'),
+      cveZona: v.zona,//.toString().padStart(2, '0'),
       desZona: this.resumenAsignacion.zonaLabel,
       cveEspecialidad: v.especialidad,
       desEspecialidad: this.resumenAsignacion.especialidadLabel

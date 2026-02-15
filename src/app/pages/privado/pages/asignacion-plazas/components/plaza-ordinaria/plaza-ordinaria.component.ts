@@ -15,13 +15,11 @@ import {
 import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {DetallePlazaComponent} from '@privado/asignacion-plazas/components/detalle-plaza/detalle-plaza.component';
 import { AsignacionPlazaService } from '@services/asignacion-plaza.service';
-import { InfoAspirante } from '@models/datosAsignacion';
+import { DisponiblesRequest, InfoAspirante, Plaza } from '@models/datosAsignacion';
 import { mapearArregloTipoDropdown } from '@utils/funciones';
 import { Regimen } from '../../../../../../core/models/datosAsignacion';
+import {Paginator, PaginatorState} from 'primeng/paginator';
 
-import { of } from 'rxjs';
-import { distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-plaza-ordinaria',
@@ -31,6 +29,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     Select,
     InputText,
     Button,
+    Paginator
   ],
   templateUrl: './plaza-ordinaria.component.html',
   styleUrl: './plaza-ordinaria.component.scss',
@@ -52,9 +51,16 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
   especialidadList: TipoDropdown[] = [];
   ooadList: TipoDropdown[] = [];
   unidadList: TipoDropdown[] = [];
-  plazasList: WritableSignal<any[]> = signal([]);
+  plazasList: WritableSignal<Plaza[]> = signal([]);
   idEspecialidad: string = '';
   //default_catalogo: TipoDropdown = {value:0,label:'Seleccione una opción'};
+
+  //Consulta paginado
+  first: number = 0;
+  rows: number = 10;
+
+  numPaginaActual: number = 0;
+  totalElementos: number = 0;
 
   constructor(public dialogService: DialogService){
     super();
@@ -126,12 +132,33 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
   }
 
   consultarPlazas(): void {
+    const v = this.filtroForm.getRawValue();
 
-    this.asignacionService.consultarPlazas(this.objFiltro()).subscribe({
+    let request: DisponiblesRequest = {
+      cveEspecialidad: v.especialidad,
+      cveOoad: v.ooad,
+      cveUnidad: v.unidad,
+      numPlaza: v.plaza,
+      regimen: Regimen.PlazaOrdinaria
+    }
+
+    this.asignacionPlazaService.plazasDisponibles(request, this.numPaginaActual, this.rows).subscribe({
       next: (result) => {
-        this.plazasList.set(result);
+        console.log('Plazas', result);
+        if(result.exito){
+          this.totalElementos = result.respuesta.page.totalElements;
+          this.plazasList.set(result.respuesta.content);
+        }
+        
       }
     })
+  }
+
+  cambiarPagina(event: PaginatorState): void {
+    if (event.page) {
+      this.numPaginaActual = event.page;
+    }
+    this.consultarPlazas();
   }
 
   objFiltro(): FiltroConsultaPlazaInterface {

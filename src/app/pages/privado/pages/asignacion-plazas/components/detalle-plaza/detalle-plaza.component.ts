@@ -6,6 +6,7 @@ import {CurrencyPipe} from '@angular/common';
 import {TooltipModule} from 'primeng/tooltip';
 import {EstadoOfertaService} from '@services/estado-oferta.service';
 import {Button} from 'primeng/button';
+import { Plaza } from '@models/datosAsignacion';
 
 @Component({
   selector: 'app-detalle-plaza',
@@ -22,7 +23,7 @@ import {Button} from 'primeng/button';
 })
 export class DetallePlazaComponent implements OnInit{
 
-  plazaSeleccionada: any;
+  plazaSeleccionada: Plaza = new Plaza();
 
   constructor(
     private readonly config: DynamicDialogConfig,
@@ -38,9 +39,9 @@ export class DetallePlazaComponent implements OnInit{
     }
 
     const nuevoEstado = {
-      titulo: "Cardiología",
-      subTitulo: "Medicina familiar",
-      badgeValue: true,
+      titulo: this.plazaSeleccionada.especialidad ?? '',
+      subTitulo: this.plazaSeleccionada.categoria ?? '',
+      badgeValue: this.plazaSeleccionada.nuevoHospital == 1 ? true : false,
     };
     this.estadoOfertaService.actualizarEstado(nuevoEstado);
   }

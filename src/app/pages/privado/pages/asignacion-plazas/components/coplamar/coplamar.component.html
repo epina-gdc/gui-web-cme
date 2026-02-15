@@ -1,6 +1,6 @@
-<div class="flex flex-column bg-white border-round-lg p-3 w-full">
+<div class="flex flex-column bg-white border-round-lg p-3 w-full" style="min-height: 180px;">
   <form [formGroup]="filtroForm">
-    <div class="flex flex-row">
+    <div class="grid">
       <div class="md:col-4 col-12">
         <div class="flex justify-content-between">
           <label class="field-label" for="especialidad">Especialidad</label>
@@ -23,8 +23,7 @@
                   placeholder="Selecciona unidad médica" class="w-full"/>
       </div>
 
-    </div>
-    <div class="flex flex-row">
+      <!--Segunda linea-->
       <div class="md:col-4 col-12">
         <div class="flex justify-content-between">
           <label class="field-label" for="plaza">Plaza</label>
@@ -39,13 +38,15 @@
         <p-button type="button" variant="outlined" label="Limpiar" />
         <p-button type="button" label="Consultar" (onClick)="consultarPlazas()"   />
       </div>
+
     </div>
   </form>
 </div>
-<div class="flex my-3">
-  <p class="titulo-seccion-asignacion">Plazas disponibles</p>
-</div>
+
 @if(plazasList().length > 0){
+  <div class="flex my-3">
+    <p class="titulo-seccion-asignacion">Plazas disponibles</p>
+  </div>
   <div class="flex flex-column bg-white border-round-lg p-3 w-full">
     @for ( registro of plazasList(); track registro.id) {
       <app-plaza-disponible-card [plaza]="registro"

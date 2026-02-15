@@ -1,6 +1,6 @@
 import { ConfigEnvironment } from '@models/config-environment.interface';
 
-const base: string = 'http://10.166.0.120:1061/';
+const base: string = 'http://10.166.120:1052/';
 
 export const environment: ConfigEnvironment = {
   production: true,
@@ -14,7 +14,8 @@ export const environment: ConfigEnvironment = {
     apiAsignacionMesa: base + '/mscme-asignacion',
     apiCalificaciones: base + '/mscme-calificaciones/api',
     apiAsignacionPlaza: base + 'mscme-asignacion',
-    apiSindical: base + '/mscme-sindical/'
+    apiSindical: base + '/mscme-sindical/',
+    apiAsignacionMonitoreo: base + 'mscme-asignacion',
   }
 }
 
