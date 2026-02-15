@@ -1,6 +1,6 @@
 import { ConfigEnvironment } from '@models/config-environment.interface';
 
-const base: string = 'http://10.166.0.120:1061/';
+const base: string = 'http://10.166.0.120:1052/';
 
 export const environment: ConfigEnvironment = {
   production: false,
