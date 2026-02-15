@@ -1,24 +1,21 @@
-import {Component, DestroyRef, inject, Input, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, DestroyRef, EventEmitter, inject, Input, OnInit, Output, signal, WritableSignal} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
 import {GeneralComponent} from '@components/general.component';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {AsignacionService} from '@services/asignacion.service';
 import {Select} from 'primeng/select';
-import {selectData} from '@privado/asignacion-plazas/dummies';
 import {InputText} from 'primeng/inputtext';
 import {Button} from 'primeng/button';
 import {PlazaDisponibleCardComponent} from '@components/plaza-disponible-card/plaza-disponible-card.component';
 import {FiltroConsultaPlazaInterface} from '@models/filtroConsultaPlaza.interface';
-import {
-  HeaderMedicoDetalleOfertaComponent
-} from '@pages/privado/shared/header-medico-detalle-oferta/header-medico-detalle-oferta.component';
+import {HeaderMedicoDetalleOfertaComponent} from '@pages/privado/shared/header-medico-detalle-oferta/header-medico-detalle-oferta.component';
 import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {DetallePlazaComponent} from '@privado/asignacion-plazas/components/detalle-plaza/detalle-plaza.component';
 import { AsignacionPlazaService } from '@services/asignacion-plaza.service';
-import { DisponiblesRequest, InfoAspirante, Plaza } from '@models/datosAsignacion';
+import { DisponiblesRequest, InfoAspirante, Plaza, Regimen } from '@models/datosAsignacion';
 import { mapearArregloTipoDropdown } from '@utils/funciones';
-import { Regimen } from '../../../../../../core/models/datosAsignacion';
 import {Paginator, PaginatorState} from 'primeng/paginator';
+import { EstadoOfertaService } from '@services/estado-oferta.service';
 
 
 @Component({
@@ -29,16 +26,17 @@ import {Paginator, PaginatorState} from 'primeng/paginator';
     Select,
     InputText,
     Button,
-    Paginator
-  ],
+    Paginator,
+    CommonModule
+],
   templateUrl: './plaza-ordinaria.component.html',
   styleUrl: './plaza-ordinaria.component.scss',
   providers: [DialogService]
 })
 export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
   @Input() infoAspirante!: InfoAspirante;
+  @Output() asignacionRegistrada = new EventEmitter<{ id: number }>();
 
-  asignacionService: AsignacionService = inject(AsignacionService);
   asignacionPlazaService: AsignacionPlazaService = inject(AsignacionPlazaService);
 
   fb: FormBuilder = inject(FormBuilder);
@@ -52,7 +50,9 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
   ooadList: TipoDropdown[] = [];
   unidadList: TipoDropdown[] = [];
   plazasList: WritableSignal<Plaza[]> = signal([]);
-  idEspecialidad: string = '';
+  //idEspecialidad: string = '';
+  idUsuario: number = 0;
+  sinResultados: boolean = false;
   //default_catalogo: TipoDropdown = {value:0,label:'Seleccione una opción'};
 
   //Consulta paginado
@@ -62,19 +62,22 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
   numPaginaActual: number = 0;
   totalElementos: number = 0;
 
-  constructor(public dialogService: DialogService){
+  constructor(public dialogService: DialogService, private readonly estadoPlazaService: EstadoOfertaService){
     super();
   }
 
   ngOnInit(): void {
-    this.filtroForm = this.iniciarForm();
-    //this.getCatalogos();
-    this.getEspecialidades();
+    //this.filtroForm = this.iniciarForm();
+    //this.getEspecialidades();
+    this.estadoPlazaService.refreshPlazas$.subscribe(() => {
+      this.ref?.close();
+    });
   }
 
   ngOnChanges(): void {
     this.filtroForm = this.iniciarForm();
-    //this.getCatalogos();
+    this.idUsuario = this.infoAspirante.idUsuario;
+    this.plazasList.set([]);
     this.getEspecialidades();
   }
 
@@ -94,21 +97,30 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
         if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
           this.especialidadList = mapearArregloTipoDropdown(result.respuesta, 'label', 'value');
           //this.especialidadList.unshift(this.default_catalogo);
-          this.idEspecialidad = result.respuesta[0]?.value ?? null;
-          this.filtroForm.get('especialidad')?.patchValue(this.idEspecialidad);
-          this.getOoad(Number(this.idEspecialidad));
+          //this.idEspecialidad = result.respuesta[0]?.value ?? null;
+          //this.filtroForm.get('especialidad')?.patchValue(this.idEspecialidad);
+          var idEspecialidad = result.respuesta[0]?.value ?? null;
+          this.filtroForm.get('especialidad')?.patchValue(idEspecialidad);
+          this.getOoad();
+          return;
+        } else{
+          this.especialidadList = [];
           return;
         }
       }
     })
   }
 
-  getOoad(cveEspecialidad: number): void{
+  getOoad(): void{
+    const cveEspecialidad = this.filtroForm.get('especialidad')?.value;
     this.asignacionPlazaService.getOoadByEspecialidad(Regimen.PlazaOrdinaria, cveEspecialidad).subscribe({
       next: (result) => {
         if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
           this.ooadList = mapearArregloTipoDropdown(result.respuesta, 'label', 'value');
           //this.ooadList.unshift(this.default_catalogo);
+          return;
+        } else{
+          this.ooadList = [];
           return;
         }
       }
@@ -126,12 +138,53 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
           this.unidadList = mapearArregloTipoDropdown(result.respuesta, 'label', 'value');
           //this.ooadList.unshift(this.default_catalogo);
           return;
+        } else{
+          this.unidadList = [];
+          return;
         }
       }
     })
   }
 
-  consultarPlazas(): void {
+  onChangeEspecialidad(){
+    this.ooadList = [];
+    const ooadCtrl = this.filtroForm.get('ooad');
+    ooadCtrl?.reset(null);
+
+    this.unidadList = [];
+    const unidadCtrl = this.filtroForm.get('unidad');
+    unidadCtrl?.reset(null);
+
+    ooadCtrl?.updateValueAndValidity({ emitEvent: false });
+    this.filtroForm.updateValueAndValidity({ emitEvent: false });
+
+    this.getOoad();
+  }
+
+  onChangeOoad(){
+    this.unidadList = [];
+    const unidadCtrl = this.filtroForm.get('unidad');
+    unidadCtrl?.reset(null);
+
+    unidadCtrl?.updateValueAndValidity({ emitEvent: false });
+    this.filtroForm.updateValueAndValidity({ emitEvent: false });
+
+    this.getUnidad();
+  }
+
+  limpiar(){
+    this.filtroForm.get('especialidad')?.patchValue('');
+    this.filtroForm.get('ooad')?.patchValue('');
+    this.filtroForm.get('unidad')?.patchValue('');
+    this.filtroForm.get('plaza')?.patchValue('');
+    this.plazasList.set([]);
+  }
+
+  consultarPlazas(inicio: boolean = true): void {
+    if (inicio) {
+      this.numPaginaActual = 0;
+      this.first = 0;
+    }
     const v = this.filtroForm.getRawValue();
 
     let request: DisponiblesRequest = {
@@ -148,17 +201,21 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
         if(result.exito){
           this.totalElementos = result.respuesta.page.totalElements;
           this.plazasList.set(result.respuesta.content);
+          this.sinResultados = false;
+        } else{
+          this.plazasList.set([]);
+          this.sinResultados = true;
+          return;
         }
-        
       }
-    })
+    });
   }
 
   cambiarPagina(event: PaginatorState): void {
     if (event.page) {
       this.numPaginaActual = event.page;
     }
-    this.consultarPlazas();
+    this.consultarPlazas(false);
   }
 
   objFiltro(): FiltroConsultaPlazaInterface {

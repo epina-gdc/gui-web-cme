@@ -26,7 +26,7 @@ export class AsignacionPlazaService {
   getEspecialidadByMatricula(matricula: string): Observable<any> {
     return this.http.get(`${this.urlAsignacion}plaza/especialidad-por-matriculaFolio?matriculaFolio=${matricula}`);
   }
-  getOoadByEspecialidad(idRegimen: number, cveEspecialidad: number): Observable<any> {
+  getOoadByEspecialidad(idRegimen: number, cveEspecialidad: string): Observable<any> {
     return this.http.get(`${this.urlAsignacion}plaza/ooad-por-especialidad?regimen=${idRegimen}&cveEspecialidad=${cveEspecialidad}`);
   }
   getUnidadByOoad(idRegimen: number, cveEspecialidad: number, cveOoad: number): Observable<any> {

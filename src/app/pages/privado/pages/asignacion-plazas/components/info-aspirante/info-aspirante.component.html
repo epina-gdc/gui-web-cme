@@ -132,6 +132,137 @@
   </div>
 </p-card>
 
+<!--Zona asignación Ordinaria o Coplamar-->
+<p-card *ngIf="(tieneAsignacion && tipoAsignacion == (1 || 2))" class="mx-2 empty-border info-card">
+  <div class="grid">
+    <div class="col-12 md:col-10">
+      <div class="flex flex-column  p-0 mt-1">
+          <div class="header-oferta-flex mb-2">
+            <p class="titulo-oferta-card texto-ajustable">
+              {{ aspirante.plaza.especialidad | titlecase }} / {{aspirante.plaza.categoria | titlecase }}
+            </p>
+          </div>
+          <p class="especificacion-oferta-card">{{ aspirante.plaza.umf | titlecase }}</p>
+        </div>
+    </div>
+    <div class="col-12 md:col-2 flex align-items-center justify-content-end">
+      <p-button type="button" variant="outlined" label="Imprimir cedula" (click)="imprimirCedula()" />
+    </div>
+
+    <div class="col-12 md:col-7 my-4">
+      <div class="grid">
+        <div class="col-6 justify-content-start">
+          <p class="texto-label-oferta-card text-600">OOAD:</p>
+        </div>
+        <div class="col-6 justify-content-end" style="text-align:right">
+          <p class="texto-label-oferta-card text-900">{{ aspirante.plaza.ooad | titlecase }}</p>
+        </div>
+        <div class="col-6 justify-content-start">
+          <p class="texto-label-oferta-card text-600">Zona:</p>
+        </div>
+        <div class="col-6 justify-content-end" style="text-align:right">
+          <p class="texto-label-oferta-card text-900">{{ aspirante.plaza.zona | titlecase }}</p>
+        </div>
+        <div class="col-6 justify-content-start">
+          <p class="texto-label-oferta-card text-600">No de plaza:</p>
+        </div>
+        <div class="col-6 justify-content-end" style="text-align:right">
+          <p class="texto-label-oferta-card text-900">{{ aspirante.plaza.numPlaza | titlecase }}</p>
+        </div>
+        <div class="col-6 justify-content-start">
+          <p class="texto-label-oferta-card text-600">Turno:</p>
+        </div>
+        <div class="col-6 justify-content-end" style="text-align:right">
+          <p class="texto-label-oferta-card text-900">{{ aspirante.plaza.turno | titlecase }}</p>
+        </div>
+        <div class="col-6 justify-content-start">
+          <p class="texto-label-oferta-card text-600">Horario:</p>
+        </div>
+        <div class="col-6 justify-content-end" style="text-align:right">
+          <p class="texto-label-oferta-card text-900">{{ aspirante.plaza.horario | titlecase }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12 md:col-5 my-4 padding-compensacion">
+      <p-card class="empty-border bg-secondary-blue-oferta-laboral">
+      <div class="flex">
+        <div class="flex col-12 flex-column p-0">
+          <p class="card-compensacion-sub-titulo">Sueldo mensual</p>
+          <div class="flex justify-content-start gap-4 my-2">
+            <div class="flex flex-column">
+              <p class="card-compensacion-seccion">Sueldo bruto</p>
+      
+              <p class="card-compensacion-titulo">{{ aspirante.plaza.sueldoMensualBruto | currency:'USD':'symbol':'1.2-2' }}
+              </p>
+            </div>
+            <div class="flex align-items-end">
+              <p class="card-compensacion-titulo">-</p>
+            </div>
+            <div class="flex flex-column">
+              <p class="card-compensacion-seccion">Sueldo neto</p>
+              <p class="card-compensacion-titulo">{{ aspirante.plaza.sueldoMensualNeto| currency:'USD':'symbol':'1.2-2' }}
+              </p>
+            </div>
+          </div>
+          <div class="flex justify-content-between p-0 mt-1">
+            <div class="col-6 flex justify-content-start p-0">
+              <p class="card-compensacion-seccion">Créditos:</p>
+            </div>
+            <div class="col-6 flex justify-content-start p-0">
+              <p class="card-compensacion-seccion">{{ aspirante.plaza.creditos }} {{ aspirante.plaza.creditos! > 1 ?
+                "Disponibles" : "Disponible" }}</p>
+            </div>
+          </div>
+          <div class="flex justify-content-between p-0 mt-1">
+            <div class="col-6 flex justify-content-start p-0">
+              <p class="card-compensacion-seccion">Bono difícil:</p>
+            </div>
+            <div class="col-6 flex justify-content-start p-0">
+              <p class="card-compensacion-seccion">{{ aspirante.plaza.bonoDificilCobertura ?
+                aspirante.plaza.bonoDificilCobertura : "No" }}</p>
+      
+            </div>
+          </div>
+          <div class="flex justify-content-between p-0 mt-1">
+            <div class="col-6 flex justify-content-start p-0">
+              <p class="card-compensacion-seccion">Acceso a crédito:</p>
+            </div>
+            <div class="col-6 flex justify-content-start p-0">
+              <p class="card-compensacion-seccion">{{ aspirante.plaza.accesoCredito ? 'Sí' : 'No' }}</p>
+            </div>
+          </div>
+          @if (aspirante.plaza.accesoCredito) {
+          @if (aspirante.plaza.creditoAutomotriz) {
+          <div class="flex justify-content-between p-0 mt-1">
+            <div class="col-6 flex justify-content-start p-0">
+              <p class="card-compensacion-seccion">Crédito automotriz:</p>
+            </div>
+            <div class="col-6 flex justify-content-start p-0">
+              <p class="card-compensacion-seccion">Monto máx {{ aspirante.plaza.creditoAutomotriz }}</p>
+            </div>
+          </div>
+          }
+          @if (aspirante.plaza.creditoHipotecario) {
+          <div class="flex justify-content-between p-0 mt-1">
+            <div class="col-6 flex justify-content-start p-0">
+              <p class="card-compensacion-seccion">Crédito hipotecario:</p>
+            </div>
+            <div class="col-6 flex justify-content-start p-0">
+              <p class="card-compensacion-seccion">Monto máx {{ aspirante.plaza.creditoHipotecario }}
+              </p>
+            </div>
+          </div>
+          }
+          }
+        </div>
+      </div>
+      </p-card>
+    </div>
+  </div>
+</p-card>
+
+
 
 <p-confirmDialog key="cambioRama" [style]="{width: '50vw'}" [baseZIndex]="10000" [closable]="true"
   styleClass="custom-title-confirm-dialog">

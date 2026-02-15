@@ -3,7 +3,7 @@ import { Card } from "primeng/card";
 import { Avatar } from 'primeng/avatar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { CommonModule } from '@angular/common';
-import { AsignacionRequest, BusquedaResponse, CedulaResponse, TipoAsignacion } from '@models/datosAsignacion';
+import { AsignacionRequest, BusquedaResponse, CedulaResponse, Plaza, TipoAsignacion } from '@models/datosAsignacion';
 import { DocumentoService } from '@services/documentos.service';
 import { ConfirmationService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
@@ -60,7 +60,8 @@ export class InfoAspiranteComponent {
       ooad: '',
       zona: '',
       especialidad: ''
-    }
+    }, 
+    plaza: new Plaza()
   };
 
 
@@ -96,7 +97,7 @@ export class InfoAspiranteComponent {
       this.aspirante.asignacion.ooad = this.asignacion.asignacionMedico?.idSustitucion?.desOoad ?? '';
       this.aspirante.asignacion.zona = this.asignacion.asignacionMedico?.idSustitucion?.desZona ?? '';
       this.aspirante.asignacion.especialidad = this.asignacion.asignacionMedico?.idSustitucion?.desEspecialidad ?? '';
-
+      this.aspirante.plaza = this.asignacion.asignacionMedico.idPlazaLayout ?? new Plaza();
 
       this.tieneAsignacion = true;
       this.tipoAsignacion = this.asignacion.asignacionMedico.idTipoAsignacion?.id ?? 0;

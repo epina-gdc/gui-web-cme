@@ -19,7 +19,6 @@ import { Mensajes } from '@utils/mensajes';
 })
 export class AsignacionSustitucionComponent {
   @Input() infoAspirante!: InfoAspirante;
-  //@Output() asignacionRegistrada = new EventEmitter<void>();
   @Output() asignacionRegistrada = new EventEmitter<{ id: number }>();
   
   asignacionPlazaService: AsignacionPlazaService = inject(AsignacionPlazaService);
@@ -71,7 +70,6 @@ export class AsignacionSustitucionComponent {
     this.formSustitucion.updateValueAndValidity({ emitEvent: false });
 
     this.getZonas();
-
   }
 
   getEspecialidades(): void {

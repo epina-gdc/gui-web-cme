@@ -67,10 +67,12 @@
         </div>
         @switch (tab) {
         @case (0) {
-        <app-plaza-ordinaria [infoAspirante]="busqueda.datosGenerales!"></app-plaza-ordinaria>
+        <app-plaza-ordinaria [infoAspirante]="busqueda.datosGenerales!"
+        (asignacionRegistrada)="onRegistroGuardado($event)"></app-plaza-ordinaria>
         }
         @case (1) {
-        <app-coplamar [infoAspirante]="busqueda.datosGenerales!"></app-coplamar>
+        <app-coplamar [infoAspirante]="busqueda.datosGenerales!"
+        (asignacionRegistrada)="onRegistroGuardado($event)"></app-coplamar>
         }
         @case (2) {
         <app-asignacion-sustitucion [infoAspirante]="busqueda.datosGenerales!"

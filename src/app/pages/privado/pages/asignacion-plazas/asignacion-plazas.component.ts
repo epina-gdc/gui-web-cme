@@ -15,6 +15,7 @@ import {Subject} from 'rxjs';
 import { AsignacionPlazaService } from '@services/asignacion-plaza.service';
 import { BusquedaResponse } from '@models/datosAsignacion';
 import { Mensajes } from '@utils/mensajes';
+import { EstadoOfertaService } from '@services/estado-oferta.service';
 
 @Component({
   selector: 'app-asignacion-plazas',
@@ -41,14 +42,19 @@ export class AsignacionPlazasComponent {
   form!: FormGroup;
   exist = false;
   tieneAsignacion: boolean = false;
+  refreshKey = 0;
 
   busqueda!: BusquedaResponse;
 
   private destroy$ = new Subject<void>();
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private readonly estadoPlazaService: EstadoOfertaService) {}
 
   ngOnInit(): void {
+    this.estadoPlazaService.refreshPlazas$.subscribe(() => {
+      this.refresh();
+    });
+    
     this.form = this.fb.group({
       folio: ['', [Validators.required, Validators.maxLength(10)]],
     });
@@ -91,11 +97,13 @@ export class AsignacionPlazasComponent {
     this.form.reset({ folio: '' });
     this.exist = false;
   }
-  refreshKey = 0;
-
 
   onRegistroGuardado(e: { id: number }) {
     //Refresh datos
+    this.refresh();
+  }
+
+  refresh(){
     this.onBuscar();
     this.refreshKey++;
   }
