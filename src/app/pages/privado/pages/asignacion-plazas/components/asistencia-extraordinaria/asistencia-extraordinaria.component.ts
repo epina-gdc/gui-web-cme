@@ -88,7 +88,7 @@ export class AsistenciaExtraordinariaComponent extends GeneralComponent {
                         this._alertServices.informacion(this.MSG073);
                     }
                     if (this.tieneAsistencia) {
-                        this._alertServices.informacion(this.MSG074);
+                        //    this._alertServices.informacion(this.MSG074);
                     }
                     if (response.respuesta?.uuidArchivo) {
                         this.obtenerFotografia(response.respuesta?.uuidArchivo);
@@ -139,7 +139,7 @@ export class AsistenciaExtraordinariaComponent extends GeneralComponent {
             next: (response: AsistenciaExtraordinariaResponse) => {
                 if (response.exito && response.respuesta) {
                     this.aspirante = response.respuesta;
-                    this._alertServices.exito(this.MSG076);
+                    this._alertServices.informacion(this.MSG076);
                 } else {
                     this._alertServices.error(response.mensaje);
                 }
@@ -169,7 +169,7 @@ export class AsistenciaExtraordinariaComponent extends GeneralComponent {
                 }
             },
             reject: () => {
-                this._alertServices.informacion("El sistema no realiza ningún cambio. Se mantiene la información actual de la cita");
+                //  this._alertServices.informacion("El sistema no realiza ningún cambio. Se mantiene la información actual de la cita");
             }
         });
     }
