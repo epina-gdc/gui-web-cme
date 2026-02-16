@@ -97,10 +97,10 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
   }
 
   guardarCalificaciones() {
+    this.confCargaCalificaciones = false;
     const id = this.form.get('convocatoria')?.value;
     if (!id) return;
     if (this.errorCalificaciones) return;
-
     this.cargando.set(true);
 
     this.cargaCalificacionesService.registrarCargaCalificaciones(id).subscribe({

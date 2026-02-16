@@ -98,7 +98,7 @@
               </div>
               <div class="flex align-items-center">
                 <p-button type="button" [disabled]="errorCalificaciones || estatus() === 0"
-                          (onClick)="guardarCalificaciones()" label="Cargar calificaciones"/>
+                          (onClick)="confCargaCalificaciones = true" label="Cargar calificaciones"/>
               </div>
             </div>
           </div>
@@ -164,8 +164,9 @@
 
     <div class="flex justify-content-end">
       <p-button variant="outlined" label="Cancelar" severity="warn"
-                class="me-3"/>
-      <p-button variant="outlined" label="Sí, confirmar"/>
+                class="me-3" (click)="confCargaCalificaciones = false"/>
+      <p-button variant="outlined" label="Sí, confirmar" (click)="guardarCalificaciones()"/>
 
     </div>
   </p-dialog>
+</div>
