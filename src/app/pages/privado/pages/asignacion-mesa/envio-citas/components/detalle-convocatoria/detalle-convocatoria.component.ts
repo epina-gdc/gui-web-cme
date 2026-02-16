@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, model, OnDestroy, OnInit, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, model, OnDestroy, OnInit, signal } from '@angular/core';
 import { Avatar } from "primeng/avatar";
 import { CardModule } from 'primeng/card';
 import { ProgressBarModule } from 'primeng/progressbar';
@@ -8,6 +8,7 @@ import { EnvioCitasService, TotalCitas, TypeMedico } from '../../services/envio-
 
 import { Mensajes } from '@utils/mensajes';
 import { AlertService } from '@services/alert.service';
+import { AsignacionMesaService, ResponseValidaConvocatoria } from '../../../asignacion-mesa/services/asignacion-mesa.service';
 
 @Component({
   selector: 'app-detalle-convocatoria',
@@ -16,9 +17,23 @@ import { AlertService } from '@services/alert.service';
   styleUrl: './detalle-convocatoria.component.scss',
 
 })
-export class DetalleConvocatoriaComponent implements OnInit, OnDestroy {
+export class DetalleConvocatoriaComponent {
+
+  constructor() {
+    effect(() => {
+
+      const convSelect = this.convocatoriaSelect();
+      const tipoMedico = this.tipoMedicoSelect();
+      if (convSelect && tipoMedico) {
+        this.validaConvocatoria();
+
+      }
+    });
+
+  }
 
   envioCitasService = inject(EnvioCitasService);
+  asignacionMesaService = inject(AsignacionMesaService);
   alertaService = inject(AlertService)
   mensajes = inject(Mensajes);
 
@@ -27,12 +42,22 @@ export class DetalleConvocatoriaComponent implements OnInit, OnDestroy {
   convocatoriaSelect = model<number | undefined>(undefined);
   tipoMedicoSelect = model<TypeMedico | undefined>(undefined);
 
-  ngOnInit(): void {
+  isFinalizado = signal<boolean>(false);
 
+
+  validaConvocatoria() {
+    this.asignacionMesaService.getValidaConvocatoria(this.convocatoriaSelect() as number).subscribe({
+      next: (response: ResponseValidaConvocatoria) => {
+        if (response.exito) {
+          this.isFinalizado.set(response.respuesta);
+        } else {
+          this.isFinalizado.set(false);
+        }
+      },
+    }
+    );
   }
 
-  ngOnDestroy(): void {
-  }
 
   onEnviarCitas() {
 
