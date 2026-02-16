@@ -102,6 +102,8 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
     if (!id) return;
     if (this.errorCalificaciones) return;
     this.cargando.set(true);
+    this.porcentaje.set(0);
+    this.estatus.set(1); // 1 = Procesando
 
     this.cargaCalificacionesService.registrarCargaCalificaciones(id).subscribe({
       next: (respuesta) => {
@@ -215,7 +217,7 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
       this.estatus.set(data.idEstatusCarga);
 
       if (this.porcentaje() === 100 && !esCargaInicial) {
-        if (porcentajeAnterior <= 100) {
+        if (porcentajeAnterior < 100) {
           this.alertaService.exito('Se realizó la carga de la información');
         }
         this.cargando.set(false);
