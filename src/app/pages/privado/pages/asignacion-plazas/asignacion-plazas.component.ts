@@ -13,7 +13,9 @@ import {Button} from "primeng/button";
 import {AlertService} from '@services/alert.service';
 import {Subject} from 'rxjs';
 import { AsignacionPlazaService } from '@services/asignacion-plaza.service';
-import { BusquedaResponse, InfoAspirante } from '@models/datosAsignacion';
+import { BusquedaResponse } from '@models/datosAsignacion';
+import { Mensajes } from '@utils/mensajes';
+import { EstadoOfertaService } from '@services/estado-oferta.service';
 
 @Component({
   selector: 'app-asignacion-plazas',
@@ -34,19 +36,25 @@ import { BusquedaResponse, InfoAspirante } from '@models/datosAsignacion';
 export class AsignacionPlazasComponent {
   alertaService: AlertService = inject(AlertService);
   asignacionService: AsignacionPlazaService = inject(AsignacionPlazaService);
+  mensajes: Mensajes = new Mensajes();
   
   tab: number = 0;
   form!: FormGroup;
   exist = false;
   tieneAsignacion: boolean = false;
+  refreshKey = 0;
 
   busqueda!: BusquedaResponse;
 
   private destroy$ = new Subject<void>();
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private readonly estadoPlazaService: EstadoOfertaService) {}
 
   ngOnInit(): void {
+    this.estadoPlazaService.refreshPlazas$.subscribe(() => {
+      this.refresh();
+    });
+    
     this.form = this.fb.group({
       folio: ['', [Validators.required, Validators.maxLength(10)]],
     });
@@ -62,7 +70,7 @@ export class AsignacionPlazasComponent {
 
     this.asignacionService.getAspirante(matricula).subscribe({
       next: (response) => {
-        console.log('Result ', response);
+        console.log('Result Busqueda', response);
         if(response.exito){
           this.busqueda = structuredClone(response.respuesta);
           this.exist = true;
@@ -89,4 +97,15 @@ export class AsignacionPlazasComponent {
     this.form.reset({ folio: '' });
     this.exist = false;
   }
+
+  onRegistroGuardado(e: { id: number }) {
+    //Refresh datos
+    this.refresh();
+  }
+
+  refresh(){
+    this.onBuscar();
+    this.refreshKey++;
+  }
+
 }
