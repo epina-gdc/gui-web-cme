@@ -29,7 +29,7 @@ export class MenuVerticalComponent implements OnInit {
   ngOnInit() {
     this.userService.userData$.subscribe(user => this.userData = user);
     this.updateActivePanel();
-
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => this.updateActivePanel());
