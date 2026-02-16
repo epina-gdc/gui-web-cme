@@ -1,13 +1,15 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
 import { Select } from 'primeng/select';
 import {Button} from 'primeng/button';
-import { InfoAspirante } from '@models/datosAsignacion';
+import { AsignacionRequest, InfoAspirante, TipoAsignacion } from '@models/datosAsignacion';
 import { AsignacionPlazaService } from '@services/asignacion-plaza.service';
 import { TipoDropdown } from '@models/tipo-dropdown.interface';
 import { mapearArregloTipoDropdown } from '@utils/funciones';
 import { CatalogosGeneralesService } from '@services/catalogos-generales.service';
+import { AlertService } from '@services/alert.service';
+import { Mensajes } from '@utils/mensajes';
 
 @Component({
   selector: 'app-asignacion-sustitucion',
@@ -17,9 +19,12 @@ import { CatalogosGeneralesService } from '@services/catalogos-generales.service
 })
 export class AsignacionSustitucionComponent {
   @Input() infoAspirante!: InfoAspirante;
+  @Output() asignacionRegistrada = new EventEmitter<{ id: number }>();
   
   asignacionPlazaService: AsignacionPlazaService = inject(AsignacionPlazaService);
   catalogosService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
+  alertaService: AlertService = inject(AlertService);
+  mensajes: Mensajes = new Mensajes();
   
   ooadOptions: TipoDropdown[] = [];
   zonaOptions: TipoDropdown[] = [];
@@ -64,8 +69,7 @@ export class AsignacionSustitucionComponent {
     zonaCtrl?.updateValueAndValidity({ emitEvent: false });
     this.formSustitucion.updateValueAndValidity({ emitEvent: false });
 
-    this.getOoad();
-
+    this.getZonas();
   }
 
   getEspecialidades(): void {
@@ -132,21 +136,41 @@ export class AsignacionSustitucionComponent {
     }
 
     const v = this.formSustitucion.getRawValue();
-
     this.resumenAsignacion = {
       ooadLabel: this.labelFrom(this.ooadOptions, v.ooad),
       zonaLabel: this.labelFrom(this.zonaOptions, v.zona),
       especialidadLabel: this.labelFrom(this.especialidadOptions, v.especialidad),
     };
 
-    console.log(this.resumenAsignacion);
-
-    this.asignacionConfirmada = true;
-  }
-
-  imprimirCedula(): void {
-    // Aquí disparas tu endpoint / impresión
-    console.log('Imprimir cédula', this.resumenAsignacion);
+    let request: AsignacionRequest = {
+      idUsuario: this.infoAspirante.idUsuario,
+      idTipoAsignacionPlaza: TipoAsignacion.Sustitucion08,
+      cveOoad: v.ooad,
+      desOoad: this.resumenAsignacion.ooadLabel,
+      cveZona: v.zona,//.toString().padStart(2, '0'),
+      desZona: this.resumenAsignacion.zonaLabel,
+      cveEspecialidad: v.especialidad,
+      desEspecialidad: this.resumenAsignacion.especialidadLabel
+    }
+    console.log(request);
+    this.asignacionPlazaService.asignarPlaza(request).subscribe({
+      next: (response) => {
+        console.log('Result ', response);
+        if (response.exito) {
+          this.alertaService.exito(this.mensajes.MSG047);
+          this.asignacionConfirmada = true;
+          this.asignacionRegistrada.emit({ id: this.infoAspirante.idUsuario });
+        } else {
+          this.alertaService.error(response.mensaje);
+          return;
+        }
+      },
+      error: (error) => {
+        //console.log(error);
+        this.alertaService.error('Ocurrió un error al registrar la asignación.');
+        return;
+      }
+    });
   }
 
 }

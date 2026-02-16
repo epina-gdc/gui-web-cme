@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {catchError, map, Observable, throwError} from 'rxjs';
 import {environment} from '@env/environment.development';
-import { AsignacionRequest, DisponiblesRequest } from '@models/datosAsignacion';
+import { AsignacionRequest, CedulaResponse, DisponiblesRequest } from '@models/datosAsignacion';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +26,7 @@ export class AsignacionPlazaService {
   getEspecialidadByMatricula(matricula: string): Observable<any> {
     return this.http.get(`${this.urlAsignacion}plaza/especialidad-por-matriculaFolio?matriculaFolio=${matricula}`);
   }
-  getOoadByEspecialidad(idRegimen: number, cveEspecialidad: number): Observable<any> {
+  getOoadByEspecialidad(idRegimen: number, cveEspecialidad: string): Observable<any> {
     return this.http.get(`${this.urlAsignacion}plaza/ooad-por-especialidad?regimen=${idRegimen}&cveEspecialidad=${cveEspecialidad}`);
   }
   getUnidadByOoad(idRegimen: number, cveEspecialidad: number, cveOoad: number): Observable<any> {
@@ -51,6 +51,13 @@ export class AsignacionPlazaService {
         return response
       }),
     )
+  }
+
+  descargarCedula(idusuario: number): Observable<CedulaResponse> {
+      let ruta = `${this.urlAsignacion}plaza/imprimirCedulaAsignacion?idUsuarioAspirante=${idusuario}`;
+      return this.http.get<CedulaResponse>(ruta, {headers: this.header}).pipe(
+          catchError(this.handleError),
+      );
   }
 
   private handleError(error: HttpErrorResponse) {

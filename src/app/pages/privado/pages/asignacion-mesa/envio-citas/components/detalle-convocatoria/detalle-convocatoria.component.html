@@ -1,21 +1,37 @@
 <div class="mt-4">
+    {{ convocatoriaSelect() | json}}
     <p-card class="empty-border">
         <div class="grid">
 
             <div class="col-12 grid align-content-center">
                 <div class="col-fixed" style="width:45px">
-                    <p-avatar class="av" [ngClass]="{'full' : value() == 100}" shape="circle">
+
+                    @if(!totalCitas() || totalCitas()?.porcentajeEnviados == 0){
+                    <div class="container-wave">
                         <span class="dot"></span>
-                        <i class="pi pi-check"
-                            [style]="{color: 'white' ,'font-size': '2rem', 'font-weight': '600'}"></i>
+                    </div>
+
+                    }@else if(totalCitas() && totalCitas()?.porcentajeEnviados ?? 0 >= 100){
+                    <p-avatar class="av full" shape="circle">
+                        <span class="dot"></span>
+                        <i class="pi pi-check" [style]="{color: 'white' ,'font-size': '2rem', 'font-weight': '600'}"></i>
                     </p-avatar>
+
+                    }@else{
+                    <div class="container-wave">
+                        <div class="circle delay1"></div>
+                        <div class="circle delay2"></div>
+                        <span class="dot"></span>
+                    </div>
+                    }
+
                 </div>
                 <div class="col">
-                    <span class="text-3xl font-bold">{{ value() }} % </span>
-                    @if(value() == 100){
+                    <span class="text-3xl font-bold">{{totalCitas()?.porcentajeEnviados ?? 0 }} % </span>
+                    @if(totalCitas()?.porcentajeEnviados == 100){
                     <span class="text-lg">Completado</span>
                     }
-                    <p-progressBar [value]="value()" class="pgB">
+                    <p-progressBar [value]="totalCitas()?.porcentajeEnviados ?? 0" class="pgB">
                         <ng-template pTemplate="content">
                         </ng-template>
                     </p-progressBar>
@@ -38,11 +54,13 @@
                             <div class="col-fixed grid card-fec-h border-round-2xl " style="width:177px">
                                 <div class="col-fixed flex flex-column">
                                     <span class="font-normal text-base">Fecha inicio</span>
-                                    <span class="font-semibold text-xl">12/08/2026</span>
+                                    <span class="font-semibold text-xl">{{totalCitas()?.fechasHorasEnvios?.fechaInicio
+                                        ?? '-'}}</span>
                                 </div>
                                 <div class="col-fixed flex flex-column">
                                     <span class="font-normal text-base"> Hora</span>
-                                    <span class="font-semibold text-xl">13:25:43 </span>
+                                    <span class="font-semibold text-xl">{{totalCitas()?.fechasHorasEnvios?.horaInicio ??
+                                        '-'}} </span>
                                 </div>
                             </div>
                         </div>
@@ -54,7 +72,7 @@
                                 </div>
                                 <hr class="c-hr">
                                 <div class="col-12">
-                                    <span class="cant">150</span>
+                                    <span class="cant">{{totalCitas()?.totalesEnviados}}</span>
                                 </div>
                             </div>
 
@@ -64,35 +82,37 @@
                         <div class="grid p-2 m-2">
                             <div class="col-fixed grid card-fec-h border-round-2xl " style="width:177px">
                                 <div class="col-fixed flex flex-column">
-                                    <span class="font-normal text-base">Fecha inicio</span>
-                                    <span class="font-semibold text-xl">12/08/2026</span>
+                                    <span class="font-normal text-base">Fecha fin</span>
+                                    <span class="font-semibold text-xl">{{totalCitas()?.fechasHorasEnvios?.fechaFin ??
+                                        '-'}}</span>
                                 </div>
                                 <div class="col-fixed flex flex-column">
                                     <span class="font-normal text-base"> Hora</span>
-                                    <span class="font-semibold text-xl">13:25:43 </span>
+                                    <span class="font-semibold text-xl">{{totalCitas()?.fechasHorasEnvios?.horaFin ??
+                                        '-'}}
+                                    </span>
                                 </div>
                             </div>
-                            
+
                             <div class="col">
-                                
+
                             </div>
-                            
+
                             <div class="col-fixed ">
-                              <p-button  label="Enviar citas"></p-button>
+                                <p-button label="Enviar citas" (onClick)="onEnviarCitas()"
+                                    [disabled]="!convocatoriaSelect() || !tipoMedicoSelect() || tieneFechaYHoraFin(totalCitas()) || !isFinalizado()"></p-button>
                             </div>
                         </div>
                         <div class="grid p2 m-2">
                             <div class="card-t-c border-round-2xl p-3 w-full">
-
                                 <div class="col-12 font-bold text-lg">
                                     <span>Total de citas enviadas con error</span>
                                 </div>
                                 <hr class="c-hr">
                                 <div class="col-12">
-                                    <span class="cant">6</span>
+                                    <span class="cant">{{totalCitas()?.totalesNoEnviados}}</span>
                                 </div>
                             </div>
-
                         </div>
                     </div>
 

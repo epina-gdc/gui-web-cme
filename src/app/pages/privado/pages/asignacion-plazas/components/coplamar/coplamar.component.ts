@@ -1,20 +1,22 @@
-import {Component, inject, Input, OnInit, signal, WritableSignal} from '@angular/core';
-import {GeneralComponent} from '@components/general.component';
-import {AsignacionService} from '@services/asignacion.service';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
+import {Component, EventEmitter, inject, Input, OnInit, Output, signal, WritableSignal} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
-import {selectData} from '@privado/asignacion-plazas/dummies';
-import {FiltroConsultaPlazaInterface} from '@models/filtroConsultaPlaza.interface';
-import {DetallePlazaComponent} from '@privado/asignacion-plazas/components/detalle-plaza/detalle-plaza.component';
-import {
-  HeaderMedicoDetalleOfertaComponent
-} from '@pages/privado/shared/header-medico-detalle-oferta/header-medico-detalle-oferta.component';
-import {Button} from 'primeng/button';
-import {InputText} from 'primeng/inputtext';
-import {PlazaDisponibleCardComponent} from '@components/plaza-disponible-card/plaza-disponible-card.component';
+import {GeneralComponent} from '@components/general.component';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Select} from 'primeng/select';
-import { InfoAspirante } from '@models/datosAsignacion';
+import {InputText} from 'primeng/inputtext';
+import {Button} from 'primeng/button';
+import {PlazaDisponibleCardComponent} from '@components/plaza-disponible-card/plaza-disponible-card.component';
+import {FiltroConsultaPlazaInterface} from '@models/filtroConsultaPlaza.interface';
+import {HeaderMedicoDetalleOfertaComponent} from '@pages/privado/shared/header-medico-detalle-oferta/header-medico-detalle-oferta.component';
+import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
+import {DetallePlazaComponent} from '@privado/asignacion-plazas/components/detalle-plaza/detalle-plaza.component';
+import { AsignacionPlazaService } from '@services/asignacion-plaza.service';
+import { DisponiblesRequest, InfoAspirante, Plaza, Regimen } from '@models/datosAsignacion';
+import { mapearArregloTipoDropdown } from '@utils/funciones';
+import {Paginator, PaginatorState} from 'primeng/paginator';
+import { EstadoOfertaService } from '@services/estado-oferta.service';
+
 
 @Component({
   selector: 'app-coplamar',
@@ -23,7 +25,9 @@ import { InfoAspirante } from '@models/datosAsignacion';
     InputText,
     PlazaDisponibleCardComponent,
     ReactiveFormsModule,
-    Select
+    Select,
+    Paginator,
+    CommonModule
   ],
   templateUrl: './coplamar.component.html',
   styleUrl: './coplamar.component.scss',
@@ -31,44 +35,186 @@ import { InfoAspirante } from '@models/datosAsignacion';
 })
 export class CoplamarComponent extends GeneralComponent implements OnInit {
   @Input() infoAspirante!: InfoAspirante;
+  @Output() asignacionRegistrada = new EventEmitter<{ id: number }>();
 
-  asignacionService: AsignacionService = inject(AsignacionService);
+  asignacionPlazaService: AsignacionPlazaService = inject(AsignacionPlazaService);
   fb: FormBuilder = inject(FormBuilder);
   filtroForm!: FormGroup;
 
   ref: DynamicDialogRef | undefined;
 
-  especialidadList: TipoDropdown[] = selectData;
-  ooadList: TipoDropdown[] = selectData;
-  unidadList: TipoDropdown[] = selectData;
-  plazasList: WritableSignal<any[]> = signal([]);
+  especialidadList: TipoDropdown[] = [];
+  ooadList: TipoDropdown[] = [];
+  unidadList: TipoDropdown[] = [];
+  plazasList: WritableSignal<Plaza[]> = signal([]);
 
+  idUsuario: number = 0;
+  sinResultados: boolean = false;
+  //default_catalogo: TipoDropdown = {value:0,label:'Seleccione una opción'};
 
-  constructor(public dialogService: DialogService){
+  //Consulta paginado
+  first: number = 0;
+  rows: number = 10;
+
+  numPaginaActual: number = 0;
+  totalElementos: number = 0;
+
+  constructor(public dialogService: DialogService, private readonly estadoPlazaService: EstadoOfertaService){
     super();
   }
 
   ngOnInit(): void {
+    //this.filtroForm = this.iniciarForm();
+    this.estadoPlazaService.refreshPlazas$.subscribe(() => {
+      this.ref?.close();
+    });
+  }
+
+  ngOnChanges(): void {
     this.filtroForm = this.iniciarForm();
+    this.idUsuario = this.infoAspirante.idUsuario;
+    this.plazasList.set([]);
+    this.getEspecialidades();
   }
 
 
   iniciarForm(): FormGroup {
     return this.fb.group({
-      especialidad: [null],
-      ooad: [null],
-      unidad: [null],
-      plaza: [null],
+      especialidad: [null as TipoDropdown['value'] | null, [Validators.required]],
+      ooad: [{ value: null as TipoDropdown['value'] | null}, [Validators.required]],
+      unidad: [{ value: null as TipoDropdown['value'] | null }, [Validators.required]],
+      plaza: ['', [Validators.maxLength(10)]],
     })
   }
 
-  consultarPlazas(): void {
-
-    this.asignacionService.consultarPlazas(this.objFiltro()).subscribe({
+  getEspecialidades(): void{
+    this.asignacionPlazaService.getEspecialidadByMatricula(this.infoAspirante.matriculaFolio).subscribe({
       next: (result) => {
-        this.plazasList.set(result);
+        if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
+          this.especialidadList = mapearArregloTipoDropdown(result.respuesta, 'label', 'value');
+          //this.especialidadList.unshift(this.default_catalogo);
+          //this.idEspecialidad = result.respuesta[0]?.value ?? null;
+          //this.filtroForm.get('especialidad')?.patchValue(this.idEspecialidad);
+          var idEspecialidad = result.respuesta[0]?.value ?? null;
+          console.log(idEspecialidad);
+          this.filtroForm.get('especialidad')?.patchValue(idEspecialidad);
+          this.getOoad();
+          return;
+        } else{
+          this.especialidadList = [];
+          return;
+        }
       }
     })
+  }
+
+  getOoad(): void{
+    const cveEspecialidad = this.filtroForm.get('especialidad')?.value;
+    console.log('Cat', cveEspecialidad);
+    this.asignacionPlazaService.getOoadByEspecialidad(Regimen.Complamar, cveEspecialidad).subscribe({
+      next: (result) => {
+        console.log(result);
+        if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
+          this.ooadList = mapearArregloTipoDropdown(result.respuesta, 'label', 'value');
+          //this.ooadList.unshift(this.default_catalogo);
+          return;
+        } else{
+          this.ooadList = [];
+          return;
+        }
+      }
+    })
+  }
+
+  getUnidad():void{
+    const idEspecialidad = this.filtroForm.get('especialidad')?.value;
+    console.log(idEspecialidad);
+    const idOoad = this.filtroForm.get('ooad')?.value;
+    console.log(idOoad);
+    this.asignacionPlazaService.getUnidadByOoad(Regimen.Complamar, idEspecialidad, idOoad).subscribe({
+      next: (result) => {
+        if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
+          this.unidadList = mapearArregloTipoDropdown(result.respuesta, 'label', 'value');
+          //this.ooadList.unshift(this.default_catalogo);
+          return;
+        } else{
+          this.unidadList = [];
+          return;
+        }
+      }
+    })
+  }
+
+  onChangeEspecialidad(){
+    this.ooadList = [];
+    const ooadCtrl = this.filtroForm.get('ooad');
+    ooadCtrl?.reset(null);
+
+    this.unidadList = [];
+    const unidadCtrl = this.filtroForm.get('unidad');
+    unidadCtrl?.reset(null);
+
+    ooadCtrl?.updateValueAndValidity({ emitEvent: false });
+    this.filtroForm.updateValueAndValidity({ emitEvent: false });
+
+    this.getOoad();
+  }
+
+  onChangeOoad(){
+    this.unidadList = [];
+    const unidadCtrl = this.filtroForm.get('unidad');
+    unidadCtrl?.reset(null);
+
+    unidadCtrl?.updateValueAndValidity({ emitEvent: false });
+    this.filtroForm.updateValueAndValidity({ emitEvent: false });
+
+    this.getUnidad();
+  }
+
+  limpiar(){
+    this.filtroForm.get('especialidad')?.patchValue('');
+    this.filtroForm.get('ooad')?.patchValue('');
+    this.filtroForm.get('unidad')?.patchValue('');
+    this.filtroForm.get('plaza')?.patchValue('');
+    this.plazasList.set([]);
+  }
+
+  consultarPlazas(inicio: boolean = true): void {
+    if (inicio) {
+      this.numPaginaActual = 0;
+      this.first = 0;
+    }
+    const v = this.filtroForm.getRawValue();
+
+    let request: DisponiblesRequest = {
+      cveEspecialidad: v.especialidad,
+      cveOoad: v.ooad,
+      cveUnidad: v.unidad,
+      numPlaza: v.plaza,
+      regimen: Regimen.Complamar
+    }
+
+    this.asignacionPlazaService.plazasDisponibles(request, this.numPaginaActual, this.rows).subscribe({
+      next: (result) => {
+        console.log('Plazas', result);
+        if(result.exito){
+          this.totalElementos = result.respuesta.page.totalElements;
+          this.plazasList.set(result.respuesta.content);
+          this.sinResultados = false;
+        } else{
+          this.plazasList.set([]);
+          this.sinResultados = true;
+          return;
+        }
+      }
+    });
+  }
+
+  cambiarPagina(event: PaginatorState): void {
+    if (event.page) {
+      this.numPaginaActual = event.page;
+    }
+    this.consultarPlazas(false);
   }
 
   objFiltro(): FiltroConsultaPlazaInterface {

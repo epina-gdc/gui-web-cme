@@ -22,6 +22,7 @@ export class EstadoOfertaService {
   private readonly favoritos =  new BehaviorSubject<number>(0)
   private readonly ofertas =  new BehaviorSubject<number>(0);
   private readonly tab =  new BehaviorSubject<number>(0);
+  private readonly refreshPlazas = new BehaviorSubject<boolean>(false);
 
   // Observable público para que los componentes puedan suscribirse
   estadoActual$ = this.estadoFuente.asObservable();
@@ -30,6 +31,8 @@ export class EstadoOfertaService {
 
   favoritosActuales$ = this.favoritos.asObservable();
   ofertasActuales$ = this.ofertas.asObservable();
+
+  refreshPlazas$ = this.refreshPlazas.asObservable();
 
   get totalFavoritos() {
     return this.favoritos.value;
@@ -57,5 +60,9 @@ export class EstadoOfertaService {
 
   actualizarTab(nuevoTab: number): void {
     this.tab.next(nuevoTab);
+  }
+
+  notificarRefreshPlazas() {
+    this.refreshPlazas.next(true);
   }
 }

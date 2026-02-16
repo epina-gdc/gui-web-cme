@@ -1,82 +1,81 @@
 <p-card class="empty-border">
-    <form [formGroup]="formulario">
 
-        <div class="grid">
-            <div class="col-12 sm:col-12 md:col-6 lg:col-4 ">
-                <div class="field">
-                    <label class="field-label" for="convocatoriaId">Convocatoria</label>
-                    <p-select [options]="convocatorias" formControlName="convocatoriaId"
-                        placeholder="Selecciona una convocatoria" optionLabel="nombre" optionValue="id"
-                        class="w-full"></p-select>
-                </div>
-            </div>
-            <div class="col-12">
-                <label class="field-label text-lg font-semibold" for="medicos">Médicos aspirantes </label>
-                <div id="medicos" class="grid mt-1 ">
-                    <div class="col-12 sm:col-6 lg:col-3">
-                        <div class="card-med becados border-round-2xl p-3 pointer"  [class.select]="tipoMedSelect() == 0">
-                            <div class="flex flex-column">
-                                <label class="card-label mb-0" for="numB">Total de Médicos becados </label>
-                                <div class="card-num" id="numB">89</div>
-                                <div class="flex justify-content-end">
-                                    <p-button styleClass="btn-ir p-0" [text]="true" [plain]="true" size="small" (onClick)="onCambioMedSelec(0)" >
-                                        <span class="p-button-label-ir">Ir</span>
-                                        <i class="pi pi-arrow-right"></i>
-                                    </p-button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="col-12 sm:col-6 lg:col-3">
-                        <div class="card-med residentes border-round-2xl p-3" [class.select]="tipoMedSelect() == 1">
-                            <div class="flex flex-column">
-                                <label class="card-label" for="numB">Total de Médicos becados </label>
-                                <div class="card-num" id="numB">89</div>
-                                <div class="flex justify-content-end">
-                                    <p-button styleClass="btn-ir p-0" [text]="true" [plain]="true" size="small" (onClick)="onCambioMedSelec(1)" >
-                                        <span class="p-button-label-ir">Ir</span>
-                                        <i class="pi pi-arrow-right"></i>
-                                    </p-button>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="col-12 sm:col-6 lg:col-3">
-                        <div class="card-med externos border-round-2xl p-3" [class.select]="tipoMedSelect() == 2">
-                            <div class="flex flex-column">
-                                <label class="card-label" for="numB">Total de Médicos becados </label>
-                                <div class="card-num" id="numB">89</div>
-                                <div class="flex justify-content-end">
-                                    <p-button styleClass="btn-ir p-0" [text]="true" [plain]="true" size="small" (onClick)="onCambioMedSelec(2)" >
-                                        <span class="p-button-label-ir">Ir</span>
-                                        <i class="pi pi-arrow-right"></i>
-                                    </p-button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-12 sm:col-6 lg:col-3">
-                        <div class="card-med total border-round-2xl p-3" >
-                            <div class="flex flex-column">
-                                <label class="card-label" for="numB">Total de Médicos becados </label>
-                                <div class="card-num" id="numB">89</div>
-
-                            </div>
-
-                        </div>
-                    </div>
-
-
-
-
-                </div>
-
+    <div class="grid">
+        <div class="col-12 sm:col-12 md:col-6 lg:col-4 ">
+            <div class="field">
+                <label class="field-label" for="idConvocatoria">Convocatoria</label>
+                <p-select [options]="convocatorias" [(ngModel)]="convocatoriaSelect"
+                    placeholder="Selecciona una convocatoria" optionLabel="desConvocatoria" optionValue="idConvocatoria"
+                    class="w-full"></p-select>
             </div>
         </div>
-    </form>
+        <div class="col-12">
+            <label class="field-label text-lg font-semibold" for="medicos">Médicos aspirantes </label>
+            <div id="medicos" class="grid mt-1 ">
+                <div class="col-12 sm:col-6 lg:col-3">
+                    <div class="card-med becados border-round-2xl p-3 pointer"
+                        [class.select]="tipoMedicoSelect() == tipoMed.BECADOS"
+                        [class.completed]="tieneProcesoCompletado(tipoMed.BECADOS)"
+                        (click)="onCambioMedSelec(tipoMed.BECADOS)" >
+                        <div class="flex flex-column">
+                            <label class="card-label mb-0" for="numB">Total de Médicos becados </label>
+                            <div class="card-num" id="numB">{{totalCitas()?.totalBecados ?? '-'}} </div>
+                            <div class="flex justify-content-end mt-auto">
+                                <div class="btn-ir-wrapper">
+                                    <span class="p-button-label-ir">Ir&nbsp;&nbsp;</span>
+                                    <i class="pi pi-arrow-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 sm:col-6 lg:col-3">
+                    <div class="card-med residentes border-round-2xl p-3 pointer"
+                        [class.select]="tipoMedicoSelect() == tipoMed.RESIDENTES"
+                        [class.completed]="tieneProcesoCompletado(tipoMed.RESIDENTES)"
+                        (click)="onCambioMedSelec(tipoMed.RESIDENTES)">
+                        <div class="flex flex-column">
+                            <label class="card-label" for="numR">Total de Médicos residentes </label>
+                            <div class="card-num" id="numR">{{totalCitas()?.totalResidentes ?? '-'}}</div>
+                            <div class="flex justify-content-end mt-auto">
+                                <div class="btn-ir-wrapper">
+                                    <span class="p-button-label-ir">Ir&nbsp;&nbsp;</span>
+                                    <i class="pi pi-arrow-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 sm:col-6 lg:col-3">
+                    <div class="card-med externos border-round-2xl p-3 pointer"
+                        [class.select]="tipoMedicoSelect() == tipoMed.EXTERNOS"
+                        [class.completed]="tieneProcesoCompletado(tipoMed.EXTERNOS)"
+                        (click)="onCambioMedSelec(tipoMed.EXTERNOS)">
+                        <div class="flex flex-column">
+                            <label class="card-label" for="numE">Total de Médicos externos </label>
+                            <div class="card-num" id="numE">{{totalCitas()?.totalExternos ?? '-'}}</div>
+                            <div class="flex justify-content-end mt-auto">
+                                <div class="btn-ir-wrapper">
+                                    <span class="p-button-label-ir">Ir&nbsp;&nbsp;</span>
+                                    <i class="pi pi-arrow-right"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 sm:col-6 lg:col-3">
+                    <div class="card-med total border-round-2xl p-3" style="cursor: auto;">
+                        <div class="flex flex-column">
+                            <label class="card-label" for="numT">Total de médicos</label>
+                            <div class="card-num" id="numT">{{totalCitas()?.totalMedicos ?? '-'}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </p-card>

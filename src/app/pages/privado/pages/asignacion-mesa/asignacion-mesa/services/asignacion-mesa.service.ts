@@ -1,7 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment.development';
-import { extend } from 'dayjs';
 import { catchError, map, Observable, throwError } from 'rxjs';
 
 // Interfaces existentes (mantenidas para compatibilidad)
@@ -175,6 +174,10 @@ export class MesaDetalle {
 
 export class ResponseMesaDetalle extends ResponseGeneral {
   respuesta!: MesaDetalle[];
+}
+
+export class ResponseValidaConvocatoria extends ResponseGeneral {
+  respuesta!: boolean;
 }
 
 
@@ -382,6 +385,19 @@ export class AsignacionMesaService {
 
   }
 
+
+  getValidaConvocatoria(idConvocatoria: number): Observable<ResponseValidaConvocatoria> {
+
+     let parametros = new HttpParams();
+    parametros = parametros.append('idConvocatoria', idConvocatoria.toString());
+    
+    return this.http.get<ResponseValidaConvocatoria>(this.serverEndPointURLAsignacion + '/valida-convocatoria', { headers: this.header, params: parametros }).pipe(
+      catchError(this.handleError),
+      map((response: ResponseValidaConvocatoria) => {
+        return response;
+      })
+    );
+  }
 
   // Método auxiliar para manejar errores
   private handleError(error: HttpErrorResponse) {
