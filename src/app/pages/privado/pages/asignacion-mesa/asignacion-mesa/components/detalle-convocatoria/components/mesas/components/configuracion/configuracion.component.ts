@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, effect, inject, model } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, effect, inject, model, signal } from '@angular/core';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
@@ -9,10 +9,37 @@ import { AsignacionMesaService, Especialidad, MesaConfiguracion, MesaDisponibili
 import { InputNumberModule } from 'primeng/inputnumber';
 import dayjs from 'dayjs';
 import { CommonModule } from '@angular/common';
+
+import { MessageModule } from 'primeng/message';
 interface Opcion {
   id: number;
   nombre: string;
 }
+
+
+export function maxLugaresDisponibles(getMaxValue: () => number | null): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const valorActual = control.value;
+    const valorMaximo = getMaxValue();
+
+    if (valorMaximo === null || valorMaximo === undefined || valorActual === null || valorActual === undefined) {
+      return null;
+    }
+
+    if (valorActual > valorMaximo) {
+      return { 
+        maxDependiente: { 
+          valorActual, 
+          valorMaximo 
+        } 
+      };
+    }
+
+    return null;
+  };
+}
+
+
 
 @Component({
   selector: 'app-configuracion',
@@ -25,7 +52,8 @@ interface Opcion {
     ReactiveFormsModule,
     DatePickerModule,
     SelectModule,
-    InputNumberModule
+    InputNumberModule,
+    MessageModule,
   ],
   templateUrl: './configuracion.component.html',
   styleUrl: './configuracion.component.scss',
@@ -47,6 +75,8 @@ export class ConfiguracionComponent {
 
   ramaActual = model<Rama | undefined>(undefined);
 
+  numLugaresDisponibles = signal<number>(0);
+
 
   formulario!: FormGroup;
 
@@ -58,15 +88,13 @@ export class ConfiguracionComponent {
   minDate: Date = new Date();
   maxDate: Date = new Date();
 
-
-
-
   ngOnInit(): void {
     this.formulario = this.fb.group({
       fecAtencion: ['', Validators.required],
       numMesa: ['', Validators.required],
       idTurno: ['', Validators.required],
-      numMedicosCupo: ['', [Validators.required, Validators.min(1)]],
+      numMedicosCupo: ['', [Validators.required, Validators.min(1),
+       maxLugaresDisponibles(() => this.formulario?.get('numMesa')?.value?.lugaresDisponibles || undefined)]],
       idEspecialidad: ['', Validators.required]
     });
 
@@ -86,7 +114,7 @@ export class ConfiguracionComponent {
     // listado de mesas
     this.asignacionMesaService.getMesasDisponibilidad(this.convocatoriaSeleccionada()?.idMesaConvocatoria as number).subscribe({
       next: (response: any) => {
-        console.log('Respuesta:', response);
+        //console.log('Respuesta:', response);
         this.mesas = response.respuesta;
       },
       error: (err) => {
@@ -98,7 +126,7 @@ export class ConfiguracionComponent {
 
     this.asignacionMesaService.getTurnos().subscribe({
       next: (response: any) => {
-        console.log('Respuesta:', response);
+        //console.log('Respuesta:', response);
         this.turnos = response.respuesta;
       },
       error: (err) => {
@@ -110,7 +138,7 @@ export class ConfiguracionComponent {
 
     this.asignacionMesaService.getEspecialidadesRama(this.ramaActual()?.id as number, this.convocatoriaSeleccionada()?.idMesaConvocatoria as number, this.convocatoriaSeleccionada()?.idConvocatoria as number).subscribe({
       next: (response: any) => {
-        console.log('Respuesta:', response);
+        //console.log('Respuesta:', response);
         this.especialidades = response.respuesta;
       },
       error: (err) => {
@@ -122,13 +150,21 @@ export class ConfiguracionComponent {
 
   }
 
+  onChangeMesa($event: any) {
+    this.numLugaresDisponibles.set($event.value.lugaresDisponibles);
+
+    // Forzar revalidación del campo dependiente
+    this.formulario.get('numMedicosCupo')?.updateValueAndValidity();
+  }
+
+
   guardar(): void {
     if (this.formulario.valid) {
 
       const mesaDetalle = {
         idMesaConvocatoria: this.convocatoriaSeleccionada()?.idMesaConvocatoria as number,
         fecAtencion: dayjs(this.formulario.value.fecAtencion).format('YYYY-MM-DD'),
-        numMesa: this.formulario.value.numMesa as number,
+        numMesa: this.formulario.value.numMesa.numeroMesa as number,
         idEspecialidad: this.formulario.value.idEspecialidad as number,
         idTurno: this.formulario.value.idTurno as number,
         numMedicosCupo: this.formulario.value.numMedicosCupo as number
@@ -136,7 +172,7 @@ export class ConfiguracionComponent {
       // Aquí iría la lógica de envío a API
       this.asignacionMesaService.guardarConfiguracionMesa(mesaDetalle).subscribe({
         next: (response: any) => {
-          console.log('Respuesta:', response);
+          //console.log('Respuesta:', response);
           //this.limpiarFormulario();
           this.obtenerListados();
           this.accionActualiza.update((value) => true);
@@ -150,11 +186,8 @@ export class ConfiguracionComponent {
         }
       });
 
-
-
-
     } else {
-      console.log('Formulario inválido');
+      //console.log('Formulario inválido');
     }
   }
 }
