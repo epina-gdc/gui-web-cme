@@ -3,7 +3,7 @@
     <div>
       <span class="titulo-seccion-asignacion">Tablero de información de asistencia</span>
     </div>
-    <div class="flex me-3 cursor-pointer" (click)="descargarExcel()">
+    <div class="flex me-3 cursor-pointer" (click)="buscar(true)">
       <i class="cme-impresora me-3" style="font-size: 1.6rem; color: #018699;"></i>
       <span class="etiqueta-icono ">Imprimir reporte</span>
     </div>
@@ -38,7 +38,7 @@
           <div class="xl:col-3 col-12 flex align-items-center">
             <div class="flex align-items-center gap-4 justify-content-between mt-4">
               <p-button type="button" class="w-full" variant="outlined" label="Limpiar" (onClick)="limpiar()"/>
-              <p-button type="button" class="w-full" label="Buscar" (onClick)="buscar()"/>
+              <p-button type="button" class="w-full" label="Buscar" (onClick)="buscar()" [disabled]="this.filtroForm.invalid"/>
             </div>
           </div>
         </div>
