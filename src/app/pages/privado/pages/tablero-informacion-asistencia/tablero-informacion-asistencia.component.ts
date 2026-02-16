@@ -1,5 +1,5 @@
 import {Component, computed, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
 import {GeneralComponent} from '@components/general.component';
 import {DatePickerModule} from 'primeng/datepicker';
@@ -157,13 +157,14 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
 
   inicializarForm(): FormGroup {
     return this.fb.group({
-      fecha: [''],
-      turno: [''],
-      tipoAsistencia: [''],
+      fecha: ['',[Validators.required]],
+      turno: ['',[Validators.required]],
+      tipoAsistencia: ['',[Validators.required]],
     })
   }
 
-  buscar() {
+  buscar(descargarExcel: boolean = false) {
+
     const objBusqueda = this.objConsulta();
 
     this.consultaPorCita.set(Number(objBusqueda.idTipoAsistencia) == 1 || objBusqueda.idTipoAsistencia == null)
@@ -175,6 +176,30 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
           if (respuesta.exito) {
             this.asistencia.set(respuesta.respuesta);
             this.fechaSeleccionada.set(objBusqueda.fecha || null);
+
+            if(descargarExcel){
+              const asistenciaCitaPorHora = this.asistencia().asistenciaCitaPorHora.find(i => {
+                return i.conteo > 0;
+              });
+              const asistenciaExtraordinariaPorHora = this.asistencia().asistenciaExtraordinariaPorHora.find(i => {
+                return i.conteo > 0;
+              });
+              const diaTurnoAsistenciaCita = this.asistencia().diaTurnoAsistenciaCita.find(i => {
+                return i.conteo > 0;
+              });
+              const diaTurnoAsistenciaExtraordinaria = this.asistencia().diaTurnoAsistenciaExtraordinaria.find(i => {
+                return i.conteo > 0;
+              });
+              if( asistenciaCitaPorHora ||
+                  asistenciaExtraordinariaPorHora ||
+                  diaTurnoAsistenciaCita ||
+                  diaTurnoAsistenciaExtraordinaria
+              ){
+                  this.descargarExcel();
+              }else{
+                this._alertServices.alerta("No existen registros");
+              }
+            }
           }
         }
       });
