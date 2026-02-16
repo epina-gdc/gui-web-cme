@@ -1,3 +1,5 @@
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" [closable]="true" styleClass="custom-confirm-dialog">
+</p-confirmDialog>
 <div class="flex gap-4">
   <div class="flex flex-column w-100 border-round-xl">
     <div class="carga-calificaciones-background flex align-items-center border-round-md">
@@ -98,7 +100,7 @@
               </div>
               <div class="flex align-items-center">
                 <p-button type="button" [disabled]="errorCalificaciones || estatus() === 0"
-                          (onClick)="confCargaCalificaciones = true" label="Cargar calificaciones"/>
+                          (onClick)="abrirModal()" label="Cargar calificaciones"/>
               </div>
             </div>
           </div>
@@ -148,25 +150,4 @@
     </div>
   </div>
 
-
-  <p-dialog
-    [(visible)]="confCargaCalificaciones"
-    [modal]="true"
-    [closable]="true"
-    [styleClass]="'dialog'"
-    [draggable]="false"
-    [resizable]="false"
-    [showHeader]="true">
-
-    <div class="flex justify-content-center mb-5">
-      <p>¿Está seguro de iniciar la carga de calificaciones?</p>
-    </div>
-
-    <div class="flex justify-content-end">
-      <p-button variant="outlined" label="Cancelar" severity="warn"
-                class="me-3" (click)="confCargaCalificaciones = false"/>
-      <p-button variant="outlined" label="Sí, confirmar" (click)="guardarCalificaciones()"/>
-
-    </div>
-  </p-dialog>
 </div>

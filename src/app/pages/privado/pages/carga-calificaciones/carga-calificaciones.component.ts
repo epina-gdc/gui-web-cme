@@ -13,6 +13,8 @@ import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {Select} from 'primeng/select';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
 import {Convocatoria} from '@models/convocatoria.interface';
+import {ConfirmationService} from 'primeng/api';
+import {ConfirmDialog} from 'primeng/confirmdialog';
 
 
 @Component({
@@ -23,7 +25,8 @@ import {Convocatoria} from '@models/convocatoria.interface';
     CommonModule,
     Card,
     ReactiveFormsModule,
-    Select
+    Select,
+    ConfirmDialog
   ],
   templateUrl: './carga-calificaciones.component.html',
   styleUrl: './carga-calificaciones.component.scss',
@@ -32,7 +35,6 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
 
   options: TipoDropdown[] = [];
 
-  confCargaCalificaciones: boolean = false;
   errorCalificaciones: boolean = false;
 
   private destroy$ = new Subject<void>();
@@ -74,7 +76,8 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
   constructor(private readonly activatedRoute: ActivatedRoute,
               private readonly cargaCalificacionesService: CargaCalificacionesService,
               private readonly alertaService: AlertService,
-              private readonly fb: FormBuilder) {
+              private readonly fb: FormBuilder,
+              private confirmationService: ConfirmationService) {
     this.form = this.inicializarForm();
     this.obtenerInformacion();
     this.iniciarRefrescoAutomatico();
@@ -97,11 +100,12 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
   }
 
   guardarCalificaciones() {
-    this.confCargaCalificaciones = false;
     const id = this.form.get('convocatoria')?.value;
     if (!id) return;
     if (this.errorCalificaciones) return;
     this.cargando.set(true);
+    this.porcentaje.set(0);
+    this.estatus.set(1); // 1 = Procesando
 
     this.cargaCalificacionesService.registrarCargaCalificaciones(id).subscribe({
       next: (respuesta) => {
@@ -215,7 +219,7 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
       this.estatus.set(data.idEstatusCarga);
 
       if (this.porcentaje() === 100 && !esCargaInicial) {
-        if (porcentajeAnterior <= 100) {
+        if (porcentajeAnterior < 100) {
           this.alertaService.exito('Se realizó la carga de la información');
         }
         this.cargando.set(false);
@@ -235,4 +239,18 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
     "Si existe una interrupción en el proceso de carga, intentar nuevamente.\n Si el error persiste comunícate con el administrador del sistema."
   ];
 
+   abrirModal() {
+     this.confirmationService.confirm({
+       message: '¿Está seguro de iniciar la carga de calificaciones?',
+       header: ' ',
+       acceptLabel: 'Sí, confirmar',
+       rejectLabel: 'Cancelar',
+       // IMPORTANTE: Estas clases deben coincidir con el CSS Global
+       acceptButtonStyleClass: 'btn-modal-confirmar',
+       rejectButtonStyleClass: 'btn-modal-cancelar',
+       accept: () => {
+         this.guardarCalificaciones()
+       }
+     });
+  }
 }
