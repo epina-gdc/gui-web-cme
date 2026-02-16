@@ -1,4 +1,5 @@
 <div class="mt-4">
+    {{ convocatoriaSelect() | json}}
     <p-card class="empty-border">
         <div class="grid">
 
@@ -99,7 +100,7 @@
 
                             <div class="col-fixed ">
                                 <p-button label="Enviar citas" (onClick)="onEnviarCitas()"
-                                    [disabled]="!convocatoriaSelect() || !tipoMedicoSelect() || tieneFechaYHoraFin(totalCitas())"></p-button>
+                                    [disabled]="!convocatoriaSelect() || !tipoMedicoSelect() || tieneFechaYHoraFin(totalCitas()) || !isFinalizado()"></p-button>
                             </div>
                         </div>
                         <div class="grid p2 m-2">
