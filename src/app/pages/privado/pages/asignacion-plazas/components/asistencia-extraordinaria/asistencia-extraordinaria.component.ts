@@ -79,7 +79,7 @@ export class AsistenciaExtraordinariaComponent extends GeneralComponent {
 
         this.loading = true;
 
-        this.asistenciaService.busqueda(this.searchQuery).subscribe({
+        this._AsistenciaService.busqueda(this.searchQuery).subscribe({
             next: (response: AsistenciaExtraordinariaResponse) => {
                 if (response.exito && response.respuesta) {
                     const data = response.respuesta;
@@ -135,7 +135,7 @@ export class AsistenciaExtraordinariaComponent extends GeneralComponent {
     }
 
     confirmar(idParticipante: string) {
-        this.asistenciaService.confimar(idParticipante).subscribe({
+        this._AsistenciaService.confimar(idParticipante).subscribe({
             next: (response: AsistenciaExtraordinariaResponse) => {
                 if (response.exito && response.respuesta) {
                     this.aspirante = response.respuesta;
@@ -175,7 +175,7 @@ export class AsistenciaExtraordinariaComponent extends GeneralComponent {
     }
 
     eliminar(idParticipante: string) {
-        this.asistenciaService.eliminar(idParticipante).subscribe({
+        this._AsistenciaService.eliminar(idParticipante).subscribe({
             next: (response: AsistenciaExtraordinariaResponse) => {
                 if (response.exito) {
                     if (this.aspirante) {

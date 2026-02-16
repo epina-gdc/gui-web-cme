@@ -28,9 +28,10 @@ export class GeneralComponent {
   protected _CatalogoGenService: CatalogosGeneralesService;
   protected _RegistroMedicoService: RegistroMedicoService;
   protected _ConvocatoriaService: ConvocatoriaService;
+  protected _AsistenciaService: AsistenciaExtraordinariaService;
   protected authService = inject(AuthService);
   protected documentoService = inject(DocumentoService);
-  protected asistenciaService = inject(AsistenciaExtraordinariaService);
+
   /* SE COMENTA TIMER */
   /* protected sessionTimerService= inject(SessionTimerService); */
 
@@ -42,9 +43,10 @@ export class GeneralComponent {
     this._CatalogoGenService = inject(CatalogosGeneralesService);
     this._RegistroMedicoService = inject(RegistroMedicoService);
     this._ConvocatoriaService = inject(ConvocatoriaService);
+    this._AsistenciaService = inject(AsistenciaExtraordinariaService);
     this.authService = inject(AuthService);
     this.documentoService = inject(DocumentoService);
-    this.asistenciaService = inject(AsistenciaExtraordinariaService);
+
   }
 
   public onlyNumbers(event: any) {

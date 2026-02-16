@@ -24,7 +24,7 @@
                         (click)="clear()">
                     </button>
                     <button pButton label="Buscar" class="bg-teal-600 border-none hover:bg-teal-700 font-bold"
-                        [loading]="loading" (click)="search()">
+                        [loading]="loading" (click)="search()" [disabled]="!searchQuery.trim()">
                     </button>
                 </div>
             </div>
@@ -135,7 +135,7 @@
 
         <ng-template #emptyState>
             <div
-                class="flex flex-column align-items-center justify-content-center mt-1 pt-1 animate-fade-in opacity-70 h-screen">
+                class="flex flex-column align-items-center justify-content-center mt-1 pt-1 animate-fade-in opacity-70 h-full">
                 <img class="p-0" src="/assets/images/tabla_sin_resultados.svg" alt="Sin resultados">
                 <p class="text-gray-500 text-lg">No hay resultados de búsqueda</p>
             </div>
