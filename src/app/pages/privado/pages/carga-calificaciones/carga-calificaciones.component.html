@@ -18,138 +18,154 @@
                       placeholder="Selecciona una convocatoria" class="w-full"/>
           </div>
         </form>
-      <div class="flex loader ">
-        @if(this.estatus() == 1){
-          <div class="loader-container">
-            <div class="outer-circle"></div>
-            <div class="inner-circle"></div>
-            <div class="pulse-small"></div>
-            <div class="pulse-large"></div>
-          </div>
-        }@else{
-          <div class="ico-estatus me-3"
-               [ngClass]="{'interrumpido': estatus() == 3, 'completado': this.estatus() == 2}">
-            <i
-              [ngClass]="{'cme-check': this.estatus() == 2, 'cme-cross': this.estatus() == 3}"
-              style="font-size: 1.2rem;"></i>
-          </div>
-        }
+        <div class="flex loader ">
+          @switch (estatus()) {
 
-        <div class="flex flex-column w-full">
-          <div class="flex align-items-center">
-            <p class="porcentaje-fecha-carga text-start me-3">{{porcentaje()}}%</p>
-            <p class="texto-procesando">{{textoEstatus()}}</p>
-          </div>
-          <div class="progress">
-            <div
-              [ngClass]="{'interrumpido': estatus() == 3, 'completado': this.estatus() == 2, 'progress-bar': this.estatus() == 1}"
-              [style.width.%]="porcentaje()"></div>
-          </div>
-        </div>
-      </div>
+            @case (1) {
+              <div class="loader-container">
+                <div class="outer-circle"></div>
+                <div class="inner-circle"></div>
+                <div class="pulse-small"></div>
+                <div class="pulse-large"></div>
+              </div>
+            }
+            @case (2) {
+              <div class="ico-estatus me-3 completado">
+                <i class="cme-check" style="font-size: 1.2rem;"></i>
+              </div>
+            }
+            @case (3) {
+              <div class="ico-estatus me-3 interrumpido">
+                <i class="cme-cross" style="font-size: 1.2rem;"></i>
+              </div>
+            }
+            @default {
+              <div class="loader-container">
+                <div class="outer-circle"></div>
+                <div class="inner-circle"></div>
+                <div class="pulse-small"></div>
+                <div class="pulse-large"></div>
+              </div>
+            }
+          }
 
-      <div class="block lg:flex gap-4">
-        <div class="w-full">
-          <div class="flex-wrap lg:flex justify-content-between gap-2">
-            <div class="flex">
-             <div class="calendario me-2">
-               <i class="cme-calendario-primero z-1" style="font-size: 1.5rem; color: #fff"></i>
-             </div>
-              <p class="ultima-fecha-entrega mb-3 lg:m-0">Última fecha de carga</p>
-            </div>
-            <div class="flex w-auto justify-content-start p-3 gap-2 bg-card-indicador border-round-lg mb-3 lg:m-0">
-              <div class="flex flex-column">
-                <p class="titulo-indicador-fecha">Fecha inicio</p>
-                <p class="indicador-fecha">{{ calificaciones.fechaInicioFormateada }}</p>
-              </div>
-              <div class="flex flex-column">
-                <p class="titulo-indicador-fecha">Hora</p>
-                <p class="indicador-fecha">{{ calificaciones.horaInicioFormateada }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="w-full">
-          <div class="flex-wrap lg:flex justify-content-between gap-2">
-            <div class="flex w-auto justify-content-start p-3 gap-2 bg-card-indicador border-round-lg mb-3 lg:m-0">
-
-              <div class="flex flex-column">
-                <p class="titulo-indicador-fecha">Fecha fin</p>
-                <p class="indicador-fecha">{{ calificaciones.fechaFinFormateada }}</p>
-              </div>
-              <div class="flex flex-column">
-                <p class="titulo-indicador-fecha">Hora</p>
-                <p class="indicador-fecha">{{ calificaciones.horaInicioFormateada }}</p>
-              </div>
-            </div>
+          <div class="flex flex-column w-full">
             <div class="flex align-items-center">
-              <p-button type="button" [disabled]="errorCalificaciones || estatus() === 0"  (onClick)="guardarCalificaciones()"  label="Cargar calificaciones"/>
+              <p class="porcentaje-fecha-carga text-start me-3">{{ porcentaje() }}%</p>
+              <p class="texto-procesando">{{ textoEstatus() }}</p>
+            </div>
+            <div class="progress">
+              <div
+                [ngClass]="{'interrumpido': estatus() == 3, 'completado': this.estatus() == 2, 'progress-bar': this.estatus() == 1}"
+                [style.width.%]="porcentaje()"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="block lg:flex gap-4">
+          <div class="w-full">
+            <div class="flex-wrap lg:flex justify-content-between gap-2">
+              <div class="flex">
+                <div class="calendario me-2">
+                  <i class="cme-calendario-primero z-1" style="font-size: 1.5rem; color: #fff"></i>
+                </div>
+                <p class="ultima-fecha-entrega mb-3 lg:m-0">Última fecha de carga</p>
+              </div>
+              <div class="flex w-auto justify-content-start p-3 gap-2 bg-card-indicador border-round-lg mb-3 lg:m-0">
+                <div class="flex flex-column">
+                  <p class="titulo-indicador-fecha">Fecha inicio</p>
+                  <p class="indicador-fecha">{{ calificaciones.fechaInicioFormateada }}</p>
+                </div>
+                <div class="flex flex-column">
+                  <p class="titulo-indicador-fecha">Hora</p>
+                  <p class="indicador-fecha">{{ calificaciones.horaInicioFormateada }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="w-full">
+            <div class="flex-wrap lg:flex justify-content-between gap-2">
+              <div class="flex w-auto justify-content-start p-3 gap-2 bg-card-indicador border-round-lg mb-3 lg:m-0">
+
+                <div class="flex flex-column">
+                  <p class="titulo-indicador-fecha">Fecha fin</p>
+                  <p class="indicador-fecha">{{ calificaciones.fechaFinFormateada }}</p>
+                </div>
+                <div class="flex flex-column">
+                  <p class="titulo-indicador-fecha">Hora</p>
+                  <p class="indicador-fecha">{{ calificaciones.horaInicioFormateada }}</p>
+                </div>
+              </div>
+              <div class="flex align-items-center">
+                <p-button type="button" [disabled]="errorCalificaciones || estatus() === 0"
+                          (onClick)="guardarCalificaciones()" label="Cargar calificaciones"/>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-wrap justify-content-between mt-2">
+          <div class=" col-12 lg:col-6">
+            <div class="p-3 bg-card-indicador border-round-lg">
+              <span class="titulo-totales-calificacion">Total de Médicos con calificación</span>
+              <div class="mt-1 border-top-2 border-indigo-200">
+                <span class="totales-calificacion mt-2">{{ calificaciones.numConCalificacion }}</span>
+              </div>
+            </div>
+          </div>
+          <div class=" col-12 lg:col-6">
+            <div class="p-3 bg-card-indicador border-round-lg">
+              <span class="titulo-totales-calificacion">Total de Médicos sin calificación</span>
+              <div class="mt-1 border-top-2 border-indigo-200">
+                <span class="totales-calificacion mt-2">{{ calificaciones.numSinCalificacion }}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="flex flex-wrap justify-content-between mt-2">
-        <div class=" col-12 lg:col-6">
-          <div class="p-3 bg-card-indicador border-round-lg">
-            <span class="titulo-totales-calificacion">Total de Médicos con calificación</span>
-            <div class="mt-1 border-top-2 border-indigo-200" >
-              <span class="totales-calificacion mt-2">{{ calificaciones.numConCalificacion }}</span>
+      <p-card class="empty-border mt-3" [header]="'Proceso de Carga de calificaciones'">
+        <div class="flex flex-wrap justify-content-between">
+          <div class="p-3 col-12 lg:col-6">
+            <div class="card-info-calificaciones p-3 ">
+              <p class="proceso-carga-calificacion">Proceso Automático</p>
+              <ul>
+                @for (proceso of listaProcesoAutomatico; track proceso) {
+                  <li class="my-1"><p class="texto-lista header-tab-documentacion">{{ proceso }}</p></li>
+                }
+              </ul>
+            </div>
+          </div>
+          <div class="p-3 col-12 lg:col-6">
+            <div class="card-info-calificaciones p-3 h-full">
+              <p class="proceso-carga-calificacion">Importante</p>
+              <div class="mt-6">
+                <p class="header-tab-documentacion ">El sistema valida que la información esté cargada antes de permitir
+                  la generación de mesas.</p>
+              </div>
             </div>
           </div>
         </div>
-        <div class=" col-12 lg:col-6">
-          <div class="p-3 bg-card-indicador border-round-lg">
-            <span class="titulo-totales-calificacion">Total de Médicos sin calificación</span>
-            <div class="mt-1 border-top-2 border-indigo-200">
-              <span class="totales-calificacion mt-2">{{ calificaciones.numSinCalificacion }}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+      </p-card>
     </div>
-    <p-card class="empty-border mt-3" [header]="'Proceso de Carga de calificaciones'">
-      <div class="flex flex-wrap justify-content-between">
-        <div class="p-3 col-12 lg:col-6">
-          <div class="card-info-calificaciones p-3 ">
-            <p class="proceso-carga-calificacion">Proceso Automático</p>
-            <ul>
-              @for (proceso of listaProcesoAutomatico; track proceso) {
-                <li class="my-1"> <p class="texto-lista header-tab-documentacion">{{proceso}}</p> </li>
-              }
-            </ul>
-          </div>
-        </div>
-        <div class="p-3 col-12 lg:col-6">
-          <div class="card-info-calificaciones p-3 h-full">
-            <p class="proceso-carga-calificacion">Importante</p>
-            <div class="mt-6">
-              <p class="header-tab-documentacion ">El sistema valida que la información esté cargada antes de permitir la generación de mesas.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </p-card>
-  </div>
-</div>
-
-
-<p-dialog
-  [(visible)]="confCargaCalificaciones"
-  [modal]="true"
-  [closable]="true"
-  [styleClass]="'dialog'"
-  [draggable]="false"
-  [resizable]="false"
-  [showHeader]="true">
-
-  <div class="flex justify-content-center mb-5">
-    <p>¿Está seguro de iniciar la carga de calificaciones?</p>
   </div>
 
-  <div class="flex justify-content-end">
-    <p-button variant="outlined" label="Cancelar" severity="warn"
-              class="me-3"/>
-    <p-button variant="outlined" label="Sí, confirmar" />
 
-  </div>
-</p-dialog>
+  <p-dialog
+    [(visible)]="confCargaCalificaciones"
+    [modal]="true"
+    [closable]="true"
+    [styleClass]="'dialog'"
+    [draggable]="false"
+    [resizable]="false"
+    [showHeader]="true">
+
+    <div class="flex justify-content-center mb-5">
+      <p>¿Está seguro de iniciar la carga de calificaciones?</p>
+    </div>
+
+    <div class="flex justify-content-end">
+      <p-button variant="outlined" label="Cancelar" severity="warn"
+                class="me-3"/>
+      <p-button variant="outlined" label="Sí, confirmar"/>
+
+    </div>
+  </p-dialog>
