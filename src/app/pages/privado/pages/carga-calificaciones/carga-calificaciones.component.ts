@@ -41,7 +41,7 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
   private readonly INTERVALO_REFRESCO = 30000;
 
   tipoEstatus: { estatus: number, descripcion: string }[] = [
-    {estatus: 0, descripcion: 'No se ha seleccionado Convocatoria'},
+    {estatus: 0, descripcion: ''},
     {estatus: 1, descripcion: 'Procesando...'},
     {estatus: 2, descripcion: 'Completado'},
     {estatus: 3, descripcion: 'Proceso interrumpido'},
@@ -59,10 +59,10 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
   });
 
   calificaciones: RespuestaCalificaciones = {
-    fechaInicioFormateada: "--/--/----",
-    horaInicioFormateada: "--:--",
-    fechaFinFormateada: "--/--/----",
-    horaFinFormateada: "--:--",
+    fechaInicioFormateada: "-",
+    horaInicioFormateada: "-",
+    fechaFinFormateada: "-",
+    horaFinFormateada: "-",
     numConCalificacion: 0,
     numSinCalificacion: 0,
     porcentaje: 0,
