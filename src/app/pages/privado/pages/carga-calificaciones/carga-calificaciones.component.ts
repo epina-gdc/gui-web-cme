@@ -215,7 +215,7 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
       this.estatus.set(data.idEstatusCarga);
 
       if (this.porcentaje() === 100 && !esCargaInicial) {
-        if (porcentajeAnterior < 100) {
+        if (porcentajeAnterior <= 100) {
           this.alertaService.exito('Se realizó la carga de la información');
         }
         this.cargando.set(false);
