@@ -11,11 +11,11 @@
       </div>
       <div class="flex justify-content-between">
         <p class="seccion-detalle-oferta-laboral">Régimen:</p>
-        <p class="texto-detalle-oferta-laboral">{{ plazaSeleccionada.tipoUnidad }}</p>
+        <p class="texto-detalle-oferta-laboral">{{ plazaSeleccionada.regimen }}</p>
       </div>
       <div class="flex justify-content-between">
         <p class="seccion-detalle-oferta-laboral">No de plaza:</p>
-        <p class="texto-detalle-oferta-laboral">{{ plazaSeleccionada.numeroPlaza }}</p>
+        <p class="texto-detalle-oferta-laboral">{{ plazaSeleccionada.numPlaza }}</p>
       </div>
       <div class="flex justify-content-between">
         <p class="seccion-detalle-oferta-laboral">Categoría:</p>
@@ -37,20 +37,20 @@
       </div>
       <div class="flex justify-content-between">
         <p class="seccion-detalle-oferta-laboral">OOAD:</p>
-        <p class="texto-detalle-oferta-laboral">{{ plazaSeleccionada.hospital.ooad }}</p>
+        <p class="texto-detalle-oferta-laboral">{{ plazaSeleccionada.ooad }}</p>
       </div>
       <div class="flex justify-content-between">
         <p class="seccion-detalle-oferta-laboral">Unidad Médica:</p>
-        <p class="texto-detalle-oferta-laboral">{{ plazaSeleccionada.hospital.nombre }}</p>
+        <p class="texto-detalle-oferta-laboral">{{ plazaSeleccionada.umf }}</p>
       </div>
       <div class="flex justify-content-between">
         <p class="seccion-detalle-oferta-laboral">Zona:</p>
-        <p class="texto-detalle-oferta-laboral">{{ plazaSeleccionada.hospital.zona }}</p>
+        <p class="texto-detalle-oferta-laboral">{{ plazaSeleccionada.zona }}</p>
       </div>
       <div class="flex justify-content-between">
         <p class="seccion-detalle-oferta-laboral">Ubicación:</p>
         <p class="texto-detalle-oferta-laboral align-last-right"
-           [appSplitByWidth]="plazaSeleccionada.hospital.direccion!"></p>
+           [appSplitByWidth]="plazaSeleccionada.direccion!"></p>
       </div>
     </div>
   </div>
@@ -67,7 +67,7 @@
               <p class="card-compensacion-seccion">Estimado bruto</p>
 
               <p
-                class="card-compensacion-titulo">{{ plazaSeleccionada.sueldoMensual.estimadoBruto |  currency:'USD':'symbol':'1.2-2' }}</p>
+                class="card-compensacion-titulo">{{ plazaSeleccionada.sueldoMensualBruto |  currency:'USD':'symbol':'1.2-2' }}</p>
             </div>
             <div class="flex align-items-end">
               <p class="card-compensacion-titulo">-</p>
@@ -75,7 +75,7 @@
             <div class="flex flex-column">
               <p class="card-compensacion-seccion">Estimado neto</p>
               <p
-                class="card-compensacion-titulo">{{ plazaSeleccionada.sueldoMensual.estimadoNeto |  currency:'USD':'symbol':'1.2-2' }}</p>
+                class="card-compensacion-titulo">{{ plazaSeleccionada.sueldoMensualNeto|  currency:'USD':'symbol':'1.2-2' }}</p>
             </div>
           </div>
           <div class="flex justify-content-between p-0 mt-1">
@@ -159,6 +159,7 @@
               severity="secondary"
               label="Asignar plaza"
               icon="cme-asignar-plaza"
+              (onClick)="asignar()"
               />
 
 </div>

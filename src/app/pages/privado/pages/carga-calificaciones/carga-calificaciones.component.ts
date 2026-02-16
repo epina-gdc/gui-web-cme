@@ -41,7 +41,7 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
   private readonly INTERVALO_REFRESCO = 30000;
 
   tipoEstatus: { estatus: number, descripcion: string }[] = [
-    {estatus: 0, descripcion: 'No se ha seleccionado Convocatoria'},
+    {estatus: 0, descripcion: ''},
     {estatus: 1, descripcion: 'Procesando...'},
     {estatus: 2, descripcion: 'Completado'},
     {estatus: 3, descripcion: 'Proceso interrumpido'},
@@ -59,10 +59,10 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
   });
 
   calificaciones: RespuestaCalificaciones = {
-    fechaInicioFormateada: "--/--/----",
-    horaInicioFormateada: "--:--",
-    fechaFinFormateada: "--/--/----",
-    horaFinFormateada: "--:--",
+    fechaInicioFormateada: "-",
+    horaInicioFormateada: "-",
+    fechaFinFormateada: "-",
+    horaFinFormateada: "-",
     numConCalificacion: 0,
     numSinCalificacion: 0,
     porcentaje: 0,
@@ -97,10 +97,10 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
   }
 
   guardarCalificaciones() {
+    this.confCargaCalificaciones = false;
     const id = this.form.get('convocatoria')?.value;
     if (!id) return;
     if (this.errorCalificaciones) return;
-
     this.cargando.set(true);
 
     this.cargaCalificacionesService.registrarCargaCalificaciones(id).subscribe({
@@ -215,7 +215,7 @@ export class CargaCalificacionesComponent implements OnInit, OnDestroy {
       this.estatus.set(data.idEstatusCarga);
 
       if (this.porcentaje() === 100 && !esCargaInicial) {
-        if (porcentajeAnterior < 100) {
+        if (porcentajeAnterior <= 100) {
           this.alertaService.exito('Se realizó la carga de la información');
         }
         this.cargando.set(false);
