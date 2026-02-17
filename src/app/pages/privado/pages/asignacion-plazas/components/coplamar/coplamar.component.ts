@@ -235,7 +235,7 @@ export class CoplamarComponent extends GeneralComponent implements OnInit {
       data: {...plaza},
       modal: true,
       width: '848px',
-      height: '50vh',
+      height: '55vh',
       focusOnShow: false,
       breakpoints: {
         '960px': '75vw',

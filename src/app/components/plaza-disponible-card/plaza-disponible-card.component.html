@@ -1,7 +1,7 @@
 <div class="my-4"></div>
 <p-card class="empty-border" styleClass="shadow-4">
   <div class="flex flex-oferta-card">
-    <article class="col-12 lg:col-9">
+    <article class="col-12 lg:col-10">
       <div class="flex flex-row gap-5 flex-oferta-card">
         <div class="flex flex-column  p-0 mt-1">
           <div class="header-oferta-flex mb-2">
@@ -47,7 +47,7 @@
       }
       <div class="flex flex-row">
         <div class="flex justify-content-between w-100 flex-oferta-card flex-row">
-          <div class="flex flex-column col-6 lg:col-4 p-0 mt-1">
+          <div class="flex flex-column col-6 lg:col-3 p-0 mt-1">
             <div class="flex flex-row gap-2 align-items-center">
               <i class="cme-pin me-5" [style]="{ 'font-size': '2.2rem', color: '#23c8a7'}"></i>
               <div class="flex flex-column">
@@ -56,7 +56,7 @@
               </div>
             </div>
           </div>
-          <div class="flex flex-column align-items-center col-6 lg:col-2 p-0 mt-1">
+          <div class="flex flex-column align-items-center col-6 lg:col-3 p-0 mt-1">
             <p class="titulo-label-oferta-card">Zona</p>
             <p class="texto-label-oferta-card">{{ plaza.zona | titlecase }}</p>
           </div>
@@ -67,17 +67,17 @@
         </div>
       </div>
     </article>
-    <div class="border-left-1 vertical-border mx-1"></div>
-    <article class="col-12 lg:col-3 flex flex-column gap-2 justify-content-between">
+    <div class="border-left-1 vertical-border"></div>
+    <article class="col-12 lg:col-2 flex flex-column gap-2 justify-content-between">
       <div class="flex justify-content-center">
         <p class="leyenda-sueldo">Sueldo mensual</p>
       </div>
       <div class="flex justify-content-evenly">
-        <div class="flex flex-column align-items-center gap-2">
+        <div class="flex flex-column align-items-center gap-2 mx-1">
           <p class="texto-sueldo"> {{ plaza.sueldoMensualBruto|  currency:'USD':'symbol':'1.2-2' }} </p>
           <p class="leyenda-sueldo"> Estimado bruto </p>
         </div>
-        <div class="flex flex-column align-items-center gap-2">
+        <div class="flex flex-column align-items-center gap-2 mx-1">
           <p class="texto-sueldo"> {{ plaza.sueldoMensualNeto|  currency:'USD':'symbol':'1.2-2' }} </p>
           <p class="leyenda-sueldo"> Estimado neto </p>
         </div>
