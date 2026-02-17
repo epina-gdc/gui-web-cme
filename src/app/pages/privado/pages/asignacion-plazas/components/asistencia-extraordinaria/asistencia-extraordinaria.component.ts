@@ -87,9 +87,7 @@ export class AsistenciaExtraordinariaComponent extends GeneralComponent {
                     if (this.tieneCita) {
                         this._alertServices.informacion(this.MSG073);
                     }
-                    if (this.tieneAsistencia) {
-                        //    this._alertServices.informacion(this.MSG074);
-                    }
+
                     if (response.respuesta?.uuidArchivo) {
                         this.obtenerFotografia(response.respuesta?.uuidArchivo);
                     }
