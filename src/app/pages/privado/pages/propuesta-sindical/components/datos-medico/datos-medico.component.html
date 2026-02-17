@@ -28,8 +28,8 @@
         <div class="flex flex-wrap justify-content-between mb-3 gap-2">
           <div class="flex align-items-center">
             <span class="titulo-nombre-aspirante font-semibold me-4">{{ this.datosMedico()?.nombreCompleto }}</span>
-            @if (this.datosMedico()?.categoriaPlaza) {
-              <p-badge [value]="'• ' + datosMedico()?.categoriaPlaza" severity="warn"/>
+            @if (this.datosMedico()?.tipoUnidad) {
+              <p-badge [value]="'• ' + datosMedico()?.tipoUnidad" severity="warn"/>
             }
 
           </div>
