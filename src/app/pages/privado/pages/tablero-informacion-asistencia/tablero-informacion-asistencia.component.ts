@@ -1,5 +1,5 @@
 import {Component, computed, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {TipoDropdown} from '@models/tipo-dropdown.interface';
 import {GeneralComponent} from '@components/general.component';
 import {DatePickerModule} from 'primeng/datepicker';
@@ -157,9 +157,9 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
 
   inicializarForm(): FormGroup {
     return this.fb.group({
-      fecha: ['',[Validators.required]],
-      turno: ['',[Validators.required]],
-      tipoAsistencia: ['',[Validators.required]],
+      fecha: [''],
+      turno: [''],
+      tipoAsistencia: [''],
     })
   }
 
@@ -270,6 +270,11 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
 
   get f() {
     return this.filtroForm.controls;
+  }
+
+  validarForm(): boolean {
+    const valid = this.f['fecha'].value || this.f['turno'].value || this.f['tipoAsistencia'].value;
+    return  !valid;
   }
 
   ngOnDestroy() {
