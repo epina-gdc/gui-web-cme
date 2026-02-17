@@ -68,6 +68,7 @@ export class DetallePlazaComponent implements OnInit{
             console.log('Result ', response);
             if (response.exito) {
               this.alertaService.exito('Felicidades se asignó con éxito la plaza No.<strong>' + this.data.plaza.numPlaza +'<strong>');
+              this.showConfetti();
               this.estadoPlazaService.notificarRefreshPlazas();
             } else {
               this.alertaService.error(response.mensaje);
@@ -93,5 +94,107 @@ export class DetallePlazaComponent implements OnInit{
     ) ?? '';
     return `El importe máximo del descuento quincenal es de hasta ${creditoFormateado} pesos`
   }
+
+  // Confetti
+  private confettiCanvasId = 'confetti-canvas-monitoreo';
+  private confettiInterval: any = null;
+  private confettiTimeoutId: any = null;
+
+  showConfetti() {
+    this.launchCanvasConfetti(4000);
+
+    if (this.confettiTimeoutId) {
+      clearTimeout(this.confettiTimeoutId);
+    }
+    this.confettiTimeoutId = setTimeout(() => {
+      this.removeConfettiCanvas();
+    }, 5000);
+
+  }
+
+  /**
+     * Crear canvas para confetti y devolverlo
+     */
+  private ensureConfettiCanvas(): HTMLCanvasElement {
+    let canvas = document.getElementById(this.confettiCanvasId) as HTMLCanvasElement | null;
+    if (canvas) return canvas;
+
+    canvas = document.createElement('canvas');
+    canvas.id = this.confettiCanvasId;
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.pointerEvents = 'none';
+    canvas.style.zIndex = '9999';
+    document.body.appendChild(canvas);
+    return canvas;
+  }
+
+  private removeConfettiCanvas(): void {
+    const canvas = document.getElementById(this.confettiCanvasId);
+    if (canvas) {
+      try { canvas.remove(); } catch (e) { /* ignore */ }
+    }
+  }
+
+  private clearConfettiTimers(): void {
+    if (this.confettiInterval) {
+      clearInterval(this.confettiInterval);
+      this.confettiInterval = null;
+    }
+    if (this.confettiTimeoutId) {
+      clearTimeout(this.confettiTimeoutId);
+      this.confettiTimeoutId = null;
+    }
+  }
+
+  /**
+   * Lanza confeti usando canvas-confetti (dinámico)
+   * @param duration Duración en ms del lanzamiento continuo
+   */
+  private async launchCanvasConfetti(duration = 3000): Promise<void> {
+    try {
+      const canvas = this.ensureConfettiCanvas();
+      const module = await import(/* webpackChunkName: "canvas-confetti" */ 'canvas-confetti');
+      const confettiLib = module.default || module;
+      const confetti = confettiLib.create(canvas, { resize: true, useWorker: true });
+
+      const end = Date.now() + duration;
+      const fire = () => {
+        confetti({
+          particleCount: 20,
+          spread: 60,
+          startVelocity: 45,
+          ticks: 200,
+          origin: { x: Math.random(), y: Math.random() * 0.6 }
+        });
+      };
+
+      // Primer burst inmediato
+      fire();
+
+      // Repetir bursts mientras no llegue al tiempo
+      this.confettiInterval = setInterval(() => {
+        if (Date.now() > end) {
+          this.clearConfettiTimers();
+          return;
+        }
+        fire();
+      }, 350);
+
+      // Auto-limpiar el canvas después de un tiempo extra
+      setTimeout(() => {
+        this.clearConfettiTimers();
+        // remove canvas after short delay
+        setTimeout(() => this.removeConfettiCanvas(), 1000);
+      }, duration + 500);
+
+    } catch (err) {
+      console.error('No se pudo cargar canvas-confetti:', err);
+    }
+  }
+
 
 }
