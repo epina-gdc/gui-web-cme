@@ -79,7 +79,7 @@ export class AsignacionPlazasComponent {
           else
             this.tieneAsignacion = false;
         } else {
-          this.alertaService.error('No se encontró matrícula/folio.');
+          this.alertaService.error(response.mensaje);
           this.exist = false;
           this.tieneAsignacion = false;
         }
