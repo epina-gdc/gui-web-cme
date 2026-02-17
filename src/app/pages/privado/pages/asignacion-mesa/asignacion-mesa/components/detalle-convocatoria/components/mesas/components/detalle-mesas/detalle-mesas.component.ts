@@ -10,6 +10,7 @@ import { CommonModule } from '@angular/common';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { Mensajes } from '@utils/mensajes';
+import {TituloCase} from '@pipes/titulo-case.pipe';
 
 @Component({
   selector: 'app-detalle-mesas',
@@ -20,7 +21,8 @@ import { Mensajes } from '@utils/mensajes';
     DatePickerModule,
     ChipModule,
     ButtonModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    TituloCase
   ],
   templateUrl: './detalle-mesas.component.html',
   styleUrl: './detalle-mesas.component.scss',
