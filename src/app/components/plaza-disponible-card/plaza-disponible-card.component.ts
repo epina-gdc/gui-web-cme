@@ -28,6 +28,7 @@ export class PlazaDisponibleCardComponent implements OnInit{
 
   @Input() plaza: Plaza = new Plaza();
   @Input() idUsuario!: number;
+  @Input() tipoAsignacion!: number;
   @Output() abrirDetalleEvent = new EventEmitter<{plaza: Plaza; idUsuario: number; tipoAsignacion: number}>();
 
   constructor(private readonly currencyPipe: CurrencyPipe) {
@@ -44,6 +45,6 @@ export class PlazaDisponibleCardComponent implements OnInit{
   }
 
   verMas(){
-    this.abrirDetalleEvent.emit({plaza: this.plaza, idUsuario: this.idUsuario, tipoAsignacion: TipoAsignacion.PlazaOrdinaria});
+    this.abrirDetalleEvent.emit({plaza: this.plaza, idUsuario: this.idUsuario, tipoAsignacion: this.tipoAsignacion});
   }
 }

@@ -91,11 +91,13 @@ export class AsignacionPlazasComponent {
         this.tieneAsignacion = false;
       }
     });
+    this.tab = 0;
   }
 
   onLimpiar() {
     this.form.reset({ folio: '' });
     this.exist = false;
+    this.tab = 0;
   }
 
   onRegistroGuardado(e: { id: number }) {
@@ -107,6 +109,7 @@ export class AsignacionPlazasComponent {
     if (this.form == undefined) {
       return;
     }
+    this.tab = 0;
     this.onBuscar();
     this.refreshKey++;
   }
