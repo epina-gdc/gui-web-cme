@@ -8,6 +8,7 @@ import { AutoCompleteCompleteEvent, AutoCompleteModule } from 'primeng/autocompl
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AsignacionMesaService, Especialidad, MesaConfiguracion, Rama, ResponseRamaConvocatoria, TotalesMedicosRama } from '../../../../services/asignacion-mesa.service';
+import {TituloCase} from '@pipes/titulo-case.pipe';
 
 @Component({
   selector: 'app-especialidad',
@@ -19,7 +20,9 @@ import { AsignacionMesaService, Especialidad, MesaConfiguracion, Rama, ResponseR
     IconFieldModule,
     InputIconModule,
     InputTextModule,
-    AutoCompleteModule],
+    AutoCompleteModule,
+    TituloCase
+  ],
   templateUrl: './especialidad.component.html',
   styleUrl: './especialidad.component.scss',
 })

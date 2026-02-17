@@ -1,49 +1,53 @@
 .titulo-oferta-card {
   color: #000;
-  font-size: 24px;
+  font-size: 22px;
   font-style: normal;
   font-weight: 700;
   line-height: 100%; /* 24px */
-  text-align: start;
+  text-align: left;
 }
 
 .especificacion-oferta-card {
   color: #000;
-  font-size: 14px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 300;
   line-height: 100%; /* 14px */
+  text-align: left;
 }
 
 .titulo-label-oferta-card {
   color: #597190;
   font-family: "Noto Sans";
-  font-size: 12px;
+  font-size: 10px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+  text-align: left;
 }
 
 .texto-label-oferta-card {
   color: #222;
   font-family: "Noto Sans";
-  font-size: 14px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 300;
   line-height: normal;
+  text-align: left;
 }
 
 .nombre-unidad-oferta-card {
   color: #000;
-  font-size: 18px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+  text-align: left;
 }
 
 .texto-sueldo {
   color: #000;
-  font-size: 22px;
+  font-size: 15px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
@@ -51,7 +55,7 @@
 
 .leyenda-sueldo {
   color: #222;
-  font-size: 10px;
+  font-size: 8px;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
@@ -121,6 +125,6 @@ hr {
   }
 
   .texto-sueldo {
-    font-size: 20px;
+    font-size: 18px;
   }
 }

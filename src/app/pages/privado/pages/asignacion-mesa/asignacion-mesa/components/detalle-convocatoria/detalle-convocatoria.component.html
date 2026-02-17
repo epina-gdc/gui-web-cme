@@ -2,12 +2,16 @@
 
 
     <app-conteo [(accionActualiza)]="accionActualiza" [(convocatoriaSeleccionada)]="convocatoriaSeleccionada"></app-conteo>
+
+  @if(convocatoriaSeleccionada()?.estatus != "CONCLUIDO"){
     <app-especialidad [(accionActualiza)]="accionActualiza" [(ramaActual)]="ramaActual"
-        [(convocatoriaSeleccionada)]="convocatoriaSeleccionada" class="mt-4"></app-especialidad>
-    @if(ramaActual()){
+          [(convocatoriaSeleccionada)]="convocatoriaSeleccionada" class="mt-4"></app-especialidad>
+  }
+    @if(ramaActual() || convocatoriaSeleccionada()?.estatus == "CONCLUIDO"){
 
     <app-mesas [(accionActualiza)]="accionActualiza" [(ramaActual)]="ramaActual"
         [(convocatoriaSeleccionada)]="convocatoriaSeleccionada" class="mt-4"></app-mesas>
     }
+
 
 </p-card>

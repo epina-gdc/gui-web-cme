@@ -157,6 +157,8 @@ export class EspecialidaDetalle {
   numeroMesa!: number;
   especialidad!: string;
   numMedicosCupo!: number;
+  tipoMedico!: string;
+  idTipoMedico!: number;
 }
 export class TurnoMesaDetalle {
   turno!: string;
@@ -210,9 +212,9 @@ export class AsignacionMesaService {
   }
 
   /**
-   * 
+   *
    * @param mesaConvocatroria guardar la configuracion de mesa
-   * @returns 
+   * @returns
    */
   guardarMesaConvocatoria(mesaConvocatroria: MesaConvocatoriaRequest): Observable<any> {
 
@@ -255,9 +257,9 @@ export class AsignacionMesaService {
   }
 
   /**
-   * 
-   * @param idConvocatoria 
-   * @returns 
+   *
+   * @param idConvocatoria
+   * @returns
    */
 
   getConvocatoriaTotales(idConvocatoria: number): Observable<ResponseConvocatoriaTotales> {
@@ -272,9 +274,9 @@ export class AsignacionMesaService {
   }
 
   /**
-   * 
-   * @param idConvocatoria 
-   * @returns 
+   *
+   * @param idConvocatoria
+   * @returns
    */
   getRamasConvocatoria(idConvocatoria: number): Observable<ResponseRamaConvocatoria> {
     let parametros = new HttpParams();
@@ -390,7 +392,7 @@ export class AsignacionMesaService {
 
      let parametros = new HttpParams();
     parametros = parametros.append('idConvocatoria', idConvocatoria.toString());
-    
+
     return this.http.get<ResponseValidaConvocatoria>(this.serverEndPointURLAsignacion + '/valida-convocatoria', { headers: this.header, params: parametros }).pipe(
       catchError(this.handleError),
       map((response: ResponseValidaConvocatoria) => {

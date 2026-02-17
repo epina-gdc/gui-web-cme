@@ -39,22 +39,24 @@
                                 @for (esp of turno.especialidades; track esp.idMesaDetalle) {
                                 <li>
                                     <div class="flex flex-row justify-content-start align-content-center  gap-2">
+                                          @if(convocatoriaSeleccionada()?.estatus != 'CONCLUIDO'){
                                         <div class="flex-none">
 
                                             <p-button icon="pi pi-times" [rounded]="true" severity="danger"
                                                 [outlined]="true" styleClass="btn-del" [class]="'btn-del'" (onClick)="onEiminarEspecialidadMesa(esp)" />
                                         </div>
+                                          }
 
                                         <div class="flex-grow-1 flex">
 
                                             <div
                                                 class="flex flex-row justify-content-between w-full align-items-center text-sm font-semibold">
                                                 <div class="flex-grow-1">
-                                                    <span class="txt-esp-label">{{ esp.especialidad }}</span>
+                                                    <span class="txt-esp-label">{{ esp.especialidad | tituloCase}}</span>
                                                 </div>
                                                 <div class="flex-none txt-esp-label">
                                                     <span>{{ esp.numMedicosCupo }}</span>
-                                                    @if (false ) {
+                                                    @if (esp.idTipoMedico == 1 ) {
                                                     &nbsp;
                                                     <p-chip class="is-becario"><span> {{'B'}}</span></p-chip>
                                                     }
