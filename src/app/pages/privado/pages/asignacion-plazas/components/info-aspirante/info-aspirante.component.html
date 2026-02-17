@@ -133,7 +133,7 @@
 </p-card>
 
 <!--Zona asignación Ordinaria o Coplamar-->
-<p-card *ngIf="(tieneAsignacion && tipoAsignacion == (1 || 2))" class="mx-2 empty-border info-card">
+<p-card *ngIf="(tieneAsignacion && tipoAsignacion == 1) || (tieneAsignacion && tipoAsignacion ==  2)" class="mx-2 empty-border info-card">
   <div class="grid">
     <div class="col-12 md:col-10">
       <div class="flex flex-column  p-0 mt-1">

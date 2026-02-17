@@ -12,10 +12,11 @@ import {HeaderMedicoDetalleOfertaComponent} from '@pages/privado/shared/header-m
 import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {DetallePlazaComponent} from '@privado/asignacion-plazas/components/detalle-plaza/detalle-plaza.component';
 import { AsignacionPlazaService } from '@services/asignacion-plaza.service';
-import { DisponiblesRequest, InfoAspirante, Plaza, Regimen } from '@models/datosAsignacion';
+import { DisponiblesRequest, InfoAspirante, Plaza, Regimen, TipoAsignacion } from '@models/datosAsignacion';
 import { mapearArregloTipoDropdown } from '@utils/funciones';
 import {Paginator, PaginatorState} from 'primeng/paginator';
 import { EstadoOfertaService } from '@services/estado-oferta.service';
+import {OnlyNumbersDirective} from '@directives/only-numbers.directive';
 
 
 @Component({
@@ -27,7 +28,8 @@ import { EstadoOfertaService } from '@services/estado-oferta.service';
     ReactiveFormsModule,
     Select,
     Paginator,
-    CommonModule
+    CommonModule,
+    OnlyNumbersDirective
   ],
   templateUrl: './coplamar.component.html',
   styleUrl: './coplamar.component.scss',
@@ -38,6 +40,7 @@ export class CoplamarComponent extends GeneralComponent implements OnInit {
   @Output() asignacionRegistrada = new EventEmitter<{ id: number }>();
 
   asignacionPlazaService: AsignacionPlazaService = inject(AsignacionPlazaService);
+  tipoAsignacion = TipoAsignacion.PlazaCoplamar;
   fb: FormBuilder = inject(FormBuilder);
   filtroForm!: FormGroup;
 
@@ -80,10 +83,10 @@ export class CoplamarComponent extends GeneralComponent implements OnInit {
 
   iniciarForm(): FormGroup {
     return this.fb.group({
-      especialidad: [null as TipoDropdown['value'] | null, [Validators.required]],
-      ooad: [{ value: null as TipoDropdown['value'] | null}, [Validators.required]],
-      unidad: [{ value: null as TipoDropdown['value'] | null }, [Validators.required]],
-      plaza: ['', [Validators.maxLength(10)]],
+      especialidad: [null, [Validators.required]],
+      ooad: [null],
+      unidad: [null],
+      plaza: [null, [Validators.maxLength(10)]],
     })
   }
 
@@ -98,6 +101,7 @@ export class CoplamarComponent extends GeneralComponent implements OnInit {
           var idEspecialidad = result.respuesta[0]?.value ?? null;
           console.log(idEspecialidad);
           this.filtroForm.get('especialidad')?.patchValue(idEspecialidad);
+          this.consultarPlazas();
           this.getOoad();
           return;
         } else{
@@ -188,16 +192,16 @@ export class CoplamarComponent extends GeneralComponent implements OnInit {
 
     let request: DisponiblesRequest = {
       cveEspecialidad: v.especialidad,
-      cveOoad: v.ooad,
-      cveUnidad: v.unidad,
-      numPlaza: v.plaza,
+      cveOoad: v.ooad ?? null,
+      cveUnidad: v.unidad ?? null,
+      numPlaza: v.plaza ?? null,
       regimen: Regimen.Complamar
     }
 
     this.asignacionPlazaService.plazasDisponibles(request, this.numPaginaActual, this.rows).subscribe({
       next: (result) => {
         console.log('Plazas', result);
-        if(result.exito){
+        if(result.exito && Array.isArray(result.respuesta.content) && result.respuesta.content.length > 0){
           this.totalElementos = result.respuesta.page.totalElements;
           this.plazasList.set(result.respuesta.content);
           this.sinResultados = false;
@@ -206,14 +210,26 @@ export class CoplamarComponent extends GeneralComponent implements OnInit {
           this.sinResultados = true;
           return;
         }
+      },
+      error: (error) => {
+        //console.log(error);
+        this.plazasList.set([]);
+        this.sinResultados = true;
+        return;
       }
     });
   }
 
   cambiarPagina(event: PaginatorState): void {
-    if (event.page) {
+    /*if (event.page) {
       this.numPaginaActual = event.page;
     }
+    this.consultarPlazas(false);*/
+    if (event.page !== undefined && event.page !== null) {
+      this.numPaginaActual = event.page;
+    }
+    this.first = event.first ?? 0;    
+    this.rows = event.rows ?? this.rows;
     this.consultarPlazas(false);
   }
 

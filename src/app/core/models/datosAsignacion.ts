@@ -14,9 +14,9 @@ export class AsignacionRequest{
 
 export class DisponiblesRequest {
     cveEspecialidad!:string;
-    cveOoad!:string;
-    cveUnidad!:string;
-    numPlaza!:number;
+    cveOoad?:string;
+    cveUnidad?:string;
+    numPlaza?:number;
     regimen!:number;
 }
 
