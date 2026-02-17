@@ -28,7 +28,7 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
    * 1: mostrar QR
    * 2: mostrar datos aspirante
    */
-  estatusAssitencia: WritableSignal<number> = signal(1);
+  estatusAsistencia: WritableSignal<number> = signal(1);
 
   especialidades: string[] = ["Cardiología", "Anestesiología pediátrica", "Neumología"];
 
@@ -61,6 +61,7 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
   }
 
   resetearVista() {
+    this.estatusAsistencia.set(1);
     this.datosMedico.set(null);
     this.timerSubscription?.unsubscribe();
   }
@@ -69,11 +70,7 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
     this.timerSubscription?.unsubscribe();
   }
 
-  handleNuevEscaneo() {
-    this.resetearVista();
-  }
-
-  confirmarFolio(folio: string = '') {
+  confirmarFolio(folio: string) {
     this.asistenciaService.obtenerCita(folio).subscribe({
       next: respuesta => {
         if (!respuesta.exito) {
@@ -82,6 +79,7 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
         }
         this.alerService.exito(respuesta.mensaje);
         this.cargarDatos(respuesta.respuesta);
+        this.estatusAsistencia.set(2);
         this.obtenerFotografia(respuesta.respuesta.uuidArchivo);
       },
       error: error => {
@@ -131,8 +129,6 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
   }
 
   procesarRespuesta(codigo: string) {
-    console.log('Lectura recibida:', codigo);
-
     const codigoLimpio = codigo.replace(/(\d{2})Ñ(\d{2})/g, '$1:$2');
 
     console.log(codigoLimpio)
@@ -141,7 +137,6 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
 
     if (patronFormato.test(codigo)) {
       const [nombre, folio, especialidad, fecha, hora, turno] = codigo.split(/[|\]]/);
-      console.log(nombre, folio, especialidad, fecha, hora, turno);
 
       this.confirmarFolio(folio);
     } else {
