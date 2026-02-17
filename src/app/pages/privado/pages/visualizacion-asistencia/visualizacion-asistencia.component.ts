@@ -133,7 +133,7 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
   procesarRespuesta(codigo: string) {
     console.log('Lectura recibida:', codigo);
 
-    const codigoLimpio = codigo.replaceAll(/(\d{2})Ñ(\d{2})/, '$1:$2');
+    const codigoLimpio = codigo.replace(/(\d{2})Ñ(\d{2})/g, '$1:$2');
 
     console.log(codigoLimpio)
 
