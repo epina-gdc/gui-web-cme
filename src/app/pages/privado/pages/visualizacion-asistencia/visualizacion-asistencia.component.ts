@@ -74,9 +74,7 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
   }
 
   confirmarFolio(folio: string = '') {
-    const folios = ['A7654321', '']
-    const folioConsulta: string = '25D0100121';
-    this.asistenciaService.obtenerCita(folioConsulta).subscribe({
+    this.asistenciaService.obtenerCita(folio).subscribe({
       next: respuesta => {
         if (!respuesta.exito) {
           this.alerService.error(respuesta.mensaje);
@@ -135,10 +133,10 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
   procesarRespuesta(codigo: string) {
     console.log('Lectura recibida:', codigo);
 
-    const patronFormato = /^[A-ZÁÉÍÓÚÑ\s]+\|[A-Z0-9]+\|[A-ZÁÉÍÓÚÑ\s]+\|\d{2}\/\d{2}\/\d{4}\|\d{2}:\d{2}\|.+$/i;
+    const patronFormato = /^[A-ZÁÉÍÓÚÑ\s]+[|\]][A-Z0-9]+[|\]][A-ZÁÉÍÓÚÑ\s]+[|\]]\d{2}\/\d{2}\/\d{4}[|\]]\d{2}:\d{2}[|\]].+$/i;
 
     if (patronFormato.test(codigo)) {
-      const [nombre, folio, especialidad, fecha, hora, turno] = codigo.split('|');
+      const [nombre, folio, especialidad, fecha, hora, turno] = codigo.split(/[|\]]/);
       this.confirmarFolio(folio);
     } else {
       this.alerService.error('QR incorrecto.');
