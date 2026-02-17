@@ -38,7 +38,7 @@
           <div class="xl:col-3 col-12 flex align-items-center">
             <div class="flex align-items-center gap-4 justify-content-between mt-4">
               <p-button type="button" class="w-full" variant="outlined" label="Limpiar" (onClick)="limpiar()"/>
-              <p-button type="button" class="w-full" label="Buscar" (onClick)="buscar()" [disabled]="this.filtroForm.invalid"/>
+              <p-button type="button" class="w-full" label="Buscar" (onClick)="buscar()" [disabled]="validarForm()"/>
             </div>
           </div>
         </div>
