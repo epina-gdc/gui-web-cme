@@ -39,11 +39,13 @@
                                 @for (esp of turno.especialidades; track esp.idMesaDetalle) {
                                 <li>
                                     <div class="flex flex-row justify-content-start align-content-center  gap-2">
+                                          @if(convocatoriaSeleccionada()?.estatus != 'CONCLUIDO'){
                                         <div class="flex-none">
 
                                             <p-button icon="pi pi-times" [rounded]="true" severity="danger"
                                                 [outlined]="true" styleClass="btn-del" [class]="'btn-del'" (onClick)="onEiminarEspecialidadMesa(esp)" />
                                         </div>
+                                          }
 
                                         <div class="flex-grow-1 flex">
 
