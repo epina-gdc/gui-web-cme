@@ -1,13 +1,13 @@
 <app-menu/>
 
-@if (userData && (userData.modulos.length !== 0 || userData.menu !== 1)) {
+@if (userData && userData.menu === 1) {
   <button class="btn-menu-float" [class.is-scrolled]="isScrolled" (click)="toggleMenu()" aria-label="Abrir menú">
     <i class="pi pi-bars"></i> <span>Menú</span>
   </button>
 }
 
 <div class="mx-3 my-3">
-  @if (userData && userData.modulos.length === 0 && userData.menu === 1) {
+  @if (userData && userData.menu === 0) {
     <router-outlet/>
   } @else {
     <div class="layout-container">
