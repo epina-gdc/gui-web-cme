@@ -133,10 +133,16 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
   procesarRespuesta(codigo: string) {
     console.log('Lectura recibida:', codigo);
 
+    const codigoLimpio = codigo.replace(/(\d{2})Ñ(\d{2})/, '$1:$2');
+
+    console.log(codigoLimpio)
+
     const patronFormato = /^[A-ZÁÉÍÓÚÑ\s]+[|\]][A-Z0-9]+[|\]][A-ZÁÉÍÓÚÑ\s]+[|\]]\d{2}\/\d{2}\/\d{4}[|\]]\d{2}:\d{2}[|\]].+$/i;
 
     if (patronFormato.test(codigo)) {
       const [nombre, folio, especialidad, fecha, hora, turno] = codigo.split(/[|\]]/);
+      console.log(nombre, folio, especialidad, fecha, hora, turno);
+
       this.confirmarFolio(folio);
     } else {
       this.alerService.error('QR incorrecto.');
