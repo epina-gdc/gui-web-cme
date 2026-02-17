@@ -29,7 +29,8 @@
     </div>
 
     <div *ngIf="exist">
-      <app-info-aspirante [refreshKey]="refreshKey" [asignacion]="busqueda"></app-info-aspirante>
+      <app-info-aspirante [refreshKey]="refreshKey" [asignacion]="busqueda"
+      (asignacionRegistrada)="onRegistroGuardado($event)"></app-info-aspirante>
 
       <!--**ESCENARIO TABS-->
       <div *ngIf="!tieneAsignacion">
@@ -68,11 +69,11 @@
         @switch (tab) {
         @case (0) {
         <app-plaza-ordinaria [infoAspirante]="busqueda.datosGenerales!"
-        (asignacionRegistrada)="onRegistroGuardado($event)"></app-plaza-ordinaria>
+        ></app-plaza-ordinaria>
         }
         @case (1) {
         <app-coplamar [infoAspirante]="busqueda.datosGenerales!"
-        (asignacionRegistrada)="onRegistroGuardado($event)"></app-coplamar>
+        ></app-coplamar>
         }
         @case (2) {
         <app-asignacion-sustitucion [infoAspirante]="busqueda.datosGenerales!"

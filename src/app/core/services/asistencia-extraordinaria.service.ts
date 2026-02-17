@@ -29,6 +29,7 @@ export class AsistenciaExtraordinariaService {
     busqueda(matriculaFolio: string): Observable<AsistenciaExtraordinariaResponse> {
         return this.http.get<AsistenciaExtraordinariaResponse>(`${this.serverEndPointURLAsistenciaExtraordinaria}${this.uriBusqueda}${matriculaFolio}`,
             { headers: this.header });
+
     }
 
     validar(matriculaFolio: string): Observable<AsistenciaExtraordinariaResponse> {

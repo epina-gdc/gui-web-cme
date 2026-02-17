@@ -56,18 +56,24 @@
         <div class="lg:col-3 col-12 flex align-items-center">
           <div class="flex align-items-center gap-4 justify-content-between mt-4">
             <p-button type="button" class="w-full" variant="outlined" label="Limpiar" (click)="limpiar()" />
-            <p-button type="submmit" class="w-full" label="Buscar" />
+            <p-button type="submmit" class="w-full" label="Buscar" [disabled]="!formAsignacion.valid" />
           </div>
 
         </div>
       </div>
+
+
       <div class="flex align-items-center">
+        @if(!isEmptyContratacionEspecifica) {
         <span class="modal-prev-sub-titulo font-medium me-2 my-4 text-color">Activar/Desactivar la validación para el
           límite de contrataciones por sustitución 08</span>
         <p-toggleswitch formControlName="limiteContrataciones" />
+        }
       </div>
-    </form>
 
+
+    </form>
+    @if(estadoConvocatoria) {
     <p-table [value]="datosConfiguracion()" [scrollable]="true" [resizableColumns]="true" columnResizeMode="expand">
       <ng-template #caption>
         <div class="flex justify-content-between seccion-titulo">
@@ -123,5 +129,6 @@
         </div>
       </ng-template>
     </p-paginator>
+    }
   </div>
 </p-card>

@@ -70,8 +70,6 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
   estadoConvocatoriaPermisoSustitucion: ConvocatoriaPermisoSustitucion | null = null;
   edoGlobalConvocatoria: boolean = false;
 
-
-
   constructor(
     private fb: FormBuilder,
     private confirmationService: ConfirmationService,
@@ -85,6 +83,15 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
   get sinFiltrosEspecificos(): boolean {
     return !(this.formAsignacion.value.ooad && this.formAsignacion.value.zona && this.formAsignacion.value.especialidad);
   }
+
+  get estadoConvocatoria(): boolean {
+    return this.estadoConvocatoriaPermisoSustitucion === null ? false : true;
+  }
+
+  get isEmptyContratacionEspecifica(): boolean {
+    return this.contratacionEspecifica === null;
+  }
+
   private syncPaginatorToData(): void {
     const total = this.datosConfiguracionAll().length;
 
@@ -102,6 +109,7 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
       this.first.set(lastFirst);
     }
   }
+
   inicializarForm(): FormGroup {
     return this.fb.group({
       convocatoria: [null],
@@ -125,17 +133,17 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
     });
 
     form.controls['limiteContratacionesEspecifica'].valueChanges.subscribe(value => {
-      console.log('Valor del limiteContratacionesEspecifica:', value);
+      //   console.log('Valor del limiteContratacionesEspecifica:', value);
 
-      let msj = value ? "si desea activar la validación en todas las OOAD's. \n ¿Desea continuar? " : "si desea desactivar la validación en todas las OOAD's. \n ¿Desea continuar?";
+      let msj = value ? "¿Si desea activar la validación en todas las OOAD, Zonas y Especialidades?" : "¿Si desea desactivar la validación en todas las OOAD, Zonas y Especialidades?";
       this.confirmacionActivarDesactivar(form, 'limiteContratacionesEspecifica', value ? 1 : 0, msj);
     });
 
     form.controls['limiteContrataciones'].valueChanges.subscribe(value => {
-      console.log('Valor del limiteContrataciones:', value);
+      //  console.log('Valor del limiteContrataciones:', value);
 
       if (this.contratacionEspecifica) {
-        let msj = value ? "si desea activar la validación en esta configuración específica. \n ¿Desea continuar? " : "si desea desactivar la validación en esta configuración específica. \n ¿Desea continuar?";
+        let msj = value ? "¿Estás seguro de que deseas activar la validación de sustitución 8?" : "¿Estás seguro de que deseas desactivar la validación de sustitución 8?";
         this.confirmacionActivarDesactivar(form, 'limiteContrataciones', value ? 1 : 0, msj);
       } else {
         this._alertServices.informacion("No se ha seleccionado una configuración específica para activar o desactivar el permiso de sustitución. Por favor, realiza una búsqueda y selecciona una configuración específica antes de activar o desactivar el permiso.");
@@ -252,6 +260,7 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
     this.datosConfiguracionAll.set([]);
     this.first.set(0);
     this.syncPaginatorToData();
+    this.contratacionEspecifica = null;
   }
 
   estadoGlobalConvocatoria(form: FormGroup, idConvocatoria: number) {
@@ -284,8 +293,10 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
         this.estadoConvocatoriaPermisoSustitucion = respuesta.respuesta;
         respuesta.respuesta.indPermisoSustitucion == 1 ? activaDesactivaOOADZonaEspecialidades = true : activaDesactivaOOADZonaEspecialidades = false;
         form.controls['limiteContratacionesEspecifica'].setValue(activaDesactivaOOADZonaEspecialidades, { emitEvent: false });
+
         if (!activaDesactivaOOADZonaEspecialidades) {
           this.listaContratacionesEspecificosDesativadas(idConvocatoriaSeleccionada);
+          this.estadoGlobalConvocatoria(form, idConvocatoriaSeleccionada);
         }
       });
   }
@@ -294,7 +305,7 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
     this._ConvocatoriaService
       .activarDesactivarPermisoEspecifico(idPermisoEspecifico, indPermisoSustitucion)
       .subscribe((respuesta: HttpRespuesta<any>) => {
-
+        console.log("Respuesta de la actualización específica", respuesta);
         this._alertServices.informacion("Se guardó la configuración correctamente.");
 
         if (this.sinFiltrosEspecificos) {
@@ -302,7 +313,7 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
         } else {
           this.buscar();
         }
-
+        this.estadoGlobalConvocatoria(this.formAsignacion, this.formAsignacion.value.convocatoria);
       });
   }
 
@@ -352,6 +363,8 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
           this.syncPaginatorToData();
           this.actualizacionGeneral(form, value);
 
+          this.contratacionEspecifica = null;
+
         }
         if (key === 'limiteContrataciones') {
           if (this.contratacionEspecifica) {
@@ -365,6 +378,7 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
       }
     });
   }
+
   private setEstatus(idPermisoSustitucion: number, estatus: boolean) {
     this.datosConfiguracionAll.update(list =>
       list.map(r =>
@@ -394,32 +408,6 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
     });
   }
 
-  activardesctivar(item: TbConfiguracionAsignacionSustitucion) {
-    console.log("Configuración seleccionada para activar/desactivar", item);
-    this.confirmationService.confirm({
-      message: "¿Desea activar o desactivar el permiso de sustitución para esta configuración específica?",
-      header: ' ',
-      acceptLabel: 'Sí, confirmar',
-      rejectLabel: 'Cancelar',
-      // IMPORTANTE: Estas clases deben coincidir con el CSS Global
-      acceptButtonStyleClass: 'btn-modal-confirmar',
-      rejectButtonStyleClass: 'btn-modal-cancelar',
-      accept: () => {
-        // Lógica real de activación/desactivación
-        // Aquí puedes agregar la lógica para activar o desactivar el permiso de sustitución para esta configuración específica
-        // Por ejemplo, podrías llamar a un servicio que se encargue de esta tarea
-        // this._ConvocatoriaService.activarDesactivarPermisoEspecifico(idPermisoEspecifico, nuevoValor).subscribe(...);
-        this._alertServices.informacion("El sistema ha actualizado la configuración según tu selección.");
-
-      },
-      reject: () => {
-        // Lógica para revertir el cambio en la interfaz si el usuario cancela
-        // Por ejemplo, podrías revertir el estado del toggle switch a su valor anterior
-        // this.formAsignacion.controls['limiteContratacionesEspecifica'].setValue(previousValue, { emitEvent: false });
-        this._alertServices.informacion("El sistema no realiza ningún cambio. Se mantiene la información actual de la configuración.");
-      }
-    });
-  }
 
 
 }

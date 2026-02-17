@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Card } from "primeng/card";
 import { Avatar } from 'primeng/avatar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -31,6 +31,7 @@ import { TipoDropdown } from '@models/tipo-dropdown.interface';
 export class InfoAspiranteComponent {
   @Input() asignacion!: BusquedaResponse;
   @Input() refreshKey = 0;
+  @Output() asignacionRegistrada = new EventEmitter<{ id: number }>();
 
 
   documentoService: DocumentoService = inject(DocumentoService);
@@ -102,6 +103,7 @@ export class InfoAspiranteComponent {
       this.tieneAsignacion = true;
       this.tipoAsignacion = this.asignacion.asignacionMedico.idTipoAsignacion?.id ?? 0;
       this.muestraTag = this.tipoAsignacion == 3 || this.tipoAsignacion == 4 || this.tipoAsignacion == 5 ? true: false;
+      console.log('Key:', this.refreshKey);
       if(this.refreshKey == 0)
         this.getMessage(this.tipoAsignacion);
       else
@@ -111,7 +113,6 @@ export class InfoAspiranteComponent {
       this.muestraTag = false;
       this.tipoAsignacion = 0;
     }
-    
   }
 
   obtenerFotografia(uuidArchivo: string): void {
@@ -202,6 +203,7 @@ export class InfoAspiranteComponent {
         console.log('Result ', response);
         if (response.exito) {
           this.alertaService.exito(tipo == TipoAsignacion.CambioRama ? this.mensajes.MSG052 : this.mensajes.MSG050);
+          this.asignacionRegistrada.emit({ id: this.idUsuario });
         } else {
           this.alertaService.error(response.mensaje);
         }
