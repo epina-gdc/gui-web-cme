@@ -28,7 +28,7 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
    * 1: mostrar QR
    * 2: mostrar datos aspirante
    */
-  estatusAssitencia: WritableSignal<number> = signal(1);
+  estatusAsistencia: WritableSignal<number> = signal(1);
 
   especialidades: string[] = ["Cardiología", "Anestesiología pediátrica", "Neumología"];
 
@@ -61,6 +61,7 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
   }
 
   resetearVista() {
+    this.estatusAsistencia.set(1);
     this.datosMedico.set(null);
     this.timerSubscription?.unsubscribe();
   }
@@ -69,14 +70,8 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
     this.timerSubscription?.unsubscribe();
   }
 
-  handleNuevEscaneo() {
-    this.resetearVista();
-  }
-
-  confirmarFolio(folio: string = '') {
-    const folios = ['A7654321', '']
-    const folioConsulta: string = '25D0100121';
-    this.asistenciaService.obtenerCita(folioConsulta).subscribe({
+  confirmarFolio(folio: string) {
+    this.asistenciaService.obtenerCita(folio).subscribe({
       next: respuesta => {
         if (!respuesta.exito) {
           this.alerService.error(respuesta.mensaje);
@@ -84,6 +79,7 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
         }
         this.alerService.exito(respuesta.mensaje);
         this.cargarDatos(respuesta.respuesta);
+        this.estatusAsistencia.set(2);
         this.obtenerFotografia(respuesta.respuesta.uuidArchivo);
       },
       error: error => {
@@ -133,12 +129,15 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
   }
 
   procesarRespuesta(codigo: string) {
-    console.log('Lectura recibida:', codigo);
+    const codigoLimpio = codigo.replace(/(\d{2})Ñ(\d{2})/g, '$1:$2');
 
-    const patronFormato = /^[A-ZÁÉÍÓÚÑ\s]+\|[A-Z0-9]+\|[A-ZÁÉÍÓÚÑ\s]+\|\d{2}\/\d{2}\/\d{4}\|\d{2}:\d{2}\|.+$/i;
+    console.log(codigoLimpio)
+
+    const patronFormato = /^([^|\]]+[|\]]){5}[^|\]]+$/;
 
     if (patronFormato.test(codigo)) {
-      const [nombre, folio, especialidad, fecha, hora, turno] = codigo.split('|');
+      const [nombre, folio, especialidad, fecha, hora, turno] = codigo.split(/[|\]]/);
+
       this.confirmarFolio(folio);
     } else {
       this.alerService.error('QR incorrecto.');

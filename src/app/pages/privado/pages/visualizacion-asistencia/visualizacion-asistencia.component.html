@@ -34,20 +34,29 @@
       @if (!datosMedico()) {
         <div class="flex flex-column justify-content-center align-items-center py-150p">
           <img role="presentation" alt="qr" title="qr" src="/assets/images/qr.png"
-               style="object-fit: cover" (click)="confirmarFolio()" class="cursor-pointer foto"/>
+               style="object-fit: cover" class="foto"/>
           <span class="texto-escanear-qr mb-5">Listo para escanear</span>
         </div>
       } @else {
         <div class="flex justify-content-start flex-wrap">
-          <div class="col-12 md:col-3 flex align-items-center justify-content-center
-              flex-column  half-border border-circle me-5">
-            <img class="foto" role="presentation" alt="img médico" title="img médico" [src]="fotoUrl"
-                 style="object-fit: cover; height: 100%; width: 50%"/>
+          <div class="col-12 md:col-3 flex align-items-center justify-content-center flex-column">
+            <div class="half-border border-circle overflow-hidden flex align-items-center justify-content-center"
+                 style="width: 15rem; height: 15rem;">
+
+              <img class="foto"
+                   role="presentation"
+                   alt="img médico"
+                   title="img médico"
+                   [src]="fotoUrl"
+                   style="object-fit: cover; width: 100%; height: 100%;"/>
+
+            </div>
           </div>
-          <div class="md:ms-5 md:col-8 col-12 p-2">
+          <div class="md:ms-5 md:col-9 col-12 p-2">
             <div class="flex flex-column">
               <span class="titulo-card-aspirante">Dr. {{ datosMedico()?.nomParticipante }}</span>
-              <span class="subtitulo-card-aspirante my-1">Matrícula: <strong>{{ datosMedico()?.matricula }}</strong></span>
+              <span
+                class="subtitulo-card-aspirante my-1">Matrícula: <strong>{{ datosMedico()?.matricula }}</strong></span>
               <span class="subtitulo-card-aspirante mt-4 mb-2"><strong>Especialidades</strong></span>
               <div class="flex flex-wrap">
                 @for (especialidad of datosMedico()?.especialidades; track especialidad) {
@@ -95,9 +104,9 @@
         </div>
       }
     </p-card>
-    @if (estatusAssitencia() == 2) {
+    @if (estatusAsistencia() == 2) {
       <div class="flex mt-2 justify-content-end">
-        <p-button type="button" label="Escanear nuevo código QR"/>
+        <p-button type="button" label="Escanear nuevo código QR" (click)="resetearVista()"/>
       </div>
     }
   </div>
