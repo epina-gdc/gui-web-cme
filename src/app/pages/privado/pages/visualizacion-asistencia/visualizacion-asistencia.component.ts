@@ -137,7 +137,7 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
 
     console.log(codigoLimpio)
 
-    const patronFormato = /^[A-ZÁÉÍÓÚÑ\s]+[|\]][A-Z0-9]+[|\]][A-ZÁÉÍÓÚÑ\s]+[|\]]\d{2}\/\d{2}\/\d{4}[|\]]\d{2}:\d{2}[|\]].+$/i;
+    const patronFormato = /^[A-ZÁÉÍÓÚÑ\s]+[|\]][A-Z0-9]+[|\]][A-ZÁÉÍÓÚÑ\s]+[|\]]\d{2}\/\d{2}\/\d{4}[|\]][^|\]]+[|\]].+$/i;
 
     if (patronFormato.test(codigo)) {
       const [nombre, folio, especialidad, fecha, hora, turno] = codigo.split(/[|\]]/);
