@@ -22,6 +22,7 @@ import { Mensajes } from '@utils/mensajes';
 import { AlertService } from '@services/alert.service';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
+import {CargaCalificacionesService} from '@services/carga-calificaciones.service';
 
 @Component({
   selector: 'app-buscar-convocatoria',
@@ -45,6 +46,7 @@ import { InputTextModule } from 'primeng/inputtext';
 })
 export class BuscarConvocatoriaComponent implements OnInit {
 
+  cargaCalificacionService: CargaCalificacionesService = inject(CargaCalificacionesService);
   asignacionMesaService = inject(AsignacionMesaService);
   mensajes = inject(Mensajes);
   alertaService = inject(AlertService)
@@ -121,6 +123,11 @@ export class BuscarConvocatoriaComponent implements OnInit {
     if (this.formulario.valid) {
       const formData = this.formulario.value as MesaConvocatoriaRequest;
 
+      if(!this.consultaEstatusCalificacion(formData.idConvocatoria)){
+        this.alertaService.alerta("No se ha concluido el proceso de carga de calificaciones.");
+        return
+      }
+
       this.asignacionMesaService.guardarMesaConvocatoria(formData).subscribe({
         next: (response) => {
 
@@ -181,6 +188,15 @@ export class BuscarConvocatoriaComponent implements OnInit {
   guardarConfiguracionUpdate(convocatoria: any) {
     const updatedConfigMesa = this.applyPartialUpdate(this.convocatoriaSeleccionadaEdicion(), convocatoria);
     console.log('updatedConfigMesa:', updatedConfigMesa);
+  }
+
+  consultaEstatusCalificacion(idConvocatoria: number): boolean{
+    this.cargaCalificacionService.consultaCargaCalificaciones(idConvocatoria).subscribe({
+      next: (response) => {
+        return response.respuesta.idEstatusCarga == 2;
+      }
+    });
+    return false;
   }
 
 

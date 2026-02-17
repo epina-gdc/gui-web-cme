@@ -21,3 +21,7 @@
   border-radius: 8px;
   border-top: #0F9B9B solid 10px;
 }
+
+::ng-deep .p-paginator-page-selected{
+  background: var(--Header, #611232);
+}
