@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 // PrimeNG Imports
@@ -42,9 +42,13 @@ export class AsistenciaExtraordinariaComponent extends GeneralComponent {
 
     private readonly MSG073: string = "El médico aspirante no cuenta con un registro previo.";
     private readonly MSG074: string = "El médico aspirante no cuenta con una cita.";
-    private readonly MSG075: string = "El médico aspirante no cuenta con cita. ¿Desea registrar su asistencia?.";
+    private readonly MSG075: string = "El médico aspirante no cuenta con cita. \n ¿Desea registrar su asistencia?.";
     private readonly MSG076: string = "Se realizo con éxito el registro de la asistencia.";
-    private readonly MSG077: string = "¿Está seguro de que desea eliminar esta cita?.";
+    private readonly MSG077: string = "¿Está seguro de que desea eliminar esta asistencia?.";
+    private readonly MSG0X1: string = "Ya cuentas con un registro de asistencia.";
+
+    private readonly MSG0E1: string = "Error al confirmar la asistencia.";
+
 
     searchQuery: string = '';
     aspirante: AsistenciaAspirante | null = null;
@@ -58,16 +62,17 @@ export class AsistenciaExtraordinariaComponent extends GeneralComponent {
 
     constructor(
         private confirmationService: ConfirmationService,
+
     ) {
         super();
     }
 
-    get tieneAsistencia(): boolean {
-        return (this.aspirante?.diaAsistenciaCita == null && this.aspirante?.horaAsistencia == null && this.aspirante?.turnoAsistencia == null);
+    get noTieneAsistencia(): boolean {
+        return (this.aspirante?.diaAsistenciaCita === null && this.aspirante?.horaAsistencia === null && this.aspirante?.turnoAsistencia === null);
     }
 
-    get tieneCita(): boolean {
-        return (this.aspirante?.fechaCita == null && this.aspirante?.horaCita == null && this.aspirante?.turnoCita == null && this.aspirante?.mesaCita == null);
+    get noTieneCita(): boolean {
+        return (this.aspirante?.fechaCita === null && this.aspirante?.horaCita === null && this.aspirante?.turnoCita === null && this.aspirante?.mesaCita === null);
     }
     // búsqueda
     search() {
@@ -84,15 +89,17 @@ export class AsistenciaExtraordinariaComponent extends GeneralComponent {
                 if (response.exito && response.respuesta) {
                     const data = response.respuesta;
                     this.aspirante = response.respuesta;
-                    if (this.tieneCita) {
-                        this._alertServices.informacion(this.MSG073);
+                    if (!this.noTieneAsistencia) {
+                        this._alertServices.informacion(this.MSG0X1);
+                    } else if (this.noTieneCita) {
+                        this._alertServices.informacion(this.MSG074);
                     }
 
                     if (response.respuesta?.uuidArchivo) {
                         this.obtenerFotografia(response.respuesta?.uuidArchivo);
                     }
                 } else {
-                    this._alertServices.error(response.mensaje);
+                    this._alertServices.alerta(response.mensaje);
                 }
                 this.loading = false;
             },
@@ -111,9 +118,12 @@ export class AsistenciaExtraordinariaComponent extends GeneralComponent {
     }
 
     register() {
-
+        let mensaje = "¿Desea registrar su asistencia?";
+        if (this.noTieneCita) {
+            mensaje = this.MSG075;
+        }
         this.confirmationService.confirm({
-            message: 'El médico aspirante no cuenta con cita. \n ¿Desea registrar su asistencia?',
+            message: mensaje,
             header: ' ',
             acceptLabel: 'Sí, confirmar',
             rejectLabel: 'Cancelar',
@@ -137,13 +147,13 @@ export class AsistenciaExtraordinariaComponent extends GeneralComponent {
             next: (response: AsistenciaExtraordinariaResponse) => {
                 if (response.exito && response.respuesta) {
                     this.aspirante = response.respuesta;
-                    this._alertServices.informacion(this.MSG076);
+                    this._alertServices.exito(response.mensaje);
                 } else {
                     this._alertServices.error(response.mensaje);
                 }
             },
             error: (err) => {
-                this._alertServices.error('Error al confirmar la asistencia');
+                this._alertServices.error(this.MSG0E1);
             }
         });
     }
@@ -158,7 +168,7 @@ export class AsistenciaExtraordinariaComponent extends GeneralComponent {
             // IMPORTANTE: Estas clases deben coincidir con el CSS Global
             acceptButtonStyleClass: 'btn-modal-confirmar',
             rejectButtonStyleClass: 'btn-modal-cancelar',
-            accept: () => { /* ... */
+            accept: () => {
                 // Lógica real de eliminación
                 if (this.aspirante) {
                     this.eliminar(this.aspirante.idParticipante.toString());
@@ -167,7 +177,7 @@ export class AsistenciaExtraordinariaComponent extends GeneralComponent {
                 }
             },
             reject: () => {
-                //  this._alertServices.informacion("El sistema no realiza ningún cambio. Se mantiene la información actual de la cita");
+
             }
         });
     }
@@ -180,8 +190,9 @@ export class AsistenciaExtraordinariaComponent extends GeneralComponent {
                         this.aspirante.diaAsistenciaCita = null;
                         this.aspirante.horaAsistencia = null;
                         this.aspirante.turnoAsistencia = null;
-
-                        this._alertServices.informacion(this.MSG074);
+                        if (this.noTieneCita) {
+                            this._alertServices.informacion(this.MSG074);
+                        }
 
                     }
                 } else {
@@ -207,5 +218,7 @@ export class AsistenciaExtraordinariaComponent extends GeneralComponent {
             }
         });
     }
+
+
 
 }
