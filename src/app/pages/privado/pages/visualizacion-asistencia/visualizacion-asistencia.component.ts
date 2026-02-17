@@ -74,9 +74,7 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
   }
 
   confirmarFolio(folio: string = '') {
-    const folios = ['A7654321', '']
-    const folioConsulta: string = '25D0100121';
-    this.asistenciaService.obtenerCita(folioConsulta).subscribe({
+    this.asistenciaService.obtenerCita(folio).subscribe({
       next: respuesta => {
         if (!respuesta.exito) {
           this.alerService.error(respuesta.mensaje);
