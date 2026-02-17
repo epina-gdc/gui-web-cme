@@ -1,22 +1,26 @@
 @layer app-components {
   :host ::ng-deep .p-dialog {
-    border-top: 14px solid #0f9b9b !important;
+    border-top: 10px solid #0f9b9b !important;
+    border-radius: 10px;
+    width: 80%;
   }
 
-  .dialog {
-    width: 50%;
-    padding: 0 30px;
-  }
 
   @media screen and (min-width: 351px) and (max-width: 575px) {
 
+    :host ::ng-deep .p-dialog {
+      width: 90%;
+    }
     .contenedor-info {
       display: flex;
       flex-direction: column;
     }
 
   }
-  @media screen and (min-width: 992px) and (max-width: 1449px) {
+  @media screen and (min-width: 992px) and (max-width: 1199px) {
+    :host ::ng-deep .p-dialog {
+      width: 40%;
+    }
     .contenedor-imagen {
       margin: auto;
     }
@@ -24,8 +28,10 @@
   }
 
 
-  @media screen and (min-width: 1450px) {
-
+  @media screen and (min-width: 1200px) {
+    :host ::ng-deep .p-dialog {
+      width: 40%;
+    }
     .contenedor-info {
       display: flex;
       flex-direction: row;

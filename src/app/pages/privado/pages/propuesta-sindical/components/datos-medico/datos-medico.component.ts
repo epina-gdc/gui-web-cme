@@ -92,7 +92,6 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
       next: data => {
         this._alertServices.exito(data.mensaje);
         this.actualizarFoto();
-        this.consultarMatriculaFolio(true);
       }
     })
   }
@@ -281,7 +280,7 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
 
      this.pSindicalService.actualizarFotogradia(this.datosMedico()?.idParticipacion || 0, this.refGuid()).subscribe({
        next: (response: any) => {
-         console.log("")
+         this.consultarMatriculaFolio(true);
        }
      })
 
