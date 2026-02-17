@@ -49,3 +49,17 @@
         border-radius: 4px;
     }
 }
+
+.label-asistencia {
+
+    color: var(--baseBlanco, #FCFBFE);
+    text-align: center;
+    font-feature-settings: 'liga' off, 'clig' off;
+    font-family: "Noto Sans";
+    font-size: 3px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 120%;
+    /* 48px */
+
+}
