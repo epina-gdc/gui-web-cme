@@ -55,7 +55,7 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
   }
 
   consultarMatriculaFolio(imprimirPropuesta: boolean = false) {
-    this.blnFotoGuardada = false;
+    //this.blnFotoGuardada = false;
     this.pSindicalService.consultaPropuesta(this.f['matricula'].value).pipe(
       tap(data => {
         if (!data.exito) {
@@ -91,7 +91,8 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
     this.pSindicalService.nuevaPropuesta(idAsignacion, idSeccion).subscribe({
       next: data => {
         this._alertServices.exito(data.mensaje);
-        this.actualizarFoto();
+        this.consultarMatriculaFolio(true);
+        //this.actualizarFoto();
       }
     })
   }
@@ -202,7 +203,7 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
     });
   }
 
-  private guardarFoto(datos: FormData, archivo: File): void {
+  /*private guardarFoto(datos: FormData, archivo: File): void {
 
     this.blnFotoGuardada = false;
     const idUsuario = this.datosMedico()?.idUsuario;
@@ -238,7 +239,50 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
         this.refGuid.set(data.guid);
       }
     });
+  }*/
+
+  private guardarFoto(datos: FormData, archivo: File): void {
+    this.blnFotoGuardada = false;
+    const idUsuario = this.datosMedico()?.idUsuario;
+    const idParticipacion = this.datosMedico()?.idParticipacion;
+
+    if (!idUsuario || !idParticipacion) {
+      this._alertServices.error('No se pudo obtener la información del usuario.');
+      return;
+    }
+
+    this.documentoService.guardarFoto(datos, this.ID_MODULO, idUsuario).pipe(
+      switchMap((data: any) => {
+        if (!data?.guid) {
+          return throwError(() => new Error(data?.mensaje || 'Error al obtener GUID de la foto.'));
+        }
+        this.refGuid.set(data.guid);
+
+        //Actualización en BD
+        return this.pSindicalService.actualizarFotogradia(idParticipacion, data.guid);
+      }),
+
+      catchError((error) => {
+        this.blnFotoGuardada = false;
+        this._alertServices.error('Error en el proceso de guardado.');
+        console.log(error?.error || error?.message);
+        return of(null);
+      })
+
+    ).subscribe({
+      next: (response: any | null) => {
+        console.log('Response', response);
+        if(response.exito) {
+          this.blnFotoGuardada = true;
+          this.defaultFile = archivo;
+          this.consultarMatriculaFolio();
+        } else {
+          this._alertServices.error(response.mensaje);
+        }
+      }
+    });
   }
+
 
   private b64toBlob(b64Data: string, contentType: string = '', sliceSize: number = 512): Blob {
 
@@ -276,16 +320,14 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
     }
   }
 
-  actualizarFoto(){
+  /*actualizarFoto(){
 
      this.pSindicalService.actualizarFotogradia(this.datosMedico()?.idParticipacion || 0, this.refGuid()).subscribe({
        next: (response: any) => {
          this.consultarMatriculaFolio(true);
        }
      })
-
-
-  }
+  }*/
 
 
   get f() {
