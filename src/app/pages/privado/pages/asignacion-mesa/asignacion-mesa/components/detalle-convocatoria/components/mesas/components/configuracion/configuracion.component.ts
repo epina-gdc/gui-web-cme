@@ -89,20 +89,18 @@ export class ConfiguracionComponent {
   maxDate: Date = new Date();
 
   ngOnInit(): void {
+    this.obtenerListados();
     this.formulario = this.fb.group({
       fecAtencion: ['', Validators.required],
       numMesa: ['', Validators.required],
       idTurno: ['', Validators.required],
       numMedicosCupo: ['', [Validators.required, Validators.min(1),
-       maxLugaresDisponibles(() => this.formulario?.get('numMesa')?.value?.lugaresDisponibles || undefined)]],
+       maxLugaresDisponibles(() => this.formulario?.get('numMesa')?.value?.lugaresDisponibles || 0)]],
       idEspecialidad: ['', Validators.required]
     });
 
     this.minDate = dayjs(this.convocatoriaSeleccionada()?.fechaInicio).toDate();
     this.maxDate = dayjs(this.convocatoriaSeleccionada()?.fechaFin).toDate();
-
-    this.obtenerListados();
-
 
   }
 
@@ -114,7 +112,7 @@ export class ConfiguracionComponent {
     // listado de mesas
     this.asignacionMesaService.getMesasDisponibilidad(this.convocatoriaSeleccionada()?.idMesaConvocatoria as number).subscribe({
       next: (response: any) => {
-        //console.log('Respuesta:', response);
+        //console.log('Disponibles:', response);
         this.mesas = response.respuesta;
       },
       error: (err) => {
@@ -151,8 +149,8 @@ export class ConfiguracionComponent {
   }
 
   onChangeMesa($event: any) {
+    //console.log($event.value.lugaresDisponibles);
     this.numLugaresDisponibles.set($event.value.lugaresDisponibles);
-
     // Forzar revalidación del campo dependiente
     this.formulario.get('numMedicosCupo')?.updateValueAndValidity();
   }
