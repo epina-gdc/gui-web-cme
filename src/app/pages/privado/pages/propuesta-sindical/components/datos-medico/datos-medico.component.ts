@@ -28,7 +28,7 @@ import {Dialog} from 'primeng/dialog';
   styleUrl: './datos-medico.component.scss'
 })
 export class DatosMedicoComponent extends GeneralComponent implements OnInit {
-  private readonly ID_MODULO: number = 45;
+  private readonly ID_MODULO: number = 5;
 
   datosMedico: WritableSignal<DetallePropuestaSindical | null> = signal(null);
   datoSeccionSindical: WritableSignal<Seccion | null> = signal(null);
