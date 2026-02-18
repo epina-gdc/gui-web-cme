@@ -38,7 +38,7 @@
                             <ul class="list-none pl-0 mt-3 mb-0" [class]="bgColorClass">
                                 @for (esp of turno.especialidades; track esp.idMesaDetalle) {
                                 <li>
-                                    <div class="flex flex-row justify-content-start align-content-center  gap-2">
+                                    <div class="flex flex-row justify-content-start align-content-center  gap-2 my-2">
                                           @if(convocatoriaSeleccionada()?.estatus != 'CONCLUIDO'){
                                         <div class="flex-none">
 
@@ -50,7 +50,7 @@
                                         <div class="flex-grow-1 flex">
 
                                             <div
-                                                class="flex flex-row justify-content-between w-full align-items-center text-sm font-semibold">
+                                                class="flex flex-row justify-content-between w-full align-items-center text-sm font-semibold gap-4">
                                                 <div class="flex-grow-1">
                                                     <span class="txt-esp-label">{{ esp.especialidad | tituloCase}}</span>
                                                 </div>
