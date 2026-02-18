@@ -173,7 +173,7 @@ export class ConfiguracionComponent {
       this.asignacionMesaService.guardarConfiguracionMesa(mesaDetalle).subscribe({
         next: (response: any) => {
           //console.log('Respuesta:', response);
-          //this.limpiarFormulario();
+          this.limpiarFormulario();
           this.obtenerListados();
           this.accionActualiza.update((value) => true);
           setTimeout(() => {
