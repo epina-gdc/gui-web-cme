@@ -73,7 +73,7 @@
 
 
     </form>
-    @if(estadoConvocatoria) {
+    @if(estadoConvocatoria && totalElementos() > 0) {
     <p-table [value]="datosConfiguracion()" [scrollable]="true" [resizableColumns]="true" columnResizeMode="expand">
       <ng-template #caption>
         <div class="flex justify-content-between seccion-titulo">
