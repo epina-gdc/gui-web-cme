@@ -23,6 +23,7 @@ import { AlertService } from '@services/alert.service';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import {CargaCalificacionesService} from '@services/carga-calificaciones.service';
+import { catchError, map, Observable, of, switchMap, take } from 'rxjs';
 
 @Component({
   selector: 'app-buscar-convocatoria',
@@ -119,7 +120,7 @@ export class BuscarConvocatoriaComponent implements OnInit {
     });
   }
 
-  guardarConfiguracion(): void {
+  /*guardarConfiguracion(): void {
     if (this.formulario.valid) {
       const formData = this.formulario.value as MesaConvocatoriaRequest;
 
@@ -144,6 +145,36 @@ export class BuscarConvocatoriaComponent implements OnInit {
         },
         error: (err) => {
           console.error('Error al guardar configuración:', err);
+        }
+      });
+    } else {
+      console.warn('Formulario inválido');
+    }
+  }*/
+
+  guardarConfiguracion(): void {
+    if (this.formulario.valid) {
+      const formData = this.formulario.value as MesaConvocatoriaRequest;
+      this.consultaEstatusCalificacion(formData.idConvocatoria).pipe(
+        take(1),
+        switchMap(esValido => {
+          if (!esValido) {
+            this.alertaService.alerta("No se ha concluido el proceso de carga de calificaciones.");
+            return of(null);
+          }
+          return this.asignacionMesaService.guardarMesaConvocatoria(formData);
+        })
+      ).subscribe(response => {
+        if(response !== null) {
+          if (response.exito) {
+            console.log('Configuración guardada exitosamente:', response);
+            this.consultarConvocatorias();
+            this.formulario.reset();
+            this.alertaService.exito(this.mensajes.MSG083);
+          }
+          if (!response.exito) {
+            this.alertaService.error(response.mensaje);
+          }
         }
       });
     } else {
@@ -190,13 +221,19 @@ export class BuscarConvocatoriaComponent implements OnInit {
     console.log('updatedConfigMesa:', updatedConfigMesa);
   }
 
-  consultaEstatusCalificacion(idConvocatoria: number): boolean{
-    this.cargaCalificacionService.consultaCargaCalificaciones(idConvocatoria).subscribe({
-      next: (response) => {
-        return response.respuesta.idEstatusCarga == 2;
-      }
-    });
-    return false;
+  consultaEstatusCalificacion(idConvocatoria: number): Observable<boolean> {
+    const tipoConvocatoria = this.convocatorias.find(x => x.idConvocatoria === idConvocatoria)?.tipo.idTipoConvocatoria;
+    console.log(tipoConvocatoria);
+    if(tipoConvocatoria === 1) {
+      return this.cargaCalificacionService
+        .consultaCargaCalificaciones(idConvocatoria)
+        .pipe(
+          map(response => response.respuesta.idEstatusCarga === 2),
+          catchError(() => of(false))
+      );
+    } else {
+      return of(true);
+    }
   }
 
 
