@@ -78,7 +78,6 @@ export class BuscarConvocatoriaComponent implements OnInit {
     effect(() => {
       this.convocatoriaEstado.refreshTick();
       this.consultarConvocatorias();
-      //this.convocatoriaSeleccionada.update(v => v ? { ...v } : v);
     });
   }
 
@@ -119,6 +118,16 @@ export class BuscarConvocatoriaComponent implements OnInit {
         if (response.exito) {
           this.configuracionMesasTabla.update(v => response.respuesta.content);
           this.totalElementos = response.respuesta.page.totalElements;
+
+          const seleccionActual = this.convocatoriaSeleccionada();
+          if (seleccionActual) {
+            const nuevaReferencia = this.configuracionMesasTabla().find(
+              x => x.idMesaConvocatoria === seleccionActual.idMesaConvocatoria
+            );
+            if (nuevaReferencia) {
+              this.convocatoriaSeleccionada.set({ ...nuevaReferencia });
+            }
+          }
         }
       },
       error: (err) => {
