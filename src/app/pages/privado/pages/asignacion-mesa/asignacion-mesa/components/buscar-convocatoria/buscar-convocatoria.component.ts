@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, model, OnInit, signal, WritableSignal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, effect, inject, model, OnInit, signal, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { SelectModule } from 'primeng/select';
@@ -24,6 +24,7 @@ import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import {CargaCalificacionesService} from '@services/carga-calificaciones.service';
 import { catchError, map, Observable, of, switchMap, take } from 'rxjs';
+import { ConvocatoriaEstadoService } from '../../services/convocatoria-estado.service';
 
 @Component({
   selector: 'app-buscar-convocatoria',
@@ -73,7 +74,13 @@ export class BuscarConvocatoriaComponent implements OnInit {
 
   visible: boolean = false;
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private convocatoriaEstado: ConvocatoriaEstadoService) { 
+    effect(() => {
+      this.convocatoriaEstado.refreshTick();
+      this.consultarConvocatorias();
+      //this.convocatoriaSeleccionada.update(v => v ? { ...v } : v);
+    });
+  }
 
   ngOnInit(): void {
     this.formulario = this.fb.group({
