@@ -11,6 +11,7 @@ import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { Mensajes } from '@utils/mensajes';
 import {TituloCase} from '@pipes/titulo-case.pipe';
+import { ConvocatoriaEstadoService } from '@pages/privado/pages/asignacion-mesa/asignacion-mesa/services/convocatoria-estado.service';
 
 @Component({
   selector: 'app-detalle-mesas',
@@ -46,6 +47,7 @@ export class DetalleMesasComponent {
 
   confirmationService = inject(ConfirmationService);
   asignacionMesaService = inject(AsignacionMesaService);
+  convocatoriaEstado = inject(ConvocatoriaEstadoService);
   mensajes = inject(Mensajes);
 
   convocatoriaSeleccionada = model<MesaConfiguracion | undefined>(undefined);
@@ -91,6 +93,7 @@ export class DetalleMesasComponent {
         this.asignacionMesaService.eliminarEspecialidadMesa(esp.idMesaDetalle).subscribe({
           next: (response: any) => {
             console.log('Respuesta:', response);
+            this.convocatoriaEstado.notifyRefresh();
             this.accionActualiza.update((value) => true);
             setTimeout(() => {
               this.accionActualiza.update((value) => false);

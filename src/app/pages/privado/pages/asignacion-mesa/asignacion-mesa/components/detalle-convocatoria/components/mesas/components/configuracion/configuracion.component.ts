@@ -11,6 +11,7 @@ import dayjs from 'dayjs';
 import { CommonModule } from '@angular/common';
 
 import { MessageModule } from 'primeng/message';
+import { ConvocatoriaEstadoService } from '@pages/privado/pages/asignacion-mesa/asignacion-mesa/services/convocatoria-estado.service';
 interface Opcion {
   id: number;
   nombre: string;
@@ -69,6 +70,7 @@ export class ConfiguracionComponent {
   }
 
   asignacionMesaService = inject(AsignacionMesaService);
+  convocatoriaEstado = inject(ConvocatoriaEstadoService);
 
   convocatoriaSeleccionada = model<MesaConfiguracion | undefined>(undefined);
   accionActualiza = model<boolean | undefined>(undefined);
@@ -173,11 +175,11 @@ export class ConfiguracionComponent {
           //console.log('Respuesta:', response);
           this.limpiarFormulario();
           this.obtenerListados();
+          this.convocatoriaEstado.notifyRefresh();
           this.accionActualiza.update((value) => true);
           setTimeout(() => {
             this.accionActualiza.update((value) => false);
           }, 500);
-
         },
         error: (err) => {
           console.error('Error:', err);
