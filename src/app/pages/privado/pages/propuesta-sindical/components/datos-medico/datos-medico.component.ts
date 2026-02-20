@@ -60,6 +60,8 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
       tap(data => {
         if (!data.exito) {
           this._alertServices.error("La matrícula/folio ingresado no cuenta con una asignación, por favor verifícala.");
+          this.datosMedico.set(null);
+          this.datoSeccionSindical.set(null);
         }
       }),
       filter(data => data.exito),
@@ -199,6 +201,7 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
         const nombreArchivo = 'foto_perfil.png';
         const tipoArchivo = response.type;
         this.defaultFile = new File([response], nombreArchivo, {type: tipoArchivo});
+        this.blnFotoGuardada = true;
       }
     });
   }
