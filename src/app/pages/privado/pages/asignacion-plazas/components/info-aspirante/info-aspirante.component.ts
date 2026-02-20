@@ -89,7 +89,8 @@ export class InfoAspiranteComponent {
     this.aspirante.matricula = this.asignacion.datosGenerales?.matriculaFolio ?? '';
     this.aspirante.especialidades = this.asignacion.datosGenerales?.especialidades.split(',').map(item => item.trim()) ?? [];
     this.aspirante.sexo = this.asignacion.datosGenerales?.genero ?? '';
-    this.aspirante.curp = this.asignacion.datosGenerales?.rfc ?? '';
+    this.aspirante.curp = this.asignacion.datosGenerales?.curp ?? '';
+    this.aspirante.rfc = this.asignacion.datosGenerales?.rfc ?? '';
     this.aspirante.email = this.asignacion.datosGenerales?.correo ?? '';
     this.aspirante.emailAdicional = this.asignacion.datosGenerales?.correoAdicional ?? '';
     this.obtenerFotografia(this.asignacion.datosGenerales?.refFotografia ?? '');
