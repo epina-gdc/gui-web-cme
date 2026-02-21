@@ -140,7 +140,6 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
     this.activatedRoute.data.subscribe(({catalogos}) => {
       const defaultValue = {label: "Selecciona opción", value: null};
       this.catalogoAsistencia.set(mapearArregloTipoDropdown(catalogos[0].respuesta, 'desTipoAsistencia', 'idTipoAsistencia'));
-      console.log(catalogos[1].respuesta);
       const turnosFormateados: TipoDropdown[] = catalogos[1].respuesta.map((item: RespuestaTurno) => {
         const fmt = (hora: any) => hora.toString().replace(/(\d+)(\d{2})$/, "$1:$2");
 
