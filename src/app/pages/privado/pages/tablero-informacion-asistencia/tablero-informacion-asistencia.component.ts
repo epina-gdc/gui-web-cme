@@ -138,9 +138,12 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
 
     this.activatedRoute.data.subscribe(({catalogos}) => {
       const defaultValue = {label: "Selecciona opción", value: null};
-      this.catalogoAsistencia.set(mapearArregloTipoDropdown(catalogos[0].respuesta, 'desTipoAsistencia', 'idTipoAsistencia'))
-      this.catalogoTurno.set(mapearArregloTipoDropdown(catalogos[1].respuesta, 'desTurno', 'idTurno'));
-
+      this.catalogoAsistencia.set(mapearArregloTipoDropdown(catalogos[0].respuesta, 'desTipoAsistencia', 'idTipoAsistencia'));
+      const turnos: TipoDropdown[]  = mapearArregloTipoDropdown(catalogos[1].respuesta, 'horaInicio', 'idTurno');
+      const turnosFormateados: TipoDropdown[] = turnos.map(turno => ({
+        label: turno.label.toString().slice(0, -2) + ":" + turno.label.toString().slice(-2), value: turno.value
+      }))
+      this.catalogoTurno.set(turnosFormateados)
       this.catalogoAsistencia.update(actual => [defaultValue, ...actual]);
       this.catalogoTurno.update(actual => [defaultValue, ...actual]);
 
@@ -177,7 +180,7 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
             this.asistencia.set(respuesta.respuesta);
             this.fechaSeleccionada.set(objBusqueda.fecha || null);
 
-            if(descargarExcel){
+            if (descargarExcel) {
               const asistenciaCitaPorHora = this.asistencia().asistenciaCitaPorHora.find(i => {
                 return i.conteo > 0;
               });
@@ -190,13 +193,13 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
               const diaTurnoAsistenciaExtraordinaria = this.asistencia().diaTurnoAsistenciaExtraordinaria.find(i => {
                 return i.conteo > 0;
               });
-              if( asistenciaCitaPorHora ||
-                  asistenciaExtraordinariaPorHora ||
-                  diaTurnoAsistenciaCita ||
-                  diaTurnoAsistenciaExtraordinaria
-              ){
-                  this.descargarExcel();
-              }else{
+              if (asistenciaCitaPorHora ||
+                asistenciaExtraordinariaPorHora ||
+                diaTurnoAsistenciaCita ||
+                diaTurnoAsistenciaExtraordinaria
+              ) {
+                this.descargarExcel();
+              } else {
                 this._alertServices.alerta("No existen registros");
               }
             }
@@ -274,7 +277,7 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
 
   validarForm(): boolean {
     const valid = this.f['fecha'].value || this.f['turno'].value || this.f['tipoAsistencia'].value;
-    return  !valid;
+    return !valid;
   }
 
   ngOnDestroy() {
