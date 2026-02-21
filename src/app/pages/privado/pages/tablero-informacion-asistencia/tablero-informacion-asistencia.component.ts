@@ -14,6 +14,7 @@ import dayjs from 'dayjs';
 import {NgClass} from '@angular/common';
 import {saveAs} from 'file-saver';
 import {Subscription, timer} from 'rxjs';
+import {RespuestaTurno} from '@models/repsuesta-turno.interfaace';
 
 @Component({
   selector: 'app-tablero-informacion-asistencia',
@@ -139,11 +140,16 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
     this.activatedRoute.data.subscribe(({catalogos}) => {
       const defaultValue = {label: "Selecciona opción", value: null};
       this.catalogoAsistencia.set(mapearArregloTipoDropdown(catalogos[0].respuesta, 'desTipoAsistencia', 'idTipoAsistencia'));
-      const turnos: TipoDropdown[] = mapearArregloTipoDropdown(catalogos[1].respuesta, 'horaInicio', 'idTurno');
-      const turnosFormateados: TipoDropdown[] = turnos.map(turno => ({
-        label: turno.label.toString().replace(/(\d+)(\d{2})$/, "$1:$2"), value: turno.value
-      }))
-      this.catalogoTurno.set(turnosFormateados)
+      const turnosFormateados: TipoDropdown[] = catalogos[1].respuesta.map((item: RespuestaTurno) => {
+        const fmt = (hora: any) => hora.toString().replace(/(\d+)(\d{2})$/, "$1:$2");
+
+        return {
+          value: item.idTurno,
+          label: `${fmt(item.horaInicio)} - ${fmt(item.horaFin)}`
+        };
+      });
+
+      this.catalogoTurno.set(turnosFormateados);
       this.catalogoAsistencia.update(actual => [defaultValue, ...actual]);
       this.catalogoTurno.update(actual => [defaultValue, ...actual]);
 
