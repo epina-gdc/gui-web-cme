@@ -60,12 +60,13 @@ export class AsignacionPlazasComponent {
     });
   }
 
-  onBuscar() {
+  onBuscar(origen: string) {
     this.form.get('folio')?.markAsTouched();
     this.form.updateValueAndValidity();
+    
 
     const matricula = (this.form.get('folio')?.value ?? '').toString().trim();
-
+    console.log('Origen: ', origen, matricula);
     if (!matricula) return; // evita buscar vacío
 
     this.asignacionService.getAspirante(matricula).subscribe({
@@ -110,8 +111,9 @@ export class AsignacionPlazasComponent {
       return;
     }
     this.tab = 0;
-    this.onBuscar();
     this.refreshKey++;
+    console.log(this.refreshKey);
+    this.onBuscar('refresh');  
   }
 
 }

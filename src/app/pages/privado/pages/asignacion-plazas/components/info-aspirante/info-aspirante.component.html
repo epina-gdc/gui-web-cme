@@ -50,7 +50,70 @@
 
       <div class="col-12">
         <div class="grid">
-          <div class="col-12 md:col-2">
+          <div class="col-12 md:col-4" >
+            <div class="grid">
+              <div class="col-12 md:col-5">
+                <div class="info-label">Matrícula/Folio</div>
+                <div class="info-value">{{ aspirante.matricula }}</div>
+              </div>
+
+              <div class="col-12 md:col-7">
+                <div class="info-label">Especialidad(es)</div>
+                <div class="esp-inline"> 
+                  <ng-container *ngFor="let e of aspirante.especialidades; let last = last"> 
+                    <span class="esp-item-text">{{ e | tituloCase}}</span> <span *ngIf="!last" class="esp-sep">/</span>
+                  </ng-container> 
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 md:col-8">
+            <div class="grid">
+              <div class="col-12 md:col-4">
+                <div class="grid">
+                  <div class="col-12 md:col-4">
+                    <div class="info-label">Sexo</div>
+                    <div class="info-value">{{ aspirante.sexo }}</div>
+                  </div>
+                  <div class="col-12 md:col-8">
+                    <div class="info-label">CURP</div>
+                    <div class="info-value">{{ aspirante.curp }}</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-12 md:col-2">
+                <div class="info-label">RFC</div>
+                <div class="info-value">{{ aspirante.rfc }}</div>
+              </div>
+
+              <div class="col-12 md:col-3">
+                <div class="info-label">Correo electrónico</div>
+                <div class="info-value">{{ aspirante.email }}</div>
+              </div>
+              <div class="col-12 md:col-3">
+                <div class="info-label">Correo electrónico adicional</div>
+                <div class="info-value">{{ aspirante.emailAdicional }}</div>
+              </div>
+
+            </div>
+          </div>
+
+          <!--<div class="col-12 md:col-4">
+            <div class="grid">
+              <div class="col-12 md:col-6">
+                <div class="info-label">Correo electrónico</div>
+                <div class="info-value">{{ aspirante.email }}</div>
+              </div>
+              <div class="col-12 md:col-6">
+                <div class="info-label">Correo electrónico adicional</div>
+                <div class="info-value">{{ aspirante.emailAdicional }}</div>
+              </div>
+            </div>
+          </div>-->
+
+
+          <!--<div class="col-12 md:col-2">
             <div class="info-label">Matrícula</div>
             <div class="info-value">{{ aspirante.matricula }}</div>
           </div>
@@ -71,14 +134,15 @@
           </div>
           <div class="col-12 md:col-3">
             <div class="grid">
-              <div class="col-12 md:col-6">
+              <div class="col-6">
                 <div class="info-label">CURP</div>
                 <div class="info-value">{{ aspirante.curp }}</div>
               </div>
-              <div class="col-12 md:col-6">
+              <div class="col-6">
                 <div class="info-label">RFC</div>
                 <div class="info-value">{{ aspirante.rfc }}</div>
               </div>
+
             </div>     
           </div>
           <div class="col-12 md:col-2">
@@ -88,7 +152,7 @@
           <div class="col-12 md:col-2">
             <div class="info-label">Correo electrónico adicional</div>
             <div class="info-value">{{ aspirante.emailAdicional }}</div>
-          </div>
+          </div>-->
         </div>
       </div>
     </div>
@@ -159,13 +223,13 @@
           <p class="texto-label-oferta-card text-600">OOAD:</p>
         </div>
         <div class="col-6 justify-content-end" style="text-align:right">
-          <p class="texto-label-oferta-card text-900">{{ aspirante.plaza.ooad | titlecase }}</p>
+          <p class="texto-label-oferta-card text-900">{{ aspirante.plaza.ooad | titlecase}}</p>
         </div>
         <div class="col-6 justify-content-start">
           <p class="texto-label-oferta-card text-600">Zona:</p>
         </div>
         <div class="col-6 justify-content-end" style="text-align:right">
-          <p class="texto-label-oferta-card text-900">{{ aspirante.plaza.zona | titlecase }}</p>
+          <p class="texto-label-oferta-card text-900">{{ aspirante.plaza.zona }}</p>
         </div>
         <div class="col-6 justify-content-start">
           <p class="texto-label-oferta-card text-600">No de plaza:</p>
