@@ -20,10 +20,11 @@ import { VerificacionDocsService } from '@services/verificacion-docs.service';
 import { DictamenRespuesta } from '@models/dictamen-respuesta.interface';
 import { AdjuntoOpinion, OpinionTecnicaRespuesta } from '@models/opnion-tecnia-respuesta.interface';
 import { TipoDropdown } from '@models/tipo-dropdown.interface';
+import {TituloCase} from '@pipes/titulo-case.pipe';
 
 @Component({
   selector: 'app-info-aspirante',
-  imports: [CommonModule, Card, Avatar, DialogModule, ConfirmDialogModule, Select, Button, FormsModule, TagModule],
+  imports: [CommonModule, Card, Avatar, DialogModule, ConfirmDialogModule, Select, Button, FormsModule, TagModule, TituloCase],
   providers: [ConfirmationService],
   templateUrl: './info-aspirante.component.html',
   styleUrl: './info-aspirante.component.scss'
@@ -93,7 +94,7 @@ export class InfoAspiranteComponent {
     this.aspirante.rfc = this.asignacion.datosGenerales?.rfc ?? '';
     this.aspirante.email = this.asignacion.datosGenerales?.correo ?? '';
     this.aspirante.emailAdicional = this.asignacion.datosGenerales?.correoAdicional ?? '';
-    this.obtenerFotografia(this.asignacion.datosGenerales?.refFotografia ?? '');
+    //this.obtenerFotografia(this.asignacion.datosGenerales?.refFotografia ?? '');
     if (this.asignacion.asignacionMedico?.id != null && this.asignacion.asignacionMedico?.id > 0) {
       //Sustitución
       this.aspirante.asignacion.ooad = this.asignacion.asignacionMedico?.idSustitucion?.desOoad ?? '';
@@ -113,6 +114,7 @@ export class InfoAspiranteComponent {
       this.tieneAsignacion = false;
       this.muestraTag = false;
       this.tipoAsignacion = 0;
+      this.refreshKey = 0;
     }
   }
 
@@ -125,6 +127,9 @@ export class InfoAspiranteComponent {
         const tipoArchivo = response.type;
         this.fotoFile = new File([response], nombreArchivo, { type: tipoArchivo });
         this.aspirante.fotoUrl = URL.createObjectURL(this.fotoFile);
+      },
+      error: (error) => {
+        console.log(error);
       }
     });
   }

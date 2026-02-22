@@ -75,13 +75,13 @@
           </div>
         </div>
         <span class="titulo-menu-asignacion font-normal text-color mb-3">Información de asignación</span>
-        <div class="flex flex-wrap gap-5 mb-3 pb-4 border-bottom-2 border-blue-50">
-          <div class="flex flex-column detalle-aspirante ">
-            <span>Plaza asignada</span>
-            @if (this.datosMedico()?.numeroPlaza) {
-              <p>Plaza {{ this.datosMedico()?.numeroPlaza }}</p>
-            }
-          </div>
+        <div class="flex flex-wrap gap-4 mb-4 pb-3 border-bottom-2 border-blue-50">
+          @if (this.datosMedico()?.numeroPlaza) {
+            <div class="flex flex-column detalle-aspirante ">
+              <span>Plaza asignada</span>
+              <p>{{ this.datosMedico()?.numeroPlaza }}</p>
+            </div>
+          }
           <div class="flex flex-column  detalle-aspirante">
             <span>OOAD asignada</span>
             <p>{{ this.datosMedico()?.ooadPlaza }}</p>
@@ -102,10 +102,12 @@
             <span>Modalidad</span>
             <p>{{ this.datosMedico()?.modalidad }}</p>
           </div>
-          <div class="flex flex-column  detalle-aspirante">
-            <span>Tipo de unidad</span>
-            <p>{{ this.datosMedico()?.tipoUnidad }}</p>
-          </div>
+          @if (this.datosMedico()?.tipoUnidad) {
+            <div class="flex flex-column  detalle-aspirante">
+              <span>Tipo de unidad</span>
+              <p>{{ this.datosMedico()?.tipoUnidad }}</p>
+            </div>
+          }
         </div>
         <span class="titulo-menu-asignacion font-normal text-color mb-3">Dirección</span>
         <div class="flex flex-wrap gap-5 mb-3 pb-4 border-bottom-2 border-blue-50">
