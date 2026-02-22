@@ -94,7 +94,7 @@ export class InfoAspiranteComponent {
     this.aspirante.rfc = this.asignacion.datosGenerales?.rfc ?? '';
     this.aspirante.email = this.asignacion.datosGenerales?.correo ?? '';
     this.aspirante.emailAdicional = this.asignacion.datosGenerales?.correoAdicional ?? '';
-    //this.obtenerFotografia(this.asignacion.datosGenerales?.refFotografia ?? '');
+    this.obtenerFotografia(this.asignacion.datosGenerales?.refFotografia ?? '');
     if (this.asignacion.asignacionMedico?.id != null && this.asignacion.asignacionMedico?.id > 0) {
       //Sustitución
       this.aspirante.asignacion.ooad = this.asignacion.asignacionMedico?.idSustitucion?.desOoad ?? '';
