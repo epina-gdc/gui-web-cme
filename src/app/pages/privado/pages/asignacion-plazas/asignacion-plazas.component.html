@@ -5,7 +5,7 @@
   </div>
 
   <header class="buscador-background flex justify-content-center align-items-center ">
-    <form [formGroup]="form" class="p-fluid" (ngSubmit)="onBuscar('boton')">
+    <form [formGroup]="form" class="p-fluid" (ngSubmit)="onBuscar()">
       <div>
         <h2 class="titulo-asignaciones">Búsqueda por matrícula/folio</h2>
         <div class="search_form">
@@ -30,7 +30,7 @@
 
     <div *ngIf="exist">
       <app-info-aspirante [refreshKey]="refreshKey" [asignacion]="busqueda"
-      (asignacionRegistrada)="onRegistroGuardado($event)"></app-info-aspirante>
+      ></app-info-aspirante>
 
       <!--**ESCENARIO TABS-->
       <div *ngIf="!tieneAsignacion">
@@ -77,7 +77,6 @@
         }
         @case (2) {
         <app-asignacion-sustitucion [infoAspirante]="busqueda.datosGenerales!"
-        (asignacionRegistrada)="onRegistroGuardado($event)" 
         ></app-asignacion-sustitucion>
         }
         }

@@ -11,7 +11,7 @@ import {mapearArregloTipoDropdown} from '@utils/funciones';
 import {TableroInformacionService} from '@services/tablero-informacion.service';
 import {Asistencia, TableroAsistenciaInterface} from '@models/tableroAsistencia.interface';
 import dayjs from 'dayjs';
-import {NgClass} from '@angular/common';
+import {NgClass, DatePipe} from '@angular/common';
 import {saveAs} from 'file-saver';
 import {Subscription, timer} from 'rxjs';
 import {RespuestaTurno} from '@models/repsuesta-turno.interfaace';
@@ -24,7 +24,8 @@ import {RespuestaTurno} from '@models/repsuesta-turno.interfaace';
     Select,
     Button,
     CardModule,
-    NgClass
+    NgClass,
+    DatePipe
   ],
   templateUrl: './tablero-informacion-asistencia.component.html',
   styleUrl: './tablero-informacion-asistencia.component.scss'
@@ -145,7 +146,8 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
 
         return {
           value: item.idTurno,
-          label: `${fmt(item.horaInicio)} - ${fmt(item.horaFin)}`
+          //label: `${fmt(item.horaInicio)} - ${fmt(item.horaFin)}`
+          label: `${fmt(item.horaInicio)} hrs.`
         };
       });
 
@@ -166,7 +168,7 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
 
   inicializarForm(): FormGroup {
     return this.fb.group({
-      fecha: [''],
+      fecha: [this.fechaActual],
       turno: [''],
       tipoAsistencia: [''],
     })
@@ -179,6 +181,7 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
     this.consultaPorCita.set(Number(objBusqueda.idTipoAsistencia) == 1 || objBusqueda.idTipoAsistencia == null)
     this.consultaExtraordinaria.set(Number(objBusqueda.idTipoAsistencia) == 2 || objBusqueda.idTipoAsistencia == null)
 
+    console.log(objBusqueda);
     this.tableroInformacionService.buscarInformacion(objBusqueda.fecha, objBusqueda.idTurno, objBusqueda.idTipoAsistencia)
       .subscribe({
         next: (respuesta) => {
@@ -232,7 +235,7 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
 
   objConsulta(): { fecha: string | null, idTurno: string | null, idTipoAsistencia: string | null } {
     return {
-      fecha: this.f['fecha'].value ? dayjs(this.f['fecha'].value).format('YYYY-MM-DD') : dayjs(this.fechaActual).format('YYYY-MM-DD'),
+      fecha: this.f['fecha'].value ? dayjs(this.f['fecha'].value).format('YYYY-MM-DD') : null,
       idTurno: this.f['turno'].value?.value ? this.f['turno'].value.value : null,
       idTipoAsistencia: this.f['tipoAsistencia'].value?.value ? this.f['tipoAsistencia'].value.value : null
     }

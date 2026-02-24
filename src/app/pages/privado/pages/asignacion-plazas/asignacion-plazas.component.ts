@@ -52,6 +52,7 @@ export class AsignacionPlazasComponent {
 
   ngOnInit(): void {
     this.estadoPlazaService.refreshPlazas$.subscribe(() => {
+      console.log('oninit');
       this.refresh();
     });
 
@@ -60,13 +61,12 @@ export class AsignacionPlazasComponent {
     });
   }
 
-  onBuscar(origen: string) {
+  onBuscar(refresh: boolean = false) {
     this.form.get('folio')?.markAsTouched();
     this.form.updateValueAndValidity();
-    
 
     const matricula = (this.form.get('folio')?.value ?? '').toString().trim();
-    console.log('Origen: ', origen, matricula);
+    console.log('refresh: ', refresh, matricula);
     if (!matricula) return; // evita buscar vacío
 
     this.asignacionService.getAspirante(matricula).subscribe({
@@ -79,6 +79,10 @@ export class AsignacionPlazasComponent {
             this.tieneAsignacion = true;
           else
             this.tieneAsignacion = false;
+          if(refresh)
+            this.refreshKey++;
+          else
+            this.refreshKey = 0;
         } else {
           this.alertaService.error(response.mensaje);
           this.exist = false;
@@ -101,19 +105,17 @@ export class AsignacionPlazasComponent {
     this.tab = 0;
   }
 
-  onRegistroGuardado(e: { id: number }) {
+  /*onRegistroGuardado(e: { id: number }) {
     //Refresh datos
     this.refresh();
-  }
+  }*/
 
   refresh() {
     if (this.form == undefined) {
       return;
     }
     this.tab = 0;
-    this.refreshKey++;
-    console.log(this.refreshKey);
-    this.onBuscar('refresh');  
+    this.onBuscar(true); 
   }
 
 }
