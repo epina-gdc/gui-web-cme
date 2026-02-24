@@ -38,7 +38,7 @@
           <div class="xl:col-3 col-12 flex align-items-center">
             <div class="flex align-items-center gap-4 justify-content-between mt-4">
               <p-button type="button" class="w-full" variant="outlined" label="Limpiar" (onClick)="limpiar()"/>
-              <p-button type="button" class="w-full" label="Buscar" (onClick)="buscar()" [disabled]="validarForm()"/>
+              <p-button type="button" class="w-full" label="Buscar" (onClick)="buscar()"/>
             </div>
           </div>
         </div>
@@ -138,7 +138,7 @@
       </div>
       <div class="flex justify-content-end align-items-center mt-3">
         <span
-          class="header-tab-documentacion">Total de asistencias del día {{ fechaSeleccionada() }}
+          class="header-tab-documentacion">Total de asistencias del día {{ fechaSeleccionada() | date:'dd/MM/yyyy' }}
           : <strong>&ensp;{{ totalAsistenciaCitas() }}&ensp;</strong> médicos aspirantes.</span>
         <i class="cme-total-aspirantes ms-2" style="font-size:3rem; color: #55BBD1"></i>
       </div>
@@ -185,7 +185,7 @@
         }
       </div>
       <div class="flex justify-content-end align-items-center mt-3">
-        <span class="header-tab-documentacion">Total de asistencias del día {{ this.fechaSeleccionada() }}
+        <span class="header-tab-documentacion">Total de asistencias del día {{ this.fechaSeleccionada() | date:'dd/MM/yyyy' }}
           :&ensp;<strong>{{ totalAsistenciaExtraordinaria() }}</strong>&ensp;médicos aspirantes.</span>
         <i class="cme-total-aspirantes ms-2" style="font-size:3rem; color: #55BBD1"></i>
       </div>
