@@ -10,6 +10,7 @@ import { mapearArregloTipoDropdown } from '@utils/funciones';
 import { CatalogosGeneralesService } from '@services/catalogos-generales.service';
 import { AlertService } from '@services/alert.service';
 import { Mensajes } from '@utils/mensajes';
+import { EstadoOfertaService } from '@services/estado-oferta.service';
 
 @Component({
   selector: 'app-asignacion-sustitucion',
@@ -19,7 +20,7 @@ import { Mensajes } from '@utils/mensajes';
 })
 export class AsignacionSustitucionComponent {
   @Input() infoAspirante!: InfoAspirante;
-  @Output() asignacionRegistrada = new EventEmitter<{ id: number }>();
+  //@Output() asignacionRegistrada = new EventEmitter<{ id: number }>();
   
   asignacionPlazaService: AsignacionPlazaService = inject(AsignacionPlazaService);
   catalogosService: CatalogosGeneralesService = inject(CatalogosGeneralesService);
@@ -41,7 +42,7 @@ export class AsignacionSustitucionComponent {
   formSustitucion!: FormGroup;
   default_catalogo: TipoDropdown = {value:0,label:'Seleccione una opción'};
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private readonly estadoPlazaService: EstadoOfertaService) {}
   
   ngOnInit(): void {
     /*this.formSustitucion = this.fb.group({
@@ -159,7 +160,8 @@ export class AsignacionSustitucionComponent {
         if (response.exito) {
           this.alertaService.exito(this.mensajes.MSG047);
           this.asignacionConfirmada = true;
-          this.asignacionRegistrada.emit({ id: this.infoAspirante.idUsuario });
+          //this.asignacionRegistrada.emit({ id: this.infoAspirante.idUsuario });
+          this.estadoPlazaService.notificarRefreshPlazas();
         } else {
           this.alertaService.error(response.mensaje);
           return;

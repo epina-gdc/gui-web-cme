@@ -21,6 +21,7 @@ import { DictamenRespuesta } from '@models/dictamen-respuesta.interface';
 import { AdjuntoOpinion, OpinionTecnicaRespuesta } from '@models/opnion-tecnia-respuesta.interface';
 import { TipoDropdown } from '@models/tipo-dropdown.interface';
 import {TituloCase} from '@pipes/titulo-case.pipe';
+import { EstadoOfertaService } from '@services/estado-oferta.service';
 
 @Component({
   selector: 'app-info-aspirante',
@@ -31,8 +32,8 @@ import {TituloCase} from '@pipes/titulo-case.pipe';
 })
 export class InfoAspiranteComponent {
   @Input() asignacion!: BusquedaResponse;
-  @Input() refreshKey = 0;
-  @Output() asignacionRegistrada = new EventEmitter<{ id: number }>();
+  @Input() refreshKey!: number;
+  //@Output() asignacionRegistrada = new EventEmitter<{ id: number }>();
 
 
   documentoService: DocumentoService = inject(DocumentoService);
@@ -74,6 +75,7 @@ export class InfoAspiranteComponent {
 
   motivoSeleccionado: string | null = null;
 
+  constructor(private readonly estadoPlazaService: EstadoOfertaService) {}
 
   ngOnInit(): void {
     //this.obtenerAspirante();
@@ -88,7 +90,7 @@ export class InfoAspiranteComponent {
     this.idUsuario = this.asignacion.datosGenerales?.idUsuario ?? 0;
     this.aspirante.nombreCompleto = this.asignacion.datosGenerales?.nombreCompleto ?? '';
     this.aspirante.matricula = this.asignacion.datosGenerales?.matriculaFolio ?? '';
-    this.aspirante.especialidades = this.asignacion.datosGenerales?.especialidades.split(',').map(item => item.trim()) ?? [];
+    this.aspirante.especialidades = this.asignacion.datosGenerales?.especialidades == null ? [] : this.asignacion.datosGenerales?.especialidades.split(',').map(item => item.trim()) ?? [];
     this.aspirante.sexo = this.asignacion.datosGenerales?.genero ?? '';
     this.aspirante.curp = this.asignacion.datosGenerales?.curp ?? '';
     this.aspirante.rfc = this.asignacion.datosGenerales?.rfc ?? '';
@@ -108,14 +110,12 @@ export class InfoAspiranteComponent {
       console.log('Key:', this.refreshKey);
       if(this.refreshKey == 0)
         this.getMessage(this.tipoAsignacion);
-      else
-        this.refreshKey = 0;
     } else {
       this.tieneAsignacion = false;
       this.muestraTag = false;
       this.tipoAsignacion = 0;
-      this.refreshKey = 0;
     }
+    console.log('KeyFinal:', this.refreshKey);
   }
 
   obtenerFotografia(uuidArchivo: string): void {
@@ -130,6 +130,7 @@ export class InfoAspiranteComponent {
       },
       error: (error) => {
         console.log(error);
+        this.aspirante.fotoUrl = '';
       }
     });
   }
@@ -209,7 +210,8 @@ export class InfoAspiranteComponent {
         console.log('Result ', response);
         if (response.exito) {
           this.alertaService.exito(tipo == TipoAsignacion.CambioRama ? this.mensajes.MSG052 : this.mensajes.MSG050);
-          this.asignacionRegistrada.emit({ id: this.idUsuario });
+          //this.asignacionRegistrada.emit({ id: this.idUsuario });
+          this.estadoPlazaService.notificarRefreshPlazas();
         } else {
           this.alertaService.error(response.mensaje);
         }

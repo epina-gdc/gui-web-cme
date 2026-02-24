@@ -37,7 +37,7 @@ import {OnlyNumbersDirective} from '@directives/only-numbers.directive';
 })
 export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
   @Input() infoAspirante!: InfoAspirante;
-  @Output() asignacionRegistrada = new EventEmitter<{ id: number }>();
+  //@Output() asignacionRegistrada = new EventEmitter<{ id: number }>();
 
   asignacionPlazaService: AsignacionPlazaService = inject(AsignacionPlazaService);
   tipoAsignacion = TipoAsignacion.PlazaOrdinaria;
