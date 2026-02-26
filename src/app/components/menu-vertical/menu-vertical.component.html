@@ -1,7 +1,7 @@
 <div class="border-round-2xl bg-white h-full p-2">
   <p class="titulo-menu-asignacion m-3">Menú</p>
 
-  <p-accordion [value]="activePanelId ?? 0" (valueChange)="onAccordionChange($event)">
+  <p-accordion [value]="activePanelId ?? 0" >
     @for (modulo of userData?.modulos; track modulo.idModuloMenu) {
       <p-accordion-panel
         [value]="modulo.idModuloMenu"
