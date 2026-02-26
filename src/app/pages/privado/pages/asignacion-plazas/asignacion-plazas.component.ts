@@ -52,7 +52,7 @@ export class AsignacionPlazasComponent {
 
   ngOnInit(): void {
     this.estadoPlazaService.refreshPlazas$.subscribe(() => {
-      console.log('oninit');
+      //console.log('oninit');
       this.refresh();
     });
 
@@ -66,12 +66,12 @@ export class AsignacionPlazasComponent {
     this.form.updateValueAndValidity();
 
     const matricula = (this.form.get('folio')?.value ?? '').toString().trim();
-    console.log('refresh: ', refresh, matricula);
+    //console.log('refresh: ', refresh, matricula);
     if (!matricula) return; // evita buscar vacío
 
     this.asignacionService.getAspirante(matricula).subscribe({
       next: (response) => {
-        console.log('Result Busqueda', response);
+        //console.log('Result Busqueda', response);
         if (response.exito) {
           this.busqueda = structuredClone(response.respuesta);
           this.exist = true;

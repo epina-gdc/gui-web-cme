@@ -39,7 +39,7 @@ export class ConteoComponent {
   cargaConteo() {
     this.asignacionMesaService.getConvocatoriaTotales(1).subscribe({
       next: (response: any) => {
-        console.log('Respuesta:', response);
+        //console.log('Respuesta:', response);
         this.conteo.update(v => response.respuesta);
       },
       error: (err) => {

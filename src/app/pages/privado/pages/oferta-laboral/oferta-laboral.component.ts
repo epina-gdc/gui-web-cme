@@ -381,7 +381,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
           'en-US'
         ) ?? '';
 
-        console.log(respuesta.respuesta)
+        //console.log(respuesta.respuesta)
 
         this.cantidadOfertasLaborales.set(respuesta.respuesta.totalFavoritas);
         this.cantidadNuevosHospitalesFiltro.set(respuesta.respuesta.totalHospitalesNuevos);

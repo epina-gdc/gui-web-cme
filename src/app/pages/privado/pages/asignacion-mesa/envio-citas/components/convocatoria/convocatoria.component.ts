@@ -171,7 +171,7 @@ export class ConvocatoriaComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe({
         next: (response) => {
-          console.log('Respuesta totales:', response);
+          //console.log('Respuesta totales:', response);
           if (response.exito) {
             const datosTotales = response.respuesta;
             this.totalCitas.set(datosTotales);
@@ -182,7 +182,7 @@ export class ConvocatoriaComponent implements OnInit {
             // Verificar si ya terminó después de actualizar
             if (this.tieneFechaYHoraFin(datosTotales)) {
               this.detenerActualizacionPeriodica();
-              console.log(' Proceso completado: fechaFin y horaFin disponibles');
+              //console.log(' Proceso completado: fechaFin y horaFin disponibles');
             }
           }
           this.loading.set(false);
@@ -201,7 +201,7 @@ export class ConvocatoriaComponent implements OnInit {
     if (this.intervalId !== null) {
       clearInterval(this.intervalId);
       this.intervalId = null;
-      console.log('Actualización periódica detenida');
+      //console.log('Actualización periódica detenida');
     }
   }
 

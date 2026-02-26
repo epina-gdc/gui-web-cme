@@ -11,7 +11,7 @@ export class BtnRegresarComponent extends GeneralComponent {
   @Input() ruta!: any;
 
   public btnRegresar() {
-    console.log("la ruta es: ", this.ruta);
+    //console.log("la ruta es: ", this.ruta);
     if (this.ruta) {
       void this._router.navigate([this.ruta]);
     } else {

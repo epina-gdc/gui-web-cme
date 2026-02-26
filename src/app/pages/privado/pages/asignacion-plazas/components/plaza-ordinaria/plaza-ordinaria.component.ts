@@ -132,9 +132,9 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
 
   getUnidad():void{
     const idEspecialidad = this.filtroForm.get('especialidad')?.value;
-    console.log(idEspecialidad);
+    //console.log(idEspecialidad);
     const idOoad = this.filtroForm.get('ooad')?.value;
-    console.log(idOoad);
+    //console.log(idOoad);
     this.asignacionPlazaService.getUnidadByOoad(Regimen.PlazaOrdinaria, idEspecialidad, idOoad).subscribe({
       next: (result) => {
         if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
@@ -197,11 +197,11 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
       numPlaza: v.plaza ?? null,
       regimen: Regimen.PlazaOrdinaria
     }
-    console.log('envio',request);
+    //console.log('envio',request);
 
     this.asignacionPlazaService.plazasDisponibles(request, this.numPaginaActual, this.rows).subscribe({
       next: (result) => {
-        console.log('Plazas', result);
+        //console.log('Plazas', result);
         if(result.exito && Array.isArray(result.respuesta.content) && result.respuesta.content.length > 0){
           this.totalElementos = result.respuesta.page.totalElements;
           this.plazasList.set(result.respuesta.content);

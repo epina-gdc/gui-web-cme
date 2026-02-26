@@ -62,10 +62,10 @@ export class DetallePlazaComponent implements OnInit{
           idTipoAsignacionPlaza: this.data.tipoAsignacion,
           idPlaza: this.data.plaza.idPlaza,
         }
-        console.log(request);
+        //console.log(request);
         this.asignacionPlazaService.asignarPlaza(request).subscribe({
           next: (response) => {
-            console.log('Result ', response);
+            //console.log('Result ', response);
             if (response.exito) {
               this.alertaService.exito('Felicidades se asignó con éxito la plaza No.<strong>' + this.data.plaza.numPlaza +'<strong>');
               this.showConfetti();
