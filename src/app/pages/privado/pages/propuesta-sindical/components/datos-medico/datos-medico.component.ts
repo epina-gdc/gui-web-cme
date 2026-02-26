@@ -86,7 +86,6 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
   }
 
   generarNuevaPropuesta() {
-
     let idSeccion = this.datoSeccionSindical()?.idSeccionSindical || 0;
     let idAsignacion = this.datosMedico()?.idAsignacion || 0;
 
@@ -95,6 +94,10 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
         this._alertServices.exito(data.mensaje);
         this.consultarMatriculaFolio(true);
         //this.actualizarFoto();
+      },
+      error: (error) => {
+        this._alertServices.error("No fue posible generar el folio de la propuesta sindical.");
+        console.error("Error en la propuesta sindical", error);
       }
     })
   }

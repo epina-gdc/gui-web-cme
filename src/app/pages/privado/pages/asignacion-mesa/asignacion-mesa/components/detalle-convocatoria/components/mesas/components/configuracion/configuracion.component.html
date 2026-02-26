@@ -19,7 +19,8 @@
                         </label>
                         <p-datePicker id="fieldfecAtencion" formControlName="fecAtencion" class="flex w-full p-date-ate"
                             [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" placeholder="Ingresa fecha"
-                            [readonlyInput]="true" [minDate]="minDate" [maxDate]="maxDate" />
+                            [readonlyInput]="true" [minDate]="minDate" [maxDate]="maxDate"
+                            (onSelect)="onFechaSeleccionada($event)" />
                     </div>
 
                     <div class="field col-12 md:col-6 lg:col-4">
