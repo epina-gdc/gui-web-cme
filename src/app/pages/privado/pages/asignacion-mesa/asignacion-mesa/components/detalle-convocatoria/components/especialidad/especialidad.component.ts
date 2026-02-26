@@ -59,7 +59,7 @@ export class EspecialidadComponent {
   obtenerRamas() {
     this.asignacionMesaService.getRamasConvocatoria(this.convocatoriaSeleccionada()?.idConvocatoria as number).subscribe({
       next: (response: ResponseRamaConvocatoria) => {
-        console.log('Respuesta:', response);
+        //console.log('Respuesta:', response);
         this.ramas = response.respuesta;
       },
       error: (err) => {
@@ -88,7 +88,7 @@ export class EspecialidadComponent {
       // obetenr el total de medicos especialidad rama
       this.asignacionMesaService.getTotalesMedicosRama(ramaSeleccionada.id, this.convocatoriaSeleccionada()?.idMesaConvocatoria as number, this.convocatoriaSeleccionada()?.idConvocatoria as number).subscribe({
         next: (response: any) => {
-          console.log('Respuesta:', response);
+          //console.log('Respuesta:', response);
           this.totalesMedicosRama = response.respuesta.totalMedicos;
           this.filtrarEspecialidades(response.respuesta.especialidades)
           this.accionActualiza.update((value) => true);

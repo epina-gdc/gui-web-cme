@@ -70,7 +70,7 @@ export class DetalleMesasComponent {
     if (fecha) {
       this.asignacionMesaService.getDetalleMesaFecha(this.convocatoriaSeleccionada()?.idMesaConvocatoria as number, dayjs(fecha).format('YYYY-MM-DD')).subscribe({
         next: (response: any) => {
-          console.log('Respuesta:', response);
+          //console.log('Respuesta:', response);
           this.mesas = response.respuesta;
         },
         error: (err) => {
@@ -92,7 +92,7 @@ export class DetalleMesasComponent {
       accept: () => {
         this.asignacionMesaService.eliminarEspecialidadMesa(esp.idMesaDetalle).subscribe({
           next: (response: any) => {
-            console.log('Respuesta:', response);
+            //console.log('Respuesta:', response);
             this.convocatoriaEstado.notifyRefresh();
             this.accionActualiza.update((value) => true);
             setTimeout(() => {

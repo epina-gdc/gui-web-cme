@@ -128,7 +128,7 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
     });
 
     form.controls['convocatoria'].valueChanges.subscribe(value => {
-      console.log('Valor de la convocatoria:', value);
+      //console.log('Valor de la convocatoria:', value);
       this.estadoGlobalConvocatoria(form, value);
       const toggle = form.get('limiteContratacionesEspecifica');
       const ooad = form.get('ooad');
@@ -184,7 +184,7 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
       desEspecialidad: this.optionsEspecialidades.find(e => e.value === this.formAsignacion.value.especialidad)?.label || '',
     }
 
-    console.log("Datos de Busqueda", filtro)
+    //console.log("Datos de Busqueda", filtro)
 
     this.buscarPermisoEspecifico(filtro);
 
@@ -247,7 +247,7 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
       .subscribe({
         next: (respuesta: HttpRespuesta<BusquedaPermisoEspecificoResult>) => {
 
-          console.log("Respuesta de la busqueda", respuesta);
+          //console.log("Respuesta de la busqueda", respuesta);
           this.contratacionEspecifica = respuesta.respuesta;
           let row: TbConfiguracionAsignacionSustitucion = {
             idPermisoSustitucion: respuesta.respuesta.idPermisoSustitucion,
@@ -287,7 +287,7 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
       this._ConvocatoriaService
         .estadoGlobalConvocatoria(idConvocatoria)
         .subscribe((respuesta: HttpRespuesta<ConvocatoriaPermisoSustitucion>) => {
-          console.log("Respuesta del estado global de la convocatoria", respuesta);
+          //console.log("Respuesta del estado global de la convocatoria", respuesta);
           let activaDesactivaOOADZonaEspecialidades: boolean = false;
           this.estadoConvocatoriaPermisoSustitucion = respuesta.respuesta;
           respuesta.respuesta.indPermisoSustitucion == 1 ? activaDesactivaOOADZonaEspecialidades = true : activaDesactivaOOADZonaEspecialidades = false;
@@ -306,7 +306,7 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
     this._ConvocatoriaService
       .actualizarPermisoGlobalConvocatoria(idConvocatoriaSeleccionada, indPermisoSustitucion)
       .subscribe((respuesta: HttpRespuesta<ConvocatoriaPermisoSustitucion>) => {
-        console.log("Respuesta de la actualización global", respuesta);
+        //console.log("Respuesta de la actualización global", respuesta);
         //  this.estadoGlobalConvocatoria(this.formAsignacion, idConvocatoria);
         let activaDesactivaOOADZonaEspecialidades: boolean = false;
         this.estadoConvocatoriaPermisoSustitucion = respuesta.respuesta;
@@ -324,7 +324,7 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
     this._ConvocatoriaService
       .activarDesactivarPermisoEspecifico(idPermisoEspecifico, indPermisoSustitucion)
       .subscribe((respuesta: HttpRespuesta<any>) => {
-        console.log("Respuesta de la actualización específica", respuesta);
+        //console.log("Respuesta de la actualización específica", respuesta);
         this._alertServices.informacion("Se guardó la configuración correctamente.");
 
         if (this.sinFiltrosEspecificos) {
@@ -339,7 +339,7 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
   listaContratacionesEspecificosDesativadas(idConvocatoria: number) {
     this._ConvocatoriaService.lstContratacionesEspecificosDesativadas(idConvocatoria)
       .subscribe((results: HttpRespuesta<BusquedaPermisoEspecificoResult[]>) => {
-        console.log("Respuesta de la lista de permisos específicos", results);
+        //console.log("Respuesta de la lista de permisos específicos", results);
         if (results.respuesta.length > 0) {
 
           let rows: TbConfiguracionAsignacionSustitucion[] = results.respuesta.map((item: BusquedaPermisoEspecificoResult) => ({

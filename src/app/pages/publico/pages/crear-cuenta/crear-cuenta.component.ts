@@ -113,7 +113,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
       // El caso CURP es implícito: si no es PASAPORTE, blnPasaporte debe ser false,
     }
 
-    console.log("registroMedico es ", this.registroMedico);
+    //console.log("registroMedico es ", this.registroMedico);
     this.saveSession("registroMedico", this.registroMedico);
     void this._router.navigate(['publico/' + this._nav.registroMedico]);
   }
@@ -128,8 +128,8 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
     } else {
       this.camposExterno();
     }
-    console.log(this.form);
-    console.log(this.form.valid);
+    //console.log(this.form);
+    //console.log(this.form.valid);
   }
 
   perfilSeleccionado() {
@@ -174,6 +174,6 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
 
   cambiaModalidad() {
     this.registroMedico.modalidad = this.form.controls['modalidad'].value;
-    console.log("hay cambios en el select ", this.registroMedico);
+    //console.log("hay cambios en el select ", this.registroMedico);
   }
 }

@@ -131,7 +131,7 @@ export class VisualizacionAsistenciaComponent implements OnDestroy {
   procesarRespuesta(codigo: string) {
     const codigoLimpio = codigo.replace(/(\d{2})Ñ(\d{2})/g, '$1:$2');
 
-    console.log(codigoLimpio)
+    //console.log(codigoLimpio)
 
     const patronFormato = /^([^|\]]+[|\]]){5}[^|\]]+$/;
 

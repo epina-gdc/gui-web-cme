@@ -119,7 +119,7 @@ export class ConfiguracionComponent {
     this.asignacionMesaService.getMesasDisponibilidad(this.convocatoriaSeleccionada()?.idMesaConvocatoria as number, fechaFormateada)
       .subscribe({
         next: (response) => {
-          console.log('Disponibles:', response);
+          //console.log('Disponibles:', response);
           this.mesas = response.respuesta;
         },
         error: (err) => {

@@ -181,7 +181,7 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
     this.consultaPorCita.set(Number(objBusqueda.idTipoAsistencia) == 1 || objBusqueda.idTipoAsistencia == null)
     this.consultaExtraordinaria.set(Number(objBusqueda.idTipoAsistencia) == 2 || objBusqueda.idTipoAsistencia == null)
 
-    console.log(objBusqueda);
+    //console.log(objBusqueda);
     this.tableroInformacionService.buscarInformacion(objBusqueda.fecha, objBusqueda.idTurno, objBusqueda.idTipoAsistencia)
       .subscribe({
         next: (respuesta) => {

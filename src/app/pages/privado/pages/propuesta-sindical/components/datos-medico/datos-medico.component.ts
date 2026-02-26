@@ -277,7 +277,7 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
 
     ).subscribe({
       next: (response: any | null) => {
-        console.log('Response', response);
+        //console.log('Response', response);
         if(response.exito) {
           this.blnFotoGuardada = true;
           this.defaultFile = archivo;

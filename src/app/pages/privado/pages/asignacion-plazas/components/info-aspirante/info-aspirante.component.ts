@@ -107,7 +107,7 @@ export class InfoAspiranteComponent {
       this.tieneAsignacion = true;
       this.tipoAsignacion = this.asignacion.asignacionMedico.idTipoAsignacion?.id ?? 0;
       this.muestraTag = true;
-      console.log('Key:', this.refreshKey);
+      //console.log('Key:', this.refreshKey);
       if(this.refreshKey == 0)
         this.getMessage(this.tipoAsignacion);
     } else {
@@ -115,7 +115,7 @@ export class InfoAspiranteComponent {
       this.muestraTag = false;
       this.tipoAsignacion = 0;
     }
-    console.log('KeyFinal:', this.refreshKey);
+    //console.log('KeyFinal:', this.refreshKey);
   }
 
   obtenerFotografia(uuidArchivo: string): void {
@@ -129,7 +129,7 @@ export class InfoAspiranteComponent {
         this.aspirante.fotoUrl = URL.createObjectURL(this.fotoFile);
       },
       error: (error) => {
-        console.log(error);
+        //console.log(error);
         this.aspirante.fotoUrl = '';
       }
     });
@@ -207,7 +207,7 @@ export class InfoAspiranteComponent {
     }
     this.asignacionService.asignarPlaza(request).subscribe({
       next: (response) => {
-        console.log('Result ', response);
+        //console.log('Result ', response);
         if (response.exito) {
           this.alertaService.exito(tipo == TipoAsignacion.CambioRama ? this.mensajes.MSG052 : this.mensajes.MSG050);
           //this.asignacionRegistrada.emit({ id: this.idUsuario });

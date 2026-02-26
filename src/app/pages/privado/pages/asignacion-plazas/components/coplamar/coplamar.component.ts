@@ -99,7 +99,7 @@ export class CoplamarComponent extends GeneralComponent implements OnInit {
           //this.idEspecialidad = result.respuesta[0]?.value ?? null;
           //this.filtroForm.get('especialidad')?.patchValue(this.idEspecialidad);
           var idEspecialidad = result.respuesta[0]?.value ?? null;
-          console.log(idEspecialidad);
+          //console.log(idEspecialidad);
           this.filtroForm.get('especialidad')?.patchValue(idEspecialidad);
           this.consultarPlazas();
           this.getOoad();
@@ -114,10 +114,10 @@ export class CoplamarComponent extends GeneralComponent implements OnInit {
 
   getOoad(): void{
     const cveEspecialidad = this.filtroForm.get('especialidad')?.value;
-    console.log('Cat', cveEspecialidad);
+    //console.log('Cat', cveEspecialidad);
     this.asignacionPlazaService.getOoadByEspecialidad(Regimen.Complamar, cveEspecialidad).subscribe({
       next: (result) => {
-        console.log(result);
+        //console.log(result);
         if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
           this.ooadList = mapearArregloTipoDropdown(result.respuesta, 'label', 'value');
           //this.ooadList.unshift(this.default_catalogo);
@@ -132,9 +132,9 @@ export class CoplamarComponent extends GeneralComponent implements OnInit {
 
   getUnidad():void{
     const idEspecialidad = this.filtroForm.get('especialidad')?.value;
-    console.log(idEspecialidad);
+    //console.log(idEspecialidad);
     const idOoad = this.filtroForm.get('ooad')?.value;
-    console.log(idOoad);
+    //console.log(idOoad);
     this.asignacionPlazaService.getUnidadByOoad(Regimen.Complamar, idEspecialidad, idOoad).subscribe({
       next: (result) => {
         if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
@@ -200,7 +200,7 @@ export class CoplamarComponent extends GeneralComponent implements OnInit {
 
     this.asignacionPlazaService.plazasDisponibles(request, this.numPaginaActual, this.rows).subscribe({
       next: (result) => {
-        console.log('Plazas', result);
+        //console.log('Plazas', result);
         if(result.exito && Array.isArray(result.respuesta.content) && result.respuesta.content.length > 0){
           this.totalElementos = result.respuesta.page.totalElements;
           this.plazasList.set(result.respuesta.content);

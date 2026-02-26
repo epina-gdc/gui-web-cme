@@ -93,7 +93,7 @@ export class AsignacionSustitucionComponent {
   getOoad(): void {
     this.catalogosService.getLstOOADS().subscribe({
       next: (result) => {
-        console.log('Catalogo', result);
+        //console.log('Catalogo', result);
         if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
           this.ooadOptions = mapearArregloTipoDropdown(result.respuesta, 'desOoad', 'cveOoad');
           this.ooadOptions.unshift(this.default_catalogo);
@@ -110,7 +110,7 @@ export class AsignacionSustitucionComponent {
     const idOoad = this.formSustitucion.get('ooad')?.value;
     this.catalogosService.getZonas(idOoad).subscribe({
       next: (result) => {
-        console.log('Zonas', result);
+        //console.log('Zonas', result);
         if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
           this.zonaOptions = mapearArregloTipoDropdown(result.respuesta, 'desZona', 'cveZona');
           this.zonaOptions.unshift(this.default_catalogo);
@@ -132,7 +132,7 @@ export class AsignacionSustitucionComponent {
   asignar(): void {
     if (this.formSustitucion.invalid) {
       this.formSustitucion.markAllAsTouched();
-      console.log('error');
+      //console.log('error');
       return;
     }
 
@@ -153,10 +153,10 @@ export class AsignacionSustitucionComponent {
       cveEspecialidad: v.especialidad,
       desEspecialidad: this.resumenAsignacion.especialidadLabel
     }
-    console.log(request);
+    //console.log(request);
     this.asignacionPlazaService.asignarPlaza(request).subscribe({
       next: (response) => {
-        console.log('Result ', response);
+        //console.log('Result ', response);
         if (response.exito) {
           this.alertaService.exito(this.mensajes.MSG047);
           this.asignacionConfirmada = true;

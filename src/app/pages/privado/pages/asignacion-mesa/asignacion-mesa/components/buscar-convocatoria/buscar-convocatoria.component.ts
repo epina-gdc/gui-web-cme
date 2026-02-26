@@ -183,7 +183,7 @@ export class BuscarConvocatoriaComponent implements OnInit {
       ).subscribe(response => {
         if(response !== null) {
           if (response.exito) {
-            console.log('Configuración guardada exitosamente:', response);
+            //console.log('Configuración guardada exitosamente:', response);
             this.consultarConvocatorias();
             this.formulario.reset();
             this.alertaService.exito(this.mensajes.MSG083);
@@ -234,12 +234,12 @@ export class BuscarConvocatoriaComponent implements OnInit {
 
   guardarConfiguracionUpdate(convocatoria: any) {
     const updatedConfigMesa = this.applyPartialUpdate(this.convocatoriaSeleccionadaEdicion(), convocatoria);
-    console.log('updatedConfigMesa:', updatedConfigMesa);
+    //console.log('updatedConfigMesa:', updatedConfigMesa);
   }
 
   consultaEstatusCalificacion(idConvocatoria: number): Observable<boolean> {
     const tipoConvocatoria = this.convocatorias.find(x => x.idConvocatoria === idConvocatoria)?.tipo.idTipoConvocatoria;
-    console.log(tipoConvocatoria);
+    //console.log(tipoConvocatoria);
     if(tipoConvocatoria === 1) {
       return this.cargaCalificacionService
         .consultaCargaCalificaciones(idConvocatoria)
