@@ -192,6 +192,40 @@
   border-radius: 50%;
 }
 
+.tag-ordinaria {
+  background-color: #E6F4EA !important;  
+  color: #2E7D32 !important;    
+  border-radius: 20px;
+  padding: 4px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tag-ordinaria .dot {
+  width: 6px;
+  height: 6px;
+   background-color: #4CAF50;
+  border-radius: 50%;
+}
+
+.tag-coplamar {
+  background-color: #FFF3E0 !important; 
+  color: #E65100 !important;    
+  border-radius: 20px;
+  padding: 4px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tag-coplamar .dot {
+  width: 6px;
+  height: 6px;
+   background-color: #FB8C00;
+  border-radius: 50%;
+}
+
 /* Responsive */
 @media (max-width: 1200px) {
   .info-grid {
