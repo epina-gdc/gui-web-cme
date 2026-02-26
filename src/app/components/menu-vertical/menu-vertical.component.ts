@@ -77,10 +77,5 @@ export class MenuVerticalComponent implements OnInit {
     }
   }
 
-  onAccordionChange(newValue: any) {
-    if (newValue === null || newValue === undefined || newValue === 0) {
-      return;
-    }
-    this.activePanelId = newValue;
-  }
+
 }
