@@ -113,10 +113,10 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
   inicializarForm(): FormGroup {
     return this.fb.group({
       convocatoria: [null],
-      limiteContratacionesEspecifica: [null],
-      ooad: [null, Validators.required],
-      zona: [null, Validators.required],
-      especialidad: [null, Validators.required],
+      limiteContratacionesEspecifica: [{ value: false, disabled: true }],
+      ooad: [{ value: null, disabled: true }, Validators.required],
+      zona: [{ value: null, disabled: true }, Validators.required],
+      especialidad: [{ value: null, disabled: true }, Validators.required],
       limiteContrataciones: [null],
     })
   }
@@ -130,10 +130,29 @@ export class AsignacionSustitucionComponent extends GeneralComponent {
     form.controls['convocatoria'].valueChanges.subscribe(value => {
       console.log('Valor de la convocatoria:', value);
       this.estadoGlobalConvocatoria(form, value);
+      const toggle = form.get('limiteContratacionesEspecifica');
+      const ooad = form.get('ooad');
+      const zona = form.get('zona');
+      const especialidad = form.get('especialidad');
+      if (value) {
+        toggle?.enable();
+        ooad?.enable();
+        zona?.enable();
+        especialidad?.enable();
+      } else {
+        toggle?.disable();
+        toggle?.setValue(false);
+        ooad?.disable();
+        zona?.disable();
+        especialidad?.disable();
+      }
     });
 
     form.controls['limiteContratacionesEspecifica'].valueChanges.subscribe(value => {
       //   console.log('Valor del limiteContratacionesEspecifica:', value);
+      if (!form.controls['limiteContratacionesEspecifica'].dirty) {
+        return; // No hacer nada si no fue modificado por el usuario
+      }
 
       let msj = value ? "¿Si desea activar la validación en todas las OOAD, Zonas y Especialidades?" : "¿Si desea desactivar la validación en todas las OOAD, Zonas y Especialidades?";
       this.confirmacionActivarDesactivar(form, 'limiteContratacionesEspecifica', value ? 1 : 0, msj);
