@@ -27,20 +27,35 @@ export class MenuVerticalComponent implements OnInit {
   activePanelId: number | null = null;
 
   ngOnInit() {
-    this.userService.userData$.subscribe(user => this.userData = user);
-    this.updateActivePanel();
-    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.userService.userData$.subscribe(user => {
+      this.userData = user;
+      this.updateActivePanel();
+    });
+
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => this.updateActivePanel());
+    ).subscribe(() => {
+      this.updateActivePanel();
+    });
   }
 
   private updateActivePanel() {
     const currentUrl = this.router.url;
-    // Se busca el módulo cuya ruta coincida con la URL actual
-    const activeModule = this.userData?.modulos.find(m => currentUrl.includes(m.ruta));
-    if (activeModule) {
-      this.activePanelId = activeModule.idModuloMenu;
+    if (!this.userData?.modulos) return;
+    for (const modulo of this.userData.modulos) {
+      // La ruta coincide con el padre (módulo sin hijos)
+      if (currentUrl.includes(modulo.ruta)) {
+        this.activePanelId = modulo.idModuloMenu;
+        return;
+      }
+
+      // La ruta coincide con algún hijo (submódulos)
+      const tieneHijoActivo = modulo.submodulos?.some(sub => currentUrl.includes(sub.ruta));
+
+      if (tieneHijoActivo) {
+        this.activePanelId = modulo.idModuloMenu; // Se mantiene el ID del padre activo
+        return;
+      }
     }
   }
 
@@ -53,10 +68,19 @@ export class MenuVerticalComponent implements OnInit {
       return;
     }
 
-    if (modulo.submodulos.length === 0) {
+    if (!modulo.submodulos || modulo.submodulos.length === 0) {
       event.stopPropagation();
+      this.activePanelId = modulo.idModuloMenu;
       void this.router.navigate(['/privado' + modulo.ruta]);
+    } else {
       this.activePanelId = modulo.idModuloMenu;
     }
+  }
+
+  onAccordionChange(newValue: any) {
+    if (newValue === null || newValue === undefined || newValue === 0) {
+      return;
+    }
+    this.activePanelId = newValue;
   }
 }

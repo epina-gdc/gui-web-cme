@@ -62,7 +62,7 @@ export class AuthService {
     if (token) {
       this.settearSession(token);
     } else {
-      if(this.router.url != "/publico/crear-cuenta")this.cerrarSesion();
+      if (this.router.url != "/publico/crear-cuenta") this.cerrarSesion();
     }
   }
 
@@ -79,7 +79,6 @@ export class AuthService {
 
   obtenerUsuarioDePayload(token: string): SesionUser | never {
     let payload: any | null = new JwtHelperService().decodeToken<Payload>(token);
-    console.log(payload);
     if (payload) {
       return {
         idPerfil: payload.idPerfil,
