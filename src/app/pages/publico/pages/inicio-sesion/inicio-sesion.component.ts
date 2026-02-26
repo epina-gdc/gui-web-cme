@@ -72,13 +72,19 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit {
             return;
           }
 
+          const usuario = this.authService.usuarioSesion;
+
           /* SE COMENTA TIMER
           // Guarda el timestamp actual.
               const loginTime = Date.now();
               localStorage.setItem('login_time', loginTime.toString());
 
                 this.sessionTimerService.startTimer(); */
-          void this._router.navigate(['/privado/inicio'], {relativeTo: this.activatedRoute,});
+          if (usuario && usuario.idPerfil === 1 && usuario.url) {
+            void this._router.navigate([`/privado/${usuario.url}`]);
+          } else {
+            void this._router.navigate(['/privado/inicio'], {relativeTo: this.activatedRoute});
+          }
         },
         error: (error) => {
           if (error.error.mensaje.includes('Usuario no encontrado con email')) {
