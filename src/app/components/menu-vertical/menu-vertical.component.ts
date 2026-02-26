@@ -68,10 +68,19 @@ export class MenuVerticalComponent implements OnInit {
       return;
     }
 
-    if (modulo.submodulos.length === 0) {
+    if (!modulo.submodulos || modulo.submodulos.length === 0) {
       event.stopPropagation();
+      this.activePanelId = modulo.idModuloMenu;
       void this.router.navigate(['/privado' + modulo.ruta]);
+    } else {
       this.activePanelId = modulo.idModuloMenu;
     }
+  }
+
+  onAccordionChange(newValue: any) {
+    if (newValue === null || newValue === undefined || newValue === 0) {
+      return;
+    }
+    this.activePanelId = newValue;
   }
 }
