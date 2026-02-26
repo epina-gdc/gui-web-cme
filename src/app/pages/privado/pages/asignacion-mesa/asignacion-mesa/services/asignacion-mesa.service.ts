@@ -322,9 +322,10 @@ export class AsignacionMesaService {
 
   }
 
-  getMesasDisponibilidad(idMesaConvocatoria: number): Observable<ResponseMesasDisponibilidad> {
+  getMesasDisponibilidad(idMesaConvocatoria: number, fecha: string): Observable<ResponseMesasDisponibilidad> {
     let parametros = new HttpParams();
     parametros = parametros.append('idMesaConvocatoria', idMesaConvocatoria.toString());
+    parametros = parametros.append('fecha', fecha);
 
     return this.http.get<ResponseMesasDisponibilidad>(this.serverEndPointURLAsignacion + '/disponibilidad', { headers: this.header, params: parametros }).pipe(
       catchError(this.handleError),

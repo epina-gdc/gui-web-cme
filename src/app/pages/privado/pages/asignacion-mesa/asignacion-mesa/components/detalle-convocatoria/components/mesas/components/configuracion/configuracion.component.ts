@@ -12,6 +12,8 @@ import { CommonModule } from '@angular/common';
 
 import { MessageModule } from 'primeng/message';
 import { ConvocatoriaEstadoService } from '@pages/privado/pages/asignacion-mesa/asignacion-mesa/services/convocatoria-estado.service';
+import { CatalogosGeneralesService } from '@services/catalogos-generales.service';
+import { RespuestaTurno } from '@models/repsuesta-turno.interfaace';
 interface Opcion {
   id: number;
   nombre: string;
@@ -68,7 +70,7 @@ export class ConfiguracionComponent {
       }
     });
   }
-
+  catalogoService = inject(CatalogosGeneralesService);
   asignacionMesaService = inject(AsignacionMesaService);
   convocatoriaEstado = inject(ConvocatoriaEstadoService);
 
@@ -110,9 +112,25 @@ export class ConfiguracionComponent {
     this.formulario.reset();
   }
 
+  onFechaSeleccionada(fecha: Date) {
+    if (!fecha) return;
+    const fechaFormateada = dayjs(fecha).format('YYYY-MM-DD');
+
+    this.asignacionMesaService.getMesasDisponibilidad(this.convocatoriaSeleccionada()?.idMesaConvocatoria as number, fechaFormateada)
+      .subscribe({
+        next: (response) => {
+          console.log('Disponibles:', response);
+          this.mesas = response.respuesta;
+        },
+        error: (err) => {
+          console.error('Error en consulta:', err);
+        }
+      });
+  }
+
   obtenerListados(): void {
     // listado de mesas
-    this.asignacionMesaService.getMesasDisponibilidad(this.convocatoriaSeleccionada()?.idMesaConvocatoria as number).subscribe({
+    /*this.asignacionMesaService.getMesasDisponibilidad(this.convocatoriaSeleccionada()?.idMesaConvocatoria as number).subscribe({
       next: (response: any) => {
         //console.log('Disponibles:', response);
         this.mesas = response.respuesta;
@@ -120,14 +138,30 @@ export class ConfiguracionComponent {
       error: (err) => {
         console.error('Error:', err);
       }
-    });
+    });*/
 
     // listado de turnos  
 
-    this.asignacionMesaService.getTurnos().subscribe({
+    /*this.asignacionMesaService.getTurnos().subscribe({
       next: (response: any) => {
         //console.log('Respuesta:', response);
         this.turnos = response.respuesta;
+      },
+      error: (err) => {
+        console.error('Error:', err);
+      }
+    });*/
+    this.catalogoService.getTurno().subscribe({
+      next: (response: any) => {
+        const turnosFormateados: Turno[] = response.respuesta.map((item: RespuestaTurno) => {
+          const fmt = (hora: any) => hora.toString().replace(/(\d+)(\d{2})$/, "$1:$2");
+          return {
+            value: item.idTurno,
+            label: `${fmt(item.horaInicio)} hrs.`
+          };
+        });
+        //console.log('Respuesta:', response);
+        this.turnos = turnosFormateados;
       },
       error: (err) => {
         console.error('Error:', err);
