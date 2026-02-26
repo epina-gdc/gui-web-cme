@@ -29,7 +29,7 @@ export class MenuVerticalComponent implements OnInit {
   ngOnInit() {
     this.userService.userData$.subscribe(user => {
       this.userData = user;
-      this.updateActivePanel(); // Actualizar cuando los datos lleguen
+      this.updateActivePanel();
     });
 
     this.router.events.pipe(
