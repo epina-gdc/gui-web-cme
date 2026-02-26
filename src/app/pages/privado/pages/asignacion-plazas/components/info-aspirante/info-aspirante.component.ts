@@ -106,7 +106,7 @@ export class InfoAspiranteComponent {
 
       this.tieneAsignacion = true;
       this.tipoAsignacion = this.asignacion.asignacionMedico.idTipoAsignacion?.id ?? 0;
-      this.muestraTag = this.tipoAsignacion == 3 || this.tipoAsignacion == 4 || this.tipoAsignacion == 5 ? true: false;
+      this.muestraTag = true;
       console.log('Key:', this.refreshKey);
       if(this.refreshKey == 0)
         this.getMessage(this.tipoAsignacion);
@@ -316,6 +316,8 @@ export class InfoAspiranteComponent {
 
   getTagTexto(tipo: number): string {
     switch (tipo) {
+      case TipoAsignacion.PlazaOrdinaria: return 'Plaza Ordinaria';
+      case TipoAsignacion.PlazaCoplamar: return 'Plaza Coplamar';
       case TipoAsignacion.Sustitucion08: return 'Sustitución 08';
       case TipoAsignacion.CambioRama: return 'Cambio de rama';
       case TipoAsignacion.RechazoOferta: return 'Rechazo de oferta';
@@ -325,6 +327,8 @@ export class InfoAspiranteComponent {
 
   getTagClass(tipo: number): string {
     switch (tipo) {
+      case TipoAsignacion.PlazaOrdinaria: return 'tag-ordinaria';
+      case TipoAsignacion.PlazaCoplamar: return 'tag-coplamar';
       case TipoAsignacion.Sustitucion08: return 'tag-sustitucion';
       case TipoAsignacion.CambioRama: return 'tag-cambio';
       case TipoAsignacion.RechazoOferta: return 'tag-rechazo';

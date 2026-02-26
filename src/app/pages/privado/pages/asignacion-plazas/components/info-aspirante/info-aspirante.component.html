@@ -189,7 +189,7 @@
               </div>
             </div>
             <div class="col-12 md:col-3 flex align-items-center justify-content-center">
-              <p-button type="button" variant="outlined" label="Imprimir cedula" (click)="imprimirCedula()" />
+              <p-button type="button" variant="outlined" label="Imprimir Nombramiento/Cédula" (click)="imprimirCedula()" />
             </div>
           
         </div>
@@ -203,7 +203,7 @@
 <!--Zona asignación Ordinaria o Coplamar-->
 <p-card *ngIf="(tieneAsignacion && tipoAsignacion == 1) || (tieneAsignacion && tipoAsignacion ==  2)" class="mx-2 empty-border info-card">
   <div class="grid">
-    <div class="col-12 md:col-10">
+    <div class="col-12 md:col-9">
       <div class="flex flex-column  p-0 mt-1">
           <div class="header-oferta-flex mb-2">
             <p class="titulo-oferta-card texto-ajustable">
@@ -213,8 +213,8 @@
           <p class="especificacion-oferta-card">{{ aspirante.plaza.umf | titlecase }}</p>
         </div>
     </div>
-    <div class="col-12 md:col-2 flex align-items-center justify-content-end">
-      <p-button type="button" variant="outlined" label="Imprimir cedula" (click)="imprimirCedula()" />
+    <div class="col-12 md:col-3 flex align-items-center justify-content-end">
+      <p-button type="button" variant="outlined" label="Imprimir Nombramiento/Cédula" (click)="imprimirCedula()" />
     </div>
 
     <div class="col-12 md:col-7 my-4">
