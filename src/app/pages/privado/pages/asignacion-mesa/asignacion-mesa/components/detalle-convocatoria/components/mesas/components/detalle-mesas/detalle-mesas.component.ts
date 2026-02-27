@@ -72,6 +72,14 @@ export class DetalleMesasComponent {
         next: (response: any) => {
           //console.log('Respuesta:', response);
           this.mesas = response.respuesta;
+          this.mesas = this.mesas.map(mesa => ({
+            ...mesa,
+            turnos: mesa.turnos.map(turno => ({
+              ...turno,
+              especialidades: [...turno.especialidades]
+                .sort((a, b) => a.idMesaDetalle - b.idMesaDetalle)
+            }))
+          }));
         },
         error: (err) => {
           console.error('Error:', err);
