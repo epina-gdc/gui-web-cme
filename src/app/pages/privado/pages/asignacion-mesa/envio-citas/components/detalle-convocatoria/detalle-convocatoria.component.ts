@@ -88,6 +88,8 @@ export class DetalleConvocatoriaComponent {
 
     if (!fechasHoras) return false;
 
+    if(total.totalesNoEnviados > 0) return false;
+
     // Verifica que fechaFin y horaFin tengan valores no vacíos
     return !!(fechasHoras.fechaFin && fechasHoras.fechaFin.trim()) ||
       !!(fechasHoras.horaFin && fechasHoras.horaFin.trim());
