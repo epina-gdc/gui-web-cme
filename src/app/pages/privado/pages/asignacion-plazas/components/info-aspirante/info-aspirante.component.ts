@@ -22,6 +22,7 @@ import { AdjuntoOpinion, OpinionTecnicaRespuesta } from '@models/opnion-tecnia-r
 import { TipoDropdown } from '@models/tipo-dropdown.interface';
 import {TituloCase} from '@pipes/titulo-case.pipe';
 import { EstadoOfertaService } from '@services/estado-oferta.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-info-aspirante',
@@ -74,6 +75,7 @@ export class InfoAspiranteComponent {
   motivos: TipoDropdown[] = [];
 
   motivoSeleccionado: string | null = null;
+  isSaving = false;
 
   constructor(private readonly estadoPlazaService: EstadoOfertaService) {}
 
@@ -200,12 +202,18 @@ export class InfoAspiranteComponent {
   }
 
   asignarPlaza(tipo: number, motivoRechazo?: number) {
+    if (this.isSaving) return;
+
+    this.isSaving = true;
+
     let request: AsignacionRequest = {
       idUsuario: this.idUsuario,
       idTipoAsignacionPlaza: tipo,
       idMotivoRechazo: motivoRechazo
     }
-    this.asignacionService.asignarPlaza(request).subscribe({
+    this.asignacionService.asignarPlaza(request)
+    .pipe(finalize(() => this.isSaving = false))
+    .subscribe({
       next: (response) => {
         //console.log('Result ', response);
         if (response.exito) {

@@ -9,6 +9,7 @@ import {Button} from 'primeng/button';
 import { AsignacionRequest, Plaza } from '@models/datosAsignacion';
 import { AlertService } from '@services/alert.service';
 import { AsignacionPlazaService } from '@services/asignacion-plaza.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-detalle-plaza',
@@ -33,6 +34,7 @@ export class DetallePlazaComponent implements OnInit{
   plazaSeleccionada: Plaza = new Plaza();
   alertaService: AlertService = inject(AlertService);
   asignacionPlazaService: AsignacionPlazaService = inject(AsignacionPlazaService);
+  isSaving = false;
 
 
   constructor(
@@ -57,30 +59,37 @@ export class DetallePlazaComponent implements OnInit{
   }
 
   asignar(){
+    if (this.isSaving) return;
+
+    this.isSaving = true;
+
+
     let request: AsignacionRequest = {
-          idUsuario: this.data.idUsuario,
-          idTipoAsignacionPlaza: this.data.tipoAsignacion,
-          idPlaza: this.data.plaza.idPlaza,
-        }
-        //console.log(request);
-        this.asignacionPlazaService.asignarPlaza(request).subscribe({
-          next: (response) => {
-            //console.log('Result ', response);
-            if (response.exito) {
-              this.alertaService.exito('Felicidades se asignó con éxito la plaza No.<strong>' + this.data.plaza.numPlaza +'<strong>');
-              this.showConfetti();
-              this.estadoPlazaService.notificarRefreshPlazas();
-            } else {
-              this.alertaService.error(response.mensaje);
-              return;
-            }
-          },
-          error: (error) => {
-            //console.log(error);
-            this.alertaService.error('Ocurrió un error al registrar la asignación.');
+      idUsuario: this.data.idUsuario,
+      idTipoAsignacionPlaza: this.data.tipoAsignacion,
+      idPlaza: this.data.plaza.idPlaza,
+    }
+    //console.log(request);
+    this.asignacionPlazaService.asignarPlaza(request)
+      .pipe(finalize(() => this.isSaving = false))
+      .subscribe({
+        next: (response) => {
+          //console.log('Result ', response);
+          if (response.exito) {
+            this.alertaService.exito('Felicidades se asignó con éxito la plaza No.<strong>' + this.data.plaza.numPlaza + '<strong>');
+            this.showConfetti();
+            this.estadoPlazaService.notificarRefreshPlazas();
+          } else {
+            this.alertaService.error(response.mensaje);
             return;
           }
-        });
+        },
+        error: (error) => {
+          //console.log(error);
+          this.alertaService.error('Ocurrió un error al registrar la asignación.');
+          return;
+        }
+      });
   }
 
 

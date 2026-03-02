@@ -127,7 +127,10 @@
                 <button pButton label="Eliminar" class="p-button-outlined p-button-danger px-4" (click)="delete()"
                     [disabled]="noTieneAsistencia"></button>
                 <button pButton label="Registrar" class="bg-teal-600 border-none hover:bg-teal-700 px-4"
-                    (click)="register()" [disabled]="!noTieneAsistencia"></button>
+                    (click)="register()" 
+                    [disabled]="!noTieneAsistencia || isSaving"
+                    [loading]="isSaving"
+                ></button>
             </div>
         </div>
 

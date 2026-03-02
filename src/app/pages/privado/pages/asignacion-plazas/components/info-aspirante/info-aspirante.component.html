@@ -349,7 +349,8 @@
       <p-button type="button" label="Cancelar" severity="danger" variant="outlined"
         (click)="cancelarConfirmacion()"></p-button>
 
-      <p-button type="button" label="Confirmar rechazo" variant="outlined" [disabled]="!motivoSeleccionado"
+      <p-button type="button" label="Confirmar rechazo" variant="outlined" [disabled]="!motivoSeleccionado || isSaving"
+        [loading]="isSaving"
         (click)="confirmarRechazo()"></p-button>
     </div>
   </ng-template>

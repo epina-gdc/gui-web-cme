@@ -162,8 +162,10 @@
                 severity="warn"/>
     }
     @if (!this.datosMedico()?.idPropuestaSindical) {
-      <p-button label="Nueva propuesta sindical" (onClick)="generarNuevaPropuesta()"
-                [disabled]="!this.blnFotoGuardada"
+      <p-button label="Nueva propuesta sindical" 
+                [disabled]="!this.blnFotoGuardada || isSaving"
+                [loading]="isSaving"
+                (onClick)="generarNuevaPropuesta()"
       />
     }
   </div>

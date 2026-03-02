@@ -9,7 +9,7 @@ import {UploadPhotoComponent} from '@components/upload-photo/upload-photo.compon
 import {PropuestaSindicalService} from '@services/propuesta-sindical.service';
 import {DetallePropuestaSindical, Seccion} from '@models/propuestaSindical.interface';
 import {concatMap, of, switchMap, tap, throwError} from 'rxjs';
-import {catchError, filter, map} from 'rxjs/operators';
+import {catchError, filter, finalize, map} from 'rxjs/operators';
 import {Dialog} from 'primeng/dialog';
 
 @Component({
@@ -42,6 +42,7 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
 
   form!: FormGroup;
   tab: number = 0;
+  isSaving = false;
 
   constructor(
     private fb: FormBuilder,
@@ -86,10 +87,16 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
   }
 
   generarNuevaPropuesta() {
+    if (this.isSaving) return;
+
+    this.isSaving = true;
+
     let idSeccion = this.datoSeccionSindical()?.idSeccionSindical || 0;
     let idAsignacion = this.datosMedico()?.idAsignacion || 0;
 
-    this.pSindicalService.nuevaPropuesta(idAsignacion, idSeccion).subscribe({
+    this.pSindicalService.nuevaPropuesta(idAsignacion, idSeccion)
+    .pipe(finalize(() => this.isSaving = false))
+    .subscribe({
       next: data => {
         this._alertServices.exito(data.mensaje);
         this.consultarMatriculaFolio(true);

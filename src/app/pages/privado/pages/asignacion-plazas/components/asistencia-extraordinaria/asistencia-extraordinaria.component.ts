@@ -16,6 +16,7 @@ import { AsistenciaCardComponent } from '@components/asistencia-card/asistencia-
 import { AsistenciaNoteComponent } from '@components/asistencia-note/asistencia-note.component';
 import { Fotografia } from '@models/fotografia';
 import { AsistenciaAspirante, AsistenciaExtraordinariaResponse } from '@models/asistencia-extraordinaria.interface';
+import { finalize } from 'rxjs';
 
 // Interfaz para los datos del médico
 @Component({
@@ -59,6 +60,7 @@ export class AsistenciaExtraordinariaComponent extends GeneralComponent {
     selectFile!: File | undefined;
     defaultFile!: File | undefined;
     datosFoto!: Fotografia;
+    isSaving = false;
 
     constructor(
         private confirmationService: ConfirmationService,
@@ -143,7 +145,13 @@ export class AsistenciaExtraordinariaComponent extends GeneralComponent {
     }
 
     confirmar(idParticipante: string) {
-        this._AsistenciaService.confimar(idParticipante).subscribe({
+        if (this.isSaving) return;
+        
+        this.isSaving = true;
+        
+        this._AsistenciaService.confimar(idParticipante)
+        .pipe(finalize(() => this.isSaving = false))
+        .subscribe({
             next: (response: AsistenciaExtraordinariaResponse) => {
                 if (response.exito && response.respuesta) {
                     this.aspirante = response.respuesta;

@@ -163,6 +163,8 @@
               severity="secondary"
               label="Asignar plaza"
               icon="cme-asignar-plaza"
+              [loading]="isSaving"
+              [disabled]="isSaving"
               (onClick)="asignar()"
               />
 

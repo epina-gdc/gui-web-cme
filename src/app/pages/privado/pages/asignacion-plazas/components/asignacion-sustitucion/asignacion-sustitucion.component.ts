@@ -11,6 +11,7 @@ import { CatalogosGeneralesService } from '@services/catalogos-generales.service
 import { AlertService } from '@services/alert.service';
 import { Mensajes } from '@utils/mensajes';
 import { EstadoOfertaService } from '@services/estado-oferta.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-asignacion-sustitucion',
@@ -41,6 +42,7 @@ export class AsignacionSustitucionComponent {
 
   formSustitucion!: FormGroup;
   default_catalogo: TipoDropdown = {value:0,label:'Seleccione una opción'};
+  isSaving = false;
 
   constructor(private fb: FormBuilder, private readonly estadoPlazaService: EstadoOfertaService) {}
   
@@ -136,6 +138,10 @@ export class AsignacionSustitucionComponent {
       return;
     }
 
+    if (this.isSaving) return;
+
+    this.isSaving = true;
+
     const v = this.formSustitucion.getRawValue();
     this.resumenAsignacion = {
       ooadLabel: this.labelFrom(this.ooadOptions, v.ooad),
@@ -154,7 +160,9 @@ export class AsignacionSustitucionComponent {
       desEspecialidad: this.resumenAsignacion.especialidadLabel
     }
     //console.log(request);
-    this.asignacionPlazaService.asignarPlaza(request).subscribe({
+    this.asignacionPlazaService.asignarPlaza(request)
+    .pipe(finalize(() => this.isSaving = false))
+    .subscribe({
       next: (response) => {
         //console.log('Result ', response);
         if (response.exito) {
