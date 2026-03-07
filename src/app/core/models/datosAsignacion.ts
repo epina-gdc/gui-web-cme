@@ -18,6 +18,8 @@ export class DisponiblesRequest {
     cveUnidad?:string;
     numPlaza?:number;
     regimen!:number;
+    cveZona?:string;
+    cveTurno?:string;
 }
 
 export class BusquedaResponse {

@@ -51,6 +51,8 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
   especialidadList: TipoDropdown[] = [];
   ooadList: TipoDropdown[] = [];
   unidadList: TipoDropdown[] = [];
+  zonaList: TipoDropdown[] = [];
+  turnoList: TipoDropdown[] = [];
   plazasList: WritableSignal<Plaza[]> = signal([]);
   //idEspecialidad: string = '';
   idUsuario: number = 0;
@@ -90,6 +92,8 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
       ooad: [null],
       unidad: [null],
       plaza: [null, [Validators.maxLength(10)]],
+      zona: [null],
+      turno: [null],
     })
   }
 
@@ -98,9 +102,6 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
       next: (result) => {
         if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
           this.especialidadList = mapearArregloTipoDropdown(result.respuesta, 'label', 'value');
-          //this.especialidadList.unshift(this.default_catalogo);
-          //this.idEspecialidad = result.respuesta[0]?.value ?? null;
-          //this.filtroForm.get('especialidad')?.patchValue(this.idEspecialidad);
           var idEspecialidad = result.respuesta[0]?.value ?? null;
           this.filtroForm.get('especialidad')?.patchValue(idEspecialidad);
           this.consultarPlazas();
@@ -149,6 +150,45 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
     })
   }
 
+  getZona():void{
+    const idEspecialidad = this.filtroForm.get('especialidad')?.value;
+    const idOoad = this.filtroForm.get('ooad')?.value;
+    const idUnidad = this.filtroForm.get('unidad')?.value;
+
+    this.asignacionPlazaService.getZonaByUnidad(Regimen.PlazaOrdinaria, idEspecialidad, idOoad, idUnidad).subscribe({
+      next: (result) => {
+        if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
+          this.zonaList = mapearArregloTipoDropdown(result.respuesta, 'label', 'value');
+          //this.zonaList.unshift(this.default_catalogo);
+          return;
+        } else{
+          this.zonaList = [];
+          return;
+        }
+      }
+    })
+  }
+
+  getTurno():void{
+    const idEspecialidad = this.filtroForm.get('especialidad')?.value;
+    const idOoad = this.filtroForm.get('ooad')?.value;
+    const idUnidad = this.filtroForm.get('unidad')?.value;
+    const idZona = this.filtroForm.get('zona')?.value;
+
+    this.asignacionPlazaService.getTurnoByZona(Regimen.PlazaOrdinaria, idEspecialidad, idOoad, idUnidad, idZona).subscribe({
+      next: (result) => {
+        if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
+          this.turnoList = mapearArregloTipoDropdown(result.respuesta, 'label', 'value');
+          //this.ooadList.unshift(this.default_catalogo);
+          return;
+        } else{
+          this.turnoList = [];
+          return;
+        }
+      }
+    })
+  }
+
   onChangeEspecialidad(){
     this.ooadList = [];
     const ooadCtrl = this.filtroForm.get('ooad');
@@ -157,6 +197,14 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
     this.unidadList = [];
     const unidadCtrl = this.filtroForm.get('unidad');
     unidadCtrl?.reset(null);
+
+    this.zonaList = [];
+    const zonaCtrl = this.filtroForm.get('zona');
+    zonaCtrl?.reset(null);
+
+    this.turnoList = [];
+    const turnoCtrl = this.filtroForm.get('turno');
+    turnoCtrl?.reset(null);
 
     ooadCtrl?.updateValueAndValidity({ emitEvent: false });
     this.filtroForm.updateValueAndValidity({ emitEvent: false });
@@ -169,10 +217,44 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
     const unidadCtrl = this.filtroForm.get('unidad');
     unidadCtrl?.reset(null);
 
+    this.zonaList = [];
+    const zonaCtrl = this.filtroForm.get('zona');
+    zonaCtrl?.reset(null);
+
+    this.turnoList = [];
+    const turnoCtrl = this.filtroForm.get('turno');
+    turnoCtrl?.reset(null);
+
     unidadCtrl?.updateValueAndValidity({ emitEvent: false });
     this.filtroForm.updateValueAndValidity({ emitEvent: false });
 
     this.getUnidad();
+  }
+
+  onChangeUnidad(){
+    this.zonaList = [];
+    const zonaCtrl = this.filtroForm.get('zona');
+    zonaCtrl?.reset(null);
+
+    this.turnoList = [];
+    const turnoCtrl = this.filtroForm.get('turno');
+    turnoCtrl?.reset(null);
+
+    zonaCtrl?.updateValueAndValidity({ emitEvent: false });
+    this.filtroForm.updateValueAndValidity({ emitEvent: false });
+
+    this.getZona();
+  }
+
+  onChangeZona(){
+    this.turnoList = [];
+    const turnoCtrl = this.filtroForm.get('turno');
+    turnoCtrl?.reset(null);
+
+    turnoCtrl?.updateValueAndValidity({ emitEvent: false });
+    this.filtroForm.updateValueAndValidity({ emitEvent: false });
+
+    this.getTurno();
   }
 
   limpiar(){
@@ -180,6 +262,8 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
     this.filtroForm.get('ooad')?.patchValue('');
     this.filtroForm.get('unidad')?.patchValue('');
     this.filtroForm.get('plaza')?.patchValue('');
+    this.filtroForm.get('zona')?.patchValue('');
+    this.filtroForm.get('turno')?.patchValue('');
     this.plazasList.set([]);
   }
 
@@ -194,6 +278,8 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
       cveEspecialidad: v.especialidad,
       cveOoad: v.ooad ?? null,
       cveUnidad: v.unidad ?? null,
+      cveZona: v.zona ?? null,
+      cveTurno: v.turno ?? null,
       numPlaza: v.plaza ?? null,
       regimen: Regimen.PlazaOrdinaria
     }
