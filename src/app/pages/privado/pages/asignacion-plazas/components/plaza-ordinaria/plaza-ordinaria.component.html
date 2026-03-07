@@ -20,10 +20,24 @@
           <label class="field-label" for="unidad">Unidad</label>
         </div>
         <p-select [options]="unidadList" formControlName="unidad" inputId="unidad" optionValue="value" optionLabel="label"
-                  placeholder="Selecciona unidad médica" class="w-full"/>
+                  placeholder="Selecciona unidad médica" class="w-full" (onChange)="onChangeUnidad()"/>
       </div>
 
       <!--Segunda linea-->
+      <div class="md:col-4 col-12">
+        <div class="flex justify-content-between">
+          <label class="field-label" for="zona">Zona</label>
+        </div>
+        <p-select [options]="zonaList" formControlName="zona" inputId="zona" optionValue="value" optionLabel="label"
+                  placeholder="Selecciona zona" class="w-full" (onChange)="onChangeZona()"/>
+      </div>
+      <div class="md:col-4 col-12">
+        <div class="flex justify-content-between">
+          <label class="field-label" for="turno">Turno</label>
+        </div>
+        <p-select [options]="turnoList" formControlName="turno" inputId="turno" optionValue="value" optionLabel="label"
+                  placeholder="Selecciona turno" class="w-full"/>
+      </div>
       <div class="md:col-4 col-12">
         <div class="flex justify-content-between">
           <label class="field-label" for="plaza">Plaza</label>
@@ -33,7 +47,7 @@
                formControlName="plaza"/>
       </div>
 
-      <div class="md:col-4 col-12 flex align-content-center flex-1 gap-3 pt-4">
+      <div class="md:col-12 col-12 flex align-content-center flex-1 gap-3 pt-4">
         <p-button type="button" variant="outlined" label="Limpiar" (onClick)="limpiar()" />
         <p-button type="button" label="Consultar" (onClick)="consultarPlazas()" [disabled]="filtroForm.invalid"  />
       </div>
