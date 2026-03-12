@@ -106,6 +106,7 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
           this.filtroForm.get('especialidad')?.patchValue(idEspecialidad);
           this.consultarPlazas();
           this.getOoad();
+          this.getTurno();
           return;
         } else{
           this.especialidadList = [];
@@ -153,9 +154,8 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
   getZona():void{
     const idEspecialidad = this.filtroForm.get('especialidad')?.value;
     const idOoad = this.filtroForm.get('ooad')?.value;
-    const idUnidad = this.filtroForm.get('unidad')?.value;
 
-    this.asignacionPlazaService.getZonaByUnidad(Regimen.PlazaOrdinaria, idEspecialidad, idOoad, idUnidad).subscribe({
+    this.asignacionPlazaService.getZonaByOoad(Regimen.PlazaOrdinaria, idEspecialidad, idOoad).subscribe({
       next: (result) => {
         if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
           this.zonaList = mapearArregloTipoDropdown(result.respuesta, 'label', 'value');
@@ -171,11 +171,8 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
 
   getTurno():void{
     const idEspecialidad = this.filtroForm.get('especialidad')?.value;
-    const idOoad = this.filtroForm.get('ooad')?.value;
-    const idUnidad = this.filtroForm.get('unidad')?.value;
-    const idZona = this.filtroForm.get('zona')?.value;
 
-    this.asignacionPlazaService.getTurnoByZona(Regimen.PlazaOrdinaria, idEspecialidad, idOoad, idUnidad, idZona).subscribe({
+    this.asignacionPlazaService.getTurnoByEspecialidad(Regimen.PlazaOrdinaria, idEspecialidad).subscribe({
       next: (result) => {
         if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
           this.turnoList = mapearArregloTipoDropdown(result.respuesta, 'label', 'value');
@@ -190,6 +187,7 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
   }
 
   onChangeEspecialidad(){
+    this.plazasList.set([]);
     this.ooadList = [];
     const ooadCtrl = this.filtroForm.get('ooad');
     ooadCtrl?.reset(null);
@@ -210,6 +208,8 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
     this.filtroForm.updateValueAndValidity({ emitEvent: false });
 
     this.getOoad();
+    this.getTurno();
+    this.consultarPlazas();
   }
 
   onChangeOoad(){
@@ -221,40 +221,11 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
     const zonaCtrl = this.filtroForm.get('zona');
     zonaCtrl?.reset(null);
 
-    this.turnoList = [];
-    const turnoCtrl = this.filtroForm.get('turno');
-    turnoCtrl?.reset(null);
-
     unidadCtrl?.updateValueAndValidity({ emitEvent: false });
     this.filtroForm.updateValueAndValidity({ emitEvent: false });
 
     this.getUnidad();
-  }
-
-  onChangeUnidad(){
-    this.zonaList = [];
-    const zonaCtrl = this.filtroForm.get('zona');
-    zonaCtrl?.reset(null);
-
-    this.turnoList = [];
-    const turnoCtrl = this.filtroForm.get('turno');
-    turnoCtrl?.reset(null);
-
-    zonaCtrl?.updateValueAndValidity({ emitEvent: false });
-    this.filtroForm.updateValueAndValidity({ emitEvent: false });
-
     this.getZona();
-  }
-
-  onChangeZona(){
-    this.turnoList = [];
-    const turnoCtrl = this.filtroForm.get('turno');
-    turnoCtrl?.reset(null);
-
-    turnoCtrl?.updateValueAndValidity({ emitEvent: false });
-    this.filtroForm.updateValueAndValidity({ emitEvent: false });
-
-    this.getTurno();
   }
 
   limpiar(){
@@ -265,6 +236,10 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
     this.filtroForm.get('zona')?.patchValue('');
     this.filtroForm.get('turno')?.patchValue('');
     this.plazasList.set([]);
+    this.ooadList = [];
+    this.unidadList = [];
+    this.zonaList = [];
+    this.turnoList = [];
   }
 
   consultarPlazas(inicio: boolean = true): void {

@@ -32,11 +32,11 @@ export class AsignacionPlazaService {
   getUnidadByOoad(idRegimen: number, cveEspecialidad: string, cveOoad: string): Observable<any> {
     return this.http.get(`${this.urlAsignacion}plaza/unidad-por-ooad?regimen=${idRegimen}&cveEspecialidad=${cveEspecialidad}&cveOoad=${cveOoad}`);
   }
-  getZonaByUnidad(idRegimen: number, cveEspecialidad: string, cveOoad: string, cveUnidad: string): Observable<any> {
-    return this.http.get(`${this.urlAsignacion}plaza/zona-por-unidad?regimen=${idRegimen}&cveEspecialidad=${cveEspecialidad}&cveOoad=${cveOoad}&cveUnidad=${cveUnidad}`);
+  getZonaByOoad(idRegimen: number, cveEspecialidad: string, cveOoad: string): Observable<any> {
+    return this.http.get(`${this.urlAsignacion}plaza/zona-por-ooad?regimen=${idRegimen}&cveEspecialidad=${cveEspecialidad}&cveOoad=${cveOoad}`);
   }
-  getTurnoByZona(idRegimen: number, cveEspecialidad: string, cveOoad: string, cveUnidad: string, cveZona: string): Observable<any> {
-    return this.http.get(`${this.urlAsignacion}plaza/turno-por-zona?regimen=${idRegimen}&cveEspecialidad=${cveEspecialidad}&cveOoad=${cveOoad}&cveUnidad=${cveUnidad}&cveZona=${cveZona}`);
+  getTurnoByEspecialidad(idRegimen: number, cveEspecialidad: string): Observable<any> {
+    return this.http.get(`${this.urlAsignacion}plaza/turno-por-especialidad?regimen=${idRegimen}&cveEspecialidad=${cveEspecialidad}`);
   }
 
   plazasDisponibles(request: DisponiblesRequest, page: number, size:number): Observable<any> {
