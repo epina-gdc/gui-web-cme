@@ -51,6 +51,8 @@ export class CoplamarComponent extends GeneralComponent implements OnInit {
   unidadList: TipoDropdown[] = [];
   zonaList: TipoDropdown[] = [];
   turnoList: TipoDropdown[] = [];
+  marcaOcupacionList: TipoDropdown[] = [];
+  horarioList: TipoDropdown[] = [];
   plazasList: WritableSignal<Plaza[]> = signal([]);
 
   idUsuario: number = 0;
@@ -91,6 +93,8 @@ export class CoplamarComponent extends GeneralComponent implements OnInit {
       plaza: [null, [Validators.maxLength(10)]],
       zona: [null],
       turno: [null],
+      marcaOcupacion: [{ value: null, disabled: true }],
+      horario: [{ value: null, disabled: true }],
     })
   }
 
@@ -108,6 +112,7 @@ export class CoplamarComponent extends GeneralComponent implements OnInit {
           this.consultarPlazas();
           this.getOoad();
           this.getTurno();
+          this.getMarcaOcupacion();
           return;
         } else{
           this.especialidadList = [];
@@ -189,6 +194,63 @@ export class CoplamarComponent extends GeneralComponent implements OnInit {
     })
   }
 
+  getMarcaOcupacion(): void {
+    const idEspecialidad = this.filtroForm.get('especialidad')?.value;
+    const marcaOcupacionCtrl = this.filtroForm.get('marcaOcupacion');
+
+    if (!idEspecialidad) {
+      this.resetMarcaOcupacion();
+      return;
+    }
+
+    marcaOcupacionCtrl?.enable({ emitEvent: false });
+
+    this.asignacionPlazaService.getMarcaOcupacionByEspecialidad(Regimen.Complamar, idEspecialidad).subscribe({
+      next: (result) => {
+        if (this.filtroForm.get('especialidad')?.value !== idEspecialidad) {
+          return;
+        }
+
+        if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
+          this.marcaOcupacionList = mapearArregloTipoDropdown(result.respuesta, 'label', 'value');
+          return;
+        } else {
+          this.marcaOcupacionList = [];
+          return;
+        }
+      }
+    })
+  }
+
+  getHorario(): void {
+    const idEspecialidad = this.filtroForm.get('especialidad')?.value;
+    const idTurno = this.filtroForm.get('turno')?.value;
+    const horarioCtrl = this.filtroForm.get('horario');
+
+    if (!idEspecialidad || !idTurno) {
+      this.resetHorario();
+      return;
+    }
+
+    horarioCtrl?.enable({ emitEvent: false });
+
+    this.asignacionPlazaService.getHorarioByTurno(Regimen.Complamar, idEspecialidad, idTurno).subscribe({
+      next: (result) => {
+        if (this.filtroForm.get('especialidad')?.value !== idEspecialidad || this.filtroForm.get('turno')?.value !== idTurno) {
+          return;
+        }
+
+        if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
+          this.horarioList = mapearArregloTipoDropdown(result.respuesta, 'label', 'value');
+          return;
+        } else {
+          this.horarioList = [];
+          return;
+        }
+      }
+    })
+  }
+
   onChangeEspecialidad(){
     this.plazasList.set([]);
     this.ooadList = [];
@@ -207,11 +269,15 @@ export class CoplamarComponent extends GeneralComponent implements OnInit {
     const turnoCtrl = this.filtroForm.get('turno');
     turnoCtrl?.reset(null);
 
+    this.resetMarcaOcupacion();
+    this.resetHorario();
+
     ooadCtrl?.updateValueAndValidity({ emitEvent: false });
     this.filtroForm.updateValueAndValidity({ emitEvent: false });
 
     this.getOoad();
     this.getTurno();
+    this.getMarcaOcupacion();
     this.consultarPlazas();
   }
 
@@ -231,6 +297,11 @@ export class CoplamarComponent extends GeneralComponent implements OnInit {
     this.getZona();
   }
 
+  onChangeTurno(): void {
+    this.resetHorario();
+    this.getHorario();
+  }
+
   limpiar(){
     this.filtroForm.get('especialidad')?.patchValue('');
     this.filtroForm.get('ooad')?.patchValue('');
@@ -238,6 +309,8 @@ export class CoplamarComponent extends GeneralComponent implements OnInit {
     this.filtroForm.get('plaza')?.patchValue('');
     this.filtroForm.get('zona')?.patchValue('');
     this.filtroForm.get('turno')?.patchValue('');
+    this.resetMarcaOcupacion();
+    this.resetHorario();
     this.plazasList.set([]);
     this.ooadList = [];
     this.unidadList = [];
@@ -260,6 +333,12 @@ export class CoplamarComponent extends GeneralComponent implements OnInit {
       cveTurno: v.turno ?? null,
       numPlaza: v.plaza ?? null,
       regimen: Regimen.Complamar
+    }
+    if (v.marcaOcupacion !== null && v.marcaOcupacion !== undefined && v.marcaOcupacion !== '') {
+      request.cveMarcaOcupacion = v.marcaOcupacion;
+    }
+    if (v.horario !== null && v.horario !== undefined && v.horario !== '') {
+      request.cveHorario = v.horario;
     }
 
     this.asignacionPlazaService.plazasDisponibles(request, this.numPaginaActual, this.rows).subscribe({
@@ -334,6 +413,20 @@ export class CoplamarComponent extends GeneralComponent implements OnInit {
 
   get f() {
     return this.filtroForm.controls;
+  }
+
+  private resetMarcaOcupacion(): void {
+    this.marcaOcupacionList = [];
+    const marcaOcupacionCtrl = this.filtroForm.get('marcaOcupacion');
+    marcaOcupacionCtrl?.reset(null, { emitEvent: false });
+    marcaOcupacionCtrl?.disable({ emitEvent: false });
+  }
+
+  private resetHorario(): void {
+    this.horarioList = [];
+    const horarioCtrl = this.filtroForm.get('horario');
+    horarioCtrl?.reset(null, { emitEvent: false });
+    horarioCtrl?.disable({ emitEvent: false });
   }
 
 }

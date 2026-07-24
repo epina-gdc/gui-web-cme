@@ -20,6 +20,8 @@ export class DisponiblesRequest {
     regimen!:number;
     cveZona?:string;
     cveTurno?:string;
+    cveMarcaOcupacion?:string;
+    cveHorario?:string;
 }
 
 export class BusquedaResponse {

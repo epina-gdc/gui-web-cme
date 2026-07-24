@@ -36,7 +36,23 @@
           <label class="field-label" for="turno">Turno</label>
         </div>
         <p-select [options]="turnoList" formControlName="turno" inputId="turno" optionValue="value" optionLabel="label"
-                  placeholder="Selecciona turno" class="w-full"/>
+                  placeholder="Selecciona turno" class="w-full" (onChange)="onChangeTurno()"/>
+      </div>
+      <div class="md:col-4 col-12">
+        <div class="flex justify-content-between">
+          <label class="field-label" for="horario">Horario</label>
+        </div>
+        <p-select [options]="horarioList" formControlName="horario" inputId="horario" optionValue="value" optionLabel="label"
+                  placeholder="Selecciona horario" class="w-full"/>
+      </div>
+
+      <!--Tercera linea-->
+      <div class="md:col-4 col-12">
+        <div class="flex justify-content-between">
+          <label class="field-label" for="marcaOcupacion">Marca por ocupación</label>
+        </div>
+        <p-select [options]="marcaOcupacionList" formControlName="marcaOcupacion" inputId="marcaOcupacion" optionValue="value" optionLabel="label"
+                  placeholder="Selecciona marca por ocupación" class="w-full"/>
       </div>
       <div class="md:col-4 col-12">
         <div class="flex justify-content-between">

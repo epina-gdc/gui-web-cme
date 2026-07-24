@@ -38,6 +38,12 @@ export class AsignacionPlazaService {
   getTurnoByEspecialidad(idRegimen: number, cveEspecialidad: string): Observable<any> {
     return this.http.get(`${this.urlAsignacion}plaza/turno-por-especialidad?regimen=${idRegimen}&cveEspecialidad=${cveEspecialidad}`);
   }
+  getMarcaOcupacionByEspecialidad(idRegimen: number, cveEspecialidad: string): Observable<any> {
+    return this.http.get(`${this.urlAsignacion}plaza/marca-ocupacion-por-especialidad?regimen=${idRegimen}&cveEspecialidad=${cveEspecialidad}`);
+  }
+  getHorarioByTurno(idRegimen: number, cveEspecialidad: string, cveTurno: string): Observable<any> {
+    return this.http.get(`${this.urlAsignacion}plaza/horario-por-turno?regimen=${idRegimen}&cveEspecialidad=${cveEspecialidad}&cveTurno=${cveTurno}`);
+  }
 
   plazasDisponibles(request: DisponiblesRequest, page: number, size:number): Observable<any> {
     let ruta = `${this.urlAsignacion}plaza/disponibles?page=${page}&size=${size}`
