@@ -1,4 +1,4 @@
-import {Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms"; // Import FormsModule
 import {Card} from 'primeng/card';
 import {Button} from 'primeng/button';
@@ -11,11 +11,15 @@ import {
   CatDocumentoVerificacion,
   CatDocVerifResponse,
   CatPerfil,
-  CatPerfilResponse,
-  CatSubperfil,
-  CatSubperfilResponse
+  CatSubperfil
 } from '@models/catalogoGeneral';
 import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.component';
+import {ConvocatoriaActiva, ConvocatoriaPerfil, ConvocatoriaSubperfil} from '@models/convocatoria.interface';
+import {HttpRespuesta} from '@models/http-respuesta.interface';
+import {
+  construirEncabezadoConvocatoriaActiva,
+  TITULO_CONVOCATORIA_DEFAULT
+} from '@utils/convocatoria-activa';
 
 @Component({
   selector: 'app-crear-cuenta',
@@ -39,13 +43,16 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   fb = inject(FormBuilder)
   form!: FormGroup;
   blnSeleccionado = false;
+  tituloConvocatoria = signal('');
+  subtituloConvocatoria = signal('');
 
   ruta: string = '';
-  lstPerfil !: any;
-  lstModalidad!: Array<CatSubperfil>;
-  lstDocumentos!: Array<CatDocumentoVerificacion>;
+  lstPerfil: Array<CatPerfil> = [];
+  lstModalidad: Array<CatSubperfil> = [];
+  lstDocumentos: Array<CatDocumentoVerificacion> = [];
   registroMedico!: RegistroMedico;
   blnResidente!: boolean;
+  private lstSubperfilesConvocatoria: Array<CatSubperfil> = [];
 
   private readonly DOCUMENTO_PASAPORTE: string = 'PASAPORTE';
 
@@ -55,23 +62,8 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
     this.blnResidente = true;
     this.blnSeleccionado = false;
     this.form = this.inicializarForm();
-    this.getCatalogoPerfiles();
-  }
-
-  getCatalogoPerfiles(): void {
-    this.lstPerfil = new Array<CatPerfil>();
-    this._CatalogoGenService.getLstPerfil().subscribe((response: CatPerfilResponse) => {
-      if (!response.exito) return;
-      this.lstPerfil = response.respuesta;
-    });
-  }
-
-  getCatalogoModalidad(): void {
-    this.lstModalidad = new Array<CatSubperfil>();
-    this._CatalogoGenService.getLstSubPerfil().subscribe((response: CatSubperfilResponse) => {
-      if (!response.exito) return;
-      this.lstModalidad = response.respuesta;
-    });
+    this.inicializarCambiosFormulario();
+    this.obtenerConvocatoriaActiva();
   }
 
   getCatalogoDocumento(): void {
@@ -87,6 +79,12 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
       perfil: ['', [Validators.required]],
       modalidad: ['', ''],
       documento: ['', ''],
+    });
+  }
+
+  inicializarCambiosFormulario(): void {
+    this.form.controls['perfil'].valueChanges.subscribe(() => {
+      this.cambiaPerfil();
     });
   }
 
@@ -123,6 +121,12 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
     this.clearCampos();
 
     this.perfilSeleccionado();
+    if (!this.registroMedico.perfil1) {
+      this.blnResidente = true;
+      this.lstModalidad = [];
+      return;
+    }
+
     if (this.registroMedico.blnInterno) {
       this.camposResidente();
     } else {
@@ -138,20 +142,21 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
 
     if (perfil) {
       this.registroMedico.perfil = perfil;
-      this.registroMedico.blnInterno = ![3, 6].includes(perfil.idPerfil);
+      this.registroMedico.blnInterno = this.esPerfilInterno(perfil);
     }
   }
 
   private camposResidente() {
     this.clearCampos();
     this.blnResidente = true;
+    this.lstModalidad = [];
   }
 
   private camposExterno() {
     
     this.blnResidente = false;
-    if( this.registroMedico.perfil1 == 6){// mostrar modalidad
-      this.getCatalogoModalidad();
+    this.actualizarModalidadesPorPerfil(this.registroMedico.perfil1);
+    if (this.lstModalidad.length > 0) {
       this.form.controls['modalidad'].setValidators([Validators.required]);
       this.form.controls['modalidad'].updateValueAndValidity();
     }
@@ -175,5 +180,94 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   cambiaModalidad() {
     this.registroMedico.modalidad = this.form.controls['modalidad'].value;
     //console.log("hay cambios en el select ", this.registroMedico);
+  }
+
+  get mostrarModalidad(): boolean {
+    return !this.blnResidente && this.lstModalidad.length > 0;
+  }
+
+  private obtenerConvocatoriaActiva(): void {
+    this._CatalogoGenService.getConvocatoriaActiva()
+      .subscribe({
+        next: (response: HttpRespuesta<ConvocatoriaActiva | undefined>) => {
+          if (!response.exito || !response.respuesta) {
+            this.establecerConvocatoriaDefault();
+            if (response.mensaje) {
+              this._alertServices.informacion(response.mensaje);
+            }
+            return;
+          }
+          this.establecerConvocatoriaActiva(response.respuesta);
+        },
+        error: (error) => {
+          console.log('Error al consultar convocatoria activa', error);
+          this.establecerConvocatoriaDefault();
+          this._alertServices.error(error?.error?.mensaje ?? 'No fue posible consultar la convocatoria activa.');
+        }
+      });
+  }
+
+  private establecerConvocatoriaActiva(convocatoria: ConvocatoriaActiva): void {
+    const encabezado = construirEncabezadoConvocatoriaActiva(convocatoria);
+    this.tituloConvocatoria.set(encabezado.titulo);
+    this.subtituloConvocatoria.set(encabezado.subtitulo);
+    this.lstPerfil = this.perfilesToCatalogo(convocatoria.perfiles ?? []);
+    this.lstSubperfilesConvocatoria = this.subperfilesToCatalogo(convocatoria.subperfiles ?? []);
+    this.lstModalidad = [];
+
+    if (this.lstPerfil.length === 1) {
+      this.form.controls['perfil'].setValue(this.lstPerfil[0].idPerfil);
+      return;
+    }
+
+    this.form.controls['perfil'].setValue(null, {emitEvent: false});
+  }
+
+  private establecerConvocatoriaDefault(): void {
+    const encabezado = construirEncabezadoConvocatoriaActiva();
+    this.tituloConvocatoria.set(encabezado.titulo);
+    this.subtituloConvocatoria.set(encabezado.subtitulo);
+    this.lstPerfil = [];
+    this.lstSubperfilesConvocatoria = [];
+    this.lstModalidad = [];
+    this.form.controls['perfil'].setValue(null, {emitEvent: false});
+  }
+
+  private actualizarModalidadesPorPerfil(idPerfil: number): void {
+    this.lstModalidad = this.lstSubperfilesConvocatoria.filter(subperfil => subperfil.idPerfil === Number(idPerfil));
+  }
+
+  private perfilesToCatalogo(perfiles: ConvocatoriaPerfil[]): CatPerfil[] {
+    return perfiles.map(perfil => ({
+      idPerfil: perfil.idPerfil,
+      nomPerfil: perfil.nomPerfil ?? perfil.desPerfil ?? perfil.descripcion ?? perfil.clave ?? String(perfil.idPerfil),
+      indActivo: perfil.indActivo ?? 1,
+      indPerfilInterno: perfil.indPerfilInterno,
+      desPerfil: perfil.desPerfil ?? perfil.descripcion ?? perfil.nomPerfil,
+      clave: perfil.clave,
+      descripcion: perfil.descripcion
+    }));
+  }
+
+  private esPerfilInterno(perfil: CatPerfil): boolean {
+    if (perfil.indPerfilInterno !== null && perfil.indPerfilInterno !== undefined) {
+      return Number(perfil.indPerfilInterno) === 1;
+    }
+
+    return ![3, 6].includes(perfil.idPerfil);
+  }
+
+  private subperfilesToCatalogo(subperfiles: ConvocatoriaSubperfil[]): CatSubperfil[] {
+    return subperfiles
+      .filter(subperfil => subperfil.idPerfil !== null && subperfil.idPerfil !== undefined)
+      .map(subperfil => ({
+        idSubperfil: subperfil.idSubperfil,
+        idPerfil: Number(subperfil.idPerfil),
+        nomSubperfil: subperfil.nomSubperfil ?? subperfil.desSubperfil ?? subperfil.descripcion ?? subperfil.clave ?? String(subperfil.idSubperfil),
+        indActivo: subperfil.indActivo ?? 1,
+        desSubperfil: subperfil.desSubperfil ?? subperfil.descripcion ?? subperfil.nomSubperfil,
+        clave: subperfil.clave,
+        descripcion: subperfil.descripcion
+      }));
   }
 }

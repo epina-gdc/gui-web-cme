@@ -1,7 +1,7 @@
 <main class="flex login-background flex-wrap">
   <aside class="lg:col-6 col-12 flex flex-column justify-content-center align-items-center p-6">
-    <h1 class="login-titulo">{{ _Mensajes.MSJ_TITULO_CONVOCATORIA }}</h1>
-    <h2 class="login-subtitulo">{{ _Mensajes.MSJ_SUBTITULO_CONVOCATORIA }}</h2>
+    <h1 class="login-titulo">{{ tituloConvocatoria() }}</h1>
+    <h2 class="login-subtitulo">{{ subtituloConvocatoria() }}</h2>
   </aside>
   <section
     class="lg:col-6 col-12 flex justify-content-center align-items-center vertical-align:middle align-items:center lg:mb-0  mb-6">
@@ -30,12 +30,12 @@
           <div class="flex flex-row" style="margin-bottom: 20px;">
             <p-select id="perfil" formControlName="perfil" [options]="lstPerfil" optionLabel="nomPerfil"
                       optionValue="idPerfil" placeholder="Selecciona un perfil" class="w-full"
-                      (ngModelChange)="cambiaPerfil()" [appendTo]="'body'">
+                      [appendTo]="'body'">
             </p-select>
           </div>
 
           @if (!blnResidente) {
-            @if ( registroMedico.perfil1 == 6) {
+            @if (mostrarModalidad) {
             <div class="flex flex-column" style=" margin-bottom: 20px;">
               <div class="flex flex-row">
                 <label class="field-label" for="modalidad">Modalidad del médico</label>

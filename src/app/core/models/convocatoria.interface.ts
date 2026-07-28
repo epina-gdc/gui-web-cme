@@ -29,12 +29,20 @@ export interface ConvocatoriaPerfil {
   idPerfil: number;
   clave?: string;
   descripcion?: string;
+  nomPerfil?: string;
+  desPerfil?: string;
+  indActivo?: number;
+  indPerfilInterno?: number;
 }
 
 export interface ConvocatoriaSubperfil {
   idSubperfil: number;
+  idPerfil?: number;
   clave?: string;
   descripcion?: string;
+  nomSubperfil?: string;
+  desSubperfil?: string;
+  indActivo?: number;
 }
 
 export interface ConvocatoriaDetalle {

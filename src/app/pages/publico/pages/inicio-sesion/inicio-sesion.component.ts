@@ -12,6 +12,10 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import {HttpRespuesta} from '@models/http-respuesta.interface';
 import {EmailAllowCaractersDirective} from '@directives/email-allow-caracters.directive';
 import {ConvocatoriaActiva} from '@models/convocatoria.interface';
+import {
+  construirEncabezadoConvocatoriaActiva,
+  TITULO_CONVOCATORIA_DEFAULT
+} from '@utils/convocatoria-activa';
 
 @Component({
   selector: 'app-inicio-sesion',
@@ -35,14 +39,13 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit {
 
   fb = inject(FormBuilder)
   destroyRef = inject(DestroyRef);
-  private readonly TITULO_DEFAULT = 'Convocatoria para M\u00e9dicos Especialistas';
 
   activatedRoute = inject(ActivatedRoute);
 
 
   formLogin!: FormGroup;
   vista = signal('login');
-  tituloConvocatoria = signal(this.TITULO_DEFAULT);
+  tituloConvocatoria = signal('');
   subtituloConvocatoria = signal('');
   registroActivo = signal(false);
   ingresoPass: boolean = false;
@@ -146,43 +149,16 @@ export class InicioSesionComponent extends GeneralComponent implements OnInit {
   }
 
   private establecerConvocatoriaActiva(convocatoria: ConvocatoriaActiva): void {
-    this.tituloConvocatoria.set(convocatoria.desConvocatoria || this.TITULO_DEFAULT);
-    this.subtituloConvocatoria.set(this.construirSubtitulo(convocatoria));
-    this.registroActivo.set(convocatoria.registroActivo === true);
+    const encabezado = construirEncabezadoConvocatoriaActiva(convocatoria);
+    this.tituloConvocatoria.set(encabezado.titulo);
+    this.subtituloConvocatoria.set(encabezado.subtitulo);
+    this.registroActivo.set(encabezado.registroActivo);
   }
 
   private establecerConvocatoriaDefault(): void {
-    this.tituloConvocatoria.set(this.TITULO_DEFAULT);
-    this.subtituloConvocatoria.set('');
-    this.registroActivo.set(false);
-  }
-
-  private construirSubtitulo(convocatoria: ConvocatoriaActiva): string {
-    const anioInicio = this.obtenerAnio(convocatoria.stpFechaInicioRegistro);
-    const anioFin = this.obtenerAnio(convocatoria.stpFechaFinRegistro);
-
-    if (!anioInicio && !anioFin) {
-      return '';
-    }
-
-    if (!anioInicio || !anioFin || anioInicio === anioFin) {
-      return `Reclutamiento IMSS ${anioInicio ?? anioFin}`;
-    }
-
-    return `Reclutamiento IMSS ${anioInicio}-${anioFin}`;
-  }
-
-  private obtenerAnio(fecha?: string | null): number | null {
-    if (!fecha) {
-      return null;
-    }
-
-    const anio = fecha.match(/^(\d{4})/)?.[1];
-    if (anio) {
-      return Number(anio);
-    }
-
-    const fechaParseada = new Date(fecha);
-    return Number.isNaN(fechaParseada.getTime()) ? null : fechaParseada.getFullYear();
+    const encabezado = construirEncabezadoConvocatoriaActiva();
+    this.tituloConvocatoria.set(encabezado.titulo);
+    this.subtituloConvocatoria.set(encabezado.subtitulo);
+    this.registroActivo.set(encabezado.registroActivo);
   }
 }

@@ -17,6 +17,7 @@ export class CatPerfil{
     idPerfil!: number;
     nomPerfil!: string;
     indActivo!: number;
+    indPerfilInterno?: number;
 
     desPerfil?: string;
     clave?: string;
