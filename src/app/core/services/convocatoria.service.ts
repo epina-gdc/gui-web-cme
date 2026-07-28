@@ -7,7 +7,12 @@ import { AspiranteRequest, InteresLaboralRequest } from '@models/aspirante';
 import { DataFotografia } from '@models/fotografia';
 import { DatosDocumentoResponse } from '@models/datosDocumento';
 import { ContactoRequest, DataContacto } from '@models/datosContacto';
-import { Convocatoria, ConvocatoriaPermisoSustitucion } from '@models/convocatoria.interface';
+import {
+  Convocatoria,
+  ConvocatoriaDetalle,
+  ConvocatoriaPermisoSustitucion,
+  ConvocatoriaRegistroRequest
+} from '@models/convocatoria.interface';
 import { DataDomicilio, ResidenciaRequest } from '@models/datosDomicilio';
 import { AlertService } from './alert.service';
 import { dataGenerales, DatosGeneralesRequest } from '@models/datosGenerales';
@@ -318,6 +323,36 @@ export class ConvocatoriaService {
         return response
       }),
     )
+  }
+
+  consultarDetalleConvocatoria(idConvocatoria: number): Observable<HttpRespuesta<ConvocatoriaDetalle>> {
+    const ruta = `${this.serverEndPointURLConvocatoria}${this.VERSION_API}convocatoria/${idConvocatoria}`;
+    return this.http.get<HttpRespuesta<ConvocatoriaDetalle>>(ruta, { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<ConvocatoriaDetalle>) => {
+        return response;
+      })
+    );
+  }
+
+  guardarConvocatoria(request: ConvocatoriaRegistroRequest): Observable<HttpRespuesta<ConvocatoriaDetalle>> {
+    const ruta = `${this.serverEndPointURLConvocatoria}${this.VERSION_API}convocatoria`;
+    return this.http.post<HttpRespuesta<ConvocatoriaDetalle>>(ruta, request, { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<ConvocatoriaDetalle>) => {
+        return response;
+      })
+    );
+  }
+
+  actualizarConvocatoria(idConvocatoria: number, request: ConvocatoriaRegistroRequest): Observable<HttpRespuesta<ConvocatoriaDetalle>> {
+    const ruta = `${this.serverEndPointURLConvocatoria}${this.VERSION_API}convocatoria/${idConvocatoria}`;
+    return this.http.put<HttpRespuesta<ConvocatoriaDetalle>>(ruta, request, { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<ConvocatoriaDetalle>) => {
+        return response;
+      })
+    );
   }
 
 

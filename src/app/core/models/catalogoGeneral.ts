@@ -19,6 +19,8 @@ export class CatPerfil{
     indActivo!: number;
 
     desPerfil?: string;
+    clave?: string;
+    descripcion?: string;
 }
 
 
@@ -29,6 +31,14 @@ export class CatSubperfil{
   indActivo!: number;
 
   desSubperfil?:string;
+  clave?: string;
+  descripcion?: string;
+}
+
+export class CatTipoConvocatoria{
+  idTipoConvocatoria!: number;
+  desTipoConvocatoria!: string;
+  indActivo!: number;
 }
 
 export class CatDocumentoVerificacion{
@@ -45,6 +55,10 @@ export class CatPerfilResponse extends ResponseGeneral{
 
 export class CatSubperfilResponse extends ResponseGeneral{
   respuesta!: Array<CatSubperfil>;
+}
+
+export class CatTipoConvocatoriaResponse extends ResponseGeneral{
+  respuesta!: Array<CatTipoConvocatoria>;
 }
 
 export class CatPaisResponse extends ResponseGeneral{

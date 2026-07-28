@@ -4,7 +4,14 @@
  */
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { CatDocVerifResponse, CatPaisResponse, CatPerfilResponse, CatSubperfilResponse } from '@models/catalogoGeneral';
+import {
+  CatDocVerifResponse,
+  CatPaisResponse,
+  CatPerfilResponse,
+  CatSubperfilResponse,
+  CatTipoConvocatoria,
+  CatTipoConvocatoriaResponse
+} from '@models/catalogoGeneral';
 import { HttpRespuesta } from '@models/http-respuesta.interface';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
@@ -47,10 +54,28 @@ export class CatalogosGeneralesService {
     );
   }
 
-  getLstSubPerfil(): Observable<CatSubperfilResponse> {
-    return this.http.get<CatSubperfilResponse>(this.serverEndPointURLCatalogos + '/subperfiles-medicos/perfil/6', { headers: this.header }).pipe(
+  getLstSubPerfil(idPerfil: number = 6): Observable<CatSubperfilResponse> {
+    return this.http.get<CatSubperfilResponse>(this.serverEndPointURLCatalogos + `/subperfiles-medicos/perfil/${idPerfil}`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: CatSubperfilResponse) => {
+        return response;
+      })
+    );
+  }
+
+  getLstTiposConvocatoria(): Observable<CatTipoConvocatoriaResponse> {
+    return this.http.get<CatTipoConvocatoriaResponse>(this.serverEndPointURLCatalogos + '/tipoconvocatoria', { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: CatTipoConvocatoriaResponse) => {
+        return response;
+      })
+    );
+  }
+
+  getTipoConvocatoriaById(idTipoConvocatoria: number): Observable<HttpRespuesta<CatTipoConvocatoria>> {
+    return this.http.get<HttpRespuesta<CatTipoConvocatoria>>(`${this.serverEndPointURLCatalogos}/tipoconvocatoria/${idTipoConvocatoria}`, { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<CatTipoConvocatoria>) => {
         return response;
       })
     );

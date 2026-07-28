@@ -1,0 +1,128 @@
+:host {
+  display: block;
+}
+
+.registro-card {
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(30, 41, 59, 0.12);
+  overflow: hidden;
+}
+
+.registro-card__header {
+  align-items: center;
+  border-bottom: 1px solid #dbe4ee;
+  display: flex;
+  justify-content: space-between;
+  min-height: 42px;
+  padding: 0 1rem;
+}
+
+.registro-card__title {
+  color: #33475b;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.registro-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.25rem 1rem 1rem;
+}
+
+.form-grid {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+}
+
+.form-grid--convocatoria {
+  grid-template-columns: minmax(260px, 340px);
+}
+
+.form-grid--datos {
+  grid-template-columns: minmax(260px, 1fr) minmax(320px, 2.3fr);
+}
+
+.form-grid--fechas {
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+}
+
+.form-grid--perfiles {
+  grid-template-columns: repeat(2, minmax(260px, 1fr));
+}
+
+.field-block {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.section-title {
+  border-bottom: 2px solid #bce1eb;
+  color: #2e4a67;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-top: .25rem;
+  padding-bottom: .5rem;
+}
+
+.field-error {
+  color: #c0392b;
+  display: block;
+  font-size: .78rem;
+  margin-top: .25rem;
+}
+
+.field-error--section {
+  margin-top: -.9rem;
+}
+
+.actions {
+  align-items: center;
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+@media (max-width: 992px) {
+  .form-grid--datos,
+  .form-grid--fechas,
+  .form-grid--perfiles {
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .registro-card__header,
+  .actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .registro-card__header {
+    gap: .5rem;
+    padding: .75rem 1rem;
+  }
+
+  .form-grid,
+  .form-grid--convocatoria,
+  .form-grid--datos,
+  .form-grid--fechas,
+  .form-grid--perfiles {
+    grid-template-columns: 1fr;
+  }
+}
+
+@layer app-components {
+  :host ::ng-deep .p-multiselect,
+  :host ::ng-deep .p-select,
+  :host ::ng-deep .p-datepicker {
+    width: 100%;
+  }
+
+  :host ::ng-deep .p-multiselect-label {
+    min-height: 1.5rem;
+  }
+}

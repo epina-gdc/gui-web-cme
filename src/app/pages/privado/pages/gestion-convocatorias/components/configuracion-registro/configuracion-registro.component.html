@@ -1,0 +1,288 @@
+<div class="flex align-items-center bg-white w-full border-round-xl p-3 mb-3">
+  <i class="cme-time me-3" style="color: #FAA604; font-size: 2rem"></i>
+  <div class="flex flex-column">
+    <span class="titulo-documento text-color">Configuraci&oacute;n de Fechas y Horarios</span>
+    <span class="doc-tab text-color">Asigne o modifique las fechas y horas para el registro de m&eacute;dicos</span>
+  </div>
+</div>
+
+<section class="registro-card">
+  <div class="registro-card__header">
+    <span class="registro-card__title">Convocatorias disponibles</span>
+    <p-button
+      type="button"
+      label="Nueva convocatoria"
+      icon="pi pi-pencil"
+      variant="text"
+      (click)="nuevaConvocatoria()">
+    </p-button>
+  </div>
+
+  <form class="registro-card__body" [formGroup]="formConfiguracion" (ngSubmit)="guardar()">
+    <div class="form-grid form-grid--convocatoria">
+      <div class="field-block">
+        <label class="field-label" for="convocatoria">Convocatoria</label>
+        <p-select
+          inputId="convocatoria"
+          [options]="optionsConvocatorias"
+          formControlName="convocatoria"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selecciona una convocatoria"
+          class="w-full"
+          [appendTo]="'body'"
+          [loading]="isLoadingCatalogos">
+        </p-select>
+      </div>
+    </div>
+
+    <div class="form-grid form-grid--datos">
+      <div class="field-block">
+        <div class="flex justify-content-between">
+          <label class="field-label" for="idTipoConvocatoria">Tipo de convocatoria</label>
+          <p class="label-obligatorio">Obligatorio</p>
+        </div>
+        <p-select
+          inputId="idTipoConvocatoria"
+          [options]="optionsTiposConvocatoria"
+          formControlName="idTipoConvocatoria"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selecciona un tipo de convocatoria"
+          class="w-full"
+          [appendTo]="'body'">
+        </p-select>
+        @if (esInvalido('idTipoConvocatoria')) {
+          <small class="field-error">{{ mensajeCampoRequerido }}</small>
+        }
+      </div>
+
+      <div class="field-block">
+        <div class="flex justify-content-between">
+          <label class="field-label" for="desConvocatoria">Nombre de la convocatoria</label>
+          <p class="label-obligatorio">Obligatorio</p>
+        </div>
+        <input
+          pInputText
+          id="desConvocatoria"
+          type="text"
+          formControlName="desConvocatoria"
+          maxlength="200"
+          placeholder="Ingresa el nombre de la convocatoria"
+          class="w-full" />
+        @if (esInvalido('desConvocatoria')) {
+          <small class="field-error">{{ mensajeCampoRequerido }}</small>
+        }
+      </div>
+    </div>
+
+    <div class="section-title">Perfiles y subperfiles</div>
+    <div class="form-grid form-grid--perfiles">
+      <div class="field-block">
+        <label class="field-label" for="perfiles">Perfiles</label>
+        <p-multiselect
+          inputId="perfiles"
+          [options]="optionsPerfiles"
+          formControlName="perfiles"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selecciona uno o varios perfiles"
+          display="chip"
+          [filter]="true"
+          filterBy="label"
+          [showToggleAll]="true"
+          selectedItemsLabel="{0} perfiles seleccionados"
+          [appendTo]="'body'"
+          [style]="{ 'width': '100%' }">
+        </p-multiselect>
+      </div>
+
+      <div class="field-block">
+        <label class="field-label" for="subperfiles">Subperfiles</label>
+        <p-multiselect
+          inputId="subperfiles"
+          [options]="optionsSubperfiles"
+          formControlName="subperfiles"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selecciona uno o varios subperfiles"
+          display="chip"
+          [filter]="true"
+          filterBy="label"
+          [showToggleAll]="true"
+          [disabled]="optionsSubperfiles.length === 0"
+          [loading]="isLoadingSubperfiles"
+          selectedItemsLabel="{0} subperfiles seleccionados"
+          [appendTo]="'body'"
+          [style]="{ 'width': '100%' }">
+        </p-multiselect>
+      </div>
+    </div>
+
+    <div class="section-title">Fechas del evento de convocatoria</div>
+    <div class="form-grid form-grid--fechas">
+      <div class="field-block">
+        <div class="flex justify-content-between">
+          <label class="field-label" for="fecInicioEvento">Fecha de inicio</label>
+          <p class="label-obligatorio">Obligatorio</p>
+        </div>
+        <p-datepicker
+          inputId="fecInicioEvento"
+          formControlName="fecInicioEvento"
+          dateFormat="dd/mm/yy"
+          [showIcon]="true"
+          [iconDisplay]="'input'"
+          [appendTo]="'body'"
+          placeholder="dd/mm/aaaa"
+          [style]="{ 'width': '100%' }">
+        </p-datepicker>
+        @if (esInvalido('fecInicioEvento')) {
+          <small class="field-error">{{ mensajeCampoRequerido }}</small>
+        }
+      </div>
+
+      <div class="field-block">
+        <div class="flex justify-content-between">
+          <label class="field-label" for="horaInicioEvento">Hora de inicio</label>
+          <p class="label-obligatorio">Obligatorio</p>
+        </div>
+        <p-datepicker
+          inputId="horaInicioEvento"
+          formControlName="horaInicioEvento"
+          [timeOnly]="true"
+          hourFormat="24"
+          [showIcon]="true"
+          [iconDisplay]="'input'"
+          [appendTo]="'body'"
+          placeholder="--:-- hrs."
+          [style]="{ 'width': '100%' }">
+        </p-datepicker>
+        @if (esInvalido('horaInicioEvento')) {
+          <small class="field-error">{{ mensajeCampoRequerido }}</small>
+        }
+      </div>
+
+      <div class="field-block">
+        <div class="flex justify-content-between">
+          <label class="field-label" for="fecFinEvento">Fecha fin</label>
+          <p class="label-obligatorio">Obligatorio</p>
+        </div>
+        <p-datepicker
+          inputId="fecFinEvento"
+          formControlName="fecFinEvento"
+          dateFormat="dd/mm/yy"
+          [showIcon]="true"
+          [iconDisplay]="'input'"
+          [appendTo]="'body'"
+          placeholder="dd/mm/aaaa"
+          [style]="{ 'width': '100%' }">
+        </p-datepicker>
+        @if (esInvalido('fecFinEvento')) {
+          <small class="field-error">{{ mensajeCampoRequerido }}</small>
+        }
+      </div>
+
+      <div class="field-block">
+        <div class="flex justify-content-between">
+          <label class="field-label" for="horaFinEvento">Hora de t&eacute;rmino</label>
+          <p class="label-obligatorio">Obligatorio</p>
+        </div>
+        <p-datepicker
+          inputId="horaFinEvento"
+          formControlName="horaFinEvento"
+          [timeOnly]="true"
+          hourFormat="24"
+          [showIcon]="true"
+          [iconDisplay]="'input'"
+          [appendTo]="'body'"
+          placeholder="--:-- hrs."
+          [style]="{ 'width': '100%' }">
+        </p-datepicker>
+        @if (esInvalido('horaFinEvento')) {
+          <small class="field-error">{{ mensajeCampoRequerido }}</small>
+        }
+      </div>
+    </div>
+    @if (mostrarErrorRango('evento')) {
+      <small class="field-error field-error--section">La fecha y hora fin del evento no puede ser menor a la fecha y hora de inicio.</small>
+    }
+
+    <div class="section-title">Fechas para registro de m&eacute;dicos</div>
+    <div class="form-grid form-grid--fechas">
+      <div class="field-block">
+        <label class="field-label" for="fechaInicioRegistro">Fecha de inicio</label>
+        <p-datepicker
+          inputId="fechaInicioRegistro"
+          formControlName="fechaInicioRegistro"
+          dateFormat="dd/mm/yy"
+          [showIcon]="true"
+          [iconDisplay]="'input'"
+          [appendTo]="'body'"
+          placeholder="dd/mm/aaaa"
+          [style]="{ 'width': '100%' }">
+        </p-datepicker>
+      </div>
+
+      <div class="field-block">
+        <label class="field-label" for="horaInicioRegistro">Hora de inicio</label>
+        <p-datepicker
+          inputId="horaInicioRegistro"
+          formControlName="horaInicioRegistro"
+          [timeOnly]="true"
+          hourFormat="24"
+          [showIcon]="true"
+          [iconDisplay]="'input'"
+          [appendTo]="'body'"
+          placeholder="--:-- hrs."
+          [style]="{ 'width': '100%' }">
+        </p-datepicker>
+      </div>
+
+      <div class="field-block">
+        <label class="field-label" for="fechaFinRegistro">Fecha fin</label>
+        <p-datepicker
+          inputId="fechaFinRegistro"
+          formControlName="fechaFinRegistro"
+          dateFormat="dd/mm/yy"
+          [showIcon]="true"
+          [iconDisplay]="'input'"
+          [appendTo]="'body'"
+          placeholder="dd/mm/aaaa"
+          [style]="{ 'width': '100%' }">
+        </p-datepicker>
+      </div>
+
+      <div class="field-block">
+        <label class="field-label" for="horaFinRegistro">Hora de t&eacute;rmino</label>
+        <p-datepicker
+          inputId="horaFinRegistro"
+          formControlName="horaFinRegistro"
+          [timeOnly]="true"
+          hourFormat="24"
+          [showIcon]="true"
+          [iconDisplay]="'input'"
+          [appendTo]="'body'"
+          placeholder="--:-- hrs."
+          [style]="{ 'width': '100%' }">
+        </p-datepicker>
+      </div>
+    </div>
+    @if (mostrarErrorRango('registro')) {
+      <small class="field-error field-error--section">La fecha y hora fin de registro no puede ser menor a la fecha y hora de inicio.</small>
+    }
+
+    <div class="actions">
+      <p-button
+        type="button"
+        label="Limpiar"
+        variant="outlined"
+        (click)="limpiar()">
+      </p-button>
+      <p-button
+        type="submit"
+        label="Guardar configuraci&oacute;n"
+        [disabled]="guardarDeshabilitado">
+      </p-button>
+    </div>
+  </form>
+</section>

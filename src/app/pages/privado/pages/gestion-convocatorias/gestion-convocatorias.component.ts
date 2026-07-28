@@ -21,6 +21,6 @@ import {Tab, TabList, Tabs} from 'primeng/tabs';
 })
 export class GestionConvocatoriasComponent {
 
-  tab: number = 1;
+  tab: number = 0;
 
 }
