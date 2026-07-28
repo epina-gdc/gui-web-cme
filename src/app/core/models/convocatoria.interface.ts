@@ -54,6 +54,21 @@ export interface ConvocatoriaDetalle {
   subperfiles?: ConvocatoriaSubperfil[];
 }
 
+export interface ConvocatoriaActiva {
+  idConvocatoria: number;
+  desConvocatoria: string;
+  fecInicio: string;
+  fecFin: string;
+  refUrlTableroOferta?: string | null;
+  tipo?: TipoConvocatoria;
+  stpFechaInicioRegistro?: string | null;
+  stpFechaFinRegistro?: string | null;
+  perfiles?: ConvocatoriaPerfil[];
+  subperfiles?: ConvocatoriaSubperfil[];
+  registroActivo: boolean;
+  indActivo: number;
+}
+
 export interface ConvocatoriaRegistroRequest {
   desConvocatoria: string;
   fecInicio: string;

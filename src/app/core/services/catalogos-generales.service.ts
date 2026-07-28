@@ -17,7 +17,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { environment } from '@env/environment.development';
 import { AlertService } from '@services/alert.service';
-import { Convocatoria } from '@models/convocatoria.interface';
+import { Convocatoria, ConvocatoriaActiva } from '@models/convocatoria.interface';
 import { Especialidades } from '@models/especialidad';
 
 @Injectable({
@@ -315,6 +315,15 @@ export class CatalogosGeneralesService {
     return this.http.get<HttpRespuesta<Convocatoria[]>>(this.serverEndPointURLCatalogos + '/convocatorias', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<Convocatoria[]>) => {
+        return response;
+      })
+    );
+  }
+
+  getConvocatoriaActiva(): Observable<HttpRespuesta<ConvocatoriaActiva | undefined>> {
+    return this.http.get<HttpRespuesta<ConvocatoriaActiva | undefined>>(this.serverEndPointURLCatalogos + '/convocatorias/activa', { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<ConvocatoriaActiva | undefined>) => {
         return response;
       })
     );
