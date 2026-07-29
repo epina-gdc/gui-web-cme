@@ -1,14 +1,14 @@
 import {ResponseGeneral} from '@models/responseGeneral';
-import {Component, inject, OnDestroy, OnInit} from '@angular/core';
+import {Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {Card} from 'primeng/card';
 import {GeneralComponent} from '@components/general.component';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
 import {Select} from 'primeng/select';
 import {Button} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
 import {HttpErrorResponse} from '@angular/common/http';
 import {CommonModule} from '@angular/common';
-import {CatPais, CatPaisResponse, CatSubperfil, CatSubperfilResponse} from '@models/catalogoGeneral';
+import {CatPais, CatPaisResponse, CatSubperfil} from '@models/catalogoGeneral';
 import {
   AreaMedicaData,
   RegistroCurpRequest,
@@ -21,6 +21,13 @@ import {passwordValidator} from '@validators/password-validator';
 import {PATRON_CURP, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_PASAPORTE, PATRON_RFC} from '@utils/regex';
 import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
 import {PrimeTemplate} from 'primeng/api';
+import {ConvocatoriaActiva} from '@models/convocatoria.interface';
+import {HttpRespuesta} from '@models/http-respuesta.interface';
+import {
+  construirEncabezadoConvocatoriaActiva,
+  filtrarSubperfilesPorPerfil,
+  subperfilesConvocatoriaToCatalogo
+} from '@utils/convocatoria-activa';
 
 @Component({
   selector: 'app-registro-medico',
@@ -44,11 +51,13 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   fb = inject(FormBuilder)
   form!: FormGroup;
   usuarioValidado = false;
+  tituloConvocatoria = signal('');
+  subtituloConvocatoria = signal('');
 
   strTitulo!: string;
   medico!: RegistroMedico;
-  lstModalidad!: Array<CatSubperfil>;
-  lstPais!: Array<CatPais>;
+  lstModalidad: Array<CatSubperfil> = [];
+  lstPais: Array<CatPais> = [];
 
   ruta: string = '';
 
@@ -66,51 +75,21 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   inPass2: boolean = false;
   idModalidad!: number;
   AREA_MEDICA_DATA: AreaMedicaData = new AreaMedicaData;
+  private lstSubperfilesConvocatoria: Array<CatSubperfil> = [];
 
   ngOnInit(): void {
     this.ruta = this._nav.publico + this._nav.crearCuenta;
     this.blnPassIguales = false;
     this.blnCorreosIguales = false;
-    this.getCatalogoModalidad();
     this.form = this.inicializarForm();
+    this.inicializarCambiosFormulario();
     this.msjForm();
     this.blnBtnValidar = true;
-    let x = this.getSession('registroMedico');
-
-    if (x) {
-      this.medico = x;
-      //console.log("meduico: ",this.medico);
-      this.medico.documentoVerif = x.documentoVerif;
-      this.medico.refCurp = '';
-      this.idModalidad = this.medico.modalidad;
-      this.form.controls['modalidad'].setValue(this.medico.modalidad);
-      if (this.medico.blnInterno) {
-        this.isResidente();
-
-      } else {
-
-        this.isExterno();
-        if (this.medico.blnPasaporte) {
-          return this.isPasaporte();
-        }
-        return this.isCurp();
-
-      }
-    } else {
-      this.medico = new RegistroMedico();
-    }
+    this.inicializarRegistroMedico();
+    this.obtenerConvocatoriaActiva();
   }
 
   /* Gestión Catalogos */
-
-  getCatalogoModalidad(): void {
-    this.lstModalidad = new Array<CatSubperfil>();
-    this._CatalogoGenService.getLstSubPerfil().subscribe((response: CatSubperfilResponse) => {
-      if (response.exito) {
-        this.lstModalidad = response.respuesta;
-      }
-    });
-  }
 
   getCatalogoPais(): void {
     this.lstPais = new Array<CatPais>();
@@ -119,6 +98,107 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
         this.lstPais = response.respuesta;
       }
     });
+  }
+
+  private inicializarRegistroMedico(): void {
+    const registroMedico = this.getSession('registroMedico');
+
+    if (!registroMedico) {
+      this.medico = new RegistroMedico();
+      return;
+    }
+
+    this.medico = registroMedico;
+    //console.log("meduico: ",this.medico);
+    this.medico.documentoVerif = registroMedico.documentoVerif;
+    this.medico.refCurp = '';
+    this.idModalidad = this.medico.modalidad;
+    this.form.controls['modalidad'].setValue(this.medico.modalidad);
+
+    if (this.medico.blnInterno) {
+      this.isResidente();
+      return;
+    }
+
+    this.isExterno();
+    if (this.medico.blnPasaporte) {
+      this.isPasaporte();
+      return;
+    }
+    this.isCurp();
+  }
+
+  private obtenerConvocatoriaActiva(): void {
+    this._CatalogoGenService.getConvocatoriaActiva()
+      .subscribe({
+        next: (response: HttpRespuesta<ConvocatoriaActiva | undefined>) => {
+          if (!response.exito || !response.respuesta) {
+            this.establecerConvocatoriaDefault();
+            if (response.mensaje) {
+              this._alertServices.informacion(response.mensaje);
+            }
+            return;
+          }
+          this.establecerConvocatoriaActiva(response.respuesta);
+        },
+        error: (error) => {
+          console.log('Error al consultar convocatoria activa', error);
+          this.establecerConvocatoriaDefault();
+          this._alertServices.error(error?.error?.mensaje ?? 'No fue posible consultar la convocatoria activa.');
+        }
+      });
+  }
+
+  private establecerConvocatoriaActiva(convocatoria: ConvocatoriaActiva): void {
+    const encabezado = construirEncabezadoConvocatoriaActiva(convocatoria);
+    this.tituloConvocatoria.set(encabezado.titulo);
+    this.subtituloConvocatoria.set(encabezado.subtitulo);
+    this.lstSubperfilesConvocatoria = subperfilesConvocatoriaToCatalogo(convocatoria.subperfiles ?? []);
+    this.actualizarModalidadesPorPerfil(this.medico?.perfil?.idPerfil);
+  }
+
+  private establecerConvocatoriaDefault(): void {
+    const encabezado = construirEncabezadoConvocatoriaActiva();
+    this.tituloConvocatoria.set(encabezado.titulo);
+    this.subtituloConvocatoria.set(encabezado.subtitulo);
+    this.lstSubperfilesConvocatoria = [];
+    this.lstModalidad = [];
+    this.configurarControlModalidad();
+  }
+
+  private actualizarModalidadesPorPerfil(idPerfil?: number | null): void {
+    this.lstModalidad = filtrarSubperfilesPorPerfil(this.lstSubperfilesConvocatoria, idPerfil);
+    this.configurarControlModalidad();
+  }
+
+  private configurarControlModalidad(): void {
+    const control = this.form.controls['modalidad'];
+
+    if (!this.mostrarModalidad) {
+      control.setValue(null, {emitEvent: false});
+      control.setValidators([]);
+      control.enable({emitEvent: false});
+      control.updateValueAndValidity();
+      return;
+    }
+
+    const modalidadActual = this.medico?.modalidad ?? control.value;
+    const existeModalidad = this.lstModalidad.some(
+      modalidad => modalidad.idSubperfil === Number(modalidadActual)
+    );
+
+    if (existeModalidad) {
+      const idModalidad = Number(modalidadActual);
+      control.setValue(idModalidad, {emitEvent: false});
+      this.medico.modalidad = idModalidad;
+      control.disable({emitEvent: false});
+    } else {
+      control.setValue(null, {emitEvent: false});
+      control.enable({emitEvent: false});
+    }
+
+    control.setValidators([Validators.required]);
+    control.updateValueAndValidity();
   }
 
   /* Formularios */
@@ -130,8 +210,8 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
       pasaporte: ['', ''],
       pais: ['', ''],
       nombre: ['', [Validators.required, Validators.pattern(PATRON_NOMBRE)]],
-      apellidoP: ['', [Validators.required, Validators.pattern(PATRON_NOMBRE)]],
-      apellidoM: ['', [Validators.pattern(PATRON_NOMBRE)]],
+      apellidoP: ['', [this.apellidoRequeridoValidator('apellidoM'), Validators.pattern(PATRON_NOMBRE)]],
+      apellidoM: ['', [this.apellidoRequeridoValidator('apellidoP'), Validators.pattern(PATRON_NOMBRE)]],
       curp: ['', Validators.compose([
         Validators.required,
         Validators.minLength(18),
@@ -171,6 +251,34 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
         passwordValidator()
       ])],
     });
+  }
+
+  private inicializarCambiosFormulario(): void {
+    this.form.controls['apellidoP'].valueChanges.subscribe(() => {
+      this.form.controls['apellidoM'].updateValueAndValidity({emitEvent: false});
+    });
+
+    this.form.controls['apellidoM'].valueChanges.subscribe(() => {
+      this.form.controls['apellidoP'].updateValueAndValidity({emitEvent: false});
+    });
+  }
+
+  private apellidoRequeridoValidator(controlComplementario: string): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const form = control.parent;
+      if (!form) {
+        return null;
+      }
+
+      const valorActual = this.tieneValor(control.value);
+      const valorComplementario = this.tieneValor(form.get(controlComplementario)?.value);
+
+      return valorActual || valorComplementario ? null : {required: true};
+    };
+  }
+
+  private tieneValor(value: unknown): boolean {
+    return typeof value === 'string' ? value.trim().length > 0 : value !== null && value !== undefined;
   }
 
   ngOnDestroy() {
@@ -235,10 +343,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.form.controls['pasaporte'].setValidators([Validators.required, Validators.minLength(6),
     Validators.maxLength(9), Validators.pattern(PATRON_PASAPORTE)]);
     this.form.controls['pais'].setValidators([Validators.required]);
-    if(this.medico.perfil.idPerfil === 6){
-      this.form.controls['modalidad'].setValidators([Validators.required]);
-      this.form.controls['modalidad'].updateValueAndValidity();
-    }
+    this.configurarControlModalidad();
     this.form.controls['pasaporte'].updateValueAndValidity();
     this.form.controls['pais'].updateValueAndValidity();
     this.dinamicoCurp();
@@ -285,12 +390,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   private isExterno() {
     this.strTitulo = 'Médico externo';
     this.clearCampos();
-    if (this.medico.perfil.idPerfil == 6) {
-
-      this.form.controls['modalidad'].setValidators([Validators.required]);
-      this.form.controls['modalidad'].updateValueAndValidity();
-      this.form.get('modalidad')?.disable();
-    }
+    this.actualizarModalidadesPorPerfil(this.medico.perfil?.idPerfil);
   }
 
   msjValidation: any = {};
@@ -373,6 +473,10 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
   get f() {
     return this.form.controls;
+  }
+
+  get mostrarModalidad(): boolean {
+    return !this.medico?.blnInterno && this.lstModalidad.length > 0;
   }
 
   blnBtnValidar!: boolean;

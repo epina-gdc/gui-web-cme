@@ -1,4 +1,5 @@
-import {ConvocatoriaActiva} from '@models/convocatoria.interface';
+import {CatPerfil, CatSubperfil} from '@models/catalogoGeneral';
+import {ConvocatoriaActiva, ConvocatoriaPerfil, ConvocatoriaSubperfil} from '@models/convocatoria.interface';
 
 export const TITULO_CONVOCATORIA_DEFAULT = 'Convocatoria para M\u00e9dicos Especialistas';
 
@@ -37,6 +38,40 @@ export function construirSubtituloConvocatoriaActiva(convocatoria: ConvocatoriaA
   }
 
   return `Reclutamiento IMSS ${anioInicio}-${anioFin}`;
+}
+
+export function perfilesConvocatoriaToCatalogo(perfiles: ConvocatoriaPerfil[] = []): CatPerfil[] {
+  return perfiles.map(perfil => ({
+    idPerfil: perfil.idPerfil,
+    nomPerfil: perfil.nomPerfil ?? perfil.desPerfil ?? perfil.descripcion ?? perfil.clave ?? String(perfil.idPerfil),
+    indActivo: perfil.indActivo ?? 1,
+    indPerfilInterno: perfil.indPerfilInterno,
+    desPerfil: perfil.desPerfil ?? perfil.descripcion ?? perfil.nomPerfil,
+    clave: perfil.clave,
+    descripcion: perfil.descripcion
+  }));
+}
+
+export function subperfilesConvocatoriaToCatalogo(subperfiles: ConvocatoriaSubperfil[] = []): CatSubperfil[] {
+  return subperfiles
+    .filter(subperfil => subperfil.idPerfil !== null && subperfil.idPerfil !== undefined)
+    .map(subperfil => ({
+      idSubperfil: subperfil.idSubperfil,
+      idPerfil: Number(subperfil.idPerfil),
+      nomSubperfil: subperfil.nomSubperfil ?? subperfil.desSubperfil ?? subperfil.descripcion ?? subperfil.clave ?? String(subperfil.idSubperfil),
+      indActivo: subperfil.indActivo ?? 1,
+      desSubperfil: subperfil.desSubperfil ?? subperfil.descripcion ?? subperfil.nomSubperfil,
+      clave: subperfil.clave,
+      descripcion: subperfil.descripcion
+    }));
+}
+
+export function filtrarSubperfilesPorPerfil(subperfiles: CatSubperfil[], idPerfil?: number | null): CatSubperfil[] {
+  if (idPerfil === null || idPerfil === undefined) {
+    return [];
+  }
+
+  return subperfiles.filter(subperfil => subperfil.idPerfil === Number(idPerfil));
 }
 
 function obtenerAnio(fecha?: string | null): number | null {

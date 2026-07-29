@@ -14,11 +14,13 @@ import {
   CatSubperfil
 } from '@models/catalogoGeneral';
 import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.component';
-import {ConvocatoriaActiva, ConvocatoriaPerfil, ConvocatoriaSubperfil} from '@models/convocatoria.interface';
+import {ConvocatoriaActiva} from '@models/convocatoria.interface';
 import {HttpRespuesta} from '@models/http-respuesta.interface';
 import {
   construirEncabezadoConvocatoriaActiva,
-  TITULO_CONVOCATORIA_DEFAULT
+  filtrarSubperfilesPorPerfil,
+  perfilesConvocatoriaToCatalogo,
+  subperfilesConvocatoriaToCatalogo
 } from '@utils/convocatoria-activa';
 
 @Component({
@@ -211,8 +213,8 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
     const encabezado = construirEncabezadoConvocatoriaActiva(convocatoria);
     this.tituloConvocatoria.set(encabezado.titulo);
     this.subtituloConvocatoria.set(encabezado.subtitulo);
-    this.lstPerfil = this.perfilesToCatalogo(convocatoria.perfiles ?? []);
-    this.lstSubperfilesConvocatoria = this.subperfilesToCatalogo(convocatoria.subperfiles ?? []);
+    this.lstPerfil = perfilesConvocatoriaToCatalogo(convocatoria.perfiles ?? []);
+    this.lstSubperfilesConvocatoria = subperfilesConvocatoriaToCatalogo(convocatoria.subperfiles ?? []);
     this.lstModalidad = [];
 
     if (this.lstPerfil.length === 1) {
@@ -234,19 +236,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   }
 
   private actualizarModalidadesPorPerfil(idPerfil: number): void {
-    this.lstModalidad = this.lstSubperfilesConvocatoria.filter(subperfil => subperfil.idPerfil === Number(idPerfil));
-  }
-
-  private perfilesToCatalogo(perfiles: ConvocatoriaPerfil[]): CatPerfil[] {
-    return perfiles.map(perfil => ({
-      idPerfil: perfil.idPerfil,
-      nomPerfil: perfil.nomPerfil ?? perfil.desPerfil ?? perfil.descripcion ?? perfil.clave ?? String(perfil.idPerfil),
-      indActivo: perfil.indActivo ?? 1,
-      indPerfilInterno: perfil.indPerfilInterno,
-      desPerfil: perfil.desPerfil ?? perfil.descripcion ?? perfil.nomPerfil,
-      clave: perfil.clave,
-      descripcion: perfil.descripcion
-    }));
+    this.lstModalidad = filtrarSubperfilesPorPerfil(this.lstSubperfilesConvocatoria, idPerfil);
   }
 
   private esPerfilInterno(perfil: CatPerfil): boolean {
@@ -255,19 +245,5 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
     }
 
     return ![3, 6].includes(perfil.idPerfil);
-  }
-
-  private subperfilesToCatalogo(subperfiles: ConvocatoriaSubperfil[]): CatSubperfil[] {
-    return subperfiles
-      .filter(subperfil => subperfil.idPerfil !== null && subperfil.idPerfil !== undefined)
-      .map(subperfil => ({
-        idSubperfil: subperfil.idSubperfil,
-        idPerfil: Number(subperfil.idPerfil),
-        nomSubperfil: subperfil.nomSubperfil ?? subperfil.desSubperfil ?? subperfil.descripcion ?? subperfil.clave ?? String(subperfil.idSubperfil),
-        indActivo: subperfil.indActivo ?? 1,
-        desSubperfil: subperfil.desSubperfil ?? subperfil.descripcion ?? subperfil.nomSubperfil,
-        clave: subperfil.clave,
-        descripcion: subperfil.descripcion
-      }));
   }
 }

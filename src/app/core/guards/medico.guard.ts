@@ -41,7 +41,7 @@ const checkMedicalProfile = (): Observable<boolean | UrlTree> => {
         return of(router.createUrlTree([`/privado/${destino}`]));
       }
 
-      if ([1, 2, 3, 6].includes(idPerfil)) {
+      if ([1, 2, 3, 6, 13].includes(idPerfil)) {
         return of(true);
       }
 
