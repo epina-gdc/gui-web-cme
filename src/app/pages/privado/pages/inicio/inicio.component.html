@@ -38,7 +38,7 @@
             <div class="lg:col-4 col-12">
               <div class="flex justify-content-between">
                 <label class="field-label" for="nss">NSS</label>
-                @if (this.userData?.idPerfil == 2) {
+                @if (perfilInterno) {
                   <p class="label-obligatorio">Obligatorio</p>
                 }
               </div>
@@ -462,6 +462,22 @@
             <p-select [options]="lstTiposDocumentos" optionLabel="label" optionValue="value"
                       placeholder="Selecciona una opción" formControlName="documento" class="w-full"/>
           </div>
+          @if (mostrarInstitucionEgreso) {
+            <div class="lg:col-3 col-12">
+              <div class="flex justify-content-between mb-1">
+                <p class="field-label">Institución educativa de egreso</p>
+                <p class="label-obligatorio">Obligatorio</p>
+              </div>
+              <input pInputText class="w-full" type="text" id="institucionEgreso"
+                     placeholder="Ingresa institución educativa de egreso"
+                     formControlName="institucionEgreso" maxlength="300"/>
+              @if (esCampoDocumentoEspecialidadInvalido('institucionEgreso')) {
+                @if (formDocumentosEspecialidad.get('institucionEgreso')?.errors?.['required']) {
+                  <p class="text-danger">{{ _Mensajes.MSJ_CAMPO_REQUERIDO }}</p>
+                }
+              }
+            </div>
+          }
           <div class="lg:col-3 col-12">
             <div class="flex justify-content-between mb-1">
               <p class="field-label">Carga de documento</p>
@@ -499,26 +515,31 @@
                       <tr>
                         <th class="label-th" scope="col">Tipo Documento</th>
                         <th class="label-th" scope="col">Especialidad Médica</th>
+                        @if (mostrarColumnaInstitucionEgreso(registro.documentos)) {
+                          <th class="label-th" scope="col">Institución educativa de egreso</th>
+                        }
                         <th class="label-th" scope="col">Acciones</th>
                       </tr>
                     </ng-template>
-                    <ng-template #body let-registro>
+                    <ng-template #body let-documento>
                       <tr>
                         <td class="label-documento-td cursor-pointer"
-                            (click)="mostrarDocumento(registro.guid)">{{ registro.tipoDocumento }}
-                        </td>
-                        <td class="label-td">{{ registro.especialidadMedica }}</td>
+                            (click)="mostrarDocumento(documento.guid)">{{ documento.tipoDocumento }}</td>
+                        <td class="label-td">{{ documento.especialidadMedica }}</td>
+                        @if (mostrarColumnaInstitucionEgreso(registro.documentos)) {
+                          <td class="label-td">{{ mostrarInstitucionEgresoDocumento(documento) ? documento.desInstitucionEgreso : '' }}</td>
+                        }
                         <td>
                           @if (!estatusPendienteDocumentacion) {
                             <p-button icon="cme-trash" [text]="true" severity="danger" [style]="{'font-size': '2.0rem'}"
-                                      (click)="eliminarDocumento(registro.especialidadMedica, registro.tipoDocumento)"/>
+                                      (click)="eliminarDocumento(documento.especialidadMedica, documento.tipoDocumento)"/>
                           }
                         </td>
                       </tr>
                     </ng-template>
                     <ng-template #emptymessage>
                       <tr>
-                        <td colspan="3">
+                        <td [attr.colspan]="mostrarColumnaInstitucionEgreso(registro.documentos) ? 4 : 3">
                         </td>
                       </tr>
                     </ng-template>
@@ -531,7 +552,7 @@
       }
     </p-card>
 
-    @if (userData?.idPerfil === 3 || userData?.idPerfil === 6) {
+    @if (perfilExterno) {
       <p-card class="mx-2 empty-border" [header]="'Constancias de cursos de educación permanente en salud'">
         <div class="flex align-items-center gap-4 px-2 py-4">
           <i class="pi pi-exclamation-circle" style="color: #BC955C; font-size: 2rem"></i>
@@ -602,9 +623,9 @@
       </p-card>
     }
 
-    @if (userData?.idPerfil === 3 || userData?.idPerfil === 6) {
+    @if (perfilExterno) {
       <p-card class="mx-2 empty-border"
-              [header]="[3,6].includes(userData?.idPerfil ?? 0) ? 'Otros Datos' : 'Datos de empleo'">
+              [header]="perfilExterno ? 'Otros Datos' : 'Datos de empleo'">
         <form [formGroup]="formDatosEmpleo">
           <article class="grid-datos-empleo">
             <div class="px-2">

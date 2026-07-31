@@ -73,6 +73,7 @@ import {FooterMedicoComponent} from '@pages/privado/shared/footer-medico/footer-
 import {DatosDocumentoResponse} from '@models/datosDocumento';
 import {EstadoOfertaService} from '@services/estado-oferta.service';
 import {OnCloseOnNavigationDirective} from '@directives/close-on-navigation.directive';
+import {TipoDocumentoEspecialidad} from '@models/tipo-documento-especialidad.interface';
 
 interface DocumentoFuente {
   refGuid: string;
@@ -81,6 +82,11 @@ interface DocumentoFuente {
 
 interface EntradaDocumentos {
   [key: string]: DocumentoFuente; // Clave: '1', '2', '3', etc. (no se usará)
+}
+
+interface TipoDocumentoEspecialidadDropdown extends TipoDropdown {
+  value: number;
+  indInstitucionEgreso?: number;
 }
 
 dayjs.extend(utc);
@@ -127,6 +133,7 @@ export class InicioComponent extends GeneralComponent {
   readonly instituciones = INSTITUCIONES;
   readonly opciones_boolean = BOOLEAN_OPCIONES;
   readonly opciones_booleanAsamblea = BOOLEAN_OPCIONES;
+  private readonly ID_DOCUMENTO_DIPLOMA_INSTITUCIONAL_ESPECIALIDAD = 1;
 
   userService = inject(UserService);
   fb: FormBuilder = inject(FormBuilder);
@@ -164,8 +171,9 @@ export class InicioComponent extends GeneralComponent {
   sexos: TipoDropdown[] = [];
   estadosCiviles: TipoDropdown[] = [];
   paises: TipoDropdown[] = [];
-  lstTiposDocumentos: TipoDropdown[] = [];
-  lstTiposDocumentosCopy: TipoDropdown[] = [];
+  lstTiposDocumentos: TipoDocumentoEspecialidadDropdown[] = [];
+  lstTiposDocumentosCopy: TipoDocumentoEspecialidadDropdown[] = [];
+  private lstTiposDocumentosBase: TipoDocumentoEspecialidadDropdown[] = [];
   lugaresNacimiento: TipoDropdown[] = [];
   estados: TipoDropdown[] = [];
   municipios: TipoDropdown[] = [];
@@ -247,7 +255,7 @@ export class InicioComponent extends GeneralComponent {
 
     let validatorsNSS: ValidatorFn[] = []; // Tipado para eliminar el warning de TS
 
-    if (this.userData?.idPerfil == 2) {
+    if (this.esPerfilInterno()) {
       // Usa un patrón que exige exactamente 11 dígitos numéricos.
       // ^[0-9]{11}$: Empieza (^), contiene exactamente 11 dígitos (0-9){11}, y termina ($).
       validatorsNSS = [
@@ -256,8 +264,6 @@ export class InicioComponent extends GeneralComponent {
         Validators.minLength(11),
         Validators.maxLength(11)
       ];
-    } else if (this.userData?.idPerfil == 3 || this.userData?.idPerfil == 6) {
-      validatorsNSS = []
     }
 
 
@@ -359,12 +365,11 @@ export class InicioComponent extends GeneralComponent {
     });
 
     this.formDocumentosEspecialidad.get('especialidad')?.valueChanges.subscribe(value => {
-      this.lstTiposDocumentos = this.lstTiposDocumentosCopy;
-      const especialidades = this.registrosDocumentosEspecialidad();
-      const especialidadSeleccionada = especialidades.find(e => e.documentos[0].cveEspecialidad == value);
-      especialidadSeleccionada?.documentos.forEach(documento => {
-        this.lstTiposDocumentos = this.lstTiposDocumentos.filter(x => x.value != documento.idDocumento)
-      });
+      this.actualizarTiposDocumentosDisponibles(value);
+    });
+
+    this.formDocumentosEspecialidad.get('documento')?.valueChanges.subscribe(value => {
+      this.actualizarValidacionInstitucionEgreso(value);
     });
   }
 
@@ -544,7 +549,8 @@ export class InicioComponent extends GeneralComponent {
   asignarFormularioDocumentosEspecialidad(): FormGroup {
     return this.fb.group({
       especialidad: [{value: '', disabled: false}, [Validators.required]],
-      documento: [{value: '', disabled: false}, [Validators.required]]
+      documento: [{value: '', disabled: false}, [Validators.required]],
+      institucionEgreso: [{value: null, disabled: false}]
     })
   }
 
@@ -590,12 +596,142 @@ export class InicioComponent extends GeneralComponent {
       this.estadosCiviles = mapearArregloTipoDropdown(estadosCiviles.respuesta, 'desEstadoCivil', 'idEstadoCivil');
       this.paises = mapearArregloTipoDropdown(paises.respuesta, 'desPais', 'idPais');
       this.lugaresNacimiento = mapearArregloTipoDropdown(lugaresNacimiento.respuesta, 'desLugarNacimiento', 'idLugarNacimiento');
-      this.lstTiposDocumentos = mapearArregloTipoDropdown(tiposDocumentos.respuesta, 'desTipoDocumentoEspecialidad', 'idTipoDocumentoEspecialidad');
-      this.lstTiposDocumentosCopy = mapearArregloTipoDropdown(tiposDocumentos.respuesta, 'desTipoDocumentoEspecialidad', 'idTipoDocumentoEspecialidad');
+      this.lstTiposDocumentosBase = this.tiposDocumentosEspecialidadToDropdown(tiposDocumentos.respuesta ?? []);
+      this.actualizarCatalogoTiposDocumentosPorPerfil();
       this.ooad = mapearArregloTipoDropdown(ooad.respuesta, 'desOoad', 'cveOoad');
       this.especialidades = mapearArregloTipoDropdown(especialidades, 'desEspecialidad', 'cveEspecialidad');
       this.dias_semana = mapearArregloTipoDropdown(dias.respuesta, 'descDiaSemana', 'idDiaSemana')
     });
+  }
+
+  private actualizarCatalogoTiposDocumentosPorPerfil(): void {
+    this.lstTiposDocumentosCopy = this.filtrarTiposDocumentosPorPerfil(this.lstTiposDocumentosBase);
+    this.actualizarTiposDocumentosDisponibles(this.formDocumentosEspecialidad.get('especialidad')?.value);
+    this.actualizarValidacionInstitucionEgreso(this.formDocumentosEspecialidad.get('documento')?.value);
+  }
+
+  private actualizarTiposDocumentosDisponibles(cveEspecialidad: string | number | null | undefined): void {
+    this.lstTiposDocumentos = [...this.lstTiposDocumentosCopy];
+    const especialidades = this.registrosDocumentosEspecialidad();
+    const especialidadSeleccionada = especialidades.find(e => e.documentos[0].cveEspecialidad == cveEspecialidad);
+    especialidadSeleccionada?.documentos.forEach(documento => {
+      this.lstTiposDocumentos = this.lstTiposDocumentos.filter(x => x.value != documento.idDocumento)
+    });
+
+    const documentoSeleccionado = this.formDocumentosEspecialidad.get('documento')?.value;
+    if (documentoSeleccionado && !this.lstTiposDocumentos.some(documento => documento.value == documentoSeleccionado)) {
+      this.formDocumentosEspecialidad.get('documento')?.setValue(null);
+    }
+  }
+
+  private filtrarTiposDocumentosPorPerfil(tiposDocumentos: TipoDocumentoEspecialidadDropdown[]): TipoDocumentoEspecialidadDropdown[] {
+    if (!this.esPerfilExterno()) {
+      return [...tiposDocumentos];
+    }
+
+    return tiposDocumentos.filter(documento => !this.esDiplomaInstitucionalEspecialidad(documento));
+  }
+
+  private esPerfilExterno(): boolean {
+    return this.obtenerIndicadorPerfilInterno() === 0;
+  }
+
+  get perfilExterno(): boolean {
+    return this.esPerfilExterno();
+  }
+
+  private esPerfilInterno(): boolean {
+    return this.obtenerIndicadorPerfilInterno() === 1;
+  }
+
+  get perfilInterno(): boolean {
+    return this.esPerfilInterno();
+  }
+
+  private obtenerIndicadorPerfilInterno(): number | null {
+    const indicador = this.datosGenerales?.indPerfilInterno
+      ?? this.datosGenerales?.datosPersonales?.indPerfilInterno
+      ?? this.datosGenerales?.datosPersonales?.perfil?.indPerfilInterno;
+
+    return indicador === null || indicador === undefined ? null : Number(indicador);
+  }
+
+  private esDiplomaInstitucionalEspecialidad(documento: TipoDropdown): boolean {
+    return Number(documento.value) === this.ID_DOCUMENTO_DIPLOMA_INSTITUCIONAL_ESPECIALIDAD;
+  }
+
+  private tiposDocumentosEspecialidadToDropdown(items: TipoDocumentoEspecialidad[]): TipoDocumentoEspecialidadDropdown[] {
+    return items.map(item => ({
+      label: item.desTipoDocumentoEspecialidad,
+      value: item.idTipoDocumentoEspecialidad,
+      indInstitucionEgreso: item.indInstitucionEgreso
+    }));
+  }
+
+  private actualizarValidacionInstitucionEgreso(idTipoDocumento: unknown): void {
+    const control = this.formDocumentosEspecialidad.get('institucionEgreso');
+    if (!control) {
+      return;
+    }
+
+    if (this.tipoDocumentoRequiereInstitucionEgreso(idTipoDocumento)) {
+      control.setValidators([Validators.required, Validators.maxLength(300)]);
+    } else {
+      control.setValue(null, {emitEvent: false});
+      control.clearValidators();
+    }
+
+    control.updateValueAndValidity({emitEvent: false});
+  }
+
+  get mostrarInstitucionEgreso(): boolean {
+    return this.tipoDocumentoRequiereInstitucionEgreso(this.formDocumentosEspecialidad.get('documento')?.value);
+  }
+
+  esCampoDocumentoEspecialidadInvalido(controlName: string): boolean {
+    const control = this.formDocumentosEspecialidad.get(controlName);
+    return !!(control && control.invalid && (control.dirty || control.touched));
+  }
+
+  mostrarInstitucionEgresoDocumento(documento: TabDocumento): boolean {
+    return this.documentoRequiereInstitucionEgreso(documento) && !!this.obtenerInstitucionEgresoDocumento(documento);
+  }
+
+  mostrarColumnaInstitucionEgreso(documentos: TabDocumento[]): boolean {
+    return documentos.some(documento => this.documentoRequiereInstitucionEgreso(documento));
+  }
+
+  private tipoDocumentoRequiereInstitucionEgreso(idTipoDocumento: unknown): boolean {
+    return Number(this.obtenerTipoDocumentoEspecialidad(idTipoDocumento)?.indInstitucionEgreso ?? 0) === 1;
+  }
+
+  private obtenerTipoDocumentoEspecialidad(idTipoDocumento: unknown): TipoDocumentoEspecialidadDropdown | undefined {
+    return this.lstTiposDocumentosBase.find(documento => documento.value == idTipoDocumento);
+  }
+
+  private documentoRequiereInstitucionEgreso(documento: TabDocumento): boolean {
+    return Number(
+      documento.indInstitucionEgreso
+      ?? this.obtenerTipoDocumentoEspecialidad(documento.idDocumento)?.indInstitucionEgreso
+      ?? 0
+    ) === 1;
+  }
+
+  private obtenerInstitucionEgresoDocumento(documento: TabDocumento): string | undefined {
+    if (!this.documentoRequiereInstitucionEgreso(documento)) {
+      return undefined;
+    }
+
+    const institucion = documento.desInstitucionEgreso?.trim();
+    return institucion || undefined;
+  }
+
+  private tieneDocumentosEspecialidadSinInstitucionEgreso(): boolean {
+    return this.registrosDocumentosEspecialidad().some(node =>
+      node.documentos.some(documento =>
+        this.documentoRequiereInstitucionEgreso(documento) && !this.obtenerInstitucionEgresoDocumento(documento)
+      )
+    );
   }
 
   crearRegistroZonaInteres() {
@@ -615,20 +751,38 @@ export class InicioComponent extends GeneralComponent {
 
   obtenerNuevoDocumento(guid: string = ''): TabDocumento {
     const tipoDocumento = this.formDocumentosEspecialidad.get('documento')?.value;
-    const documentoLabel = this.lstTiposDocumentos.find(d => d.value === tipoDocumento)?.label as string;
+    const tipoDocumentoSeleccionado = this.obtenerTipoDocumentoEspecialidad(tipoDocumento);
+    const documentoLabel = tipoDocumentoSeleccionado?.label as string;
     const especialidad = this.formDocumentosEspecialidad.get('especialidad')?.value;
     const especialidadLabel = this.especialidades.find(d => d.value === especialidad)?.label as string;
+    const desInstitucionEgreso = this.obtenerInstitucionEgresoFormulario(tipoDocumento);
 
     return {
       tipoDocumento: documentoLabel,
       especialidadMedica: especialidadLabel,
       cveEspecialidad: especialidad,
-      idDocumento: tipoDocumento,
-      guid
+      idDocumento: Number(tipoDocumento),
+      guid,
+      indInstitucionEgreso: tipoDocumentoSeleccionado?.indInstitucionEgreso,
+      ...(desInstitucionEgreso ? {desInstitucionEgreso} : {})
     }
   }
 
+  private obtenerInstitucionEgresoFormulario(idTipoDocumento: unknown): string | undefined {
+    if (!this.tipoDocumentoRequiereInstitucionEgreso(idTipoDocumento)) {
+      return undefined;
+    }
+
+    const institucion = this.formDocumentosEspecialidad.get('institucionEgreso')?.value?.trim();
+    return institucion || undefined;
+  }
+
   subirDocumentoyObtenerGuid(): void {
+    if (this.formDocumentosEspecialidad.invalid) {
+      this.formDocumentosEspecialidad.markAllAsTouched();
+      return;
+    }
+
     const tipoDoc = this.obtenerTipoDocumentoAValidar();
     const especialidadDoc = this.obtenerEspecialidadAValidar();
 
@@ -740,7 +894,9 @@ export class InicioComponent extends GeneralComponent {
     if (this.formDocumentosEspecialidad.get('especialidad')?.value) {
       if (this.formDocumentosEspecialidad.get('especialidad')?.value == especialidadParaModificar.documentos[0].cveEspecialidad) {
         const docAdd = this.lstTiposDocumentosCopy.find(x => x.label.toLowerCase() === tipoDocumento.toLowerCase());
-        this.lstTiposDocumentos.push(docAdd!);
+        if (docAdd && !this.lstTiposDocumentos.some(documento => documento.value == docAdd.value)) {
+          this.lstTiposDocumentos.push(docAdd);
+        }
       }
     }
 
@@ -776,6 +932,7 @@ export class InicioComponent extends GeneralComponent {
 
         if (!response.exito) return;
         this.datosGenerales = response.respuesta;
+        this.actualizarCatalogoTiposDocumentosPorPerfil();
         this.setDatosGenerales();
       }
     });
@@ -839,7 +996,7 @@ export class InicioComponent extends GeneralComponent {
         indInfoAsamblea
       } = datosPersonales;
 
-      if (perfil.idPerfil == 2) {
+      if (this.esPerfilInterno()) {
         let validatorsNSS: ValidatorFn[] = [];
         validatorsNSS = [
           Validators.required,
@@ -850,7 +1007,7 @@ export class InicioComponent extends GeneralComponent {
 
         this.formRegistro.controls['nss'].setValidators(validatorsNSS);
         this.formRegistro.controls['nss'].updateValueAndValidity();
-      } else if ([3, 6].includes(perfil.idPerfil)) {
+      } else if (this.esPerfilExterno()) {
         this.formRegistro.controls['nss'].clearValidators();
         this.formRegistro.controls['nss'].updateValueAndValidity();
       }
@@ -878,7 +1035,7 @@ export class InicioComponent extends GeneralComponent {
       }
 
       /* CUANDO NO EXISTE CURP DEJA DE FUNCIONAR LA OBTENCION POR CURP */
-      if ([3, 6].includes(perfil.idPerfil)) {
+      if (this.esPerfilExterno()) {
         if (sexo) {
           this.formRegistro.get('sexo')?.patchValue(
             {
@@ -1217,9 +1374,9 @@ export class InicioComponent extends GeneralComponent {
 
   validacionesNegocio() {
 
-    if (this.userData?.idPerfil == 3 || this.userData?.idPerfil == 6) {
-      this.formRegistro.get('nss')?.clearValidators;
-      this.formRegistro.get('nss')?.updateValueAndValidity;
+    if (this.esPerfilExterno()) {
+      this.formRegistro.get('nss')?.clearValidators();
+      this.formRegistro.get('nss')?.updateValueAndValidity();
     }
   }
 
@@ -1411,7 +1568,7 @@ export class InicioComponent extends GeneralComponent {
     const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
     const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
     const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
-    const externo: boolean = [3, 6].includes(this.userData?.idPerfil as number);
+    const externo: boolean = this.esPerfilExterno();
 
     if (this.estatusPendienteDocumentacion) {
       this.indice.update((value: number) => value + 1);
@@ -1436,11 +1593,16 @@ export class InicioComponent extends GeneralComponent {
       this._alertServices.error('Al menos debe estar cargada una especialidad');
       return;
     }
+    if (this.tieneDocumentosEspecialidadSinInstitucionEgreso()) {
+      this._alertServices.error(this._Mensajes.MSG037);
+      this._alertServices.error('La institución educativa de egreso es obligatoria para el tipo de documento seleccionado.');
+      return;
+    }
 
     const cadaEspecialidadTieneDiploma: boolean = especialidades.every(node =>
       node.documentos.some(documento => documento.idDocumento === 1));
 
-    if (!cadaEspecialidadTieneDiploma && !externo) {
+    if (this.requiereDiplomaInstitucionalEspecialidad() && !cadaEspecialidadTieneDiploma && !externo) {
       this._alertServices.error(this._Mensajes.MSG037);
       this._alertServices.error('Para cada especialidad es necesario el documento Diploma Institucional de Especialidad.');
       return;
@@ -1460,6 +1622,10 @@ export class InicioComponent extends GeneralComponent {
       const solicitud: SolicitudGuardarDocumentacion = this.generarSolicitudGuardarDocumentacion();
       this.guardarSegundaSeccion(solicitud);
     }
+  }
+
+  private requiereDiplomaInstitucionalEspecialidad(): boolean {
+    return !this.esPerfilExterno();
   }
 
   mostrarModalValidacion(): void {
@@ -1500,18 +1666,23 @@ export class InicioComponent extends GeneralComponent {
     )
   }
 
-  convertirTabNodes(): { especialidad: string, especialidadMedica: string, tipoDocumento: string, guid: string }[] {
+  convertirTabNodes(): { especialidad: string, especialidadMedica: string, tipoDocumento: string, guid: string, desInstitucionEgreso?: string }[] {
 
     // Usamos flatMap para mapear y aplanar en una sola operación
     return this.registrosDocumentosEspecialidad().flatMap(node => {
       const especialidadPrincipal = node.especialidad;
 
-      return node.documentos.map(documento => ({
-        especialidad: especialidadPrincipal,
-        especialidadMedica: documento.especialidadMedica,
-        tipoDocumento: documento.tipoDocumento,
-        guid: documento.guid
-      }));
+      return node.documentos.map(documento => {
+        const desInstitucionEgreso = this.obtenerInstitucionEgresoDocumento(documento);
+
+        return {
+          especialidad: especialidadPrincipal,
+          especialidadMedica: documento.especialidadMedica,
+          tipoDocumento: documento.tipoDocumento,
+          guid: documento.guid,
+          ...(desInstitucionEgreso ? {desInstitucionEgreso} : {})
+        };
+      });
     });
   }
 
@@ -1558,7 +1729,7 @@ export class InicioComponent extends GeneralComponent {
   }
 
   generarSolicitudGuardarDocumentacion(): SolicitudGuardarDocumentacion {
-    const externo: boolean = [3, 6].includes(this.userData?.idPerfil as number);
+    const externo: boolean = this.esPerfilExterno();
     const constancias = this.documentosLocalStorageService.obtenerRefConstanciaCompleta();
 
     if (!externo) {
@@ -1631,7 +1802,7 @@ export class InicioComponent extends GeneralComponent {
 
       // Mapear el array de documentos a la estructura RefDocumentoEspecialidad
       const documentosEspecialidad: RefDocumentoEspecialidad[] = node.documentos.map(doc => {
-        return {
+        const documentoEspecialidad: RefDocumentoEspecialidad = {
           idDocumentoEspecialidad: doc.idDocumentoEspecialidad,
           tipoDocumentoEspecialidad: {
             idTipoDocumentoEspecialidad: doc.idDocumento,
@@ -1640,6 +1811,13 @@ export class InicioComponent extends GeneralComponent {
             refGuid: doc.guid,
           }
         };
+
+        const desInstitucionEgreso = this.obtenerInstitucionEgresoDocumento(doc);
+        if (desInstitucionEgreso) {
+          documentoEspecialidad.desInstitucionEgreso = desInstitucionEgreso;
+        }
+
+        return documentoEspecialidad;
       });
 
       const documentosCompletos = documentosEspecialidad.map(d => {
@@ -1733,7 +1911,7 @@ export class InicioComponent extends GeneralComponent {
     const refObligatorio2 = this.documentosLocalStorageService.obtenerRefGuid(2);
     const refObligatorio3 = this.documentosLocalStorageService.obtenerRefGuid(3);
     const especialidades = this.documentosLocalStorageService.obtenerRefGuidEspecialidad();
-    const externo = this.userData?.idPerfil === 3 || this.userData?.idPerfil === 6;
+    const externo = this.esPerfilExterno();
     const refConstancia1 = this.documentosLocalStorageService.obtenerRefConstancia(1);
     const refConstancia2 = this.documentosLocalStorageService.obtenerRefConstancia(2);
     const refConstancia3 = this.documentosLocalStorageService.obtenerRefConstancia(3);
@@ -1999,6 +2177,9 @@ export class InicioComponent extends GeneralComponent {
           cveEspecialidad: data.cveEspecialidad,
           idDocumento: item.tipoDocumentoEspecialidad.idTipoDocumentoEspecialidad,
           guid: item.documento.refGuid,
+          indInstitucionEgreso: item.tipoDocumentoEspecialidad.indInstitucionEgreso
+            ?? this.obtenerTipoDocumentoEspecialidad(item.tipoDocumentoEspecialidad.idTipoDocumentoEspecialidad)?.indInstitucionEgreso,
+          desInstitucionEgreso: item.desInstitucionEgreso,
         })
       );
 

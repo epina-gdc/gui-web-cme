@@ -247,9 +247,14 @@ export class DetalleOfertaLaboralComponent extends GeneralComponent implements O
     return {
       cveEspecialidad: null,
       cveOoad: null,
+      cveZona: null,
+      cveUnidad: null,
+      cveMarcaOcupacion: null,
+      cveTurno: null,
+      cveHorario: null,
+      numPlaza: null,
       cveBono: null,
       regimen: null,
-      cveZona: null,
       idUsuario: this.userData?.idUsuario as number
     }
   }

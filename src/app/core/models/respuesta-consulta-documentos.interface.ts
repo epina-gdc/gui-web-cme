@@ -56,14 +56,16 @@ export interface ItemDocumentoEspecialidad {
   idDocumentoEspecialidad: number,
   tipoDocumentoEspecialidad: {
     idTipoDocumentoEspecialidad: number,
-    desTipoDocumentoEspecialidad: string
+    desTipoDocumentoEspecialidad: string,
+    indInstitucionEgreso?: number
   },
   documento: {
     refGuid: string,
     refNombre: string,
     refExtension: string
   },
-  indCubre: null
+  indCubre: null,
+  desInstitucionEgreso?: string
 }
 
 export interface RespuestaDatosEmpleo {

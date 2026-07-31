@@ -19,6 +19,7 @@ import { environment } from '@env/environment.development';
 import { AlertService } from '@services/alert.service';
 import { Convocatoria, ConvocatoriaActiva } from '@models/convocatoria.interface';
 import { Especialidades } from '@models/especialidad';
+import {TipoDocumentoEspecialidad} from '@models/tipo-documento-especialidad.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -193,10 +194,10 @@ export class CatalogosGeneralesService {
     );
   }
 
-  getLstTiposDocumentos(): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/tiposdocumento-especialidad', { headers: this.header }).pipe(
+  getLstTiposDocumentos(): Observable<HttpRespuesta<TipoDocumentoEspecialidad[]>> {
+    return this.http.get<HttpRespuesta<TipoDocumentoEspecialidad[]>>(this.serverEndPointURLCatalogos + '/tiposdocumento-especialidad', { headers: this.header }).pipe(
       catchError(this.handleError),
-      map((response: HttpRespuesta<any>) => {
+      map((response: HttpRespuesta<TipoDocumentoEspecialidad[]>) => {
         return response;
       })
     );

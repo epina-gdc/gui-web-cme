@@ -20,6 +20,13 @@ import { ResponseGeneral } from '@models/responseGeneral';
 import { SolicitudGuardarDocumentacion } from '@models/solicitud-guardar-documentacion.interface';
 import { HttpRespuesta } from '@models/http-respuesta.interface';
 import { BusquedaPermisoEspecifico, BusquedaPermisoEspecificoResult } from '@models/asignacion-sustitucion.interface';
+import {
+  FiltrosOfertaLaboralRequest,
+  HorarioPlazaCatalogo,
+  MarcaOcupacionCatalogo,
+  TurnoPlazaCatalogo,
+  UnidadPlazaCatalogo
+} from '@models/plaza-catalogos.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -254,7 +261,7 @@ export class ConvocatoriaService {
 
   }
 
-  consultarPlazas(filtros: any, parameters: any): Observable<any> {
+  consultarPlazas(filtros: FiltrosOfertaLaboralRequest, parameters: any): Observable<any> {
 
     const { page, size, sort } = parameters;
 
@@ -274,13 +281,7 @@ export class ConvocatoriaService {
   }
 
   consultarTotales(
-    filtros: {
-      cveEspecialidad: string | null,
-      cveOoad: string | null,
-      cveBono: string | null,
-      regimen: string | null,
-      cveZona: string | null
-    }
+    filtros: Omit<FiltrosOfertaLaboralRequest, 'idUsuario'>
   ): Observable<HttpRespuesta<any>> {
 
     return this.http.post<HttpRespuesta<any>>(`${this.serverEndPointURLConvocatoria}/plazas/consultar/totales`, filtros).pipe(
@@ -292,14 +293,7 @@ export class ConvocatoriaService {
   }
 
   consultarTotalesFavoritos(
-    filtros: {
-      cveEspecialidad: string | null,
-      cveOoad: string | null,
-      cveBono: string | null,
-      regimen: string | null,
-      cveZona: string | null,
-      idUsuario: number
-    }
+    filtros: FiltrosOfertaLaboralRequest
   ): Observable<HttpRespuesta<any>> {
 
     return this.http.post<HttpRespuesta<any>>(`${this.serverEndPointURLConvocatoria}/plazas-favoritas/consultar/totales`, filtros).pipe(
@@ -356,7 +350,7 @@ export class ConvocatoriaService {
   }
 
 
-  consultarFavoritos(filtros: any, parameters: any): Observable<any> {
+  consultarFavoritos(filtros: FiltrosOfertaLaboralRequest, parameters: any): Observable<any> {
 
     const { page, size, sort } = parameters;
 
@@ -373,6 +367,58 @@ export class ConvocatoriaService {
         return response
       }),
     )
+  }
+
+  getUnidadesOfertaLaboral(cveEspecialidad: string, cveOoad: string): Observable<HttpRespuesta<UnidadPlazaCatalogo[]>> {
+    let parametros = new HttpParams();
+    parametros = parametros.set('cveEspecialidad', cveEspecialidad);
+    parametros = parametros.set('cveOoad', cveOoad);
+
+    return this.http.get<HttpRespuesta<UnidadPlazaCatalogo[]>>(
+      `${this.serverEndPointURLConvocatoria}/plazas/catalogos/unidad-por-ooad`,
+      {headers: this.header, params: parametros}
+    ).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<UnidadPlazaCatalogo[]>) => response)
+    );
+  }
+
+  getMarcasOcupacionOfertaLaboral(cveEspecialidad: string): Observable<HttpRespuesta<MarcaOcupacionCatalogo[]>> {
+    const parametros = new HttpParams().set('cveEspecialidad', cveEspecialidad);
+
+    return this.http.get<HttpRespuesta<MarcaOcupacionCatalogo[]>>(
+      `${this.serverEndPointURLConvocatoria}/plazas/catalogos/marca-ocupacion-por-especialidad`,
+      {headers: this.header, params: parametros}
+    ).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<MarcaOcupacionCatalogo[]>) => response)
+    );
+  }
+
+  getTurnosOfertaLaboral(cveEspecialidad: string): Observable<HttpRespuesta<TurnoPlazaCatalogo[]>> {
+    const parametros = new HttpParams().set('cveEspecialidad', cveEspecialidad);
+
+    return this.http.get<HttpRespuesta<TurnoPlazaCatalogo[]>>(
+      `${this.serverEndPointURLConvocatoria}/plazas/catalogos/turno-por-especialidad`,
+      {headers: this.header, params: parametros}
+    ).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<TurnoPlazaCatalogo[]>) => response)
+    );
+  }
+
+  getHorariosOfertaLaboral(cveEspecialidad: string, cveTurno: number): Observable<HttpRespuesta<HorarioPlazaCatalogo[]>> {
+    let parametros = new HttpParams();
+    parametros = parametros.set('cveEspecialidad', cveEspecialidad);
+    parametros = parametros.set('cveTurno', cveTurno);
+
+    return this.http.get<HttpRespuesta<HorarioPlazaCatalogo[]>>(
+      `${this.serverEndPointURLConvocatoria}/plazas/catalogos/horario-por-turno`,
+      {headers: this.header, params: parametros}
+    ).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<HorarioPlazaCatalogo[]>) => response)
+    );
   }
 
   /**

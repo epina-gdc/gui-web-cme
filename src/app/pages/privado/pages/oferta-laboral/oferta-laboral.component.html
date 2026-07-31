@@ -68,6 +68,41 @@
             <p-select [options]="especialidad_tablero" formControlName="especialidad_tablero" optionLabel="label"
               placeholder="Selecciona una Especialidad o Subespecialidad" class="w-full" />
           </div>
+          <div class="col-12 lg:col-4">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="unidad_tablero">Unidad</label>
+            </div>
+            <p-select [options]="unidad_tablero" formControlName="unidad_tablero" optionLabel="label"
+              placeholder="Selecciona una Unidad" class="w-full" />
+          </div>
+          <div class="col-12 lg:col-4">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="marca_ocupacion_tablero">Marca de ocupación</label>
+            </div>
+            <p-select [options]="marca_ocupacion_tablero" formControlName="marca_ocupacion_tablero" optionLabel="label"
+              placeholder="Selecciona una Marca de ocupación" class="w-full" />
+          </div>
+          <div class="col-12 lg:col-4">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="turno_tablero">Turno</label>
+            </div>
+            <p-select [options]="turno_tablero" formControlName="turno_tablero" optionLabel="label"
+              placeholder="Selecciona un Turno" class="w-full" />
+          </div>
+          <div class="col-12 lg:col-4">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="horario_tablero">Horario</label>
+            </div>
+            <p-select [options]="horario_tablero" formControlName="horario_tablero" optionLabel="label"
+              placeholder="Selecciona un Horario" class="w-full" />
+          </div>
+          <div class="col-12 lg:col-4">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="plaza_tablero">Plaza</label>
+            </div>
+            <input pInputText class="w-full" type="text" id="plaza_tablero" placeholder="Ingresa"
+              formControlName="plaza_tablero" appOnlyNumbers maxlength="10" />
+          </div>
 <!--
            SE SOLICITA OCULTAR ESTA SECCIÓN POR EL MOMENTO 08/01/26
           <div class="col-12 lg:col-4">
@@ -77,13 +112,15 @@
             <p-select [options]="regimen_tablero" formControlName="regimen_tablero" optionLabel="label"
               placeholder="Selecciona un Tipo de Unidad" class="w-full" />
           </div> -->
-          <div class="col-12 lg:col-4">
-            <div class="flex justify-content-between">
-              <label class="field-label" for="bono_tablero">Bono difícil cobertura</label>
+          @if (mostrarFiltroBonoDificilCobertura) {
+            <div class="col-12 lg:col-4">
+              <div class="flex justify-content-between">
+                <label class="field-label" for="bono_tablero">Bono difícil cobertura</label>
+              </div>
+              <p-select [options]="bono_tablero" formControlName="bono_tablero" optionLabel="label"
+                placeholder="Selecciona un Bono" class="w-full" />
             </div>
-            <p-select [options]="bono_tablero" formControlName="bono_tablero" optionLabel="label"
-              placeholder="Selecciona un Bono" class="w-full" />
-          </div>
+          }
           <div class="col-12 lg:col-4 flex align-items-end">
             <p-button class="ml-auto lg:ml-0" type="button" label="Consultar" (click)="seleccionarPaginacion()" />
           </div>

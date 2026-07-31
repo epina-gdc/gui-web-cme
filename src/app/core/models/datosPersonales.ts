@@ -23,6 +23,7 @@ export class DatosPersonales{
     perfil!: CatPerfil;
     subperfil!: CatSubperfil;
     indInfoAsamblea!:number;
+    indPerfilInterno?: number;
 
 
 }

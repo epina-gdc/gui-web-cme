@@ -6,6 +6,7 @@ import {Select} from 'primeng/select';
 import {KpiCardComponent} from '@components/kpi-card/kpi-card.component';
 import {OfertaCardComponent} from '@components/oferta-card/oferta-card.component';
 import {Button} from 'primeng/button';
+import {InputText} from 'primeng/inputtext';
 import {CommonModule, CurrencyPipe, NgClass} from '@angular/common';
 import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 import {DetalleOfertaLaboralComponent} from '@privado/detalle-oferta-laboral/detalle-oferta-laboral.component';
@@ -28,6 +29,10 @@ import {SesionUser} from '@models/sesion-user.interface';
 import {TableLazyLoadEvent} from 'primeng/table';
 import {DrawerModule} from 'primeng/drawer';
 import {ClickService} from '@services/click.service';
+import {HttpRespuesta} from '@models/http-respuesta.interface';
+import {ConvocatoriaActiva} from '@models/convocatoria.interface';
+import {FiltrosOfertaLaboralRequest} from '@models/plaza-catalogos.interface';
+import {OnlyNumbersDirective} from '@directives/only-numbers.directive';
 
 @Component({
   selector: 'app-oferta-laboral',
@@ -38,17 +43,20 @@ import {ClickService} from '@services/click.service';
     KpiCardComponent,
     OfertaCardComponent,
     Button,
+    InputText,
     NgClass,
     Paginator,
     PrimeTemplate,
     CommonModule,
-    DrawerModule
+    DrawerModule,
+    OnlyNumbersDirective
   ],
   templateUrl: './oferta-laboral.component.html',
   styleUrl: './oferta-laboral.component.scss',
   providers: [DialogService, CurrencyPipe]
 })
 export class OfertaLaboralComponent extends GeneralComponent implements OnInit, OnDestroy {
+  private readonly ID_TIPO_CONVOCATORIA_MINIDRAFT = 2;
   blnSinResultados = false;
   clickService = inject(ClickService);
   userService = inject(UserService);
@@ -77,7 +85,11 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
 
   ooad_tablero: TipoDropdown[] = [];
   zona_tablero: TipoDropdown[] = [];
+  unidad_tablero: TipoDropdown[] = [];
   especialidad_tablero: TipoDropdown[] = [];
+  marca_ocupacion_tablero: TipoDropdown[] = [];
+  turno_tablero: TipoDropdown[] = [];
+  horario_tablero: TipoDropdown[] = [];
   regimen_tablero: TipoDropdown[] = [];
   bono_tablero: TipoDropdown[] = [];
   default_catalogo: TipoDropdown = {value:0,label:'Seleccione una opción'};
@@ -87,6 +99,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
   private ofertasSubscription: Subscription = new Subscription();
 
   visible: boolean = false;
+  mostrarFiltroBonoDificilCobertura = true;
 
 
   constructor(
@@ -98,6 +111,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     this.formTablero = this.asignarFormTablero();
     this.obtenerCatalogos();
     this.suscribirObservables();
+    this.obtenerConvocatoriaActiva();
     this.obtenerTotalesGenerales();
   }
 
@@ -105,7 +119,12 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     return this.fb.group({
       ooad_tablero: [],
       zona_tablero: [],
+      unidad_tablero: [{value: null, disabled: true}],
       especialidad_tablero: [],
+      marca_ocupacion_tablero: [{value: null, disabled: true}],
+      turno_tablero: [{value: null, disabled: true}],
+      horario_tablero: [{value: null, disabled: true}],
+      plaza_tablero: [],
       regimen_tablero: [],
       bono_tablero: []
     })
@@ -157,10 +176,12 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     } */
     if (id === 1) {
       this.formTablero.reset({});
+      this.resetFiltrosDependientes();
       this.consultarFavoritos();
     }
     if (id === 0) {
       this.formTablero.reset({});
+      this.resetFiltrosDependientes();
       this.consultarPlazas();
     }
     this.activeTab.update(() => id);
@@ -240,16 +261,61 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     });
   }
 
+  private obtenerConvocatoriaActiva(): void {
+    this._CatalogoGenService.getConvocatoriaActiva().subscribe({
+      next: (response: HttpRespuesta<ConvocatoriaActiva | undefined>) => {
+        const idTipoConvocatoria = this.obtenerIdTipoConvocatoria(response.respuesta);
+        this.actualizarVisibilidadFiltroBono(idTipoConvocatoria);
+      },
+      error: (error) => {
+        console.log('Error al consultar convocatoria activa', error);
+        this.actualizarVisibilidadFiltroBono(null);
+      }
+    });
+  }
+
+  private obtenerIdTipoConvocatoria(convocatoria?: ConvocatoriaActiva): number | null {
+    const idTipoConvocatoria = convocatoria?.tipo?.idTipoConvocatoria
+      ?? (convocatoria as { idTipoConvocatoria?: number } | undefined)?.idTipoConvocatoria;
+
+    return idTipoConvocatoria === null || idTipoConvocatoria === undefined ? null : Number(idTipoConvocatoria);
+  }
+
+  private actualizarVisibilidadFiltroBono(idTipoConvocatoria: number | null): void {
+    this.mostrarFiltroBonoDificilCobertura = idTipoConvocatoria !== this.ID_TIPO_CONVOCATORIA_MINIDRAFT;
+
+    if (!this.mostrarFiltroBonoDificilCobertura) {
+      this.formTablero.get('bono_tablero')?.reset();
+    }
+  }
+
   suscribirObservables(): void {
     this.formTablero.get('ooad_tablero')?.valueChanges.subscribe(value => {
       this.zona_tablero = [];
-      this.formTablero.get('zona_tablero')?.setValue([]);
-      if(value.value == 0){
+      this.formTablero.get('zona_tablero')?.setValue(null);
+      this.resetUnidad();
+      if(!value || value.value == 0){
         this.formTablero.get('zona_tablero')?.reset();
         return;
       }
-      this.obtenerZonasPorOoad(value)
-  })
+      this.obtenerZonasPorOoad(value);
+      this.obtenerUnidades();
+    });
+
+    this.formTablero.get('especialidad_tablero')?.valueChanges.subscribe(() => {
+      this.resetUnidad();
+      this.resetMarcaOcupacion();
+      this.resetTurno();
+      this.resetHorario();
+      this.obtenerUnidades();
+      this.obtenerMarcasOcupacion();
+      this.obtenerTurnos();
+    });
+
+    this.formTablero.get('turno_tablero')?.valueChanges.subscribe(() => {
+      this.resetHorario();
+      this.obtenerHorarios();
+    });
   }
 
   obtenerZonasPorOoad(ooad: any): void {
@@ -271,37 +337,149 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     });
   }
 
+  obtenerUnidades(): void {
+    const cveEspecialidad = this.obtenerValorControlComoString('especialidad_tablero');
+    const cveOoad = this.obtenerValorControlComoString('ooad_tablero');
+    const unidadCtrl = this.formTablero.get('unidad_tablero');
+
+    if (!cveEspecialidad || !cveOoad) {
+      this.resetUnidad();
+      return;
+    }
+
+    unidadCtrl?.enable({emitEvent: false});
+
+    this._ConvocatoriaService.getUnidadesOfertaLaboral(cveEspecialidad, cveOoad).subscribe({
+      next: (result) => {
+        if (this.obtenerValorControlComoString('especialidad_tablero') !== cveEspecialidad
+          || this.obtenerValorControlComoString('ooad_tablero') !== cveOoad) {
+          return;
+        }
+
+        if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
+          this.unidad_tablero = this.agregarDefaultCatalogo(
+            mapearArregloTipoDropdown(result.respuesta, 'descUnidad', 'cveUnidad')
+          );
+          return;
+        }
+
+        this.unidad_tablero = [];
+      },
+      error: () => {
+        this.unidad_tablero = [];
+        console.log('Ocurrio un error con la búsqueda de unidades');
+      }
+    });
+  }
+
+  obtenerMarcasOcupacion(): void {
+    const cveEspecialidad = this.obtenerValorControlComoString('especialidad_tablero');
+    const marcaCtrl = this.formTablero.get('marca_ocupacion_tablero');
+
+    if (!cveEspecialidad) {
+      this.resetMarcaOcupacion();
+      return;
+    }
+
+    marcaCtrl?.enable({emitEvent: false});
+
+    this._ConvocatoriaService.getMarcasOcupacionOfertaLaboral(cveEspecialidad).subscribe({
+      next: (result) => {
+        if (this.obtenerValorControlComoString('especialidad_tablero') !== cveEspecialidad) {
+          return;
+        }
+
+        if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
+          this.marca_ocupacion_tablero = this.agregarDefaultCatalogo(
+            mapearArregloTipoDropdown(result.respuesta, 'descMarcaOcupacion', 'cveMarcaOcupacion')
+          );
+          return;
+        }
+
+        this.marca_ocupacion_tablero = [];
+      },
+      error: () => {
+        this.marca_ocupacion_tablero = [];
+        console.log('Ocurrio un error con la búsqueda de marcas por ocupación');
+      }
+    });
+  }
+
+  obtenerTurnos(): void {
+    const cveEspecialidad = this.obtenerValorControlComoString('especialidad_tablero');
+    const turnoCtrl = this.formTablero.get('turno_tablero');
+
+    if (!cveEspecialidad) {
+      this.resetTurno();
+      return;
+    }
+
+    turnoCtrl?.enable({emitEvent: false});
+
+    this._ConvocatoriaService.getTurnosOfertaLaboral(cveEspecialidad).subscribe({
+      next: (result) => {
+        if (this.obtenerValorControlComoString('especialidad_tablero') !== cveEspecialidad) {
+          return;
+        }
+
+        if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
+          this.turno_tablero = this.agregarDefaultCatalogo(
+            mapearArregloTipoDropdown(result.respuesta, 'descTurno', 'cveTurno')
+          );
+          return;
+        }
+
+        this.turno_tablero = [];
+      },
+      error: () => {
+        this.turno_tablero = [];
+        console.log('Ocurrio un error con la búsqueda de turnos');
+      }
+    });
+  }
+
+  obtenerHorarios(): void {
+    const cveEspecialidad = this.obtenerValorControlComoString('especialidad_tablero');
+    const cveTurno = this.obtenerValorControlComoNumber('turno_tablero');
+    const horarioCtrl = this.formTablero.get('horario_tablero');
+
+    if (!cveEspecialidad || !cveTurno) {
+      this.resetHorario();
+      return;
+    }
+
+    horarioCtrl?.enable({emitEvent: false});
+
+    this._ConvocatoriaService.getHorariosOfertaLaboral(cveEspecialidad, cveTurno).subscribe({
+      next: (result) => {
+        if (this.obtenerValorControlComoString('especialidad_tablero') !== cveEspecialidad
+          || this.obtenerValorControlComoNumber('turno_tablero') !== cveTurno) {
+          return;
+        }
+
+        if (result.exito && Array.isArray(result.respuesta) && result.respuesta.length > 0) {
+          this.horario_tablero = this.agregarDefaultCatalogo(
+            mapearArregloTipoDropdown(result.respuesta, 'descHorario', 'cveHorario')
+          );
+          return;
+        }
+
+        this.horario_tablero = [];
+      },
+      error: () => {
+        this.horario_tablero = [];
+        console.log('Ocurrio un error con la búsqueda de horarios');
+      }
+    });
+  }
+
   consultarPlazas(referencia: string = "paginado") {
     this.blnSinResultados = false;
     if (referencia == "btn") {
       this.numPaginaActual = 0;
       this.first = 0;
     }
-    let ooad = this.formTablero.get('ooad_tablero')?.value;
-    let zona = this.formTablero.get('zona_tablero')?.value;
-    let especialidad = this.formTablero.get('especialidad_tablero')?.value;
-    let regimen = this.formTablero.get('regimen_tablero')?.value;
-    let bono = this.formTablero.get('bono_tablero')?.value;
-
-    const bonoParse = bono?.label.replace(/[$,]/g, "") ?? null;
-
-
-    ooad = (ooad?.value == 0) ? null : ooad;
-    zona = (zona?.value == 0) ? null : zona;
-    especialidad = (especialidad?.value == 0) ? null : especialidad;
-    bono = (bono?.value == 0) ? null : bono;
-    if(regimen?.label){
-      regimen = (regimen?.value == 0) ? null : regimen?.label;
-    }
-
-    const filtros = {
-      "cveEspecialidad": especialidad?.value,
-      "cveOoad": ooad?.value ?? null,
-      "cveBono": bono?.value ?? null,
-      "regimen": regimen ?? null,
-      "cveZona": zona?.value ?? null,
-      "idUsuario": this.userData?.idUsuario
-    }
+    const filtros = this.generarSolicitudFiltros();
 
     const parameters = {
       "page": this.numPaginaActual,
@@ -317,13 +495,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
         this.registros.set(ofertas.content)
       }),
       concatMap(() => this._ConvocatoriaService.consultarTotales(
-        {
-          cveEspecialidad: filtros.cveEspecialidad,
-          cveOoad: filtros.cveOoad,
-          cveBono: filtros.cveBono,
-          regimen: filtros.regimen,
-          cveZona: filtros.cveZona
-        }
+        this.generarSolicitudFiltrosTotales(filtros)
       ))
     ).subscribe({
       next: (respuesta: any) => {
@@ -358,16 +530,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
         this.totalElementos = ofertas.page.totalElements;
         this.registros.set(ofertas.content)
       }),
-      concatMap(() => this._ConvocatoriaService.consultarTotalesFavoritos(
-        {
-          cveEspecialidad: filtros.cveEspecialidad,
-          cveOoad: filtros.cveOoad,
-          cveBono: filtros.cveBono,
-          regimen: filtros.regimen,
-          cveZona: filtros.cveZona,
-          idUsuario: this.userData?.idUsuario as number
-        }
-      ))
+      concatMap(() => this._ConvocatoriaService.consultarTotalesFavoritos(filtros))
     ).subscribe({
       next: (respuesta: any) => {
         if(respuesta.respuesta.totalFavoritas == 0){
@@ -391,41 +554,112 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
 
   }
 
-  generarSolicitudFiltros() {
-
-    let ooad = this.formTablero.get('ooad_tablero')?.value;
-    let zona = this.formTablero.get('zona_tablero')?.value;
-    let especialidad = this.formTablero.get('especialidad_tablero')?.value;
-    let regimen = this.formTablero.get('regimen_tablero')?.value;
-    let bono = this.formTablero.get('bono_tablero')?.value;
-
-
-    ooad = (ooad?.value == 0) ? null : ooad;
-    zona = (zona?.value == 0) ? null : zona;
-    especialidad = (especialidad?.value == 0) ? null : especialidad;
-    bono = (bono?.value == 0) ? null : bono;
-    if(regimen?.label){
-      regimen = (regimen?.value == 0) ? null : regimen?.label;
-    }
-
-
+  generarSolicitudFiltros(): FiltrosOfertaLaboralRequest {
     return {
-      cveEspecialidad: especialidad?.value,
-      cveOoad: ooad?.value ?? null,
-      cveBono: bono?.value ?? null,
-      regimen: regimen ?? null,
-      cveZona: zona?.value ?? null,
-      idUsuario: this.userData?.idUsuario
+      cveEspecialidad: this.obtenerValorControlComoString('especialidad_tablero'),
+      cveOoad: this.obtenerValorControlComoString('ooad_tablero'),
+      cveZona: this.obtenerValorControlComoString('zona_tablero'),
+      cveUnidad: this.obtenerValorControlComoString('unidad_tablero'),
+      cveMarcaOcupacion: this.obtenerValorControlComoNumber('marca_ocupacion_tablero'),
+      cveTurno: this.obtenerValorControlComoNumber('turno_tablero'),
+      cveHorario: this.obtenerValorControlComoString('horario_tablero'),
+      numPlaza: this.obtenerInputControlComoNumber('plaza_tablero'),
+      cveBono: this.obtenerValorFiltroComoNumber(this.obtenerFiltroBonoSeleccionado()?.value),
+      regimen: this.obtenerRegimenSeleccionado(),
+      idUsuario: this.userData?.idUsuario ?? null
     }
+  }
+
+  private generarSolicitudFiltrosTotales(filtros: FiltrosOfertaLaboralRequest): Omit<FiltrosOfertaLaboralRequest, 'idUsuario'> {
+    return {
+      cveEspecialidad: filtros.cveEspecialidad,
+      cveOoad: filtros.cveOoad,
+      cveZona: filtros.cveZona,
+      cveUnidad: filtros.cveUnidad,
+      cveMarcaOcupacion: filtros.cveMarcaOcupacion,
+      cveTurno: filtros.cveTurno,
+      cveHorario: filtros.cveHorario,
+      numPlaza: filtros.numPlaza,
+      cveBono: filtros.cveBono,
+      regimen: filtros.regimen
+    };
+  }
+
+  private obtenerFiltroBonoSeleccionado(): TipoDropdown | null {
+    if (!this.mostrarFiltroBonoDificilCobertura) {
+      return null;
+    }
+
+    const bono = this.formTablero.get('bono_tablero')?.value;
+    return bono?.value == 0 ? null : bono;
+  }
+
+  private obtenerValorFiltroComoString(value: unknown): string | null {
+    return value === null || value === undefined ? null : String(value);
+  }
+
+  private obtenerValorControlComoString(controlName: string): string | null {
+    const filtro = this.obtenerFiltroSeleccionado(controlName);
+    return this.obtenerValorFiltroComoString(filtro?.value);
+  }
+
+  private obtenerValorControlComoNumber(controlName: string): number | null {
+    const filtro = this.obtenerFiltroSeleccionado(controlName);
+    return this.obtenerValorFiltroComoNumber(filtro?.value);
+  }
+
+  private obtenerValorFiltroComoNumber(value: unknown): number | null {
+    const valor = value;
+
+    if (valor === null || valor === undefined) {
+      return null;
+    }
+
+    const numero = Number(valor);
+    return Number.isNaN(numero) ? null : numero;
+  }
+
+  private obtenerFiltroSeleccionado(controlName: string): TipoDropdown | null {
+    const value = this.formTablero.get(controlName)?.value as TipoDropdown | null | undefined;
+    return !value || value.value == 0 ? null : value;
+  }
+
+  private obtenerInputControlComoNumber(controlName: string): number | null {
+    const value = this.formTablero.get(controlName)?.value;
+    if (value === null || value === undefined || value === '') {
+      return null;
+    }
+
+    const numero = Number(value);
+    return Number.isNaN(numero) ? null : numero;
+  }
+
+  private obtenerRegimenSeleccionado(): string | null {
+    const regimen = this.formTablero.get('regimen_tablero')?.value as TipoDropdown | null | undefined;
+
+    if (!regimen || regimen.value == 0) {
+      return null;
+    }
+
+    return regimen.label ?? null;
+  }
+
+  private agregarDefaultCatalogo(items: TipoDropdown[]): TipoDropdown[] {
+    return items.length > 0 ? [this.default_catalogo, ...items] : [];
   }
 
   generalSolicitudFiltrosTotales() {
     return {
       cveEspecialidad: null,
       cveOoad: null,
+      cveZona: null,
+      cveUnidad: null,
+      cveMarcaOcupacion: null,
+      cveTurno: null,
+      cveHorario: null,
+      numPlaza: null,
       cveBono: null,
-      regimen: null,
-      cveZona: null
+      regimen: null
     }
   }
 
@@ -433,9 +667,14 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     return {
       cveEspecialidad: null,
       cveOoad: null,
+      cveZona: null,
+      cveUnidad: null,
+      cveMarcaOcupacion: null,
+      cveTurno: null,
+      cveHorario: null,
+      numPlaza: null,
       cveBono: null,
       regimen: null,
-      cveZona: null,
       idUsuario: this.userData?.idUsuario as number
     }
   }
@@ -464,6 +703,41 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
         this.estadoOfertaService.actualizarFavoritos(respuesta.respuesta.totalFavoritas);
       }
     })
+  }
+
+  private resetFiltrosDependientes(): void {
+    this.resetUnidad();
+    this.resetMarcaOcupacion();
+    this.resetTurno();
+    this.resetHorario();
+  }
+
+  private resetUnidad(): void {
+    this.unidad_tablero = [];
+    const unidadCtrl = this.formTablero.get('unidad_tablero');
+    unidadCtrl?.reset(null, {emitEvent: false});
+    unidadCtrl?.disable({emitEvent: false});
+  }
+
+  private resetMarcaOcupacion(): void {
+    this.marca_ocupacion_tablero = [];
+    const marcaCtrl = this.formTablero.get('marca_ocupacion_tablero');
+    marcaCtrl?.reset(null, {emitEvent: false});
+    marcaCtrl?.disable({emitEvent: false});
+  }
+
+  private resetTurno(): void {
+    this.turno_tablero = [];
+    const turnoCtrl = this.formTablero.get('turno_tablero');
+    turnoCtrl?.reset(null, {emitEvent: false});
+    turnoCtrl?.disable({emitEvent: false});
+  }
+
+  private resetHorario(): void {
+    this.horario_tablero = [];
+    const horarioCtrl = this.formTablero.get('horario_tablero');
+    horarioCtrl?.reset(null, {emitEvent: false});
+    horarioCtrl?.disable({emitEvent: false});
   }
 
   ngOnInit() {

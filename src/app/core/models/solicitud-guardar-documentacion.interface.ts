@@ -34,7 +34,8 @@ export interface RefDocumentoEspecialidad {
   },
   documento: {
     refGuid: string
-  }
+  },
+  desInstitucionEgreso?: string
 }
 
 

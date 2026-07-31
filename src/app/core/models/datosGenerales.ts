@@ -21,6 +21,7 @@ export class DatosGeneralesResponse {
   datosContacto!: DatosContacto;
   datosResidenciaActual!: Residencia;
   zonasInteresLaboral!: Array<InteresLaboral>;
+  indPerfilInterno?: number;
 }
 
 export class dataGenerales extends ResponseGeneral {
