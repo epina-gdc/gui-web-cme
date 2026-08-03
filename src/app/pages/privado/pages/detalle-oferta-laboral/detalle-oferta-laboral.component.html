@@ -8,14 +8,16 @@
         </div>
       </p-tab>
 
-      <p-tab value="1" (click)="cambioDatosHeader(1)">
-        <div class="header-tab-oferta">
-          <i class="cme-pin" style="color: #41ABD9; font-size: 1.4rem"></i>
-          Ubicación y servicios
-        </div>
-      </p-tab>
+      @if (mostrarUbicacionServicios) {
+        <p-tab value="1" (click)="cambioDatosHeader(1)">
+          <div class="header-tab-oferta">
+            <i class="cme-pin" style="color: #41ABD9; font-size: 1.4rem"></i>
+            Ubicación y servicios
+          </div>
+        </p-tab>
+      }
 
-      @if (pdfSrcSede) {
+      @if (mostrarSedes) {
         <p-tab value="2" (click)="cambioDatosHeader(2)">
           <div class="header-tab-oferta">
             <i class="cme-sedes" style="color: #41ABD9; font-size: 1.4rem"></i>
@@ -197,55 +199,109 @@
                   </div> -->
         </div>
       </p-tabpanel>
-      <p-tabpanel value="1">
-        <div class="flex flex-wrap h-full">
-          <div class="col-12 md:col-6  pr-4 justify-content-center flex">
-            @if (mapaRef) {
-              <img [src]="ref + mapaRef" alt="Image" class="res-imagen">
-            } @else {
-              <div class="bg-img-no-disponible"></div>
-            }
-          </div>
-          <div class="col-12 md:col-6 md:pl-4 justify-content-center ">
-            <p-carousel
-              styleClass="carousel slide"
-              [value]="imgCarrusel" [prevButtonProps]="{ icon: 'cme-arrow', styleClass: 'cme-arrow carousel-icon'}"
-              [nextButtonProps]="{ icon: 'cme-revert-arrow', styleClass:'cme-revert-arrow carousel-icon'}"
-              [numVisible]="1"
-              [numScroll]="1" [responsiveOptions]="responsiveOptions">
-              <ng-template let-product #item>
-                <div class="flex rounded justify-content-center " style="width: 300px; background-color: blue;">
-                  <div class="relative mx-auto justify-content-center">
-                    <p-image width="320px" height="460"
-                             [src]="ref + product.refGuid"
-                             [alt]="product.name" styleClass="carousel-image"
-                             class="rounded-border flex "/>
+      @if (mostrarUbicacionServicios) {
+        <p-tabpanel value="1">
+          <div class="flex flex-wrap h-full">
+            <div class="col-12 md:col-6  pr-4 justify-content-center flex">
+              @if (mapaRef) {
+                <img [src]="ref + mapaRef" alt="Image" class="res-imagen">
+              } @else {
+                <div class="bg-img-no-disponible"></div>
+              }
+            </div>
+            <div class="col-12 md:col-6 md:pl-4 justify-content-center ">
+              <p-carousel
+                styleClass="carousel slide"
+                [value]="imgCarrusel" [prevButtonProps]="{ icon: 'cme-arrow', styleClass: 'cme-arrow carousel-icon'}"
+                [nextButtonProps]="{ icon: 'cme-revert-arrow', styleClass:'cme-revert-arrow carousel-icon'}"
+                [numVisible]="1"
+                [numScroll]="1" [responsiveOptions]="responsiveOptions">
+                <ng-template let-product #item>
+                  <div class="flex rounded justify-content-center " style="width: 300px; background-color: blue;">
+                    <div class="relative mx-auto justify-content-center">
+                      <p-image width="320px" height="460"
+                               [src]="ref + product.refGuid"
+                               [alt]="product.name" styleClass="carousel-image"
+                               class="rounded-border flex "/>
 
+                    </div>
                   </div>
+                </ng-template>
+              </p-carousel>
+            </div>
+            <div class="col-12 flex justify-content-end mt-2" style="margin-bottom: 30px;">
+              <p-button (click)="btnDescargar(1)" variant="outlined" label="Descargar PDF"/>
+            </div>
+          </div>
+        </p-tabpanel>
+      }
+      @if (mostrarSedes) {
+        <p-tabpanel value="2">
+          <div class="sedes-panel">
+            <form [formGroup]="formSedes">
+              <div class="flex flex-wrap">
+                <div class="col-12">
+                  <div class="flex justify-content-between">
+                    <label class="field-label" for="ooad_sedes">OOAD</label>
+                  </div>
+                  <p-multiselect
+                    inputId="ooad_sedes"
+                    [options]="ooadSedesOptions"
+                    formControlName="ooads"
+                    optionLabel="label"
+                    optionValue="value"
+                    placeholder="Seleccione opción"
+                    display="chip"
+                    [filter]="true"
+                    filterBy="label"
+                    [showClear]="true"
+                    selectedItemsLabel="{0} OOAD seleccionadas"
+                    [appendTo]="'body'"
+                    [style]="{ 'width': '100%' }">
+                  </p-multiselect>
                 </div>
-              </ng-template>
-            </p-carousel>
-          </div>
-          <div class="col-12 flex justify-content-end mt-2" style="margin-bottom: 30px;">
-            <p-button (click)="btnDescargar(1)" variant="outlined" label="Descargar PDF"/>
-          </div>
-        </div>
-      </p-tabpanel>
-      <p-tabpanel value="2">
-        <div class="flex flex-wrap flex-row">
-          <div class="col-12 justify-content-center flex" style="overflow: hidden; ">
-            @if (pdfSrcSede) {
-              <iframe width="100%" height="475px" [src]="pdfSrcSede" frameborder="0">
-                <p>{{ _Mensajes.MSJ_NOT_SUPPORT_IFRAMES }}</p>
-              </iframe>
-            }
-          </div>
-          <div class="col-12 flex justify-content-end mt-2" style="margin-bottom: 30px;">
+              </div>
+            </form>
 
-            <p-button (click)="btnDescargarSede(2)" variant="outlined" label="Descargar PDF"/>
+            @if (isLoadingSedes || sedesOoad.length > 0) {
+              <p-table
+                [value]="sedesOoad"
+                [loading]="isLoadingSedes"
+                [scrollable]="true"
+                [resizableColumns]="true"
+                [tableStyle]="{ 'min-width': '50rem' }"
+                styleClass="sedes-table"
+                columnResizeMode="expand">
+                <ng-template #header>
+                  <tr>
+                    <th scope="col" class="sedes-table__numero" pResizableColumn>Número</th>
+                    <th scope="col" pResizableColumn>OOAD</th>
+                    <th scope="col" pResizableColumn>Sedes</th>
+                  </tr>
+                </ng-template>
+                <ng-template #body let-sede let-rowIndex="rowIndex">
+                  <tr>
+                    <td class="sedes-table__numero">{{ rowIndex + 1 }}.</td>
+                    <td>{{ sede.desOoad }}</td>
+                    <td>{{ sede.refDireccion }}</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            } @else {
+              <div class="sedes-empty">
+                <img src="/assets/images/tabla_sin_resultados.svg" alt="No hay resultados de búsqueda">
+                <p class="sedes-empty__title">No hay resultados de búsqueda</p>
+                <p class="sedes-empty__message">No se encontraron resultados con los parámetros seleccionados.</p>
+              </div>
+            }
+
+            <div class="flex justify-content-end mt-3" style="margin-bottom: 30px;">
+
+              <p-button (click)="btnDescargarSede()" variant="outlined" label="Descargar PDF"/>
+            </div>
           </div>
-        </div>
-      </p-tabpanel>
+        </p-tabpanel>
+      }
     </p-tabpanels>
   </p-tabs>
 </div>

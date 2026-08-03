@@ -24,6 +24,7 @@ import {
   FiltrosOfertaLaboralRequest,
   HorarioPlazaCatalogo,
   MarcaOcupacionCatalogo,
+  SedeOoadCatalogo,
   TurnoPlazaCatalogo,
   UnidadPlazaCatalogo
 } from '@models/plaza-catalogos.interface';
@@ -418,6 +419,42 @@ export class ConvocatoriaService {
     ).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<HorarioPlazaCatalogo[]>) => response)
+    );
+  }
+
+  getSedesOfertaLaboral(cvesOoad: string[] = []): Observable<HttpRespuesta<SedeOoadCatalogo[]>> {
+    let parametros = new HttpParams();
+
+    cvesOoad
+      .filter(cveOoad => !!cveOoad)
+      .forEach(cveOoad => parametros = parametros.append('cve_ooad', cveOoad));
+
+    return this.http.get<HttpRespuesta<SedeOoadCatalogo[]>>(
+      `${this.serverEndPointURLConvocatoria}/plazas/catalogos/sedes`,
+      {headers: this.header, params: parametros}
+    ).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<SedeOoadCatalogo[]>) => response)
+    );
+  }
+
+  getSedesPdfOfertaLaboral(cvesOoad: string[] = []): Observable<Blob> {
+    let parametros = new HttpParams();
+
+    cvesOoad
+      .filter(cveOoad => !!cveOoad)
+      .forEach(cveOoad => parametros = parametros.append('cve_ooad', cveOoad));
+
+    return this.http.get(
+      `${this.serverEndPointURLConvocatoria}/plazas/catalogos/sedes/pdf`,
+      {
+        headers: this.header.set('Accept', 'application/pdf'),
+        params: parametros,
+        responseType: 'blob'
+      }
+    ).pipe(
+      catchError(this.handleError),
+      map((response: Blob) => response)
     );
   }
 

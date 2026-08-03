@@ -100,6 +100,7 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
 
   visible: boolean = false;
   mostrarFiltroBonoDificilCobertura = true;
+  private idTipoConvocatoriaActiva: number | null = null;
 
 
   constructor(
@@ -203,7 +204,12 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
       .subscribe({
         next: (ref) => {
           this.ref = this.dialogService.open(DetalleOfertaLaboralComponent, {
-            data: {...oportunidad, ref},
+            data: {
+              ...oportunidad,
+              ref,
+              idTipoConvocatoria: this.idTipoConvocatoriaActiva,
+              ooadSedesOptions: this.obtenerOpcionesOoadParaDetalle()
+            },
             modal: true,
             width: '848px',
             height: '85vh',
@@ -220,6 +226,10 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
           });
         }
       });
+  }
+
+  private obtenerOpcionesOoadParaDetalle(): TipoDropdown[] {
+    return this.ooad_tablero.filter(ooad => ooad.value !== this.default_catalogo.value);
   }
 
 
@@ -265,10 +275,12 @@ export class OfertaLaboralComponent extends GeneralComponent implements OnInit, 
     this._CatalogoGenService.getConvocatoriaActiva().subscribe({
       next: (response: HttpRespuesta<ConvocatoriaActiva | undefined>) => {
         const idTipoConvocatoria = this.obtenerIdTipoConvocatoria(response.respuesta);
+        this.idTipoConvocatoriaActiva = idTipoConvocatoria;
         this.actualizarVisibilidadFiltroBono(idTipoConvocatoria);
       },
       error: (error) => {
         console.log('Error al consultar convocatoria activa', error);
+        this.idTipoConvocatoriaActiva = null;
         this.actualizarVisibilidadFiltroBono(null);
       }
     });

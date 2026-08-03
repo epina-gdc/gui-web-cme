@@ -18,6 +18,18 @@ export interface HorarioPlazaCatalogo {
   descHorario: string;
 }
 
+export interface SedeOoadCatalogo {
+  idSedeOoad: number;
+  cveOoad: string;
+  desOoad: string;
+  nomSede: string;
+  refDireccion: string;
+  nomResponsable: string;
+  refTelefonoOficina: string;
+  refTelefonoCelular: string;
+  refCorreoInstitucional: string;
+}
+
 export interface FiltrosOfertaLaboralRequest {
   cveEspecialidad: string | null;
   cveOoad: string | null;
