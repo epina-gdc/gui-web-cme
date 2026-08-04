@@ -93,6 +93,8 @@ export class AuthService {
         sub: payload.sub,
         idSubperfil: payload.idSubperfil,
         subperfil: payload.subperfil,
+        indMedico: payload.indMedico,
+        indPerfilInterno: payload.indPerfilInterno,
         fechaRegistro: payload.fechaRegistro,
         refPasaporte: payload.refPasaporte,
         refFolio: payload?.refFolio,

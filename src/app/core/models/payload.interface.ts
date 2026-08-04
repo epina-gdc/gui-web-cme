@@ -10,4 +10,6 @@ perfil: string;
 refCurp: string;
 refEmail: string;
 sub: string;
+indMedico?: number,
+indPerfilInterno?: number
 }

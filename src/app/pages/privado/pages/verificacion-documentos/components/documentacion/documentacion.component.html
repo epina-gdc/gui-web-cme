@@ -1,9 +1,16 @@
 <app-card-info [datosPersonales]="detalleAspirante.datosPersonales"
                [evaluacion]="detalleAspirante.participacion.resultadoVerificacion"></app-card-info>
+@let indPerfilInterno = $any(detalleAspirante).indPerfilInterno ?? $any(detalleAspirante).IND_PERFIL_INTERNO ?? $any(detalleAspirante.datosPersonales).indPerfilInterno ?? $any(detalleAspirante.datosPersonales).IND_PERFIL_INTERNO ?? $any(detalleAspirante.datosPersonales.perfil).indPerfilInterno ?? $any(detalleAspirante.datosPersonales.perfil).IND_PERFIL_INTERNO;
 <div class="py-1 px-4 md:bg-white border-round-xl">
   <p-tabs [value]="tab" class="tab-documentacion">
+    <!--
+      Validación anterior basada en IDs.
+      Se conserva para posible rollback; fue reemplazada por IND_PERFIL_INTERNO.
+
+      [ngClass]="{'residente': ![3, 6].includes(detalleAspirante.datosPersonales.perfil.idPerfil)}"
+    -->
     <p-tablist class="flex flex-row"
-               [ngClass]="{'residente': ![3, 6].includes(detalleAspirante.datosPersonales.perfil.idPerfil)}">
+               [ngClass]="{'residente': indPerfilInterno != 0}">
       <p-tab [value]="0" (click)="tab = 0" class="w-auto">
         <div class="header-tab-documentacion">
           <i class="cme-deals me-3" style="color: #000000; font-size: 1.4rem"></i>
@@ -16,7 +23,13 @@
           <p>Documentos por especialidad</p>
         </div>
       </p-tab>
-      @if ([3, 6].includes(detalleAspirante.datosPersonales.perfil.idPerfil)) {
+      <!--
+        Validación anterior basada en IDs.
+        Se conserva para posible rollback; fue reemplazada por IND_PERFIL_INTERNO.
+
+        @if ([3, 6].includes(detalleAspirante.datosPersonales.perfil.idPerfil)) {
+      -->
+      @if (indPerfilInterno == 0) {
         <p-tab [value]="2" (click)="tab = 2" class="w-auto">
           <div class="header-tab-documentacion">
             <i class="cme-deals me-3" style="color: #000000; font-size: 1.4rem"></i>

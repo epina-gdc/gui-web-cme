@@ -26,6 +26,7 @@ const checkMedicalProfile = (): Observable<boolean | UrlTree> => {
 
       const url = authService.usuarioSesion?.url;
       const modulos = authService.usuarioSesion?.modulos;
+      const indMedico = authService.usuarioSesion?.indMedico;
 
       if (!PERFILES_COMPLETOS.includes(idPerfil)) {
         return of(router.createUrlTree(['/privado/config-erronea']));
@@ -41,7 +42,14 @@ const checkMedicalProfile = (): Observable<boolean | UrlTree> => {
         return of(router.createUrlTree([`/privado/${destino}`]));
       }
 
-      if ([1, 2, 3, 6, 13].includes(idPerfil)) {
+      // Validación anterior basada en IDs.
+      // Se conserva para posible rollback; fue reemplazada por IND_MEDICO.
+      
+      // if ([1, 2, 3, 6, 13].includes(idPerfil)) {
+      //   return of(true);
+      // }
+
+      if (idPerfil === 1 || (indMedico !== null && indMedico === 1)) {
         return of(true);
       }
 

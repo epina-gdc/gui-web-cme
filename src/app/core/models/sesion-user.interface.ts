@@ -16,7 +16,9 @@ export interface SesionUser {
   refPasaporte?: string;
   menu: 0 | 1;
   modulos: ModuloUser[],
-  url: string
+  url: string,
+  indMedico?: number,
+  indPerfilInterno?: number
 }
 
 

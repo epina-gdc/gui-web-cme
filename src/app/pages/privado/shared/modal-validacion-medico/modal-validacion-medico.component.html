@@ -410,7 +410,14 @@
       </div>
 
       <div class="flex flex-wrap flex-row">
-        @if ([3, 6].includes(userData?.idPerfil ?? 0)) {
+        <!--
+          Validación anterior basada en IDs.
+          Se conserva para posible rollback; fue reemplazada por IND_PERFIL_INTERNO.
+
+          @if ([3, 6].includes(userData?.idPerfil ?? 0)) {
+        -->
+        @let indPerfilInterno = $any(datosGenerales).indPerfilInterno ?? $any(datosGenerales).IND_PERFIL_INTERNO ?? $any(datosGenerales).datosPersonales?.indPerfilInterno ?? $any(datosGenerales).datosPersonales?.IND_PERFIL_INTERNO ?? $any(datosGenerales).datosPersonales?.perfil?.indPerfilInterno ?? $any(datosGenerales).datosPersonales?.perfil?.IND_PERFIL_INTERNO;
+        @if (indPerfilInterno == 0) {
           <div class="col-12 md:col-6">
             <div
               class="flex flex-column margen_seccion"

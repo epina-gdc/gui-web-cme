@@ -240,10 +240,15 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   }
 
   private esPerfilInterno(perfil: CatPerfil): boolean {
-    if (perfil.indPerfilInterno !== null && perfil.indPerfilInterno !== undefined) {
-      return Number(perfil.indPerfilInterno) === 1;
-    }
+    // Validación anterior basada en IDs.
+    // Se conserva para posible rollback; fue reemplazada por IND_PERFIL_INTERNO.
+    //
+    // if (perfil.indPerfilInterno !== null && perfil.indPerfilInterno !== undefined) {
+    //   return Number(perfil.indPerfilInterno) === 1;
+    // }
+    //
+    // return ![3, 6].includes(perfil.idPerfil);
 
-    return ![3, 6].includes(perfil.idPerfil);
+    return Number(perfil.indPerfilInterno) === 1;
   }
 }
