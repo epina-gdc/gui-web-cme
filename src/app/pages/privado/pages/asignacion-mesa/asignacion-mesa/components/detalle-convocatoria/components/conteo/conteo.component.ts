@@ -19,8 +19,21 @@ export class ConteoComponent {
 
   constructor() {
     effect(() => {
+      const idConvocatoria = this.obtenerIdConvocatoriaSeleccionada();
+      if (idConvocatoria === null) {
+        this.conteo.set(undefined);
+        return;
+      }
+
+      this.cargaConteo(idConvocatoria);
+    });
+
+    effect(() => {
       if (this.accionActualiza()) {
-        this.cargaConteo();
+        const idConvocatoria = this.obtenerIdConvocatoriaSeleccionada();
+        if (idConvocatoria !== null) {
+          this.cargaConteo(idConvocatoria);
+        }
       }
     });
 
@@ -32,12 +45,8 @@ export class ConteoComponent {
   asignacionMesaService = inject(AsignacionMesaService);
   convocatoriaSeleccionada = model<MesaConfiguracion | undefined>(undefined);
 
-  ngOnInit(): void {
-    this.cargaConteo();
-  }
-
-  cargaConteo() {
-    this.asignacionMesaService.getConvocatoriaTotales(1).subscribe({
+  cargaConteo(idConvocatoria: number) {
+    this.asignacionMesaService.getConvocatoriaTotales(idConvocatoria).subscribe({
       next: (response: any) => {
         //console.log('Respuesta:', response);
         this.conteo.update(v => response.respuesta);
@@ -48,5 +57,15 @@ export class ConteoComponent {
     });
   }
 
+  private obtenerIdConvocatoriaSeleccionada(): number | null {
+    const idConvocatoria = this.convocatoriaSeleccionada()?.idConvocatoria;
+
+    if (idConvocatoria === null || idConvocatoria === undefined) {
+      return null;
+    }
+
+    const id = Number(idConvocatoria);
+    return Number.isNaN(id) ? null : id;
+  }
 
 }
