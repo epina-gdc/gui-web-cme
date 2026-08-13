@@ -30,6 +30,7 @@
 
     <div *ngIf="exist">
       <app-info-aspirante [refreshKey]="refreshKey" [asignacion]="busqueda"
+      [mostrarCambioRama]="mostrarCambioRama"
       ></app-info-aspirante>
 
       <!--**ESCENARIO TABS-->
@@ -54,14 +55,16 @@
                 </div>
               </p-tab>
 
-              <p-tab [value]="2" (click)="tab = 2" class="w-auto">
+              @if (mostrarTabAsignacionSustitucion) {
+                <p-tab [value]="2" (click)="tab = 2" class="w-auto">
                 <div class="header-tab-documentacion">
                   <i class="cme-sustitucion me-3" [ngStyle]="{
                       'color': tab == 2 ? '#404041' : '#ADB8CC'
                       }" style="font-size: 1.4rem"></i>
                   <p>Asignación de sustitución</p>
                 </div>
-              </p-tab>
+                </p-tab>
+              }
 
             </p-tablist>
           </p-tabs>
@@ -76,8 +79,10 @@
         ></app-coplamar>
         }
         @case (2) {
-        <app-asignacion-sustitucion [infoAspirante]="busqueda.datosGenerales!"
-        ></app-asignacion-sustitucion>
+        @if (mostrarTabAsignacionSustitucion) {
+          <app-asignacion-sustitucion [infoAspirante]="busqueda.datosGenerales!"
+          ></app-asignacion-sustitucion>
+        }
         }
         }
         <!--**ESCENARIO TABS-->

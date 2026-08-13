@@ -34,6 +34,7 @@ import { finalize } from 'rxjs';
 export class InfoAspiranteComponent {
   @Input() asignacion!: BusquedaResponse;
   @Input() refreshKey!: number;
+  @Input() mostrarCambioRama = true;
   //@Output() asignacionRegistrada = new EventEmitter<{ id: number }>();
 
 

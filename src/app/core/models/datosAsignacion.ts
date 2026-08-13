@@ -48,6 +48,7 @@ export class InfoAspirante {
     correoAdicional?:string;
     idTipoConvocatoria!:number;
     tipoConvocatoria!:string;
+    indPerfilInterno?: number;
 }
 
 export class AsignacionPlaza {
