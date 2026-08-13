@@ -31,6 +31,7 @@ import {InicioModulosComponent} from '@privado/inicio-modulos/inicio-modulos.com
 import {CargaCalificacionesResolver} from '../../core/resolvers/carga-calificaciones.resolver';
 import {tableroInformacionResolver} from '../../core/resolvers/tablero-informacion.resolver';
 import { MonitoreoAsignacionesComponent } from './pages/monitoreo-asignaciones/monitoreo-asignaciones.component';
+import { GestionPlazaComponent } from './pages/gestion-plazas/components/gestion-plaza/gestion-plaza.component';
 
 const routes: Routes = [{
   path: '',
@@ -109,6 +110,11 @@ const routes: Routes = [{
     {
       path: NAV.gestionConvocatoria,
       component: GestionConvocatoriasComponent,
+    },
+    //Se agrega nueva ruta
+    {
+      path: NAV.gestionPlazas,
+      component: GestionPlazaComponent,
     },
     {
       path: NAV.monitoreoAsignaciones,
