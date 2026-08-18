@@ -1,1 +1,43 @@
-<p>gestion-plaza works!</p>
+<!--TODO quitarlo después de pruebas-->
+<p-button label="Manual" [text]="true" (onClick)="this.gestionPlazaService.setTipoBusqueda(TipoBusquedaPlaza.BusquedaManual)" />
+<p-button label="Layout"  [text]="true" (onClick)="this.gestionPlazaService.setTipoBusqueda(TipoBusquedaPlaza.BusquedaLayout)" />
+<div class="flex justify-content-start align-items-center gap-1 mt-2 lg:mt-0 mb-4">
+  <h3 class="titulo-seccion">Gestión de Plazas</h3>
+</div>
+
+@if (gestionPlazaService.tipoBusqueda() === TipoBusquedaPlaza.BusquedaManual) {
+<div class="carga-calificaciones-background mb-4 border-round-xl overflow-hidden shadow-2 flex align-items-center justify-content-center">
+  <h1 class="titulo-asignaciones">Nueva plaza</h1>
+</div>
+} @else {
+<div class="mb-4">
+  <p-card class="empty-border mb-4">
+    <form [formGroup]="formBusqueda" (ngSubmit)="onBuscar()">
+      <article class="flex flex-row flex-wrap align-items-end">
+        <div class="lg:col-4 col-12">
+          <label class="field-label" for="ooad">OOAD</label>
+          <p-select id="ooad" formControlName="ooad" [options]="lstOoad" optionLabel="label" optionValue="value"
+            placeholder="Selecciona OOAD" class="w-full" />
+        </div>
+
+        <div class="lg:col-4 col-12">
+          <label class="field-label" for="noPlaza">No. de plaza</label>
+          <input pInputText id="noPlaza" type="text" max class="w-full" placeholder="Selecciona No. de plaza"
+            formControlName="noPlaza" appOnlyNumbers maxlength="6"/>
+        </div>
+
+        <div class="flex col-12 lg:col-4 justify-content-end align-items-center gap-4 mt-3 lg:mt-0">
+          <p-button type="button" (onClick)="onLimpiar()" variant="outlined" label="Limpiar" />
+          <p-button type="submit" label="Buscar" [disabled]="formBusqueda.get('ooad')?.invalid" />
+        </div>
+      </article>
+    </form>
+  </p-card>
+</div>
+}
+
+<app-tabla-plazas [plazas]="plazas()" [totalRecords]="totalRecords" [first]="first" [rows]="rows"
+  [titulo]="'Plazas nuevas'" [tipoBusqueda]="gestionPlazaService.tipoBusqueda()"
+  (pageChange)="onPageChange($event)" (accionSeleccionada)="accionPlazaSeleccionada($event)" >
+
+</app-tabla-plazas>
