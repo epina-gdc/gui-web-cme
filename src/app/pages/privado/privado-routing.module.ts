@@ -24,11 +24,15 @@ import {
 import {AsignacionMesaComponent} from './pages/asignacion-mesa/asignacion-mesa/asignacion-mesa.component';
 import {PropuestaSindicalComponent} from '@privado/propuesta-sindical/propuesta-sindical.component';
 import {CargaCalificacionesComponent} from '@privado/carga-calificaciones/carga-calificaciones.component';
+import {
+  CargaMedicosSustitutosComponent
+} from '@privado/carga-medicos-sustitutos/carga-medicos-sustitutos.component';
 import {GestionConvocatoriasComponent} from '@privado/gestion-convocatorias/gestion-convocatorias.component';
 import {NotFoundComponent} from '@privado/not-found/not-found.component';
 import {ErrorConfiguracionComponent} from '@privado/error-configuracion/error-configuracion.component';
 import {InicioModulosComponent} from '@privado/inicio-modulos/inicio-modulos.component';
 import {CargaCalificacionesResolver} from '../../core/resolvers/carga-calificaciones.resolver';
+import {CargaMedicosSustitutosResolver} from '../../core/resolvers/carga-medicos-sustitutos.resolver';
 import {tableroInformacionResolver} from '../../core/resolvers/tablero-informacion.resolver';
 import { MonitoreoAsignacionesComponent } from './pages/monitoreo-asignaciones/monitoreo-asignaciones.component';
 
@@ -81,6 +85,13 @@ const routes: Routes = [{
       component: CargaCalificacionesComponent,
       resolve: {
         respuesta: CargaCalificacionesResolver
+      }
+    },
+    {
+      path: NAV.cargaMedicosSustitutos,
+      component: CargaMedicosSustitutosComponent,
+      resolve: {
+        respuesta: CargaMedicosSustitutosResolver
       }
     },
     {
