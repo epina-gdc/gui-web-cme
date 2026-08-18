@@ -1,20 +1,20 @@
-import {Component, computed, OnDestroy, OnInit, signal, WritableSignal} from '@angular/core';
-import {FormBuilder, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {TipoDropdown} from '@models/tipo-dropdown.interface';
-import {GeneralComponent} from '@components/general.component';
-import {DatePickerModule} from 'primeng/datepicker';
-import {Select} from 'primeng/select';
-import {Button} from 'primeng/button';
-import {CardModule} from 'primeng/card';
-import {ActivatedRoute} from '@angular/router';
-import {mapearArregloTipoDropdown} from '@utils/funciones';
-import {TableroInformacionService} from '@services/tablero-informacion.service';
-import {Asistencia, TableroAsistenciaInterface} from '@models/tableroAsistencia.interface';
+import { Component, computed, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { TipoDropdown } from '@models/tipo-dropdown.interface';
+import { GeneralComponent } from '@components/general.component';
+import { DatePickerModule } from 'primeng/datepicker';
+import { Select } from 'primeng/select';
+import { Button } from 'primeng/button';
+import { CardModule } from 'primeng/card';
+import { ActivatedRoute } from '@angular/router';
+import { mapearArregloTipoDropdown } from '@utils/funciones';
+import { TableroInformacionService } from '@services/tablero-informacion.service';
+import { Asistencia, TableroAsistenciaInterface } from '@models/tableroAsistencia.interface';
 import dayjs from 'dayjs';
-import {NgClass, DatePipe} from '@angular/common';
-import {saveAs} from 'file-saver';
-import {Subscription, timer} from 'rxjs';
-import {RespuestaTurno} from '@models/repsuesta-turno.interfaace';
+import { NgClass, DatePipe } from '@angular/common';
+import { saveAs } from 'file-saver';
+import { Subscription, timer } from 'rxjs';
+import { RespuestaTurno } from '@models/repsuesta-turno.interfaace';
 
 @Component({
   selector: 'app-tablero-informacion-asistencia',
@@ -138,8 +138,8 @@ export class TableroInformacionAsistenciaComponent extends GeneralComponent impl
   ngOnInit(): void {
     this.filtroForm = this.inicializarForm();
 
-    this.activatedRoute.data.subscribe(({catalogos}) => {
-      const defaultValue = {label: "Selecciona opción", value: null};
+    this.activatedRoute.data.subscribe(({ catalogos }) => {
+      const defaultValue = { label: "Selecciona opción", value: null };
       this.catalogoAsistencia.set(mapearArregloTipoDropdown(catalogos[0].respuesta, 'desTipoAsistencia', 'idTipoAsistencia'));
       const turnosFormateados: TipoDropdown[] = catalogos[1].respuesta.map((item: RespuestaTurno) => {
         const fmt = (hora: any) => hora.toString().replace(/(\d+)(\d{2})$/, "$1:$2");

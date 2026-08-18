@@ -14,7 +14,8 @@ export const environment: ConfigEnvironment = {
     apiCalificaciones: 'http://10.166.0.120:1062/mscme-calificaciones/api',
     apiAsistencia: 'http://10.166.120:1063/mscme-asistencia/api',
     apiAsignacionPlaza: 'http://10.166.0.120:1061/mscme-asignacion',
-    apiSindical: 'http://10.166.120:1064/mscme-sindical/'
+    apiSindical: 'http://10.166.120:1064/mscme-sindical/',
+    apiCatalogosPlaza: 'http://127.0.0.1:8084/mscme-catalogos/api',
   }
 }
 
