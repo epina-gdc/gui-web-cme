@@ -29,3 +29,10 @@ export enum TipoBusquedaPlaza {
   BusquedaManual,
   BusquedaLayout
 }
+
+export enum AccionPlaza {
+  VerDetalle,
+  EditarEstatus,
+  EditarPlaza,
+  EliminarPlaza
+}

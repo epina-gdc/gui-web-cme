@@ -5,6 +5,7 @@ import { Popover, PopoverModule } from 'primeng/popover';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { PillComponent } from '@components/pill/pill.component';
 import { GestionPlazaInterface, TipoBusquedaPlaza } from '@models/gestion-plaza.interface';
+import { AccionPlaza } from '@models/gestion-plaza.interface';
 
 @Component({
     selector: 'app-tabla-plazas',
@@ -33,21 +34,28 @@ export class TablaPlazasComponent {
     readonly tipoBusqueda = input<TipoBusquedaPlaza>(TipoBusquedaPlaza.BusquedaManual);
 
     readonly pageChange = output<PaginatorState>();
-    readonly accionSeleccionada = output<GestionPlazaInterface>();
+    readonly accionSeleccionada = output<{plaza:GestionPlazaInterface, accion: AccionPlaza}>();
     readonly nuevaPlaza = output<void>();
-    readonly exportarDatos = output<void>();
 
     readonly plazaSeleccionada = signal<GestionPlazaInterface | null>(null);
+
+    readonly AccionPlaza = AccionPlaza;
 
     abrirAcciones(event: Event, plaza: GestionPlazaInterface): void {
         this.plazaSeleccionada.set(plaza);
         this.op()?.toggle(event);
     }
 
-    detallePlazaSeleccionada(): void {
+    detallePlazaSeleccionada(accion: AccionPlaza): void {
       const plaza = this.plazaSeleccionada();
         if (!plaza) return;
-        this.accionSeleccionada.emit(plaza);
+
+        const movimiento = {
+            plaza,
+            accion
+        };
+
+        this.accionSeleccionada.emit(movimiento);
         this.op()?.hide();
     }
 
@@ -55,9 +63,6 @@ export class TablaPlazasComponent {
         this.nuevaPlaza.emit();
     }
 
-    onExportarDatos(): void {
-        this.exportarDatos.emit();
-    }
 
     onPageChange(event: PaginatorState): void {
         this.pageChange.emit(event);
