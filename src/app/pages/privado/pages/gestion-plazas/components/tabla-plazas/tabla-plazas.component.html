@@ -108,22 +108,22 @@
 <p-popover #op (onHide)="plazaSeleccionada.set(null)">
   <ng-template #content>
     @if (tipoBusqueda() === TipoBusquedaPlaza.BusquedaLayout) {
-    <div class="flex align-items-center boton-descargar cursor-pointer" (click)="detallePlazaSeleccionada()">
+    <div class="flex align-items-center boton-descargar cursor-pointer" (click)="detallePlazaSeleccionada(AccionPlaza.VerDetalle)">
       <i class="icon pi pi-eye" [style]="{ 'font-size': '1.2rem', color: '#a9c9f8'}"></i>
       <span class="ms-2 acciones-tabla">Ver detalle</span>
     </div>
 
-    <div class="flex align-items-center boton-descargar cursor-pointer mt-2" (click)="detallePlazaSeleccionada()">
+    <div class="flex align-items-center boton-descargar cursor-pointer mt-2" (click)="detallePlazaSeleccionada(AccionPlaza.EditarEstatus)">
       <i class="icon pi pi-file-edit" [style]="{ 'font-size': '1.2rem', color: '#a9c9f8'}"></i>
       <span class="ms-2 acciones-tabla">Editar estatus</span>
     </div>
     } @else {
-    <div class="flex align-items-center boton-descargar cursor-pointer" (click)="detallePlazaSeleccionada()">
+    <div class="flex align-items-center boton-descargar cursor-pointer" (click)="detallePlazaSeleccionada(AccionPlaza.EditarPlaza)">
       <i class="icon pi pi-pencil" [style]="{ 'font-size': '1.2rem', color: '#a9c9f8'}"></i>
       <span class="ms-2 acciones-tabla">Editar</span>
     </div>
 
-    <div class="flex align-items-center boton-descargar cursor-pointer mt-2" (click)="detallePlazaSeleccionada()">
+    <div class="flex align-items-center boton-descargar cursor-pointer mt-2" (click)="detallePlazaSeleccionada(AccionPlaza.EliminarPlaza)">
       <i class="icon pi pi-trash" [style]="{ 'font-size': '1.2rem', color: '#a9c9f8'}"></i>
       <span class="ms-2 acciones-tabla">Eliminar</span>
     </div>

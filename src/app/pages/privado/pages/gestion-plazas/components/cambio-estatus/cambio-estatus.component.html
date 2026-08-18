@@ -1,0 +1,31 @@
+<div class="mt-4">
+  <form [formGroup]="form" >
+        <div class="flex flex-column w-full">
+          <div class="col-12">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="ooad">Estatus</label>
+              <p class="label-obligatorio">Obligatorio</p>
+            </div>
+            <p-select id="estatus" formControlName="estatus" [options]="lstEstatus" optionLabel="label" optionValue="value"
+              placeholder="Estatus" class="w-full" />
+          </div>
+
+          <div class="col-12">
+          <div class="flex justify-content-between">
+            <label class="field-label" for="observaciones">Observaciones</label>
+            <p class="label-obligatorio">Obligatorio</p>
+          </div>
+            <textarea rows="3" cols="30" class="w-full"  [autoResize]="true" pTextarea formControlName="observaciones"
+                    maxlength="500" id="observaciones" placeholder="Observaciones">
+                    </textarea>
+            <label class="label-obligatorio"
+                for="observaciones">{{ form.get('observaciones')?.value?.length || 0 }}/500 caracteres</label>
+          </div>
+
+          <div class="flex col-12 justify-content-end gap-4 mt-3 lg:mt-0">
+            <p-button type="button" (onClick)="cancelar()" variant="outlined" label="Cancelar" />
+            <p-button type="button" label="Aceptar" [disabled]="form.invalid" />
+          </div>
+        </div>
+  </form>
+</div>

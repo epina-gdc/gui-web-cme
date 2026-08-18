@@ -4,7 +4,7 @@ import { TipoBusquedaPlaza } from '@models/gestion-plaza.interface';
 @Injectable({
   providedIn: 'root'
 })
-export class GestionPlazaService {
+export class GestionPlazaEstadoService {
   private readonly _tipoBusqueda: WritableSignal<TipoBusquedaPlaza> = signal<TipoBusquedaPlaza>(TipoBusquedaPlaza.BusquedaLayout);
 
   public readonly tipoBusqueda: Signal<TipoBusquedaPlaza> = this._tipoBusqueda.asReadonly();
