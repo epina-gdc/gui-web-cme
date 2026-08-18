@@ -1,162 +1,43 @@
+<!--TODO quitarlo después de pruebas-->
+<p-button label="Manual" [text]="true" (onClick)="this.gestionPlazaService.setTipoBusqueda(TipoBusquedaPlaza.BusquedaManual)" />
+<p-button label="Layout"  [text]="true" (onClick)="this.gestionPlazaService.setTipoBusqueda(TipoBusquedaPlaza.BusquedaLayout)" />
 <div class="flex justify-content-start align-items-center gap-1 mt-2 lg:mt-0 mb-4">
   <h3 class="titulo-seccion">Gestión de Plazas</h3>
 </div>
 
+@if (gestionPlazaService.tipoBusqueda() === TipoBusquedaPlaza.BusquedaManual) {
+<div class="carga-calificaciones-background mb-4 border-round-xl overflow-hidden shadow-2 flex align-items-center justify-content-center">
+  <h1 class="titulo-asignaciones">Nueva plaza</h1>
+</div>
+} @else {
 <div class="mb-4">
-
   <p-card class="empty-border mb-4">
     <form [formGroup]="formBusqueda" (ngSubmit)="onBuscar()">
       <article class="flex flex-row flex-wrap align-items-end">
         <div class="lg:col-4 col-12">
           <label class="field-label" for="ooad">OOAD</label>
-          <p-select
-            id="ooad"
-            formControlName="ooad"
-            [options]="lstOoad"
-            optionLabel="label"
-            optionValue="value"
-            placeholder="Selecciona OOAD"
-            class="w-full"
-          />
+          <p-select id="ooad" formControlName="ooad" [options]="lstOoad" optionLabel="label" optionValue="value"
+            placeholder="Selecciona OOAD" class="w-full" />
         </div>
 
         <div class="lg:col-4 col-12">
           <label class="field-label" for="noPlaza">No. de plaza</label>
-          <input
-            pInputText
-            id="noPlaza"
-            type="text"
-            class="w-full"
-            placeholder="Selecciona No. de plaza"
-            formControlName="noPlaza"
-          />
+          <input pInputText id="noPlaza" type="text" max class="w-full" placeholder="Selecciona No. de plaza"
+            formControlName="noPlaza" appOnlyNumbers maxlength="6"/>
         </div>
 
         <div class="flex col-12 lg:col-4 justify-content-end align-items-center gap-4 mt-3 lg:mt-0">
-          <p-button
-            type="button"
-            (onClick)="onLimpiar()"
-            variant="outlined"
-            label="Limpiar"
-          />
-          <p-button
-            type="submit"
-            label="Buscar"
-            [disabled]="formBusqueda.get('ooad')?.invalid"
-          />
+          <p-button type="button" (onClick)="onLimpiar()" variant="outlined" label="Limpiar" />
+          <p-button type="submit" label="Buscar" [disabled]="formBusqueda.get('ooad')?.invalid" />
         </div>
       </article>
     </form>
   </p-card>
 </div>
+}
 
-  <p-table class="mt-4"
-    [value]="plazas()"
-    [scrollable]="true"
-    [resizableColumns]="true"
-    columnResizeMode="expand"
-  >
-    <ng-template #header>
-      <tr>
-        <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">OOAD</th>
-        <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">No. de plaza</th>
-        <th scope="col" pResizableColumn class="py-4" style="min-width: 140px">Tipo de Unidad</th>
-        <th scope="col" pResizableColumn class="py-4" style="min-width: 160px">Categoría</th>
-        <th scope="col" pResizableColumn class="py-4" style="min-width: 140px">Especialidad</th>
-        <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Horario</th>
-        <th scope="col" pResizableColumn class="py-4" style="min-width: 150px">Turno</th>
-        <th scope="col" pResizableColumn class="py-4" style="min-width: 90px">Zona</th>
-        <th scope="col" pResizableColumn class="py-4" style="min-width: 160px">Marca de ocupación</th>
-        <th scope="col" pResizableColumn class="py-4" style="min-width: 180px">Clasificación de unidad</th>
-        <th scope="col" pResizableColumn class="py-4" style="min-width: 240px">Unidad</th>
-        <th scope="col" pResizableColumn class="py-4" style="min-width: 240px">Adscripción</th>
-        <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">Tipo de plaza</th>
-        <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">Estatus</th>
-        <th scope="col" class="py-4" style="min-width: 100px" alignFrozen="right" pFrozenColumn>
-          Acciones
-        </th>
-      </tr>
-    </ng-template>
+<app-tabla-plazas [plazas]="plazas()" [totalRecords]="totalRecords" [first]="first" [rows]="rows"
+  [titulo]="'Plazas nuevas'" [tipoBusqueda]="gestionPlazaService.tipoBusqueda()"
+  (pageChange)="onPageChange($event)" (accionSeleccionada)="accionPlazaSeleccionada($event)" >
 
-    <ng-template #body let-plaza>
-      <tr>
-        <td>{{ plaza.ooad }}</td>
-        <td>{{ plaza.noPlaza }}</td>
-        <td>{{ plaza.tipoUnidad }}</td>
-        <td>{{ plaza.categoria }}</td>
-        <td>{{ plaza.especialidad }}</td>
-        <td>{{ plaza.horario }}</td>
-        <td>{{ plaza.turno }}</td>
-        <td>{{ plaza.zona }}</td>
-        <td>{{ plaza.marcaOcupacion }}</td>
-        <td>{{ plaza.clasificacionUnidad }}</td>
-        <td>{{ plaza.unidad }}</td>
-        <td>{{ plaza.adscripcion }}</td>
-        <td>{{ plaza.tipoPlaza }}</td>
-        <td>
-          <app-pill [texto]="plaza.estatus" [pillType]="getPillType(plaza.estatus)" />
-        </td>
-        <td alignFrozen="right" pFrozenColumn>
-          <div class="flex align-items-center justify-content-center">
-            <i
-              (click)="abrirAcciones($event, op, plaza)"
-              class="cme-ellipsis cursor-pointer border-round-3xl"
-              [style]="{ 'font-size': '2.2rem', color: '#a9c9f8', background: '#f6faff' }"
-            ></i>
-          </div>
-        </td>
-      </tr>
-    </ng-template>
-
-    <ng-template #emptymessage>
-      <tr>
-        <td colspan="15">
-          <div class="flex justify-content-center align-items-center p-4">
-            <img class="p-0" src="/assets/images/tabla_sin_resultados.svg" alt="Sin resultados" />
-          </div>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-
-  <p-paginator
-    styleClass="justify-content-end"
-    [showFirstLastIcon]="false"
-    [first]="first"
-    [rows]="rows"
-    [totalRecords]="totalRecords"
-    (onPageChange)="onPageChange($event)"
-  >
-    <ng-template pTemplate="previouspagelinkicon">
-      <div class="flex align-items-center">
-        <span class="pi pi-chevron-left text-xl font-normal mr-2"></span>
-        <span class="font-semibold mr-5">Anterior</span>
-      </div>
-    </ng-template>
-    <ng-template pTemplate="nextpagelinkicon">
-      <div class="flex align-items-center">
-        <span class="font-semibold ml-5">Siguiente</span>
-        <span class="pi pi-chevron-right text-xl font-normal ml-2"></span>
-      </div>
-    </ng-template>
-  </p-paginator>
-
-
-<p-popover #op (onHide)="plazaSeleccionada = null">
-  <ng-template #content>
-    <div
-      class="flex align-items-center boton-descargar cursor-pointer"
-      (click)="verDetalle(plazaSeleccionada)"
-    >
-      <i class="icon pi pi-eye" [style]="{ 'font-size': '1.2rem', color: '#a9c9f8'}"></i>
-      <span class="ms-2 acciones-tabla">Ver detalle</span>
-    </div>
-    <div
-      class="flex align-items-center boton-descargar cursor-pointer mt-2"
-      (click)="editarEstatus(plazaSeleccionada)"
-    >
-      <i class="icon pi pi-file-edit" [style]="{ 'font-size': '1.2rem', color: '#a9c9f8'}"></i>
-      <span class="ms-2 acciones-tabla">Editar estatus</span>
-    </div>
-  </ng-template>
-</p-popover>
+</app-tabla-plazas>

@@ -1,20 +1,21 @@
-import { Component, inject, OnInit, signal, ViewChild, WritableSignal } from '@angular/core';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Card } from 'primeng/card';
 import { Select } from 'primeng/select';
 import { InputText } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
-import { TableModule } from 'primeng/table';
-import { Popover, PopoverModule } from 'primeng/popover';
-import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { PaginatorState } from 'primeng/paginator';
 import { GeneralComponent } from '@components/general.component';
-import { PillComponent } from '@components/pill/pill.component';
 import { TipoDropdown } from '@models/tipo-dropdown.interface';
 import { GestionPlazaInterface, TipoBusquedaPlaza } from '@models/gestion-plaza.interface';
 import { mapearArregloTipoDropdown } from '@utils/funciones';
 import { DUMMIE_TABLA_GESTION_PLAZAS } from '../../dummies';
 import { Mensajes } from '@utils/mensajes';
+import { GestionPlazaService } from '@services/gestion-plaza.service';
+import { TablaPlazasComponent } from '../tabla-plazas/tabla-plazas.component';
+import { OnlyNumbersDirective } from '@directives/only-numbers.directive';
+import { AlertService } from '@services/alert.service';
 
 @Component({
   selector: 'app-gestion-plaza',
@@ -26,35 +27,35 @@ import { Mensajes } from '@utils/mensajes';
     Select,
     InputText,
     Button,
-    TableModule,
-    PopoverModule,
-    PaginatorModule,
-    PillComponent
+    TablaPlazasComponent,
+    OnlyNumbersDirective
   ],
   templateUrl: './gestion-plaza.component.html',
   styleUrl: './gestion-plaza.component.scss'
 })
 export class GestionPlazaComponent extends GeneralComponent implements OnInit {
-  @ViewChild('op') op!: Popover;
+  readonly TipoBusquedaPlaza = TipoBusquedaPlaza;
 
   formBusqueda!: FormGroup;
   fb: FormBuilder = inject(FormBuilder);
   mensajes = inject(Mensajes);
+  alertaService: AlertService = inject(AlertService);
+  gestionPlazaService = inject(GestionPlazaService);
 
   lstOoad: TipoDropdown[] = [];
 
   readonly plazasDummies: GestionPlazaInterface[] = DUMMIE_TABLA_GESTION_PLAZAS;
 
   plazas: WritableSignal<GestionPlazaInterface[]> = signal<GestionPlazaInterface[]>([]);
-  plazaSeleccionada: GestionPlazaInterface | null = null;
 
   first: number = 0;
   rows: number = 10;
   totalRecords: number = 100;
 
-  tipoConsulta: WritableSignal<number> = signal(TipoBusquedaPlaza.BusquedaLayout);
-
   ngOnInit(): void {
+
+    this.gestionPlazaService.setTipoBusqueda(TipoBusquedaPlaza.BusquedaLayout);
+
     this.inicializarFormulario();
     this.cargarCatalogos();
     this.plazas.set([...this.plazasDummies]);
@@ -88,13 +89,14 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
 
     const { ooad, noPlaza } = this.formBusqueda.value;
 
-
-    //Consumir servicio para consulta de plazas
+    // Consumir servicio para consulta de plazas
     this.plazas.set(this.plazasDummies);
     this.first = 0;
 
-    //Si no se encuentran plazas mostrar MSG024
-    //this.mensajes.MSG024;
+    this.alertaService.error(this.mensajes.MSG024);
+
+    // Si no se encuentran plazas mostrar MSG024
+    // this.mensajes.MSG024;
   }
 
   onLimpiar(): void {
@@ -108,33 +110,33 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
     this.rows = event.rows ?? 10;
   }
 
-  abrirAcciones(event: Event, popover: Popover, plaza: GestionPlazaInterface): void {
-    this.plazaSeleccionada = plaza;
-    popover.toggle(event);
+  verDetalle(plaza: GestionPlazaInterface): void {
+    console.log('Ver detalle de plaza:', plaza);
   }
 
-  verDetalle(plaza: GestionPlazaInterface | null): void {
-    if (!plaza) return;
-    this.op?.hide();
-
+  editarEstatus(plaza: GestionPlazaInterface): void {
+    console.log('Editar estatus de plaza:', plaza);
   }
 
-  editarEstatus(plaza: GestionPlazaInterface | null): void {
-    if (!plaza) return;
-    this.op?.hide();
-
+  editar(plaza: GestionPlazaInterface): void {
+    console.log('Editar plaza:', plaza);
   }
 
-  getPillType(estatus: string): number {
-    switch (estatus?.toLowerCase()) {
-      case 'vacante':
-        return 3;
-      case 'etiquetada':
-        return 1;
-      case 'ocupado':
-        return 0;
-      default:
-        return 2;
-    }
+  eliminar(plaza: GestionPlazaInterface): void {
+    console.log('Eliminar plaza:', plaza);
+  }
+
+  abrirModalNuevaPlaza(): void {
+    console.log('Abrir modal nueva plaza');
+  }
+
+  exportarDatos(): void {
+    console.log('Exportar datos de plazas');
+  }
+
+
+  accionPlazaSeleccionada(plaza: GestionPlazaInterface){
+    console.log(plaza)
   }
 }
+

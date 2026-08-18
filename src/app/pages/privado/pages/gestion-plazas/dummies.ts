@@ -16,7 +16,8 @@ export const DUMMIE_TABLA_GESTION_PLAZAS: GestionPlazaInterface[] = [
     unidad: 'Unidad médica de alta especialidad',
     adscripcion: 'Hospital general de zona  No. 17',
     tipoPlaza: 'Base',
-    estatus: 'Vacante'
+    estatus: 'Vacante',
+    observaciones: 'Sin observaciones'
   },
   {
     id: 2,
@@ -33,7 +34,8 @@ export const DUMMIE_TABLA_GESTION_PLAZAS: GestionPlazaInterface[] = [
     unidad: 'Unidad médica de alta especialidad',
     adscripcion: 'Hospital general de zona  No. 17',
     tipoPlaza: 'Confianza',
-    estatus: 'Etiquetada'
+    estatus: 'Etiquetada',
+    observaciones: 'Sin observaciones'
   },
   {
     id: 3,
@@ -50,7 +52,8 @@ export const DUMMIE_TABLA_GESTION_PLAZAS: GestionPlazaInterface[] = [
     unidad: 'Unidad médica de alta especialidad',
     adscripcion: 'Unidad de medicina familiar No.45',
     tipoPlaza: 'Base',
-    estatus: 'Vacante'
+    estatus: 'Vacante',
+    observaciones: 'Sin observaciones'
   },
   {
     id: 4,
@@ -67,7 +70,8 @@ export const DUMMIE_TABLA_GESTION_PLAZAS: GestionPlazaInterface[] = [
     unidad: 'Unidad médica de alta especialidad',
     adscripcion: 'Hospital general regional No.25',
     tipoPlaza: 'Eventual',
-    estatus: 'Etiquetada'
+    estatus: 'Etiquetada',
+    observaciones: 'Sin observaciones'
   },
   {
     id: 5,
@@ -84,7 +88,8 @@ export const DUMMIE_TABLA_GESTION_PLAZAS: GestionPlazaInterface[] = [
     unidad: 'Unidad médica de alta especialidad',
     adscripcion: 'Hospital general de zona  No. 17',
     tipoPlaza: 'Confianza',
-    estatus: 'Etiquetada'
+    estatus: 'Etiquetada',
+    observaciones: 'Sin observaciones'
   },
   {
     id: 6,
@@ -101,7 +106,8 @@ export const DUMMIE_TABLA_GESTION_PLAZAS: GestionPlazaInterface[] = [
     unidad: 'Unidad médica de alta especialidad',
     adscripcion: 'Hospital general de zona  No. 17',
     tipoPlaza: 'Base',
-    estatus: 'Etiquetada'
+    estatus: 'Etiquetada',
+    observaciones: 'Sin observaciones'
   },
   {
     id: 7,
@@ -118,7 +124,8 @@ export const DUMMIE_TABLA_GESTION_PLAZAS: GestionPlazaInterface[] = [
     unidad: 'Unidad médica de alta especialidad',
     adscripcion: 'Unidad de medicina familiar No.45',
     tipoPlaza: 'Confianza',
-    estatus: 'Etiquetada'
+    estatus: 'Etiquetada',
+    observaciones: 'Sin observaciones'
   },
   {
     id: 8,
@@ -135,7 +142,8 @@ export const DUMMIE_TABLA_GESTION_PLAZAS: GestionPlazaInterface[] = [
     unidad: 'Unidad médica de alta especialidad',
     adscripcion: 'Hospital general de zona  No. 17',
     tipoPlaza: 'Eventual',
-    estatus: 'Etiquetada'
+    estatus: 'Etiquetada',
+    observaciones: 'Sin observaciones'
   },
   {
     id: 9,
@@ -152,7 +160,8 @@ export const DUMMIE_TABLA_GESTION_PLAZAS: GestionPlazaInterface[] = [
     unidad: 'Unidad médica de alta especialidad',
     adscripcion: 'Hospital general de zona  No. 17',
     tipoPlaza: 'Base',
-    estatus: 'Vacante'
+    estatus: 'Vacante',
+    observaciones: 'Sin observaciones'
   },
   {
     id: 10,
@@ -169,7 +178,8 @@ export const DUMMIE_TABLA_GESTION_PLAZAS: GestionPlazaInterface[] = [
     unidad: 'Unidad médica de alta especialidad',
     adscripcion: 'Hospital general de zona  No. 17',
     tipoPlaza: 'Eventual',
-    estatus: 'Etiquetada'
+    estatus: 'Etiquetada',
+    observaciones: 'Sin observaciones'
   },
   {
     id: 11,
@@ -186,6 +196,7 @@ export const DUMMIE_TABLA_GESTION_PLAZAS: GestionPlazaInterface[] = [
     unidad: 'Unidad médica de alta especialidad',
     adscripcion: 'Hospital general de zona  No. 17',
     tipoPlaza: 'Base',
-    estatus: 'Ocupada'
+    estatus: 'Ocupada',
+    observaciones: 'Sin observaciones'
   }
 ];

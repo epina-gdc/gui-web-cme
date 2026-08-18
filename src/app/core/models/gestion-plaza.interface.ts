@@ -14,6 +14,7 @@ export interface GestionPlazaInterface {
   adscripcion: string;
   tipoPlaza: string;
   estatus: 'Vacante' | 'Etiquetada' | 'Ocupada';
+  observaciones: string;
 }
 
 export interface FiltroGestionPlazaInterface {

@@ -1,0 +1,21 @@
+@layer app-components {
+  :host ::ng-deep {
+    .p-datatable-thead > tr > th {
+      padding-top: 18px !important;
+      padding-bottom: 18px !important;
+      font-size: 13.5px;
+    }
+
+    .p-datatable-header {
+      .boton-descargar {
+        color: #018699;
+        font-size: 14px;
+        transition: opacity 0.2s ease;
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+  }
+}
