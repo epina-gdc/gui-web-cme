@@ -21,5 +21,6 @@ export const NAV = {
   errorConfig: 'config-erronea',
   home: 'inicio',
   homeModulos: 'inicio-modulos',
-  gestionPlazas: 'gestion-plazas'
+  gestionPlazas: 'gestion-plazas',
+  nuevaPlaza: 'nueva-plaza'
 };

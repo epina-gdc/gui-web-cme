@@ -1,0 +1,179 @@
+<section class="nueva-plaza-page">
+    <header class="breadcrumb-header">
+        <h1>Administraci&oacute;n de plazas</h1>
+        <span></span>
+        <h2>Nueva plaza</h2>
+    </header>
+
+    <form class="nueva-plaza-card" [formGroup]="form" (ngSubmit)="guardar()">
+        <div class="form-grid">
+            <div class="field-block required-field">
+                <div class="field-meta">
+                    <label for="ooad">OOAD</label>
+                    <span>Obligatorio</span>
+                </div>
+                <p-select inputId="ooad" [options]="ooads" formControlName="ooad" optionLabel="label"
+                    optionValue="value" placeholder="Selecciona OOAD" [filter]="true" filterBy="label"
+                    [appendTo]="'body'" class="w-full">
+                </p-select>
+            </div>
+
+            <div class="field-block required-field">
+                <div class="field-meta">
+                    <label for="numeroPlaza">No. de plaza</label>
+                </div>
+                <input pInputText id="numeroPlaza" type="text" formControlName="numeroPlaza" maxlength="10"
+                    class="system-input" />
+            </div>
+
+            <div class="field-block required-field">
+                <div class="field-meta">
+                    <label for="tipoUnidad">Tipo de Unidad</label>
+                    <span>Obligatorio</span>
+                </div>
+                <p-select inputId="tipoUnidad" [options]="tiposUnidad" formControlName="tipoUnidad" optionLabel="label"
+                    optionValue="value" placeholder="Selecciona Tipo de Unidad" [filter]="true" filterBy="label"
+                    [appendTo]="'body'" class="w-full">
+                </p-select>
+            </div>
+
+            <div class="field-block required-field">
+                <div class="field-meta">
+                    <label for="categoria">Categor&iacute;a</label>
+                    <span>Obligatorio</span>
+                </div>
+                <p-select inputId="categoria" [options]="categorias" formControlName="categoria" optionLabel="label"
+                    optionValue="value" placeholder="Selecciona categor&iacute;a" [filter]="true" filterBy="label"
+                    [appendTo]="'body'" class="w-full">
+                </p-select>
+            </div>
+
+            <div class="field-block required-field">
+                <div class="field-meta">
+                    <label for="especialidad">Especialidad</label>
+                    <span>Obligatorio</span>
+                </div>
+                <p-select inputId="especialidad" [options]="especialidades" formControlName="especialidad"
+                    optionLabel="label" optionValue="value" placeholder="Selecciona especialidad" [filter]="true"
+                    filterBy="label" [appendTo]="'body'" class="w-full">
+                </p-select>
+            </div>
+
+            <div class="field-block required-field">
+                <div class="field-meta">
+                    <label for="horario">Horario</label>
+                    <span>Obligatorio</span>
+                </div>
+                <p-select inputId="horario" [options]="horarios" formControlName="horario" optionLabel="label"
+                    optionValue="value" placeholder="Selecciona horario" [filter]="true" filterBy="label"
+                    [appendTo]="'body'" class="w-full">
+                </p-select>
+            </div>
+
+            <div class="field-block required-field">
+                <div class="field-meta">
+                    <label for="turno">Turno</label>
+                    <span>Obligatorio</span>
+                </div>
+                <p-select inputId="turno" [options]="turnos" formControlName="turno" optionLabel="label"
+                    optionValue="value" placeholder="Selecciona turno" [filter]="true" filterBy="label"
+                    [appendTo]="'body'" class="w-full">
+                </p-select>
+            </div>
+
+            <div class="field-block required-field">
+                <div class="field-meta">
+                    <label for="zona">Zona</label>
+                    <span>Obligatorio</span>
+                </div>
+                <p-select inputId="zona" [options]="zonas" formControlName="zona" optionLabel="label"
+                    optionValue="value" placeholder="Selecciona zona" [filter]="true" filterBy="label"
+                    [appendTo]="'body'" class="w-full">
+                </p-select>
+            </div>
+
+            <div class="field-block required-field">
+                <div class="field-meta">
+                    <label for="marcaOcupacion">Marca de ocupaci&oacute;n</label>
+                    <span>Obligatorio</span>
+                </div>
+                <p-select inputId="marcaOcupacion" [options]="marcasOcupacion" formControlName="marcaOcupacion"
+                    optionLabel="label" optionValue="value" placeholder="Selecciona ocupaci&oacute;n" [filter]="true"
+                    filterBy="label" [appendTo]="'body'" class="w-full">
+                </p-select>
+            </div>
+
+            <div class="field-block required-field">
+                <div class="field-meta">
+                    <label for="clasificacionUnidad">Clasificaci&oacute;n de unidad</label>
+                    <span>Obligatorio</span>
+                </div>
+                <p-select inputId="clasificacionUnidad" [options]="clasificacionesUnidad"
+                    formControlName="clasificacionUnidad" optionLabel="label" optionValue="value"
+                    placeholder="Selecciona clasificaci&oacute;n de unidad" [filter]="true" filterBy="label"
+                    [appendTo]="'body'" class="w-full">
+                </p-select>
+            </div>
+
+            <div class="field-block required-field">
+                <div class="field-meta">
+                    <label for="unidad">Unidad</label>
+                    <span>Obligatorio</span>
+                </div>
+                <p-select inputId="unidad" [options]="unidades" formControlName="unidad" optionLabel="label"
+                    optionValue="value" placeholder="Selecciona unidad" [filter]="true" filterBy="label"
+                    [appendTo]="'body'" class="w-full">
+                </p-select>
+            </div>
+
+            <div class="field-block required-field">
+                <div class="field-meta">
+                    <label for="adscripcion">Adscripci&oacute;n</label>
+                    <span>Obligatorio</span>
+                </div>
+                <p-select inputId="adscripcion" [options]="adscripciones" formControlName="adscripcion"
+                    optionLabel="label" optionValue="value" placeholder="Selecciona adscripci&oacute;n" [filter]="true"
+                    filterBy="label" [appendTo]="'body'" class="w-full">
+                </p-select>
+            </div>
+
+            <div class="field-block required-field">
+                <div class="field-meta">
+                    <label for="tipoPlaza">Tipo de plaza</label>
+                    <span>Obligatorio</span>
+                </div>
+                <p-select inputId="tipoPlaza" [options]="tiposPlaza" formControlName="tipoPlaza" optionLabel="label"
+                    optionValue="value" placeholder="Selecciona tipo de plaza" [filter]="true" filterBy="label"
+                    [appendTo]="'body'" class="w-full">
+                </p-select>
+            </div>
+
+            <div class="field-block required-field">
+                <div class="field-meta">
+                    <label for="estatus">Estatus</label>
+                    <span>Obligatorio</span>
+                </div>
+                <p-select inputId="estatus" [options]="estatus" formControlName="estatus" optionLabel="label"
+                    optionValue="value" placeholder="Selecciona estatus" [appendTo]="'body'" class="w-full">
+                </p-select>
+            </div>
+
+            <div class="field-block field-block--full required-field">
+                <div class="field-meta">
+                    <label for="observaciones">Observaciones</label>
+                    <span>Obligatorio</span>
+                </div>
+                <textarea id="observaciones" pTextarea rows="4" maxlength="500" formControlName="observaciones">
+        </textarea>
+                <div class="character-count">{{ caracteresObservaciones }}/500 Caracteres</div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <p-button type="button" label="Limpiar" variant="outlined" (onClick)="limpiar()">
+            </p-button>
+            <p-button type="submit" label="Guardar" [disabled]="guardarDeshabilitado">
+            </p-button>
+        </div>
+    </form>
+</section>
