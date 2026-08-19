@@ -125,6 +125,10 @@ const routes: Routes = [{
     },
     {
       path: NAV.nuevaPlaza,
+      component: GestionPlazaComponent,
+    },
+    {
+      path: NAV.generarNuevaPlaza,
       component: NuevaPlazaComponent,
       resolve: {
         catalogos: nuevaPlazaResolver,
