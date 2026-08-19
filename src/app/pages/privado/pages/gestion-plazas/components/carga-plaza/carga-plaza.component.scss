@@ -1,0 +1,173 @@
+@layer app-components {
+  .carga-plaza-page {
+    min-width: 0;
+  }
+
+  .carga-plaza-hero {
+    min-height: 309px;
+  }
+
+  .carga-plaza-card {
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(22, 26, 29, 0.08);
+  }
+
+  .carga-plaza-card__header {
+    padding: 1rem 1.25rem;
+    background: #FAFDFE;
+    border-bottom: 1px solid #E6EAF7;
+  }
+
+  .carga-plaza-card__body {
+    padding: 1.25rem;
+  }
+
+  .bg-card-indicador {
+    background: #EAF2FB;
+  }
+
+  .fecha-carga-grid {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) minmax(170px, 0.5fr) minmax(170px, 0.5fr);
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .fecha-card {
+    display: flex;
+    justify-content: flex-start;
+    gap: 2rem;
+    min-height: 58px;
+    padding: 1rem;
+  }
+
+  .calendario {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #5688bf;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    flex: 0 0 32px;
+  }
+
+  .calendario::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: #65A0E0;
+    transform: translate(1%, -44%);
+    border-radius: 92px;
+    width: 100px;
+    height: 51px;
+  }
+
+  .hidden-file {
+    display: none;
+  }
+
+  .upload-zone {
+    min-height: 174px;
+    border: 1px dashed #DDE5EF;
+    border-radius: 8px;
+    background: #FFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7C97AC;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .upload-zone:focus-visible {
+    outline: 2px solid #65A0E0;
+    outline-offset: 2px;
+  }
+
+  .upload-zone--dragging {
+    border-color: #5688BF;
+    background: #F5FAFF;
+  }
+
+  .upload-zone--disabled {
+    cursor: not-allowed;
+    opacity: 0.65;
+  }
+
+  .upload-zone__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: #7C97AC;
+    font-size: 12px;
+    text-align: center;
+    flex-wrap: wrap;
+  }
+
+  .upload-zone__content span {
+    color: #597190;
+    font-weight: 600;
+  }
+
+
+  .proceso-carga-card {
+    display: block;
+    margin-top: 0.005rem;
+    padding-top: 1rem;
+    border-top: 1px solid #DDE5EF;
+  }
+
+  :host ::ng-deep .proceso-carga-card>.p-card {
+    overflow: hidden;
+    border: 1px solid #E6EAF7;
+    box-shadow: 0 1px 4px rgba(22, 26, 29, 0.08);
+  }
+
+  .errores-carga {
+    border: 1px solid #F2D6D8;
+    border-radius: 8px;
+    background: #FFF8F8;
+    padding: 1rem;
+  }
+
+  .texto-lista {
+    white-space: pre-line;
+  }
+
+  ul {
+    color: var(--gris-header-tabla, #58595C);
+    font-family: Arial;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .fecha-carga-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .fecha-card {
+      width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    .carga-plaza-hero {
+      min-height: 220px;
+    }
+
+    .carga-plaza-card__body {
+      padding: 1rem;
+    }
+
+    .fecha-card {
+      gap: 1.5rem;
+    }
+  }
+}

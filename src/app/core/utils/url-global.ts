@@ -23,5 +23,6 @@ export const NAV = {
   homeModulos: 'inicio-modulos',
   gestionPlazas: 'gestion-plaza',
   nuevaPlaza: 'nueva-plaza',
-  generarNuevaPlaza: 'generar-plaza'
+  generarNuevaPlaza: 'generar-plaza',
+  cargaPlaza: 'carga-plaza',
 };

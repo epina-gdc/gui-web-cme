@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AlertService } from '@services/alert.service';
 import { Button } from 'primeng/button';
@@ -13,7 +13,6 @@ import { NuevaPlazaCatalogos } from '@services/nueva-plaza.service';
 import { of } from 'rxjs';
 import { catchError, distinctUntilChanged, map, switchMap, tap } from 'rxjs/operators';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
 interface CatalogoOption {
   label: string;
   value: string | number;
@@ -23,12 +22,7 @@ interface ZonaCatalogo {
   desZona?: string;
   cveZona?: string | number;
 }
-/*
-type CatalogosNuevaPlazaRoute = NuevaPlazaCatalogos & {
-  ooads: HttpRespuesta<Record<string, unknown>[]>;
-  especialidades: Record<string, unknown>[];
-};
-*/
+
 type CatalogosNuevaPlazaRoute = NuevaPlazaCatalogos;
 @Component({
   selector: 'app-nueva-plaza',
@@ -47,6 +41,8 @@ export class NuevaPlazaComponent extends GeneralComponent implements OnInit, OnD
   private readonly fb = inject(FormBuilder);
   private readonly alertService = inject(AlertService);
   private readonly destroyRef = inject(DestroyRef);
+
+
 
   private consecutivo = 1;
   private readonly plazasExistentes = new Set<string>(['000009', '000128']);
@@ -91,7 +87,7 @@ export class NuevaPlazaComponent extends GeneralComponent implements OnInit, OnD
     { label: 'Etiquetada', value: 'ETIQUETADA' }
   ];
 
-  constructor(private activatedRoute: ActivatedRoute) {
+  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
     super();
   }
 
@@ -157,6 +153,11 @@ export class NuevaPlazaComponent extends GeneralComponent implements OnInit, OnD
     this.consecutivo++;
     this.alertService.exito('Plaza registrada con exito.');
     this.limpiar();
+
+    setTimeout(() => {
+      this.router.navigate(['/privado/nueva-plaza']);
+    }, 2000)
+
   }
 
   private cargarCatalogos(catalogos?: CatalogosNuevaPlazaRoute): void {

@@ -33,6 +33,7 @@ import { tableroInformacionResolver } from '../../core/resolvers/tablero-informa
 import { MonitoreoAsignacionesComponent } from './pages/monitoreo-asignaciones/monitoreo-asignaciones.component';
 import { GestionPlazaComponent } from './pages/gestion-plazas/components/gestion-plaza/gestion-plaza.component';
 import { NuevaPlazaComponent } from './pages/gestion-plazas/components/nueva-plaza/nueva-plaza.component';
+import { CargaPlazaComponent } from './pages/gestion-plazas/components/carga-plaza/carga-plaza.component';
 import { nuevaPlazaResolver } from '../../core/resolvers/nueva-plaza.resolver';
 
 const routes: Routes = [{
@@ -85,6 +86,10 @@ const routes: Routes = [{
       resolve: {
         respuesta: CargaCalificacionesResolver
       }
+    },
+    {
+      path: NAV.cargaPlaza,
+      component: CargaPlazaComponent,
     },
     {
       path: NAV.asistenciaExtraordinaria,
