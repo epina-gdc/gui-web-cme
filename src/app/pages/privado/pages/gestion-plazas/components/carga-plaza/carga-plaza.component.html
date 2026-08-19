@@ -6,7 +6,8 @@
     <h3 class="titulo-seccion">Carga de plazas</h3>
   </div>
 
-  <div class="carga-calificaciones-background carga-plaza-hero border-round-xl overflow-hidden shadow-2 flex align-items-center justify-content-center">
+  <div
+    class="carga-calificaciones-background carga-plaza-hero border-round-xl overflow-hidden shadow-2 flex align-items-center justify-content-center">
     <h1 class="titulo-asignaciones">Carga de plazas</h1>
   </div>
 
@@ -20,7 +21,7 @@
         <div class="lg:col-4 col-12 px-0">
           <label class="field-label" for="convocatoria">Convocatoria</label>
           <p-select id="convocatoria" [options]="options" formControlName="convocatoria" optionLabel="label"
-                    optionValue="value" placeholder="Selecciona una convocatoria" class="w-full" />
+            optionValue="value" placeholder="Selecciona una convocatoria" class="w-full" />
         </div>
       </form>
 
@@ -77,68 +78,61 @@
 
       <div class="mt-4">
         <input #fileInput class="hidden-file" type="file"
-               accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-               (change)="onSeleccionarArchivo($event)" />
+          accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          (change)="onSeleccionarArchivo($event)" />
 
-        <div class="upload-zone"
-             tabindex="0"
-             role="button"
-             aria-label="Adjunta un archivo en formato XLSX"
-             [class.upload-zone--dragging]="arrastrando()"
-             [class.upload-zone--disabled]="!puedeAdjuntarArchivo()"
-             (click)="abrirSelectorArchivo()"
-             (keydown.enter)="abrirSelectorArchivo()"
-             (keydown.space)="abrirSelectorArchivo(); $event.preventDefault()"
-             (dragover)="onDragOver($event)"
-             (dragleave)="onDragLeave($event)"
-             (drop)="onDrop($event)">
+        <div class="upload-zone" tabindex="0" role="button" aria-label="Adjunta un archivo en formato XLSX"
+          [class.upload-zone--dragging]="arrastrando()" [class.upload-zone--disabled]="!puedeAdjuntarArchivo()"
+          (click)="abrirSelectorArchivo()" (keydown.enter)="abrirSelectorArchivo()"
+          (keydown.space)="abrirSelectorArchivo(); $event.preventDefault()" (dragover)="onDragOver($event)"
+          (dragleave)="onDragLeave($event)" (drop)="onDrop($event)">
           @if (cargando()) {
-            <div class="upload-zone__content">
-              <i class="cme-upload upload-zone__loading-icon" style="font-size: 1.3rem"></i>
-              <p>Cargando plazas...</p>
-            </div>
+          <div class="upload-zone__content">
+            <i class="cme-upload upload-zone__loading-icon" style="font-size: 1.3rem"></i>
+            <p>Cargando plazas...</p>
+          </div>
           } @else if (archivoSeleccionado()) {
-            <div class="upload-zone__content">
-              <i class="cme-upload" style="font-size: 1.3rem"></i>
-              <p>{{ archivoSeleccionado()?.name }}</p>
-              <span>{{ formatearPeso(archivoSeleccionado()?.size ?? 0) }}</span>
-            </div>
+          <div class="upload-zone__content">
+            <i class="cme-upload" style="font-size: 1.3rem"></i>
+            <p>{{ archivoSeleccionado()?.name }}</p>
+            <span>{{ formatearPeso(archivoSeleccionado()?.size ?? 0) }}</span>
+          </div>
           } @else {
-            <div class="upload-zone__content">
-              <i class="cme-upload" style="font-size: 1.3rem"></i>
-              <p>Adjunta un archivo en formato XLSX</p>
-            </div>
+          <div class="upload-zone__content">
+            <i class="cme-upload" style="font-size: 1.3rem"></i>
+            <p>Adjunta un archivo en formato XLSX</p>
+          </div>
           }
         </div>
       </div>
 
       @if (erroresCarga().length > 0) {
-        <div class="errores-carga mt-3">
-          <p class="proceso-carga-calificacion">Registros no cargados</p>
-          <ul class="m-0 mt-2 pl-4">
-            @for (error of erroresCarga(); track $index) {
-              <li class="my-1">
-                <p class="texto-lista header-tab-documentacion">
-                  Plaza {{ obtenerPlazaError(error) }} - OOAD {{ obtenerOoadError(error) }}
-                  @if (error.mensaje) {
-                    <span>: {{ error.mensaje }}</span>
-                  }
-                </p>
-              </li>
-            }
-          </ul>
-        </div>
+      <div class="errores-carga mt-3">
+        <p class="proceso-carga-calificacion">Registros no cargados</p>
+        <ul class="m-0 mt-2 pl-4">
+          @for (error of erroresCarga(); track $index) {
+          <li class="my-1">
+            <p class="texto-lista header-tab-documentacion">
+              Plaza {{ obtenerPlazaError(error) }} - OOAD {{ obtenerOoadError(error) }}
+              @if (error.mensaje) {
+              <span>: {{ error.mensaje }}</span>
+              }
+            </p>
+          </li>
+          }
+        </ul>
+      </div>
       }
     </div>
   </div>
 
-  <p-card class="empty-border mt-3" [header]="'Proceso de Carga de plazas'">
+  <p-card class="empty-border proceso-carga-card" [header]="'Proceso de Carga de plazas'">
     <p class="proceso-carga-calificacion mb-3">Importante</p>
     <ul class="m-0 pl-4">
       @for (proceso of listaImportante; track proceso) {
-        <li class="my-2">
-          <p class="texto-lista header-tab-documentacion">{{ proceso }}</p>
-        </li>
+      <li class="my-2">
+        <p class="texto-lista header-tab-documentacion">{{ proceso }}</p>
+      </li>
       }
     </ul>
   </p-card>

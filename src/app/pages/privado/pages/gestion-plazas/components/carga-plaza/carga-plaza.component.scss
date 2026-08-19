@@ -113,6 +113,20 @@
     font-weight: 600;
   }
 
+
+  .proceso-carga-card {
+    display: block;
+    margin-top: 0.005rem;
+    padding-top: 1rem;
+    border-top: 1px solid #DDE5EF;
+  }
+
+  :host ::ng-deep .proceso-carga-card>.p-card {
+    overflow: hidden;
+    border: 1px solid #E6EAF7;
+    box-shadow: 0 1px 4px rgba(22, 26, 29, 0.08);
+  }
+
   .errores-carga {
     border: 1px solid #F2D6D8;
     border-radius: 8px;

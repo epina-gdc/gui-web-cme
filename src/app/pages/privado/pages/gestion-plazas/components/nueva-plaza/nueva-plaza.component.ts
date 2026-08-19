@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AlertService } from '@services/alert.service';
 import { Button } from 'primeng/button';
@@ -87,7 +87,7 @@ export class NuevaPlazaComponent extends GeneralComponent implements OnInit, OnD
     { label: 'Etiquetada', value: 'ETIQUETADA' }
   ];
 
-  constructor(private activatedRoute: ActivatedRoute) {
+  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
     super();
   }
 
@@ -153,6 +153,10 @@ export class NuevaPlazaComponent extends GeneralComponent implements OnInit, OnD
     this.consecutivo++;
     this.alertService.exito('Plaza registrada con exito.');
     this.limpiar();
+
+    setTimeout(() => {
+      this.router.navigate(['/privado/nueva-plaza']);
+    }, 2000)
 
   }
 
