@@ -18,6 +18,8 @@ import { OnlyNumbersDirective } from '@directives/only-numbers.directive';
 import { AlertService } from '@services/alert.service';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CambioEstatusComponent } from '../cambio-estatus/cambio-estatus.component';
+import { ActivatedRoute } from '@angular/router';
+import { NAV } from '@utils/url-global';
 
 interface PlazaAccion  {
   plaza: GestionPlazaInterface,
@@ -50,6 +52,7 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
   alertaService: AlertService = inject(AlertService);
   gestionPlazaService = inject(GestionPlazaEstadoService);
   dialogService = inject(DialogService);
+  private route = inject(ActivatedRoute);
 
   ref: DynamicDialogRef | undefined;
 
@@ -66,11 +69,19 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.gestionPlazaService.setTipoBusqueda(TipoBusquedaPlaza.BusquedaLayout);
-
+    this.obtenerTipoBusquedaDesdeRuta();
     this.inicializarFormulario();
     this.cargarCatalogos();
     this.plazas.set([...this.plazasDummies]);
+  }
+
+  private obtenerTipoBusquedaDesdeRuta(): void {
+     const path = this.route.snapshot.routeConfig?.path;
+    if (path === NAV.gestionPlazas) {
+      this.gestionPlazaService.setTipoBusqueda(TipoBusquedaPlaza.BusquedaLayout);
+    } else {
+      this.gestionPlazaService.setTipoBusqueda(TipoBusquedaPlaza.BusquedaManual);
+    }
   }
 
   inicializarFormulario(): void {
