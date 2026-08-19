@@ -1,18 +1,18 @@
 <div class="py-1 px-4 md:bg-white border-round-xl">
   <p-tabs [value]="tab">
     <p-tablist class="flex flex-row">
-      <p-tab [value]="0" (click)="tab = 0" class="w-full">
+      <p-tab [value]="0" (click)="tab = 0" class="w-6">
         <div class="header-tab-documentacion">
           <i class="cme-document me-3" style="color: #000000; font-size: 1.4rem"></i>
           <p>Propuesta sindical</p>
         </div>
       </p-tab>
-<!--      <p-tab [value]="1" (click)="tab = 1" class="w-6">-->
-<!--        <div class="header-tab-documentacion">-->
-<!--          <i class="cme-file me-3" style="color: #000000; font-size: 1.4rem"></i>-->
-<!--          <p>Reporte de propuestas</p>-->
-<!--        </div>-->
-<!--      </p-tab>-->
+      <p-tab [value]="1" (click)="tab = 1" class="w-6">
+        <div class="header-tab-documentacion">
+          <i class="cme-file me-3" style="color: #000000; font-size: 1.4rem"></i>
+          <p>Reporte de propuestas</p>
+        </div>
+      </p-tab>
     </p-tablist>
   </p-tabs>
 </div>
@@ -21,4 +21,8 @@
   @case (0) {
     <app-datos-medico></app-datos-medico>
   }
+  @case (1){
+    <app-reporte-propuestas></app-reporte-propuestas>
+  }
+
 }
