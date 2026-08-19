@@ -5,7 +5,7 @@
         <span class="titulo-tabla font-bold text-xl">{{ titulo() }}</span>
 
         <div class="flex align-items-center gap-4">
-          <div class="flex align-items-center boton-descargar cursor-pointer gap-2" (click)="onNuevaPlaza()">
+          <div class="flex align-items-center boton-descargar cursor-pointer gap-2" [routerLink]="['/privado/generar-plaza']">
             <i class="pi pi-user-plus" [style]="{ 'font-size': '1.3rem', color: '#018699' }"></i>
             <span class="font-medium">Nueva plaza</span>
           </div>

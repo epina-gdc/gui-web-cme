@@ -6,6 +6,7 @@ import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { PillComponent } from '@components/pill/pill.component';
 import { GestionPlazaInterface, TipoBusquedaPlaza } from '@models/gestion-plaza.interface';
 import { AccionPlaza } from '@models/gestion-plaza.interface';
+import { RouterLink } from '@angular/router';
 
 @Component({
     selector: 'app-tabla-plazas',
@@ -15,7 +16,8 @@ import { AccionPlaza } from '@models/gestion-plaza.interface';
         TableModule,
         PopoverModule,
         PaginatorModule,
-        PillComponent
+        PillComponent,
+        RouterLink
     ],
     templateUrl: './tabla-plazas.component.html',
     styleUrl: './tabla-plazas.component.scss',
@@ -35,7 +37,7 @@ export class TablaPlazasComponent {
 
     readonly pageChange = output<PaginatorState>();
     readonly accionSeleccionada = output<{plaza:GestionPlazaInterface, accion: AccionPlaza}>();
-    readonly nuevaPlaza = output<void>();
+
 
     readonly plazaSeleccionada = signal<GestionPlazaInterface | null>(null);
 
@@ -58,11 +60,6 @@ export class TablaPlazasComponent {
         this.accionSeleccionada.emit(movimiento);
         this.op()?.hide();
     }
-
-    onNuevaPlaza(): void {
-        this.nuevaPlaza.emit();
-    }
-
 
     onPageChange(event: PaginatorState): void {
         this.pageChange.emit(event);
