@@ -22,6 +22,8 @@ export class Mensajes {
   public MSG024: string = 'No se encontraron resultados con la información proporcionada.';
   public MSG025: string = 'Por favor, ingresa la información en los campos faltantes.';
   public MSG026: string = 'Datos guardados correctamente.';
+  public MSG030: string = 'Se cargaron con \u00e9xito las plazas.';
+  public MSG031: string = 'No se cargaron las plazas.';
   public MSG037: string = 'La información está incompleta, favor de verificar.';
   public MSG039: string = '¡Registro exitoso!. Te hemos enviado un correo con los detalles. No olvides revisarlo.';
   public MSG041: string = 'Actualmente no hay plazas ofertadas vacantes disponibles. Por favor, consulta más adelante.';
