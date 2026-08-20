@@ -10,7 +10,6 @@ import { GeneralComponent } from '@components/general.component';
 import { TipoDropdown } from '@models/tipo-dropdown.interface';
 import { GestionPlazaInterface, TipoBusquedaPlaza, AccionPlaza } from '@models/gestion-plaza.interface';
 import { mapearArregloTipoDropdown } from '@utils/funciones';
-import { DUMMIE_TABLA_GESTION_PLAZAS } from '../../dummies';
 import { Mensajes } from '@utils/mensajes';
 import { GestionPlazaEstadoService } from '@services/gestion-plaza-estado.service';
 import { TablaPlazasComponent } from '../tabla-plazas/tabla-plazas.component';
@@ -20,6 +19,8 @@ import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { CambioEstatusComponent } from '../cambio-estatus/cambio-estatus.component';
 import { ActivatedRoute } from '@angular/router';
 import { NAV } from '@utils/url-global';
+import { GestionPlazaService } from '@services/gestion-plaza.service';
+import { ConvocatoriaActiva } from '@models/convocatoria.interface';
 
 interface PlazaAccion  {
   plaza: GestionPlazaInterface,
@@ -50,7 +51,8 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
   fb: FormBuilder = inject(FormBuilder);
   mensajes = inject(Mensajes);
   alertaService: AlertService = inject(AlertService);
-  gestionPlazaService = inject(GestionPlazaEstadoService);
+  gestionEstadoPlazaService = inject(GestionPlazaEstadoService);
+  gestionPLazaService: GestionPlazaService = inject(GestionPlazaService);
   dialogService = inject(DialogService);
   private route = inject(ActivatedRoute);
 
@@ -58,13 +60,14 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
 
   lstOoad: TipoDropdown[] = [];
 
-  readonly plazasDummies: GestionPlazaInterface[] = DUMMIE_TABLA_GESTION_PLAZAS;
 
   plazas: WritableSignal<GestionPlazaInterface[]> = signal<GestionPlazaInterface[]>([]);
+  convocatoriaActiva!: ConvocatoriaActiva;
 
   first: number = 0;
   rows: number = 10;
-  totalRecords: number = 100;
+  numPaginaActual: number = 0;
+  totalRecords: number = 0;
 
 
   ngOnInit(): void {
@@ -72,22 +75,22 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
     this.obtenerTipoBusquedaDesdeRuta();
     this.inicializarFormulario();
     this.cargarCatalogos();
-    this.plazas.set([...this.plazasDummies]);
   }
 
   private obtenerTipoBusquedaDesdeRuta(): void {
      const path = this.route.snapshot.routeConfig?.path;
     if (path === NAV.gestionPlazas) {
-      this.gestionPlazaService.setTipoBusqueda(TipoBusquedaPlaza.BusquedaLayout);
+      this.gestionEstadoPlazaService.setTipoBusqueda(TipoBusquedaPlaza.BusquedaLayout);
     } else {
-      this.gestionPlazaService.setTipoBusqueda(TipoBusquedaPlaza.BusquedaManual);
+      this.gestionEstadoPlazaService.setTipoBusqueda(TipoBusquedaPlaza.BusquedaManual);
+      this.plazas.set([])
     }
   }
 
   inicializarFormulario(): void {
     this.formBusqueda = this.fb.group({
-      ooad: [null, [Validators.required]],
-      noPlaza: ['']
+      cveOoad: [null, [Validators.required]],
+      numPlaza: ['']
     });
   }
 
@@ -95,11 +98,22 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
     this._CatalogoGenService.getLstOOADS().subscribe({
       next: (response) => {
         if (response?.respuesta && response.respuesta.length > 0) {
-          this.lstOoad = mapearArregloTipoDropdown(response.respuesta, 'desOoad', 'desOoad');
+          this.lstOoad = mapearArregloTipoDropdown(response.respuesta, 'desOoad', 'cveOoad');
         }
       },
       error: (err) => {
         console.error('Error al consultar catálogo de OOAD:', err);
+      }
+    });
+
+    this._CatalogoGenService.getConvocatoriaActiva().subscribe({
+      next: (response) => {
+        if (response?.respuesta) {
+          this.convocatoriaActiva = response.respuesta;
+        }
+      },
+      error: (err) => {
+        console.error('Error al consultar convocatoria activa:', err);
       }
     });
   }
@@ -109,14 +123,38 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
       this.formBusqueda.markAllAsTouched();
       return;
     }
+    const { cveOoad, numPlaza } = this.formBusqueda.value;
 
-    const { ooad, noPlaza } = this.formBusqueda.value;
 
-    // Consumir servicio para consulta de plazas
-    this.plazas.set(this.plazasDummies);
-    this.first = 0;
+    const objBusqueda = {
+      idConvocatoria: this.convocatoriaActiva.idConvocatoria,
+      cveOoad,
+      numPlaza,
+      page: this.numPaginaActual,
+      size: this.rows
+    }
 
-    this.alertaService.error(this.mensajes.MSG024);
+
+
+
+    this.gestionPLazaService.consultarPlazaLayout(objBusqueda).subscribe({
+      next: resp => {
+        if(resp.respuesta.content.length != 0){
+          this.plazas.set(resp.respuesta.content);
+          this.totalRecords = resp.respuesta.page.totalElements;
+        }else{
+          this.plazas.set([]);
+          this.totalRecords = 0;
+          this.alertaService.error(this.mensajes.MSG024);
+        }
+      },
+      error: err => {
+        this.plazas.set([]);
+        this.totalRecords = 0;
+        this.alertaService.error(this.mensajes.MSG024);
+      }
+    })
+
 
     // Si no se encuentran plazas mostrar MSG024
     // this.mensajes.MSG024;
@@ -124,7 +162,7 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
 
   onLimpiar(): void {
     this.formBusqueda.reset();
-    this.plazas.set([...this.plazasDummies]);
+    this.plazas.set([]);
     this.first = 0;
   }
 
