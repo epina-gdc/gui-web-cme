@@ -80,6 +80,55 @@ export interface NuevaPlazaCatalogos {
   tiposUnidad: HttpRespuesta<TipoUnidadPlaza[]>;
 }
 
+export interface RegistrarPlazaRequest {
+  numPlaza?: number;
+  cveOoad: string | number;
+  descOoad?: string;
+  cveZona?: string | number;
+  descZona?: string;
+  clasificacion?: string;
+  cveUnidad?: string;
+  descUnidad?: string;
+  cveDepartamento?: string;
+  descDepartamento?: string;
+  cvePuesto?: string;
+  descPuesto?: string;
+  cveCategoria?: string;
+  descCategoria?: string;
+  cveAreaResponsabilidad?: string;
+  descAreaResponsabilidad?: string;
+  cveTurno?: number;
+  descTurno?: string;
+  cveHorario?: string;
+  descHorario?: string;
+  cveTipoPlaza?: string;
+  descTipoPlaza?: string;
+  cveMarcaOcupacion?: number;
+  descMarcaOcupacion?: string;
+  idEstatusPlaza: number;
+  origenPlaza?: string;
+  desObservaciones?: string;
+}
+
+export interface RegistrarPlazaRespuesta {
+  idPlaza: number;
+  cveOoad: string;
+  cvePuesto?: string;
+  cveUnidad?: string;
+  especialidad?: string;
+  categoria?: string;
+  regimen?: string;
+  turno?: string;
+  tipoPlaza?: string;
+  marcaOcupacion?: string;
+  numPlaza?: string;
+  idEstatusPlaza: number;
+  estatusPlaza?: string;
+  idConvocatoria?: number;
+  origenPlaza?: string;
+  observaciones?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -87,6 +136,7 @@ export class NuevaPlazaService {
   private readonly VERSION_API = '/v1/';
   private readonly serverEndPointURLCatalogosPlazas = `${environment.api.apiCatalogosPlaza}${this.VERSION_API}catalogos/plazas`;
   private readonly serverEndPointURLCatalogos = `${environment.api.apiCatalogosPlaza}${this.VERSION_API}catalogos`;
+  private readonly serverEndPointURLAdministracionPlazas = `${environment.api.apiAdmonPlazas}${this.VERSION_API}administracionPlazas`;
   private readonly http: HttpClient = inject(HttpClient);
 
   header: HttpHeaders = new HttpHeaders({
@@ -143,6 +193,34 @@ export class NuevaPlazaService {
   getTiposUnidad(): Observable<HttpRespuesta<TipoUnidadPlaza[]>> {
     return this.getCatalogoPlazas<TipoUnidadPlaza>('tipos-unidad');
   }
+
+  /*
+    registrarPlaza(request: RegistrarPlazaRequest): Observable<HttpRespuesta<RegistrarPlazaRespuesta>> {
+      return this.http.post<HttpRespuesta<RegistrarPlazaRespuesta>>(
+        `${this.serverEndPointURLAdministracionPlazas}/registrarPlaza`,
+        request,
+        { headers: this.header }
+      ).pipe(
+        catchError(this.handleError),
+        map((response: HttpRespuesta<RegistrarPlazaRespuesta>) => response)
+      );
+    }
+  */
+
+  registrarPlaza(request: RegistrarPlazaRequest): Observable<HttpRespuesta<RegistrarPlazaRespuesta>> {
+    return this.postNuevaPlaza<RegistrarPlazaRespuesta>('registrarPlaza', request);
+  }
+
+  private postNuevaPlaza<T>(recurso: string, request: RegistrarPlazaRequest): Observable<HttpRespuesta<T>> {
+    return this.http.post<HttpRespuesta<T>>(`${this.serverEndPointURLAdministracionPlazas}/${recurso}`,
+      request,
+      { headers: this.header }
+    ).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<T>) => response)
+    );
+  }
+
 
   private getCatalogo<T>(recurso: string): Observable<HttpRespuesta<T[]>> {
     return this.http.get<HttpRespuesta<T[]>>(`${this.serverEndPointURLCatalogos}/${recurso}`, { headers: this.header }).pipe(
