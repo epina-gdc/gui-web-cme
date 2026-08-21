@@ -214,6 +214,23 @@
     padding: 0 !important;
   }
 
+  .modal-cambio-estatus {
+    .p-dialog-header {
+      display: flex !important;
+      justify-content: flex-end !important;
+      align-items: center !important;
+      padding: 0.5rem 1rem 0 !important;
+
+      .p-dialog-header-actions,
+      .p-dialog-header-icons {
+        margin-left: auto;
+      }
+    }
+
+    .p-dialog-content {
+      padding-top: 0.5rem !important;
+    }
+  }
 
   .icon-white .p-button-icon {
     color: #fff;
@@ -670,7 +687,7 @@
 
     // PROPIEDADES CLAVE PARA CENTRAR EL MENSAJE:
     text-align: left !important;
-    display: block; 
+    display: block;
     width: 100%;
     padding: 1.5rem 2.5rem 2.5rem 2.5rem;
     white-space: pre-line; // Respeta los saltos de línea (\n)
@@ -704,7 +721,7 @@
     justify-content: right;
     gap: 1rem;
     margin-top: 2rem;
-    
+
   }
 
   // 4. Footer (Botones)
