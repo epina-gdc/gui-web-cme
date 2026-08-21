@@ -3,7 +3,8 @@
 </div>
 
 @if (gestionEstadoPlazaService.tipoBusqueda() === TipoBusquedaPlaza.BusquedaManual) {
-<div class="carga-calificaciones-background mb-4 border-round-xl overflow-hidden shadow-2 flex align-items-center justify-content-center">
+<div
+  class="carga-calificaciones-background mb-4 border-round-xl overflow-hidden shadow-2 flex align-items-center justify-content-center">
   <h1 class="titulo-asignaciones">Nueva plaza</h1>
 </div>
 } @else {
@@ -20,7 +21,7 @@
         <div class="lg:col-4 col-12">
           <label class="field-label" for="numPlaza">No. de plaza</label>
           <input pInputText id="numPlaza" type="text" max class="w-full" placeholder="Selecciona No. de plaza"
-            formControlName="numPlaza" appOnlyNumbers maxlength="6"/>
+            formControlName="numPlaza" appOnlyNumbers maxlength="6" />
         </div>
 
         <div class="flex col-12 lg:col-4 justify-content-end align-items-center gap-4 mt-3 lg:mt-0">
@@ -35,6 +36,8 @@
 
 <app-tabla-plazas [plazas]="plazas()" [totalRecords]="totalRecords" [first]="first" [rows]="rows"
   [titulo]="'Plazas nuevas'" [tipoBusqueda]="gestionEstadoPlazaService.tipoBusqueda()"
-  (pageChange)="onPageChange($event)" (accionSeleccionada)="accionPlazaSeleccionada($event)" >
-
+  (pageChange)="onPageChange($event)" (accionSeleccionada)="accionPlazaSeleccionada($event)">
 </app-tabla-plazas>
+
+<p-confirmDialog [style]="{width: '450px'}" [closable]="true" styleClass="custom-confirm-dialog">
+</p-confirmDialog>
