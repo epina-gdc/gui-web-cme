@@ -79,14 +79,10 @@ export class NuevaPlazaComponent extends GeneralComponent implements OnInit, OnD
   adscripciones: CatalogoOption[] = [];
   tiposPlaza: CatalogoOption[] = [];
   puestos: CatalogoOption[] = [];
-
+  estatus: CatalogoOption[] = [];
   zonas: CatalogoOption[] = [];
-  guardando = false;
 
-  readonly estatus: CatalogoOption[] = [
-    { label: 'VACANTE', value: '1' },
-    { label: 'ETIQUETADA', value: '2' }
-  ];
+  guardando = false;
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router) {
     super();
@@ -190,6 +186,7 @@ export class NuevaPlazaComponent extends GeneralComponent implements OnInit, OnD
     this.adscripciones = this.mapearCatalogo(catalogos.adscripciones.respuesta, 'descAdscripcion', 'cveAdscripcion');
     this.tiposPlaza = this.mapearCatalogo(catalogos.tiposPlaza.respuesta, 'descTipoPlaza', 'cveTipoPlaza');
     this.puestos = this.mapearCatalogo(catalogos.puestos.respuesta, 'descPuesto', 'cvePuesto');
+    this.estatus = this.mapearCatalogo(catalogos.statusPlaza.respuesta.filter((item) => item.descEstatusPlaza.toUpperCase() != "Ocupada".toUpperCase()), 'descEstatusPlaza', 'idEstatusPlaza');
   }
 
   private crearSolicitudRegistrarPlaza(): RegistrarPlazaRequest {
