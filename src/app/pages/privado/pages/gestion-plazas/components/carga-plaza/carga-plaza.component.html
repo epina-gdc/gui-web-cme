@@ -78,10 +78,10 @@
 
       <div class="mt-4">
         <input #fileInput class="hidden-file" type="file"
-          accept=".xlsx,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          accept=".xlsx,.xls,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
           (change)="onSeleccionarArchivo($event)" />
 
-        <div class="upload-zone" tabindex="0" role="button" aria-label="Adjunta un archivo en formato XLSX"
+        <div class="upload-zone" tabindex="0" role="button" aria-label="Adjunta un archivo en formato XLSX o XLS"
           [class.upload-zone--dragging]="arrastrando()" [class.upload-zone--disabled]="!puedeAdjuntarArchivo()"
           (click)="abrirSelectorArchivo()" (keydown.enter)="abrirSelectorArchivo()"
           (keydown.space)="abrirSelectorArchivo(); $event.preventDefault()" (dragover)="onDragOver($event)"
@@ -100,7 +100,7 @@
           } @else {
           <div class="upload-zone__content">
             <i class="cme-upload" style="font-size: 1.3rem"></i>
-            <p>Adjunta un archivo en formato XLSX</p>
+            <p>Adjunta un archivo en formato XLSX o XLS</p>
           </div>
           }
         </div>
