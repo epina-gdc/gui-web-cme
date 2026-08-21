@@ -71,7 +71,6 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
 
 
   ngOnInit(): void {
-
     this.obtenerTipoBusquedaDesdeRuta();
     this.inicializarFormulario();
     this.cargarCatalogos();
@@ -125,7 +124,6 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
     }
     const { cveOoad, numPlaza } = this.formBusqueda.value;
 
-
     const objBusqueda = {
       idConvocatoria: this.convocatoriaActiva.idConvocatoria,
       cveOoad,
@@ -133,9 +131,6 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
       page: this.numPaginaActual,
       size: this.rows
     }
-
-
-
 
     this.gestionPLazaService.consultarPlazaLayout(objBusqueda).subscribe({
       next: resp => {
@@ -154,62 +149,47 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
         this.alertaService.error(this.mensajes.MSG024);
       }
     })
-
-
-    // Si no se encuentran plazas mostrar MSG024
-    // this.mensajes.MSG024;
   }
 
   onLimpiar(): void {
     this.formBusqueda.reset();
-    this.plazas.set([]);
+    //this.plazas.set([]);
     this.first = 0;
   }
 
-  onPageChange(event: PaginatorState): void {
+  onPageChange(event: any): void {
     this.first = event.first ?? 0;
     this.rows = event.rows ?? 10;
+    this.numPaginaActual = event.page;
+    this.onBuscar();
   }
 
-  verDetalle(plaza: GestionPlazaInterface): void {
+  verDetalle(plaza: GestionPlazaInterface, edicion: boolean): void {
     this.ref = this.dialogService.open(CambioEstatusComponent, {
       style:{
         'border-top': '11px solid #0F9B9B',
         'border-radius': '9px'
       },
-      data: {plaza, edicion: false},
+      data: {plaza, edicion},
       modal: true,
       width: '600px',
-      height: '33vh',
+      height: '37vh',
       focusOnShow: false,
       breakpoints: {
         '960px': '75vw',
         '640px': '90vw'
       },
-      styleClass: 'oferta-detail'
+      styleClass: 'modal-cambio-estatus',
+      closable: true
+    });
+
+    this.ref.onClose.subscribe((resultado) => {
+      if (resultado) {
+        this.onBuscar();
+      }
     });
   }
 
-
-
-  editarEstatus(plaza: GestionPlazaInterface): void {
-    this.ref = this.dialogService.open(CambioEstatusComponent, {
-      style:{
-        'border-top': '11px solid #0F9B9B',
-        'border-radius': '9px'
-      },
-      data: {plaza, edicion: true},
-      modal: true,
-      width: '600px',
-      height: '33vh',
-      focusOnShow: false,
-      breakpoints: {
-        '960px': '75vw',
-        '640px': '90vw'
-      },
-      styleClass: 'oferta-detail'
-    });
-  }
 
   editar(plaza: GestionPlazaInterface): void {
     console.log('Editar plaza:', plaza);
@@ -219,19 +199,14 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
     console.log('Eliminar plaza:', plaza);
   }
 
-  abrirModalNuevaPlaza(): void {
-    console.log('Abrir modal nueva plaza');
-  }
-
-
   accionPlazaSeleccionada(plaza: PlazaAccion){
 
     switch (plaza.accion) {
       case AccionPlaza.VerDetalle:
-        this.verDetalle(plaza.plaza );
+        this.verDetalle(plaza.plaza, false);
         break;
       case AccionPlaza.EditarEstatus:
-        this.editarEstatus(plaza.plaza );
+        this.verDetalle(plaza.plaza, true );
         break;
       case AccionPlaza.EditarPlaza:
         this.editar(plaza.plaza );

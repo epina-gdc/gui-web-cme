@@ -21,6 +21,7 @@ export class Mensajes {
   public MSG023: string = 'Por favor, ingresa la información en los campos faltantes.';
   public MSG024: string = 'No se encontraron resultados con la información proporcionada.';
   public MSG025: string = 'Por favor, ingresa la información en los campos faltantes.';
+  public MSG025a: string = 'Cambio de estatus realizado exitosamente.';
   public MSG026: string = 'Datos guardados correctamente.';
   public MSG030: string = 'Se cargaron con \u00e9xito las plazas.';
   public MSG031: string = 'No se cargaron las plazas.';

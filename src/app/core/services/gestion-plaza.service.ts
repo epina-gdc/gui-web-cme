@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { Injectable, Signal, signal, WritableSignal } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from '@env/environment.development';
-import { PaginadoFiltros, TipoBusquedaPlaza } from '@models/gestion-plaza.interface';
+import { PaginadoFiltros } from '@models/gestion-plaza.interface';
 import { HttpRespuesta } from '@models/http-respuesta.interface';
 import { catchError, Observable, throwError } from 'rxjs';
 
@@ -13,6 +13,12 @@ export interface FiltrosPlazaLayout {
   size?: number;
 }
 
+export interface CambioEstatusPlazaRequest {
+  idPlaza: number;
+  idEstatus: number;
+  desObservaciones?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,9 +26,7 @@ export class GestionPlazaService {
   private readonly version: string = 'v1/';
   private readonly urlBase = environment.api.apiAdmonPlazas + this.version;
 
-  constructor(private _http: HttpClient){
-
-  }
+  constructor(private _http: HttpClient) {}
 
   consultarPlazaLayout(filtros: FiltrosPlazaLayout = {}): Observable<HttpRespuesta<PaginadoFiltros>> {
     let params = new HttpParams();
@@ -45,13 +49,21 @@ export class GestionPlazaService {
       `${this.urlBase}administracionPlazas/busquedaPlazasFiltro`,
       { params }
     ).pipe(
-            catchError(this.handleError)
+      catchError(this.handleError)
+    );
+  }
+
+  cambiarEstatusPlaza(datos: CambioEstatusPlazaRequest): Observable<HttpRespuesta<any>> {
+    return this._http.put<HttpRespuesta<any>>(
+      `${this.urlBase}administracionPlazas/actualizarEstatusPlaza`,
+      datos
+    ).pipe(
+      catchError(this.handleError)
     );
   }
 
   private handleError(error: HttpErrorResponse) {
-      console.error(`Error ${error.status}:`, error);
-      return throwError(() => error);
+    console.error(`Error ${error.status}:`, error);
+    return throwError(() => error);
   }
-
 }
