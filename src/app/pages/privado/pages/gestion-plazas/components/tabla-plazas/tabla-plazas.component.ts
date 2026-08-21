@@ -68,13 +68,13 @@ export class TablaPlazasComponent {
 
     getPillType(estatus: string): number {
         switch (estatus?.toLowerCase()) {
-            case 'Vacante':
-                return 1;
-            case 'Etiquetada':
-                return 3;
-            case 'Ocupado':
-            case 'Ocupada':
-                return 2;
+            case 'vacante':
+                return 4;
+            case 'etiquetada':
+                return 6;
+            case 'ocupado':
+            case 'ocupada':
+                return 5;
             default:
                 return 1;
         }
