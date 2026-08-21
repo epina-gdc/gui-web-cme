@@ -77,12 +77,12 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
   }
 
   private obtenerTipoBusquedaDesdeRuta(): void {
-     const path = this.route.snapshot.routeConfig?.path;
+    const path = this.route.snapshot.routeConfig?.path;
+    this.plazas.set([])
     if (path === NAV.gestionPlazas) {
       this.gestionEstadoPlazaService.setTipoBusqueda(TipoBusquedaPlaza.BusquedaLayout);
     } else {
       this.gestionEstadoPlazaService.setTipoBusqueda(TipoBusquedaPlaza.BusquedaManual);
-      this.plazas.set([])
     }
   }
 
@@ -109,6 +109,9 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
       next: (response) => {
         if (response?.respuesta) {
           this.convocatoriaActiva = response.respuesta;
+          if(this.gestionEstadoPlazaService.tipoBusqueda() === TipoBusquedaPlaza.BusquedaManual){
+            this.onBuscar();
+          }
         }
       },
       error: (err) => {
@@ -118,7 +121,10 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
   }
 
   onBuscar(): void {
-    if (this.formBusqueda.invalid) {
+    const esBusquedaLayout = this.gestionEstadoPlazaService.tipoBusqueda() === TipoBusquedaPlaza.BusquedaLayout;
+
+
+    if (esBusquedaLayout && this.formBusqueda.invalid) {
       this.formBusqueda.markAllAsTouched();
       return;
     }
@@ -126,8 +132,8 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
 
     const objBusqueda = {
       idConvocatoria: this.convocatoriaActiva.idConvocatoria,
-      cveOoad,
-      numPlaza,
+      cveOoad: esBusquedaLayout ? cveOoad : null,
+      numPlaza: esBusquedaLayout ? numPlaza : null,
       page: this.numPaginaActual,
       size: this.rows
     }
@@ -192,6 +198,7 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
 
 
   editar(plaza: GestionPlazaInterface): void {
+    debugger
     console.log('Editar plaza:', plaza);
   }
 

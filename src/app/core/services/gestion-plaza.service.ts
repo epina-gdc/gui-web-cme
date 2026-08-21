@@ -5,12 +5,16 @@ import { PaginadoFiltros } from '@models/gestion-plaza.interface';
 import { HttpRespuesta } from '@models/http-respuesta.interface';
 import { catchError, Observable, throwError } from 'rxjs';
 
+
+
+
+
 export interface FiltrosPlazaLayout {
   idConvocatoria?: number;
-  cveOoad?: number;
-  numPlaza?: string;
   page?: number;
   size?: number;
+  cveOoad?: number;
+  numPlaza?: string;
 }
 
 export interface CambioEstatusPlazaRequest {
