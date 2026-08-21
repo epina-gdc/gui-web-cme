@@ -19,5 +19,6 @@ export const nuevaPlazaResolver: ResolveFn<any> = (route, state) => {
     tiposPlaza: nuevaPlazaService.getTiposPlaza(),
     marcasOcupacion: nuevaPlazaService.getMarcasOcupacion(),
     tiposUnidad: nuevaPlazaService.getTiposUnidad(),
+    statusPlaza: nuevaPlazaService.getStatusPlaza(),
   });
 };

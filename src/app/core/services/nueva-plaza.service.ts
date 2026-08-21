@@ -65,6 +65,11 @@ export interface TipoUnidadPlaza {
   descTipoUnidad: string;
 }
 
+export interface StatusPlaza {
+  idEstatusPlaza: number;
+  descEstatusPlaza: string;
+}
+
 export interface NuevaPlazaCatalogos {
   ooads: HttpRespuesta<OoadPlaza[]>;
   especialidades: EspecialidadPlaza[];
@@ -78,6 +83,7 @@ export interface NuevaPlazaCatalogos {
   tiposPlaza: HttpRespuesta<TipoPlaza[]>;
   marcasOcupacion: HttpRespuesta<MarcaOcupacionNuevaPlaza[]>;
   tiposUnidad: HttpRespuesta<TipoUnidadPlaza[]>;
+  statusPlaza: HttpRespuesta<StatusPlaza[]>;
 }
 
 export interface RegistrarPlazaRequest {
@@ -192,6 +198,10 @@ export class NuevaPlazaService {
 
   getTiposUnidad(): Observable<HttpRespuesta<TipoUnidadPlaza[]>> {
     return this.getCatalogoPlazas<TipoUnidadPlaza>('tipos-unidad');
+  }
+
+  getStatusPlaza(): Observable<HttpRespuesta<StatusPlaza[]>> {
+    return this.getCatalogoPlazas<StatusPlaza>('estatus-plaza');
   }
 
   /*

@@ -172,8 +172,8 @@ export class CargaPlazaComponent extends GeneralComponent implements OnInit, OnD
 
     if (!this.validarPuedeAdjuntar()) return;
 
-    if (!this.esArchivoXlsx(archivo)) {
-      this._alertServices.error('Solo se permiten archivos en formato .xlsx.');
+    if (!this.esArchivoExcel(archivo)) {
+      this._alertServices.error('Solo se permiten archivos en formato .xlsx o .xls.');
       return;
     }
 
@@ -230,18 +230,15 @@ export class CargaPlazaComponent extends GeneralComponent implements OnInit, OnD
       )
       .subscribe({
         next: (respuesta) => {
-          const errores = respuesta?.respuesta?.errores ?? [];
-          this.erroresCarga.set(errores);
-
           if (!respuesta?.exito) {
             this.cargaEnProceso.set(false);
             this._alertServices.error(respuesta?.mensaje || this._Mensajes.MSG031);
             return;
           }
 
-          this.procesarRespuesta(respuesta.respuesta);
           this.archivoSeleccionado.set(null);
           this._alertServices.exito(respuesta.mensaje || this._Mensajes.MSG030);
+          this.consultarUltimaCarga(idConvocatoria);
         },
         error: (error) => {
           this.cargaEnProceso.set(false);
@@ -275,12 +272,10 @@ export class CargaPlazaComponent extends GeneralComponent implements OnInit, OnD
     };
   }
 
-  private esArchivoXlsx(archivo: File): boolean {
+  private esArchivoExcel(archivo: File): boolean {
     const extension = archivo.name.split('.').pop()?.toLowerCase();
-    const tipoValido = archivo.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      || archivo.type === '';
 
-    return extension === 'xlsx' && tipoValido;
+    return extension === 'xlsx' || extension === 'xls';
   }
 
   private obtenerMensajeError(error: unknown): string {
