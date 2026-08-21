@@ -23,7 +23,7 @@ export interface CambioEstatusPlazaRequest {
   providedIn: 'root'
 })
 export class GestionPlazaService {
-  private readonly version: string = 'v1/';
+  private readonly version: string = '/v1/';
   private readonly urlBase = environment.api.apiAdmonPlazas + this.version;
 
   constructor(private _http: HttpClient) { }

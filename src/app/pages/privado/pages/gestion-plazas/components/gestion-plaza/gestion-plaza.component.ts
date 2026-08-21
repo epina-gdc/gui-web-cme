@@ -63,6 +63,7 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
   ref: DynamicDialogRef | undefined;
 
   lstOoad: TipoDropdown[] = [];
+  lstEstatusPlaza: TipoDropdown[] = [];
 
 
   plazas: WritableSignal<GestionPlazaInterface[]> = signal<GestionPlazaInterface[]>([]);
@@ -122,6 +123,23 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
         console.error('Error al consultar convocatoria activa:', err);
       }
     });
+
+    this._CatalogoGenService.getLstEstatusPlaza().subscribe({
+      next: (response) => {
+        if (response?.respuesta) {
+          if (response?.respuesta && response.respuesta.length > 0) {
+          this.lstEstatusPlaza = mapearArregloTipoDropdown(response.respuesta, 'descEstatusPlaza', 'idEstatusPlaza');
+        }
+        }
+      },
+      error: (err) => {
+        console.error('Error al consultar convocatoria activa:', err);
+      }
+    });
+
+
+
+
   }
 
   onBuscar(): void {
@@ -180,7 +198,7 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
         'border-top': '11px solid #0F9B9B',
         'border-radius': '9px'
       },
-      data: { plaza, edicion },
+      data: { plaza, edicion, lstEstatusPlaza: this.lstEstatusPlaza },
       modal: true,
       width: '600px',
       height: '37vh',
