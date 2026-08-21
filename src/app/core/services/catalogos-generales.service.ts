@@ -20,6 +20,7 @@ import { AlertService } from '@services/alert.service';
 import { Convocatoria, ConvocatoriaActiva } from '@models/convocatoria.interface';
 import { Especialidades } from '@models/especialidad';
 import {TipoDocumentoEspecialidad} from '@models/tipo-documento-especialidad.interface';
+import { EstatusPlaza } from '@models/estatusPlaza';
 
 @Injectable({
   providedIn: 'root'
@@ -338,6 +339,16 @@ export class CatalogosGeneralesService {
       })
     );
   }
+
+  getLstEstatusPlaza(): Observable<HttpRespuesta<EstatusPlaza[]>>{
+    return this.http.get<HttpRespuesta<EstatusPlaza[]>>(this.serverEndPointURLCatalogos + '/plazas/estatus-plaza', { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<EstatusPlaza[]>) => {
+        return response;
+      })
+    );
+  }
+
   private handleError(error: HttpErrorResponse) {
 
     if (error.status) {

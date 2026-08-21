@@ -18,7 +18,10 @@ export class PillComponent {
     [1, 'pendiente'],
     [2, 'revision'],
     [3, 'cumple'],
-    [0, 'noCumple']
+    [0, 'noCumple'],
+    [4, 'vacante'],
+    [5, 'ocupada'],
+    [6, 'etiquetada']
   ]);
 
   settearClase(): string {
