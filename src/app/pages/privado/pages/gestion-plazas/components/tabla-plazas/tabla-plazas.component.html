@@ -48,24 +48,24 @@
 
   <ng-template #body let-plaza>
     <tr>
-      <td>{{ plaza.ooad }}</td>
-      <td>{{ plaza.noPlaza }}</td>
-      <td>{{ plaza.tipoUnidad }}</td>
-      <td>{{ plaza.categoria }}</td>
+      <td>{{ plaza.descOoad }}</td>
+      <td>{{ plaza.numPlaza }}</td>
+      <td>{{ plaza.clasificacion }}</td>
+      <td>{{ plaza.descCategoria }}</td>
       <td>{{ plaza.especialidad }}</td>
-      <td>{{ plaza.horario }}</td>
-      <td>{{ plaza.turno }}</td>
-      <td>{{ plaza.zona }}</td>
-      <td>{{ plaza.marcaOcupacion }}</td>
-      <td>{{ plaza.clasificacionUnidad }}</td>
-      <td>{{ plaza.unidad }}</td>
-      <td>{{ plaza.adscripcion }}</td>
-      <td>{{ plaza.tipoPlaza }}</td>
+      <td>{{ plaza.descHorario }}</td>
+      <td>{{ plaza.descTurno }}</td>
+      <td>{{ plaza.descZona }}</td>
+      <td>{{ plaza.descMarcaOcupacion }}</td>
+      <td>{{ plaza.clasificacion }}</td>
+      <td>{{ plaza.umf }}</td>
+      <td>{{ plaza.direccion }}</td>
+      <td>{{ plaza.descTipoPlaza }}</td>
       <td>
-        <app-pill [texto]="plaza.estatus" [pillType]="getPillType(plaza.estatus)" />
+        <app-pill [texto]="plaza.estatusPlaza" [pillType]="getPillType(plaza.estatusPlaza)" />
       </td>
       @if(tipoBusqueda() === TipoBusquedaPlaza.BusquedaManual){
-        <td>{{ plaza.observaciones }}</td>
+        <td>{{ plaza.desObservaciones }}</td>
       }
       <td alignFrozen="right" pFrozenColumn>
         <div class="flex align-items-center justify-content-center">
@@ -75,6 +75,7 @@
       </td>
     </tr>
   </ng-template>
+
 
   <ng-template #emptymessage>
     <tr>

@@ -2,7 +2,7 @@
   <h3 class="titulo-seccion">Gestión de Plazas</h3>
 </div>
 
-@if (gestionPlazaService.tipoBusqueda() === TipoBusquedaPlaza.BusquedaManual) {
+@if (gestionEstadoPlazaService.tipoBusqueda() === TipoBusquedaPlaza.BusquedaManual) {
 <div class="carga-calificaciones-background mb-4 border-round-xl overflow-hidden shadow-2 flex align-items-center justify-content-center">
   <h1 class="titulo-asignaciones">Nueva plaza</h1>
 </div>
@@ -12,20 +12,20 @@
     <form [formGroup]="formBusqueda" (ngSubmit)="onBuscar()">
       <article class="flex flex-row flex-wrap align-items-end">
         <div class="lg:col-4 col-12">
-          <label class="field-label" for="ooad">OOAD</label>
-          <p-select id="ooad" formControlName="ooad" [options]="lstOoad" optionLabel="label" optionValue="value"
+          <label class="field-label" for="cveOoad">OOAD</label>
+          <p-select id="cveOoad" formControlName="cveOoad" [options]="lstOoad" optionLabel="label" optionValue="value"
             placeholder="Selecciona OOAD" class="w-full" />
         </div>
 
         <div class="lg:col-4 col-12">
-          <label class="field-label" for="noPlaza">No. de plaza</label>
-          <input pInputText id="noPlaza" type="text" max class="w-full" placeholder="Selecciona No. de plaza"
-            formControlName="noPlaza" appOnlyNumbers maxlength="6"/>
+          <label class="field-label" for="numPlaza">No. de plaza</label>
+          <input pInputText id="numPlaza" type="text" max class="w-full" placeholder="Selecciona No. de plaza"
+            formControlName="numPlaza" appOnlyNumbers maxlength="6"/>
         </div>
 
         <div class="flex col-12 lg:col-4 justify-content-end align-items-center gap-4 mt-3 lg:mt-0">
           <p-button type="button" (onClick)="onLimpiar()" variant="outlined" label="Limpiar" />
-          <p-button type="submit" label="Buscar" [disabled]="formBusqueda.get('ooad')?.invalid" />
+          <p-button type="submit" label="Buscar" [disabled]="formBusqueda.invalid" />
         </div>
       </article>
     </form>
@@ -34,7 +34,7 @@
 }
 
 <app-tabla-plazas [plazas]="plazas()" [totalRecords]="totalRecords" [first]="first" [rows]="rows"
-  [titulo]="'Plazas nuevas'" [tipoBusqueda]="gestionPlazaService.tipoBusqueda()"
+  [titulo]="'Plazas nuevas'" [tipoBusqueda]="gestionEstadoPlazaService.tipoBusqueda()"
   (pageChange)="onPageChange($event)" (accionSeleccionada)="accionPlazaSeleccionada($event)" >
 
 </app-tabla-plazas>

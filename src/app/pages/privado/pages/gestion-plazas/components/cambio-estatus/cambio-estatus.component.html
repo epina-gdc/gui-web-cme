@@ -24,7 +24,9 @@
 
           <div class="flex col-12 justify-content-end gap-4 mt-3 lg:mt-0">
             <p-button type="button" (onClick)="cancelar()" variant="outlined" label="Cancelar" />
-            <p-button type="button" label="Aceptar" [disabled]="form.invalid" />
+            @if (this.esEdicion && this.plaza?.idEstatusPlaza != 2) {
+              <p-button type="button" label="Aceptar" (onClick)="cambiarEstatus()" [disabled]="form.invalid" />
+            }
           </div>
         </div>
   </form>
