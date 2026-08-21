@@ -134,8 +134,8 @@ export interface RegistrarPlazaRespuesta {
 })
 export class NuevaPlazaService {
   private readonly VERSION_API = '/v1/';
-  private readonly serverEndPointURLCatalogosPlazas = `${environment.api.apiCatalogosPlaza}${this.VERSION_API}catalogos/plazas`;
-  private readonly serverEndPointURLCatalogos = `${environment.api.apiCatalogosPlaza}${this.VERSION_API}catalogos`;
+  private readonly serverEndPointURLCatalogosPlazas = `${environment.api.apiCatalogos}${this.VERSION_API}catalogos/plazas`;
+  private readonly serverEndPointURLCatalogos = `${environment.api.apiCatalogos}${this.VERSION_API}catalogos`;
   private readonly serverEndPointURLAdministracionPlazas = `${environment.api.apiAdmonPlazas}${this.VERSION_API}administracionPlazas`;
   private readonly http: HttpClient = inject(HttpClient);
 
