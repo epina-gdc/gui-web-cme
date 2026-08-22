@@ -26,8 +26,10 @@ export interface UnidadNuevaPlaza {
 }
 
 export interface AdscripcionPlaza {
-  cveAdscripcion: string;
-  descAdscripcion: string;
+  cveAdscripcion?: string;
+  cveUnidad?: string;
+  descAdscripcion?: string;
+  desAdscripcion?: string;
 }
 
 export interface PuestoPlaza {
@@ -111,14 +113,53 @@ export interface RegistrarPlazaRequest {
   descTipoPlaza?: string;
   cveMarcaOcupacion?: number;
   descMarcaOcupacion?: string;
+  descRegimen?: string | number;
+  refDireccionUnidad?: string;
+  indHospitalNuevo?: number;
+  refSueldoMensualBruto?: number;
+  refSueldoMensualNeto?: number;
+  indAccesoCredito?: number;
+  refCredHipotecarioImporte?: number;
+  refCredAutomotrizImporte?: number;
+  refCredHipotecarioQuincenal?: number;
+  refCredAutomotrizQuincenal?: number;
+  refBonoDificilCobertura?: number;
+  refAltoCostoVida?: number;
   idEstatusPlaza: number;
   origenPlaza?: string;
   desObservaciones?: string;
 }
 
+export interface ActualizarPlazaRequest extends RegistrarPlazaRequest {
+  idPlaza: number;
+  numPlaza: number;
+}
+
+export interface DetallePlazaResponse {
+  idPlaza: number;
+  cveOoad?: string | number;
+  cvePuesto?: string;
+  cveUnidad?: string;
+  cveZona?: string | number;
+  cveCategoria?: string;
+  cveAreaResponsabilidad?: string;
+  cveEspecialidad?: string;
+  cveTurno?: string | number;
+  cveHorario?: string;
+  cveTipoPlaza?: string;
+  cveMarcaOcupacion?: string | number;
+  cveDepartamento?: string;
+  cveAdscripcion?: string;
+  cveClasificacionUnidad?: string;
+  numPlaza?: string | number;
+  idEstatusPlaza?: number;
+  origenPlaza?: string;
+  [key: string]: unknown;
+}
+
 export interface RegistrarPlazaRespuesta {
   idPlaza: number;
-  cveOoad: string;
+  cveOoad?: string;
   cvePuesto?: string;
   cveUnidad?: string;
   especialidad?: string;
@@ -128,7 +169,7 @@ export interface RegistrarPlazaRespuesta {
   tipoPlaza?: string;
   marcaOcupacion?: string;
   numPlaza?: string;
-  idEstatusPlaza: number;
+  idEstatusPlaza?: number;
   estatusPlaza?: string;
   idConvocatoria?: number;
   origenPlaza?: string;
@@ -204,25 +245,27 @@ export class NuevaPlazaService {
     return this.getCatalogoPlazas<StatusPlaza>('estatus-plaza');
   }
 
-  /*
-    registrarPlaza(request: RegistrarPlazaRequest): Observable<HttpRespuesta<RegistrarPlazaRespuesta>> {
-      return this.http.post<HttpRespuesta<RegistrarPlazaRespuesta>>(
-        `${this.serverEndPointURLAdministracionPlazas}/registrarPlaza`,
-        request,
-        { headers: this.header }
-      ).pipe(
-        catchError(this.handleError),
-        map((response: HttpRespuesta<RegistrarPlazaRespuesta>) => response)
-      );
-    }
-  */
+  buscarDetallePlaza(idPlaza: number): Observable<HttpRespuesta<DetallePlazaResponse>> {
+    return this.http.get<HttpRespuesta<DetallePlazaResponse>>(
+      `${this.serverEndPointURLAdministracionPlazas}/buscarDetallePlaza/${idPlaza}`,
+      { headers: this.header }
+    ).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<DetallePlazaResponse>) => response)
+    );
+  }
 
   registrarPlaza(request: RegistrarPlazaRequest): Observable<HttpRespuesta<RegistrarPlazaRespuesta>> {
     return this.postNuevaPlaza<RegistrarPlazaRespuesta>('registrarPlaza', request);
   }
 
+  actualizarPlaza(request: ActualizarPlazaRequest): Observable<HttpRespuesta<RegistrarPlazaRespuesta>> {
+    return this.putNuevaPlaza<RegistrarPlazaRespuesta>('actualizarPlaza', request);
+  }
+
   private postNuevaPlaza<T>(recurso: string, request: RegistrarPlazaRequest): Observable<HttpRespuesta<T>> {
-    return this.http.post<HttpRespuesta<T>>(`${this.serverEndPointURLAdministracionPlazas}/${recurso}`,
+    return this.http.post<HttpRespuesta<T>>(
+      `${this.serverEndPointURLAdministracionPlazas}/${recurso}`,
       request,
       { headers: this.header }
     ).pipe(
@@ -231,6 +274,16 @@ export class NuevaPlazaService {
     );
   }
 
+  private putNuevaPlaza<T>(recurso: string, request: ActualizarPlazaRequest): Observable<HttpRespuesta<T>> {
+    return this.http.put<HttpRespuesta<T>>(
+      `${this.serverEndPointURLAdministracionPlazas}/${recurso}`,
+      request,
+      { headers: this.header }
+    ).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<T>) => response)
+    );
+  }
 
   private getCatalogo<T>(recurso: string): Observable<HttpRespuesta<T[]>> {
     return this.http.get<HttpRespuesta<T[]>>(`${this.serverEndPointURLCatalogos}/${recurso}`, { headers: this.header }).pipe(

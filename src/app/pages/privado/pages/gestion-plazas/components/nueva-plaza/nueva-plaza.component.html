@@ -2,7 +2,7 @@
     <header class="breadcrumb-header">
         <h1>Administraci&oacute;n de plazas</h1>
         <span></span>
-        <h2>Nueva plaza</h2>
+        <h2>{{ tituloFormulario }}</h2>
     </header>
 
     <form class="nueva-plaza-card" [formGroup]="form" (ngSubmit)="guardar()">
@@ -23,7 +23,7 @@
                 <div class="field-meta">
                     <label for="numeroPlaza">No. de plaza</label>
                 </div>
-                <input pInputText id="numeroPlaza" type="text" formControlName="numeroPlaza" maxlength="10"
+                <input pInputText id="numeroPlaza" type="text" formControlName="numeroPlaza" maxlength="10" (input)="onlyNumbers($event)"
                     class="system-input" />
 
             </div>
@@ -174,7 +174,7 @@
         <div class="form-actions">
             <p-button type="button" label="Limpiar" variant="outlined" (onClick)="limpiar()">
             </p-button>
-            <p-button type="submit" label="Guardar" [disabled]="guardarDeshabilitado">
+            <p-button type="submit" [label]="labelGuardar" [disabled]="guardarDeshabilitado">
             </p-button>
         </div>
     </form>

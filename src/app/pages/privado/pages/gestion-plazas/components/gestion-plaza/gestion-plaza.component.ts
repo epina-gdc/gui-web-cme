@@ -128,8 +128,8 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
       next: (response) => {
         if (response?.respuesta) {
           if (response?.respuesta && response.respuesta.length > 0) {
-          this.lstEstatusPlaza = mapearArregloTipoDropdown(response.respuesta, 'descEstatusPlaza', 'idEstatusPlaza');
-        }
+            this.lstEstatusPlaza = mapearArregloTipoDropdown(response.respuesta, 'descEstatusPlaza', 'idEstatusPlaza');
+          }
         }
       },
       error: (err) => {
@@ -156,6 +156,7 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
       idConvocatoria: this.convocatoriaActiva.idConvocatoria,
       cveOoad: esBusquedaLayout ? cveOoad : null,
       numPlaza: esBusquedaLayout ? numPlaza : null,
+      origenPlaza: esBusquedaLayout ? 'LAYOUT' : 'MANUAL',
       page: this.numPaginaActual,
       size: this.rows
     }
@@ -220,7 +221,10 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
 
 
   editar(plaza: GestionPlazaInterface): void {
-    console.log('Editar plaza:', plaza);
+    this._router.navigate(['/privado/generar-plaza'], {
+      queryParams: { idPlaza: plaza.idPlaza },
+      state: { plaza }
+    });
   }
 
   eliminar(plaza: any): void {
