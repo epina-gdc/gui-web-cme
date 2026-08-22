@@ -6,6 +6,8 @@ import { Select } from 'primeng/select';
 import { InputText } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
 import { PaginatorState } from 'primeng/paginator';
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 import { GeneralComponent } from '@components/general.component';
 import { TipoDropdown } from '@models/tipo-dropdown.interface';
 import { GestionPlazaInterface, TipoBusquedaPlaza, AccionPlaza } from '@models/gestion-plaza.interface';
@@ -22,7 +24,7 @@ import { NAV } from '@utils/url-global';
 import { GestionPlazaService } from '@services/gestion-plaza.service';
 import { ConvocatoriaActiva } from '@models/convocatoria.interface';
 
-interface PlazaAccion  {
+interface PlazaAccion {
   plaza: GestionPlazaInterface,
   accion: AccionPlaza
 }
@@ -37,12 +39,13 @@ interface PlazaAccion  {
     Select,
     InputText,
     Button,
+    ConfirmDialog,
     TablaPlazasComponent,
     OnlyNumbersDirective
   ],
   templateUrl: './gestion-plaza.component.html',
   styleUrl: './gestion-plaza.component.scss',
-  providers: [DialogService]
+  providers: [DialogService, ConfirmationService]
 })
 export class GestionPlazaComponent extends GeneralComponent implements OnInit {
   readonly TipoBusquedaPlaza = TipoBusquedaPlaza;
@@ -51,6 +54,7 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
   fb: FormBuilder = inject(FormBuilder);
   mensajes = inject(Mensajes);
   alertaService: AlertService = inject(AlertService);
+  confirmationService: ConfirmationService = inject(ConfirmationService);
   gestionEstadoPlazaService = inject(GestionPlazaEstadoService);
   gestionPLazaService: GestionPlazaService = inject(GestionPlazaService);
   dialogService = inject(DialogService);
@@ -59,6 +63,7 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
   ref: DynamicDialogRef | undefined;
 
   lstOoad: TipoDropdown[] = [];
+  lstEstatusPlaza: TipoDropdown[] = [];
 
 
   plazas: WritableSignal<GestionPlazaInterface[]> = signal<GestionPlazaInterface[]>([]);
@@ -109,7 +114,7 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
       next: (response) => {
         if (response?.respuesta) {
           this.convocatoriaActiva = response.respuesta;
-          if(this.gestionEstadoPlazaService.tipoBusqueda() === TipoBusquedaPlaza.BusquedaManual){
+          if (this.gestionEstadoPlazaService.tipoBusqueda() === TipoBusquedaPlaza.BusquedaManual) {
             this.onBuscar();
           }
         }
@@ -118,6 +123,23 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
         console.error('Error al consultar convocatoria activa:', err);
       }
     });
+
+    this._CatalogoGenService.getLstEstatusPlaza().subscribe({
+      next: (response) => {
+        if (response?.respuesta) {
+          if (response?.respuesta && response.respuesta.length > 0) {
+            this.lstEstatusPlaza = mapearArregloTipoDropdown(response.respuesta, 'descEstatusPlaza', 'idEstatusPlaza');
+          }
+        }
+      },
+      error: (err) => {
+        console.error('Error al consultar convocatoria activa:', err);
+      }
+    });
+
+
+
+
   }
 
   onBuscar(): void {
@@ -141,10 +163,10 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
 
     this.gestionPLazaService.consultarPlazaLayout(objBusqueda).subscribe({
       next: resp => {
-        if(resp.respuesta.content.length != 0){
+        if (resp.respuesta.content.length != 0) {
           this.plazas.set(resp.respuesta.content);
           this.totalRecords = resp.respuesta.page.totalElements;
-        }else{
+        } else {
           this.plazas.set([]);
           this.totalRecords = 0;
           this.alertaService.error(this.mensajes.MSG024);
@@ -173,11 +195,11 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
 
   verDetalle(plaza: GestionPlazaInterface, edicion: boolean): void {
     this.ref = this.dialogService.open(CambioEstatusComponent, {
-      style:{
+      style: {
         'border-top': '11px solid #0F9B9B',
         'border-radius': '9px'
       },
-      data: {plaza, edicion},
+      data: { plaza, edicion, lstEstatusPlaza: this.lstEstatusPlaza },
       modal: true,
       width: '600px',
       height: '37vh',
@@ -205,24 +227,46 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
     });
   }
 
-  eliminar(plaza: GestionPlazaInterface): void {
-    console.log('Eliminar plaza:', plaza);
+  eliminar(plaza: any): void {
+    const idPlaza = plaza.idPlaza ?? plaza.id;
+    this.confirmationService.confirm({
+      message: '¿Está seguro de que desea eliminar la plaza nueva?',
+      header: ' ',
+      acceptLabel: 'Aceptar',
+      rejectLabel: 'Cancelar',
+      acceptButtonStyleClass: 'btn-modal-confirmar',
+      rejectButtonStyleClass: 'btn-modal-cancelar',
+      accept: () => {
+        if (idPlaza != null) {
+          this.gestionPLazaService.eliminarPlaza(idPlaza).subscribe({
+            next: () => {
+              this.alertaService.exito('Plaza eliminada correctamente');
+              this.onBuscar();
+            },
+            error: (err) => {
+              console.error('Error al eliminar la plaza:', err);
+              this.alertaService.error('Error al eliminar la plaza');
+            }
+          });
+        }
+      }
+    });
   }
 
-  accionPlazaSeleccionada(plaza: PlazaAccion){
+  accionPlazaSeleccionada(plaza: PlazaAccion) {
 
     switch (plaza.accion) {
       case AccionPlaza.VerDetalle:
         this.verDetalle(plaza.plaza, false);
         break;
       case AccionPlaza.EditarEstatus:
-        this.verDetalle(plaza.plaza, true );
+        this.verDetalle(plaza.plaza, true);
         break;
       case AccionPlaza.EditarPlaza:
-        this.editar(plaza.plaza );
+        this.editar(plaza.plaza);
         break;
       case AccionPlaza.EliminarPlaza:
-        this.eliminar(plaza.plaza );
+        this.eliminar(plaza.plaza);
         break;
       default:
         break;

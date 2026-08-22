@@ -5,10 +5,6 @@ import { PaginadoFiltros } from '@models/gestion-plaza.interface';
 import { HttpRespuesta } from '@models/http-respuesta.interface';
 import { catchError, Observable, throwError } from 'rxjs';
 
-
-
-
-
 export interface FiltrosPlazaLayout {
   idConvocatoria?: number;
   page?: number;
@@ -31,7 +27,7 @@ export class GestionPlazaService {
   private readonly version: string = '/v1/';
   private readonly urlBase = environment.api.apiAdmonPlazas + this.version;
 
-  constructor(private _http: HttpClient) {}
+  constructor(private _http: HttpClient) { }
 
   consultarPlazaLayout(filtros: FiltrosPlazaLayout = {}): Observable<HttpRespuesta<PaginadoFiltros>> {
     let params = new HttpParams();
@@ -57,7 +53,7 @@ export class GestionPlazaService {
       `${this.urlBase}administracionPlazas/busquedaPlazasFiltro`,
       { params }
     ).pipe(
-      catchError(this.handleError)
+        catchError(this.handleError)
     );
   }
 
@@ -65,6 +61,14 @@ export class GestionPlazaService {
     return this._http.put<HttpRespuesta<any>>(
       `${this.urlBase}administracionPlazas/actualizarEstatusPlaza`,
       datos
+    ).pipe(
+      catchError(this.handleError)
+    );
+  }
+
+  eliminarPlaza(idPlaza: number): Observable<HttpRespuesta<any>> {
+    return this._http.delete<HttpRespuesta<any>>(
+      `${this.urlBase}administracionPlazas/eliminarPlaza/${idPlaza}`
     ).pipe(
       catchError(this.handleError)
     );

@@ -34,14 +34,9 @@ export class CambioEstatusComponent extends GeneralComponent implements OnInit {
   plaza!: any;
   esEdicion: boolean = false;
 
-  lstEstatus: TipoDropdown[] = [
-    { label: 'VACANTE', value: 1 },
-    { label: 'OCUPADA', value: 2 },
-    { label: 'ETIQUETADA', value: 3 }
-  ];
+  lstEstatus: TipoDropdown[] = [];
 
   ngOnInit() {
-
     this.obtenerDatosDialogo();
     this.form = this.inicializarFormulario();
 
@@ -67,6 +62,7 @@ export class CambioEstatusComponent extends GeneralComponent implements OnInit {
     if (this.config.data) {
       this.plaza = this.config.data.plaza;
       this.esEdicion = this.config.data.edicion ?? false;
+      this.lstEstatus = this.config.data.lstEstatusPlaza;
     }
   }
 
