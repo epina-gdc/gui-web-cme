@@ -134,6 +134,7 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
       idConvocatoria: this.convocatoriaActiva.idConvocatoria,
       cveOoad: esBusquedaLayout ? cveOoad : null,
       numPlaza: esBusquedaLayout ? numPlaza : null,
+      origenPlaza: esBusquedaLayout ? 'LAYOUT' : 'MANUAL',
       page: this.numPaginaActual,
       size: this.rows
     }
@@ -198,8 +199,10 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
 
 
   editar(plaza: GestionPlazaInterface): void {
-    debugger
-    console.log('Editar plaza:', plaza);
+    this._router.navigate(['/privado/generar-plaza'], {
+      queryParams: { idPlaza: plaza.idPlaza },
+      state: { plaza }
+    });
   }
 
   eliminar(plaza: GestionPlazaInterface): void {

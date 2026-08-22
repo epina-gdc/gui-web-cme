@@ -15,6 +15,7 @@ export interface FiltrosPlazaLayout {
   size?: number;
   cveOoad?: number;
   numPlaza?: string;
+  origenPlaza?: string;
 }
 
 export interface CambioEstatusPlazaRequest {
@@ -27,7 +28,7 @@ export interface CambioEstatusPlazaRequest {
   providedIn: 'root'
 })
 export class GestionPlazaService {
-  private readonly version: string = 'v1/';
+  private readonly version: string = '/v1/';
   private readonly urlBase = environment.api.apiAdmonPlazas + this.version;
 
   constructor(private _http: HttpClient) {}
@@ -42,6 +43,9 @@ export class GestionPlazaService {
     }
     if (filtros.numPlaza?.trim()) {
       params = params.set('numPlaza', filtros.numPlaza.trim());
+    }
+    if (filtros.origenPlaza?.trim()) {
+      params = params.set('origenPlaza', filtros.origenPlaza.trim());
     }
     if (filtros.page != null) {
       params = params.set('page', filtros.page.toString());
