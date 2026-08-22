@@ -77,7 +77,9 @@
                     <td alignFrozen="right" pFrozenColumn>
                         <div class="flex align-items-center justify-content-center">
                             <i class="cme-ellipsis cursor-pointer border-round-3xl" onkeypress=""
-                                [style]="{ 'font-size': '2.2rem', color: '#a9c9f8', background: '#f6faff' }">
+                                [ngClass]="{'opacity-50': !puedeEditar(row)}"
+                                (click)="puedeEditar(row) ? op.toggle($event) : null"
+                                [style]="{ 'font-size': '2.2rem', color: puedeEditar(row) ? '#a9c9f8' : '#c7c7c7', background: '#f6faff' }">
                             </i>
                         </div>
                         <p-popover #op>
@@ -158,8 +160,9 @@
         </div>
         <div class="flex justify-content-end gap-2 mt-3">
             <p-button label="Cancelar" [outlined]="true" severity="danger" (onClick)="visible = false" />
-            <p-button label="Aceptar (No hay servicio de actualizacion )" [outlined]="true" severity="success"
-                (onClick)="guardarConfiguracionUpdate(formularioEdicion.value); visible = false" />
+            <p-button label="Aceptar" [outlined]="true" severity="success" [loading]="actualizandoEdicion"
+                [disabled]="formularioEdicion.invalid || actualizandoEdicion"
+                (onClick)="guardarConfiguracionUpdate()" />
         </div>
     </form>
 </p-dialog>

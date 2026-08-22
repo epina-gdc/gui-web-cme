@@ -14,21 +14,18 @@
         </div>
 
         <div class="col-12 md:col-6">
-          <div *ngIf="!tieneAsignacion" class="grid">
-            <div class="col-12 md:col-4 flex align-items-center justify-content-start gap-2"
-              style="cursor: pointer; color: #63c2ea;" (click)="rechazarOferta()">
+          <div *ngIf="!tieneAsignacion" class="info-actions">
+            <div class="info-actions__item" (click)="rechazarOferta()">
               <i class="cme-rechazo-oferta" style="font-size: 1.4rem"></i>
-              <p style="font-size: 11px; font-weight: 500; text-align: left;">Rechazo de oferta</p>
+              <p>Rechazo de oferta</p>
             </div>
-            <div *ngIf="mostrarCambioRama" class="col-12 md:col-4 flex align-items-center justify-content-start gap-2"
-              style="cursor: pointer; color: #63c2ea;" (click)="cambiarRama()">
+            <div *ngIf="mostrarCambioRama" class="info-actions__item" (click)="cambiarRama()">
               <i class="cme-cambio-rama" style="font-size: 1.4rem"></i>
-              <p style="font-size: 11px; font-weight: 500; text-align: left;">Cambio de rama</p>
+              <p>Cambio de rama</p>
             </div>
-            <div class="col-12 md:col-4 flex align-items-center justify-content-start gap-2"
-              style="cursor: pointer; color: #63c2ea;" (click)="reimprimirVerificacion()">
+            <div class="info-actions__item" (click)="reimprimirVerificacion()">
               <i class="cme-file" style="font-size: 1.8rem"></i>
-              <p style="font-size: 11px; font-weight: 500; text-align: left;">Reimpresión de verificación</p>
+              <p>Reimpresión de verificación</p>
             </div>
           </div>
 

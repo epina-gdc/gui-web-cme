@@ -16,6 +16,8 @@ import { AsignacionMesaService, ConvocatoriaTotales, MesaConfiguracion } from '.
   styleUrl: './conteo.component.scss',
 })
 export class ConteoComponent {
+  readonly TIPO_CONVOCATORIA_DRAFT = 1;
+  readonly TIPO_CONVOCATORIA_MINI_DRAFT = 2;
 
   constructor() {
     effect(() => {
@@ -65,6 +67,26 @@ export class ConteoComponent {
     }
 
     const id = Number(idConvocatoria);
+    return Number.isNaN(id) ? null : id;
+  }
+
+  mostrarConteoDraft(): boolean {
+    const idTipoConvocatoria = this.obtenerIdTipoConvocatoriaSeleccionada();
+    return idTipoConvocatoria === null || idTipoConvocatoria === this.TIPO_CONVOCATORIA_DRAFT;
+  }
+
+  mostrarConteoMiniDraft(): boolean {
+    return this.obtenerIdTipoConvocatoriaSeleccionada() === this.TIPO_CONVOCATORIA_MINI_DRAFT;
+  }
+
+  private obtenerIdTipoConvocatoriaSeleccionada(): number | null {
+    const idTipoConvocatoria = this.convocatoriaSeleccionada()?.idTipoConvocatoria;
+
+    if (idTipoConvocatoria === null || idTipoConvocatoria === undefined) {
+      return null;
+    }
+
+    const id = Number(idTipoConvocatoria);
     return Number.isNaN(id) ? null : id;
   }
 

@@ -34,6 +34,11 @@ export class DetalleMesasComponent {
 
   constructor() {
     effect(() => {
+      const convocatoria = this.convocatoriaSeleccionada();
+      queueMicrotask(() => this.actualizarRangoFechasConvocatoria(convocatoria));
+    });
+
+    effect(() => {
       this.onSeleccionarFecha(this.fechaSeleccionada());
     });
 
@@ -60,33 +65,76 @@ export class DetalleMesasComponent {
   minDate: Date = new Date();
   maxDate: Date = new Date();
   ngOnInit(): void {
-    this.minDate = dayjs(this.convocatoriaSeleccionada()?.fechaInicio).toDate();
-    this.maxDate = dayjs(this.convocatoriaSeleccionada()?.fechaFin).toDate();
-    this.fechaSeleccionada.set(this.minDate);
+    this.actualizarRangoFechasConvocatoria(this.convocatoriaSeleccionada());
   }
-
   onSeleccionarFecha(fecha: Date | undefined) {
+    const idMesaConvocatoria = this.convocatoriaSeleccionada()?.idMesaConvocatoria;
 
-    if (fecha) {
-      this.asignacionMesaService.getDetalleMesaFecha(this.convocatoriaSeleccionada()?.idMesaConvocatoria as number, dayjs(fecha).format('YYYY-MM-DD')).subscribe({
-        next: (response: any) => {
-          //console.log('Respuesta:', response);
-          this.mesas = response.respuesta;
-          this.mesas = this.mesas.map(mesa => ({
-            ...mesa,
-            turnos: mesa.turnos.map(turno => ({
-              ...turno,
-              especialidades: [...turno.especialidades]
-                .sort((a, b) => a.idMesaDetalle - b.idMesaDetalle)
-            }))
-          }));
-        },
-        error: (err) => {
-          console.error('Error:', err);
-        }
-      });
+    if (!fecha || idMesaConvocatoria === undefined || idMesaConvocatoria === null) {
+      this.mesas = [];
+      return;
     }
 
+    const fechaConsulta = dayjs(fecha).format('YYYY-MM-DD');
+
+    this.asignacionMesaService.getDetalleMesaFecha(idMesaConvocatoria, fechaConsulta).subscribe({
+      next: (response: any) => {
+        if (!this.esConsultaActual(idMesaConvocatoria, fechaConsulta)) {
+          return;
+        }
+
+        //console.log('Respuesta:', response);
+        this.mesas = response.respuesta;
+        this.mesas = this.mesas.map(mesa => ({
+          ...mesa,
+          turnos: mesa.turnos.map(turno => ({
+            ...turno,
+            especialidades: [...turno.especialidades]
+              .sort((a, b) => a.idMesaDetalle - b.idMesaDetalle)
+          }))
+        }));
+      },
+      error: (err) => {
+        console.error('Error:', err);
+      }
+    });
+
+  }
+
+  private actualizarRangoFechasConvocatoria(convocatoria: MesaConfiguracion | undefined): void {
+    const fechaInicio = this.obtenerFechaValida(convocatoria?.fechaInicio);
+    const fechaFin = this.obtenerFechaValida(convocatoria?.fechaFin);
+
+    if (!convocatoria || !fechaInicio || !fechaFin) {
+      const fechaActual = new Date();
+      this.minDate = fechaActual;
+      this.maxDate = fechaActual;
+      this.fechaSeleccionada.set(undefined);
+      this.mesas = [];
+      return;
+    }
+
+    this.minDate = fechaInicio;
+    this.maxDate = fechaFin;
+    this.mesas = [];
+    this.fechaSeleccionada.set(fechaInicio);
+  }
+
+  private obtenerFechaValida(fecha: string | undefined): Date | undefined {
+    if (!fecha) {
+      return undefined;
+    }
+
+    const fechaDayjs = dayjs(fecha);
+    return fechaDayjs.isValid() ? fechaDayjs.toDate() : undefined;
+  }
+
+  private esConsultaActual(idMesaConvocatoria: number, fechaConsulta: string): boolean {
+    const fechaActual = this.fechaSeleccionada();
+
+    return this.convocatoriaSeleccionada()?.idMesaConvocatoria === idMesaConvocatoria
+      && !!fechaActual
+      && dayjs(fechaActual).format('YYYY-MM-DD') === fechaConsulta;
   }
 
   onEiminarEspecialidadMesa(esp: EspecialidaDetalle) {

@@ -47,6 +47,7 @@ import { ConvocatoriaEstadoService } from '../../services/convocatoria-estado.se
   styleUrl: './buscar-convocatoria.component.scss'
 })
 export class BuscarConvocatoriaComponent implements OnInit {
+  private readonly ESTATUS_PENDIENTE = 'PENDIENTE';
 
   cargaCalificacionService: CargaCalificacionesService = inject(CargaCalificacionesService);
   asignacionMesaService = inject(AsignacionMesaService);
@@ -73,6 +74,7 @@ export class BuscarConvocatoriaComponent implements OnInit {
   configuracionMesasTabla = model<MesaConfiguracion[]>([]);
 
   visible: boolean = false;
+  actualizandoEdicion: boolean = false;
 
   constructor(private fb: FormBuilder, private convocatoriaEstado: ConvocatoriaEstadoService) { 
     effect(() => {
@@ -103,6 +105,14 @@ export class BuscarConvocatoriaComponent implements OnInit {
       next: (response: ResponseConvocatorias) => {
         if (response.exito) {
           this.convocatorias = response.respuesta;
+          this.configuracionMesasTabla.update(configuraciones =>
+            configuraciones.map(configuracion => this.agregarTipoConvocatoria(configuracion))
+          );
+
+          const seleccionActual = this.convocatoriaSeleccionada();
+          if (seleccionActual) {
+            this.convocatoriaSeleccionada.set(this.agregarTipoConvocatoria(seleccionActual));
+          }
 
         }
       },
@@ -116,7 +126,9 @@ export class BuscarConvocatoriaComponent implements OnInit {
     this.asignacionMesaService.getLstConfiguracionMesas(this.numPaginaActual, this.rows).subscribe({
       next: (response: ResponseConfiguracionMesas) => {
         if (response.exito) {
-          this.configuracionMesasTabla.update(v => response.respuesta.content);
+          this.configuracionMesasTabla.update(v => response.respuesta.content.map(
+            configuracion => this.agregarTipoConvocatoria(configuracion)
+          ));
           this.totalElementos = response.respuesta.page.totalElements;
 
           const seleccionActual = this.convocatoriaSeleccionada();
@@ -125,7 +137,10 @@ export class BuscarConvocatoriaComponent implements OnInit {
               x => x.idMesaConvocatoria === seleccionActual.idMesaConvocatoria
             );
             if (nuevaReferencia) {
-              this.convocatoriaSeleccionada.set({ ...nuevaReferencia });
+              this.convocatoriaSeleccionada.set({
+                ...nuevaReferencia,
+                idTipoConvocatoria: nuevaReferencia.idTipoConvocatoria ?? seleccionActual.idTipoConvocatoria
+              });
             }
           }
         }
@@ -208,12 +223,20 @@ export class BuscarConvocatoriaComponent implements OnInit {
   }
 
   onSeleccion(convocatoria: MesaConfiguracion) {
-    this.convocatoriaSeleccionada.set(convocatoria);
+    this.convocatoriaSeleccionada.set(this.agregarTipoConvocatoria(convocatoria));
 
   }
 
 
+  puedeEditar(convocatoria: MesaConfiguracion): boolean {
+    return convocatoria.estatus?.trim().toUpperCase() === this.ESTATUS_PENDIENTE;
+  }
+
   onEditar(convocatoria: MesaConfiguracion) {
+    if (!this.puedeEditar(convocatoria)) {
+      this.alertaService.alerta('Solo se puede editar una configuración en estatus PENDIENTE.');
+      return;
+    }
 
     this.convocatoriaSeleccionadaEdicion.update(v => convocatoria);
 
@@ -228,15 +251,43 @@ export class BuscarConvocatoriaComponent implements OnInit {
     this.visible = true;
   }
 
-  applyPartialUpdate<T>(obj: T, updates: Partial<T>): T {
-    return { ...obj, ...updates };
-  }
+  guardarConfiguracionUpdate() {
+    const configuracion = this.convocatoriaSeleccionadaEdicion();
+    if (!configuracion || !this.puedeEditar(configuracion)) {
+      this.alertaService.alerta('Solo se puede editar una configuración en estatus PENDIENTE.');
+      return;
+    }
 
-  guardarConfiguracionUpdate(convocatoria: any) {
-    const updatedConfigMesa = this.applyPartialUpdate(this.convocatoriaSeleccionadaEdicion(), convocatoria);
-    //console.log('updatedConfigMesa:', updatedConfigMesa);
-  }
+    this.formularioEdicion.markAllAsTouched();
+    this.formularioEdicion.updateValueAndValidity();
+    if (this.formularioEdicion.invalid) {
+      return;
+    }
 
+    const formData = this.formularioEdicion.getRawValue() as MesaConvocatoriaRequest;
+    this.actualizandoEdicion = true;
+
+    this.asignacionMesaService.actualizarMesaConvocatoria(configuracion.idMesaConvocatoria, formData).subscribe({
+      next: (response) => {
+        if (response.exito) {
+          this.visible = false;
+          this.consultarConvocatorias();
+          this.alertaService.exito(response.mensaje || this.mensajes.MSG083);
+          return;
+        }
+
+        this.alertaService.error(response.mensaje);
+      },
+      error: (error) => {
+        const msg = error?.error?.mensaje || error?.message || 'Error al actualizar la configuración.';
+        this.alertaService.error(msg);
+        this.actualizandoEdicion = false;
+      },
+      complete: () => {
+        this.actualizandoEdicion = false;
+      }
+    });
+  }
   consultaEstatusCalificacion(idConvocatoria: number): Observable<boolean> {
     const tipoConvocatoria = this.convocatorias.find(x => x.idConvocatoria === idConvocatoria)?.tipo.idTipoConvocatoria;
     //console.log(tipoConvocatoria);
@@ -250,6 +301,17 @@ export class BuscarConvocatoriaComponent implements OnInit {
     } else {
       return of(true);
     }
+  }
+
+  private agregarTipoConvocatoria(configuracion: MesaConfiguracion): MesaConfiguracion {
+    const idTipoConvocatoria = this.convocatorias.find(
+      convocatoria => convocatoria.idConvocatoria === configuracion.idConvocatoria
+    )?.tipo.idTipoConvocatoria;
+
+    return {
+      ...configuracion,
+      idTipoConvocatoria: idTipoConvocatoria ?? configuracion.idTipoConvocatoria
+    };
   }
 
 

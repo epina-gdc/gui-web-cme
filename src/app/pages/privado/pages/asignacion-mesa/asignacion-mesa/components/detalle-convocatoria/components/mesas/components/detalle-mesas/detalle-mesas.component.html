@@ -7,8 +7,9 @@
                 <span>Fecha de atención</span>
 
             </label>
-            <p-datePicker appendTo="body" [(ngModel)]="fechaSeleccionada" class="flex w-full p-date-ate"
-                [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay" [minDate]="minDate" [maxDate]="maxDate"  da />
+            <p-datePicker appendTo="body" [ngModel]="fechaSeleccionada()" (ngModelChange)="fechaSeleccionada.set($event)"
+                class="flex w-full p-date-ate" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"
+                [minDate]="minDate" [maxDate]="maxDate" />
         </div>
     </div>
 
@@ -39,7 +40,7 @@
                                 @for (esp of turno.especialidades; track esp.idMesaDetalle) {
                                 <li>
                                     <div class="flex flex-row justify-content-start align-content-center  gap-2 my-2">
-                                          @if(convocatoriaSeleccionada()?.estatus != 'CONCLUIDO'){
+                                          @if(convocatoriaSeleccionada()?.permiteEliminarMesas){
                                         <div class="flex-none">
 
                                             <p-button icon="pi pi-times" [rounded]="true" severity="danger"

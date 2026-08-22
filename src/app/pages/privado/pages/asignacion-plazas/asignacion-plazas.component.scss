@@ -2,20 +2,30 @@
 
 
   :host ::ng-deep .p-tablist-tab-list {
-    justify-content: space-between !important;
-    overflow: scroll;
+    justify-content: center !important;
+    gap: 0;
+    width: 100%;
+    overflow-x: auto;
     overflow-y: hidden;
   }
 
   :host ::ng-deep .p-tab {
-    min-width: 400px;
+    flex: 1 1 0;
+    min-width: 0;
     display: flex;
+    justify-content: center;
+  }
+
+  :host ::ng-deep .p-tab .header-tab-documentacion {
+    width: 100%;
+    align-items: center;
     justify-content: center;
   }
 
 
   :host ::ng-deep .p-tablist-content {
     max-width: 100%;
+    width: 100%;
   }
 
   .p-tab > div > p{
@@ -103,7 +113,7 @@
       overflow: hidden;
     }
     :host ::ng-deep .p-tab {
-      min-width: fit-content;
+      min-width: 0;
     }
   }
 

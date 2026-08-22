@@ -46,6 +46,7 @@ export class PageInfo {
 // Clase para la configuración de una mesa
 export class MesaConfiguracion {
   idConvocatoria!: number;
+  idTipoConvocatoria?: number;
   idMesaDetalle!: number | null;
   idMesaConvocatoria!: number;
   desConvocatoria!: string;
@@ -55,7 +56,7 @@ export class MesaConfiguracion {
   porcentajeConfiguracion!: number;
   fechaInicio!: string;
   fechaFin!: string;
-
+  permiteEliminarMesas!: boolean;
 }
 
 // Clase para la estructura de respuesta con paginación
@@ -80,6 +81,10 @@ export class ConvocatoriaTotales {
     totalConvocatorias: number
   };
   externos!: {
+    totalUsuarios: number,
+    totalConvocatorias: number
+  };
+  sustitutos?: {
     totalUsuarios: number,
     totalConvocatorias: number
   };
@@ -227,6 +232,23 @@ export class AsignacionMesaService {
     return this.http.post<any>(ruta, { headers: this.header }, { params: parametros }).pipe(
       catchError(this.handleError),
       map((response: any) => {
+        return response;
+      })
+    );
+  }
+
+  /**
+   * Actualizar la configuración de mesa de una convocatoria.
+   */
+  actualizarMesaConvocatoria(
+    idMesaConvocatoria: number,
+    mesaConvocatoria: MesaConvocatoriaRequest
+  ): Observable<ResponseGeneral> {
+    const ruta = `${this.serverEndPointURLAsignacion}/mesa-convocatoria/${idMesaConvocatoria}`;
+
+    return this.http.put<ResponseGeneral>(ruta, mesaConvocatoria, { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: ResponseGeneral) => {
         return response;
       })
     );

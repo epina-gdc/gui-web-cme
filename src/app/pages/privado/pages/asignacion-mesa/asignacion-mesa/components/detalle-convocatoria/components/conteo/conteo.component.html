@@ -1,4 +1,5 @@
 <div class="grid gap-3 bg-azul-claro p-3 rounded rounded-4 m-1">
+  @if (mostrarConteoDraft()) {
   <div
     class=" flex-1 md:flex-auto gap-4 p-4 rounded-lg shadow-sm bg-white border border-gray-200 flex items-center rounded rounded-4">
     <div class="mr-3 flex">
@@ -28,6 +29,24 @@
       </div>
     </div>
   </div>
+  }
+
+  @if (mostrarConteoMiniDraft()) {
+  <div
+    class="flex-1 md:flex-auto gap-4 p-4 rounded-lg shadow-sm bg-white border border-gray-200 flex items-center rounded rounded-4">
+    <div class="mr-3 flex">
+      <span class="circle verde flex justify-content-center align-items-center">
+        <i class="cme-coplamar" style="font-size: 2.5rem; color: white"></i>
+      </span>
+    </div>
+    <div>
+      <div class="font-medium text-gray-700">Sustitutos</div>
+      <div class="text-3xl font-bold text-gray-900">
+        {{ conteo()?.sustitutos?.totalConvocatorias || 0 }}/{{ conteo()?.sustitutos?.totalUsuarios || 0 }}
+      </div>
+    </div>
+  </div>
+  }
 
   <div
     class="flex-1 md:flex-auto gap-4 p-4 rounded-lg shadow-sm bg-white border border-gray-200 flex items-center rounded rounded-4">
