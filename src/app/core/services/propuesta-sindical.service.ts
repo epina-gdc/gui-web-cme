@@ -5,6 +5,22 @@ import {DetallePropuestaSindical} from '@models/propuestaSindical.interface';
 import {environment} from '@env/environment.development';
 import {HttpRespuesta} from '@models/http-respuesta.interface';
 import {ResponseGeneral} from '@models/responseGeneral';
+import { PaginadoReporteFiltros } from '@models/reporte-propuesta.interface';
+
+export interface FiltrosReporte extends FiltrosPrincipales {
+  page?: number| string | null;
+  size?: number| string | null;
+}
+
+export interface FiltrosPrincipales {
+  idConvocatoria?: number | null;
+  cveOoad?: number | null;
+  numPlaza?: string | null;
+  fechaInicio?: string | null;
+  fechaFin?: string | null;
+  estatusPropuesta?: string | null;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -98,6 +114,90 @@ export class PropuestaSindicalService {
       }),
     );
 
+
+  }
+
+  consultarPropuestas(filtros: FiltrosReporte = {}): Observable<HttpRespuesta<PaginadoReporteFiltros>>{
+
+    const ruta = `${this.URL_BASE}${this.V}propuesta-sindical/reporte-propuestas`;
+    let params = new HttpParams();
+
+    if (filtros.idConvocatoria != null) {
+      params = params.set('idConvocatoria', filtros.idConvocatoria.toString());
+    }
+
+    if (filtros.cveOoad != null) {
+      params = params.set('cveOoad', filtros.cveOoad.toString());
+    }
+
+    if (filtros.numPlaza?.trim()) {
+      params = params.set('numPlaza', filtros.numPlaza.trim());
+    }
+
+    if (filtros.estatusPropuesta?.trim()) {
+      params = params.set('estatusPropuesta', filtros.estatusPropuesta.trim());
+    }
+
+    if (filtros.fechaInicio?.trim()) {
+      params = params.set('fechaInicio', filtros.fechaInicio.trim());
+    }
+
+    if (filtros.fechaFin?.trim()) {
+      params = params.set('fechaFin', filtros.fechaFin.trim());
+    }
+
+    if (filtros.page != null) {
+      params = params.set('page', filtros.page);
+    }
+
+    if (filtros.size != null) {
+      params = params.set('size', filtros.size);
+    }
+
+    return this.http.get<HttpRespuesta<PaginadoReporteFiltros>>(
+      `${ruta}`,
+      { params }
+    ).pipe(
+        catchError(this.handleError)
+    );
+  }
+
+  exportarExcel(filtros: FiltrosPrincipales = {}): Observable<Blob>{
+    const ruta = `${this.URL_BASE}${this.V}propuesta-sindical/reporte-propuestas/excel`;
+    let params = new HttpParams();
+
+    if (filtros.idConvocatoria != null) {
+      params = params.set('idConvocatoria', filtros.idConvocatoria.toString());
+    }
+
+    if (filtros.cveOoad != null) {
+      params = params.set('cveOoad', filtros.cveOoad.toString());
+    }
+
+    if (filtros.numPlaza?.trim()) {
+      params = params.set('numPlaza', filtros.numPlaza.trim());
+    }
+
+    if (filtros.estatusPropuesta?.trim()) {
+      params = params.set('estatusPropuesta', filtros.estatusPropuesta.trim());
+    }
+
+    if (filtros.fechaInicio?.trim()) {
+      params = params.set('fechaInicio', filtros.fechaInicio.trim());
+    }
+
+    if (filtros.fechaFin?.trim()) {
+      params = params.set('fechaFin', filtros.fechaFin.trim());
+    }
+
+    return this.http.get(ruta, {
+      params,
+      responseType: 'blob'
+    }
+
+    ).pipe(
+        catchError(this.handleError)
+    );
 
   }
 
