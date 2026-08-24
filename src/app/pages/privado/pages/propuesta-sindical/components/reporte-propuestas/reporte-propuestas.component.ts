@@ -3,9 +3,15 @@ import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { GeneralComponent } from '@components/general.component';
 import { ConvocatoriaActiva } from '@models/convocatoria.interface';
+import { ReportePropuestaInterface } from '@models/reporte-propuesta.interface';
+import { AlertService } from '@services/alert.service';
+import { PropuestaSindicalService, FiltrosReporte } from '@services/propuesta-sindical.service';
+import { Mensajes } from '@utils/mensajes';
+import { saveAs } from 'file-saver';
 import moment from 'moment';
 import { Button } from 'primeng/button';
 import { DatePicker } from 'primeng/datepicker';
+import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
 
 @Component({
@@ -14,7 +20,8 @@ import { TableModule } from 'primeng/table';
     ReactiveFormsModule,
     TableModule,
     Button,
-    CommonModule
+    CommonModule,
+    PaginatorModule
   ],
   templateUrl: './reporte-propuestas.component.html',
   styleUrl: './reporte-propuestas.component.scss'
@@ -22,13 +29,21 @@ import { TableModule } from 'primeng/table';
 export class ReportePropuestasComponent extends GeneralComponent implements OnInit {
 
   fb: FormBuilder = inject(FormBuilder);
+  pSindicalService: PropuestaSindicalService = inject(PropuestaSindicalService);
+  alertaService: AlertService = inject(AlertService);
+  mensajes = inject(Mensajes);
 
   form!: FormGroup;
 
   minDate!: Date;
   maxDate!: Date;
 
-  propuestas: WritableSignal<any> = signal(null);
+  first: number = 0;
+  rows: number = 10;
+  numPaginaActual: number = 0;
+  totalElementos: number = 0;
+
+  propuestas: WritableSignal<ReportePropuestaInterface[]> = signal([]);
   convocatoriaActiva!: ConvocatoriaActiva;
 
   ngOnInit(): void {
@@ -38,8 +53,8 @@ export class ReportePropuestasComponent extends GeneralComponent implements OnIn
 
   inicializarFormulario(): FormGroup {
     return this.fb.group({
-      fechaInicio: [null, [Validators.required]],
-      fechaFin: [null, [Validators.required]],
+      fechaInicio: [null],
+      fechaFin: [null],
     });
   }
 
@@ -65,14 +80,71 @@ export class ReportePropuestasComponent extends GeneralComponent implements OnIn
   }
 
   onBuscar(): void {
-    if (this.form.invalid) return;
+
     const { fechaInicio, fechaFin } = this.form.value;
-    console.log('Buscar propuestas:', { fechaInicio, fechaFin });
+
+    const objBusqueda: FiltrosReporte = {
+      idConvocatoria: this.convocatoriaActiva?.idConvocatoria ?? null,
+      cveOoad: null,
+      numPlaza: null,
+      fechaInicio: fechaInicio ? moment(fechaInicio).format('YYYY-MM-DD') : moment(this.minDate).format('YYYY-MM-DD'),
+      fechaFin: fechaFin ? moment(fechaFin).format('YYYY-MM-DD') : moment(this.maxDate).format('YYYY-MM-DD'),
+      estatusPropuesta: null,
+      page: this.numPaginaActual,
+      size: this.rows
+    }
+
+    this.pSindicalService.consultarPropuestas(objBusqueda).subscribe({
+      next: resp => {
+        if(resp.respuesta?.contenido){
+          this.propuestas.set(resp.respuesta.contenido);
+          this.totalElementos = resp.respuesta.totalElementos;
+        }else{
+          this.propuestas.set([]);
+          this.totalElementos = 0;
+        }
+      },
+      error: err => {
+        this.alertaService.error(this.mensajes.MSG018);
+        this.propuestas.set([]);
+        this.totalElementos = 0;
+      }
+    })
   }
 
 
   onExportarDatos(): void {
-    console.log('Exportar datos');
+
+    const { fechaInicio, fechaFin } = this.form.value;
+
+    const objBusqueda: FiltrosReporte = {
+      idConvocatoria: this.convocatoriaActiva?.idConvocatoria ?? null,
+      cveOoad: null,
+      numPlaza: null,
+      fechaInicio: fechaInicio ? moment(fechaInicio).format('YYYY-MM-DD') : moment(this.minDate).format('YYYY-MM-DD'),
+      fechaFin: fechaFin ? moment(fechaFin).format('YYYY-MM-DD') : moment(this.maxDate).format('YYYY-MM-DD'),
+      estatusPropuesta: null,
+      page: this.numPaginaActual,
+      size: this.rows
+    }
+
+    this.pSindicalService.exportarExcel(objBusqueda).subscribe({
+      next: (resp: Blob) => {
+        const nombreArchivo = `REPORTE_PROPUESTAS_${moment().format('YYYYMMDD_HHmm')}.xlsx`
+        saveAs(resp,nombreArchivo);
+      },
+      error: (error) => {
+        console.error('Error al descargar el Excel:', error);
+        this._alertServices.error('Error al descargar el Excel');
+      }
+    })
+  }
+
+  onPageChange(event: any): void {
+    this.first = event.first ?? 0;
+    this.rows = event.rows ?? 10;
+    this.numPaginaActual = event.page;
+    this.onBuscar();
   }
 
 }

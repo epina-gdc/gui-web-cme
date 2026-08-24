@@ -1,14 +1,13 @@
 <div class="flex flex-wrap p-3 bg-white border-round-xl my-3">
   <div class="col-8">
-    <form [formGroup]="form" (ngSubmit)="onBuscar()">
+    <form [formGroup]="form">
       <div class="form-grid grid align-items-end">
         <div class="field col-12 md:col-4">
           <label
             for="fechaInicio"
             class="field-label flex pt-2 justify-content-between"
           >
-            <span>Rango de fecha inicio</span>
-            <span class="text-xs text-black-50">Obligatorio</span>
+            <span>Fecha Inicio</span>
           </label>
           <p-datePicker
             id="fechaInicio"
@@ -27,8 +26,7 @@
             for="fechaFin"
             class="field-label flex pt-2 justify-content-between"
           >
-            <span>Rango de fecha fin</span>
-            <span class="text-xs text-black-50">Obligatorio</span>
+            <span>Fecha Término</span>
           </label>
           <p-datePicker
             id="fechaFin"
@@ -37,13 +35,13 @@
             [iconDisplay]="'input'"
             [showIcon]="true"
             inputId="fechaFinInput"
-            placeholder="Selecciona fecha fin"
+            placeholder="Selecciona fecha término"
             [readonlyInput]="true"
             [maxDate]="maxDate"
           />
         </div>
         <div class="field col-12 md:col-4 flex gap-3 pb-1">
-          <p-button type="submit" label="Buscar" [disabled]="form.invalid" />
+          <p-button type="submit" label="Buscar" (onClick)="onBuscar()" />
         </div>
       </div>
     </form>
@@ -106,21 +104,41 @@
     </tr>
   </ng-template>
 
-  <ng-template #body let-plaza>
+  <ng-template #body let-propuesta>
     <tr>
-       <td>{{ plaza.ooad }}</td>
-      <td>{{ plaza.noPlaza }}</td>
-      <td>{{ plaza.tipoUnidad }}</td>
-      <td>{{ plaza.categoria }}</td>
-      <td>{{ plaza.especialidad }}</td>
-      <td>{{ plaza.horario }}</td>
-      <td>{{ plaza.turno }}</td>
-      <td>{{ plaza.zona }}</td>
-      <td>{{ plaza.marcaOcupacion }}</td>
-      <td>{{ plaza.clasificacionUnidad }}</td>
-      <td>{{ plaza.unidad }}</td>
-      <td>{{ plaza.adscripcion }}</td>
-      <td>{{ plaza.tipoPlaza }}</td>
+      <td>{{propuesta.matriculaFolio}}</td>
+      <td>{{propuesta.plaza}}</td>
+      <td>{{propuesta.folioPropuestaSindical}}</td>
+      <td>{{propuesta.nombres}}</td>
+      <td>{{propuesta.primerApellido}}</td>
+      <td>{{propuesta.segundoApellido}}</td>
+      <td>{{propuesta.fechaNacimiento}}</td>
+      <td>{{propuesta.edad}}</td>
+      <td>{{propuesta.curp}}</td>
+      <td>{{propuesta.rfc}}</td>
+      <td>{{propuesta.ooadAsignada}}</td>
+      <td>{{propuesta.zona}}</td>
+      <td>{{propuesta.categoria}}</td>
+      <td>{{propuesta.especialidad}}</td>
+      <td>{{propuesta.fechaNacimiento}}</td>
+      <td>{{propuesta.folioRegistro}}</td>
+      <td>{{propuesta.nacionalidad}}</td>
+      <td>{{propuesta.seccionSindical}}</td>
+      <td>{{propuesta.regimen}}</td>
+      <td>{{propuesta.entidad}}</td>
+      <td>{{propuesta.alcaldiaMunicipio}}</td>
+      <td>{{propuesta.colonia}}</td>
+      <td>{{propuesta.codigoPostal}}</td>
+      <td>{{propuesta.calle}}</td>
+      <td>{{propuesta.numeroExterior}}</td>
+      <td>{{propuesta.telefono}}</td>
+      <td>{{propuesta.celular}}</td>
+      <td>{{propuesta.usuarioMesaPropuesta}}</td>
+      <td>{{propuesta.fechaPropuestaSindical}}</td>
+      <td>{{propuesta.estatusPropuesta}}</td>
+      <td>{{propuesta.tipoAsignacion}}</td>
+      <td>{{propuesta.fechaPropuesta}}</td>
+
     </tr>
   </ng-template>
 
@@ -134,3 +152,20 @@
     </tr>
   </ng-template>
 </p-table>
+@if(totalElementos > 0){
+  <p-paginator styleClass="justify-content-end" [showFirstLastIcon]="false" [first]="first" [rows]="rows"
+    [totalRecords]="totalElementos" (onPageChange)="onPageChange($event)">
+    <ng-template pTemplate="previouspagelinkicon">
+      <div class="flex align-items-center">
+        <span class="pi pi-chevron-left text-xl font-normal mr-2"></span>
+        <span class="font-semibold mr-5">Anterior</span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="nextpagelinkicon">
+      <div class="flex align-items-center">
+        <span class="font-semibold ml-5">Siguiente</span>
+        <span class="pi pi-chevron-right text-xl font-normal ml-2"></span>
+      </div>
+    </ng-template>
+  </p-paginator>
+}
