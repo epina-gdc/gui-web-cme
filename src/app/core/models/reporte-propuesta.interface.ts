@@ -36,11 +36,15 @@ export interface ReportePropuestaInterface {
 }
 
 export interface PaginadoReporteFiltros {
-  contenido: ReportePropuestaInterface[];
-  pagina: number;
-  tamanio: number;
-  totalElementos: number;
-  totalPaginas: number;
+  content: ReportePropuestaInterface[];
+  page: PagePaginado;
+}
+
+export interface PagePaginado {
+  number: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
 }
 
 
