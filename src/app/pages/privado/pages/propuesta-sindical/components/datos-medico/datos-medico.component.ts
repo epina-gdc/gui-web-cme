@@ -8,6 +8,7 @@ import {Badge} from 'primeng/badge';
 import {UploadPhotoComponent} from '@components/upload-photo/upload-photo.component';
 import {PropuestaSindicalService} from '@services/propuesta-sindical.service';
 import {DetallePropuestaSindical, Seccion} from '@models/propuestaSindical.interface';
+import {ConvocatoriaActiva} from '@models/convocatoria.interface';
 import {concatMap, of, switchMap, tap, throwError} from 'rxjs';
 import {catchError, filter, finalize, map} from 'rxjs/operators';
 import {Dialog} from 'primeng/dialog';
@@ -29,11 +30,16 @@ import {Dialog} from 'primeng/dialog';
 })
 export class DatosMedicoComponent extends GeneralComponent implements OnInit {
   private readonly ID_MODULO: number = 5;
+  private readonly ID_TIPO_CONVOCATORIA_MINIDRAFT = 2;
+  private readonly DES_TIPO_CONVOCATORIA_MINIDRAFT = 'MINIDRAFT';
+  private readonly ID_ORIGEN_PARTICIPACION_SIAP = 2;
+  private readonly MSG_BLOQUEO_PROPUESTA_SIAP_MINIDRAFT = 'No se permite la emisión de propuestas sindicales a médicos sustitutos para convocatorias de tipo Mini Draft.';
 
   datosMedico: WritableSignal<DetallePropuestaSindical | null> = signal(null);
   datoSeccionSindical: WritableSignal<Seccion | null> = signal(null);
   refGuid: WritableSignal<string> = signal("");
   dialogCancelacion: boolean = false;
+  convocatoriaActiva: ConvocatoriaActiva | null = null;
 
   needsCleanup: boolean = false;
   blnFotoGuardada: boolean = false;
@@ -43,6 +49,7 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
   form!: FormGroup;
   tab: number = 0;
   isSaving = false;
+  private bloqueoPropuestaSindicalNotificado = false;
 
   constructor(
     private fb: FormBuilder,
@@ -53,9 +60,11 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.iniciarFormulario();
+    this.obtenerConvocatoriaActiva();
   }
 
   consultarMatriculaFolio(imprimirPropuesta: boolean = false) {
+    this.bloqueoPropuestaSindicalNotificado = false;
     //this.blnFotoGuardada = false;
     this.pSindicalService.consultaPropuesta(this.f['matricula'].value).pipe(
       tap(data => {
@@ -63,6 +72,7 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
           this._alertServices.error("La matrícula/folio ingresado no cuenta con una asignación, por favor verifícala.");
           this.datosMedico.set(null);
           this.datoSeccionSindical.set(null);
+          this.bloqueoPropuestaSindicalNotificado = false;
         }
       }),
       filter(data => data.exito),
@@ -75,6 +85,7 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
       next: data => {
         this.datosMedico.set(data.detalleMedico.respuesta.datosGenerales);
         this.datoSeccionSindical.set(data.ooad.respuesta?.[0] ?? null);
+        this.validarBloqueoPropuestaSindical();
         if (this.datosMedico()?.refGuidFotografia) {
           this.obtenerFotografia(this.datosMedico()?.refGuidFotografia || "");
         }
@@ -87,6 +98,11 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
   }
 
   generarNuevaPropuesta() {
+    if (this.bloquearPropuestaSindicalMiniDraftSiap) {
+      this.mostrarMensajeBloqueoPropuestaSindical();
+      return;
+    }
+
     if (this.isSaving) return;
 
     this.isSaving = true;
@@ -98,7 +114,11 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
     .pipe(finalize(() => this.isSaving = false))
     .subscribe({
       next: data => {
-        this._alertServices.exito(data.mensaje);
+        if(data.exito) {
+          this._alertServices.exito(data.mensaje);
+        } else {
+          this._alertServices.error(data.mensaje);
+        }
         this.consultarMatriculaFolio(true);
         //this.actualizarFoto();
       },
@@ -178,9 +198,16 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
     this.form.reset();
     this.datosMedico.set(null);
     this.datoSeccionSindical.set(null);
+    this.bloqueoPropuestaSindicalNotificado = false;
   }
 
   archivoSeleccionado($event: any): void {
+    if (this.bloquearPropuestaSindicalMiniDraftSiap) {
+      this.mostrarMensajeBloqueoPropuestaSindical();
+      this.needsCleanup = true;
+      return;
+    }
+
     if ($event.length == 0) {
       this._alertServices.alerta('El peso del archivo excede al permitido.');
       return;
@@ -255,6 +282,12 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
   }*/
 
   private guardarFoto(datos: FormData, archivo: File): void {
+    if (this.bloquearPropuestaSindicalMiniDraftSiap) {
+      this.mostrarMensajeBloqueoPropuestaSindical();
+      this.needsCleanup = true;
+      return;
+    }
+
     this.blnFotoGuardada = false;
     const idUsuario = this.datosMedico()?.idUsuario;
     const idParticipacion = this.datosMedico()?.idParticipacion;
@@ -341,7 +374,67 @@ export class DatosMedicoComponent extends GeneralComponent implements OnInit {
        }
      })
   }*/
+  get disableActualizarFoto(): boolean {
+    return !!this.datosMedico()?.idPropuestaSindical || this.bloquearPropuestaSindicalMiniDraftSiap;
+  }
 
+  get deshabilitarNuevaPropuesta(): boolean {
+    return !this.blnFotoGuardada || this.isSaving || this.bloquearPropuestaSindicalMiniDraftSiap;
+  }
+
+  get bloquearPropuestaSindicalMiniDraftSiap(): boolean {
+    return this.esConvocatoriaMiniDraft && this.esOrigenParticipacionSiap;
+  }
+
+  private obtenerConvocatoriaActiva(): void {
+    this._CatalogoGenService.getConvocatoriaActiva().subscribe({
+      next: response => {
+        this.convocatoriaActiva = response.exito ? response.respuesta ?? null : null;
+        this.validarBloqueoPropuestaSindical();
+      },
+      error: error => {
+        console.log('Error al consultar convocatoria activa', error);
+        this.convocatoriaActiva = null;
+      }
+    });
+  }
+
+  private get esConvocatoriaMiniDraft(): boolean {
+    const idTipoConvocatoria = this.obtenerNumero(
+      this.convocatoriaActiva?.tipo?.idTipoConvocatoria
+      ?? (this.convocatoriaActiva as (ConvocatoriaActiva & { idTipoConvocatoria?: number | string | null }) | null)?.idTipoConvocatoria
+    );
+    const desTipoConvocatoria = this.convocatoriaActiva?.tipo?.desTipoConvocatoria?.trim().toUpperCase().replace(/\s+/g, '') ?? '';
+
+    return idTipoConvocatoria === this.ID_TIPO_CONVOCATORIA_MINIDRAFT
+      || desTipoConvocatoria === this.DES_TIPO_CONVOCATORIA_MINIDRAFT;
+  }
+
+  private get esOrigenParticipacionSiap(): boolean {
+    return this.obtenerNumero(this.datosMedico()?.idOrigenParticipacion) === this.ID_ORIGEN_PARTICIPACION_SIAP;
+  }
+
+  private validarBloqueoPropuestaSindical(): void {
+    if (!this.bloquearPropuestaSindicalMiniDraftSiap || this.bloqueoPropuestaSindicalNotificado) {
+      return;
+    }
+
+    this.mostrarMensajeBloqueoPropuestaSindical();
+    this.bloqueoPropuestaSindicalNotificado = true;
+  }
+
+  private mostrarMensajeBloqueoPropuestaSindical(): void {
+    this._alertServices.error(this.MSG_BLOQUEO_PROPUESTA_SIAP_MINIDRAFT);
+  }
+
+  private obtenerNumero(value: number | string | null | undefined): number | null {
+    if (value === null || value === undefined || value === '') {
+      return null;
+    }
+
+    const numero = Number(value);
+    return Number.isNaN(numero) ? null : numero;
+  }
 
   get f() {
     return this.form.controls;

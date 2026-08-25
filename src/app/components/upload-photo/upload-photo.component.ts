@@ -93,6 +93,8 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
   }
 
   mostrarOpciones(event: Event): void {
+    if (this.disableUpload) return;
+
     if (this.menu) {
       this.menu.toggle(event);
     }
@@ -132,12 +134,16 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
   }
 
   seleccionarArchivo(): void {
+    if (this.disableUpload) return;
+
     const elemento: HTMLElement | null = document.getElementById('choose_btn');
     if (!elemento) return;
     elemento.querySelector('button')?.click();
   }
 
   cargarArchivo(): void {
+    if (this.disableUpload) return;
+
     const elemento: HTMLElement | null = document.getElementById('load_btn');
     if (!elemento) return;
     elemento.querySelector('button')?.click();
@@ -202,6 +208,12 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
 
 
   onSelectedFiles(event: any) {
+    if (this.disableUpload) {
+      this.fileUpload?.clear();
+      this.files = this.existingFile ? [this.existingFile] : [];
+      return;
+    }
+
     // Verificar si PrimeNG reportó algún archivo no válido
     // Los archivos inválidos por tamaño, tipo, etc., se encuentran en event.invalidFiles.
     for (const archivo of event.files) {
@@ -261,6 +273,7 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
   }
 
   async tomarFotografia(): Promise<void> {
+    if (this.disableUpload) return;
 
     if (!('mediaDevices' in navigator && 'getUserMedia' in navigator.mediaDevices)) {
       this.alertaService.error('No se puede tomar la fotografía" (API no soportada).');
@@ -395,6 +408,8 @@ export class UploadPhotoComponent implements OnInit, OnChanges {
 
   // Procesa y emite el archivo capturado
   manejarArchivoCapturado(file: File): void {
+    if (this.disableUpload) return;
+
     // Limpia los archivos actuales del p-fileupload
     this.fileUpload.clear();
 

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError, map, Observable, throwError} from 'rxjs';
-import {DetallePropuestaSindical} from '@models/propuestaSindical.interface';
+import {ConsultaPropuestaSindicalResponse} from '@models/propuestaSindical.interface';
 import {environment} from '@env/environment.development';
 import {HttpRespuesta} from '@models/http-respuesta.interface';
 import {ResponseGeneral} from '@models/responseGeneral';
@@ -25,14 +25,14 @@ export class PropuestaSindicalService {
   constructor(private http: HttpClient) {
   }
 
-  consultaPropuesta(matriculaFolio: string): Observable<HttpRespuesta<any>> {
+  consultaPropuesta(matriculaFolio: string): Observable<HttpRespuesta<ConsultaPropuestaSindicalResponse>> {
 
     let parametro = new HttpParams();
     parametro = parametro.set('matriculaFolio', matriculaFolio);
 
     const ruta = `${this.URL_BASE}${this.V}propuesta-sindical/aspirante-por-matriculaFolio`;
 
-    return this.http.get<HttpRespuesta<any>>(ruta, {headers: this.header, params: parametro}).pipe(
+    return this.http.get<HttpRespuesta<ConsultaPropuestaSindicalResponse>>(ruta, {headers: this.header, params: parametro}).pipe(
       catchError(this.handleError),
       map((response: any) => {
         return response
