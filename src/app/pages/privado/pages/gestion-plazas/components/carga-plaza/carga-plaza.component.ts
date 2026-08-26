@@ -9,7 +9,7 @@ import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { GeneralComponent } from '@components/general.component';
 import { Convocatoria } from '@models/convocatoria.interface';
-import { ErrorCargaPlaza, RespuestaCargaPlaza } from '@models/respuesta-carga-plaza.interface';
+import { ErrorCargaPlaza, RespuestaCargaPlaza, RespuestaRegistroCargaPlaza } from '@models/respuesta-carga-plaza.interface';
 import { TipoDropdown } from '@models/tipo-dropdown.interface';
 import { CargaPlazaService } from '@services/carga-plaza.service';
 
@@ -42,16 +42,17 @@ export class CargaPlazaComponent extends GeneralComponent implements OnInit, OnD
   options: TipoDropdown[] = [];
   archivoSeleccionado: WritableSignal<File | null> = signal<File | null>(null);
   cargando: WritableSignal<boolean> = signal<boolean>(false);
+  validandoPlazas: WritableSignal<boolean> = signal<boolean>(false);
   arrastrando: WritableSignal<boolean> = signal<boolean>(false);
   cargaEnProceso: WritableSignal<boolean> = signal<boolean>(false);
-  plazasAsignadas: WritableSignal<boolean> = signal<boolean>(false);
+  plazasOcupadas: WritableSignal<boolean> = signal<boolean>(false);
   erroresCarga: WritableSignal<ErrorCargaPlaza[]> = signal<ErrorCargaPlaza[]>([]);
 
   carga: RespuestaCargaPlaza = this.obtenerCargaInicial();
 
   readonly listaImportante: string[] = [
     'Al realizar la carga de las plazas, si ya existen plazas cargadas estas seran eliminadas para cargar las nuevas plazas.',
-    'Si ya existen plazas asignadas, ya no es posible realizar la carga de plazas.',
+    'Si ya existen plazas ocupadas, ya no es posible realizar la carga de plazas.',
   ];
 
   ngOnInit(): void {
@@ -60,13 +61,13 @@ export class CargaPlazaComponent extends GeneralComponent implements OnInit, OnD
     this.form.get('convocatoria')?.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe((idConvocatoria: number | null) => {
-        this.archivoSeleccionado.set(null);
-        this.erroresCarga.set([]);
-        this.carga = this.obtenerCargaInicial();
+        this.reiniciarEstadoConvocatoria();
 
-        if (!idConvocatoria) return;
+        const id = Number(idConvocatoria);
+        if (!id) return;
 
-        this.consultarUltimaCarga(idConvocatoria);
+        this.consultarUltimaCarga(id);
+        this.consultarValidacionPlazasOcupadas(id);
       });
   }
 
@@ -93,15 +94,21 @@ export class CargaPlazaComponent extends GeneralComponent implements OnInit, OnD
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (respuesta) => {
+          if (!this.esConvocatoriaActual(idConvocatoria)) return;
+
           if (respuesta?.exito && respuesta.respuesta) {
             this.procesarRespuesta(respuesta.respuesta);
             return;
           }
 
           this.carga = this.obtenerCargaInicial();
+          this.cargaEnProceso.set(false);
         },
         error: () => {
+          if (!this.esConvocatoriaActual(idConvocatoria)) return;
+
           this.carga = this.obtenerCargaInicial();
+          this.cargaEnProceso.set(false);
         },
       });
   }
@@ -142,8 +149,9 @@ export class CargaPlazaComponent extends GeneralComponent implements OnInit, OnD
   puedeAdjuntarArchivo(): boolean {
     return Boolean(this.form.get('convocatoria')?.value)
       && !this.cargando()
+      && !this.validandoPlazas()
       && !this.cargaEnProceso()
-      && !this.plazasAsignadas();
+      && !this.plazasOcupadas();
   }
 
   formatearTotal(valor?: number | null): string {
@@ -159,18 +167,69 @@ export class CargaPlazaComponent extends GeneralComponent implements OnInit, OnD
     return `${(kb / 1024).toFixed(1)} MB`;
   }
 
+  obtenerRegistroError(error: ErrorCargaPlaza): string {
+    return String(error.registro ?? error.numFila ?? '-');
+  }
+
   obtenerPlazaError(error: ErrorCargaPlaza): string {
-    return String(error.idPlaza ?? error.noPlaza ?? '-');
+    return String(error.noPlaza ?? error.numPlaza ?? error.idPlaza ?? '-');
   }
 
   obtenerOoadError(error: ErrorCargaPlaza): string {
-    return String(error.ooad ?? error.cveOoad ?? '-');
+    return String(error.ooad ?? error.descOoad ?? error.cveOoad ?? '-');
+  }
+
+  private consultarValidacionPlazasOcupadas(idConvocatoria: number): void {
+    this.validandoPlazas.set(true);
+
+    this.cargaPlazaService.validarPlazasOcupadas(idConvocatoria)
+      .pipe(
+        takeUntil(this.destroy$),
+        finalize(() => {
+          if (this.esConvocatoriaActual(idConvocatoria)) {
+            this.validandoPlazas.set(false);
+          }
+        })
+      )
+      .subscribe({
+        next: (respuesta) => {
+          if (!this.esConvocatoriaActual(idConvocatoria)) return;
+
+          if (!respuesta?.exito || !respuesta.respuesta) {
+            this.plazasOcupadas.set(false);
+            return;
+          }
+
+          const validacion = respuesta.respuesta;
+          const existenPlazasOcupadas = Boolean(
+            validacion.existenPlazasOcupadas || validacion.puedeIniciarProceso === false
+          );
+
+          this.plazasOcupadas.set(existenPlazasOcupadas);
+
+          if (existenPlazasOcupadas) {
+            this.archivoSeleccionado.set(null);
+            this._alertServices.alerta(this.obtenerMensajePlazasOcupadas(validacion.totalPlazasOcupadas));
+          }
+        },
+        error: () => {
+          if (!this.esConvocatoriaActual(idConvocatoria)) return;
+
+          this.plazasOcupadas.set(false);
+          this._alertServices.error('No fue posible validar si existen plazas ocupadas.');
+        },
+      });
   }
 
   private prepararArchivo(archivo: File | null): void {
     if (!archivo) return;
 
     if (!this.validarPuedeAdjuntar()) return;
+
+    if (archivo.size === 0) {
+      this._alertServices.error('El archivo no debe estar vacio.');
+      return;
+    }
 
     if (!this.esArchivoExcel(archivo)) {
       this._alertServices.error('Solo se permiten archivos en formato .xlsx o .xls.');
@@ -187,13 +246,18 @@ export class CargaPlazaComponent extends GeneralComponent implements OnInit, OnD
       return false;
     }
 
+    if (this.validandoPlazas()) {
+      this._alertServices.alerta('Espera a que termine la validacion de plazas ocupadas.');
+      return false;
+    }
+
     if (this.cargaEnProceso()) {
       this._alertServices.alerta('Existe un proceso de carga en ejecucion. Intenta nuevamente mas tarde.');
       return false;
     }
 
-    if (this.plazasAsignadas()) {
-      this._alertServices.alerta('No es posible cargar plazas porque ya existen plazas asignadas.');
+    if (this.plazasOcupadas()) {
+      this._alertServices.alerta(this.obtenerMensajePlazasOcupadas());
       return false;
     }
 
@@ -214,7 +278,7 @@ export class CargaPlazaComponent extends GeneralComponent implements OnInit, OnD
   }
 
   private cargarArchivo(): void {
-    const idConvocatoria = this.form.get('convocatoria')?.value as number | null;
+    const idConvocatoria = Number(this.form.get('convocatoria')?.value);
     const archivo = this.archivoSeleccionado();
 
     if (!idConvocatoria || !archivo) return;
@@ -230,18 +294,28 @@ export class CargaPlazaComponent extends GeneralComponent implements OnInit, OnD
       )
       .subscribe({
         next: (respuesta) => {
+          if (!this.esConvocatoriaActual(idConvocatoria)) return;
+
+          this.erroresCarga.set(this.obtenerErroresCarga(respuesta?.respuesta ?? null));
+
           if (!respuesta?.exito) {
             this.cargaEnProceso.set(false);
             this._alertServices.error(respuesta?.mensaje || this._Mensajes.MSG031);
             return;
           }
 
+          this.cargaEnProceso.set(false);
           this.archivoSeleccionado.set(null);
+          this.actualizarResumenCargaLayout(respuesta.respuesta);
           this._alertServices.exito(respuesta.mensaje || this._Mensajes.MSG030);
           this.consultarUltimaCarga(idConvocatoria);
+          this.consultarValidacionPlazasOcupadas(idConvocatoria);
         },
         error: (error) => {
+          if (!this.esConvocatoriaActual(idConvocatoria)) return;
+
           this.cargaEnProceso.set(false);
+          this.erroresCarga.set(this.obtenerErroresHttp(error));
           this._alertServices.error(this.obtenerMensajeError(error));
         },
       });
@@ -254,28 +328,96 @@ export class CargaPlazaComponent extends GeneralComponent implements OnInit, OnD
     };
 
     this.cargaEnProceso.set(Boolean(data.procesoEnEjecucion || data.idEstatusCarga === 1));
-    this.plazasAsignadas.set(Boolean(data.tienePlazasAsignadas));
+
+    if (data.tienePlazasOcupadas !== undefined) {
+      this.plazasOcupadas.set(Boolean(data.tienePlazasOcupadas));
+      return;
+    }
+
+    if (data.tienePlazasAsignadas !== undefined) {
+      this.plazasOcupadas.set(Boolean(data.tienePlazasAsignadas));
+    }
   }
 
   private obtenerCargaInicial(): RespuestaCargaPlaza {
-    this.cargaEnProceso.set(false);
-    this.plazasAsignadas.set(false);
-
     return {
+      nombreArchivo: null,
       fechaInicioFormateada: '-',
       horaInicioFormateada: '-',
       fechaFinFormateada: '-',
       horaFinFormateada: '-',
+      totalRegistros: null,
+      totalRegistrosValidos: null,
+      totalRegistrosRechazados: null,
       totalPlazasOfertadas: null,
       totalPlazasCredito: null,
       idEstatusCarga: 0,
+      procesoEnEjecucion: false,
+      errores: [],
     };
+  }
+
+  private actualizarResumenCargaLayout(data?: RespuestaRegistroCargaPlaza | null): void {
+    if (!data) return;
+
+    this.carga = {
+      ...this.carga,
+      totalRegistros: data.totalRegistros ?? this.carga.totalRegistros ?? null,
+      totalRegistrosRechazados: data.totalErrores ?? this.carga.totalRegistrosRechazados ?? null,
+      totalPlazasOfertadas: data.totalPlazasOfertadas ?? this.carga.totalPlazasOfertadas,
+      totalPlazasCredito: data.totalPlazasConCredito ?? this.carga.totalPlazasCredito,
+    };
+  }
+
+  private obtenerErroresCarga(data?: RespuestaRegistroCargaPlaza | null): ErrorCargaPlaza[] {
+    return this.normalizarErroresCarga(data?.plazasConError ?? []);
+  }
+
+  private obtenerErroresHttp(error: unknown): ErrorCargaPlaza[] {
+    const detalle = error as { error?: { respuesta?: RespuestaRegistroCargaPlaza } };
+    return this.obtenerErroresCarga(detalle?.error?.respuesta ?? null);
+  }
+
+  private normalizarErroresCarga(errores: ErrorCargaPlaza[]): ErrorCargaPlaza[] {
+    return errores.map((error) => ({
+      ...error,
+      registro: error.registro ?? error.numFila,
+      noPlaza: error.noPlaza ?? error.numPlaza,
+      ooad: error.ooad ?? error.descOoad ?? (error.cveOoad != null ? String(error.cveOoad) : undefined),
+      mensaje: error.mensaje ?? this.obtenerMensajeRegistro(error),
+    }));
+  }
+
+  private obtenerMensajeRegistro(error: ErrorCargaPlaza): string {
+    if (Array.isArray(error.errores) && error.errores.length > 0) {
+      return error.errores.join(' ');
+    }
+
+    return error.mensaje ?? '';
+  }
+
+  private reiniciarEstadoConvocatoria(): void {
+    this.archivoSeleccionado.set(null);
+    this.erroresCarga.set([]);
+    this.carga = this.obtenerCargaInicial();
+    this.cargaEnProceso.set(false);
+    this.plazasOcupadas.set(false);
+    this.validandoPlazas.set(false);
+  }
+
+  private obtenerMensajePlazasOcupadas(total?: number | null): string {
+    const totalPlazas = typeof total === 'number' && total > 0 ? ` Total: ${total}.` : '';
+    return `No es posible realizar la carga, ya existen plazas ocupadas para la convocatoria proporcionada.${totalPlazas}`;
   }
 
   private esArchivoExcel(archivo: File): boolean {
     const extension = archivo.name.split('.').pop()?.toLowerCase();
 
     return extension === 'xlsx' || extension === 'xls';
+  }
+
+  private esConvocatoriaActual(idConvocatoria: number): boolean {
+    return Number(this.form.get('convocatoria')?.value) === idConvocatoria;
   }
 
   private obtenerMensajeError(error: unknown): string {
