@@ -96,9 +96,9 @@ export class ReportePropuestasComponent extends GeneralComponent implements OnIn
 
     this.pSindicalService.consultarPropuestas(objBusqueda).subscribe({
       next: resp => {
-        if(resp.respuesta?.contenido){
-          this.propuestas.set(resp.respuesta.contenido);
-          this.totalElementos = resp.respuesta.totalElementos;
+        if(resp.respuesta?.content){
+          this.propuestas.set(resp.respuesta.content);
+          this.totalElementos = resp.respuesta.page.totalElements;
         }else{
           this.propuestas.set([]);
           this.totalElementos = 0;
