@@ -121,6 +121,10 @@ export class NuevaPlazaComponent extends GeneralComponent implements OnInit, OnD
     return this.modoEdicion ? 'Actualizar' : 'Guardar';
   }
 
+  get editar(): boolean {
+    return this.modoEdicion;
+  }
+
   get guardarDeshabilitado(): boolean {
     return this.form.invalid
       || this.guardando

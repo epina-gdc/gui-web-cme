@@ -1,0 +1,244 @@
+@layer app-components {
+  .reporte-asignacion-page {
+    min-width: 0;
+  }
+
+  .breadcrumb-text,
+  .breadcrumb-separator {
+    color: #566da8;
+    font-family: Arial, sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  .breadcrumb-separator {
+    color: #4f5f85;
+    font-weight: 400;
+  }
+
+  .reporte-filtros {
+    padding: 1rem 1.25rem;
+    box-shadow: 0 1px 4px rgba(22, 26, 29, 0.08);
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1rem 1.25rem;
+    align-items: end;
+  }
+
+  .field-control {
+    grid-column: span 4;
+    min-width: 0;
+  }
+
+  .field-control--date {
+    grid-column: span 2;
+  }
+
+  .form-actions {
+    grid-column: span 2;
+    align-self: start;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 1rem;
+    min-width: 0;
+    padding-top: 1.55rem;
+  }
+
+  .field-label {
+    display: block;
+    margin-bottom: 0.45rem;
+    color: #303845;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .required-helper {
+    display: block;
+    margin-top: 0.35rem;
+    color: #566da8;
+    font-size: 11px;
+    line-height: 1.1;
+  }
+
+  .reporte-tabla {
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(22, 26, 29, 0.08);
+  }
+
+  .tabla-caption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 0.25rem;
+  }
+
+  .titulo-tabla {
+    color: #34495e;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .export-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .export-action {
+    border: 0;
+    background: transparent;
+    color: #018699;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+    padding: 0.25rem 0;
+  }
+
+  .export-action:disabled {
+    cursor: progress;
+    opacity: 0.6;
+  }
+
+  .export-action i {
+    font-size: 1.1rem;
+  }
+
+  .estatus-badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 24px;
+    padding: 0.25rem 0.6rem;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .estatus-badge--success {
+    background: #EAF7E9;
+    color: #289D38;
+  }
+
+  .estatus-badge--danger {
+    background: #FCEBEB;
+    color: #B42318;
+  }
+
+  .estatus-badge--warning {
+    background: #FFF4D6;
+    color: #946200;
+  }
+
+  .estatus-badge--info {
+    background: #EAF2FB;
+    color: #3C6CA8;
+  }
+
+  .empty-state {
+    min-height: 390px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    color: #B5B8C3;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .empty-state img {
+    width: min(150px, 36vw);
+    height: auto;
+  }
+
+  :host ::ng-deep {
+
+    .p-select,
+    .p-datepicker,
+    .p-inputtext {
+      width: 100%;
+    }
+
+    .p-select-label,
+    .p-inputtext {
+      font-size: 13px;
+    }
+
+    .p-datatable-header {
+      border: 0;
+      background: #FFFFFF;
+      padding: 0.65rem 1rem;
+    }
+
+    .p-datatable-thead>tr>th {
+      background: #EEF3FF;
+      color: #4E596C;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 0.95rem 0.85rem !important;
+      white-space: nowrap;
+    }
+
+    .p-datatable-tbody>tr>td {
+      color: #677082;
+      font-size: 13px;
+      padding: 0.8rem 0.85rem;
+      white-space: nowrap;
+    }
+
+    .p-paginator {
+      border: 0;
+      background: #F3F6FF;
+      padding: 0.75rem 1rem;
+    }
+  }
+
+  @media screen and (max-width: 1200px) {
+
+    .field-control,
+    .field-control--date,
+    .form-actions {
+      grid-column: span 6;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+
+    .breadcrumb-text,
+    .breadcrumb-separator {
+      font-size: 18px;
+    }
+
+    .field-control,
+    .field-control--date,
+    .form-actions {
+      grid-column: span 12;
+    }
+
+    .form-actions,
+    .tabla-caption,
+    .export-actions {
+      justify-content: flex-start;
+    }
+
+    .form-actions {
+      padding-top: 0;
+    }
+  }
+}

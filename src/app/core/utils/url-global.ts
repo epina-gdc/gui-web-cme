@@ -10,6 +10,7 @@ export const NAV = {
   verificacionDocumentos: 'verificacion-documentos',
   ofertaLaboral: 'oferta-laboral',
   asignacion: 'asignacion-plaza',
+  reporteAsignacion: 'reporte-asignacion',
   cargaCalificaciones: 'carga-calificaciones',
   asistenciaExtraordinaria: 'asistencia-extraordinaria',
   visualizacionAsistencia: 'visualizacion-asistencia',

@@ -13,6 +13,7 @@ import { documentacionAspiranteResolver } from '../../core/resolvers/documentaci
 import { verficacionDocsResolver } from '../../core/resolvers/verificacion-docs.resolver';
 import { OfertaLaboralComponent } from './pages/oferta-laboral/oferta-laboral.component';
 import { AsignacionPlazasComponent } from '@privado/asignacion-plazas/asignacion-plazas.component';
+import { ReporteAsignacionComponent } from './pages/asignacion-plazas/components/reporte-asignacion/reporte-asignacion.component';
 
 import {
   AsistenciaExtraordinariaComponent
@@ -80,6 +81,10 @@ const routes: Routes = [{
     {
       path: NAV.asignacion,
       component: AsignacionPlazasComponent,
+    },
+    {
+      path: NAV.reporteAsignacion,
+      component: ReporteAsignacionComponent,
     },
     {
       path: NAV.cargaCalificaciones,

@@ -17,16 +17,18 @@
                     [appendTo]="'body'" class="w-full">
                 </p-select>
             </div>
-
+            @if(editar){
             <div class="field-block required-field">
 
                 <div class="field-meta">
                     <label for="numeroPlaza">No. de plaza</label>
                 </div>
-                <input pInputText id="numeroPlaza" type="text" formControlName="numeroPlaza" maxlength="10" (input)="onlyNumbers($event)"
-                    class="system-input" />
+                <input pInputText id="numeroPlaza" type="text" formControlName="numeroPlaza" maxlength="10"
+                    (input)="onlyNumbers($event)" class="system-input" readonly />
 
             </div>
+            }
+
 
             <div class="field-block required-field">
                 <div class="field-meta">
