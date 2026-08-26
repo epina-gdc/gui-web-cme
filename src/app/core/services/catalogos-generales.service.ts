@@ -19,7 +19,7 @@ import { environment } from '@env/environment.development';
 import { AlertService } from '@services/alert.service';
 import { Convocatoria, ConvocatoriaActiva } from '@models/convocatoria.interface';
 import { Especialidades } from '@models/especialidad';
-import {TipoDocumentoEspecialidad} from '@models/tipo-documento-especialidad.interface';
+import { TipoDocumentoEspecialidad } from '@models/tipo-documento-especialidad.interface';
 import { EstatusPlaza } from '@models/estatusPlaza';
 
 @Injectable({
@@ -178,7 +178,7 @@ export class CatalogosGeneralesService {
   }
 
   getZonas(cveOoad: string): Observable<HttpRespuesta<any>> {
-    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/zonas/${cveOoad}`, {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/zonas/${cveOoad}`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -208,6 +208,15 @@ export class CatalogosGeneralesService {
     return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/especialidades', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
+        return response;
+      })
+    );
+  }
+
+  getCollEspecialidades(): Observable<any> {
+    return this.http.get<any>(this.serverEndPointURLCatalogos + '/especialidades', { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: any) => {
         return response;
       })
     );
@@ -296,7 +305,7 @@ export class CatalogosGeneralesService {
     );
   }
   getSeccionSindical(ooad: string): Observable<any> {
-    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/seccion-sindical/ooad/${ooad}`, {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/seccion-sindical/ooad/${ooad}`, { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -305,7 +314,7 @@ export class CatalogosGeneralesService {
   }
 
   getMotivosRechazo(): Observable<any> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/motivoRechazo', {headers: this.header}).pipe(
+    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/motivoRechazo', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
         return response;
@@ -340,7 +349,7 @@ export class CatalogosGeneralesService {
     );
   }
 
-  getLstEstatusPlaza(): Observable<HttpRespuesta<EstatusPlaza[]>>{
+  getLstEstatusPlaza(): Observable<HttpRespuesta<EstatusPlaza[]>> {
     return this.http.get<HttpRespuesta<EstatusPlaza[]>>(this.serverEndPointURLCatalogos + '/plazas/estatus-plaza', { headers: this.header }).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<EstatusPlaza[]>) => {

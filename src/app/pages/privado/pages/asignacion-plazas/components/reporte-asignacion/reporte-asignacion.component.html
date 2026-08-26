@@ -1,0 +1,155 @@
+<section class="reporte-asignacion-page">
+  <div class="flex justify-content-start align-items-center gap-2 mt-2 lg:mt-0 mb-3">
+    <span class="breadcrumb-text">Asignaciones</span>
+    <span class="breadcrumb-separator">|</span>
+    <h3 class="titulo-seccion m-0">Reporte de asignaci&oacute;n</h3>
+  </div>
+
+  <div class="reporte-filtros bg-white border-round-xl">
+    <form [formGroup]="form" (ngSubmit)="onBuscar()">
+      <div class="form-grid">
+        <div class="field-control">
+          <label class="field-label" for="cveOoad">OOAD</label>
+          <p-select id="cveOoad" formControlName="cveOoad" [options]="ooads" optionLabel="label" optionValue="value"
+            placeholder="Selecciona OOAD" class="w-full" [filter]="true" filterBy="label" appendTo="body" />
+        </div>
+
+        <div class="field-control">
+          <label class="field-label" for="cveZona">Zona</label>
+          <p-select id="cveZona" formControlName="cveZona" [options]="zonas" optionLabel="label" optionValue="value"
+            placeholder="Selecciona zona" class="w-full" [filter]="true" filterBy="label" appendTo="body"
+            [disabled]="!form.get('cveOoad')?.value" />
+        </div>
+
+        <div class="field-control">
+          <label class="field-label" for="idTipoAsignacion">Tipo de asignaci&oacute;n</label>
+          <p-select id="idTipoAsignacion" formControlName="idTipoAsignacion" [options]="tiposAsignacion"
+            optionLabel="label" optionValue="value" placeholder="Selecciona asignaci&oacute;n" class="w-full"
+            [filter]="true" filterBy="label" appendTo="body" />
+        </div>
+
+        <div class="field-control">
+          <label class="field-label" for="cveEspecialidad">Especialidad</label>
+          <p-select id="cveEspecialidad" formControlName="cveEspecialidad" [options]="especialidades"
+            optionLabel="label" optionValue="value" placeholder="Selecciona especialidad" class="w-full" [filter]="true"
+            filterBy="label" appendTo="body" />
+        </div>
+
+        <div class="field-control">
+          <label class="field-label" for="idConvocatoria">Convocatoria</label>
+          <p-select id="idConvocatoria" formControlName="idConvocatoria" [options]="convocatorias" optionLabel="label"
+            optionValue="value" placeholder="Selecciona una convocatoria" class="w-full" [filter]="true"
+            filterBy="label" appendTo="body" />
+        </div>
+
+        <div class="field-control">
+          <label class="field-label" for="numPlaza">No. de plaza</label>
+          <input pInputText id="numPlaza" type="text" class="w-full" placeholder="Ingresa plaza"
+            formControlName="numPlaza" appOnlyNumbers maxlength="7" />
+        </div>
+
+        <div class="field-control">
+          <label class="field-label" for="matriculaFolio">Matr&iacute;cula/Folio</label>
+          <input pInputText id="matriculaFolio" type="text" class="w-full" placeholder="Ingresa matr&iacute;cula"
+            formControlName="matriculaFolio" appOnlyNumbers maxlength="10" />
+        </div>
+
+        <div class="field-control field-control--date">
+          <label class="field-label" for="fechaInicio">Fecha de inicio</label>
+          <p-datePicker id="fechaInicio" formControlName="fechaInicio" [style]="{ width: '100%' }"
+            [iconDisplay]="'input'" [showIcon]="true" inputId="fechaInicioInput" placeholder="Inicio"
+            [readonlyInput]="true" [minDate]="minDate" [maxDate]="maxDate" dateFormat="dd/mm/yy" appendTo="body" />
+          <small class="required-helper">Obligatorio</small>
+        </div>
+
+        <div class="field-control field-control--date">
+          <label class="field-label" for="fechaFin">Fecha fin</label>
+          <p-datePicker id="fechaFin" formControlName="fechaFin" [style]="{ width: '100%' }" [iconDisplay]="'input'"
+            [showIcon]="true" inputId="fechaFinInput" placeholder="Fin" [readonlyInput]="true" [minDate]="minDate"
+            [maxDate]="maxDate" dateFormat="dd/mm/yy" appendTo="body" />
+          <small class="required-helper">Obligatorio</small>
+        </div>
+
+        <div class="form-actions">
+          <p-button type="button" label="Limpiar" variant="outlined" (onClick)="onLimpiar()" />
+          <p-button type="submit" label="Buscar" [loading]="cargando()" />
+        </div>
+      </div>
+    </form>
+  </div>
+
+  @if (registros().length > 0) {
+  <div class="reporte-tabla bg-white border-round-xl mt-3">
+    <p-table [value]="registros()" [scrollable]="true" [resizableColumns]="true" columnResizeMode="expand">
+      <ng-template #caption>
+        <div class="tabla-caption">
+          <span class="titulo-tabla">Reporte de asignaci&oacute;n</span>
+          <div class="export-actions">
+            <button type="button" class="export-action" (click)="onExportarGeneral()" [disabled]="exportandoGeneral()">
+              <i class="cme-download"></i>
+              <span>Exportar reporte general</span>
+            </button>
+            <button type="button" class="export-action" (click)="onExportarDetalle()" [disabled]="exportandoDetalle()">
+              <i class="cme-download"></i>
+              <span>Exportar reporte a detalle</span>
+            </button>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template #header>
+        <tr>
+          <th scope="col" pResizableColumn>No. de OOAD</th>
+          <th scope="col" pResizableColumn>OOAD</th>
+          <th scope="col" pResizableColumn>Clave zona</th>
+          <th scope="col" pResizableColumn>Zona</th>
+          <th scope="col" pResizableColumn>Tipo de asignaci&oacute;n</th>
+          <th scope="col" pResizableColumn>Estatus</th>
+          <th scope="col" pResizableColumn>OOAD Residencia</th>
+          <th scope="col" pResizableColumn>Matr&iacute;cula/Folio</th>
+          <th scope="col" pResizableColumn>Nombre(s)</th>
+        </tr>
+      </ng-template>
+
+      <ng-template #body let-registro>
+        <tr>
+          <td>{{ obtenerNoOoad(registro) }}</td>
+          <td>{{ obtenerOoad(registro) }}</td>
+          <td>{{ obtenerClaveZona(registro) }}</td>
+          <td>{{ obtenerZona(registro) }}</td>
+          <td>{{ obtenerTipoAsignacion(registro) }}</td>
+          <td>
+            <span class="estatus-badge" [ngClass]="obtenerClaseEstatus(registro)">
+              {{ obtenerEstatus(registro) }}
+            </span>
+          </td>
+          <td>{{ obtenerOoadResidencia(registro) }}</td>
+          <td>{{ obtenerMatriculaFolio(registro) }}</td>
+          <td>{{ obtenerNombre(registro) }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+    <p-paginator styleClass="justify-content-end" [showFirstLastIcon]="false" [first]="first" [rows]="rows"
+      [totalRecords]="totalRecords" (onPageChange)="onPageChange($event)">
+      <ng-template pTemplate="previouspagelinkicon">
+        <div class="flex align-items-center">
+          <span class="pi pi-chevron-left text-xl font-normal mr-2"></span>
+          <span class="font-semibold mr-5">Anterior</span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="nextpagelinkicon">
+        <div class="flex align-items-center">
+          <span class="font-semibold ml-5">Siguiente</span>
+          <span class="pi pi-chevron-right text-xl font-normal ml-2"></span>
+        </div>
+      </ng-template>
+    </p-paginator>
+  </div>
+  } @else {
+  <div class="empty-state">
+    <img src="/assets/images/tabla_sin_resultados.svg" alt="Sin resultados" />
+    <p>No hay resultados de b&uacute;squeda</p>
+  </div>
+  }
+</section>

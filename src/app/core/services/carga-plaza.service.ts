@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '@env/environment.development';
 import { HttpRespuesta } from '@models/http-respuesta.interface';
-import { RespuestaCargaPlaza } from '@models/respuesta-carga-plaza.interface';
+import { RespuestaCargaPlaza, RespuestaRegistroCargaPlaza, ValidacionCargaPlaza } from '@models/respuesta-carga-plaza.interface';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -22,13 +22,6 @@ interface ControlCargaPlazaResponse {
   refMensajeResultado?: string | null;
 }
 
-export interface PlazaCargaLayoutResponse {
-  idPlaza: number;
-  numPlaza: number;
-  cveOoad: number | string;
-  origenPlaza: string;
-}
-
 interface FechaHoraFormateada {
   fecha: string;
   hora: string;
@@ -40,10 +33,11 @@ interface FechaHoraFormateada {
 export class CargaPlazaService {
   private readonly VERSION_API = '/v1/';
   private readonly urlCargaLayoutPlaza = `${environment.api.apiAdmonPlazas}${this.VERSION_API}cargaLayoutPlaza`;
+  private readonly urlAdministracionPlazas = `${environment.api.apiAdmonPlazas}${this.VERSION_API}administracionPlazas`;
   private readonly http: HttpClient = inject(HttpClient);
 
   consultarCargaPlazas(idConvocatoria: number): Observable<HttpRespuesta<RespuestaCargaPlaza>> {
-    const params = new HttpParams().set('idConvocatoria', idConvocatoria);
+    const params = new HttpParams().set('idConvocatoria', String(idConvocatoria));
 
     return this.http.get<HttpRespuesta<ControlCargaPlazaResponse | null>>(
       `${this.urlCargaLayoutPlaza}/ultimaCarga`,
@@ -56,12 +50,21 @@ export class CargaPlazaService {
     );
   }
 
-  registrarCargaPlazas(idConvocatoria: number, archivo: File): Observable<HttpRespuesta<PlazaCargaLayoutResponse[]>> {
+  validarPlazasOcupadas(idConvocatoria: number): Observable<HttpRespuesta<ValidacionCargaPlaza>> {
+    const params = new HttpParams().set('idConvocatoria', String(idConvocatoria));
+
+    return this.http.get<HttpRespuesta<ValidacionCargaPlaza>>(
+      `${this.urlAdministracionPlazas}/plazaValidacion`,
+      { params }
+    );
+  }
+
+  registrarCargaPlazas(idConvocatoria: number, archivo: File): Observable<HttpRespuesta<RespuestaRegistroCargaPlaza>> {
     const formData = new FormData();
     formData.append('idConvocatoria', String(idConvocatoria));
     formData.append('archivo', archivo, archivo.name);
 
-    return this.http.post<HttpRespuesta<PlazaCargaLayoutResponse[]>>(
+    return this.http.post<HttpRespuesta<RespuestaRegistroCargaPlaza>>(
       `${this.urlCargaLayoutPlaza}/cargarArchivo`,
       formData
     );
@@ -72,15 +75,19 @@ export class CargaPlazaService {
     const fin = this.obtenerFechaHora(data?.stpFinCarga);
 
     return {
+      nombreArchivo: data?.nomArchivo ?? null,
       fechaInicioFormateada: inicio.fecha,
       horaInicioFormateada: inicio.hora,
       fechaFinFormateada: fin.fecha,
       horaFinFormateada: fin.hora,
+      totalRegistros: data?.numTotalRegistros ?? null,
+      totalRegistrosValidos: data?.numRegistrosValidos ?? null,
+      totalRegistrosRechazados: data?.numRegistrosRechazados ?? null,
       totalPlazasOfertadas: data?.numPlazasOfertadas ?? null,
       totalPlazasCredito: data?.numPlazasConCredito ?? null,
       idEstatusCarga: data?.idEstatusCarga ?? 0,
       procesoEnEjecucion: this.esCargaEnProceso(data),
-      tienePlazasAsignadas: false,
+      mensajeResultado: data?.refMensajeResultado ?? null,
       errores: [],
     };
   }
