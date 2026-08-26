@@ -91,6 +91,11 @@
             <i class="cme-upload upload-zone__loading-icon" style="font-size: 1.3rem"></i>
             <p>Cargando plazas...</p>
           </div>
+          } @else if (validandoPlazas()) {
+          <div class="upload-zone__content">
+            <i class="cme-upload upload-zone__loading-icon" style="font-size: 1.3rem"></i>
+            <p>Validando plazas ocupadas...</p>
+          </div>
           } @else if (archivoSeleccionado()) {
           <div class="upload-zone__content">
             <i class="cme-upload" style="font-size: 1.3rem"></i>
@@ -113,6 +118,9 @@
           @for (error of erroresCarga(); track $index) {
           <li class="my-1">
             <p class="texto-lista header-tab-documentacion">
+              @if (obtenerRegistroError(error) !== '-') {
+              Fila {{ obtenerRegistroError(error) }} -
+              }
               Plaza {{ obtenerPlazaError(error) }} - OOAD {{ obtenerOoadError(error) }}
               @if (error.mensaje) {
               <span>: {{ error.mensaje }}</span>
