@@ -64,6 +64,8 @@ export class DetalleMesasComponent {
 
   minDate: Date = new Date();
   maxDate: Date = new Date();
+  private idMesaConvocatoriaSincronizada: number | undefined;
+
   ngOnInit(): void {
     this.actualizarRangoFechasConvocatoria(this.convocatoriaSeleccionada());
   }
@@ -102,6 +104,15 @@ export class DetalleMesasComponent {
   }
 
   private actualizarRangoFechasConvocatoria(convocatoria: MesaConfiguracion | undefined): void {
+    const idMesaConvocatoria = convocatoria?.idMesaConvocatoria;
+    const esMismaConvocatoria = this.idMesaConvocatoriaSincronizada === idMesaConvocatoria;
+
+    if (esMismaConvocatoria) {
+      return;
+    }
+
+    this.idMesaConvocatoriaSincronizada = idMesaConvocatoria;
+
     const fechaInicio = this.obtenerFechaValida(convocatoria?.fechaInicio);
     const fechaFin = this.obtenerFechaValida(convocatoria?.fechaFin);
 
