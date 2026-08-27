@@ -3,7 +3,7 @@ import {CommonModule} from '@angular/common';
 import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
 import { Select } from 'primeng/select';
 import {Button} from 'primeng/button';
-import { AsignacionRequest, InfoAspirante, TipoAsignacion } from '@models/datosAsignacion';
+import { agregarIdParticipacionSiap, AsignacionRequest, InfoAspirante, TipoAsignacion } from '@models/datosAsignacion';
 import { AsignacionPlazaService } from '@services/asignacion-plaza.service';
 import { TipoDropdown } from '@models/tipo-dropdown.interface';
 import { mapearArregloTipoDropdown } from '@utils/funciones';
@@ -149,7 +149,7 @@ export class AsignacionSustitucionComponent {
       especialidadLabel: this.labelFrom(this.especialidadOptions, v.especialidad),
     };
 
-    let request: AsignacionRequest = {
+    let request: AsignacionRequest = agregarIdParticipacionSiap({
       idUsuario: this.infoAspirante.idUsuario,
       idTipoAsignacionPlaza: TipoAsignacion.Sustitucion08,
       cveOoad: v.ooad,
@@ -158,7 +158,7 @@ export class AsignacionSustitucionComponent {
       desZona: this.resumenAsignacion.zonaLabel,
       cveEspecialidad: v.especialidad,
       desEspecialidad: this.resumenAsignacion.especialidadLabel
-    }
+    }, this.infoAspirante)
     //console.log(request);
     this.asignacionPlazaService.asignarPlaza(request)
     .pipe(finalize(() => this.isSaving = false))

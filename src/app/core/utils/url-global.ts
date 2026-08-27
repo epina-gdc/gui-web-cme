@@ -12,6 +12,7 @@ export const NAV = {
   asignacion: 'asignacion-plaza',
   reporteAsignacion: 'reporte-asignacion',
   cargaCalificaciones: 'carga-calificaciones',
+  cargaMedicosSustitutos: 'carga-medicos-sustitutos',
   asistenciaExtraordinaria: 'asistencia-extraordinaria',
   visualizacionAsistencia: 'visualizacion-asistencia',
   tableroInformacionAsistencia: 'tablero-asistencia',
