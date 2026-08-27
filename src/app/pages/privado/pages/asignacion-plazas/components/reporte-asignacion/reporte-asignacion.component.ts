@@ -44,6 +44,9 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
   private readonly alertaService: AlertService = inject(AlertService);
   private readonly mensajes: Mensajes = inject(Mensajes);
   private readonly destroy$ = new Subject<void>();
+  private MSGHU052A: string = 'La fecha de inicio y la fecha de fin son obligatorios.';
+  private MSGHU052B: string = 'La fecha de inicio no debe ser mayor a la fecha de fin.';
+  private MSGHU052C: string = 'La fechas deben de estar dentro de la convocatoria.';
 
   form: FormGroup = this.fb.group({
     cveOoad: [null],
@@ -85,7 +88,7 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
 
   onBuscar(): void {
     if (!this.validarBusqueda()) return;
-
+    console.log('onBuscar called', this.form.value);
     this.cargando.set(true);
     this.busquedaRealizada.set(true);
 
@@ -237,7 +240,6 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
       .subscribe({
         next: (response) => {
           this.convocatoriasCatalogo = ((response?.respuesta ?? []) as Convocatoria[])
-            .filter((convocatoria) => convocatoria.tipo?.idTipoConvocatoria === 1);
           this.convocatorias = [
 
             ...this.convocatoriasCatalogo.map((convocatoria) => ({
@@ -332,7 +334,7 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
   private validarBusqueda(): boolean {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      this.alertaService.error(this.mensajes.MSG082);
+      this.alertaService.error(this.MSGHU052A);
       return false;
     }
 
@@ -340,12 +342,12 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
     const fechaFin = this.crearFecha(this.form.get('fechaFin')?.value);
 
     if (!fechaInicio || !fechaFin || fechaInicio > fechaFin) {
-      this.alertaService.error(this.mensajes.MSG082);
+      this.alertaService.error(this.MSGHU052B);
       return false;
     }
 
     if (!this.fechasDentroDeConvocatoria(fechaInicio, fechaFin)) {
-      this.alertaService.error(this.mensajes.MSG082);
+      this.alertaService.error(this.MSGHU052C);
       return false;
     }
 
