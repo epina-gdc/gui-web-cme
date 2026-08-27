@@ -65,19 +65,30 @@
 
 .info-actions {
   display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  align-items: center;
   justify-content: flex-end;
-
-  :host ::ng-deep .p-button.p-button-text {
-    padding: 0.25rem 0.5rem;
-  }
-
-  :host ::ng-deep .p-button-label {
-    font-weight: 500;
-  }
+  flex-wrap: wrap;
+  gap: 1rem 1.75rem;
+  width: 100%;
 }
 
+.info-actions__item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.5rem;
+  color: #63c2ea;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.info-actions__item p {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.2;
+  text-align: left;
+}
 .info-grid {
   margin-top: 0.75rem;
   display: grid;
@@ -248,7 +259,7 @@
   }
 
   .info-actions {
-    justify-content: flex-start;
+    justify-content: flex-end;
   }
 
   .info-grid {

@@ -4,6 +4,7 @@ export class AsignacionRequest{
     idTipoAsignacionPlaza!:number;
     idPlaza?:number;
     idMotivoRechazo?:number;
+    idParticipacion?:number;
     cveOoad?:string;
     desOoad?:string;
     cveZona?:string;
@@ -48,6 +49,9 @@ export class InfoAspirante {
     correoAdicional?:string;
     idTipoConvocatoria!:number;
     tipoConvocatoria!:string;
+    indPerfilInterno?: number;
+    idParticipacion?: number;
+    idOrigenParticipacion?: number;
 }
 
 export class AsignacionPlaza {
@@ -124,7 +128,35 @@ export interface CedulaResponse {
     respuesta: Cedula; 
 }
 
+export const OrigenParticipacion = {
+    Siap: 2
+} as const;
 
+export function agregarIdParticipacionSiap(request: AsignacionRequest, aspirante?: InfoAspirante | null): AsignacionRequest {
+    const idParticipacion = obtenerNumero(aspirante?.idParticipacion);
+
+    if (esOrigenParticipacionSiap(aspirante) && idParticipacion !== null) {
+        return {
+            ...request,
+            idParticipacion
+        };
+    }
+
+    return request;
+}
+
+export function esOrigenParticipacionSiap(aspirante?: InfoAspirante | null): boolean {
+    return obtenerNumero(aspirante?.idOrigenParticipacion) === OrigenParticipacion.Siap;
+}
+
+function obtenerNumero(value: number | string | null | undefined): number | null {
+    if (value === null || value === undefined || value === '') {
+        return null;
+    }
+
+    const numberValue = Number(value);
+    return Number.isNaN(numberValue) ? null : numberValue;
+}
 export const TipoAsignacion = {
     PlazaOrdinaria: 1,
     PlazaCoplamar: 2,

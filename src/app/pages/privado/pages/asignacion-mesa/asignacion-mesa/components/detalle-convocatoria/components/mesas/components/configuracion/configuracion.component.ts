@@ -66,7 +66,16 @@ export class ConfiguracionComponent {
   constructor(private fb: FormBuilder) {
     effect(() => {
       if (this.accionActualiza()) {
-        this.obtenerListados();
+        this.obtenerEspecialidadesPorRama();
+      }
+    });
+
+    effect(() => {
+      const rama = this.ramaActual();
+      const convocatoria = this.convocatoriaSeleccionada();
+
+      if (rama?.id && convocatoria?.idMesaConvocatoria && convocatoria?.idConvocatoria) {
+        this.obtenerEspecialidadesPorRama();
       }
     });
   }
@@ -93,7 +102,7 @@ export class ConfiguracionComponent {
   maxDate: Date = new Date();
 
   ngOnInit(): void {
-    this.obtenerListados();
+    this.obtenerTurnos();
     this.formulario = this.fb.group({
       fecAtencion: ['', Validators.required],
       numMesa: ['', Validators.required],
@@ -129,6 +138,11 @@ export class ConfiguracionComponent {
   }
 
   obtenerListados(): void {
+    this.obtenerTurnos();
+    this.obtenerEspecialidadesPorRama();
+  }
+
+  obtenerTurnos(): void {
     // listado de mesas
     /*this.asignacionMesaService.getMesasDisponibilidad(this.convocatoriaSeleccionada()?.idMesaConvocatoria as number).subscribe({
       next: (response: any) => {
@@ -168,9 +182,19 @@ export class ConfiguracionComponent {
       }
     });
 
-    // listado de especialidades por rama 
+  }
 
-    this.asignacionMesaService.getEspecialidadesRama(this.ramaActual()?.id as number, this.convocatoriaSeleccionada()?.idMesaConvocatoria as number, this.convocatoriaSeleccionada()?.idConvocatoria as number).subscribe({
+  obtenerEspecialidadesPorRama(): void {
+    const rama = this.ramaActual();
+    const convocatoria = this.convocatoriaSeleccionada();
+
+    if (!rama?.id || !convocatoria?.idMesaConvocatoria || !convocatoria?.idConvocatoria) {
+      this.especialidades = [];
+      return;
+    }
+
+    // listado de especialidades por rama
+    this.asignacionMesaService.getEspecialidadesRama(rama.id, convocatoria.idMesaConvocatoria, convocatoria.idConvocatoria).subscribe({
       next: (response: any) => {
         //console.log('Respuesta:', response);
         this.especialidades = response.respuesta;
@@ -208,7 +232,6 @@ export class ConfiguracionComponent {
         next: (response: any) => {
           //console.log('Respuesta:', response);
           this.limpiarFormulario();
-          this.obtenerListados();
           this.convocatoriaEstado.notifyRefresh();
           this.accionActualiza.update((value) => true);
           setTimeout(() => {

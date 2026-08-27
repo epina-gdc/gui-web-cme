@@ -1,0 +1,156 @@
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" [closable]="true" styleClass="custom-confirm-dialog">
+</p-confirmDialog>
+<div class="flex gap-4">
+  <div class="flex flex-column w-100 border-round-xl">
+    <div class="carga-calificaciones-background flex align-items-center border-round-md">
+      <div class="col-12 flex flex-column justify-content-center p-6">
+        <h2 class="titulo-asignaciones">Carga de médicos sustitutos Mini Draft</h2>
+      </div>
+    </div>
+
+    <div class="mt-3 p-4 bg-white border-round-xl">
+      <span class="titulo-documento text-color">Convocatorias disponibles</span>
+      <div class="flex flex-column">
+        <form [formGroup]="form">
+          <div class="lg:col-4 col-12 my-4">
+            <div class="flex justify-content-between">
+              <label class="field-label" for="convocatoria">Convocatoria</label>
+            </div>
+            <p-select [options]="options" formControlName="convocatoria" optionLabel="label" optionValue="value"
+                      placeholder="Selecciona una convocatoria" class="w-full"/>
+          </div>
+        </form>
+        <div class="flex loader">
+          @switch (estado()) {
+            @case ('EN PROCESO') {
+              <div class="loader-container">
+                <div class="outer-circle"></div>
+                <div class="inner-circle"></div>
+                <div class="pulse-small"></div>
+                <div class="pulse-large"></div>
+              </div>
+            }
+            @case ('FINALIZADO') {
+              <div class="ico-estatus me-3 completado">
+                <i class="cme-check" style="font-size: 1.2rem;"></i>
+              </div>
+            }
+            @case ('INTERRUMPIDO') {
+              <div class="ico-estatus me-3 interrumpido">
+                <i class="cme-cross" style="font-size: 1.2rem;"></i>
+              </div>
+            }
+            @default {
+              <div class="loader-container">
+                <div class="outer-circle"></div>
+                <div class="inner-circle"></div>
+                <div class="pulse-small"></div>
+                <div class="pulse-large"></div>
+              </div>
+            }
+          }
+
+          <div class="flex flex-column w-full">
+            <div class="flex align-items-center">
+              <p class="porcentaje-fecha-carga text-start me-3">{{ porcentaje() | number: '1.0-2' }}%</p>
+              <p class="texto-procesando">{{ textoEstatus() }}</p>
+            </div>
+            <div class="progress">
+              <div [ngClass]="claseBarraProgreso()" [style.width.%]="porcentaje()"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="block lg:flex gap-4">
+          <div class="w-full">
+            <div class="flex-wrap lg:flex justify-content-between gap-2">
+              <div class="flex">
+                <div class="calendario me-2">
+                  <i class="cme-calendario-primero z-1" style="font-size: 1.5rem; color: #fff"></i>
+                </div>
+                <p class="ultima-fecha-entrega mb-3 lg:m-0">Última fecha de carga</p>
+              </div>
+              <div class="flex w-auto justify-content-start p-3 gap-2 bg-card-indicador border-round-lg mb-3 lg:m-0">
+                <div class="flex flex-column">
+                  <p class="titulo-indicador-fecha">Fecha inicio</p>
+                  <p class="indicador-fecha">{{ carga().fechaInicio ? (carga().fechaInicio | date: 'dd/MM/yyyy') : '-' }}</p>
+                </div>
+                <div class="flex flex-column">
+                  <p class="titulo-indicador-fecha">Hora</p>
+                  <p class="indicador-fecha">{{ carga().fechaInicio ? (carga().fechaInicio | date: 'HH:mm') : '-' }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="w-full">
+            <div class="flex-wrap lg:flex justify-content-between gap-2">
+              <div class="flex w-auto justify-content-start p-3 gap-2 bg-card-indicador border-round-lg mb-3 lg:m-0">
+                <div class="flex flex-column">
+                  <p class="titulo-indicador-fecha">Fecha fin</p>
+                  <p class="indicador-fecha">{{ carga().fechaFin ? (carga().fechaFin | date: 'dd/MM/yyyy') : '-' }}</p>
+                </div>
+                <div class="flex flex-column">
+                  <p class="titulo-indicador-fecha">Hora</p>
+                  <p class="indicador-fecha">{{ carga().fechaFin ? (carga().fechaFin | date: 'HH:mm') : '-' }}</p>
+                </div>
+              </div>
+              <div class="flex align-items-center">
+                <p-button type="button" [disabled]="botonDeshabilitado()"
+                          (onClick)="abrirModal()" label="Cargar información"/>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap justify-content-between mt-2">
+          <div class="col-12 lg:col-6">
+            <div class="p-3 bg-card-indicador border-round-lg">
+              <span class="titulo-totales-calificacion">Total de médicos cargados</span>
+              <div class="mt-1 border-top-2 border-indigo-200">
+                <span class="totales-calificacion mt-2">{{ carga().totalRegistros | number: '1.0-0' }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 lg:col-6">
+            <div class="p-3 bg-card-indicador border-round-lg">
+              <span class="titulo-totales-calificacion">OOAD's procesadas</span>
+              <div class="mt-1 border-top-2 border-indigo-200">
+                <span class="totales-calificacion mt-2">
+                  {{ carga().ooadProcesadas | number: '1.0-0' }} de {{ carga().totalOoad | number: '1.0-0' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        @if (estado() === 'INTERRUMPIDO' && carga().mensajeResultado) {
+          <div class="mt-3 p-3 bg-card-indicador border-round-lg">
+            <p class="texto-lista header-tab-documentacion">{{ carga().mensajeResultado }}</p>
+          </div>
+        }
+      </div>
+      <p-card class="empty-border mt-3" [header]="'Proceso de Carga de médicos sustitutos'">
+        <div class="flex flex-wrap justify-content-between">
+          <div class="p-3 col-12 lg:col-6">
+            <div class="card-info-calificaciones p-3">
+              <p class="proceso-carga-calificacion">Proceso Automático</p>
+              <ul>
+                @for (proceso of listaProcesoAutomatico; track proceso) {
+                  <li class="my-1"><p class="texto-lista header-tab-documentacion">{{ proceso }}</p></li>
+                }
+              </ul>
+            </div>
+          </div>
+          <div class="p-3 col-12 lg:col-6">
+            <div class="card-info-calificaciones p-3 h-full">
+              <p class="proceso-carga-calificacion">Importante</p>
+              <div class="mt-6">
+                <p class="header-tab-documentacion">El sistema valida que la información esté cargada antes de la generación y envío de citas.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-card>
+    </div>
+  </div>
+</div>

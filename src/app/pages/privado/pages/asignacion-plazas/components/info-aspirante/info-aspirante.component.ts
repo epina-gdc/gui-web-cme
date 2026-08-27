@@ -3,7 +3,7 @@ import { Card } from "primeng/card";
 import { Avatar } from 'primeng/avatar';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { CommonModule } from '@angular/common';
-import { AsignacionRequest, BusquedaResponse, CedulaResponse, Plaza, TipoAsignacion } from '@models/datosAsignacion';
+import { agregarIdParticipacionSiap, AsignacionRequest, BusquedaResponse, CedulaResponse, esOrigenParticipacionSiap, Plaza, TipoAsignacion } from '@models/datosAsignacion';
 import { DocumentoService } from '@services/documentos.service';
 import { ConfirmationService } from 'primeng/api';
 import { DialogModule } from 'primeng/dialog';
@@ -34,6 +34,7 @@ import { finalize } from 'rxjs';
 export class InfoAspiranteComponent {
   @Input() asignacion!: BusquedaResponse;
   @Input() refreshKey!: number;
+  @Input() mostrarCambioRama = true;
   //@Output() asignacionRegistrada = new EventEmitter<{ id: number }>();
 
 
@@ -86,6 +87,10 @@ export class InfoAspiranteComponent {
 
   ngOnChanges(): void {
     this.obtenerAspirante();
+  }
+
+  get mostrarReimpresionVerificacion(): boolean {
+    return !esOrigenParticipacionSiap(this.asignacion?.datosGenerales);
   }
 
   obtenerAspirante() {
@@ -198,7 +203,7 @@ export class InfoAspiranteComponent {
   }
 
   imprimirCedula(){
-    this.descargaCedula(this.idUsuario);
+    this.descargaCedula(this.asignacion.datosGenerales?.idParticipacion ?? 0);
   }
 
   asignarPlaza(tipo: number, motivoRechazo?: number) {
@@ -206,11 +211,11 @@ export class InfoAspiranteComponent {
 
     this.isSaving = true;
 
-    let request: AsignacionRequest = {
+    let request: AsignacionRequest = agregarIdParticipacionSiap({
       idUsuario: this.idUsuario,
       idTipoAsignacionPlaza: tipo,
       idMotivoRechazo: motivoRechazo
-    }
+    }, this.asignacion.datosGenerales)
     this.asignacionService.asignarPlaza(request)
     .pipe(finalize(() => this.isSaving = false))
     .subscribe({

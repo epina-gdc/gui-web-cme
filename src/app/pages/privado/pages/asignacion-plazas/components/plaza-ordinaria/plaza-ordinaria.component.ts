@@ -389,7 +389,7 @@ export class PlazaOrdinariaComponent extends GeneralComponent implements OnInit{
         'border-bottom': '17px solid #41ABD9',
         'border-radius': '9px'
       },
-      data: {...plaza},
+      data: {...plaza, infoAspirante: this.infoAspirante},
       modal: true,
       width: '848px',
       height: '55vh',

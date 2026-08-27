@@ -65,8 +65,8 @@ export class AsignacionPlazaService {
     )
   }
 
-  descargarCedula(idusuario: number): Observable<CedulaResponse> {
-      let ruta = `${this.urlAsignacion}plaza/imprimirCedulaAsignacion?idUsuarioAspirante=${idusuario}`;
+  descargarCedula(idParticipacion: number): Observable<CedulaResponse> {
+      let ruta = `${this.urlAsignacion}plaza/imprimirCedulaAsignacion?idParticipacion=${idParticipacion}`;
       return this.http.get<CedulaResponse>(ruta, {headers: this.header}).pipe(
           catchError(this.handleError),
       );

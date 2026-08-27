@@ -3,12 +3,18 @@ export interface GuardarPropuesta {
   idSeccionSindical: number
 }
 
+export interface ConsultaPropuestaSindicalResponse {
+  datosGenerales: DetallePropuestaSindical
+}
+
 export interface DetallePropuestaSindical {
   idPropuestaSindical: number,
   refFolioPropuesta: string,
   fechaNacimiento: string,
   idUsuario: number,
   idParticipacion: number,
+  idOrigenParticipacion?: number | string | null,
+  origenParticipacion?: string | null,
   idConvocatoria: number,
   idAsignacion: number,
   idEstatusValidacion: number,
