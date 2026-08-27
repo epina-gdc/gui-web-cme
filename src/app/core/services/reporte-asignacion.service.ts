@@ -14,7 +14,7 @@ import { catchError, map, Observable, throwError } from 'rxjs';
 })
 export class ReporteAsignacionService {
   private readonly version = '/v1/';
-  private readonly urlReporte = `${environment.api.apiAsignacion}${this.version}reportes-asignacion`;
+  private readonly urlReporte = `${environment.api.apiAsignacionReporte}${this.version}reportes-asignacion`;
   private readonly http: HttpClient = inject(HttpClient);
 
   private readonly header = new HttpHeaders({
