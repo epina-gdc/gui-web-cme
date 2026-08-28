@@ -27,4 +27,5 @@ export const NAV = {
   nuevaPlaza: 'nueva-plaza',
   generarNuevaPlaza: 'generar-plaza',
   cargaPlaza: 'carga-plaza',
+  reportePlaza: 'reporte-plaza'
 };

@@ -40,6 +40,8 @@ import { GestionPlazaComponent } from './pages/gestion-plazas/components/gestion
 import { NuevaPlazaComponent } from './pages/gestion-plazas/components/nueva-plaza/nueva-plaza.component';
 import { CargaPlazaComponent } from './pages/gestion-plazas/components/carga-plaza/carga-plaza.component';
 import { nuevaPlazaResolver } from '../../core/resolvers/nueva-plaza.resolver';
+import { ReportePlazasComponent } from './pages/gestion-plazas/components/reporte-plazas/reporte-plazas.component';
+import { reportePlazaResolver } from '../../core/resolvers/reporte-plazas.resolver';
 
 const routes: Routes = [{
   path: '',
@@ -148,6 +150,13 @@ const routes: Routes = [{
       component: NuevaPlazaComponent,
       resolve: {
         catalogos: nuevaPlazaResolver,
+      }
+    },
+    {
+      path: NAV.reportePlaza,
+      component: ReportePlazasComponent,
+      resolve: {
+        respuesta: reportePlazaResolver,
       }
     },
     {
