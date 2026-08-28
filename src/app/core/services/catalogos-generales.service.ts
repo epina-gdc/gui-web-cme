@@ -21,6 +21,8 @@ import { Convocatoria, ConvocatoriaActiva } from '@models/convocatoria.interface
 import { Especialidades } from '@models/especialidad';
 import { TipoDocumentoEspecialidad } from '@models/tipo-documento-especialidad.interface';
 import { EstatusPlaza } from '@models/estatusPlaza';
+import { CategoriaPlaza } from '@models/cat-categoria.interface';
+import { TipoUnidad } from '@models/cat-tipo-unidad.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -357,6 +359,26 @@ export class CatalogosGeneralesService {
       })
     );
   }
+
+  getLstCategorias(): Observable<HttpRespuesta<CategoriaPlaza[]>>{
+    return this.http.get<HttpRespuesta<CategoriaPlaza[]>>(this.serverEndPointURLCatalogos + '/plazas/categorias', { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<CategoriaPlaza[]>) => {
+        return response;
+      })
+    );
+  }
+
+  getLstTiposUnidad(): Observable<HttpRespuesta<TipoUnidad[]>>{
+    return this.http.get<HttpRespuesta<TipoUnidad[]>>(this.serverEndPointURLCatalogos + '/plazas/tipos-unidad', { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<TipoUnidad[]>) => {
+        return response;
+      })
+    );
+  }
+
+
 
   private handleError(error: HttpErrorResponse) {
 
