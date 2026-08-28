@@ -1,3 +1,4 @@
+import { CatalogosGeneralesService } from '@services/catalogos-generales.service';
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -7,12 +8,14 @@ import { ActivatedRoute } from '@angular/router';
 import { GeneralComponent } from '@components/general.component';
 import { PillComponent } from '@components/pill/pill.component';
 import { TipoDropdown } from '@models/tipo-dropdown.interface';
+import { ReportePlazasService } from '@services/reporte-plazas.service';
 import { mapearArregloTipoDropdown } from '@utils/funciones';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { Select } from 'primeng/select';
 import { TableModule } from 'primeng/table';
+import { distinctUntilChanged, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-reporte-plazas',
@@ -34,6 +37,7 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
 
   fb: FormBuilder = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
+  private readonly reportePlazasService: ReportePlazasService = inject(ReportePlazasService);
 
   lstReportePlazas: WritableSignal<any> = signal([]);
 
@@ -68,7 +72,19 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
         this.lstEspecialidades = mapearArregloTipoDropdown(especialidades,'desEspecialidad','cveEspecialidad');
         this.lstCategorias = mapearArregloTipoDropdown(categorias.respuesta, 'descCategoria','cveCategoria');
         this.lstUnidades = mapearArregloTipoDropdown(tiposUnidades.respuesta, 'descTipoUnidad','cveTipoUnidad');
-      });
+    });
+
+    this.form.controls['ooad'].valueChanges
+      .pipe(
+        distinctUntilChanged(),
+        switchMap(ooad => this._CatalogoGenService.getLstZonas(ooad)),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(respuesta => {
+        if(respuesta.exito){
+          this.lstZonas = mapearArregloTipoDropdown(respuesta.respuesta, 'desZona','cveZona');
+        }
+    });
   }
 
   inicialziarFormulario(): FormGroup{
@@ -82,6 +98,8 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
     })
 
   }
+
+
 
 
   onLimpiar() {
