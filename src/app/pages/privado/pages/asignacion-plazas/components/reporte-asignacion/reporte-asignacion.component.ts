@@ -473,7 +473,8 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
     const fechaValida = this.crearFecha(fecha);
     if (!fechaValida) return null;
 
-    return `${fechaValida.getFullYear()}-${this.rellenarDosDigitos(fechaValida.getMonth() + 1)}-${this.rellenarDosDigitos(fechaValida.getDate())}`;
+    //return `${fechaValida.getFullYear()}-${this.rellenarDosDigitos(fechaValida.getMonth() + 1)}-${this.rellenarDosDigitos(fechaValida.getDate())}`;
+    return `${this.rellenarDosDigitos(fechaValida.getDate())}/${this.rellenarDosDigitos(fechaValida.getMonth() + 1)}/${fechaValida.getFullYear()}`;
   }
 
   private obtenerMarcaTiempo(): string {
