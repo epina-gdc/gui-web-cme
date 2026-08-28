@@ -44,8 +44,8 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
   private readonly alertaService: AlertService = inject(AlertService);
   private readonly mensajes: Mensajes = inject(Mensajes);
   private readonly destroy$ = new Subject<void>();
-  private MSGHU052A: string = 'La fecha de inicio y la fecha de fin son obligatorios.';
-  private MSGHU052B: string = 'La fecha de inicio no debe ser mayor a la fecha de fin.';
+  private MSGHU052A: string = 'Fecha inicio y fecha fin son obligatorias.';
+  private MSGHU052B: string = 'La fecha fin no puede ser menor a la fecha inicio.';
   private MSGHU052C: string = 'La fechas deben de estar dentro de la convocatoria.';
 
   form: FormGroup = this.fb.group({
