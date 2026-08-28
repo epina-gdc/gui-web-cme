@@ -25,6 +25,7 @@ import {AdjuntoOpinion, OpinionTecnicaRespuesta} from '@models/opnion-tecnia-res
 import {AlertService} from '@services/alert.service';
 import {UserService} from '@services/user.service';
 import {SesionUser} from '@models/sesion-user.interface';
+import { PERFIL_ADMINISTRADOR } from '@utils/constants';
 
 
 @Component({
@@ -45,6 +46,8 @@ import {SesionUser} from '@models/sesion-user.interface';
   styleUrl: './verificacion-documentos.component.scss',
 })
 export class VerificacionDocumentosComponent extends GeneralComponent implements OnInit {
+  private readonly ID_PERFIL_ADMINISTRADOR = PERFIL_ADMINISTRADOR;
+
   @ViewChild('op') op!: Popover;
 
   dummies = [{ label: 'Dummie 1', value: 'Dummie 1' }, { label: 'Dummie 2', value: 'Dummie 2' }];
@@ -76,6 +79,7 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
 
   userService = inject(UserService);
   userData: SesionUser | null = null;
+  indPerfilInterno: number | null = null;
 
   constructor(
     private readonly activatedRoute: ActivatedRoute,
@@ -87,7 +91,10 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
 
   ngOnInit(): void {
     this.userService.userData$.subscribe(user => this.userData = user);
-    this.paginar();
+    this.activatedRoute.data.subscribe(data => {
+      this.indPerfilInterno = this.obtenerIndicadorPerfilInterno(data['indPerfilInterno']);
+      this.paginar();
+    });
   }
 
   obtenerCatalogos() {
@@ -165,7 +172,7 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
 
 
   filtros(): VerificacionDocsInterface {
-    return {
+    const filtros: VerificacionDocsInterface = {
       page: this.paginaActual,
       size: this.rows,
 
@@ -173,7 +180,13 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
       cveEspecialidad: (this.filtroForm.get('especialidad')?.value)?.value != 0 ? (this.filtroForm.get('especialidad')?.value)?.value : null,
       matriculaFolio: this.filtroForm.get('matricula')?.value,
 
+    };
+
+    if (this.esAdministrador()) {
+      filtros.indPerfilInterno = this.indPerfilInterno ?? 1;
     }
+
+    return filtros;
   }
 
   filtrosExcel(): VerificacionDocsExcelInterface {
@@ -362,5 +375,23 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
       Object.entries(obj).filter(([_, valor]) => valor !== undefined)
     ) as Partial<T>;
   }
+  private obtenerIndicadorPerfilInterno(indicadorRuta: unknown) {
+    return this.obtenerIndicadorValido(indicadorRuta);
+  }
+
+  private obtenerIndicadorValido(valor: unknown) {
+    if (valor === null || valor === undefined || valor === '') {
+      return null;
+    }
+
+    const indicador = Number(valor);
+    return [0, 1].includes(indicador) ? indicador : null;
+  }
+
+  private esAdministrador() {
+    const usuario = this.userData ?? this.authService.usuarioSesion;
+    return usuario?.idPerfil === this.ID_PERFIL_ADMINISTRADOR;
+  }
+
 
 }

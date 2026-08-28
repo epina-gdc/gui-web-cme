@@ -63,6 +63,28 @@ const routes: Routes = [{
       }
     },
     {
+      path: NAV.verificacionDocumentos + '/1',
+      component: VerificacionDocumentosComponent,
+      canActivate: [validadorGuard],
+      data: {
+        indPerfilInterno: 1
+      },
+      resolve: {
+        respuesta: verficacionDocsResolver
+      }
+    },
+    {
+      path: NAV.verificacionDocumentos + '/2',
+      component: VerificacionDocumentosComponent,
+      canActivate: [validadorGuard],
+      data: {
+        indPerfilInterno: 0
+      },
+      resolve: {
+        respuesta: verficacionDocsResolver
+      }
+    },
+    {
       path: NAV.documentacionAspirante,
       component: DocumentacionComponent,
       resolve: {

@@ -42,7 +42,7 @@ const checkValidatorProfile = (): Observable<boolean | UrlTree> => {
         return of(router.createUrlTree([`/privado/${destino}`]));
       }
 
-      if ([4, 5].includes(idPerfil)) {
+      if ([1, 4, 5].includes(idPerfil)) {
         return of(true);
       }
 
