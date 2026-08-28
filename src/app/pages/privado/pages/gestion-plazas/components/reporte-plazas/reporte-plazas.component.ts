@@ -1,10 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal, WritableSignal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 import { GeneralComponent } from '@components/general.component';
 import { PillComponent } from '@components/pill/pill.component';
 import { TipoDropdown } from '@models/tipo-dropdown.interface';
+import { mapearArregloTipoDropdown } from '@utils/funciones';
 import { Button } from 'primeng/button';
 import { InputText } from 'primeng/inputtext';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
@@ -30,15 +33,16 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
 
 
   fb: FormBuilder = inject(FormBuilder);
+  private readonly destroyRef = inject(DestroyRef);
 
   lstReportePlazas: WritableSignal<any> = signal([]);
 
 
-  lstOoad: TipoDropdown[] = [];
-  lstZona: TipoDropdown[] = [];
-  lstEspecialidad: TipoDropdown[] = [];
-  lstCategoria: TipoDropdown[] = [];
-  lstUnidad: TipoDropdown[] = [];
+  lstOoads: TipoDropdown[] = [];
+  lstZonas: TipoDropdown[] = [];
+  lstEspecialidades: TipoDropdown[] = [];
+  lstCategorias: TipoDropdown[] = [];
+  lstUnidades: TipoDropdown[] = [];
 
   tituloModulo: string = "Reporte de plazas";
   tituloTabla: string = "Reporte de plazas";
@@ -49,12 +53,22 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
   totalRecords: number = 0;
 
 
-  constructor(){
+  constructor(private activatedRoute: ActivatedRoute){
     super();
   }
 
   ngOnInit(): void {
     this.form = this.inicialziarFormulario();
+
+    this.activatedRoute.data
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(({respuesta}) => {
+        const {categorias, especialidades, ooads, tiposUnidades} = respuesta;
+        this.lstOoads = mapearArregloTipoDropdown(ooads.respuesta,'desOoad','cveOoad');
+        this.lstEspecialidades = mapearArregloTipoDropdown(especialidades,'desEspecialidad','cveEspecialidad');
+        this.lstCategorias = mapearArregloTipoDropdown(categorias.respuesta, 'descCategoria','cveCategoria');
+        this.lstUnidades = mapearArregloTipoDropdown(tiposUnidades.respuesta, 'descTipoUnidad','cveTipoUnidad');
+      });
   }
 
   inicialziarFormulario(): FormGroup{
