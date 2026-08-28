@@ -6,7 +6,7 @@ import {CurrencyPipe} from '@angular/common';
 import {TooltipModule} from 'primeng/tooltip';
 import {EstadoOfertaService} from '@services/estado-oferta.service';
 import {Button} from 'primeng/button';
-import { AsignacionRequest, Plaza } from '@models/datosAsignacion';
+import { agregarIdParticipacionSiap, AsignacionRequest, InfoAspirante, Plaza } from '@models/datosAsignacion';
 import { AlertService } from '@services/alert.service';
 import { AsignacionPlazaService } from '@services/asignacion-plaza.service';
 import { finalize } from 'rxjs';
@@ -29,7 +29,8 @@ export class DetallePlazaComponent implements OnInit{
   data: {
     plaza: Plaza,
     idUsuario: number,
-    tipoAsignacion: number
+    tipoAsignacion: number,
+    infoAspirante?: InfoAspirante
   } = {plaza: new Plaza(), idUsuario: 0, tipoAsignacion: 0};
   plazaSeleccionada: Plaza = new Plaza();
   alertaService: AlertService = inject(AlertService);
@@ -64,11 +65,11 @@ export class DetallePlazaComponent implements OnInit{
     this.isSaving = true;
 
 
-    let request: AsignacionRequest = {
+    let request: AsignacionRequest = agregarIdParticipacionSiap({
       idUsuario: this.data.idUsuario,
       idTipoAsignacionPlaza: this.data.tipoAsignacion,
       idPlaza: this.data.plaza.idPlaza,
-    }
+    }, this.data.infoAspirante)
     //console.log(request);
     this.asignacionPlazaService.asignarPlaza(request)
       .pipe(finalize(() => this.isSaving = false))

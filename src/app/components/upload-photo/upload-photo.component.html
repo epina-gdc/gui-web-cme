@@ -29,15 +29,14 @@
         <div class="flex flex-wrap justify-content-between align-items-center flex-1 gap-2">
           <div class="flex gap-2">
             <p-button (onClick)="choose($event, chooseCallback)" icon="pi pi-images" [rounded]="true"
-                      [outlined]="true"
-                      id="choose_btn"/>
+                      [outlined]="true" [disabled]="disableUpload" id="choose_btn"/>
 
             <p-button (onClick)="uploadEvent(uploadCallback)" icon="pi pi-cloud-upload" [rounded]="true"
                       [outlined]="true"
-                      severity="success" [disabled]="!files || files.length === 0" id="load_btn"/>
+                      severity="success" [disabled]="disableUpload || !files || files.length === 0" id="load_btn"/>
             <p-button (onClick)="clearCallback()" icon="pi pi-times" [rounded]="true" [outlined]="true"
                       severity="danger"
-                      [disabled]="!files || files.length === 0" id="clear_btn"/>
+                      [disabled]="disableUpload || !files || files.length === 0" id="clear_btn"/>
 
           </div>
         </div>
@@ -48,15 +47,14 @@
         @if (files?.length > 0) {
           <div class="flex flex-wrap">
             @for (file of files; track file.objectURL; let index = $index) {
-              @if(!disableUpload){}
               <div class="flex align-items-center justify-content-center
               flex-column border-dashed border-1 half-border border-circle border-imagen">
                 <img role="presentation" class="border-circle"
                      [alt]="file.name" [src]="file.objectURL" style="object-fit: cover; width: 100%; height: 100%;"/>
 
                 @if(!disableUpload){
-                     <p-splitbutton dropdownIcon="cme-camara" [rounded]="true" [model]="items" (click)="mostrarOpciones($event)"
-                               styleClass="btn-upload image-upload-button" class="image-upload-button" />
+                  <p-splitbutton dropdownIcon="cme-camara" [rounded]="true" [model]="items" (click)="mostrarOpciones($event)"
+                                 styleClass="btn-upload image-upload-button" class="image-upload-button" />
                 }
                 <!--
                 <p-button icon="cme-camara" [rounded]="true" class="btn-upload image-upload-button"
@@ -102,8 +100,10 @@
             <p class="label-obligatorio">(jpg/png, máx. 1Mb),<br> clara y sin gafas</p>
           </span>
 
-          <p-splitbutton dropdownIcon="cme-camara" [rounded]="true" [model]="items" (click)="mostrarOpciones($event)"
-                         styleClass="btn-upload image-upload-button" class="image-upload-button" />
+          @if(!disableUpload){
+            <p-splitbutton dropdownIcon="cme-camara" [rounded]="true" [model]="items" (click)="mostrarOpciones($event)"
+                           styleClass="btn-upload image-upload-button" class="image-upload-button" />
+          }
 
           <!--
           <p-button icon="cme-camara" [rounded]="true" class="btn-upload image-upload-button"

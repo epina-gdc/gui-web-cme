@@ -91,11 +91,6 @@ export class EspecialidadComponent {
           //console.log('Respuesta:', response);
           this.totalesMedicosRama = response.respuesta.totalMedicos;
           this.filtrarEspecialidades(response.respuesta.especialidades)
-          this.accionActualiza.update((value) => true);
-          setTimeout(() => {
-            this.accionActualiza.update((value) => false);
-          }, 500);
-
         },
         error: (err) => {
           console.error('Error:', err);

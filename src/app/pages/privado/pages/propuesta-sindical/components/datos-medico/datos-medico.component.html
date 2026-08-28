@@ -19,7 +19,7 @@
   <p-card class="empty-border" [header]="'Datos del médico aspirante'">
     <div class="contenedor-info p-2">
       <div class="lg:col-3 col-12 flex flex-row mb-4 lg:mb-0 justify-content-center contenedor-imagen">
-        <upload-photo [disableUpload]="!!this.datosMedico()?.idPropuestaSindical"
+        <upload-photo [disableUpload]="disableActualizarFoto"
                       (fileSelected)="archivoSeleccionado($event)"
                       [clearOnFailedSave]="needsCleanup"
                       [existingFile]="defaultFile" (cleanupDone)="onCleanupDone()" class="mt-5"/>
@@ -163,7 +163,7 @@
     }
     @if (!this.datosMedico()?.idPropuestaSindical) {
       <p-button label="Nueva propuesta sindical" 
-                [disabled]="!this.blnFotoGuardada || isSaving"
+                [disabled]="deshabilitarNuevaPropuesta"
                 [loading]="isSaving"
                 (onClick)="generarNuevaPropuesta()"
       />
