@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+//import { ActivatedRoute } from '@angular/router';
 import { Convocatoria } from '@models/convocatoria.interface';
 import { ReporteAsignacionFiltro, ReporteAsignacionRegistro } from '@models/reporte-asignacion.interface';
 import { TipoDropdown } from '@models/tipo-dropdown.interface';
@@ -80,7 +81,11 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
   rows = 10;
   paginaActual = 0;
   totalRecords = 0;
-
+  /*
+    constructor(private activatedRoute: ActivatedRoute) {
+      super();
+    }
+  */
   ngOnInit(): void {
     this.cargarCatalogos();
     this.suscribirCambiosFormulario();
