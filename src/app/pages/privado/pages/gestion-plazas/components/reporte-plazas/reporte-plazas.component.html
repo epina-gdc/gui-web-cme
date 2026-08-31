@@ -7,11 +7,11 @@
   <form [formGroup]="form" class="border-round-lg bg-white px-4 py-2 mt-4">
     <div class="grid">
       <div class="field col-12 md:col-6 lg:col-3">
-        <label class="field-label" for="ooad">OOAD</label>
+        <label class="field-label" for="cveOoad">OOAD</label>
         <p-select
-          inputId="ooad"
+          inputId="cveOoad"
           [options]="lstOoads"
-          formControlName="ooad"
+          formControlName="cveOoad"
           optionLabel="label"
           optionValue="value"
           placeholder="Selecciona OOAD"
@@ -22,11 +22,11 @@
         />
       </div>
       <div class="col-12 md:col-6 lg:col-3">
-        <label class="field-label" for="zona">Zona</label>
+        <label class="field-label" for="cveZona">Zona</label>
         <p-select
-          inputId="zona"
+          inputId="cveZona"
           [options]="lstZonas"
-          formControlName="zona"
+          formControlName="cveZona"
           optionLabel="label"
           optionValue="value"
           placeholder="Selecciona zona"
@@ -37,11 +37,11 @@
         />
       </div>
       <div class="col-12 md:col-6 lg:col-3">
-        <label class="field-label" for="especialidad">Especialidad</label>
+        <label class="field-label" for="cveEspecialidad">Especialidad</label>
         <p-select
-          inputId="especialidad"
+          inputId="cveEspecialidad"
           [options]="lstEspecialidades"
-          formControlName="especialidad"
+          formControlName="cveEspecialidad"
           optionLabel="label"
           optionValue="value"
           placeholder="Selecciona especialidad"
@@ -52,11 +52,11 @@
         />
       </div>
       <div class="col-12 md:col-6 lg:col-3">
-        <label class="field-label" for="categoria">Categoría</label>
+        <label class="field-label" for="cveCategoria">Categoría</label>
         <p-select
-          inputId="categoria"
+          inputId="cveCategoria"
           [options]="lstCategorias"
-          formControlName="categoria"
+          formControlName="cveCategoria"
           optionLabel="label"
           optionValue="value"
           placeholder="Selecciona categoría"
@@ -67,25 +67,25 @@
         />
       </div>
       <div class="col-12 md:col-6 lg:col-3">
-        <label class="field-label" for="noPlaza">No. de plaza</label>
+        <label class="field-label" for="numPlaza">No. de plaza</label>
         <input
           pInputText
-          id="noPlaza"
+          id="numPlaza"
           type="text"
           max
           class="w-full"
           placeholder="Ingresa plaza"
-          formControlName="noPlaza"
+          formControlName="numPlaza"
           appOnlyNumbers
           maxlength="7"
         />
       </div>
       <div class="col-12 md:col-6 lg:col-3">
-        <label class="field-label" for="unidad">Unidad</label>
+        <label class="field-label" for="cveUnidad">Unidad</label>
         <p-select
-          inputId="unidad"
+          inputId="cveUnidad"
           [options]="lstUnidades"
-          formControlName="unidad"
+          formControlName="cveUnidad"
           optionLabel="label"
           optionValue="value"
           placeholder="Selecciona unidad"
@@ -102,8 +102,9 @@
             class="w-full"
             variant="outlined"
             label="Limpiar"
+            (onClick)="onLimpiar()"
           />
-          <p-button type="button" class="w-full" label="Buscar" />
+          <p-button type="button" (onClick)="setBusquedaReciente()" class="w-full" label="Buscar" [disabled]="!form.dirty"/>
         </div>
       </div>
     </div>
@@ -117,18 +118,20 @@
 >
   <ng-template #caption>
     <div class="flex justify-content-between align-items-center py-2 px-1">
-      <span class="titulo-tabla font-bold text-xl">{{ tituloTabla }}</span>
+      <span class="titulo-tabla font-bold text-xl">{{ tituloModulo }}</span>
       <div class="flex align-items-center gap-4">
-        <div
-          class="flex align-items-center boton-descargar cursor-pointer gap-2"
-          (click)="onExportarDatos()"
-        >
-          <i
-            class="pi pi-upload"
-            [style]="{ 'font-size': '1.3rem', color: '#018699' }"
-          ></i>
-          <span class="font-medium">Exportar datos</span>
-        </div>
+        @if (lstReportePlazas().length > 0) {
+          <div
+            class="flex align-items-center boton-descargar cursor-pointer gap-2"
+            (click)="onExportarDatos()"
+          >
+            <i
+              class="pi pi-upload"
+              [style]="{ 'font-size': '1.3rem', color: '#018699' }"
+            ></i>
+            <span class="font-medium">Exportar datos</span>
+          </div>
+        }
       </div>
     </div>
   </ng-template>
@@ -153,7 +156,7 @@
         Unidad
       </th>
       <th scope="col" pResizableColumn class="py-4" style="min-width: 90px">
-        ZonClave de Adscripcióna
+        Clave de Adscripción
       </th>
       <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">
         Adscripción
@@ -207,34 +210,34 @@
   </ng-template>
   <ng-template #body let-reportePlaza>
     <tr>
+      <td>{{ reportePlaza.cveOoad }}</td>
       <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
-      <td>{{ reportePlaza.descOoad }}</td>
+      <td>{{ reportePlaza.cveZona }}</td>
+      <td>{{ reportePlaza.descZona }}</td>
+      <td>{{ reportePlaza.cveUnidad }}</td>
+      <td>{{reportePlaza.umf}}</td>
+      <td>{{ reportePlaza.cveAdscripcion }}</td>
+      <td>{{ reportePlaza.descAdscripcion }}</td>
+      <td>{{ reportePlaza.clasificacion }}</td>
+      <td>{{ reportePlaza.numPlaza }}</td>
+      <td>{{ reportePlaza.cvePuesto }}</td>
+      <td>{{ reportePlaza.descCategoria }}</td>
+      <td>{{ reportePlaza.especialidad }}</td>
+      <td>{{ reportePlaza.especialidad }}</td>
+      <td>{{ reportePlaza.descMarcaOcupacion }}</td>
+      <td>{{ reportePlaza.descMarcaOcupacion }}</td>
+      <td>{{ reportePlaza.descTurno }}</td>
+      <td>{{ reportePlaza.descHorario }}</td>
+      <td>{{ reportePlaza.descHorario }}</td>
+      <td>{{ reportePlaza.descTipoPlaza }}</td>
+      <td>{{ reportePlaza.descRegimen }}</td>
       <td>
         <app-pill
           [texto]="reportePlaza.estatusPlaza"
-          [pillType]="getPillType('asd')"
+          [pillType]="getPillType(reportePlaza.estatusPlaza)"
         />
       </td>
-      <td>{{ reportePlaza.descOoad }}</td>
+      <td>{{ reportePlaza.desObservaciones }}</td>
     </tr>
   </ng-template>
   <ng-template #emptymessage>
@@ -251,7 +254,7 @@
     </tr>
   </ng-template>
 </p-table>
-@if (lstReportePlazas().lenght > 0) {
+@if (lstReportePlazas().length > 0) {
   <p-paginator
     styleClass="justify-content-end"
     [showFirstLastIcon]="false"

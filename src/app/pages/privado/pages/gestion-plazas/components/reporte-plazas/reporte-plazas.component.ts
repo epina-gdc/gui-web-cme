@@ -15,7 +15,11 @@ import { InputText } from 'primeng/inputtext';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { Select } from 'primeng/select';
 import { TableModule } from 'primeng/table';
-import { distinctUntilChanged, switchMap } from 'rxjs';
+import { distinctUntilChanged, filter, switchMap } from 'rxjs';
+import { FiltrosReportePlaza } from '@models/reporte-plazas.interface';
+
+import { saveAs } from 'file-saver';
+import moment from 'moment';
 
 @Component({
   selector: 'app-reporte-plazas',
@@ -34,13 +38,12 @@ import { distinctUntilChanged, switchMap } from 'rxjs';
 })
 export class ReportePlazasComponent extends GeneralComponent implements OnInit {
 
-
   fb: FormBuilder = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
   private readonly reportePlazasService: ReportePlazasService = inject(ReportePlazasService);
 
   lstReportePlazas: WritableSignal<any> = signal([]);
-
+  ultimaBusqueda: WritableSignal<FiltrosReportePlaza> = signal({});
 
   lstOoads: TipoDropdown[] = [];
   lstZonas: TipoDropdown[] = [];
@@ -49,13 +52,11 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
   lstUnidades: TipoDropdown[] = [];
 
   tituloModulo: string = "Reporte de plazas";
-  tituloTabla: string = "Reporte de plazas";
   form!: FormGroup;
   numPaginaActual: number = 0;
   first: number = 0;
   rows: number = 10;
   totalRecords: number = 0;
-
 
   constructor(private activatedRoute: ActivatedRoute){
     super();
@@ -74,11 +75,12 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
         this.lstUnidades = mapearArregloTipoDropdown(tiposUnidades.respuesta, 'descTipoUnidad','cveTipoUnidad');
     });
 
-    this.form.controls['ooad'].valueChanges
+    this.form.controls['cveOoad'].valueChanges
       .pipe(
         distinctUntilChanged(),
-        switchMap(ooad => this._CatalogoGenService.getLstZonas(ooad)),
-        takeUntilDestroyed(this.destroyRef)
+        filter(value => !!value),
+        takeUntilDestroyed(this.destroyRef),
+        switchMap(ooad => this._CatalogoGenService.getLstZonas(ooad))
       )
       .subscribe(respuesta => {
         if(respuesta.exito){
@@ -89,25 +91,33 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
 
   inicialziarFormulario(): FormGroup{
     return this.fb.group({
-      ooad: [null],
-      zona: [null],
-      especialidad: [null],
-      categoria: [null],
-      noPlaza: [null],
-      unidad: [null],
+      cveOoad: [null],
+      cveZona: [null],
+      cveEspecialidad: [null],
+      cveCategoria: [null],
+      numPlaza: [null],
+      cveUnidad: [null],
     })
-
   }
 
-
-
-
   onLimpiar() {
-
+    this.form.reset();
+    this.lstZonas = [];
+    //this.lstReportePlazas.set([]);
+    this.first = 0;
   }
 
   onExportarDatos() {
-
+    this.reportePlazasService.exportarExcel(this.ultimaBusqueda()).subscribe({
+      next: (resp: Blob) => {
+        const nombreArchivo = `REPORTE_PLAZAS_${moment().format('YYYYMMDD_HHmm')}.xlsx`
+        saveAs(resp,nombreArchivo);
+      },
+      error: (error) => {
+        console.error('Error al descargar el Excel:', error);
+        this._alertServices.error('Error al descargar el Excel');
+      }
+    })
   }
 
   getPillType(textoEstatus: string): number{
@@ -121,7 +131,39 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
     this.onBuscar();
   }
 
-  onBuscar(){
+  setBusquedaReciente(): void {
+    const {cveOoad, cveZona, cveEspecialidad, cveCategoria, numPlaza,
+           cveUnidad} :FiltrosReportePlaza = this.form.value;
 
+    this.ultimaBusqueda.set({
+      idConvocatoria: null,
+      cveOoad: cveOoad ? cveOoad : null,
+      cveZona: cveZona ? cveZona : null,
+      cveEspecialidad: cveEspecialidad ? cveEspecialidad : null,
+      cveCategoria: cveCategoria ? cveCategoria : null,
+      numPlaza: numPlaza ? numPlaza : null,
+      cveUnidad: cveUnidad ? cveUnidad : null,
+      page: this.numPaginaActual,
+      size: this.rows
+    });
+    this.onBuscar();
+  }
+
+  onBuscar(){
+    this.reportePlazasService.consultarLstReportes(this.ultimaBusqueda()).subscribe({
+      next: resp => {
+        if(resp.respuesta.content.length > 0){
+          this.lstReportePlazas.set(resp.respuesta.content);
+          this.totalRecords = resp.respuesta.page.totalElements;
+        } else {
+          this.lstReportePlazas.set([]);
+          this.totalRecords = 0;
+        }
+      },
+      error: err => {
+        this.lstReportePlazas.set([]);
+        this.totalRecords = 0;
+      }
+    })
   }
 }
