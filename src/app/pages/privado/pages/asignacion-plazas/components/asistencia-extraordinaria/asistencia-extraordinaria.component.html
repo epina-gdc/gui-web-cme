@@ -63,17 +63,17 @@
 
                     <div class="col-12 md:col-9">
                         <h2 class="text-3xl font-bold m-0 mb-2">{{ aspirante.nomParticipante }}</h2>
-                        <div class="flex flex-wrap gap-3 text-900 mb-4">
+                        <div class="flex flex-wrap justify-content-between gap-3 text-900 mb-4 mr-6">
                             <span>Matrícula: <strong>{{ aspirante.matricula }}</strong></span>
                             <span>CURP: <strong>{{ aspirante.curp }}</strong></span>
                             <span>RFC: <strong>{{ aspirante.rfc }}</strong></span>
                         </div>
 
                         <div class="mb-4">
-                            <h4 class="m-0 mb-2 text-700">Especialidades</h4>
+                            <h4 class="especialidades-titulo m-0 mb-2 text-700">Especialidades</h4>
                             <div class="flex flex-wrap gap-2">
                                 <span *ngFor="let esp of aspirante.especialidades"
-                                    class="border-1 border-blue-200 text-blue-600 px-3 py-1 border-round-2xl text-sm">
+                                    class="especialidad-chip border-1 border-blue-200 text-blue-600 px-3 py-1 border-round-2xl">
                                     {{ esp }}
                                 </span>
                             </div>
@@ -105,15 +105,15 @@
                                 }
                             </div>
                             <div class="col-6 md:col-3 mb-2">
-                                <asistencia-note [titulo]="'Modalidad'" [descripcion]="aspirante.modalidad"
+                                <asistencia-note class="nota-destacada" [titulo]="'Modalidad'" [descripcion]="aspirante.modalidad"
                                     [icono]="'cme-modalidad'" [tamanio]="'text-xl'" />
                             </div>
                             <div class="col-6 md:col-3 mb-2">
-                                <asistencia-note [titulo]="'Estatus'" [descripcion]="aspirante.estatus"
+                                <asistencia-note class="nota-destacada" [titulo]="'Estatus'" [descripcion]="aspirante.estatus"
                                     [icono]="'cme-check'" />
                             </div>
                             <div class="col-6 md:col-3 mb-2">
-                                <asistencia-note [titulo]="'Verificación documental'"
+                                <asistencia-note class="nota-destacada" [titulo]="'Verificación documental'"
                                     [descripcion]="aspirante.verificacionDoc" [icono]="'pi-star'" />
                                 <!--  -->
                             </div>

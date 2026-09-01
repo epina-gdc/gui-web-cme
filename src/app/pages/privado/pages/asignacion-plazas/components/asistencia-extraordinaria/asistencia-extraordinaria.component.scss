@@ -63,3 +63,29 @@
     /* 48px */
 
 }
+
+.especialidades-titulo {
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.especialidad-chip {
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+:host ::ng-deep asistencia-note.nota-destacada {
+    .font-semibold {
+        font-size: 1.2rem;
+    }
+
+    .text-700 {
+        font-size: 1.2rem;
+        line-height: 1.35;
+    }
+
+    i {
+        font-size: 1.25rem;
+    }
+}
