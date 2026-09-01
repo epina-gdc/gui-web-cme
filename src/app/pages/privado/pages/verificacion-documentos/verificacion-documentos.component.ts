@@ -190,12 +190,18 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
   }
 
   filtrosExcel(): VerificacionDocsExcelInterface {
-    return {
+    const filtros: VerificacionDocsExcelInterface = {
       idEstatus: (this.filtroForm.get('estatus')?.value)?.value,
       cveEspecialidad: (this.filtroForm.get('especialidad')?.value)?.value,
       matriculaFolio: this.filtroForm.get('matricula')?.value,
 
+    };
+
+    if (this.esAdministrador()) {
+      filtros.indPerfilInterno = this.indPerfilInterno ?? 1;
     }
+
+    return filtros;
   }
 
 
