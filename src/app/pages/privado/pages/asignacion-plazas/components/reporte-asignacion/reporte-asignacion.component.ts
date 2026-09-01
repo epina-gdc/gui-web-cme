@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit, signal, WritableSignal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+//import { ActivatedRoute } from '@angular/router';
 import { Convocatoria } from '@models/convocatoria.interface';
 import { ReporteAsignacionFiltro, ReporteAsignacionRegistro } from '@models/reporte-asignacion.interface';
 import { TipoDropdown } from '@models/tipo-dropdown.interface';
@@ -44,6 +45,9 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
   private readonly alertaService: AlertService = inject(AlertService);
   private readonly mensajes: Mensajes = inject(Mensajes);
   private readonly destroy$ = new Subject<void>();
+  private MSGHU052A: string = 'Fecha inicio y fecha fin son obligatorias.';
+  private MSGHU052B: string = 'La fecha fin no puede ser menor a la fecha inicio.';
+  private MSGHU052C: string = 'La fechas deben de estar dentro de la convocatoria.';
 
   form: FormGroup = this.fb.group({
     cveOoad: [null],
@@ -77,7 +81,11 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
   rows = 10;
   paginaActual = 0;
   totalRecords = 0;
-
+  /*
+    constructor(private activatedRoute: ActivatedRoute) {
+      super();
+    }
+  */
   ngOnInit(): void {
     this.cargarCatalogos();
     this.suscribirCambiosFormulario();
@@ -85,7 +93,7 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
 
   onBuscar(): void {
     if (!this.validarBusqueda()) return;
-
+    console.log('onBuscar called', this.form.value);
     this.cargando.set(true);
     this.busquedaRealizada.set(true);
 
@@ -237,7 +245,6 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
       .subscribe({
         next: (response) => {
           this.convocatoriasCatalogo = ((response?.respuesta ?? []) as Convocatoria[])
-            .filter((convocatoria) => convocatoria.tipo?.idTipoConvocatoria === 1);
           this.convocatorias = [
 
             ...this.convocatoriasCatalogo.map((convocatoria) => ({
@@ -332,7 +339,7 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
   private validarBusqueda(): boolean {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      this.alertaService.error(this.mensajes.MSG082);
+      this.alertaService.error(this.MSGHU052A);
       return false;
     }
 
@@ -340,12 +347,12 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
     const fechaFin = this.crearFecha(this.form.get('fechaFin')?.value);
 
     if (!fechaInicio || !fechaFin || fechaInicio > fechaFin) {
-      this.alertaService.error(this.mensajes.MSG082);
+      this.alertaService.error(this.MSGHU052B);
       return false;
     }
 
     if (!this.fechasDentroDeConvocatoria(fechaInicio, fechaFin)) {
-      this.alertaService.error(this.mensajes.MSG082);
+      this.alertaService.error(this.MSGHU052C);
       return false;
     }
 
@@ -471,7 +478,8 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
     const fechaValida = this.crearFecha(fecha);
     if (!fechaValida) return null;
 
-    return `${fechaValida.getFullYear()}-${this.rellenarDosDigitos(fechaValida.getMonth() + 1)}-${this.rellenarDosDigitos(fechaValida.getDate())}`;
+    //return `${fechaValida.getFullYear()}-${this.rellenarDosDigitos(fechaValida.getMonth() + 1)}-${this.rellenarDosDigitos(fechaValida.getDate())}`;
+    return `${this.rellenarDosDigitos(fechaValida.getDate())}/${this.rellenarDosDigitos(fechaValida.getMonth() + 1)}/${fechaValida.getFullYear()}`;
   }
 
   private obtenerMarcaTiempo(): string {

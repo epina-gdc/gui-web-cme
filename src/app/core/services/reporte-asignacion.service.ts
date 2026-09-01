@@ -9,12 +9,13 @@ import {
 } from '@models/reporte-asignacion.interface';
 import { catchError, map, Observable, throwError } from 'rxjs';
 
+
 @Injectable({
   providedIn: 'root',
 })
 export class ReporteAsignacionService {
   private readonly version = '/v1/';
-  private readonly urlReporte = `${environment.api.apiAsignacionPlaza}${this.version}plaza/reporteAsignacion`;
+  private readonly urlReporte = `${environment.api.apiAsignacionReporte}${this.version}reportes-asignacion`;
   private readonly http: HttpClient = inject(HttpClient);
 
   private readonly header = new HttpHeaders({
@@ -26,7 +27,7 @@ export class ReporteAsignacionService {
 
   consultarReporte(filtros: ReporteAsignacionFiltro): Observable<HttpRespuesta<ReporteAsignacionPaginado>> {
     return this.http.get<HttpRespuesta<ReporteAsignacionRespuestaAlterna>>(
-      this.urlReporte,
+      `${this.urlReporte}/listado`,
       { headers: this.header, params: this.crearParametros(filtros) }
     ).pipe(
       map((response: HttpRespuesta<ReporteAsignacionRespuestaAlterna>) => ({
@@ -38,11 +39,11 @@ export class ReporteAsignacionService {
   }
 
   exportarReporteGeneral(filtros: ReporteAsignacionFiltro): Observable<Blob> {
-    return this.exportar(`${this.urlReporte}/exportarGeneral`, filtros);
+    return this.exportar(`${this.urlReporte}/general/excel`, filtros);
   }
 
   exportarReporteDetalle(filtros: ReporteAsignacionFiltro): Observable<Blob> {
-    return this.exportar(`${this.urlReporte}/exportarDetalle`, filtros);
+    return this.exportar(`${this.urlReporte}/detalle/excel`, filtros);
   }
 
   private exportar(url: string, filtros: ReporteAsignacionFiltro): Observable<Blob> {

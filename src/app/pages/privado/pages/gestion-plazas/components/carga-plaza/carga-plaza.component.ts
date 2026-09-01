@@ -79,7 +79,6 @@ export class CargaPlazaComponent extends GeneralComponent implements OnInit, OnD
           const convocatorias = (respuesta?.respuesta ?? []) as Convocatoria[];
 
           this.options = convocatorias
-            .filter((item: Convocatoria) => item.tipo?.idTipoConvocatoria === 1)
             .map((item: Convocatoria) => ({
               value: item.idConvocatoria,
               label: item.desConvocatoria,

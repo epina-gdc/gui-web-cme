@@ -114,7 +114,7 @@
       @if (erroresCarga().length > 0) {
       <div class="errores-carga mt-3">
         <p class="proceso-carga-calificacion">Registros no cargados</p>
-        <ul class="m-0 mt-2 pl-4">
+        <ul class="m-0 mt-2 pl-4 max-h-60 overflow-y-auto pr-2">
           @for (error of erroresCarga(); track $index) {
           <li class="my-1">
             <p class="texto-lista header-tab-documentacion">

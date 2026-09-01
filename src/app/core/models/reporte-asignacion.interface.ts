@@ -1,3 +1,4 @@
+import { HttpRespuesta } from '@models/http-respuesta.interface';
 export interface ReporteAsignacionFiltro {
   idConvocatoria?: number | null;
   cveOoad?: string | number | null;
@@ -65,4 +66,38 @@ export interface ReporteAsignacionRespuestaAlterna {
   size?: number;
   number?: number;
   pagina?: number;
+}
+
+export interface ReporteAsignacionOoad {
+  cveOoad: string;
+  desOoad: string;
+}
+export interface ReporteAsignacionEspecialidad {
+  cveEspecialidad: string;
+  desEspecialidad: string;
+}
+export interface ReporteAsignacionConvocatoria {
+  idConvocatoria: number;
+  desConvocatoria: string;
+  fecInicio: Date;
+  tipo: ReporteAsignacionTipo;
+  fecFin: Date;
+  indActivo: number;
+}
+export interface ReporteAsignacionTipo {
+  idTipoConvocatoria: number;
+  desTipoConvocatoria: string;
+  indActivo: number;
+}
+
+export interface ReporteDeAsignacionTipo {
+  idTipoAsignacion: number;
+  tipoAsignacion: string;
+  total: number;
+}
+export interface ReporteAsignacionCatalogos {
+  ooads: HttpRespuesta<ReporteAsignacionOoad[]>;
+  especialidades: ReporteAsignacionEspecialidad[];
+  convicatorias: HttpRespuesta<ReporteAsignacionConvocatoria[]>;
+  asignaciones: HttpRespuesta<ReporteDeAsignacionTipo[]>;
 }
