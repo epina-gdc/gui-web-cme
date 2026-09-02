@@ -110,42 +110,22 @@
           }
         </div>
       </div>
-      <!-- linea boton *propuesta b*  -->
     </div>
   </div>
 
   @if (erroresCarga().length > 0) {
   <p-card class="empty-border proceso-carga-card" [header]="'Proceso de Carga de plazas'">
-    <p class="proceso-carga-calificacion mb-3">Importante</p>
-    <button type="button" class="btn-descargar-errores" (click)="descargarErroresCarga()">
-      <i class="cme-download" style="font-size: 1.2rem"></i>
-      <span>Descargar registros con errores (.txt)</span>
-    </button>
+    <div class="flex flex-column gap-2">
+      <p class="titulo-proceso-carga text-lg mb-2">Se han detectado errores en el proceso de carga de plazas</p>
+
+    </div>
+    <div class="flex flex-column gap-2 mt-3">
+      <button type="button" class="btn-descargar-errores " (click)="descargarErroresCarga()">
+        <i class="cme-download" style="font-size: 1.2rem"></i>
+        <span>Descargar registros con errores (.txt)</span>
+      </button>
+    </div>
   </p-card>
   }
 
-  <!--
-      *propuesta b*
-      @if (erroresCarga().length > 0) {
-      <div class="errores-carga mt-3">
-        <button type="button" class="btn-descargar-errores" (click)="descargarErroresCarga()">
-          <i class="cme-download" style="font-size: 1.2rem"></i>
-          <span>Descargar registros con errores (.txt)</span>
-        </button>
-      </div>
-      }
-    -->
-
-  <!--
-  <p-card class="empty-border proceso-carga-card" [header]="'Proceso de Carga de plazas'">
-    <p class="proceso-carga-calificacion mb-3">Importante</p>
-    <ul class="m-0 pl-4">
-      @for (proceso of listaImportante; track proceso) {
-      <li class="my-2">
-        <p class="texto-lista header-tab-documentacion">{{ proceso }}</p>
-      </li>
-      }
-    </ul>
-  </p-card>
-  -->
 </section>
