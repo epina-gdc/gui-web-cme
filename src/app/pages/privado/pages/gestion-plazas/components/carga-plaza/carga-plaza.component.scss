@@ -134,6 +134,33 @@
     padding: 1rem;
   }
 
+  .btn-descargar-errores {
+    min-height: 40px;
+    border: 1px solid #018699;
+    border-radius: 8px;
+    background: #FFFFFF;
+    color: #018699;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.875rem;
+    font-family: Arial;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+  }
+
+  .btn-descargar-errores:hover {
+    background: #F3FBFC;
+  }
+
+  .btn-descargar-errores:focus-visible {
+    outline: 2px solid #65A0E0;
+    outline-offset: 2px;
+  }
+
   .texto-lista {
     white-space: pre-line;
   }
