@@ -16,7 +16,7 @@ import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { Select } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { distinctUntilChanged, filter, switchMap } from 'rxjs';
-import { FiltrosReportePlaza } from '@models/reporte-plazas.interface';
+import { FiltrosReportePlaza, ReportePlazas } from '@models/reporte-plazas.interface';
 
 import { saveAs } from 'file-saver';
 import moment from 'moment';
@@ -42,7 +42,7 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
   private readonly destroyRef = inject(DestroyRef);
   private readonly reportePlazasService: ReportePlazasService = inject(ReportePlazasService);
 
-  lstReportePlazas: WritableSignal<any> = signal([]);
+  lstReportePlazas: WritableSignal<ReportePlazas[]> = signal([]);
   ultimaBusqueda: WritableSignal<FiltrosReportePlaza> = signal({});
 
   lstOoads: TipoDropdown[] = [];

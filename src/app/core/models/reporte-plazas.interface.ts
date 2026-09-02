@@ -37,6 +37,10 @@ export interface ReportePlazas {
   idConvocatoria: number | null,
   origenPlaza: string | null,
   desObservaciones: string | null,
+  cveEspecialidad?: string | null,
+  cveCategoria?: string | null,
+  cveMarcaOcupacion?: string | null,
+  cveHorario?: string | null,
 }
 
 export interface FiltrosReportePlaza {
