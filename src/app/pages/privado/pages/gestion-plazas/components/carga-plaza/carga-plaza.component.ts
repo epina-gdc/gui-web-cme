@@ -178,6 +178,23 @@ export class CargaPlazaComponent extends GeneralComponent implements OnInit, OnD
     return String(error.ooad ?? error.descOoad ?? error.cveOoad ?? '-');
   }
 
+  descargarErroresCarga(): void {
+    const errores = this.erroresCarga();
+    if (errores.length === 0) return;
+
+    const contenido = this.construirContenidoErroresCarga(errores);
+    const blob = new Blob([contenido], { type: 'text/plain;charset=utf-8' });
+    const enlace = document.createElement('a');
+    const objectUrl = URL.createObjectURL(blob);
+
+    enlace.href = objectUrl;
+    enlace.download = this.obtenerNombreArchivoErrores();
+    document.body.appendChild(enlace);
+    enlace.click();
+    enlace.remove();
+    URL.revokeObjectURL(objectUrl);
+  }
+
   private consultarValidacionPlazasOcupadas(idConvocatoria: number): void {
     this.validandoPlazas.set(true);
 
@@ -395,6 +412,41 @@ export class CargaPlazaComponent extends GeneralComponent implements OnInit, OnD
     return error.mensaje ?? '';
   }
 
+  private construirContenidoErroresCarga(errores: ErrorCargaPlaza[]): string {
+    const encabezado = 'Fila\tPlaza\tOOAD\tMensaje';
+    const filas = errores.map((error) => {
+      const mensaje = error.mensaje || this.obtenerMensajeRegistro(error);
+
+      return [
+        this.limpiarValorTxt(this.obtenerRegistroError(error)),
+        this.limpiarValorTxt(this.obtenerPlazaError(error)),
+        this.limpiarValorTxt(this.obtenerOoadError(error)),
+        this.limpiarValorTxt(mensaje),
+      ].join('\t');
+    });
+
+    return [
+      'Registros con errores en carga de plazas',
+      `Total de registros con errores: ${errores.length}`,
+      '',
+      encabezado,
+      ...filas,
+    ].join('\r\n');
+  }
+
+  private limpiarValorTxt(valor: string): string {
+    const valorLimpio = valor.replace(/\r?\n|\t/g, ' ').trim();
+    return valorLimpio || '-';
+  }
+
+  private obtenerNombreArchivoErrores(): string {
+    const fecha = new Date();
+    const pad = (valor: number): string => valor.toString().padStart(2, '0');
+    const fechaArchivo = `${fecha.getFullYear()}${pad(fecha.getMonth() + 1)}${pad(fecha.getDate())}`;
+    const horaArchivo = `${pad(fecha.getHours())}${pad(fecha.getMinutes())}`;
+
+    return `REGISTROS_ERROR_CARGA_PLAZAS_${fechaArchivo}_${horaArchivo}.txt`;
+  }
   private reiniciarEstadoConvocatoria(): void {
     this.archivoSeleccionado.set(null);
     this.erroresCarga.set([]);

@@ -110,30 +110,33 @@
           }
         </div>
       </div>
-
-      @if (erroresCarga().length > 0) {
-      <div class="errores-carga mt-3">
-        <p class="proceso-carga-calificacion">Registros no cargados</p>
-        <ul class="m-0 mt-2 pl-4 max-h-60 overflow-y-auto pr-2">
-          @for (error of erroresCarga(); track $index) {
-          <li class="my-1">
-            <p class="texto-lista header-tab-documentacion">
-              @if (obtenerRegistroError(error) !== '-') {
-              Fila {{ obtenerRegistroError(error) }} -
-              }
-              Plaza {{ obtenerPlazaError(error) }} - OOAD {{ obtenerOoadError(error) }}
-              @if (error.mensaje) {
-              <span>: {{ error.mensaje }}</span>
-              }
-            </p>
-          </li>
-          }
-        </ul>
-      </div>
-      }
+      <!-- linea boton *propuesta b*  -->
     </div>
   </div>
 
+  @if (erroresCarga().length > 0) {
+  <p-card class="empty-border proceso-carga-card" [header]="'Proceso de Carga de plazas'">
+    <p class="proceso-carga-calificacion mb-3">Importante</p>
+    <button type="button" class="btn-descargar-errores" (click)="descargarErroresCarga()">
+      <i class="cme-download" style="font-size: 1.2rem"></i>
+      <span>Descargar registros con errores (.txt)</span>
+    </button>
+  </p-card>
+  }
+
+  <!--
+      *propuesta b*
+      @if (erroresCarga().length > 0) {
+      <div class="errores-carga mt-3">
+        <button type="button" class="btn-descargar-errores" (click)="descargarErroresCarga()">
+          <i class="cme-download" style="font-size: 1.2rem"></i>
+          <span>Descargar registros con errores (.txt)</span>
+        </button>
+      </div>
+      }
+    -->
+
+  <!--
   <p-card class="empty-border proceso-carga-card" [header]="'Proceso de Carga de plazas'">
     <p class="proceso-carga-calificacion mb-3">Importante</p>
     <ul class="m-0 pl-4">
@@ -144,4 +147,5 @@
       }
     </ul>
   </p-card>
+  -->
 </section>
