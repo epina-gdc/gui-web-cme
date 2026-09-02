@@ -23,6 +23,8 @@ import { ActivatedRoute } from '@angular/router';
 import { NAV } from '@utils/url-global';
 import { GestionPlazaService } from '@services/gestion-plaza.service';
 import { ConvocatoriaActiva } from '@models/convocatoria.interface';
+import moment from 'moment';
+import { saveAs } from 'file-saver';
 
 interface PlazaAccion {
   plaza: GestionPlazaInterface,
@@ -249,6 +251,19 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
             }
           });
         }
+      }
+    });
+  }
+
+  exportarReporte(){
+    this.gestionPLazaService.exportarExcel().subscribe({
+    next: (resp: Blob) => {
+        const nombreArchivo = `REPORTE_PLAZAS_${moment().format('YYYYMMDD_HHmm')}.xlsx`
+        saveAs(resp,nombreArchivo);
+      },
+      error: (error) => {
+        console.error('Error al descargar el Excel:', error);
+        this._alertServices.error('Error al descargar el Excel');
       }
     });
   }

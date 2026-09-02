@@ -36,7 +36,8 @@
 
 <app-tabla-plazas [plazas]="plazas()" [totalRecords]="totalRecords" [first]="first" [rows]="rows"
   [titulo]="'Plazas nuevas'" [tipoBusqueda]="gestionEstadoPlazaService.tipoBusqueda()"
-  (pageChange)="onPageChange($event)" (accionSeleccionada)="accionPlazaSeleccionada($event)">
+  (pageChange)="onPageChange($event)" (accionSeleccionada)="accionPlazaSeleccionada($event)"
+  (exportarReporte)="exportarReporte()">
 </app-tabla-plazas>
 
 <p-confirmDialog [style]="{width: '450px'}" [closable]="true" styleClass="custom-confirm-dialog">

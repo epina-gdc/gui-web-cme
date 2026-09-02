@@ -75,5 +75,6 @@ export enum AccionPlaza {
   VerDetalle,
   EditarEstatus,
   EditarPlaza,
-  EliminarPlaza
+  EliminarPlaza,
+  ExportarDatos
 }

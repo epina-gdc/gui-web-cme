@@ -57,6 +57,18 @@ export class GestionPlazaService {
     );
   }
 
+  exportarExcel(): Observable<Blob>{
+    return this._http.get(
+      `${this.urlBase}administracionPlazas/exportarExcelPlazasNuevas`,
+      {
+        responseType: 'blob'
+      }
+    ).pipe(
+        catchError(this.handleError)
+    );
+
+  }
+
   cambiarEstatusPlaza(datos: CambioEstatusPlazaRequest): Observable<HttpRespuesta<any>> {
     return this._http.put<HttpRespuesta<any>>(
       `${this.urlBase}administracionPlazas/actualizarEstatusPlaza`,

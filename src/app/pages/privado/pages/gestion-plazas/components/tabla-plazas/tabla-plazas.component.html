@@ -9,10 +9,14 @@
             <i class="pi pi-user-plus" [style]="{ 'font-size': '1.3rem', color: '#018699' }"></i>
             <span class="font-medium">Nueva plaza</span>
           </div>
-          <!--<div class="flex align-items-center boton-descargar cursor-pointer gap-2" (click)="onExportarDatos()">
-            <i class="pi pi-upload" [style]="{ 'font-size': '1.3rem', color: '#018699' }"></i>
-            <span class="font-medium">Exportar datos</span>
-          </div>-->
+          <!--
+          @if(plazas().length > 0){
+            <div class="flex align-items-center boton-descargar cursor-pointer gap-2" (click)="detallePlazaSeleccionada(AccionPlaza.ExportarDatos)">
+              <i class="pi pi-upload" [style]="{ 'font-size': '1.3rem', color: '#018699' }"></i>
+              <span class="font-medium">Exportar datos</span>
+            </div>
+          }
+          -->
         </div>
 
       </div>

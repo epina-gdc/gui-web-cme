@@ -37,6 +37,7 @@ export class TablaPlazasComponent {
 
     readonly pageChange = output<PaginatorState>();
     readonly accionSeleccionada = output<{plaza:GestionPlazaInterface, accion: AccionPlaza}>();
+    readonly exportarReporte = output<any>();
 
 
     readonly plazaSeleccionada = signal<GestionPlazaInterface | null>(null);
@@ -50,6 +51,9 @@ export class TablaPlazasComponent {
 
     detallePlazaSeleccionada(accion: AccionPlaza): void {
       const plaza = this.plazaSeleccionada();
+
+      if(accion === 4)this.exportarReporte.emit(true);
+
         if (!plaza) return;
 
         const movimiento = {
