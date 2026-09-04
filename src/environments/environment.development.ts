@@ -15,8 +15,8 @@ export const environment: ConfigEnvironment = {
     apiAsistencia: 'http://10.166.120:1063/mscme-asistencia/api',
     apiAsignacionPlaza: 'http://10.166.0.120:1061/mscme-asignacion',
     apiSindical: 'http://10.166.120:1064/mscme-sindical/',
-    apiAdmonPlazas: 'http://10.166.0.120:1066/mscme-admon-plazas',
-    apiAsignacionReporte: 'http://127.0.0.1:8089/mscme-asignacion'
+    apiAdmonPlazas: 'http://10.166.0.120:1066/mscme-admon-plazas'
+
   }
 }
 

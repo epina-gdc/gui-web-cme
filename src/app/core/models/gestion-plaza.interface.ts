@@ -21,6 +21,8 @@ export interface GestionPlazaInterface {
   numPlaza: string;
   clasificacion: string;
   descOoad: string;
+  cveAdscripcion: string;
+  descAdscripcion: string;
   creditos: number;
   refBonoDificilCobertura: number;
   indAccesoCredito: number;

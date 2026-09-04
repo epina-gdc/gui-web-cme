@@ -12,6 +12,5 @@ export interface ConfigEnvironment {
     apiAsignacionPlaza: string;
     apiSindical: string;
     apiAdmonPlazas: string;
-    apiAsignacionReporte: string;
   }
 }
