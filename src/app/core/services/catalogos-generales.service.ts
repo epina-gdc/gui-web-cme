@@ -20,6 +20,7 @@ import { AlertService } from '@services/alert.service';
 import { Convocatoria, ConvocatoriaActiva } from '@models/convocatoria.interface';
 import { Especialidades } from '@models/especialidad';
 import {TipoDocumentoEspecialidad} from '@models/tipo-documento-especialidad.interface';
+import { MotivoDesasignacion } from '@models/datosAsignacion';
 
 @Injectable({
   providedIn: 'root'
@@ -298,6 +299,15 @@ export class CatalogosGeneralesService {
     return this.http.get<HttpRespuesta<any>>(`${this.serverEndPointURLCatalogos}/seccion-sindical/ooad/${ooad}`, {headers: this.header}).pipe(
       catchError(this.handleError),
       map((response: HttpRespuesta<any>) => {
+        return response;
+      })
+    );
+  }
+
+  getMotivosDesasignacion(): Observable<HttpRespuesta<MotivoDesasignacion[]>> {
+    return this.http.get<HttpRespuesta<MotivoDesasignacion[]>>(this.serverEndPointURLCatalogos + '/motivoDesasignacion', {headers: this.header}).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<MotivoDesasignacion[]>) => {
         return response;
       })
     );

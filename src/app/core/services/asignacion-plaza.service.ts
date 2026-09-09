@@ -2,7 +2,8 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {catchError, map, Observable, throwError} from 'rxjs';
 import {environment} from '@env/environment.development';
-import { AsignacionRequest, CedulaResponse, DisponiblesRequest } from '@models/datosAsignacion';
+import { AsignacionRequest, CedulaResponse, DesasignacionRequest, DesasignacionRespuesta, DisponiblesRequest } from '@models/datosAsignacion';
+import { HttpRespuesta } from '@models/http-respuesta.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -65,6 +66,16 @@ export class AsignacionPlazaService {
     )
   }
 
+  desasignarPlaza(request: DesasignacionRequest): Observable<HttpRespuesta<DesasignacionRespuesta>> {
+    const ruta = this.urlAsignacion + 'plaza/desasignar';
+    return this.http.post<HttpRespuesta<DesasignacionRespuesta>>(ruta, request, { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<DesasignacionRespuesta>) => {
+        return response;
+      }),
+    );
+  }
+
   descargarCedula(idParticipacion: number): Observable<CedulaResponse> {
       let ruta = `${this.urlAsignacion}plaza/imprimirCedulaAsignacion?idParticipacion=${idParticipacion}`;
       return this.http.get<CedulaResponse>(ruta, {headers: this.header}).pipe(
@@ -80,3 +91,4 @@ export class AsignacionPlazaService {
 
 
 }
+

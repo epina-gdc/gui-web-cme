@@ -13,6 +13,26 @@ export class AsignacionRequest{
     desEspecialidad?:string;
 }
 
+export interface MotivoDesasignacion {
+    idMotivoDesasignacion: number;
+    desMotivoDesasignacion: string;
+    indActivo: number;
+}
+
+export interface DesasignacionRequest {
+    idAsignacion: number;
+    idMotivoDesasignacion: number;
+    desJustificacion?: string;
+}
+
+export interface DesasignacionRespuesta {
+    idDesasignacionPlaza: number;
+    idAsignacion: number;
+    idPlaza?: number;
+    idMotivoDesasignacion: number;
+    stpDesasignacion: string;
+}
+
 export class DisponiblesRequest {
     cveEspecialidad!:string;
     cveOoad?:string;
@@ -52,6 +72,9 @@ export class InfoAspirante {
     indPerfilInterno?: number;
     idParticipacion?: number;
     idOrigenParticipacion?: number;
+    modalidad?: string;
+    ooadResidencia?: string;
+    desOoadResidencia?: string;
 }
 
 export class AsignacionPlaza {
@@ -169,3 +192,4 @@ export const Regimen ={
     PlazaOrdinaria: 1,
     Complamar: 2
 } as const;
+

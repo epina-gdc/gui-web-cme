@@ -1,0 +1,316 @@
+<section class="desasignacion-plaza">
+  <div class="flex justify-content-start align-items-center gap-1 mt-4 mb-4 lg:mt-0">
+    <!-- <btn-regresar/> -->
+    <h3 class="titulo-seccion">Cancelación de asignación</h3>
+  </div>
+
+  <header class="buscador-background flex justify-content-center align-items-center">
+    <form [formGroup]="form" class="p-fluid" (ngSubmit)="onBuscar()">
+      <div>
+        <h2 class="titulo-asignaciones">Búsqueda por matrícula/folio</h2>
+        <div class="search_form">
+          <div class="md:col-4 col-12 flex align-content-center flex-1 gap-3 pt-4">
+            <input
+              pInputText
+              class="w-full"
+              type="text"
+              id="folio"
+              maxlength="10"
+              placeholder="Ingrese su matrícula/folio"
+              formControlName="folio"
+              (input)="normalizarFolio()" />
+            <p-button type="button" variant="outlined" label="Limpiar" (onClick)="onLimpiar()" [disabled]="isSearching || isSaving" />
+            <p-button type="submit" label="Buscar" [loading]="isSearching" [disabled]="form.invalid || isSearching || isSaving" />
+          </div>
+        </div>
+      </div>
+    </form>
+  </header>
+  <main>
+     <!-- Estado vacío -->
+    <div class="content" *ngIf="!exist">
+      <div class="empty">
+        <img class="empty__img" src="/assets/images/tabla_sin_resultados.svg" alt="Sin resultados" />
+        <p class="empty__text">No hay resultados de búsqueda</p>
+      </div>
+    </div>
+
+    <ng-container *ngIf="exist">
+      <p-card class="mx-2 empty-border info-card mt-3" [header]="'Información del médico aspirante'">
+        <div class="grid aspirante-card-content">
+          <div class="col-12 md:col-2">
+            <div class="info-avatar flex align-items-center justify-content-center">
+              <p-avatar [image]="aspirante.fotoUrl" shape="circle" size="xlarge"></p-avatar>
+            </div>
+          </div>
+
+          <div class="col-12 md:col-10">
+            <div class="grid align-items-center">
+              <div class="col-12 md:col-5">
+                <h2 class="info-name">{{ aspirante.nombreCompleto }}</h2>
+              </div>
+              <div class="col-12 md:col-7 flex align-items-center justify-content-start">
+                <p-tag
+                  [value]="getTagTexto(tipoAsignacion)"
+                  [styleClass]="getTagClass(tipoAsignacion)"
+                  icon="pi pi-circle">
+                </p-tag>
+              </div>
+            </div>
+
+            <div class="grid datos-aspirante">
+              <div class="col-12 md:col-2">
+                <div class="info-label">Matrícula/folio</div>
+                <div class="info-value">{{ aspirante.matricula }}</div>
+              </div>
+
+              <div class="col-12 md:col-3">
+                <div class="info-label">Especialidad(es)</div>
+                <div class="esp-inline">
+                  <ng-container *ngFor="let especialidad of aspirante.especialidades; let last = last">
+                    <span class="esp-item-text">{{ especialidad | tituloCase }}</span><span *ngIf="!last" class="esp-sep">/</span>
+                  </ng-container>
+                </div>
+              </div>
+
+              <div class="col-12 md:col-3">
+                <div class="info-label">CURP</div>
+                <div class="info-value">{{ aspirante.curp }}</div>
+              </div>
+
+              <div class="col-12 md:col-2">
+                <div class="info-label">RFC</div>
+                <div class="info-value">{{ aspirante.rfc }}</div>
+              </div>
+
+              <div class="col-12 md:col-2">
+                <div class="info-label">Sexo</div>
+                <div class="info-value">{{ aspirante.sexo }}</div>
+              </div>
+            </div>
+
+            <div class="grid">
+              <div class="col-12 md:col-2" *ngIf="esMedicoInterno">
+                <div class="info-label">OOAD Residencia</div>
+                <div class="info-value">{{ aspirante.ooadResidencia }}</div>
+              </div>
+
+              <div class="col-12 md:col-2">
+                <div class="info-label">Modalidad</div>
+                <div class="info-value">{{ aspirante.modalidad }}</div>
+              </div>
+            </div>
+
+            <div *ngIf="esSustitucion" class="grid" >
+              <div class="col-12 md:col-12">
+                <h3 class="titulo-seccion">Asignación de sustitución</h3>
+              </div>
+              <div class="col-12 md:col-4 flex align-items-center justify-content-start gap-2">
+                <i class="cme-ooad" style="color: #63c2ea;font-size: 1.7rem" ></i>
+                <div class="flex flex-column line-height-2" style="font-size: 12px;text-align: left;">
+                  <span class="font-semibold text-900">OOAD</span>
+                  <span class="font-semibold text-600">{{ aspirante.asignacion.ooad }}</span>
+                </div>
+              </div>
+              <div class="col-12 md:col-4 flex align-items-center justify-content-start gap-2">
+                <i class="cme-pin" style="color: #63c2ea;font-size: 1.7rem" ></i>
+                <div class="flex flex-column line-height-2" style="font-size: 12px;text-align: left;">
+                  <span class="font-semibold text-900">Zona</span>
+                  <span class="font-semibold text-600">{{ aspirante.asignacion.zona }}</span>
+                </div>
+              </div>
+              <div class="col-12 md:col-4 flex align-items-center justify-content-start gap-2">
+                <i class="cme-total" style="color: #63c2ea;font-size: 1.7rem" ></i>
+                <div class="flex flex-column line-height-2" style="font-size: 12px;text-align: left;">
+                  <span class="font-semibold text-900">Especialidad</span>
+                  <span class="font-semibold text-600">{{ aspirante.asignacion.especialidad }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </p-card>
+
+      <p-card *ngIf="esPlazaConDetalle" class="mx-2 empty-border info-card mt-3" [header]="'Detalle de la plaza'">
+        <div class="grid">
+          <div class="col-12 md:col-7">
+            <div class="flex flex-column p-0 mt-1">
+              <p class="titulo-oferta-card texto-ajustable">
+                {{ aspirante.plaza.especialidad | titlecase }} / {{ aspirante.plaza.categoria | titlecase }}
+              </p>
+              <p class="especificacion-oferta-card">{{ aspirante.plaza.umf | titlecase }}</p>
+            </div>
+
+            <div class="grid my-4 detalle-plaza-lista">
+              <div class="col-6 justify-content-start">
+                <p class="texto-label-oferta-card text-600">OOAD:</p>
+              </div>
+              <div class="col-6 justify-content-end text-right">
+                <p class="texto-label-oferta-card text-900">{{ aspirante.plaza.ooad | titlecase }}</p>
+              </div>
+
+              <div class="col-6 justify-content-start">
+                <p class="texto-label-oferta-card text-600">Zona:</p>
+              </div>
+              <div class="col-6 justify-content-end text-right">
+                <p class="texto-label-oferta-card text-900">{{ aspirante.plaza.zona }}</p>
+              </div>
+
+              <div class="col-6 justify-content-start">
+                <p class="texto-label-oferta-card text-600">No de plaza:</p>
+              </div>
+              <div class="col-6 justify-content-end text-right">
+                <p class="texto-label-oferta-card text-900">{{ aspirante.plaza.numPlaza }}</p>
+              </div>
+
+              <div class="col-6 justify-content-start">
+                <p class="texto-label-oferta-card text-600">Turno:</p>
+              </div>
+              <div class="col-6 justify-content-end text-right">
+                <p class="texto-label-oferta-card text-900">{{ aspirante.plaza.turno | titlecase }}</p>
+              </div>
+
+              <div class="col-6 justify-content-start">
+                <p class="texto-label-oferta-card text-600">Horario:</p>
+              </div>
+              <div class="col-6 justify-content-end text-right">
+                <p class="texto-label-oferta-card text-900">{{ aspirante.plaza.horario }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 md:col-5 my-4 padding-compensacion">
+            <p-card class="empty-border bg-secondary-blue-oferta-laboral">
+              <div class="flex">
+                <div class="flex col-12 flex-column p-0">
+                  <p class="card-compensacion-sub-titulo">Sueldo mensual</p>
+                  <div class="flex justify-content-start gap-4 my-2 flex-wrap">
+                    <div class="flex flex-column">
+                      <p class="card-compensacion-seccion">Sueldo Bruto</p>
+                      <p class="card-compensacion-titulo">{{ aspirante.plaza.sueldoMensualBruto | currency:'USD':'symbol':'1.2-2' }}</p>
+                    </div>
+                    <div class="flex align-items-end">
+                      <p class="card-compensacion-titulo">-</p>
+                    </div>
+                    <div class="flex flex-column">
+                      <p class="card-compensacion-seccion">Sueldo Neto</p>
+                      <p class="card-compensacion-titulo">{{ aspirante.plaza.sueldoMensualNeto | currency:'USD':'symbol':'1.2-2' }}</p>
+                    </div>
+                  </div>
+
+                  <div class="flex justify-content-between p-0 mt-1">
+                    <div class="col-6 flex justify-content-start p-0">
+                      <p class="card-compensacion-seccion">Créditos:</p>
+                    </div>
+                    <div class="col-6 flex justify-content-start p-0">
+                      <p class="card-compensacion-seccion">{{ aspirante.plaza.creditos }} {{ (aspirante.plaza.creditos ?? 0) > 1 ? 'Disponibles' : 'Disponible' }}</p>
+                    </div>
+                  </div>
+
+                  <div class="flex justify-content-between p-0 mt-1">
+                    <div class="col-6 flex justify-content-start p-0">
+                      <p class="card-compensacion-seccion">Bono difícil cobertura:</p>
+                    </div>
+                    <div class="col-6 flex justify-content-start p-0">
+                      <p class="card-compensacion-seccion">{{ aspirante.plaza.bonoDificilCobertura ? aspirante.plaza.bonoDificilCobertura : 'No' }}</p>
+                    </div>
+                  </div>
+
+                  <div class="flex justify-content-between p-0 mt-1">
+                    <div class="col-6 flex justify-content-start p-0">
+                      <p class="card-compensacion-seccion">Acceso crédito:</p>
+                    </div>
+                    <div class="col-6 flex justify-content-start p-0">
+                      <p class="card-compensacion-seccion">{{ aspirante.plaza.accesoCredito ? 'Sí' : 'No' }}</p>
+                    </div>
+                  </div>
+
+                  <ng-container *ngIf="aspirante.plaza.accesoCredito">
+                    <div class="flex justify-content-between p-0 mt-1" *ngIf="aspirante.plaza.creditoAutomotriz">
+                      <div class="col-6 flex justify-content-start p-0">
+                        <p class="card-compensacion-seccion">Crédito automotriz:</p>
+                      </div>
+                      <div class="col-6 flex justify-content-start p-0">
+                        <p class="card-compensacion-seccion">Monto máx, {{ aspirante.plaza.creditoAutomotriz | currency:'USD':'symbol':'1.2-2' }}</p>
+                      </div>
+                    </div>
+
+                    <div class="flex justify-content-between p-0 mt-1" *ngIf="aspirante.plaza.creditoHipotecario">
+                      <div class="col-6 flex justify-content-start p-0">
+                        <p class="card-compensacion-seccion">Crédito hipotecario:</p>
+                      </div>
+                      <div class="col-6 flex justify-content-start p-0">
+                        <p class="card-compensacion-seccion">Monto máx, {{ aspirante.plaza.creditoHipotecario | currency:'USD':'symbol':'1.2-2' }}</p>
+                      </div>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </p-card>
+          </div>
+        </div>
+      </p-card>
+
+      <div class="flex justify-content-end mx-2 mt-3 mb-3">
+        <p-button
+          type="button"
+          [label]="textoBotonDesasignar"
+          [loading]="isSaving"
+          [disabled]="isSaving || isSearching"
+          (onClick)="abrirModalDesasignacion()" />
+      </div>
+    </ng-container>
+  </main>
+
+  <p-dialog
+    header="Desasignación"
+    [(visible)]="modalVisible"
+    [modal]="true"
+    [closable]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [style]="{ width: '50vw', 'max-width': '590px' }"
+    styleClass="custom-form-confirm-dialog desasignacion-dialog">
+    <form [formGroup]="modalForm" class="message-body" (ngSubmit)="confirmarDesasignacion()">
+      <p class="pregunta">¿Estás seguro de desasignar la plaza?</p>
+
+      <div class="field">
+        <div class="flex justify-content-between align-items-center mb-2">
+          <label class="field-label" for="motivoDesasignacion">Motivo</label>
+          <span class="label-obligatorio">Obligatorio</span>
+        </div>
+        <p-select
+          [options]="motivosDesasignacion"
+          formControlName="idMotivoDesasignacion"
+          inputId="motivoDesasignacion"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selecciona el motivo"
+          appendTo="body"
+          class="w-full"
+          [disabled]="isLoadingMotivos || isSaving">
+        </p-select>
+      </div>
+
+      <div class="field mt-3">
+        <label class="field-label block mb-2" for="observacionesDesasignacion">Observaciones</label>
+        <textarea
+          id="observacionesDesasignacion"
+          rows="3"
+          cols="30"
+          class="w-full"
+          pTextarea
+          formControlName="desJustificacion"
+          maxlength="500"
+          placeholder="Observaciones">
+        </textarea>
+        <span class="contador-observaciones">{{ observacionesLength }}/500 caracteres</span>
+      </div>
+
+      <div class="acciones">
+        <p-button type="button" label="Cancelar" severity="danger" variant="outlined" [disabled]="isSaving" (onClick)="cancelarModal()"></p-button>
+        <p-button type="submit" label="Aceptar" variant="outlined" [loading]="isSaving" [disabled]="modalForm.invalid || isSaving || isLoadingMotivos"></p-button>
+      </div>
+    </form>
+  </p-dialog>
+</section>
