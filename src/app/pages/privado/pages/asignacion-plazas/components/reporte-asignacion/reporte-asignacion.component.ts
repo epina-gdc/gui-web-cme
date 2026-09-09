@@ -182,7 +182,11 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
   }
 
   obtenerEstatus(registro: ReporteAsignacionRegistro): string {
-    return this.obtenerValor(registro.estatus, registro.estatusValidacion);
+    return this.obtenerValor(
+      registro.estatus,
+      registro.estatusValidacion,
+      registro.descEstatusVerificacion
+    );
   }
 
   obtenerOoadResidencia(registro: ReporteAsignacionRegistro): string {
@@ -436,7 +440,7 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
 
   private obtenerValor(...valores: unknown[]): string {
     const valor = valores.find((item) => item !== null && item !== undefined && item !== '');
-    return valor !== undefined ? String(valor) : '-';
+    return valor !== undefined ? String(valor) : '';
   }
 
   private crearFecha(value: unknown): Date | null {

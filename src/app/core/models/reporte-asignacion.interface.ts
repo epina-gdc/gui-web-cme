@@ -29,6 +29,9 @@ export interface ReporteAsignacionRegistro {
   desTipoAsignacion?: string | null;
   estatus?: string | null;
   estatusValidacion?: string | null;
+  idEstatusVerificacion?: number | null;
+  descEstatusVerificacion?: string | null;
+  idMedicoSustituto?: number | null;
   ooadResidencia?: string | null;
   desOoadResidencia?: string | null;
   matriculaFolio?: string | null;
