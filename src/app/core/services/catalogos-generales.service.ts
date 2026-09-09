@@ -287,10 +287,10 @@ export class CatalogosGeneralesService {
     );
   }
 
-  getConvocatorias(): Observable<any> {
-    return this.http.get<HttpRespuesta<any>>(this.serverEndPointURLCatalogos + '/convocatorias', { headers: this.header }).pipe(
+  getConvocatorias(): Observable<HttpRespuesta<Convocatoria[]>> {
+    return this.http.get<HttpRespuesta<Convocatoria[]>>(this.serverEndPointURLCatalogos + '/convocatorias', { headers: this.header }).pipe(
       catchError(this.handleError),
-      map((response: HttpRespuesta<any>) => {
+      map((response: HttpRespuesta<Convocatoria[]>) => {
         return response;
       })
     );
@@ -330,7 +330,6 @@ export class CatalogosGeneralesService {
       })
     );
   }
-
   getConvocatoriaActiva(): Observable<HttpRespuesta<ConvocatoriaActiva | undefined>> {
     return this.http.get<HttpRespuesta<ConvocatoriaActiva | undefined>>(this.serverEndPointURLCatalogos + '/convocatorias/activa', { headers: this.header }).pipe(
       catchError(this.handleError),
@@ -360,3 +359,5 @@ export class CatalogosGeneralesService {
 
 
 }
+
+
