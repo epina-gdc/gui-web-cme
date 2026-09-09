@@ -68,6 +68,7 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
   especialidades: TipoDropdown[] = [];
   convocatorias: TipoDropdown[] = [];
   convocatoriasCatalogo: Convocatoria[] = [];
+  default_catalogo: TipoDropdown = { value: 0, label: 'Seleccione una opción' };
 
   registros: WritableSignal<ReporteAsignacionRegistro[]> = signal<ReporteAsignacionRegistro[]>([]);
   busquedaRealizada: WritableSignal<boolean> = signal<boolean>(false);
@@ -245,13 +246,12 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
       .subscribe({
         next: (response) => {
           this.convocatoriasCatalogo = ((response?.respuesta ?? []) as Convocatoria[])
-          this.convocatorias = [
-
-            ...this.convocatoriasCatalogo.map((convocatoria) => ({
+          this.convocatorias = this.agregarDefaultCatalogo(
+            this.convocatoriasCatalogo.map((convocatoria) => ({
               label: convocatoria.desConvocatoria,
               value: convocatoria.idConvocatoria,
-            })),
-          ];
+            }))
+          );
         },
         error: () => this.alertaService.error('No fue posible cargar las convocatorias.'),
       });
@@ -267,16 +267,16 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
             value: tipo.idTipoAsignacion,
           }));
 
-          this.tiposAsignacion = [...opciones];
+          this.tiposAsignacion = this.agregarDefaultCatalogo(opciones);
         },
         error: () => {
-          this.tiposAsignacion = [
+          this.tiposAsignacion = this.agregarDefaultCatalogo([
             { label: 'Plaza ordinaria', value: TipoAsignacion.PlazaOrdinaria },
             { label: 'Plaza COPLAMAR', value: TipoAsignacion.PlazaCoplamar },
             { label: 'Sustitucion 08', value: TipoAsignacion.Sustitucion08 },
             { label: 'Cambio de rama', value: TipoAsignacion.CambioRama },
             { label: 'Rechazo de oferta', value: TipoAsignacion.RechazoOferta },
-          ];
+          ]);
         },
       });
   }
@@ -368,11 +368,11 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
   private crearFiltros(incluirPaginado: boolean): ReporteAsignacionFiltro {
     const value = this.form.value;
     const filtros: ReporteAsignacionFiltro = {
-      idConvocatoria: value.idConvocatoria ?? null,
-      cveOoad: value.cveOoad ?? null,
-      cveZona: value.cveZona ?? null,
-      idTipoAsignacion: value.idTipoAsignacion ?? null,
-      cveEspecialidad: value.cveEspecialidad ?? null,
+      idConvocatoria: value.idConvocatoria || null,
+      cveOoad: value.cveOoad || null,
+      cveZona: value.cveZona || null,
+      idTipoAsignacion: value.idTipoAsignacion || null,
+      cveEspecialidad: value.cveEspecialidad || null,
       numPlaza: value.numPlaza?.trim() || null,
       matriculaFolio: value.matriculaFolio?.trim() || null,
       fechaInicio: this.formatearFecha(value.fechaInicio),
@@ -420,7 +420,11 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
       }))
       .filter((item) => item.label && item.value !== null && item.value !== undefined);
 
-    return [...opciones];
+    return this.agregarDefaultCatalogo(opciones);
+  }
+
+  private agregarDefaultCatalogo(items: TipoDropdown[]): TipoDropdown[] {
+    return items.length > 0 ? [this.default_catalogo, ...items] : [];
   }
 
   private obtenerPropiedad(item: unknown, keys: string[]): unknown {

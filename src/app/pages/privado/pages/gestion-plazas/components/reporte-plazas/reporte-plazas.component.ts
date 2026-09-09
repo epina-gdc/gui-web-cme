@@ -45,6 +45,8 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
   lstReportePlazas: WritableSignal<ReportePlazas[]> = signal([]);
   ultimaBusqueda: WritableSignal<FiltrosReportePlaza> = signal({});
 
+  default_catalogo: TipoDropdown = {value:0,label:'Seleccione una opción'};
+
   lstOoads: TipoDropdown[] = [];
   lstZonas: TipoDropdown[] = [];
   lstEspecialidades: TipoDropdown[] = [];
@@ -69,10 +71,18 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(({respuesta}) => {
         const {categorias, especialidades, ooads, tiposUnidades} = respuesta;
-        this.lstOoads = mapearArregloTipoDropdown(ooads.respuesta,'desOoad','cveOoad');
-        this.lstEspecialidades = mapearArregloTipoDropdown(especialidades,'desEspecialidad','cveEspecialidad');
-        this.lstCategorias = mapearArregloTipoDropdown(categorias.respuesta, 'descCategoria','cveCategoria');
-        this.lstUnidades = mapearArregloTipoDropdown(tiposUnidades.respuesta, 'descTipoUnidad','cveTipoUnidad');
+        this.lstOoads = this.agregarDefaultCatalogo(
+          mapearArregloTipoDropdown(ooads.respuesta,'desOoad','cveOoad')
+        );
+        this.lstEspecialidades = this.agregarDefaultCatalogo(
+          mapearArregloTipoDropdown(especialidades,'desEspecialidad','cveEspecialidad')
+        );
+        this.lstCategorias = this.agregarDefaultCatalogo(
+          mapearArregloTipoDropdown(categorias.respuesta, 'descCategoria','cveCategoria')
+        );
+        this.lstUnidades = this.agregarDefaultCatalogo(
+          mapearArregloTipoDropdown(tiposUnidades.respuesta, 'descTipoUnidad','cveTipoUnidad')
+        );
     });
 
     this.form.controls['cveOoad'].valueChanges
@@ -84,7 +94,9 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
       )
       .subscribe(respuesta => {
         if(respuesta.exito){
-          this.lstZonas = mapearArregloTipoDropdown(respuesta.respuesta, 'desZona','cveZona');
+          this.lstZonas = this.agregarDefaultCatalogo(
+            mapearArregloTipoDropdown(respuesta.respuesta, 'desZona','cveZona')
+          );
         }
     });
   }
@@ -165,5 +177,9 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
         this.totalRecords = 0;
       }
     })
+  }
+
+  private agregarDefaultCatalogo(items: TipoDropdown[]): TipoDropdown[] {
+    return items.length > 0 ? [this.default_catalogo, ...items] : [];
   }
 }
