@@ -2,104 +2,73 @@
   display: block;
 }
 
-// ============================================
-// VARIABLES
-// ============================================
-$card-min-height: 117px;
+$card-min-height: 132px;
 $border-width: 0px;
-$border-radius: 12px;
 $box-shadow-selected: -1px 4px 4px 0px;
 
-// Colores base
 $color-becados: #155DFC;
 $color-residentes: #0AD50A;
 $color-externos: #E10000;
+$color-sustitutos: #7A00E6;
 $color-text: #45556C;
 $color-text-secondary: #62748E;
 $color-total-num: #314158;
 
-// Transparencias
-$alpha-semi: 0.45; // 73 en hexadecimal
-$alpha-shadow-completed: 0.25;
+$alpha-semi: 0.45;
 $alpha-shadow-selected: 0.6;
 
-// Colores con transparencia
 $bg-becados-semi: rgba(239, 246, 255, $alpha-semi);
 $bg-becados-solid: #EFF6FF;
-
 $bg-residentes-semi: rgba(243, 255, 238, $alpha-semi);
 $bg-residentes-solid: #F3FFEE;
-
 $bg-externos-semi: rgba(255, 235, 235, $alpha-semi);
 $bg-externos-solid: #FFEBEB;
-
+$bg-sustitutos-semi: rgba(246, 237, 255, $alpha-semi);
+$bg-sustitutos-solid: #F6EDFF;
 $bg-total: #F5F7FF;
 
-// ============================================
-// ESTILOS BASE DE LA TARJETA
-// ============================================
 .card-med {
   min-height: $card-min-height;
   cursor: pointer;
 
   .p-button-label-ir,
   .pi::before {
-    font-size: 12px !important;
+    font-size: 16px !important;
     color: $color-text-secondary;
   }
 
   .card-label {
-    font-size: 14px;
+    font-size: 18px;
     font-weight: 400;
   }
 
   .card-num {
-    font-size: 30px;
+    font-size: 40px;
     font-weight: 600;
   }
 }
 
-// ============================================
-// MIXIN PARA ESTILOS DE TIPO DE MÉDICO
-// ============================================
 @mixin tipo-medico($color, $bg-semi, $bg-solid, $text-color) {
   background-color: $bg-semi;
 
   .card-label {
-    color: rgba($text-color, $alpha-semi);
+    color: $text-color;
   }
 
   .card-num {
-    color: rgba($color, $alpha-semi);
+    color: $color;
+  }
+
+  &.completed {
+    background-color: $bg-solid;
   }
 
   &.select {
     border: solid $border-width $color;
     box-shadow: $box-shadow-selected rgba($color, $alpha-shadow-selected);
-
-    .card-num {
-      color: $color;
-    }
-  }
-
-  &.completed {
-    background-color: $bg-solid;
-    border: solid $border-width $color;
-    box-shadow: $box-shadow-selected rgba($color, $alpha-shadow-selected);
-
-    .card-label {
-      color: $text-color;
-    }
-
-    .card-num {
-      color: $color;
-    }
   }
 }
 
-// ============================================
-// APLICAR ESTILOS POR TIPO
-// ============================================
 .card-med.becados {
   @include tipo-medico($color-becados, $bg-becados-semi, $bg-becados-solid, $color-text);
 }
@@ -112,9 +81,10 @@ $bg-total: #F5F7FF;
   @include tipo-medico($color-externos, $bg-externos-semi, $bg-externos-solid, $color-text);
 }
 
-// ============================================
-// ESTILOS TARJETA TOTAL
-// ============================================
+.card-med.sustitutos {
+  @include tipo-medico($color-sustitutos, $bg-sustitutos-semi, $bg-sustitutos-solid, #4A3A66);
+}
+
 .card-med.total {
   background-color: $bg-total;
   cursor: auto;

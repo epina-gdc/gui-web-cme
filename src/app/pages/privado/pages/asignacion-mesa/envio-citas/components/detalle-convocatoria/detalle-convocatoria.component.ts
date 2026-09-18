@@ -4,7 +4,7 @@ import { Avatar } from "primeng/avatar";
 import { CardModule } from 'primeng/card';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { Button } from "primeng/button";
-import { EnvioCitasService, TotalCitas, TypeMedico } from '../../services/envio-citas.service';
+import { EnvioCitasService, SolicitudEnvioCitas, TotalCitas, TypeMedico } from '../../services/envio-citas.service';
 
 import { Mensajes } from '@utils/mensajes';
 import { AlertService } from '@services/alert.service';
@@ -41,8 +41,11 @@ export class DetalleConvocatoriaComponent {
   totalCitas = model<TotalCitas | undefined>(undefined);
   convocatoriaSelect = model<number | undefined>(undefined);
   tipoMedicoSelect = model<TypeMedico | undefined>(undefined);
+  solicitudEnvioCitas = model<SolicitudEnvioCitas | undefined>(undefined);
+  convocatoriaInactivaSeleccionada = model<boolean>(false);
 
   isFinalizado = signal<boolean>(false);
+  private idSolicitudEnvio = 0;
 
 
   validaConvocatoria() {
@@ -60,14 +63,22 @@ export class DetalleConvocatoriaComponent {
 
 
   onEnviarCitas() {
+    const idConvocatoria = this.convocatoriaSelect();
+    const idTipoMedico = this.tipoMedicoSelect();
 
-    if (!this.convocatoriaSelect() || !this.tipoMedicoSelect()) {
-      return
+    if (!idConvocatoria || !idTipoMedico || this.convocatoriaInactivaSeleccionada()) {
+      return;
     }
-    this.envioCitasService.guardarAsignacionCitas(this.convocatoriaSelect() as number, this.tipoMedicoSelect() as number).subscribe({
+
+    this.envioCitasService.guardarAsignacionCitas(idConvocatoria, idTipoMedico).subscribe({
       next: (response) => {
         if (response.exito) {
           this.alertaService.informacion(this.mensajes.MSG_INICIO_CORREOS);
+          this.solicitudEnvioCitas.set({
+            idConvocatoria,
+            idTipoMedico,
+            idSolicitud: ++this.idSolicitudEnvio,
+          });
         } else {
           this.alertaService.error(response.mensaje);
         }
@@ -95,3 +106,6 @@ export class DetalleConvocatoriaComponent {
       !!(fechasHoras.horaFin && fechasHoras.horaFin.trim());
   }
 }
+
+
+
