@@ -58,7 +58,7 @@
                         class="col-12 md:col-3 flex align-items-center justify-content-center md:justify-content-start">
                         <img [src]="foto ? foto : '/assets/images/default-profile.png'"
                             class="border-circle w-20rem h-20rem object-cover shadow-2" style="object-fit: cover;"
-                            alt="Foto Doctor">
+                            alt="Foto">
                     </div>
 
                     <div class="col-12 md:col-9">
@@ -82,39 +82,39 @@
                         <div class="grid text-sm">
                             <div class="col-6 md:col-3 mb-2">
                                 @if (aspirante.fechaCita) {
-                                <asistencia-note [titulo]="'Fecha'" [descripcion]="aspirante.fechaCita"
+                                <asistencia-note class="nota-destacada" [titulo]="'Fecha'" [descripcion]="aspirante.fechaCita"
                                     [icono]="'cme-citas'" [ajuste]="'ml-5'" [tamanio]="'text-xl'" />
                                 }
                             </div>
                             <div class="col-6 md:col-3 mb-2">
                                 @if(aspirante.horaCita) {
-                                <asistencia-note [titulo]="'Hora'" [descripcion]="aspirante.horaCita"
+                                <asistencia-note class="nota-destacada" [titulo]="'Hora'" [descripcion]="aspirante.horaCita"
                                     [icono]="'cme-time'" />
                                 }
                             </div>
                             <div class="col-6 md:col-3 mb-2">
                                 @if(aspirante.mesaCita) {
-                                <asistencia-note [titulo]="'Mesa'" [descripcion]="aspirante.mesaCita"
+                                <asistencia-note class="nota-destacada" [titulo]="'Mesa'" [descripcion]="aspirante.mesaCita"
                                     [icono]="'cme-numero-mesa'" [ajuste]="'ml-5'" [tamanio]="'text-xl'" />
                                 }
                             </div>
                             <div class="col-6 md:col-3 mb-2">
                                 @if(aspirante.turnoCita) {
-                                <asistencia-note [titulo]="'Turno'" [descripcion]="aspirante.turnoCita"
+                                <asistencia-note class="nota-destacada" [titulo]="'Turno'" [descripcion]="aspirante.turnoCita"
                                     [icono]="'cme-time'" />
                                 }
                             </div>
-                            <div class="col-6 md:col-3 mb-2">
-                                <asistencia-note class="nota-destacada" [titulo]="'Modalidad'" [descripcion]="aspirante.modalidad"
-                                    [icono]="'cme-modalidad'" [tamanio]="'text-xl'" />
+                            <div class="col-12 md:col-4 mb-2">
+                                <asistencia-note class="nota-destacada nota-resumen" [titulo]="'Modalidad'" [descripcion]="aspirante.modalidad"
+                                    [icono]="'cme-total-citados'" [tamanio]="'text-xl'" />
                             </div>
-                            <div class="col-6 md:col-3 mb-2">
-                                <asistencia-note class="nota-destacada" [titulo]="'Estatus'" [descripcion]="aspirante.estatus"
-                                    [icono]="'cme-check'" />
+                            <div class="col-12 md:col-4 mb-2">
+                                <asistencia-note class="nota-destacada nota-resumen" [titulo]="'Estatus'" [descripcion]="aspirante.estatus"
+                                    [icono]="'pi-sync'" />
                             </div>
-                            <div class="col-6 md:col-3 mb-2">
-                                <asistencia-note class="nota-destacada" [titulo]="'Verificación documental'"
-                                    [descripcion]="aspirante.verificacionDoc" [icono]="'pi-star'" />
+                            <div class="col-12 md:col-4 mb-2">
+                                <asistencia-note class="nota-destacada nota-resumen" [titulo]="'Verificación documental'"
+                                    [descripcion]="aspirante.verificacionDoc" [icono]="'pi-file-check'" />
                                 <!--  -->
                             </div>
                         </div>
