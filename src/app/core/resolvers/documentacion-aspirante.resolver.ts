@@ -9,10 +9,14 @@ export const documentacionAspiranteResolver: ResolveFn<any> = (route, state) => 
   const verificacionDocsService: VerificacionDocsService = inject(VerificacionDocsService);
   const router: Router = inject(Router);
   const alertService: AlertService = inject(AlertService);
+  const tipoVerificacion = route.paramMap.get('tipoVerificacion');
+  const rutaVerificacion = tipoVerificacion === '1' || tipoVerificacion === '2'
+    ? `/privado/verificacion-documentos/${tipoVerificacion}`
+    : '/privado/verificacion-documentos';
 
   return verificacionDocsService.consultarPerfilDetalle(idUsuario).pipe(
     catchError((error) => {
-      void router.navigate(['/privado/verificacion-documentos']);
+      void router.navigate([rutaVerificacion]);
       alertService.error('No se puede acceder al registro seleccionado');
 
       return error;

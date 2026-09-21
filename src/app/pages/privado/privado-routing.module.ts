@@ -86,6 +86,13 @@ const routes: Routes = [{
       }
     },
     {
+      path: NAV.documentacionAspirante + '/:tipoVerificacion',
+      component: DocumentacionComponent,
+      resolve: {
+        respuesta: documentacionAspiranteResolver,
+      }
+    },
+    {
       path: NAV.documentacionAspirante,
       component: DocumentacionComponent,
       resolve: {

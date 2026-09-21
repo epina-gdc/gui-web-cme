@@ -124,7 +124,7 @@
 
 <div class="flex justify-content-end">
   <p-button type="button" variant="outlined" class="me-2" label="Cancelar"
-            [routerLink]="'privado/verificacion-documentos'"/>
+            [routerLink]="rutaVerificacionDocumentos"/>
   @if (estatusId !== 3) {
     <p-button type="submit" [disabled]="formularioValidacion.invalid" label="Finalizar verificación"
               (click)="finalizarVerificacion()"/>

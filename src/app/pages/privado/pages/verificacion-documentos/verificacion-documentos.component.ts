@@ -364,8 +364,16 @@ export class VerificacionDocumentosComponent extends GeneralComponent implements
   }
 
   irDetalleDocumentacion(usuario: TablaVerificacionDocsInterface) {
-    let ruta = this._nav.documentacionAspirante.replace(':id', usuario.idUsuario.toString());
-    this._router.navigate([this._nav.privado + ruta])
+    const ruta = this._nav.documentacionAspirante.replace(':id', usuario.idUsuario.toString());
+    void this._router.navigate([this._nav.privado + ruta + this.obtenerTipoVerificacionRuta()]);
+  }
+
+  private obtenerTipoVerificacionRuta(): string {
+    if (!this.esAdministrador()) {
+      return '';
+    }
+
+    return this.indPerfilInterno === 0 ? '/2' : '/1';
   }
 
   limpiar() {
