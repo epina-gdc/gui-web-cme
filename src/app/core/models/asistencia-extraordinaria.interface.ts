@@ -9,6 +9,7 @@ export interface AsistenciaAspirante {
     nomParticipante: string;
     uuidArchivo: string | null;
     matricula: string | null;
+    folio?: string | null;
     curp: string | null;
     rfc: string | null;
     fechaCita: string | null;

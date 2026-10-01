@@ -35,6 +35,7 @@ import {CargaCalificacionesResolver} from '../../core/resolvers/carga-calificaci
 import {CargaMedicosSustitutosResolver} from '../../core/resolvers/carga-medicos-sustitutos.resolver';
 import {tableroInformacionResolver} from '../../core/resolvers/tablero-informacion.resolver';
 import { MonitoreoAsignacionesComponent } from './pages/monitoreo-asignaciones/monitoreo-asignaciones.component';
+import {DesasignacionPlazaComponent} from '@privado/desasignacion-plaza/desasignacion-plaza.component';
 
 const routes: Routes = [{
   path: '',
@@ -63,6 +64,35 @@ const routes: Routes = [{
       }
     },
     {
+      path: NAV.verificacionDocumentos + '/1',
+      component: VerificacionDocumentosComponent,
+      canActivate: [validadorGuard],
+      data: {
+        indPerfilInterno: 1
+      },
+      resolve: {
+        respuesta: verficacionDocsResolver
+      }
+    },
+    {
+      path: NAV.verificacionDocumentos + '/2',
+      component: VerificacionDocumentosComponent,
+      canActivate: [validadorGuard],
+      data: {
+        indPerfilInterno: 0
+      },
+      resolve: {
+        respuesta: verficacionDocsResolver
+      }
+    },
+    {
+      path: NAV.documentacionAspirante + '/:tipoVerificacion',
+      component: DocumentacionComponent,
+      resolve: {
+        respuesta: documentacionAspiranteResolver,
+      }
+    },
+    {
       path: NAV.documentacionAspirante,
       component: DocumentacionComponent,
       resolve: {
@@ -79,6 +109,10 @@ const routes: Routes = [{
     {
       path: NAV.asignacion,
       component: AsignacionPlazasComponent,
+    },
+    {
+      path: NAV.desasignacion,
+      component: DesasignacionPlazaComponent,
     },
     {
       path: NAV.cargaCalificaciones,

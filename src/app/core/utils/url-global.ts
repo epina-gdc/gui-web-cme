@@ -22,4 +22,5 @@ export const NAV = {
   errorConfig: 'config-erronea',
   home: 'inicio',
   homeModulos: 'inicio-modulos',
+  desasignacion: 'cancelacion-asignacion',
 };

@@ -4,4 +4,5 @@ export interface VerificacionDocsInterface{
   idEstatus?: number;
   cveEspecialidad?: number;
   matriculaFolio?: string;
+  indPerfilInterno?: number;
 }

@@ -76,6 +76,25 @@ export class AsistenciaExtraordinariaComponent extends GeneralComponent {
     get noTieneCita(): boolean {
         return (this.aspirante?.fechaCita === null && this.aspirante?.horaCita === null && this.aspirante?.turnoCita === null && this.aspirante?.mesaCita === null);
     }
+
+    get esModalidadExterna(): boolean {
+        return this.aspirante?.modalidad?.trim().toUpperCase() === 'EXTERNO';
+    }
+
+    get etiquetaIdentificador(): string {
+        return this.esModalidadExterna ? 'Folio' : 'Matrícula';
+    }
+
+    get identificadorAspirante(): string {
+        if (!this.aspirante) {
+            return '';
+        }
+
+        return this.esModalidadExterna
+            ? this.aspirante.folio ?? this.aspirante.matricula ?? ''
+            : this.aspirante.matricula ?? '';
+    }
+
     // búsqueda
     search() {
 

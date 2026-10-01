@@ -30,7 +30,7 @@ import {DetalleDocumentacionEspecialidadDocumento} from '@models/detalleDocument
 import {DocumentoService} from '@services/documentos.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {VerificacionDocsService} from '@services/verificacion-docs.service';
-import {Router, RouterLink} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {AlertService} from '@services/alert.service';
 import {Mensajes} from '@utils/mensajes';
 import {DialogModule} from 'primeng/dialog';
@@ -74,6 +74,7 @@ export class DocsEspecialidadComponent implements OnInit {
   verificacionDocsService: VerificacionDocsService = inject(VerificacionDocsService)
 
   router: Router = inject(Router);
+  activatedRoute = inject(ActivatedRoute);
 
   pdfSrc: Uint8Array | undefined;
 
@@ -114,6 +115,13 @@ export class DocsEspecialidadComponent implements OnInit {
 
   private checkScreenSize(): void {
     this.isMobileView = window.innerWidth < this.MOBILE_BREAKPOINT;
+  }
+
+  get rutaVerificacionDocumentos(): string {
+    const tipoVerificacion = this.activatedRoute.snapshot.paramMap.get('tipoVerificacion');
+    return tipoVerificacion === '1' || tipoVerificacion === '2'
+      ? `/privado/verificacion-documentos/${tipoVerificacion}`
+      : '/privado/verificacion-documentos';
   }
 
   ngOnInit(): void {
@@ -374,7 +382,7 @@ export class DocsEspecialidadComponent implements OnInit {
       next: (respuesta) => {
         if (!respuesta.exito) return;
         this.actualizarRegistro.emit(true);
-        this.router.navigate(['privado/verificacion-documentos']).then(
+        this.router.navigate([this.rutaVerificacionDocumentos]).then(
           () => this.alertaService.exito(this.MSJ_FINALIZACION)
         );
       },

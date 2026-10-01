@@ -19,14 +19,17 @@ export class TotalCitas {
   totalBecados!: number;
   totalResidentes!: number;
   totalExternos!: number;
+  totalSustitutos!: number;
   totalMedicos!: number;
   totalesEnviados!: number;
   totalesNoEnviados!: number;
   porcentajeEnviados!: number;
   fechasHorasEnvios?: FechasHorasEnvios | null;
-  validaBecados!: true;
-  validaResidentes!: true;
-  validaMedicosExterno!: true;
+  validaBecados!: boolean;
+  validaResidentes!: boolean;
+  validaMedicosExterno!: boolean;
+  validaSustitutos!: boolean;
+  estatusEnvio!: number;
 }
 
 export class ResponseTotalesCistas extends ResponseGeneral {
@@ -48,6 +51,18 @@ export enum TypeMedico {
   BECADOS = 1,
   RESIDENTES = 2,
   EXTERNOS = 3,
+  SUSTITUTOS = 4,
+}
+
+export enum TypeConvocatoria {
+  DRAFT = 1,
+  MINI_DRAFT = 2,
+}
+
+export interface SolicitudEnvioCitas {
+  idConvocatoria: number;
+  idTipoMedico: TypeMedico;
+  idSolicitud: number;
 }
 
 

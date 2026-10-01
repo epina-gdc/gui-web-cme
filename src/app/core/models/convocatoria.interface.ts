@@ -1,10 +1,14 @@
 export interface Convocatoria {
-  idConvocatoria: number,
-  desConvocatoria: string,
-  fecInicio: string,
-  fecFin: string,
-  indActivo: number,
-  tipo: TipoConvocatoria,
+  idConvocatoria: number;
+  desConvocatoria: string;
+  fecInicio: string;
+  tipo: TipoConvocatoria;
+  fecFin: string;
+  fechaInicioRegistro?: string | null;
+  fechaFinRegistro?: string | null;
+  registroActivo?: boolean;
+  activa?: boolean;
+  indActivo: number;
 }
 
 export interface TipoConvocatoria {
@@ -90,3 +94,4 @@ export interface ConvocatoriaRegistroRequest {
   perfiles: Pick<ConvocatoriaPerfil, 'idPerfil'>[];
   subperfiles: Pick<ConvocatoriaSubperfil, 'idSubperfil'>[];
 }
+
