@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, model } from '@angular/core';
 import { ConvocatoriaComponent } from "./components/convocatoria/convocatoria.component";
 import { DetalleConvocatoriaComponent } from "./components/detalle-convocatoria/detalle-convocatoria.component";
 import { ProcesoAsignacionComponent } from "./components/proceso-asignacion/proceso-asignacion.component";
-import { TotalCitas, TypeMedico } from './services/envio-citas.service';
+import { SolicitudEnvioCitas, TotalCitas, TypeMedico } from './services/envio-citas.service';
 
 @Component({
   selector: 'app-envio-citas',
@@ -15,4 +15,9 @@ export class EnvioCitasComponent {
   totalCitas = model<TotalCitas | undefined>(undefined);
   convocatoriaSelect = model<number | undefined>(undefined);
   tipoMedicoSelect = model<TypeMedico | undefined>(undefined);
+  solicitudEnvioCitas = model<SolicitudEnvioCitas | undefined>(undefined);
+  convocatoriaInactivaSeleccionada = model<boolean>(false);
 }
+
+
+

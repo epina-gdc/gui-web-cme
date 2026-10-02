@@ -53,7 +53,10 @@ export class CargaMedicosSustitutosComponent implements OnInit, OnDestroy {
   options: TipoDropdown[] = [];
   form: FormGroup;
 
+  private convocatorias: Convocatoria[] = [];
+
   idConvocatoriaSeleccionada: WritableSignal<number | null> = signal(null);
+  convocatoriaInactivaSeleccionada: WritableSignal<boolean> = signal(false);
   carga: WritableSignal<CargaSustitutosResponse> = signal({...CARGA_SUSTITUTOS_INICIAL});
   estado: WritableSignal<EstadoCargaSustitutos | null> = signal(null);
   enviandoInicio: WritableSignal<boolean> = signal(false);
@@ -90,6 +93,7 @@ export class CargaMedicosSustitutosComponent implements OnInit, OnDestroy {
       || this.enviandoInicio()
       || this.consultandoEstado()
       || !this.consultaInicialCompletada()
+      || this.convocatoriaInactivaSeleccionada()
       || this.estado() === 'EN PROCESO';
   });
 
@@ -151,8 +155,10 @@ export class CargaMedicosSustitutosComponent implements OnInit, OnDestroy {
           ? respuesta.respuesta as Convocatoria[]
           : [];
 
-        this.options = convocatorias
-          .filter((item: Convocatoria) => this.esConvocatoriaMiniDraft(item))
+        this.convocatorias = convocatorias
+          .filter((item: Convocatoria) => this.esConvocatoriaMiniDraft(item));
+
+        this.options = this.convocatorias
           .map((item: Convocatoria) => ({
             value: item.idConvocatoria,
             label: item.desConvocatoria
@@ -166,6 +172,7 @@ export class CargaMedicosSustitutosComponent implements OnInit, OnDestroy {
       .subscribe((value: unknown) => {
         const idConvocatoria = this.obtenerNumero(value);
         this.idConvocatoriaSeleccionada.set(idConvocatoria);
+        this.convocatoriaInactivaSeleccionada.set(this.esConvocatoriaInactiva(idConvocatoria));
         this.reiniciarEstado(idConvocatoria);
 
         if (idConvocatoria !== null) {
@@ -352,6 +359,14 @@ export class CargaMedicosSustitutosComponent implements OnInit, OnDestroy {
       || desTipoConvocatoria === this.DES_TIPO_CONVOCATORIA_MINIDRAFT;
   }
 
+  private esConvocatoriaInactiva(idConvocatoria: number | null): boolean {
+    if (idConvocatoria === null) {
+      return false;
+    }
+
+    return this.convocatorias.find(convocatoria => convocatoria.idConvocatoria === idConvocatoria)?.activa === false;
+  }
+
   private normalizarPorcentaje(value: number | string | null | undefined): number {
     const porcentaje = this.obtenerNumero(value) ?? 0;
     return Math.min(100, Math.max(0, porcentaje));
@@ -366,3 +381,4 @@ export class CargaMedicosSustitutosComponent implements OnInit, OnDestroy {
     return Number.isNaN(numero) ? null : numero;
   }
 }
+

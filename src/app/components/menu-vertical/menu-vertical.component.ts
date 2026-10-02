@@ -1,6 +1,8 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion';
-import {SesionUser} from '@models/sesion-user.interface';
+import {ModuloUser, SesionUser, SubModuloUser} from '@models/sesion-user.interface';
+import {PERFIL_ADMINISTRADOR} from '@utils/constants';
+import {NAV} from '@utils/url-global';
 import {UserService} from '@services/user.service';
 import {NavigationEnd, Router, RouterLink, RouterLinkActive} from '@angular/router';
 import {filter} from 'rxjs/operators';
@@ -25,6 +27,10 @@ export class MenuVerticalComponent implements OnInit {
   private router = inject(Router);
 
   activePanelId: number | null = null;
+
+  private readonly ID_PERFIL_ADMINISTRADOR = PERFIL_ADMINISTRADOR;
+  private readonly RUTA_VERIFICACION_DOCUMENTOS = `/${NAV.verificacionDocumentos}`;
+  private readonly TIPOS_VERIFICACION_ADMINISTRADOR = [1, 2] as const;
 
   ngOnInit() {
     this.userService.userData$.subscribe(user => {
@@ -57,6 +63,30 @@ export class MenuVerticalComponent implements OnInit {
         return;
       }
     }
+  }
+
+  obtenerRutaSubmodulo(modulo: ModuloUser, submodulo: SubModuloUser): string {
+    const ruta = this.normalizarRuta(submodulo.ruta);
+    if (this.userData?.idPerfil !== this.ID_PERFIL_ADMINISTRADOR
+      || ruta !== this.RUTA_VERIFICACION_DOCUMENTOS) {
+      return `/privado${ruta}`;
+    }
+
+    const submodulosVerificacion = modulo.submodulos.filter(
+      sub => this.normalizarRuta(sub.ruta) === this.RUTA_VERIFICACION_DOCUMENTOS
+    );
+    const indiceVerificacion = submodulosVerificacion.findIndex(
+      sub => sub.idModuloMenu === submodulo.idModuloMenu
+    );
+    const tipoVerificacion = this.TIPOS_VERIFICACION_ADMINISTRADOR[indiceVerificacion];
+
+    return tipoVerificacion
+      ? `/privado${ruta}/${tipoVerificacion}`
+      : `/privado${ruta}`;
+  }
+
+  private normalizarRuta(ruta: string): string {
+    return ruta.startsWith('/') ? ruta : `/${ruta}`;
   }
 
   handleHeaderClick(event: MouseEvent, modulo: any) {

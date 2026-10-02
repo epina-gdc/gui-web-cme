@@ -21,6 +21,7 @@ export class Convocatoria {
   fecInicio!: string;
   tipo!: TipoConvocatoria;
   fecFin!: string;
+  activa?: boolean;
   indActivo!: number;
 }
 
@@ -433,3 +434,4 @@ export class AsignacionMesaService {
 
 
 }
+
