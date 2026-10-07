@@ -1,5 +1,32 @@
 
 @layer app-components {
+  .estado-sin-resultados {
+    display: grid;
+    min-height: calc(100vh - 260px);
+    padding: 3rem 1rem;
+    place-items: center;
+  }
+
+  .estado-sin-resultados__contenido {
+    display: grid;
+    gap: 1.5rem;
+    place-items: center;
+    text-align: center;
+  }
+
+  .estado-sin-resultados__imagen {
+    width: 135px;
+    height: auto;
+  }
+
+  .estado-sin-resultados__texto {
+    margin: 0;
+    color: #a3a3a3;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
   :host ::ng-deep {
     .p-datatable-thead > tr > th {
       padding-top: 18px !important;

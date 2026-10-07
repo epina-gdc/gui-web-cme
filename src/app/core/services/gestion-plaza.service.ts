@@ -11,13 +11,13 @@ export interface FiltrosPlazaLayout {
   size?: number;
   cveOoad?: number;
   numPlaza?: string;
-  origenPlaza?: string;
+  refOrigenPlaza?: string;
 }
 
 export interface CambioEstatusPlazaRequest {
   idPlaza: number;
   idEstatus: number;
-  desObservaciones?: string;
+  refObservaciones?: string;
 }
 
 @Injectable({
@@ -40,8 +40,8 @@ export class GestionPlazaService {
     if (filtros.numPlaza?.trim()) {
       params = params.set('numPlaza', filtros.numPlaza.trim());
     }
-    if (filtros.origenPlaza?.trim()) {
-      params = params.set('origenPlaza', filtros.origenPlaza.trim());
+    if (filtros.refOrigenPlaza?.trim()) {
+      params = params.set('refOrigenPlaza', filtros.refOrigenPlaza.trim());
     }
     if (filtros.page != null) {
       params = params.set('page', filtros.page.toString());

@@ -9,6 +9,10 @@
             <i class="pi pi-user-plus" [style]="{ 'font-size': '1.3rem', color: '#018699' }"></i>
             <span class="font-medium">Nueva plaza</span>
           </div>
+          <div class="flex align-items-center boton-descargar cursor-pointer gap-2" (click)="detallePlazaSeleccionada(AccionPlaza.ExportarDatos)">
+              <i class="pi pi-upload" [style]="{ 'font-size': '1.3rem', color: '#018699' }"></i>
+              <span class="font-medium">Exportar datos</span>
+            </div>
           <!--
           @if(plazas().length > 0){
             <div class="flex align-items-center boton-descargar cursor-pointer gap-2" (click)="detallePlazaSeleccionada(AccionPlaza.ExportarDatos)">
@@ -63,13 +67,13 @@
       <td>{{ plaza.descMarcaOcupacion }}</td>
       <td>{{ plaza.clasificacion }}</td>
       <td>{{ plaza.umf }}</td>
-      <td>{{ plaza.direccion }}</td>
+      <td>{{ plaza.descAdscripcion }}</td>
       <td>{{ plaza.descTipoPlaza }}</td>
       <td>
         <app-pill [texto]="plaza.estatusPlaza" [pillType]="getPillType(plaza.estatusPlaza)" />
       </td>
       @if(tipoBusqueda() === TipoBusquedaPlaza.BusquedaManual){
-        <td>{{ plaza.desObservaciones }}</td>
+        <td>{{ plaza.refObservaciones }}</td>
       }
       <td alignFrozen="right" pFrozenColumn>
         <div class="flex align-items-center justify-content-center">
@@ -118,13 +122,21 @@
       <span class="ms-2 acciones-tabla">Ver detalle</span>
     </div>
 
-    <div class="flex align-items-center boton-descargar cursor-pointer mt-2" (click)="detallePlazaSeleccionada(AccionPlaza.EditarEstatus)">
-      <i class="icon pi pi-file-edit" [style]="{ 'font-size': '1.2rem', color: '#a9c9f8'}"></i>
-      <span class="ms-2 acciones-tabla">Editar estatus</span>
-    </div>
+    @if (!esPlazaOcupada()) {
+      <div class="flex align-items-center boton-descargar cursor-pointer mt-2" (click)="detallePlazaSeleccionada(AccionPlaza.EditarEstatus)">
+        <i class="cme-editar" [style]="{ 'font-size': '1.2rem', color: '#a9c9f8'}"></i>
+        <span class="ms-2 acciones-tabla">Editar estatus</span>
+      </div>
+    } @else {
+      <div class="flex align-items-center boton-descargar mt-2 accion-deshabilitada" aria-disabled="true"
+        title="No es posible editar el estatus de una plaza ocupada">
+        <i class="cme-editar" [style]="{ 'font-size': '1.2rem', color: '#a9c9f8'}"></i>
+        <span class="ms-2 acciones-tabla">Editar estatus</span>
+      </div>
+    }
     } @else {
     <div class="flex align-items-center boton-descargar cursor-pointer" (click)="detallePlazaSeleccionada(AccionPlaza.EditarPlaza)">
-      <i class="icon pi pi-pencil" [style]="{ 'font-size': '1.2rem', color: '#a9c9f8'}"></i>
+      <i class="cme-editar" [style]="{ 'font-size': '1.2rem', color: '#a9c9f8'}"></i>
       <span class="ms-2 acciones-tabla">Editar</span>
     </div>
 

@@ -192,13 +192,14 @@ export class NuevaPlazaComponent extends GeneralComponent implements OnInit, OnD
           return;
         }
 
+        const mensajeExito = response.mensaje || this.obtenerMensajeExito();
+
         this.consecutivo++;
-        this.alertService.exito(response.mensaje || this.obtenerMensajeExito());
         this.limpiar();
 
-        setTimeout(() => {
-          this.router.navigate(['/privado/nueva-plaza']);
-        }, 2000);
+        void this.router.navigate(['/privado/nueva-plaza']).then(() => {
+          this.alertService.exito(mensajeExito);
+        });
       },
       error: (error) => {
         this.alertService.error(error?.error?.mensaje || this.obtenerMensajeError());
@@ -296,7 +297,7 @@ export class NuevaPlazaComponent extends GeneralComponent implements OnInit, OnD
       adscripcion: this.obtenerAdscripcionEdicion(plaza),
       tipoPlaza: this.obtenerValorOpcion(this.tiposPlaza, this.obtenerCampo(plaza, 'cveTipoPlaza'), this.obtenerTextoCampo(plaza, 'descTipoPlaza', 'tipoPlaza')),
       estatus: this.obtenerValorOpcion(this.estatus, this.obtenerCampo(plaza, 'idEstatusPlaza'), this.obtenerTextoCampo(plaza, 'estatusPlaza')),
-      observaciones: this.obtenerTextoCampo(plaza, 'desObservaciones', 'observaciones') ?? ''
+      observaciones: this.obtenerTextoCampo(plaza, 'refObservaciones', 'observaciones') ?? ''
     };
   }
 
@@ -372,8 +373,8 @@ export class NuevaPlazaComponent extends GeneralComponent implements OnInit, OnD
       cveMarcaOcupacion: this.obtenerNumeroSolicitud(valores.marcaOcupacion),
       descMarcaOcupacion: marcaOcupacion?.label,
       idEstatusPlaza: this.obtenerNumeroSolicitud(valores.estatus) ?? 0,
-      origenPlaza: 'MANUAL',
-      desObservaciones: valores.observaciones
+      refOrigenPlaza: 'MANUAL',
+      refObservaciones: valores.observaciones
     };
     const numPlaza = this.obtenerNumeroSolicitud(valores.numeroPlaza);
 

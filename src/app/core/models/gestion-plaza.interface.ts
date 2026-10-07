@@ -33,8 +33,10 @@ export interface GestionPlazaInterface {
   idEstatusPlaza: number;
   estatusPlaza: string;
   idConvocatoria: number;
-  origenPlaza: string;
-  desObservaciones: string;
+  refOrigenPlaza: string;
+  refObservaciones: string;
+  cveAdscripcion: string;
+  descAdscripcion: string;
 }
 
 export interface Page {

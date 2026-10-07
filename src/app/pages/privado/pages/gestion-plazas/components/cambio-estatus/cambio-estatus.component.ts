@@ -50,11 +50,11 @@ export class CambioEstatusComponent extends GeneralComponent implements OnInit {
       ? Number(this.plaza.idEstatusPlaza)
       : null;
 
-    const obs = this.plaza?.desObservaciones ?? this.plaza?.observaciones ?? '';
+    const obs = this.plaza?.refObservaciones ?? this.plaza?.observaciones ?? '';
 
     return this.fb.group({
       estatus: [valorEstatus, [Validators.required]],
-      observaciones: [obs]
+      observaciones: [obs, [Validators.required]]
     });
   }
 
@@ -72,7 +72,7 @@ export class CambioEstatusComponent extends GeneralComponent implements OnInit {
     const obj = {
       idPlaza: this.plaza.idPlaza,
       idEstatus: datosForm.estatus,
-      desObservaciones: datosForm.observaciones
+      refObservaciones: datosForm.observaciones
     }
 
     this.gestionPlazaService.cambiarEstatusPlaza(obj).subscribe({

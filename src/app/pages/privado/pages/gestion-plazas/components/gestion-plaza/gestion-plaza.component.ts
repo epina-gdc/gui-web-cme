@@ -52,6 +52,7 @@ interface PlazaAccion {
 export class GestionPlazaComponent extends GeneralComponent implements OnInit {
   readonly TipoBusquedaPlaza = TipoBusquedaPlaza;
 
+  esBusquedaLayout: boolean = true;
   formBusqueda!: FormGroup;
   fb: FormBuilder = inject(FormBuilder);
   mensajes = inject(Mensajes);
@@ -85,10 +86,10 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
 
   private obtenerTipoBusquedaDesdeRuta(): void {
     const path = this.route.snapshot.routeConfig?.path;
-    this.plazas.set([])
-    if (path === NAV.gestionPlazas) {
-      this.gestionEstadoPlazaService.setTipoBusqueda(TipoBusquedaPlaza.BusquedaLayout);
-    } else {
+    this.esBusquedaLayout = path === NAV.gestionPlazas;
+    this.plazas.set([]);
+
+    if (!this.esBusquedaLayout) {
       this.gestionEstadoPlazaService.setTipoBusqueda(TipoBusquedaPlaza.BusquedaManual);
     }
   }
@@ -116,8 +117,8 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
       next: (response) => {
         if (response?.respuesta) {
           this.convocatoriaActiva = response.respuesta;
-          if (this.gestionEstadoPlazaService.tipoBusqueda() === TipoBusquedaPlaza.BusquedaManual) {
-            this.onBuscar();
+          if (!this.esBusquedaLayout) {
+            this.onBuscar(false);
           }
         }
       },
@@ -144,9 +145,8 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
 
   }
 
-  onBuscar(): void {
-    const esBusquedaLayout = this.gestionEstadoPlazaService.tipoBusqueda() === TipoBusquedaPlaza.BusquedaLayout;
-
+  onBuscar(mostrarAlertaSinResultados: boolean = true): void {
+    const esBusquedaLayout = this.esBusquedaLayout;
 
     if (esBusquedaLayout && this.formBusqueda.invalid) {
       this.formBusqueda.markAllAsTouched();
@@ -158,20 +158,24 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
       idConvocatoria: this.convocatoriaActiva.idConvocatoria,
       cveOoad: esBusquedaLayout ? cveOoad : null,
       numPlaza: esBusquedaLayout ? numPlaza : null,
-      origenPlaza: esBusquedaLayout ? 'LAYOUT' : 'MANUAL',
+      refOrigenPlaza: esBusquedaLayout ? undefined : 'MANUAL',
       page: this.numPaginaActual,
       size: this.rows
     }
 
     this.gestionPLazaService.consultarPlazaLayout(objBusqueda).subscribe({
       next: resp => {
-        if (resp.respuesta.content.length != 0) {
-          this.plazas.set(resp.respuesta.content);
-          this.totalRecords = resp.respuesta.page.totalElements;
+        const resultados = resp?.respuesta?.content ?? [];
+
+        if (resultados.length > 0) {
+          this.plazas.set(resultados);
+          this.totalRecords = resp.respuesta.page?.totalElements ?? resultados.length;
         } else {
           this.plazas.set([]);
           this.totalRecords = 0;
-          this.alertaService.error(this.mensajes.MSG024);
+          if (mostrarAlertaSinResultados) {
+            this.alertaService.error(this.mensajes.MSG024);
+          }
         }
       },
       error: err => {
@@ -184,8 +188,10 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
 
   onLimpiar(): void {
     this.formBusqueda.reset();
-    //this.plazas.set([]);
+    this.plazas.set([]);
+    this.totalRecords = 0;
     this.first = 0;
+    this.numPaginaActual = 0;
   }
 
   onPageChange(event: any): void {
@@ -203,12 +209,11 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
       },
       data: { plaza, edicion, lstEstatusPlaza: this.lstEstatusPlaza },
       modal: true,
-      width: '600px',
-      height: '37vh',
+      width: '730px',
       focusOnShow: false,
       breakpoints: {
-        '960px': '75vw',
-        '640px': '90vw'
+        '960px': '90vw',
+        '640px': '95vw'
       },
       styleClass: 'modal-cambio-estatus',
       closable: true
@@ -243,7 +248,7 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
           this.gestionPLazaService.eliminarPlaza(idPlaza).subscribe({
             next: () => {
               this.alertaService.exito('Plaza eliminada correctamente');
-              this.onBuscar();
+              this.onBuscar(false);
             },
             error: (err) => {
               console.error('Error al eliminar la plaza:', err);

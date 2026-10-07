@@ -37,7 +37,7 @@ export class TablaPlazasComponent {
 
     readonly pageChange = output<PaginatorState>();
     readonly accionSeleccionada = output<{plaza:GestionPlazaInterface, accion: AccionPlaza}>();
-    readonly exportarReporte = output<any>();
+    readonly exportarReporte = output<void>();
 
 
     readonly plazaSeleccionada = signal<GestionPlazaInterface | null>(null);
@@ -50,11 +50,15 @@ export class TablaPlazasComponent {
     }
 
     detallePlazaSeleccionada(accion: AccionPlaza): void {
+      if (accion === AccionPlaza.ExportarDatos) {
+        this.exportarDatos();
+        return;
+      }
+
       const plaza = this.plazaSeleccionada();
 
-      if(accion === 4)this.exportarReporte.emit(true);
-
         if (!plaza) return;
+        if (accion === AccionPlaza.EditarEstatus && this.esPlazaOcupada(plaza)) return;
 
         const movimiento = {
             plaza,
@@ -63,6 +67,14 @@ export class TablaPlazasComponent {
 
         this.accionSeleccionada.emit(movimiento);
         this.op()?.hide();
+    }
+
+    exportarDatos(): void {
+        this.exportarReporte.emit();
+    }
+
+    esPlazaOcupada(plaza: GestionPlazaInterface | null = this.plazaSeleccionada()): boolean {
+        return plaza?.estatusPlaza?.trim().toLowerCase() === 'ocupada';
     }
 
     onPageChange(event: PaginatorState): void {

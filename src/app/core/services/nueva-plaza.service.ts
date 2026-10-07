@@ -126,8 +126,8 @@ export interface RegistrarPlazaRequest {
   refBonoDificilCobertura?: number;
   refAltoCostoVida?: number;
   idEstatusPlaza: number;
-  origenPlaza?: string;
-  desObservaciones?: string;
+  refOrigenPlaza?: string;
+  refObservaciones?: string;
 }
 
 export interface ActualizarPlazaRequest extends RegistrarPlazaRequest {
@@ -153,7 +153,7 @@ export interface DetallePlazaResponse {
   cveClasificacionUnidad?: string;
   numPlaza?: string | number;
   idEstatusPlaza?: number;
-  origenPlaza?: string;
+  refOrigenPlaza?: string;
   [key: string]: unknown;
 }
 
@@ -172,7 +172,7 @@ export interface RegistrarPlazaRespuesta {
   idEstatusPlaza?: number;
   estatusPlaza?: string;
   idConvocatoria?: number;
-  origenPlaza?: string;
+  refOrigenPlaza?: string;
   observaciones?: string;
 }
 
