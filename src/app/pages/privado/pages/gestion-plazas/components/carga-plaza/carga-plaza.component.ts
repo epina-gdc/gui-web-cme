@@ -51,8 +51,8 @@ export class CargaPlazaComponent extends GeneralComponent implements OnInit, OnD
   carga: RespuestaCargaPlaza = this.obtenerCargaInicial();
 
   readonly listaImportante: string[] = [
-    'Al realizar la carga de las plazas, si ya existen plazas cargadas estas seran eliminadas para cargar las nuevas plazas.',
-    'Si ya existen plazas ocupadas, ya no es posible realizar la carga de plazas.',
+    'Al realizar la carga de las plazas, si ya existen plazas cargadas estas serán eliminadas para cargar las nuevas plazas.',
+    'Si ya existen plazas asignadas, ya no es posible realizar la carga de plazas.',
   ];
 
   ngOnInit(): void {

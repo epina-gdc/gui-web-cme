@@ -47,8 +47,8 @@ export class ReportePropuestasComponent extends GeneralComponent implements OnIn
   convocatoriaActiva!: ConvocatoriaActiva;
 
   ngOnInit(): void {
-    this.cargarCatalogos();
     this.form = this.inicializarFormulario();
+    this.cargarCatalogos();
   }
 
   inicializarFormulario(): FormGroup {
@@ -71,6 +71,8 @@ export class ReportePropuestasComponent extends GeneralComponent implements OnIn
           if (this.convocatoriaActiva.fecFin) {
             this.maxDate = moment(this.convocatoriaActiva.fecFin).toDate();
           }
+
+          this.onBuscar(this.minDate, moment().toDate());
         }
       },
       error: (err) => {
@@ -79,16 +81,18 @@ export class ReportePropuestasComponent extends GeneralComponent implements OnIn
     });
   }
 
-  onBuscar(): void {
+  onBuscar(fechaInicioInicial?: Date, fechaFinInicial?: Date): void {
 
     const { fechaInicio, fechaFin } = this.form.value;
+    const fechaInicioConsulta = fechaInicio ?? fechaInicioInicial ?? this.minDate;
+    const fechaFinConsulta = fechaFin ?? fechaFinInicial ?? this.maxDate;
 
     const objBusqueda: FiltrosReporte = {
       idConvocatoria: this.convocatoriaActiva?.idConvocatoria ?? null,
       cveOoad: null,
       numPlaza: null,
-      fechaInicio: fechaInicio ? moment(fechaInicio).format('YYYY-MM-DD') : moment(this.minDate).format('YYYY-MM-DD'),
-      fechaFin: fechaFin ? moment(fechaFin).format('YYYY-MM-DD') : moment(this.maxDate).format('YYYY-MM-DD'),
+      fechaInicio: fechaInicioConsulta ? moment(fechaInicioConsulta).format('YYYY-MM-DD') : null,
+      fechaFin: fechaFinConsulta ? moment(fechaFinConsulta).format('YYYY-MM-DD') : null,
       estatusPropuesta: null,
       page: this.numPaginaActual,
       size: this.rows
@@ -96,13 +100,12 @@ export class ReportePropuestasComponent extends GeneralComponent implements OnIn
 
     this.pSindicalService.consultarPropuestas(objBusqueda).subscribe({
       next: resp => {
-        if(resp.respuesta?.content){
-          this.propuestas.set(resp.respuesta.content);
-          this.totalElementos = resp.respuesta.page.totalElements;
-        }else{
-          this.propuestas.set([]);
-          this.totalElementos = 0;
-        }
+        const propuestas = resp?.respuesta?.content ?? [];
+
+        this.propuestas.set(propuestas);
+        this.totalElementos = propuestas.length > 0
+          ? (resp.respuesta?.page?.totalElements ?? propuestas.length)
+          : 0;
       },
       error: err => {
         this.alertaService.error(this.mensajes.MSG018);

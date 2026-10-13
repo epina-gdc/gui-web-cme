@@ -113,19 +113,25 @@
     </div>
   </div>
 
-  @if (erroresCarga().length > 0) {
   <p-card class="empty-border proceso-carga-card" [header]="'Proceso de Carga de plazas'">
-    <div class="flex flex-column gap-2">
-      <p class="titulo-proceso-carga text-lg mb-2">Se han detectado errores en el proceso de carga de plazas</p>
-
+    <div class="proceso-carga-card__important">
+      <p class="proceso-carga-card__title">Importante</p>
+      <ul class="proceso-carga-card__list">
+        @for (mensaje of listaImportante; track mensaje) {
+        <li>{{ mensaje }}</li>
+        }
+      </ul>
     </div>
-    <div class="flex flex-column gap-2 mt-3">
+
+    @if (erroresCarga().length > 0) {
+    <div class="proceso-carga-card__errors mt-3">
+      <p class="titulo-proceso-carga">Se han detectado errores en el proceso de carga de plazas</p>
       <button type="button" class="btn-descargar-errores " (click)="descargarErroresCarga()">
         <i class="cme-download" style="font-size: 1.2rem"></i>
         <span>Descargar registros con errores (.txt)</span>
       </button>
     </div>
+    }
   </p-card>
-  }
 
 </section>
