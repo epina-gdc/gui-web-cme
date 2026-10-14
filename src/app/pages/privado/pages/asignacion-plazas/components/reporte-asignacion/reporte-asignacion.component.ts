@@ -22,6 +22,11 @@ import { distinctUntilChanged, finalize, takeUntil } from 'rxjs/operators';
 import { GeneralComponent } from '@components/general.component';
 import { OnlyNumbersDirective } from '@directives/only-numbers.directive';
 
+interface ColumnaResultadoReporte {
+  encabezado: string;
+  propiedad: keyof ReporteAsignacionRegistro;
+}
+
 @Component({
   selector: 'app-reporte-asignacion',
   imports: [
@@ -45,18 +50,24 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
   private readonly alertaService: AlertService = inject(AlertService);
   private readonly mensajes: Mensajes = inject(Mensajes);
   private readonly destroy$ = new Subject<void>();
-  private MSGHU052A: string = 'Fecha inicio y fecha fin son obligatorias.';
+  private MSGHU052A: string = 'Convocatoria, fecha inicio y fecha fin son obligatorias.';
   private MSGHU052B: string = 'La fecha fin no puede ser menor a la fecha inicio.';
   private MSGHU052C: string = 'La fechas deben de estar dentro de la convocatoria.';
+  private readonly estatusPorId: Record<number, string> = {
+    1: 'Pendiente',
+    2: 'Revisión Documental',
+    3: 'Cumple con requisitos',
+    4: 'No cumple con requisitos',
+  };
 
   form: FormGroup = this.fb.group({
     cveOoad: [null],
     cveZona: [null],
     idTipoAsignacion: [null],
     cveEspecialidad: [null],
-    idConvocatoria: [null],
+    idConvocatoria: [null, Validators.required],
     numPlaza: ['', [Validators.maxLength(7), Validators.pattern(/^\d{0,7}$/)]],
-    matriculaFolio: ['', [Validators.maxLength(10), Validators.pattern(/^\d{0,10}$/)]],
+    matriculaFolio: ['', [Validators.maxLength(10), Validators.pattern(/^[a-zA-Z0-9]{0,10}$/)]],
     fechaInicio: [null, Validators.required],
     fechaFin: [null, Validators.required],
   });
@@ -68,6 +79,29 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
   especialidades: TipoDropdown[] = [];
   convocatorias: TipoDropdown[] = [];
   convocatoriasCatalogo: Convocatoria[] = [];
+  readonly columnasAdicionales: readonly ColumnaResultadoReporte[] = [
+    { encabezado: 'Primer Apellido', propiedad: 'primerApellido' },
+    { encabezado: 'Segundo Apellido', propiedad: 'segundoApellido' },
+    { encabezado: 'NSS', propiedad: 'nss' },
+    { encabezado: 'CURP', propiedad: 'curp' },
+    { encabezado: 'RFC', propiedad: 'rfc' },
+    { encabezado: 'Clave categoría', propiedad: 'claveCategoria' },
+    { encabezado: 'Categoría', propiedad: 'categoria' },
+    { encabezado: 'Clave especialidad', propiedad: 'cveEspecialidad' },
+    { encabezado: 'Especialidad', propiedad: 'desEspecialidad' },
+    { encabezado: 'Plaza asignada', propiedad: 'plazaAsignada' },
+    { encabezado: 'Clave adscripción', propiedad: 'claveAdscripcion' },
+    { encabezado: 'Adscripción', propiedad: 'adscripcion' },
+    { encabezado: 'Clave unidad', propiedad: 'claveUnidad' },
+    { encabezado: 'Unidad', propiedad: 'unidad' },
+    { encabezado: 'Nivel de atención', propiedad: 'nivelAtencion' },
+    { encabezado: 'Tipo de plaza descripción', propiedad: 'tipoPlazaDescripcion' },
+    { encabezado: 'Tipo Unidad', propiedad: 'tipoUnidad' },
+    { encabezado: 'Marca de ocupación descripción', propiedad: 'marcaOcupacionDescripcion' },
+    { encabezado: 'Horario descripción', propiedad: 'horarioDescripcion' },
+    { encabezado: 'No Propuesta Sindical', propiedad: 'noPropuestaSindical' },
+    { encabezado: 'Motivo de rechazo', propiedad: 'motivoRechazo' },
+  ];
 
   registros: WritableSignal<ReporteAsignacionRegistro[]> = signal<ReporteAsignacionRegistro[]>([]);
   busquedaRealizada: WritableSignal<boolean> = signal<boolean>(false);
@@ -181,7 +215,8 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
   }
 
   obtenerEstatus(registro: ReporteAsignacionRegistro): string {
-    return this.obtenerValor(registro.estatus, registro.estatusValidacion);
+    const idEstatus = Number(registro.idEstatusVerificacion);
+    return this.estatusPorId[idEstatus] ?? this.obtenerValor(registro.descEstatusVerificacion);
   }
 
   obtenerOoadResidencia(registro: ReporteAsignacionRegistro): string {
@@ -196,14 +231,23 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
     return this.obtenerValor(registro.nombres, registro.nombre, registro.nombreCompleto);
   }
 
+  obtenerValorColumna(registro: ReporteAsignacionRegistro, propiedad: keyof ReporteAsignacionRegistro): string {
+    return this.obtenerValor(registro[propiedad]);
+  }
+
   obtenerClaseEstatus(registro: ReporteAsignacionRegistro): string {
-    const estatus = this.normalizarTexto(this.obtenerEstatus(registro));
-
-    if (estatus.includes('no cumple') || estatus.includes('rechaz')) return 'estatus-badge--danger';
-    if (estatus.includes('cumple') || estatus.includes('asignad')) return 'estatus-badge--success';
-    if (estatus.includes('pendiente')) return 'estatus-badge--warning';
-
-    return 'estatus-badge--info';
+    switch (Number(registro.idEstatusVerificacion)) {
+      case 1:
+        return 'estatus-badge--warning';
+      case 2:
+        return 'estatus-badge--info';
+      case 3:
+        return 'estatus-badge--success';
+      case 4:
+        return 'estatus-badge--danger';
+      default:
+        return 'estatus-badge--info';
+    }
   }
 
   private cargarCatalogos(): void {
@@ -495,10 +539,6 @@ export class ReporteAsignacionComponent extends GeneralComponent implements OnIn
 
   private rellenarDosDigitos(value: number): string {
     return String(value).padStart(2, '0');
-  }
-
-  private normalizarTexto(value: string): string {
-    return value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   }
 
   private obtenerMensajeError(error: unknown): string {

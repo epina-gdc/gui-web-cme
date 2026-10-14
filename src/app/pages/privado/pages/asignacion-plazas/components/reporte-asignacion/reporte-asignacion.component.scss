@@ -37,6 +37,10 @@
     grid-column: span 2;
   }
 
+  .field-control--row-start {
+    grid-column: 1 / span 4;
+  }
+
   .form-actions {
     grid-column: span 2;
     align-self: start;
@@ -55,6 +59,19 @@
     font-family: Arial, sans-serif;
     font-size: 12px;
     font-weight: 700;
+  }
+
+  .field-label--required {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .field-label--required span:last-child {
+    color: #566DA8;
+    font-size: 11px;
+    font-weight: 400;
   }
 
   .required-helper {
@@ -148,23 +165,27 @@
     color: #3C6CA8;
   }
 
-  .empty-state {
-    min-height: 390px;
+  /* Empty state */
+  .empty {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-height: calc(100vh - 360px);
+    padding: 3rem 1rem;
     gap: 1rem;
-    color: #B5B8C3;
-    font-family: Arial, sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    text-align: center;
+    opacity: 0.9;
   }
 
-  .empty-state img {
-    width: min(150px, 36vw);
+  .empty__img {
+    width: 135px;
     height: auto;
+  }
+
+  .empty__text {
+    margin: 0;
+    font-size: 14px;
+    color: #8a96a3;
   }
 
   :host ::ng-deep {
@@ -213,6 +234,7 @@
 
     .field-control,
     .field-control--date,
+    .field-control--row-start,
     .form-actions {
       grid-column: span 6;
     }
@@ -227,6 +249,7 @@
 
     .field-control,
     .field-control--date,
+    .field-control--row-start,
     .form-actions {
       grid-column: span 12;
     }
