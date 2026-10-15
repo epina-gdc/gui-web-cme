@@ -1,29 +1,155 @@
-:host {
-    display: block
-}
+@layer app-components {
+  .reporte-plazas-page {
+    min-width: 0;
+  }
 
-.breadcrumb-header {
-    align-items: center;
+  .reporte-filtros {
+    padding: 1rem 1.25rem;
+    box-shadow: 0 1px 4px rgba(22, 26, 29, 0.08);
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: 1rem 0.75rem;
+    align-items: end;
+  }
+
+  .field-control {
+    grid-column: span 3;
+    min-width: 0;
+  }
+
+  .field-control--convocatoria,
+  .field-control--row-start {
+    grid-column: 1 / span 3;
+  }
+
+  .form-actions {
+    grid-column: span 3;
+    align-self: start;
     display: flex;
-    gap: 1rem;
-    margin: .2rem 0 0
-}
+    align-items: flex-start;
+    gap: 0.75rem;
+    min-width: 0;
+    padding-top: 1.55rem;
+  }
 
-.breadcrumb-header h1,
-.breadcrumb-header h2 {
-    color: #6f79b6;
-    font-size: 1.55rem;
+  .field-label {
+    display: block;
+    margin-bottom: 0.45rem;
+    color: #303845;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
     font-weight: 700;
-    line-height: 1.2;
-    margin: 0
-}
+  }
 
-.breadcrumb-header h1 {
-    font-weight: 800
-}
+  .field-label--required {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
 
-.breadcrumb-header span {
-    background: #6f79b6;
-    height: 28px;
-    width: 2px
+  .field-label--required span:last-child {
+    color: #566da8;
+    font-size: 11px;
+    font-weight: 400;
+  }
+
+  .reporte-tabla {
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(22, 26, 29, 0.08);
+  }
+
+  .titulo-tabla {
+    color: #34495E;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 360px);
+    padding: 3rem 1rem;
+    gap: 1rem;
+    opacity: 0.9;
+  }
+
+  .empty__img {
+    width: 135px;
+    height: auto;
+  }
+
+  .empty__text {
+    margin: 0;
+    color: #8A96A3;
+    font-size: 14px;
+  }
+
+  :host ::ng-deep {
+    .p-select,
+    .p-inputtext {
+      width: 100%;
+    }
+
+    .p-select-label,
+    .p-inputtext {
+      font-size: 13px;
+    }
+
+    .p-datatable-header {
+      border: 0;
+      background: #FFFFFF;
+      padding: 0.65rem 1rem;
+    }
+
+    .p-datatable-thead > tr > th {
+      background: #EEF3FF;
+      color: #4E596C;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 0.95rem 0.85rem !important;
+      white-space: nowrap;
+    }
+
+    .p-datatable-tbody > tr > td {
+      color: #677082;
+      font-size: 13px;
+      padding: 0.8rem 0.85rem;
+      white-space: nowrap;
+    }
+
+    .p-paginator {
+      border: 0;
+      background: #F3F6FF;
+      padding: 0.75rem 1rem;
+    }
+  }
+
+  @media screen and (max-width: 1200px) {
+    .field-control,
+    .field-control--convocatoria,
+    .field-control--row-start,
+    .form-actions {
+      grid-column: span 6;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .field-control,
+    .field-control--convocatoria,
+    .field-control--row-start,
+    .form-actions {
+      grid-column: span 12;
+    }
+
+    .form-actions {
+      padding-top: 0;
+    }
+  }
 }

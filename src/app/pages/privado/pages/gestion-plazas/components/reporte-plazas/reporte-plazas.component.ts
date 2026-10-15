@@ -2,7 +2,7 @@ import { CatalogosGeneralesService } from '@services/catalogos-generales.service
 import { CommonModule } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { GeneralComponent } from '@components/general.component';
@@ -17,6 +17,8 @@ import { Select } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { distinctUntilChanged, filter, switchMap } from 'rxjs';
 import { FiltrosReportePlaza, ReportePlazas } from '@models/reporte-plazas.interface';
+import { AlertService } from '@services/alert.service';
+import { Mensajes } from '@utils/mensajes';
 
 import { saveAs } from 'file-saver';
 import moment from 'moment';
@@ -41,11 +43,14 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
   fb: FormBuilder = inject(FormBuilder);
   private readonly destroyRef = inject(DestroyRef);
   private readonly reportePlazasService: ReportePlazasService = inject(ReportePlazasService);
+  private readonly alertaService: AlertService = inject(AlertService);
+  private readonly mensajes: Mensajes = inject(Mensajes);
 
   lstReportePlazas: WritableSignal<ReportePlazas[]> = signal([]);
   ultimaBusqueda: WritableSignal<FiltrosReportePlaza> = signal({});
 
   lstOoads: TipoDropdown[] = [];
+  lstConvocatorias: TipoDropdown[] = [];
   lstZonas: TipoDropdown[] = [];
   lstEspecialidades: TipoDropdown[] = [];
   lstCategorias: TipoDropdown[] = [];
@@ -64,6 +69,7 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.inicialziarFormulario();
+    this.cargarConvocatorias();
 
     this.activatedRoute.data
       .pipe(takeUntilDestroyed(this.destroyRef))
@@ -91,6 +97,7 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
 
   inicialziarFormulario(): FormGroup{
     return this.fb.group({
+      idConvocatoria: [null, Validators.required],
       cveOoad: [null],
       cveZona: [null],
       cveEspecialidad: [null],
@@ -101,10 +108,22 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
   }
 
   onLimpiar() {
-    this.form.reset();
+    this.form.reset({
+      idConvocatoria: null,
+      cveOoad: null,
+      cveZona: null,
+      cveEspecialidad: null,
+      cveCategoria: null,
+      numPlaza: null,
+      cveUnidad: null,
+    });
     this.lstZonas = [];
-    //this.lstReportePlazas.set([]);
     this.first = 0;
+    this.numPaginaActual = 0;
+    this.rows = 10;
+    this.totalRecords = 0;
+    this.ultimaBusqueda.set({});
+    this.lstReportePlazas.set([]);
   }
 
   onExportarDatos() {
@@ -120,23 +139,40 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
     })
   }
 
-  getPillType(textoEstatus: string): number{
-    return 0;
+  getPillType(idEstatusPlaza: number | null): number {
+    switch (idEstatusPlaza) {
+      case 1:
+        return 4;
+      case 2:
+        return 5;
+      case 3:
+        return 6;
+      default:
+        return 1;
+    }
   }
 
   onPageChange(event: PaginatorState): void {
     this.first = event.first ?? 0;
     this.rows = event.rows ?? 10;
-    this.numPaginaActual = event.page ? event.page : 0;
+    this.numPaginaActual = event.page ?? 0;
+    this.ultimaBusqueda.update((filtros) => ({
+      ...filtros,
+      page: this.numPaginaActual,
+      size: this.rows,
+    }));
     this.onBuscar();
   }
 
   setBusquedaReciente(): void {
-    const {cveOoad, cveZona, cveEspecialidad, cveCategoria, numPlaza,
+    const {idConvocatoria, cveOoad, cveZona, cveEspecialidad, cveCategoria, numPlaza,
            cveUnidad} :FiltrosReportePlaza = this.form.value;
 
+    this.first = 0;
+    this.numPaginaActual = 0;
+
     this.ultimaBusqueda.set({
-      idConvocatoria: null,
+      idConvocatoria: idConvocatoria ? idConvocatoria : null,
       cveOoad: cveOoad ? cveOoad : null,
       cveZona: cveZona ? cveZona : null,
       cveEspecialidad: cveEspecialidad ? cveEspecialidad : null,
@@ -158,6 +194,7 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
         } else {
           this.lstReportePlazas.set([]);
           this.totalRecords = 0;
+          this.alertaService.error(this.mensajes.MSG082);
         }
       },
       error: err => {
@@ -165,5 +202,20 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
         this.totalRecords = 0;
       }
     })
+  }
+
+  private cargarConvocatorias(): void {
+    this._CatalogoGenService.getConvocatorias()
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (respuesta) => {
+          this.lstConvocatorias = mapearArregloTipoDropdown(
+            respuesta?.respuesta ?? [],
+            'desConvocatoria',
+            'idConvocatoria'
+          );
+        },
+        error: () => this._alertServices.error('No fue posible cargar el catálogo de convocatorias.'),
+      });
   }
 }
