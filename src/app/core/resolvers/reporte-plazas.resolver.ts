@@ -12,6 +12,6 @@ export const reportePlazaResolver: ResolveFn<any> = (route, state) => {
     ooads: catalogosService.getLstOOADS(),
     especialidades: catalogosService.getLstEspecialidades(),
     categorias: catalogosService.getLstCategorias(),
-    tiposUnidades: catalogosService.getLstTiposUnidad()
+    unidades: catalogosService.getLstUnidades()
   });
 };
