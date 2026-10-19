@@ -24,6 +24,7 @@ import { MotivoDesasignacion } from '@models/datosAsignacion';
 import { EstatusPlaza } from '@models/estatusPlaza';
 import { CategoriaPlaza } from '@models/cat-categoria.interface';
 import { TipoUnidad } from '@models/cat-tipo-unidad.interface';
+import { UnidadPlazaCatalogo } from '@models/plaza-catalogos.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -384,6 +385,13 @@ export class CatalogosGeneralesService {
       map((response: HttpRespuesta<TipoUnidad[]>) => {
         return response;
       })
+    );
+  }
+
+  getLstUnidades(): Observable<HttpRespuesta<UnidadPlazaCatalogo[]>> {
+    return this.http.get<HttpRespuesta<UnidadPlazaCatalogo[]>>(this.serverEndPointURLCatalogos + '/plazas/unidades', { headers: this.header }).pipe(
+      catchError(this.handleError),
+      map((response: HttpRespuesta<UnidadPlazaCatalogo[]>) => response)
     );
   }
 

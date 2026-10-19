@@ -74,11 +74,11 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
     this.activatedRoute.data
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(({respuesta}) => {
-        const {categorias, especialidades, ooads, tiposUnidades} = respuesta;
+        const {categorias, especialidades, ooads, unidades} = respuesta;
         this.lstOoads = mapearArregloTipoDropdown(ooads.respuesta,'desOoad','cveOoad');
         this.lstEspecialidades = mapearArregloTipoDropdown(especialidades,'desEspecialidad','cveEspecialidad');
         this.lstCategorias = mapearArregloTipoDropdown(categorias.respuesta, 'descCategoria','cveCategoria');
-        this.lstUnidades = mapearArregloTipoDropdown(tiposUnidades.respuesta, 'descTipoUnidad','cveTipoUnidad');
+        this.lstUnidades = mapearArregloTipoDropdown(unidades.respuesta, 'descUnidad', 'cveUnidad');
     });
 
     this.form.controls['cveOoad'].valueChanges
