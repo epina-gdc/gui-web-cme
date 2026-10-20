@@ -5,7 +5,14 @@
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {inject, Injectable} from '@angular/core';
 import {environment} from '@env/environment.development';
-import {RegistroCurpRequest, RegistroInternoRequest, RegistroPasaporteRequest} from '@models/datosMedico';
+import {
+  EvaluacionReingreso,
+  EvaluarReingresoRequest,
+  RegistroCurpRequest,
+  RegistroInternoRequest,
+  RegistroPasaporteRequest,
+  RespuestaReingreso
+} from '@models/datosMedico';
 import {Observable, throwError} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 
@@ -60,6 +67,29 @@ export class RegistroMedicoService {
       }),
     )
   }
+
+  evaluarReingreso(datos: EvaluarReingresoRequest): Observable<RespuestaReingreso<EvaluacionReingreso>> {
+    return this.http.post<RespuestaReingreso<EvaluacionReingreso>>(
+      `${this.serverEndPointURRegistro}/registro/reingreso/evaluar`,
+      datos,
+      { headers: this.header }
+    ).pipe(
+      catchError(this.handleError),
+      map((response: RespuestaReingreso<EvaluacionReingreso>) => response)
+    );
+  }
+
+  confirmarReingreso(idParticipacionAnterior: number): Observable<RespuestaReingreso<number>> {
+    return this.http.post<RespuestaReingreso<number>>(
+      `${this.serverEndPointURRegistro}/registro/reingreso/confirmar`,
+      { idParticipacionAnterior },
+      { headers: this.header }
+    ).pipe(
+      catchError(this.handleError),
+      map((response: RespuestaReingreso<number>) => response)
+    );
+  }
+
   getDatosByMatricula(datos: any): Observable<any> {
     return this.http.post<any>(`${this.serverEndPointURRegistro}/validacion/medico-interno`, datos, { headers: this.header }).pipe(
       catchError(this.handleError),

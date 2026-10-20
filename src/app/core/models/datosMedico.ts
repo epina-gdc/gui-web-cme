@@ -75,6 +75,27 @@ export class RegistroPasaporteRequest {
   refRfc!: string;
 }
 
+export interface EvaluarReingresoRequest {
+  cveMatricula?: string;
+  refCurp?: string;
+  refRfc?: string;
+  refEmail?: string;
+}
+
+export interface EvaluacionReingreso {
+  requiereConfirmacionReingreso: boolean;
+  idUsuario?: number;
+  idParticipacionAnterior?: number;
+  idConvocatoriaActual?: number;
+  idTipoConvocatoria?: number;
+}
+
+export interface RespuestaReingreso<T> {
+  exito: boolean;
+  mensaje: string;
+  respuesta?: T;
+}
+
 
 export class AreaMedicaData{
   lugar!: string;
