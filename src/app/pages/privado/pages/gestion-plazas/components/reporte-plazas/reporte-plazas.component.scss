@@ -1,0 +1,29 @@
+:host {
+    display: block
+}
+
+.breadcrumb-header {
+    align-items: center;
+    display: flex;
+    gap: 1rem;
+    margin: .2rem 0 0
+}
+
+.breadcrumb-header h1,
+.breadcrumb-header h2 {
+    color: #6f79b6;
+    font-size: 1.55rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0
+}
+
+.breadcrumb-header h1 {
+    font-weight: 800
+}
+
+.breadcrumb-header span {
+    background: #6f79b6;
+    height: 28px;
+    width: 2px
+}

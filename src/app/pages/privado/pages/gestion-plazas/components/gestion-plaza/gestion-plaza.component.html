@@ -1,0 +1,53 @@
+<div class="flex justify-content-start align-items-center gap-1 mt-2 lg:mt-0 mb-4">
+  <h3 class="titulo-seccion">Gestión de Plazas</h3>
+</div>
+
+@if (!esBusquedaLayout) {
+<div
+  class="carga-calificaciones-background mb-4 border-round-xl overflow-hidden shadow-2 flex align-items-center justify-content-center">
+  <h1 class="titulo-asignaciones">Nueva plaza</h1>
+</div>
+} @else {
+<div class="mb-4">
+  <p-card class="empty-border mb-4">
+    <form [formGroup]="formBusqueda" (ngSubmit)="onBuscar()">
+      <article class="flex flex-row flex-wrap align-items-end">
+        <div class="lg:col-4 col-12">
+          <label class="field-label" for="cveOoad">OOAD</label>
+          <p-select id="cveOoad" formControlName="cveOoad" [options]="lstOoad" optionLabel="label" optionValue="value"
+            placeholder="Selecciona OOAD" class="w-full" />
+        </div>
+
+        <div class="lg:col-4 col-12">
+          <label class="field-label" for="numPlaza">No. de plaza</label>
+          <input pInputText id="numPlaza" type="text" max class="w-full" placeholder="Selecciona No. de plaza"
+            formControlName="numPlaza" appOnlyNumbers maxlength="6" />
+        </div>
+
+        <div class="flex col-12 lg:col-4 justify-content-end align-items-center gap-4 mt-3 lg:mt-0">
+          <p-button type="button" (onClick)="onLimpiar()" variant="outlined" label="Limpiar" />
+          <p-button type="submit" label="Buscar" [disabled]="formBusqueda.invalid" />
+        </div>
+      </article>
+    </form>
+  </p-card>
+</div>
+}
+
+@if (!esBusquedaLayout || plazas().length > 0) {
+  <app-tabla-plazas [plazas]="plazas()" [totalRecords]="totalRecords" [first]="first" [rows]="rows"
+    [titulo]="'Plazas nuevas'" [tipoBusqueda]="esBusquedaLayout ? TipoBusquedaPlaza.BusquedaLayout : TipoBusquedaPlaza.BusquedaManual"
+    (pageChange)="onPageChange($event)" (accionSeleccionada)="accionPlazaSeleccionada($event)"
+    (exportarReporte)="exportarReporte()">
+  </app-tabla-plazas>
+} @else {
+  <section class="estado-sin-resultados" role="status" aria-live="polite">
+    <div class="estado-sin-resultados__contenido">
+      <img class="estado-sin-resultados__imagen" src="/assets/images/tabla_sin_resultados.svg" alt="Sin resultados" />
+      <p class="estado-sin-resultados__texto">No hay resultados de búsqueda</p>
+    </div>
+  </section>
+}
+
+<p-confirmDialog [style]="{width: '450px'}" [closable]="true" styleClass="custom-confirm-dialog">
+</p-confirmDialog>

@@ -25,6 +25,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.cme-editar:before {
+  content: "\e937";
+}
+
+.cme-admin-plaza:before {
+  content: "\e936";
+}
 
 .cme-estrella:before {
   content: "\e933";

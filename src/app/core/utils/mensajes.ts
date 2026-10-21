@@ -19,9 +19,12 @@ export class Mensajes {
   public MSG017: string = 'Se ha enviado a su cuenta de correo la información para poder ingresar.';
   public MSG018: string = 'No se encontró ningún registro con los datos proporcionados.';
   public MSG023: string = 'Por favor, ingresa la información en los campos faltantes.';
-  public MSG024: string = 'Datos guardados correctamente.';
+  public MSG024: string = 'No se encontraron resultados con la información proporcionada.';
   public MSG025: string = 'Por favor, ingresa la información en los campos faltantes.';
+  public MSG025a: string = 'Cambio de estatus realizado exitosamente.';
   public MSG026: string = 'Datos guardados correctamente.';
+  public MSG030: string = 'Se cargaron con \u00e9xito las plazas.';
+  public MSG031: string = 'No se cargaron las plazas.';
   public MSG037: string = 'La información está incompleta, favor de verificar.';
   public MSG039: string = '¡Registro exitoso!. Te hemos enviado un correo con los detalles. No olvides revisarlo.';
   public MSG041: string = 'Actualmente no hay plazas ofertadas vacantes disponibles. Por favor, consulta más adelante.';
@@ -38,6 +41,8 @@ export class Mensajes {
   public MSG057: string = 'El médico aspirante ya cuenta con una asignación de sustitución.';
   public MSG062: string = 'Tu contraseña ha sido actualizada correctamente, te hemos enviado un correo con los detalles del cambio de contraseña. Por seguridad, no compartas tu contraseña con nadie.';
   public MSG063: string = 'El enlace ha expirado o no es válido. Por favor, solicita un nuevo cambio de contraseña';
+
+  public MSG082: string = 'No se encontraron resultados con los par\u00e1metros ingresados.';
 
   public MSJ_PASS_MIN_CARACTER: string = "La contraseña debe tener al menos 8 caracteres"
   public MSJ_PASS_MAX_CARACTER: string = "La contraseña debe tener máximo 12 caracteres"

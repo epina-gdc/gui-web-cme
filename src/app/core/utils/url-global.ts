@@ -10,6 +10,7 @@ export const NAV = {
   verificacionDocumentos: 'verificacion-documentos',
   ofertaLaboral: 'oferta-laboral',
   asignacion: 'asignacion-plaza',
+  reporteAsignacion: 'reporte-asignacion',
   cargaCalificaciones: 'carga-calificaciones',
   cargaMedicosSustitutos: 'carga-medicos-sustitutos',
   asistenciaExtraordinaria: 'asistencia-extraordinaria',
@@ -23,4 +24,9 @@ export const NAV = {
   home: 'inicio',
   homeModulos: 'inicio-modulos',
   desasignacion: 'cancelacion-asignacion',
+  gestionPlazas: 'gestion-plaza',
+  nuevaPlaza: 'nueva-plaza',
+  generarNuevaPlaza: 'generar-plaza',
+  cargaPlaza: 'carga-plaza',
+  reportePlaza: 'reporte-plaza'
 };

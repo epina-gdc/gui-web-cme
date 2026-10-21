@@ -42,7 +42,8 @@
                 </div>
 
                 <div class="field col-3 flex justify-content-end align-items-start" style="padding-top: 33px;">
-                  <p-button variant="outlined" label="Validar" [disabled]="habilitarBtnMatricula"
+                  <p-button variant="outlined" label="Validar"
+                            [disabled]="habilitarBtnMatricula || evaluandoReingreso || registroBloqueadoPorReingreso"
                             (click)="btnValidarMatricula()"/>
                 </div>
               </div>
@@ -102,7 +103,9 @@
                 </div>
 
                 <div class="field col-3 flex justify-content-end align-items-start" style="padding-top: 33px;">
-                  <p-button class="btn-outLine" label="Validar" [disabled]="blnBtnValidar" (click)="btnValidarCurp()"/>
+                  <p-button class="btn-outLine" label="Validar"
+                            [disabled]="blnBtnValidar || evaluandoReingreso || registroBloqueadoPorReingreso"
+                            (click)="btnValidarCurp()"/>
                 </div>
 
               </div>
@@ -355,7 +358,8 @@
             </div>
 
             <div class=" mt-4 flex justify-content-end">
-              <p-button label="Crear cuenta" type="submit" [disabled]="form.invalid || !usuarioValidado"/>
+              <p-button label="Crear cuenta" type="submit"
+                        [disabled]="form.invalid || !usuarioValidado || evaluandoReingreso || registroBloqueadoPorReingreso"/>
             </div>
           </form>
         </article>
@@ -364,3 +368,5 @@
     </p-card>
   </section>
 </main>
+
+<p-confirmDialog [closable]="false" styleClass="custom-confirm-dialog"></p-confirmDialog>

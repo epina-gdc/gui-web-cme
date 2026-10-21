@@ -1,0 +1,279 @@
+<section class="nueva-plaza-page mb-4">
+  <header class="breadcrumb-header">
+    <h1>Administraci&oacute;n de plazas</h1>
+    <span></span>
+    <h2>{{ tituloModulo }}</h2>
+  </header>
+  <form [formGroup]="form" class="border-round-lg bg-white px-4 py-2 mt-4">
+    <div class="grid">
+      <div class="field col-12 md:col-6 lg:col-3">
+        <label class="field-label" for="cveOoad">OOAD</label>
+        <p-select
+          inputId="cveOoad"
+          [options]="lstOoads"
+          formControlName="cveOoad"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selecciona OOAD"
+          [filter]="true"
+          filterBy="label"
+          [appendTo]="'body'"
+          class="w-full"
+        />
+      </div>
+      <div class="col-12 md:col-6 lg:col-3">
+        <label class="field-label" for="cveZona">Zona</label>
+        <p-select
+          inputId="cveZona"
+          [options]="lstZonas"
+          formControlName="cveZona"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selecciona zona"
+          [filter]="true"
+          filterBy="label"
+          [appendTo]="'body'"
+          class="w-full"
+        />
+      </div>
+      <div class="col-12 md:col-6 lg:col-3">
+        <label class="field-label" for="cveEspecialidad">Especialidad</label>
+        <p-select
+          inputId="cveEspecialidad"
+          [options]="lstEspecialidades"
+          formControlName="cveEspecialidad"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selecciona especialidad"
+          [filter]="true"
+          filterBy="label"
+          [appendTo]="'body'"
+          class="w-full"
+        />
+      </div>
+      <div class="col-12 md:col-6 lg:col-3">
+        <label class="field-label" for="cveCategoria">Categoría</label>
+        <p-select
+          inputId="cveCategoria"
+          [options]="lstCategorias"
+          formControlName="cveCategoria"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selecciona categoría"
+          [filter]="true"
+          filterBy="label"
+          [appendTo]="'body'"
+          class="w-full"
+        />
+      </div>
+      <div class="col-12 md:col-6 lg:col-3">
+        <label class="field-label" for="numPlaza">No. de plaza</label>
+        <input
+          pInputText
+          id="numPlaza"
+          type="text"
+          max
+          class="w-full"
+          placeholder="Ingresa plaza"
+          formControlName="numPlaza"
+          appOnlyNumbers
+          maxlength="7"
+        />
+      </div>
+      <div class="col-12 md:col-6 lg:col-3">
+        <label class="field-label" for="cveUnidad">Unidad</label>
+        <p-select
+          inputId="cveUnidad"
+          [options]="lstUnidades"
+          formControlName="cveUnidad"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selecciona unidad"
+          [filter]="true"
+          filterBy="label"
+          [appendTo]="'body'"
+          class="w-full"
+        />
+      </div>
+      <div class="lg:col-3 col-12 flex align-items-center">
+        <div class="flex align-items-center gap-4 justify-content-between mt-4">
+          <p-button
+            type="button"
+            class="w-full"
+            variant="outlined"
+            label="Limpiar"
+            (onClick)="onLimpiar()"
+          />
+          <p-button type="button" (onClick)="setBusquedaReciente()" class="w-full" label="Buscar" [disabled]="!form.dirty"/>
+        </div>
+      </div>
+    </div>
+  </form>
+</section>
+<p-table
+  [value]="lstReportePlazas()"
+  [scrollable]="true"
+  [resizableColumns]="true"
+  columnResizeMode="expand"
+>
+  <ng-template #caption>
+    <div class="flex justify-content-between align-items-center py-2 px-1">
+      <span class="titulo-tabla font-bold text-xl">{{ tituloModulo }}</span>
+      <div class="flex align-items-center gap-4">
+        @if (lstReportePlazas().length > 0) {
+          <div
+            class="flex align-items-center boton-descargar cursor-pointer gap-2"
+            (click)="onExportarDatos()"
+          >
+            <i
+              class="pi pi-upload"
+              [style]="{ 'font-size': '1.3rem', color: '#018699' }"
+            ></i>
+            <span class="font-medium">Exportar datos</span>
+          </div>
+        }
+      </div>
+    </div>
+  </ng-template>
+  <ng-template #header>
+    <tr>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">
+        Núm. OOAD
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 140px">
+        OOAD
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 160px">
+        Cve Zona
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 140px">
+        Zona
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">
+        Clave de Unidad
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 150px">
+        Unidad
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 90px">
+        Clave de Adscripción
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">
+        Adscripción
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">
+        Tipo de Unidad
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">
+        No. de plaza
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">
+        Clave de Categoría
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">
+        Categoría
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">
+        Clave de Especialidad
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">
+        Especialidad
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">
+        Clave Marca de ocupación
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">
+        Marca de ocupación
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">
+        Turno
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">
+        Clave de Horario
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">
+        Horario
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">
+        Tipo de Plaza
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">
+        Tipo Unidad
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">
+        Estatus
+      </th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 120px">
+        Observaciones
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-reportePlaza>
+    <tr>
+      <td>{{ reportePlaza.cveOoad }}</td>
+      <td>{{ reportePlaza.descOoad }}</td>
+      <td>{{ reportePlaza.cveZona }}</td>
+      <td>{{ reportePlaza.descZona }}</td>
+      <td>{{ reportePlaza.cveUnidad }}</td>
+      <td>{{reportePlaza.umf}}</td>
+      <td>{{ reportePlaza.cveAdscripcion }}</td>
+      <td>{{ reportePlaza.descAdscripcion }}</td>
+      <td>{{ reportePlaza.clasificacion }}</td>
+      <td>{{ reportePlaza.numPlaza }}</td>
+      <td>{{ reportePlaza.cveCategoria }}</td>
+      <td>{{ reportePlaza.descCategoria }}</td>
+      <td>{{ reportePlaza.cveEspecialidad }}</td>
+      <td>{{ reportePlaza.especialidad }}</td>
+      <td>{{ reportePlaza.cveMarcaOcupacion }}</td>
+      <td>{{ reportePlaza.descMarcaOcupacion }}</td>
+      <td>{{ reportePlaza.descTurno }}</td>
+      <td>{{ reportePlaza.cveHorario }}</td>
+      <td>{{ reportePlaza.descHorario }}</td>
+      <td>{{ reportePlaza.descTipoPlaza }}</td>
+      <td>{{ reportePlaza.descRegimen }}</td>
+      <td>
+        <app-pill
+          [texto]="reportePlaza.estatusPlaza"
+          [pillType]="getPillType(reportePlaza.estatusPlaza)"
+        />
+      </td>
+      <td>{{ reportePlaza.refObservaciones }}</td>
+    </tr>
+  </ng-template>
+  <ng-template #emptymessage>
+    <tr>
+      <td colspan="23">
+        <div class="flex justify-content-center align-items-center p-4">
+          <img
+            class="p-0"
+            src="/assets/images/tabla_sin_resultados.svg"
+            alt="Sin resultados"
+          />
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+@if (lstReportePlazas().length > 0) {
+  <p-paginator
+    styleClass="justify-content-end"
+    [showFirstLastIcon]="false"
+    [first]="first"
+    [rows]="rows"
+    [totalRecords]="totalRecords"
+    (onPageChange)="onPageChange($event)"
+  >
+    <ng-template pTemplate="previouspagelinkicon">
+      <div class="flex align-items-center">
+        <span class="pi pi-chevron-left text-xl font-normal mr-2"></span>
+        <span class="font-semibold mr-5">Anterior</span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="nextpagelinkicon">
+      <div class="flex align-items-center">
+        <span class="font-semibold ml-5">Siguiente</span>
+        <span class="pi pi-chevron-right text-xl font-normal ml-2"></span>
+      </div>
+    </ng-template>
+  </p-paginator>
+}

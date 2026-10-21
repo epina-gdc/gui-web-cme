@@ -1,0 +1,180 @@
+<div class="flex flex-wrap p-3 bg-white border-round-xl my-3">
+  <div class="col-8">
+    <form [formGroup]="form">
+      <div class="form-grid grid align-items-end">
+        <div class="field col-12 md:col-4">
+          <label
+            for="fechaInicio"
+            class="field-label flex pt-2 justify-content-between"
+          >
+            <span>Rango de fecha inicio</span>
+          </label>
+          <p-datePicker
+            id="fechaInicio"
+            formControlName="fechaInicio"
+            [style]="{ 'width': '100%' }"
+            [iconDisplay]="'input'"
+            [showIcon]="true"
+            inputId="fechaInicioInput"
+            placeholder="Selecciona fecha inicio"
+            [readonlyInput]="true"
+            [minDate]="minDate"
+            [maxDate]="maxDate"
+          />
+        </div>
+        <div class="field col-12 md:col-4">
+          <label
+            for="fechaFin"
+            class="field-label flex pt-2 justify-content-between"
+          >
+            <span>Rango de fecha fin</span>
+          </label>
+          <p-datePicker
+            id="fechaFin"
+            formControlName="fechaFin"
+            [style]="{ 'width': '100%' }"
+            [iconDisplay]="'input'"
+            [showIcon]="true"
+            inputId="fechaFinInput"
+            placeholder="Selecciona fecha término"
+            [readonlyInput]="true"
+            [minDate]="minDate"
+            [maxDate]="maxDate"
+          />
+        </div>
+        <div class="field col-12 md:col-4 flex gap-3 pb-1">
+          <p-button type="submit" label="Buscar" (onClick)="onBuscar()" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+@if (propuestas().length > 0) {
+<p-table [value]="propuestas()" [scrollable]="true" [resizableColumns]="true" columnResizeMode="expand">
+
+    <ng-template #caption>
+      <div class="flex justify-content-end align-items-center py-2 px-1">
+        <div class="flex align-items-center gap-4">
+          <div class="flex align-items-center boton-descargar cursor-pointer gap-2" (click)="onExportarDatos()">
+            <i class="pi pi-upload" [style]="{ 'font-size': '1.3rem', color: '#018699' }"></i>
+            <span class="font-medium">Exportar datos</span>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+
+  <ng-template #header>
+    <tr>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Matrícula/Folio</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Plaza</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Folio Propuesta Sindical</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Nombre(s)</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Primer Apellido</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Segundo Apellido</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Fecha de Nacimiento</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Edad</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">CURP</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">RFC</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">OOAD Asignada</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Zona</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Categoría</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Especialidad</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Modalidad</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Folio de registro</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Nacionalidad</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Sección Sindical</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Régimen</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Entidad</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Alcaldía/Municipio</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Colonia</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Código Postal</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Calle</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Número Exterior</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Teléfono</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Celular</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Usuario de mesa de propuesta</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Fecha propuesta sindical</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Estatus de propuesta</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Tipo de asignacion</th>
+      <th scope="col" pResizableColumn class="py-4" style="min-width: 130px">Fecha de la propuesta</th>
+
+
+
+    </tr>
+  </ng-template>
+
+  <ng-template #body let-propuesta>
+    <tr>
+      <td>{{propuesta.matriculaFolio}}</td>
+      <td>{{propuesta.plaza}}</td>
+      <td>{{propuesta.folioPropuestaSindical}}</td>
+      <td>{{propuesta.nombres}}</td>
+      <td>{{propuesta.primerApellido}}</td>
+      <td>{{propuesta.segundoApellido}}</td>
+      <td>{{propuesta.fechaNacimiento}}</td>
+      <td>{{propuesta.edad}}</td>
+      <td>{{propuesta.curp}}</td>
+      <td>{{propuesta.rfc}}</td>
+      <td>{{propuesta.ooadAsignada}}</td>
+      <td>{{propuesta.zona}}</td>
+      <td>{{propuesta.categoria}}</td>
+      <td>{{propuesta.especialidad}}</td>
+      <td>{{propuesta.modalidad}}</td>
+      <td>{{propuesta.folioRegistro}}</td>
+      <td>{{propuesta.nacionalidad}}</td>
+      <td>{{propuesta.seccionSindical}}</td>
+      <td>{{propuesta.regimen}}</td>
+      <td>{{propuesta.entidad}}</td>
+      <td>{{propuesta.alcaldiaMunicipio}}</td>
+      <td>{{propuesta.colonia}}</td>
+      <td>{{propuesta.codigoPostal}}</td>
+      <td>{{propuesta.calle}}</td>
+      <td>{{propuesta.numeroExterior}}</td>
+      <td>{{propuesta.telefono}}</td>
+      <td>{{propuesta.celular}}</td>
+      <td>{{propuesta.usuarioMesaPropuesta}}</td>
+      <td>{{propuesta.fechaPropuestaSindical}}</td>
+      <td>{{propuesta.estatusPropuesta}}</td>
+      <td>{{propuesta.tipoAsignacion}}</td>
+      <td>{{propuesta.fechaPropuesta}}</td>
+
+    </tr>
+  </ng-template>
+
+  <ng-template #emptymessage>
+    <tr>
+      <td colspan="32">
+        <div class="flex justify-content-center align-items-center p-4">
+          <img class="p-0" src="/assets/images/tabla_sin_resultados.svg" alt="Sin resultados" />
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+@if(totalElementos > 0){
+  <p-paginator styleClass="justify-content-end" [showFirstLastIcon]="false" [first]="first" [rows]="rows"
+    [totalRecords]="totalElementos" (onPageChange)="onPageChange($event)">
+    <ng-template pTemplate="previouspagelinkicon">
+      <div class="flex align-items-center">
+        <span class="pi pi-chevron-left text-xl font-normal mr-2"></span>
+        <span class="font-semibold mr-5">Anterior</span>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="nextpagelinkicon">
+      <div class="flex align-items-center">
+        <span class="font-semibold ml-5">Siguiente</span>
+        <span class="pi pi-chevron-right text-xl font-normal ml-2"></span>
+      </div>
+    </ng-template>
+  </p-paginator>
+}
+} @else {
+  <section class="estado-sin-resultados" role="status" aria-live="polite">
+    <div class="estado-sin-resultados__contenido">
+      <img class="estado-sin-resultados__imagen" src="/assets/images/tabla_sin_resultados.svg" alt="Sin resultados" />
+      <p class="estado-sin-resultados__texto">No hay resultados de búsqueda</p>
+    </div>
+  </section>
+}
