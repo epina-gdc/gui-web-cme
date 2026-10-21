@@ -92,7 +92,8 @@
               [attr.aria-disabled]="!registroActivo()"
               [attr.tabindex]="registroActivo() ? 0 : -1">Crear
               cuenta</a>
-            <p-button type="submit" [disabled]="formLogin.invalid" label="Iniciar sesión"/>
+            <p-button type="submit" [disabled]="formLogin.invalid || evaluandoReingreso || registroBloqueadoPorReingreso"
+                      label="Iniciar sesión"/>
           </div>
         </div>
       </form>
@@ -100,3 +101,5 @@
     </p-card>
   </section>
 </main>
+
+<p-confirmDialog [closable]="false" styleClass="custom-confirm-dialog"></p-confirmDialog>
