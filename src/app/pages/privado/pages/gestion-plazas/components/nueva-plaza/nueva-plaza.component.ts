@@ -125,6 +125,16 @@ export class NuevaPlazaComponent extends GeneralComponent implements OnInit, OnD
     return this.modoEdicion;
   }
 
+  get esEstatusOcupada(): boolean {
+    return this.obtenerNumeroSolicitud(this.form.controls.estatus.value) === 2;
+  }
+
+  get etiquetaEstatusOcupada(): string {
+    return this.plazaEdicion
+      ? this.obtenerTextoCampo(this.plazaEdicion, 'estatusPlaza', 'descEstatusPlaza') ?? 'Ocupada'
+      : 'Ocupada';
+  }
+
   get guardarDeshabilitado(): boolean {
     return this.form.invalid
       || this.guardando
@@ -282,6 +292,8 @@ export class NuevaPlazaComponent extends GeneralComponent implements OnInit, OnD
   }
 
   private obtenerValoresFormularioEdicion(plaza: DetallePlazaResponse): Record<string, string | number> {
+    const idEstatusPlaza = this.obtenerNumeroCampo(plaza, 'idEstatusPlaza');
+
     return {
       ooad: this.obtenerValorOpcion(this.ooads, this.obtenerCampo(plaza, 'cveOoad'), this.obtenerTextoCampo(plaza, 'descOoad', 'ooad', 'ubicacion')),
       numeroPlaza: this.normalizarValor(this.obtenerCampo(plaza, 'numPlaza')),
@@ -296,7 +308,9 @@ export class NuevaPlazaComponent extends GeneralComponent implements OnInit, OnD
       unidad: this.obtenerValorOpcion(this.unidades, this.obtenerCampo(plaza, 'cveUnidad'), this.obtenerTextoCampo(plaza, 'descUnidad', 'umf')),
       adscripcion: this.obtenerAdscripcionEdicion(plaza),
       tipoPlaza: this.obtenerValorOpcion(this.tiposPlaza, this.obtenerCampo(plaza, 'cveTipoPlaza'), this.obtenerTextoCampo(plaza, 'descTipoPlaza', 'tipoPlaza')),
-      estatus: this.obtenerValorOpcion(this.estatus, this.obtenerCampo(plaza, 'idEstatusPlaza'), this.obtenerTextoCampo(plaza, 'estatusPlaza')),
+      estatus: idEstatusPlaza === 2
+        ? idEstatusPlaza
+        : this.obtenerValorOpcion(this.estatus, idEstatusPlaza, this.obtenerTextoCampo(plaza, 'estatusPlaza')),
       observaciones: this.obtenerTextoCampo(plaza, 'refObservaciones', 'observaciones') ?? ''
     };
   }

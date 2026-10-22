@@ -157,9 +157,13 @@
                     <label for="estatus">Estatus</label>
                     <span class="label-obligatorio">Obligatorio</span>
                 </div>
+                @if (esEstatusOcupada) {
+                <span class="estatus-ocupada">{{ etiquetaEstatusOcupada }}</span>
+                } @else {
                 <p-select inputId="estatus" [options]="estatus" formControlName="estatus" optionLabel="label"
                     optionValue="value" placeholder="Selecciona estatus" [appendTo]="'body'" class="w-full">
                 </p-select>
+                }
             </div>
 
             <div class="field-block field-block--full required-field">
