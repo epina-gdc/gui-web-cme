@@ -74,7 +74,7 @@ export class TablaPlazasComponent {
     }
 
     esPlazaOcupada(plaza: GestionPlazaInterface | null = this.plazaSeleccionada()): boolean {
-        return plaza?.estatusPlaza?.trim().toLowerCase() === 'ocupada';
+        return plaza?.idEstatusPlaza === 2;
     }
 
     onPageChange(event: PaginatorState): void {
@@ -82,15 +82,14 @@ export class TablaPlazasComponent {
     }
 
 
-    getPillType(estatus: string): number {
-        switch (estatus?.toLowerCase()) {
-            case 'vacante':
+    getPillType(idEstatusPlaza: number | null | undefined): number {
+        switch (idEstatusPlaza) {
+            case 1:
                 return 4;
-            case 'etiquetada':
-                return 6;
-            case 'ocupado':
-            case 'ocupada':
+            case 2:
                 return 5;
+            case 3:
+                return 6;
             default:
                 return 1;
         }

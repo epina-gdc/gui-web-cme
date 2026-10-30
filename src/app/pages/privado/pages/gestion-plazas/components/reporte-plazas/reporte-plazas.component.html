@@ -1,12 +1,33 @@
-<section class="nueva-plaza-page mb-4">
-  <header class="breadcrumb-header">
-    <h1>Administraci&oacute;n de plazas</h1>
-    <span></span>
-    <h2>{{ tituloModulo }}</h2>
-  </header>
-  <form [formGroup]="form" class="border-round-lg bg-white px-4 py-2 mt-4">
-    <div class="grid">
-      <div class="field col-12 md:col-6 lg:col-3">
+<section class="reporte-plazas-page">
+  <div class="flex justify-content-start align-items-center mt-2 lg:mt-0 mb-3">
+    <h3 class="titulo-seccion">Administraci&oacute;n de plazas | {{ tituloModulo }}</h3>
+  </div>
+
+  <div class="reporte-filtros bg-white border-round-xl">
+    <form [formGroup]="form">
+      <div class="form-grid">
+        <div class="field-control field-control--convocatoria">
+          <label class="field-label field-label--required" for="idConvocatoria">
+            <span>Convocatoria</span>
+            <span>Obligatorio</span>
+          </label>
+          <p-select
+            inputId="idConvocatoria"
+            [options]="lstConvocatorias"
+            formControlName="idConvocatoria"
+            optionLabel="label"
+            optionValue="value"
+            placeholder="Selecciona una convocatoria"
+            [filter]="true"
+            filterBy="label"
+            [appendTo]="'body'"
+            class="w-full"
+            [class.ng-invalid]="form.get('idConvocatoria')?.invalid && form.get('idConvocatoria')?.touched"
+            [class.ng-dirty]="form.get('idConvocatoria')?.touched"
+          />
+        </div>
+
+        <div class="field-control field-control--row-start">
         <label class="field-label" for="cveOoad">OOAD</label>
         <p-select
           inputId="cveOoad"
@@ -21,7 +42,7 @@
           class="w-full"
         />
       </div>
-      <div class="col-12 md:col-6 lg:col-3">
+      <div class="field-control">
         <label class="field-label" for="cveZona">Zona</label>
         <p-select
           inputId="cveZona"
@@ -36,7 +57,7 @@
           class="w-full"
         />
       </div>
-      <div class="col-12 md:col-6 lg:col-3">
+      <div class="field-control">
         <label class="field-label" for="cveEspecialidad">Especialidad</label>
         <p-select
           inputId="cveEspecialidad"
@@ -51,7 +72,7 @@
           class="w-full"
         />
       </div>
-      <div class="col-12 md:col-6 lg:col-3">
+      <div class="field-control">
         <label class="field-label" for="cveCategoria">Categoría</label>
         <p-select
           inputId="cveCategoria"
@@ -66,7 +87,7 @@
           class="w-full"
         />
       </div>
-      <div class="col-12 md:col-6 lg:col-3">
+      <div class="field-control field-control--row-start">
         <label class="field-label" for="numPlaza">No. de plaza</label>
         <input
           pInputText
@@ -80,7 +101,7 @@
           maxlength="7"
         />
       </div>
-      <div class="col-12 md:col-6 lg:col-3">
+      <div class="field-control">
         <label class="field-label" for="cveUnidad">Unidad</label>
         <p-select
           inputId="cveUnidad"
@@ -95,22 +116,22 @@
           class="w-full"
         />
       </div>
-      <div class="lg:col-3 col-12 flex align-items-center">
-        <div class="flex align-items-center gap-4 justify-content-between mt-4">
+      <div class="form-actions">
           <p-button
             type="button"
-            class="w-full"
             variant="outlined"
             label="Limpiar"
             (onClick)="onLimpiar()"
           />
-          <p-button type="button" (onClick)="setBusquedaReciente()" class="w-full" label="Buscar" [disabled]="!form.dirty"/>
-        </div>
+          <p-button type="button" (onClick)="setBusquedaReciente()" label="Buscar" [disabled]="form.invalid || !form.dirty"/>
       </div>
     </div>
   </form>
-</section>
-<p-table
+  </div>
+
+  @if (lstReportePlazas().length > 0) {
+  <div class="reporte-tabla bg-white border-round-xl mt-3">
+    <p-table
   [value]="lstReportePlazas()"
   [scrollable]="true"
   [resizableColumns]="true"
@@ -129,7 +150,7 @@
               class="pi pi-upload"
               [style]="{ 'font-size': '1.3rem', color: '#018699' }"
             ></i>
-            <span class="font-medium">Exportar datos</span>
+            <span class="font-medium">Exportar reporte</span>
           </div>
         }
       </div>
@@ -234,27 +255,13 @@
       <td>
         <app-pill
           [texto]="reportePlaza.estatusPlaza"
-          [pillType]="getPillType(reportePlaza.estatusPlaza)"
+          [pillType]="getPillType(reportePlaza.idEstatusPlaza)"
         />
       </td>
       <td>{{ reportePlaza.refObservaciones }}</td>
     </tr>
   </ng-template>
-  <ng-template #emptymessage>
-    <tr>
-      <td colspan="23">
-        <div class="flex justify-content-center align-items-center p-4">
-          <img
-            class="p-0"
-            src="/assets/images/tabla_sin_resultados.svg"
-            alt="Sin resultados"
-          />
-        </div>
-      </td>
-    </tr>
-  </ng-template>
-</p-table>
-@if (lstReportePlazas().length > 0) {
+    </p-table>
   <p-paginator
     styleClass="justify-content-end"
     [showFirstLastIcon]="false"
@@ -276,4 +283,11 @@
       </div>
     </ng-template>
   </p-paginator>
-}
+  </div>
+  } @else {
+  <div class="empty" aria-live="polite">
+    <img class="empty__img" src="/assets/images/tabla_sin_resultados.svg" alt="Sin resultados" />
+    <p class="empty__text">No hay resultados de b&uacute;squeda</p>
+  </div>
+  }
+</section>

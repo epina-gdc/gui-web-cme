@@ -70,7 +70,7 @@
       <td>{{ plaza.descAdscripcion }}</td>
       <td>{{ plaza.descTipoPlaza }}</td>
       <td>
-        <app-pill [texto]="plaza.estatusPlaza" [pillType]="getPillType(plaza.estatusPlaza)" />
+        <app-pill [texto]="plaza.estatusPlaza" [pillType]="getPillType(plaza.idEstatusPlaza)" />
       </td>
       @if(tipoBusqueda() === TipoBusquedaPlaza.BusquedaManual){
         <td>{{ plaza.refObservaciones }}</td>
