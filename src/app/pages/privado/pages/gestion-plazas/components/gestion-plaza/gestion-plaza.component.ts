@@ -25,6 +25,7 @@ import { GestionPlazaService } from '@services/gestion-plaza.service';
 import { ConvocatoriaActiva } from '@models/convocatoria.interface';
 import moment from 'moment';
 import { saveAs } from 'file-saver';
+import { HttpErrorResponse } from '@angular/common/http';
 
 interface PlazaAccion {
   plaza: GestionPlazaInterface,
@@ -250,9 +251,12 @@ export class GestionPlazaComponent extends GeneralComponent implements OnInit {
               this.alertaService.exito('Plaza eliminada correctamente');
               this.onBuscar(false);
             },
-            error: (err) => {
+            error: (err: HttpErrorResponse) => {
               console.error('Error al eliminar la plaza:', err);
-              this.alertaService.error('Error al eliminar la plaza');
+              const mensaje = err.status === 400
+                ? err.error?.mensaje ?? err.error?.message ?? 'Error al eliminar la plaza'
+                : 'Error al eliminar la plaza';
+              this.alertaService.error(mensaje);
             }
           });
         }

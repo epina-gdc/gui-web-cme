@@ -11,6 +11,7 @@ import {CommonModule} from '@angular/common';
 import {CatPais, CatPaisResponse, CatSubperfil} from '@models/catalogoGeneral';
 import {
   AreaMedicaData,
+  EvaluarReingresoRequest,
   RegistroCurpRequest,
   RegistroInternoRequest,
   RegistroMedico,
@@ -20,7 +21,8 @@ import {BtnRegresarComponent} from '@components/btn-regresar/btn-regresar.compon
 import {passwordValidator} from '@validators/password-validator';
 import {PATRON_CURP, PATRON_MATRICULA, PATRON_NOMBRE, PATRON_PASAPORTE, PATRON_RFC} from '@utils/regex';
 import {AlphanumericDirective} from '@directives/only-alphanumeric.directive';
-import {PrimeTemplate} from 'primeng/api';
+import {ConfirmationService, PrimeTemplate} from 'primeng/api';
+import {ConfirmDialog} from 'primeng/confirmdialog';
 import {ConvocatoriaActiva} from '@models/convocatoria.interface';
 import {HttpRespuesta} from '@models/http-respuesta.interface';
 import {
@@ -41,14 +43,17 @@ import {
     BtnRegresarComponent,
     AlphanumericDirective,
     PrimeTemplate,
+    ConfirmDialog,
   ],
   standalone: true,
   templateUrl: './registro-medico.component.html',
-  styleUrl: './registro-medico.component.scss'
+  styleUrl: './registro-medico.component.scss',
+  providers: [ConfirmationService]
 })
 export class RegistroMedicoComponent extends GeneralComponent implements OnInit, OnDestroy {
 
   fb = inject(FormBuilder)
+  private readonly confirmationService = inject(ConfirmationService);
   form!: FormGroup;
   usuarioValidado = false;
   tituloConvocatoria = signal('');
@@ -76,6 +81,8 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   idModalidad!: number;
   AREA_MEDICA_DATA: AreaMedicaData = new AreaMedicaData;
   private lstSubperfilesConvocatoria: Array<CatSubperfil> = [];
+  evaluandoReingreso = false;
+  registroBloqueadoPorReingreso = false;
 
   ngOnInit(): void {
     this.ruta = this._nav.publico + this._nav.crearCuenta;
@@ -491,10 +498,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
   public btnValidarCurp() {
     this.medico.refCurp = this.form.controls['curp'].value;
-    // this.form.markAllAsTouched();
-    this.validarCURP();
-
-    //  this._alertServices.alerta(this._Mensajes.MSG010b);
+    this.evaluarReingreso(() => this.validarCURP());
 
   }
 
@@ -574,42 +578,132 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
     this.asignarDatos();
 
-    if (this.form.valid) {
-
-
-      if (this.blnCorreosIguales) {
-
-
-        if (this.blnPassIguales) {
-
-          if (this.medico.blnInterno) {
-
-            return this.postResidente();
-          } else {
-            if (this.medico.blnPasaporte) {
-
-              return this.postPasaporte();
-
-            }
-
-            return this.postCurp();
-
-          }
-
-
-        }
-        return this._alertServices.alerta(this._Mensajes.MSG007);
-
-
-      }
-      return this._alertServices.alerta(this._Mensajes.MSG0077);
-
-
-    } else {
+    if (!this.form.valid) {
 
       this._alertServices.alerta(this._Mensajes.MSG013);
       this.activarCampos(this.medico.blnInterno);
+      return;
     }
+
+    if (!this.blnCorreosIguales) {
+      this._alertServices.alerta(this._Mensajes.MSG0077);
+      return;
+    }
+
+    if (!this.blnPassIguales) {
+      this._alertServices.alerta(this._Mensajes.MSG007);
+      return;
+    }
+
+    this.evaluarReingreso(() => this.registrarSegunFlujo());
+  }
+
+  private registrarSegunFlujo(): void {
+    if (this.medico.blnInterno) {
+      this.postResidente();
+      return;
+    }
+
+    if (this.medico.blnPasaporte) {
+      this.postPasaporte();
+      return;
+    }
+
+    this.postCurp();
+  }
+
+  private evaluarReingreso(siguiente: () => void): void {
+    if (this.evaluandoReingreso || this.registroBloqueadoPorReingreso) {
+      return;
+    }
+
+    this.evaluandoReingreso = true;
+    this._RegistroMedicoService.evaluarReingreso(this.construirSolicitudReingreso()).subscribe({
+      next: (respuesta) => {
+        if (!respuesta.exito) {
+          this.evaluandoReingreso = false;
+          this._alertServices.error(respuesta.mensaje || 'No fue posible evaluar el reingreso.');
+          return;
+        }
+
+        const evaluacion = respuesta.respuesta;
+        if (evaluacion?.requiereConfirmacionReingreso) {
+          const idParticipacionAnterior = Number(evaluacion.idParticipacionAnterior);
+          if (!Number.isFinite(idParticipacionAnterior) || idParticipacionAnterior <= 0) {
+            this.evaluandoReingreso = false;
+            this._alertServices.error('No fue posible identificar la participación previa para confirmar el reingreso.');
+            return;
+          }
+
+          this.mostrarConfirmacionReingreso(respuesta.mensaje, idParticipacionAnterior);
+          return;
+        }
+
+        this.evaluandoReingreso = false;
+        siguiente();
+      },
+      error: (error: HttpErrorResponse) => {
+        this.evaluandoReingreso = false;
+        this._alertServices.error(
+          error.error?.mensaje ?? error.error?.message ?? 'No fue posible evaluar el reingreso.'
+        );
+      }
+    });
+  }
+
+  private construirSolicitudReingreso(): EvaluarReingresoRequest {
+    const obtenerValor = (campo: string): string => {
+      const valor = this.form.controls[campo]?.value;
+      return typeof valor === 'string' ? valor.trim() : '';
+    };
+
+    const solicitud: EvaluarReingresoRequest = {};
+    const matricula = obtenerValor('matricula');
+    const curp = obtenerValor('curp');
+    const rfc = obtenerValor('rfc');
+    const correo = obtenerValor('correo');
+
+    if (matricula) solicitud.cveMatricula = matricula;
+    if (curp) solicitud.refCurp = curp;
+    if (rfc) solicitud.refRfc = rfc;
+    if (correo) solicitud.refEmail = correo;
+
+    return solicitud;
+  }
+
+  private mostrarConfirmacionReingreso(mensaje: string, idParticipacionAnterior: number): void {
+    this.confirmationService.confirm({
+      header: 'Participación previa',
+      message: mensaje,
+      icon: 'pi pi-info-circle',
+      acceptLabel: 'Aceptar',
+      rejectLabel: 'Cancelar',
+      accept: () => this.confirmarReingreso(idParticipacionAnterior),
+      reject: () => {
+        this.evaluandoReingreso = false;
+        this.registroBloqueadoPorReingreso = true;
+      }
+    });
+  }
+
+  private confirmarReingreso(idParticipacionAnterior: number): void {
+    this._RegistroMedicoService.confirmarReingreso(idParticipacionAnterior).subscribe({
+      next: (respuesta) => {
+        this.evaluandoReingreso = false;
+        if (!respuesta.exito) {
+          this._alertServices.error(respuesta.mensaje || 'No fue posible confirmar el reingreso.');
+          return;
+        }
+
+        this.paginaAnterior(respuesta.mensaje || this._Mensajes.MSG012);
+      },
+      error: (error: HttpErrorResponse) => {
+        this.evaluandoReingreso = false;
+        this._alertServices.error(
+          error.error?.mensaje ?? error.error?.message ?? 'No fue posible confirmar el reingreso.'
+        );
+      }
+    });
   }
 
 
@@ -725,10 +819,10 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
 
-  private paginaAnterior() {
+  private paginaAnterior(mensaje: string = this._Mensajes.MSG012) {
     void this._router.navigate(['publico/inicio-sesion']);
     setTimeout(() => {
-      this._alertServices.exito(this._Mensajes.MSG012);
+      this._alertServices.exito(mensaje);
     }, 500);
   }
 
@@ -787,7 +881,8 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
     this.medico.cveMatricula = this.form.controls['matricula'].value;
     if (this.medico.cveMatricula.length >= 6) {
-      return this.validarMatricula();
+      this.evaluarReingreso(() => this.validarMatricula());
+      return;
     } else {
       return this._alertServices.alerta(this._Mensajes.MSG010a);
     }

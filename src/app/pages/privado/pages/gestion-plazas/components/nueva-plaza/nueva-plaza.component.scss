@@ -82,6 +82,21 @@
     color: #404041 !important
 }
 
+.estatus-ocupada {
+    align-items: center;
+    background: #fff;
+    border: 1px solid #dfe5ec;
+    border-radius: 6px;
+    color: #404041;
+    display: flex;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.2;
+    min-height: 40px;
+    padding: .5rem .75rem;
+    width: 100%
+}
+
 .character-count {
     color: #6f86bf;
     font-size: .7rem;

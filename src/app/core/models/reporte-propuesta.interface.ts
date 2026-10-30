@@ -32,7 +32,6 @@ export interface ReportePropuestaInterface {
   fechaPropuestaSindical: string | null;
   estatusPropuesta: string | null;
   tipoAsignacion: string | null;
-  fechaPropuesta: string | null;
 }
 
 export interface PaginadoReporteFiltros {
