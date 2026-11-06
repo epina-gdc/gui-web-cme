@@ -15,7 +15,7 @@ import { InputText } from 'primeng/inputtext';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { Select } from 'primeng/select';
 import { TableModule } from 'primeng/table';
-import { distinctUntilChanged, filter, switchMap } from 'rxjs';
+import { catchError, distinctUntilChanged, EMPTY, filter, switchMap } from 'rxjs';
 import { FiltrosReportePlaza, ReportePlazas } from '@models/reporte-plazas.interface';
 import { AlertService } from '@services/alert.service';
 import { Mensajes } from '@utils/mensajes';
@@ -86,7 +86,18 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
         distinctUntilChanged(),
         filter(value => !!value),
         takeUntilDestroyed(this.destroyRef),
-        switchMap(ooad => this._CatalogoGenService.getLstZonas(ooad))
+        switchMap(ooad => {
+          this.lstZonas = [];
+          this.form.controls['cveZona'].reset(null);
+
+          return this._CatalogoGenService.getLstZonas(ooad).pipe(
+            catchError(() => {
+              this.limpiarZonas();
+              this.alertaService.error('No fue posible cargar las zonas.');
+              return EMPTY;
+            })
+          );
+        })
       )
       .subscribe(respuesta => {
         if(respuesta.exito){
@@ -124,6 +135,11 @@ export class ReportePlazasComponent extends GeneralComponent implements OnInit {
     this.totalRecords = 0;
     this.ultimaBusqueda.set({});
     this.lstReportePlazas.set([]);
+  }
+
+  private limpiarZonas(): void {
+    this.form.controls['cveZona'].reset(null);
+    this.lstZonas = [];
   }
 
   onExportarDatos() {
