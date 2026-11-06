@@ -229,6 +229,7 @@
           <div class="lg:col-3 col-12">
             <div class="flex justify-content-between">
               <label class="field-label" for="paisNacimiento">País de nacimiento</label>
+              <p class="label-obligatorio">Obligatorio</p>
             </div>
             <p-select [options]="paises" formControlName="paisNacimiento" optionLabel="label"
                       filterBy="label" [filter]="true" placeholder="Ingresa País de nacimiento"
@@ -237,6 +238,7 @@
           <div class="lg:col-3 col-12">
             <div class="flex justify-content-between">
               <label class="field-label" for="estadoNacimiento">Estado de origen (nacimiento)</label>
+              <p class="label-obligatorio">Obligatorio</p>
             </div>
             <p-select [options]="lugaresNacimiento" formControlName="estadoNacimiento" optionLabel="label"
                       optionValue="value"

@@ -291,8 +291,8 @@ export class InicioComponent extends GeneralComponent {
         value: '',
         disabled: false
       }, [Validators.required, Validators.minLength(10), Validators.maxLength(10)]],
-      paisNacimiento: [],
-      estadoNacimiento: [],
+      paisNacimiento: [null, [Validators.required]],
+      estadoNacimiento: [null, [Validators.required]],
       codigoPostal: [{value: '', disabled: false}, [Validators.required]],
       pais: [],
       estado: [{value: '', disabled: false}, [Validators.required]],
