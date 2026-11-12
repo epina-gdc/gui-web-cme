@@ -28,6 +28,7 @@ import {HttpRespuesta} from '@models/http-respuesta.interface';
 import {
   construirEncabezadoConvocatoriaActiva,
   filtrarSubperfilesPorPerfil,
+  MENSAJE_REGISTRO_CERRADO,
   subperfilesConvocatoriaToCatalogo
 } from '@utils/convocatoria-activa';
 
@@ -58,6 +59,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   usuarioValidado = false;
   tituloConvocatoria = signal('');
   subtituloConvocatoria = signal('');
+  registroActivo = signal(false);
 
   strTitulo!: string;
   medico!: RegistroMedico;
@@ -93,6 +95,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     this.msjForm();
     this.blnBtnValidar = true;
     this.inicializarRegistroMedico();
+    this.bloquearRegistro();
     this.obtenerConvocatoriaActiva();
   }
 
@@ -160,6 +163,15 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     const encabezado = construirEncabezadoConvocatoriaActiva(convocatoria);
     this.tituloConvocatoria.set(encabezado.titulo);
     this.subtituloConvocatoria.set(encabezado.subtitulo);
+    this.registroActivo.set(encabezado.registroActivo);
+
+    if (!encabezado.registroActivo) {
+      this.bloquearRegistro();
+      this._alertServices.informacion(MENSAJE_REGISTRO_CERRADO);
+      return;
+    }
+
+    this.habilitarRegistro();
     this.lstSubperfilesConvocatoria = subperfilesConvocatoriaToCatalogo(convocatoria.subperfiles ?? []);
     this.actualizarModalidadesPorPerfil(this.medico?.perfil?.idPerfil);
   }
@@ -168,9 +180,19 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
     const encabezado = construirEncabezadoConvocatoriaActiva();
     this.tituloConvocatoria.set(encabezado.titulo);
     this.subtituloConvocatoria.set(encabezado.subtitulo);
+    this.registroActivo.set(false);
     this.lstSubperfilesConvocatoria = [];
     this.lstModalidad = [];
     this.configurarControlModalidad();
+    this.bloquearRegistro();
+  }
+
+  private bloquearRegistro(): void {
+    this.form.disable({emitEvent: false});
+  }
+
+  private habilitarRegistro(): void {
+    this.form.enable({emitEvent: false});
   }
 
   private actualizarModalidadesPorPerfil(idPerfil?: number | null): void {
@@ -497,6 +519,10 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
   public btnValidarCurp() {
+    if (!this.registroActivo()) {
+      return;
+    }
+
     this.medico.refCurp = this.form.controls['curp'].value;
     this.evaluarReingreso(() => this.validarCURP());
 
@@ -505,6 +531,9 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   datosCURP!: any;
 
   private validarCURP() {
+    if (!this.registroActivo()) {
+      return;
+    }
 
     this.inCurp = true;
 
@@ -575,6 +604,9 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
 
   public btnCrearCuenta() {
+    if (!this.registroActivo()) {
+      return;
+    }
 
     this.asignarDatos();
 
@@ -599,6 +631,10 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
   private registrarSegunFlujo(): void {
+    if (!this.registroActivo()) {
+      return;
+    }
+
     if (this.medico.blnInterno) {
       this.postResidente();
       return;
@@ -613,7 +649,7 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
   private evaluarReingreso(siguiente: () => void): void {
-    if (this.evaluandoReingreso || this.registroBloqueadoPorReingreso) {
+    if (!this.registroActivo() || this.evaluandoReingreso || this.registroBloqueadoPorReingreso) {
       return;
     }
 
@@ -878,6 +914,9 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
 
 
   public btnValidarMatricula() {
+    if (!this.registroActivo()) {
+      return;
+    }
 
     this.medico.cveMatricula = this.form.controls['matricula'].value;
     if (this.medico.cveMatricula.length >= 6) {
@@ -913,6 +952,9 @@ export class RegistroMedicoComponent extends GeneralComponent implements OnInit,
   }
 
   private validarMatricula() {
+    if (!this.registroActivo()) {
+      return;
+    }
 
     let datos = {
       matricula: this.medico.cveMatricula,

@@ -74,7 +74,7 @@
           }
 
           <div class="flex flex-row justify-content-end" style="margin-top: 40px;">
-            <p-button type="submit" label="Aceptar" [disabled]="!form.valid"/>
+            <p-button type="submit" label="Aceptar" [disabled]="!registroActivo() || !form.valid"/>
           </div>
         </article>
       </form>

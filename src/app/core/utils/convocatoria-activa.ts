@@ -2,6 +2,7 @@ import {CatPerfil, CatSubperfil} from '@models/catalogoGeneral';
 import {ConvocatoriaActiva, ConvocatoriaPerfil, ConvocatoriaSubperfil} from '@models/convocatoria.interface';
 
 export const TITULO_CONVOCATORIA_DEFAULT = 'Convocatoria para M\u00e9dicos Especialistas';
+export const MENSAJE_REGISTRO_CERRADO = 'Estimado(a) médico(a), el periodo de registro en la convocatoria vigente esta cerrado. Te esperamos en futuras convocatorias';
 
 export interface EncabezadoConvocatoriaActiva {
   titulo: string;

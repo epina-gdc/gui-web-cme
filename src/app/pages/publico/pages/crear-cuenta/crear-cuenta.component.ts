@@ -19,6 +19,7 @@ import {HttpRespuesta} from '@models/http-respuesta.interface';
 import {
   construirEncabezadoConvocatoriaActiva,
   filtrarSubperfilesPorPerfil,
+  MENSAJE_REGISTRO_CERRADO,
   perfilesConvocatoriaToCatalogo,
   subperfilesConvocatoriaToCatalogo
 } from '@utils/convocatoria-activa';
@@ -47,6 +48,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   blnSeleccionado = false;
   tituloConvocatoria = signal('');
   subtituloConvocatoria = signal('');
+  registroActivo = signal(false);
 
   ruta: string = '';
   lstPerfil: Array<CatPerfil> = [];
@@ -65,6 +67,7 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
     this.blnSeleccionado = false;
     this.form = this.inicializarForm();
     this.inicializarCambiosFormulario();
+    this.bloquearRegistro();
     this.obtenerConvocatoriaActiva();
   }
 
@@ -91,6 +94,10 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
   }
 
   public btnAceptar(): void {
+    if (!this.registroActivo()) {
+      return;
+    }
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -213,6 +220,15 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
     const encabezado = construirEncabezadoConvocatoriaActiva(convocatoria);
     this.tituloConvocatoria.set(encabezado.titulo);
     this.subtituloConvocatoria.set(encabezado.subtitulo);
+    this.registroActivo.set(encabezado.registroActivo);
+
+    if (!encabezado.registroActivo) {
+      this.bloquearRegistro();
+      this._alertServices.informacion(MENSAJE_REGISTRO_CERRADO);
+      return;
+    }
+
+    this.habilitarRegistro();
     this.lstPerfil = perfilesConvocatoriaToCatalogo(convocatoria.perfiles ?? []);
     this.lstSubperfilesConvocatoria = subperfilesConvocatoriaToCatalogo(convocatoria.subperfiles ?? []);
     this.lstModalidad = [];
@@ -229,10 +245,20 @@ export class CrearCuentaComponent extends GeneralComponent implements OnInit {
     const encabezado = construirEncabezadoConvocatoriaActiva();
     this.tituloConvocatoria.set(encabezado.titulo);
     this.subtituloConvocatoria.set(encabezado.subtitulo);
+    this.registroActivo.set(false);
+    this.bloquearRegistro();
     this.lstPerfil = [];
     this.lstSubperfilesConvocatoria = [];
     this.lstModalidad = [];
     this.form.controls['perfil'].setValue(null, {emitEvent: false});
+  }
+
+  private bloquearRegistro(): void {
+    this.form.disable({emitEvent: false});
+  }
+
+  private habilitarRegistro(): void {
+    this.form.enable({emitEvent: false});
   }
 
   private actualizarModalidadesPorPerfil(idPerfil: number): void {
